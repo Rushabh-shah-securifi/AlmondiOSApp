@@ -11,7 +11,9 @@
 #import "CommonMethods.h"
 #import "SFIColors.h"
 #import "UIFont+Securifi.h"
+#import "URIData.h"
 #import "BrowsingHistory.h"
+#import "NSDate+Convenience.h"
 
 @interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *browsingTable;
@@ -66,28 +68,32 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 40;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.browsingData.count;
+    BrowsingHistory *browsHist = self.browsingHistoryDayWise[section];
+    return browsHist.URIs.count;
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return self.browsingHistoryDayWise.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 45;
+    return 40;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    
     return [self deviceHeader:section tableView:tableView];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-     HistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"HistorytableCell" forIndexPath:indexPath];
+    NSLog(@"cell for row");
+    HistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"HistorytableCell" forIndexPath:indexPath];
     if (cell == nil){
-        cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HistorytableCell"];
+    cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HistorytableCell"];
     }
-    BrowsingHistory *browsHist = [self.browsingData objectAtIndex:indexPath.row];
-    [cell setCell:browsHist.url Image:browsHist.image];
+    BrowsingHistory *browsHist = [self.browsingHistoryDayWise objectAtIndex:indexPath.section];
+    NSArray *URIs = browsHist.URIs;
+    [cell setCell:URIs[indexPath.row]];
     return cell;
 }
 
@@ -100,9 +106,9 @@
 }
 
 -(UIView*)deviceHeader:(NSInteger)section tableView:(UITableView*)tableView{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 25)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
     view.backgroundColor = [UIColor whiteColor];
-    if (section >0) {
+    if (section > 0) {
         UITableViewHeaderFooterView *foot = (UITableViewHeaderFooterView *)view;
         CGRect sepFrame = CGRectMake(0, 0, tableView.frame.size.width, 1);
         UIView *seperatorView =[[UIView alloc] initWithFrame:sepFrame];
@@ -111,7 +117,7 @@
     }
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
     [label setFont:[UIFont securifiBoldFont:13]];
-    label.text = @"Thu 23 June";
+    label.text = [self getHeaderDate:section];
     label.textColor = [UIColor grayColor];
     [view addSubview:label];
     
@@ -120,6 +126,12 @@
     seperatorView.backgroundColor = [UIColor colorWithWhite:224.0/255.0 alpha:0.5];
     [view addSubview:seperatorView];
     return view;
+}
+
+-(NSString*)getHeaderDate:(NSInteger)section{
+    NSDate *date = [[NSDate alloc]init];
+    BrowsingHistory *browsHistory = self.browsingHistoryDayWise[section];
+    return [browsHistory.date getDayMonthFormat];
 }
 
 #pragma mark click handler

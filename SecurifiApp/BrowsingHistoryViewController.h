@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface BrowsingHistoryViewController : UIViewController
-@property (nonatomic) NSArray *browsingData;
+@property (nonatomic) NSArray *browsingHistoryDayWise;
 @end

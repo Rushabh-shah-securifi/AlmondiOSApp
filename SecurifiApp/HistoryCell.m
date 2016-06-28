@@ -21,12 +21,13 @@
 
     // Configure the view for the selected state
 }
--(void)setCell:(NSString *)httpUrlReq Image:(UIImage*)image{
+-(void)setCell:(URIData*)uri{
     dispatch_async(dispatch_get_main_queue(), ^() {
-    self.webImg.image = image;
-    NSArray * properties = [httpUrlReq componentsSeparatedByString:@"/"];
-    NSLog(@"_httpString %@,%@,%@,%@,%@",httpUrlReq,properties[0],properties[1],properties[2],properties[3]);
-    self.siteName.text = properties[2];
+        self.webImg.image = uri.image;
+        self.siteName.text = uri.hostName;
+        self.countLbl.text = @(uri.count).stringValue;
+        self.lastActTime.text = [uri.lastActiveTime stringFromDate];
+        
     });
 }
 

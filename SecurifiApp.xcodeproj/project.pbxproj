@@ -507,8 +507,10 @@
 		CEF6F50B1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
 		F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F426AE2E1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
-		F4B656101D210CCF0047A3F8 /* BrowsingHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B6560F1D210CCF0047A3F8 /* BrowsingHistory.m */; };
-		F4B656111D210CCF0047A3F8 /* BrowsingHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B6560F1D210CCF0047A3F8 /* BrowsingHistory.m */; };
+		F4B656101D210CCF0047A3F8 /* URIData.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B6560F1D210CCF0047A3F8 /* URIData.m */; };
+		F4B656111D210CCF0047A3F8 /* URIData.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B6560F1D210CCF0047A3F8 /* URIData.m */; };
+		F4B656141D223BD70047A3F8 /* BrowsingHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B656131D223BD70047A3F8 /* BrowsingHistory.m */; };
+		F4B656151D223BD70047A3F8 /* BrowsingHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B656131D223BD70047A3F8 /* BrowsingHistory.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1051,8 +1053,10 @@
 		CEF6F5081C92CD3D00C68975 /* deviceListJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = deviceListJson.json; sourceTree = "<group>"; };
 		F426AE2B1D19515500AE60C8 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
-		F4B6560E1D210CCF0047A3F8 /* BrowsingHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistory.h; sourceTree = "<group>"; };
-		F4B6560F1D210CCF0047A3F8 /* BrowsingHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistory.m; sourceTree = "<group>"; };
+		F4B6560E1D210CCF0047A3F8 /* URIData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URIData.h; sourceTree = "<group>"; };
+		F4B6560F1D210CCF0047A3F8 /* URIData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URIData.m; sourceTree = "<group>"; };
+		F4B656121D223BD70047A3F8 /* BrowsingHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistory.h; sourceTree = "<group>"; };
+		F4B656131D223BD70047A3F8 /* BrowsingHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistory.m; sourceTree = "<group>"; };
 		F65023B0DECE8F15E5353C48 /* Pods-Almond.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Almond.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Almond/Pods-Almond.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1941,8 +1945,10 @@
 				CE57E5301D1BBCC400493460 /* HistoryCell.xib */,
 				CE57E53C1D1BE50C00493460 /* BrowsingHistoryViewController.h */,
 				CE57E53D1D1BE50C00493460 /* BrowsingHistoryViewController.m */,
-				F4B6560E1D210CCF0047A3F8 /* BrowsingHistory.h */,
-				F4B6560F1D210CCF0047A3F8 /* BrowsingHistory.m */,
+				F4B6560E1D210CCF0047A3F8 /* URIData.h */,
+				F4B6560F1D210CCF0047A3F8 /* URIData.m */,
+				F4B656121D223BD70047A3F8 /* BrowsingHistory.h */,
+				F4B656131D223BD70047A3F8 /* BrowsingHistory.m */,
 			);
 			name = SiteMap;
 			sourceTree = "<group>";
@@ -2639,9 +2645,10 @@
 				CEF6F4E71C92CAD600C68975 /* RulePayload.m in Sources */,
 				A5C7B4031CA14F5400E269A2 /* DevicePayload.m in Sources */,
 				1DF03B77AE6B540AFC5851BB /* DebugLogger.m in Sources */,
-				F4B656111D210CCF0047A3F8 /* BrowsingHistory.m in Sources */,
+				F4B656111D210CCF0047A3F8 /* URIData.m in Sources */,
 				1DF03CC89074191AC5F942CA /* ScoreboardDebugLoggerViewController.m in Sources */,
 				842651AE1BE0C86C001F79C1 /* TimeText.m in Sources */,
+				F4B656151D223BD70047A3F8 /* BrowsingHistory.m in Sources */,
 				1DF033F4DF8C6A502EB12289 /* ScoreboardTextEditorViewController.m in Sources */,
 				1DF031DB440397B975511290 /* UIColor+GetHSB.m in Sources */,
 				CEF6F4EF1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */,
@@ -2726,7 +2733,7 @@
 				CEF6F4EC1C92CAD600C68975 /* RulesTableViewController.m in Sources */,
 				1C7E7D951A41A0990026F0BA /* SFIRouterTableViewController.m in Sources */,
 				1C7E7E061A41A0B30026F0BA /* main.m in Sources */,
-				F4B656101D210CCF0047A3F8 /* BrowsingHistory.m in Sources */,
+				F4B656101D210CCF0047A3F8 /* URIData.m in Sources */,
 				CEF6F4FC1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */,
 				A5C7B40A1CA28D6F00E269A2 /* GenericIndexValue.m in Sources */,
 				846414C91B736B36008AB07F /* ILHuePickerView.m in Sources */,
@@ -2777,6 +2784,7 @@
 				CEEC42331C98560D00A2C35D /* TextInput.m in Sources */,
 				1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */,
 				1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */,
+				F4B656141D223BD70047A3F8 /* BrowsingHistory.m in Sources */,
 				1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */,
 				1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */,
 				A5C7B4061CA2677700E269A2 /* GenericParams.m in Sources */,
