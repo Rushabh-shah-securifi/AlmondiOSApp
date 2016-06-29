@@ -56,11 +56,12 @@
     button = [[UIButton alloc]init];
     button1 = [[UIButton alloc]init];
     button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [button addTarget:self action:@selector(AlmondSelection:) forControlEvents:UIControlEventTouchUpInside];
     button1 = [UIButton buttonWithType:UIButtonTypeCustom];
     [button1 addTarget:self action:@selector(AlmondSelection:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
-    [self.view addSubview:button1];
+    [Scroller addSubview:button];
+    [Scroller addSubview:button1];
     [self SelectAlmond:@"AddAlmond"];
     
     [self markNetworkStatusIcon];
@@ -68,7 +69,79 @@
     [self initializeHUD];
 }
 
--(void)SelectAlmond : (NSString *)title{
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self
+               selector:@selector(onAlmondModeDidChange:)
+                   name:kSFIAlmondModeDidChange
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onDeviceListAndDynamicResponseParsed:) //for both sensors and clients
+                   name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onCurrentAlmondChanged:)
+                   name:kSFIDidChangeCurrentAlmond
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onNetworkUpNotifier:)
+                   name:NETWORK_UP_NOTIFIER
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onNetworkDownNotifier:)
+                   name:NETWORK_DOWN_NOTIFIER
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onNetworkConnectingNotifier:)
+                   name:NETWORK_CONNECTING_NOTIFIER
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onReachabilityDidChange:)
+                   name:kSFIReachabilityChangedNotification
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onDidReceiveNotifications)
+                   name:kSFINotificationDidStore
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationDidStore
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationBadgeCountDidChange
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationDidMarkViewed
+                 object:nil];
+    [self.toolkit tryRefreshNotifications];
+    [self initializeNotification];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.dashboardTable reloadData];
+    });
+    [self getDeviceClientNotification];
+    [self markNetworkStatusIcon];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+}
+
+-(void)initializeNotification{
+    [self updateMode:self.toolkit.mode_src];
+    [self updateDeviceClientListCount];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+- (void)SelectAlmond : (NSString *)title{
     CGFloat strikeWidth;
     CGSize textSize;
     textSize = [title sizeWithAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Medium" size:18]}];
@@ -78,6 +151,7 @@
     [button setTitle:title forState:UIControlStateNormal];
     [button1 setBackgroundImage:[UIImage imageNamed:@"arrow_drop_down_black.pdf"] forState:UIControlStateNormal];
 }
+
 
 #pragma mark Navigation UI
 -(void)navigationBarStyle{
@@ -145,11 +219,6 @@
             [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
         });
     }
-}
-
--(void)initializeNotification{
-    [self updateMode:self.toolkit.mode_src];
-    [self updateDeviceClientListCount];
 }
 
 -(void)updateDeviceClientListCount{
@@ -233,13 +302,7 @@
     self.HUD.labelText = text;
     [self.HUD show:YES];
 }
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-}
-
+#pragma mark Update
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     [self updateDeviceClientListCount];
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -251,63 +314,6 @@
             [self.refreshControl endRefreshing];
         }
     });
-}
-
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:YES];
-    
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self
-               selector:@selector(onAlmondModeDidChange:)
-                   name:kSFIAlmondModeDidChange
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onDeviceListAndDynamicResponseParsed:) //for both sensors and clients
-                   name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onCurrentAlmondChanged:)
-                   name:kSFIDidChangeCurrentAlmond
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onNetworkUpNotifier:)
-                   name:NETWORK_UP_NOTIFIER
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onNetworkDownNotifier:)
-                   name:NETWORK_DOWN_NOTIFIER
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onNetworkConnectingNotifier:)
-                   name:NETWORK_CONNECTING_NOTIFIER
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onReachabilityDidChange:)
-                   name:kSFIReachabilityChangedNotification
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onDidReceiveNotifications)
-                   name:kSFINotificationDidStore
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onNotificationCountChanged:)
-                   name:kSFINotificationDidStore
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onNotificationCountChanged:)
-                   name:kSFINotificationBadgeCountDidChange
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onNotificationCountChanged:)
-                   name:kSFINotificationDidMarkViewed
-                 object:nil];
-    [self.toolkit tryRefreshNotifications];
-    [self initializeNotification];
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.dashboardTable reloadData];
-    });
-    [self getDeviceClientNotification];
-    [self markNetworkStatusIcon];
 }
 
 - (void)onNotificationCountChanged:(id)event {
@@ -367,6 +373,7 @@
     });
 }
 
+#pragma mark selectAlmond
 - (IBAction)AlmondSelection:(UIButton *)sender {
     enum SFIAlmondConnectionMode modeValue = [self.toolkit currentConnectionMode];
     NSArray *almondList = [self buildAlmondList:modeValue];
@@ -444,9 +451,7 @@
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
+
 
 - (IBAction)homeMode:(id)sender {
     if(self.toolkit.currentAlmond != nil){
@@ -501,6 +506,8 @@
         }
     }
 }
+
+#pragma mark tableviewDelegate
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
@@ -610,7 +617,7 @@
     return self.clientNotificationArr.count == 0;
 }
 
-#pragma onConnectionStatus
+#pragma mark onConnectionStatus
 -(void)onConnection:(NSString *)Title subTitle:(NSString *)subTitle stmt:(enum SFIAlmondConnectionMode)mode{
     UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:@"Almond Connection" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     almondSelect.title = Title;
@@ -807,22 +814,6 @@
     [toolkit.scenesArray removeAllObjects];
     [toolkit.ruleList removeAllObjects];
 }
-
-
-//- (void)presentLocalNetworkSettingsEditor {
-//    NSString *mac = self.toolkit.currentAlmond.almondplusMAC;
-//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-//    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:mac];
-//    if (!settings) {
-//        settings = [SFIAlmondLocalNetworkSettings new];
-//        settings.almondplusMAC = mac;
-//    }
-//    RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
-//    editor.settings = settings;
-//    editor.enableUnlinkActionButton = ![toolkit almondExists:mac]; // only allowed to unlink local almonds that are not affiliated with the cloud
-//    UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
-//    [self presentViewController:ctrl animated:YES completion:nil];
-//}
 
 - (void)markNetworkStatusIcon {
     NSString *const almondMac = self.toolkit.currentAlmond.almondplusMAC;
