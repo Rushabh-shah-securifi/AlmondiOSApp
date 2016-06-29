@@ -60,4 +60,6 @@
 
 - (enum SFIAlmondConnectionMode)currentConnectionMode;
 
+- (void)removeAlert;
+
 @end

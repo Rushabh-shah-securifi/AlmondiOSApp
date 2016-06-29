@@ -23,6 +23,8 @@
 #import "Analytics.h"
 #import "NewAddSceneViewController.h"
 #import "SFIButtonSubProperties.h"
+#import "AlertView.h"
+
 #define AVENIR_ROMAN @"Avenir-Roman"
 
 @interface SFIScenesTableViewController ()<UITableViewDataSource,UITableViewDelegate,SFIScenesTableViewCellDelegate,MBProgressHUDDelegate,MessageViewDelegate> {
@@ -333,6 +335,7 @@
 
 #pragma mark
 - (IBAction)btnAddNewSceneTap:(id)sender {
+    [self removeAlert];
     NewAddSceneViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewAddSceneViewController"];
     viewController.scene = [[Rule alloc]init];
     [self.navigationController pushViewController:viewController animated:YES];
