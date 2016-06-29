@@ -22,7 +22,7 @@
 #import "UILabel+ActionSheet.h"
 #import "UIFont+Securifi.h"
 
-@interface DashboardViewController ()<MBProgressHUDDelegate>{
+@interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate>{
     UIButton *button, *button1;
 }
 
@@ -38,7 +38,6 @@
 @property(nonatomic, readonly) CircleLabel *countLabel;
 @property(nonatomic, readonly) UIButton *countButton;
 @property(nonatomic) UIImageView *navigationImg;
-@property(nonatomic) SFITableViewController * ref;
 
 @end
 
@@ -238,9 +237,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
-        [self.HUD removeFromSuperview];
-    }
+    
 }
 
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
@@ -674,7 +671,6 @@
 }
 
 -(void)onConnection3:(NSString *)Title subTitle:(NSString *)subTitle{
-    self.ref = [[SFITableViewController alloc]init];
     UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:@"Almond Connection" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     almondSelect.title = Title;
     UIAlertAction *Check = [UIAlertAction
@@ -682,7 +678,7 @@
                             style:UIAlertActionStyleDefault
                             handler:^(UIAlertAction * action)
                             {
-                                [self.ref presentLocalNetworkSettingsEditor];
+                                [self presentLocalNetworkSettingsEditor];
                             }];
     [almondSelect addAction:Check];
     UIAlertAction *Close = [UIAlertAction
@@ -698,6 +694,25 @@
     almondSelect.popoverPresentationController.permittedArrowDirections = 0;
     [self presentViewController:almondSelect animated:YES completion:nil];
 
+}
+- (void)presentLocalNetworkSettingsEditor {
+    NSString *mac = self.toolkit.currentAlmond.almondplusMAC;
+    
+    _toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondLocalNetworkSettings *settings = [_toolkit localNetworkSettingsForAlmond:mac];
+    NSLog(@"sfitableview - presentlocalnetwork - mac: %@, settings: %@", mac, settings);
+    if (!settings) {
+        settings = [SFIAlmondLocalNetworkSettings new];
+        settings.almondplusMAC = mac;
+    }
+    
+    RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+    editor.delegate = self;
+    editor.settings = settings;
+    editor.enableUnlinkActionButton = ![_toolkit almondExists:mac]; // only allowed to unlink local almonds that are not affiliated with the cloud
+    
+    UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
+    [self presentViewController:ctrl animated:YES completion:nil];
 }
 
 - (void)onConnectionStatusButtonPressed:(id)sender {
@@ -935,5 +950,34 @@
     [container appendAttributedString:nameStr];
     [container appendAttributedString:eventStr];
     return container;
+}
+
+
+#pragma mark - RouterNetworkSettingsEditorDelegate methods
+
+- (void)networkSettingsEditorDidLinkAlmond:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    
+}
+
+- (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit setLocalNetworkSettings:newSettings];
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidComplete:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {
+    NSString *almondMac = editor.settings.almondplusMAC;
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit removeLocalNetworkSettingsForAlmond:almondMac];
+    [editor dismissViewControllerAnimated:YES completion:nil];
 }
 @end
