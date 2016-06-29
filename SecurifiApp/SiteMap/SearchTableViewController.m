@@ -17,7 +17,9 @@
 
 @interface SearchTableViewController ()<UISearchResultsUpdating, UISearchBarDelegate>
 @property (nonatomic, strong) UISearchController *searchController;
-@property (nonatomic)NSArray *searchResultsArray;
+@property (nonatomic) NSArray *searchResultsArray;
+@property (nonatomic) UITableView *searchTableView;
+@property (nonatomic) NSMutableArray *localSearchDayWiseHist;
 @end
 
 @implementation SearchTableViewController
@@ -56,50 +58,65 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.browsingHistoryDayWise.count;
 }
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 40;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView == self.tableView){
         BrowsingHistory *browsHist = self.browsingHistoryDayWise[section];
         return browsHist.URIs.count;
     }
     else{
-        return self.searchResultsArray.count;
+        BrowsingHistory *browsHist = self.localSearchDayWiseHist[section];
+        return browsHist.URIs.count;
+
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 45;
+    return 40;
 }
-
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 0.000001;
+   
+    
+}
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
     return [self deviceHeader:section tableView:tableView];
 }
 -(UIView*)deviceHeader:(NSInteger)section tableView:(UITableView*)tableView{
-    NSString *header = @"Thu 23 June";
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 25)];
-    if (section >0) {
-        UITableViewHeaderFooterView *foot = (UITableViewHeaderFooterView *)view;
-        CGRect sepFrame = CGRectMake(0, 0, tableView.frame.size.width, 1);
-        UIView *seperatorView =[[UIView alloc] initWithFrame:sepFrame];
-        seperatorView.backgroundColor = [UIColor colorWithWhite:224.0/255.0 alpha:0.5];
-    }
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
+    view.backgroundColor = [UIColor whiteColor];
+//    if (section > 0) {
+//        UITableViewHeaderFooterView *foot = (UITableViewHeaderFooterView *)view;
+//        CGRect sepFrame = CGRectMake(0, 0, tableView.frame.size.width, 1);
+//        UIView *seperatorView =[[UIView alloc] initWithFrame:sepFrame];
+//        seperatorView.backgroundColor = [UIColor colorWithWhite:224.0/255.0 alpha:0.5];
+//        [foot addSubview:seperatorView];
+//    }
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
-    [label setFont:[UIFont securifiBoldFont:12]];
-    label.text = header;
+    [label setFont:[UIFont securifiBoldFont:13]];
+    NSString *headerDate = [self getHeaderDate:section];
+    label.text = section == 0? [NSString stringWithFormat:@"Today, %@",headerDate]: headerDate;
     label.textColor = [UIColor grayColor];
     [view addSubview:label];
-    CGRect sepFrame = CGRectMake(0, 32, tableView.frame.size.width, 1);
-    UIView *seperatorView =[[UIView alloc] initWithFrame:sepFrame];
-    seperatorView.backgroundColor = [UIColor colorWithWhite:224.0/255.0 alpha:0.5];
+    
+//    CGRect sepFrame = CGRectMake(0, 32, tableView.frame.size.width, 1);
+//    UIView *seperatorView =[[UIView alloc] initWithFrame:sepFrame];
+//    seperatorView.backgroundColor = [UIColor colorWithWhite:224.0/255.0 alpha:0.5];
+//    [view addSubview:seperatorView];
     return view;
 }
-
+- (NSString*)getHeaderDate:(NSInteger)section{
+    BrowsingHistory *browsHistory = self.browsingHistoryDayWise[section];
+    return [browsHistory.date getDayMonthFormat];
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     HistoryCell *cell;
     if(tableView == self.tableView)
         cell = [tableView dequeueReusableCellWithIdentifier:@"abc" forIndexPath:indexPath];
     else
-        cell = [tableView dequeueReusableCellWithIdentifier:@"abc"];
+        cell = [tableView dequeueReusableCellWithIdentifier:@"abc" forIndexPath:indexPath];
     
     if (cell == nil){
         cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"abc"];
@@ -107,22 +124,20 @@
     if(tableView == self.tableView){
         BrowsingHistory *browsHist = [self.browsingHistoryDayWise objectAtIndex:indexPath.section];
         NSArray *URIs = browsHist.URIs;
-        [cell setName:[URIs objectAtIndex:indexPath.row]];
+        [cell setCell:[URIs objectAtIndex:indexPath.row]];
     }
     else {
        NSLog(@"searchArr inside table cell %@",self.searchResultsArray);
 //        cell.siteName.text = [self.searchResultsArray objectAtIndex:indexPath.row];
-        BrowsingHistory *browsHist = [self.browsingHistoryDayWise objectAtIndex:indexPath.section];
+        BrowsingHistory *browsHist = [self.localSearchDayWiseHist objectAtIndex:indexPath.section];
         NSArray *URIs = browsHist.URIs;
-        [cell setName:URIs[indexPath.row]];
+        [cell setCell:URIs[indexPath.row]];
 
     }
     
     return cell;
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 40;
-}
+
 - (void)initializeSearchController {
     
     //instantiate a search results controller for presenting the search/filter results (will be presented on top of the parent table view)
@@ -154,26 +169,33 @@
     
     //this ViewController will be responsisble for implementing UISearchBarDelegate protocol methods(s)
     self.searchController.searchBar.delegate = self;
+    self.searchTableView = ((UITableViewController *)self.searchController.searchResultsController).tableView;
+    [self.searchTableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
+    
 }
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController{
     NSString *searchString = self.searchController.searchBar.text;
     NSPredicate *resultPredicate;
     NSLog(@"searching string = %@",searchString);
-//    for(BrowsingHistory *browsHistory in self.browsingHistoryDayWise){
-    BrowsingHistory *browsHistory = self.browsingHistoryDayWise[0];
+    self.localSearchDayWiseHist = [NSMutableArray new];
+    
+    for(BrowsingHistory *browsHistory in self.browsingHistoryDayWise){
+        BrowsingHistory *newBrowsHistory = [BrowsingHistory new];
+        
         NSArray *URIs = browsHistory.URIs;
          resultPredicate = [NSPredicate predicateWithFormat:@"hostName CONTAINS[c] %@",searchString];
-        self.searchResultsArray = [URIs filteredArrayUsingPredicate:resultPredicate];
-//    }
+        NSArray *arr = [URIs filteredArrayUsingPredicate:resultPredicate];
+        
+        newBrowsHistory.URIs = arr;
+        [self.localSearchDayWiseHist addObject:newBrowsHistory];
+    }
 //    NSArray *URIs = browsHist.URIs;
 //    NSInteger scope = self.searchController.searchBar.selectedScopeButtonIndex;
 //    resultPredicate = [NSPredicate predicateWithFormat:@"lastName CONTAINS[c]",searchString];
 //    
 //    self.searchResultsArray = [self.httpArr filteredArrayUsingPredicate:resultPredicate];
-    for(URIData *urlData in self.searchResultsArray)
-        NSLog(@"urldata hostname = %@",urlData.hostName);
-    NSLog(@"self.searchResultsArray = %@",self.searchResultsArray);
-    [((UITableViewController *)self.searchController.searchResultsController).tableView reloadData];
+    
+    [self.searchTableView reloadData];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope{
