@@ -625,7 +625,6 @@
                                 [self configureNetworkSettings:mode];
                             }];
     [almondSelect addAction:Check];
-    [self presentViewController:almondSelect animated:YES completion:nil];
     UIAlertAction *Close = [UIAlertAction
                             actionWithTitle:@"Close"
                             style:UIAlertActionStyleDefault
@@ -634,6 +633,10 @@
                                 [almondSelect dismissViewControllerAnimated:YES completion:nil];
                             }];
     [almondSelect addAction:Close];
+    almondSelect.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0);
+    almondSelect.popoverPresentationController.sourceView = self.view;
+    almondSelect.popoverPresentationController.permittedArrowDirections = 0;
+    [self presentViewController:almondSelect animated:YES completion:nil];
 }
 
 -(void)onConnection2:(NSString *)Title subTitle1:(NSString *)subTitle1 subTitle2:(NSString *)subTitle2 stmt1:(enum SFIAlmondConnectionMode)mode1 stmt2:(enum SFIAlmondConnectionMode)mode2{
@@ -655,7 +658,6 @@
                                  [self configureNetworkSettings:mode2];
                              }];
     [almondSelect addAction:Check2];
-    [self presentViewController:almondSelect animated:YES completion:nil];
     UIAlertAction *Close = [UIAlertAction
                             actionWithTitle:@"Close"
                             style:UIAlertActionStyleDefault
@@ -664,6 +666,11 @@
                                 [almondSelect dismissViewControllerAnimated:YES completion:nil];
                             }];
     [almondSelect addAction:Close];
+    almondSelect.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0);
+    almondSelect.popoverPresentationController.sourceView = self.view;
+    almondSelect.popoverPresentationController.permittedArrowDirections = 0;
+    almondSelect.popoverPresentationController.permittedArrowDirections = 0;
+    [self presentViewController:almondSelect animated:YES completion:nil];
 }
 
 -(void)onConnection3:(NSString *)Title subTitle:(NSString *)subTitle{
@@ -678,7 +685,6 @@
                                 [self.ref presentLocalNetworkSettingsEditor];
                             }];
     [almondSelect addAction:Check];
-    [self presentViewController:almondSelect animated:YES completion:nil];
     UIAlertAction *Close = [UIAlertAction
                             actionWithTitle:@"Close"
                             style:UIAlertActionStyleDefault
@@ -687,6 +693,11 @@
                                 [almondSelect dismissViewControllerAnimated:YES completion:nil];
                             }];
     [almondSelect addAction:Close];
+    almondSelect.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0);
+    almondSelect.popoverPresentationController.sourceView = self.view;
+    almondSelect.popoverPresentationController.permittedArrowDirections = 0;
+    [self presentViewController:almondSelect animated:YES completion:nil];
+
 }
 
 - (void)onConnectionStatusButtonPressed:(id)sender {
