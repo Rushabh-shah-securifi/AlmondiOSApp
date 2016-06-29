@@ -86,11 +86,19 @@
     return aAttrString;
 }
 + (NSString *)getColorHex:(NSString*)value {
+    return [self getHex:value factor:65535];
+}
+
++ (NSString *)getDimmableHex:(NSString*)value{
+    return [self getHex:value factor:255];
+}
+
++ (NSString *)getHex:(NSString*)value factor:(int)factor{
     if (!value) {
         return @"";
     }
     float hue = [value floatValue];
-    hue = hue / 65535;
+    hue = hue / factor;
     UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
     return [color.hexString uppercaseString];
 }

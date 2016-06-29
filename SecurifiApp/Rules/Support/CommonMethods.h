@@ -23,4 +23,6 @@
 + (UIImage *)imageNamed:(NSString *)name withColor:(UIColor *)color;
 
 +(UIImage *)MultiplyImageByConstantColor:(UIImage*)image andColor:(UIColor *)color;
+
++ (NSString *)getDimmableHex:(NSString*)value;
 @end

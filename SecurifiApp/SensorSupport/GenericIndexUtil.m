@@ -46,25 +46,37 @@
             genericValue = genericIndexValue.genericValue;
             genericIndex = genericIndexValue.genericIndex;
             
-            if([genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] && [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
-                headerText = [NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.displayText];
+            if([genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
+//                NSLog(@"type: %d, grouplabel: %@, display text: %@", device.type, genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.displayText);
+                headerText = [NSString stringWithFormat:@"%@ %@%@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.displayText, genericIndexValue.genericIndex.formatter.units];
+//                NSLog(@"header text: %@", headerText);
             }else{
                 headerText = genericIndexValue.genericValue.displayText;
             }
             if(genericIndexValue.genericValue.icon.length == 0)
                 headerText = @"";
+            
             index = genericIndexValue.index;
-        }else if([genericIndexValue.genericIndex.placement rangeOfString:HEADER options:NSCaseInsensitiveSearch].location != NSNotFound){ //contains
-            if(genericIndexValue.genericValue.iconText)
-                [detailText appendString:[NSString stringWithFormat:@"%@ %@ ", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.iconText]];
-            else
-                
-                [detailText appendString:[NSString stringWithFormat:@"%@ ", genericIndexValue.genericValue.displayText]];
         }
-        //NSLog(@"header text: %@, detail text: %@", headerText, detailText);
+        else if([genericIndexValue.genericIndex.placement rangeOfString:HEADER options:NSCaseInsensitiveSearch].location != NSNotFound){ //contains
+            if(genericIndexValue.genericValue.iconText){
+                if(detailText.length == 0)
+                    [detailText appendString:[NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.iconText]];
+                else[detailText appendString:[NSString stringWithFormat:@", %@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.iconText]];
+            }
+            
+            else{
+                if(detailText.length == 0)
+                    [detailText appendString:[NSString stringWithFormat:@"%@", genericIndexValue.genericValue.displayText]];
+                else
+                    [detailText appendString:[NSString stringWithFormat:@", %@", genericIndexValue.genericValue.displayText]];
+            }
+            
+        }
+//        NSLog(@"header text: %@, detail text: %@", headerText, detailText);
     }//for
     //NSLog(@"generic value: %@, generic Index: %@", genericValue, genericIndex);
-    //NSLog(@"generic value display text before: %@", genericValue.displayText);
+//    NSLog(@"generic value display text before: %@", genericValue.displayText);
     if(genericValue == nil){
         genericValue = [GenericValue new];
         GenericDeviceClass *genericDevice = toolkit.genericDevices[@(device.type).stringValue];
@@ -73,8 +85,10 @@
     
     if(detailText.length > 0){
         genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:[NSString stringWithFormat:@"%@ %@", headerText, detailText]];
+    }else if(headerText.length > 0){
+        genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:[NSString stringWithFormat:@"%@", headerText]];
     }
-    //NSLog(@"generic value display text after: %@", genericValue.displayText);
+//    NSLog(@"generic value display text after: %@", genericValue.displayText);
     return [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:index deviceID:device.ID];
 }
 

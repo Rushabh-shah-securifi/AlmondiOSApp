@@ -1567,10 +1567,10 @@
                     }
                     
                     float hue = [value floatValue];
-                    int intClolor = 65535/8;
+                    int intClolor = 255/8;
                     
                     
-                    UIColor *color = [UIColor colorWithHue:(hue/65535) saturation:100 brightness:100 alpha:1.0];
+                    UIColor *color = [UIColor colorWithHue:(hue/255) saturation:100 brightness:100 alpha:1.0];
                     //                    NSDictionary *attr = @{
                     //                            NSBackgroundColorAttributeName : color,
                     //                    }
@@ -1592,11 +1592,11 @@
                     else
                         return [NSString stringWithFormat:@"(%@)",[color.hexString uppercaseString]];
                 };
-                s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.layoutType=@"dimButton";
                 s1.displayText=@"HUE\nCOLOR";
                 s1.minValue = 0;
                 s1.maxValue = 255;
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" hue color changed to ", @" hue color changed to ");
                 return @[s1];
             }
