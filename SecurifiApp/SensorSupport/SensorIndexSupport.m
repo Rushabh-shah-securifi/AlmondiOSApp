@@ -1532,13 +1532,14 @@
                 
                 return @[s1];
             }
-        }
             break;
+        }
+            
         case SFIDeviceType_PressureSensor_30:
             break;
         case SFIDeviceType_FlowSensor_31:
             break;
-        case SFIDeviceType_ColorDimmableLight_32:
+        case SFIDeviceType_ColorDimmableLight_32:{
             if (type == SFIDevicePropertyType_SWITCH_BINARY) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
@@ -1554,20 +1555,41 @@
                 
                 return @[s1, s2];
             }
-            if (type == SFIDevicePropertyType_CURRENT_HUE) {
+            if (type == SFIDevicePropertyType_COLOR_HUE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"0";
+                s1.iconName = DT25_LIGHT_SENSOR_TRUE;
                 s1.valueTransformer = ^NSString *(NSString *value) {
                     if (!value) {
                         return @"";
                     }
                     
                     float hue = [value floatValue];
-                    hue = hue / 65535;
+                    int intClolor = 65535/8;
                     
-                    UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
-                    return [color.hexString uppercaseString];
+                    
+                    UIColor *color = [UIColor colorWithHue:(hue/65535) saturation:100 brightness:100 alpha:1.0];
+                    //                    NSDictionary *attr = @{
+                    //                            NSBackgroundColorAttributeName : color,
+                    //                    }
+                    //                    NSAttributedString *a = [[NSAttributedString alloc] initWithString:@"\u25a1" attributes:attr];
+                    if(hue>=0 && hue <= 1*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"red shade",[color.hexString uppercaseString]];
+                    else if(hue>=1 && hue <= 2*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"orange shade",[color.hexString uppercaseString]];
+                    else if(hue>=2 && hue <= 3*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"yellow shade",[color.hexString uppercaseString]];
+                    else if(hue>=3 && hue <= 4*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"green shade",[color.hexString uppercaseString]];
+                    else if(hue>=5 && hue <= 6*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"indigo shade",[color.hexString uppercaseString]];
+                    else if(hue>=6 && hue <= 7*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"violet shade",[color.hexString uppercaseString]];
+                    else if(hue > 7 *intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"reddish shade",[color.hexString uppercaseString]];
+                    else
+                        return [NSString stringWithFormat:@"(%@)",[color.hexString uppercaseString]];
                 };
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.layoutType=@"dimButton";
@@ -1577,11 +1599,12 @@
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" hue color changed to ", @" hue color changed to ");
                 return @[s1];
             }
-            if (type == SFIDevicePropertyType_CURRENT_SATURATION) {
+            if (type == SFIDevicePropertyType_SATURATION) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"0";
                 s1.displayText=@"SATURATION";
+                s1.iconName = @"saturation_icon";
                 s1.layoutType = @"dimButton";
                 s1.minValue = 0;
                 s1.maxValue = 255;
@@ -1596,6 +1619,7 @@
                 s1.matchType = MatchType_any;
                 s1.matchData = @"0";
                 s1.displayText=@"BRIGHTNESS";
+                s1.iconName = @"brightness-icon";
                 s1.layoutType = @"dimButton";
                 s1.minValue = 0;
                 s1.maxValue = 255;
@@ -1621,6 +1645,7 @@
             }
             
             break;
+        }
         case SFIDeviceType_HAPump_33:
             break;
         case SFIDeviceType_Shade_34:
