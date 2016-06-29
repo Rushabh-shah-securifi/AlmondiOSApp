@@ -205,7 +205,7 @@ UILabel *topLabel;
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties]){
                     NSString *text;
                     if(isDimButton){
-                    buttonProperties.displayedData = [NSString stringWithFormat:@"%d",(int)ceil([buttonProperties.matchData intValue]*(genericIndex.formatter.factor == 0?1.0:genericIndex.formatter.factor))];
+                    buttonProperties.displayedData = [NSString stringWithFormat:@"%d",(int)roundf([buttonProperties.matchData intValue]*(genericIndex.formatter.factor == 0?1.0:genericIndex.formatter.factor))];
                          NSLog(@"buttonProperties.displayedData %@", buttonProperties.displayedData);
                         text = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,(genericIndex.formatter.units == nil?@"":genericIndex.formatter.units)];
                          //NSLog(@"is dim button text %@",text);
@@ -294,7 +294,7 @@ UILabel *topLabel;
     if(isTrigger){
         NSString *toptext = subProperties.deviceName;
         NSString *insideDisplayText = (isDimmbutton && !isScene) ? [NSString stringWithFormat:@"%@ %@",[subProperties getcondition],subProperties.displayText]:subProperties.displayText ;
-        
+        NSLog(@"insideDisplayText: %@", insideDisplayText);
         if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
             isDimmbutton = NO;//for we are putting images of hueLamp
         
