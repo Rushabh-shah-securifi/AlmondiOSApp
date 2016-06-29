@@ -91,10 +91,10 @@
     return [self validateSSIDNameMaxLen:str];
 }
 
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-    NSString *str = textField.text;
-    return [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
-}
+//- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+//    NSString *str = textField.text;
+//    return [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
+//}
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     NSString *str = textField.text;

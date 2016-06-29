@@ -691,7 +691,7 @@ int mii;
 //                }
                 
                 if (self.navigationController.topViewController == self  && self.isBUG) {
-                    //NSLog(@"cloud settings: %@", settings);
+                    NSLog(@"cloud settings: %@", settings);
                     SFIRouterSettingsTableViewController *ctrl = [SFIRouterSettingsTableViewController new];
                     ctrl.title = self.navigationItem.title;
                     ctrl.wirelessSettings = settings;
@@ -699,7 +699,8 @@ int mii;
                     ctrl.enableRouterWirelessControl = YES;
                     ctrl.isSimulator = self.isSimulator;
                     UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-                    [self presentViewController:nctrl animated:YES completion:nil];
+//                    [self presentViewController:nctrl animated:YES completion:nil];
+                    [self.navigationController pushViewController:ctrl animated:YES];
                 }
                 break;
             }

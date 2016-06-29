@@ -47,8 +47,8 @@ int mii;
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
     self.navigationItem.title = toolkit.currentAlmond.almondplusName;
     
-    UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
-    self.navigationItem.rightBarButtonItem = done;
+//    UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
+//    self.navigationItem.rightBarButtonItem = done;
 
     [[Analytics sharedInstance] markRouterSettingsScreen];
 }
@@ -64,7 +64,6 @@ int mii;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self];
     [self hideHUD];
@@ -98,6 +97,7 @@ int mii;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSLog(@"self.wirelessSettings.count %ld",self.wirelessSettings.count);
     return self.wirelessSettings.count;
 }
 
