@@ -2381,6 +2381,7 @@
             // Add a catch-all:
             // For now, because the cloud and Almond router are not sophisticated enough, we have to suppress
             // all notifications except for index 1
+            NSLog(@"ignore index");
             IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
             s1.notificationIgnoreIndex = YES;
             s1.matchType = MatchType_any;
@@ -2667,13 +2668,13 @@
                 s1.matchData = @"0";
                 s1.iconName = @"alarm_on"; //temp
                 s1.displayText=@"STOP";
-                s1.notificationText = NSLocalizedString(@" is Closed.", @" is Closed.");
+                s1.notificationText = @"Alarm Stopped";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"1";
                 s2.displayText=@"EMERGENCY";
                 s2.iconName = @"multisoundsiren_icon";
-                s2.notificationText = @"Alarm Ambulance";
+                s2.notificationText = @"Alarm Emergency";
                 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchData = @"2";
@@ -2703,7 +2704,7 @@
                 s7.matchData = @"6";
                 s7.displayText=@"BEEP";
                 s7.iconName = @"multisoundsiren_icon";
-                s7.notificationText = @"Alarm BEEP";
+                s7.notificationText = @"Alarm Beep";
                 
                 return @[s1, s2, s3, s4, s5, s6, s7];
             }

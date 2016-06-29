@@ -121,7 +121,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     SFINotification *notification = self.notification;
     _sensorSupport = [SensorSupport new];
     [_sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
-    NSLog(@"Notification - Name: %@, type: %d", notification.deviceName, notification.deviceType);
+    NSLog(@"Notification - Name: %@, type: %d, index: %d", notification.deviceName, notification.deviceType, notification.valueIndex);
     NSLog(@"sensorsupport icon");
     [self setDateLabelText:notification];
     [self setIcon];
