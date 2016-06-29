@@ -3452,19 +3452,19 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_equals;
                 s1.matchData = @"1";
-                s1.iconName = @"low-volume-icon";
+                s1.iconName = @"low_volume_icon";
                 s1.valueFormatter.notificationPrefix = @"set to Low.";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchType = MatchType_equals;
                 s2.matchData = @"2";
-                s2.iconName = @"medium-volume-icon";
+                s2.iconName = @"medium_volume_icon";
                 s2.valueFormatter.notificationPrefix = @"set to Medium.";
                 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchType = MatchType_equals;
                 s3.matchData = @"3";
-                s3.iconName = @"high-volume-icon";
+                s3.iconName = @"high_volume_icon";
                 s3.valueFormatter.notificationPrefix = @"set to High.";
                 return @[s1, s2, s3];
             }

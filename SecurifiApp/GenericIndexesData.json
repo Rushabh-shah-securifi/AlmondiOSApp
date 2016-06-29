@@ -182,14 +182,14 @@
     "-18": {
         "Name": "InactiveGrace",
         "Type": "Actuator",
-        "Placement": "Detail",
+        "Placement":"Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "inactiveGracePeriod"
     },
     "-19": {
         "Name": "AllowOnNetwork",
         "Type": "Actuator",
-        "Placement": "Detail",
+        "Placement":"Detail",
         "Layout": "GRID_VIEW",
         "AppLabel": "allowOnNetwork",
         "Values": {
@@ -248,6 +248,13 @@
                 "Label": "Others"
             }
         }
+    },
+    "-23": {
+        "Name": "Browsing History",
+        "Type": "Actuator",
+        "Placement": "Detail",
+        "Layout": "HISTORY_LAYOUT",
+        "AppLabel": "browsingHistory"
     },
     "-30": {
         "Name": "ClientEvent",
@@ -1085,12 +1092,9 @@
     "26": {
         "Name": "PRESSURE",
         "Type": "Sensor",
-        "ReadOnly": "true",
         "Placement": "Header",
         "Layout": "TEXT_VIEW_ONLY",
         "AppLabel": "pressure",
-        "Conditional": "true",
-        "DefaultVisibility": "true",
         "ExcludeFrom": "Scene",
         "DefaultIcon": "switch_off",
         "Formatter": {
@@ -2280,17 +2284,17 @@
         "DefaultIcon": "alarm_on",
         "Values": {
             "1": {
-                "Icon": "low-volume-icon",
+                "Icon": "low_volume_icon",
                 "AppLabel": "low",
                 "Label": "Low"
             },
             "2": {
-                "Icon": "medium-volume-icon",
+                "Icon": "medium_volume_icon",
                 "AppLabel": "medium",
                 "Label": "Medium"
             },
             "3":{
-                "Icon": "high-volume-icon",
+                "Icon": "high_volume_icon",
                 "AppLabel": "high",
                 "Label": "High"
             }

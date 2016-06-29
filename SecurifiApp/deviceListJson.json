@@ -687,7 +687,6 @@
         "name": "ColorDimmableLight",
         "isActuator": "true",
         "defaultIcon": "light_off",
-        "ExcludeFrom":"Rule_Scene",
         "Indexes": {
             "1": {
                 "genericIndexID": "18",
@@ -1216,21 +1215,6 @@
             }
         }
     },
-    "60": {
-        "name": "Securifi Siren",
-        "isActuator": "true",
-        "defaultIcon": "alarm_on",
-        "Indexes": {
-            "1": {
-                "genericIndexID": "88",
-                "row_no": 1
-            },
-            "2": {
-                "genericIndexID": "91",
-                "row_no": 2
-            }
-        }
-    },
     "61": {
         "name": "Securifi Button",
         "isActuator": "false",
@@ -1338,7 +1322,7 @@
                 "genericIndexID": "99"
             },
             "4": {
-                "row_no": 4,
+                "row_no": 3,
                 "genericIndexID": "100"
             }
         }
