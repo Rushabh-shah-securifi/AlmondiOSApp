@@ -19,6 +19,9 @@
 @interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *browsingTable;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
+@property (nonatomic) dispatch_queue_t imageDownloadQueue;
+@property (nonatomic) NSMutableDictionary *urlToImageDict;
+
 
 @end
 
@@ -44,13 +47,18 @@
        NSFontAttributeName:[UIFont securifiBoldFont:14]}];
     self.title = @"Browsing history";
     [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
-    [self.browsingTable reloadData];
+//    [self.browsingTable reloadData];
     [super viewDidLoad];
+    self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
+    dispatch_async(self.imageDownloadQueue, ^{
+        [self fetchImagesInBackGround];
+    });
     // Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
      [self initializeNotification];
+    
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
@@ -70,6 +78,40 @@
     NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
     
     [notification addObserver:self selector:@selector(onImageFetch:) name:NOTIFICATION_IMAGE_FETCH object:nil];
+}
+
+
+-(void)fetchImagesInBackGround{
+    self.urlToImageDict = [NSMutableDictionary new];
+    for(BrowsingHistory *browsHist in self.browsingHistoryDayWise){
+        for(URIData *uri in browsHist.URIs){
+            if(!uri.image){
+                uri.image = [self getImage:uri.hostName];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.browsingTable reloadData];
+                });
+            }
+        }
+    }
+}
+
+-(UIImage*)getImage:(NSString*)hostName{
+    NSLog(@"fetch image browsing");
+    UIImage *img;
+    if(self.urlToImageDict[hostName]){
+        NSLog(@"one");
+        return self.urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
+    }else{
+        NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
+        img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+        if(!img){
+            NSLog(@"four");
+            img = [UIImage imageNamed:@"Mail_icon"];
+        }
+        NSLog(@"five");
+        self.urlToImageDict[hostName] = img;
+        return img;
+    }
 }
 
 #pragma mark tabledelegate methods

@@ -72,18 +72,15 @@ int randomMobileInternalIndex;
 //
 //    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
 //    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        dispatch_async(self.imageDownloadQueue, ^{
-            NSDictionary *historyData = @{};
-
+//        dispatch_async(self.imageDownloadQueue, ^{
+            NSDictionary *historyData;
+//            historyData = [data objectFromJSONData];
             historyData = [self parseJson:@"temp"];
-            
             NSLog(@"historyData: %@", historyData);
-            
             
             self.browsingHistoryDayWise = [NSMutableArray new];
             NSArray *history = historyData[@"Data"];
-            
-            
+ 
             for(NSDictionary *hisDict in history){
                 BrowsingHistory *browsingHist = [BrowsingHistory new];
                 browsingHist.date = [NSDate convertStirngToDate:hisDict[@"Date"]];
@@ -105,10 +102,7 @@ int randomMobileInternalIndex;
                 [self.browsingHistoryDayWise addObject:browsingHist];
                 [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_IMAGE_FETCH object:nil];
             }
-        });
-      
-        
-   
+//        });
 //    }] resume];
     
     
@@ -120,8 +114,11 @@ int randomMobileInternalIndex;
     UIImage *img;
     if(self.urlToImageDict[hostName]){
         NSLog(@"one");
-        return self.urlToImageDict[hostName];
+        return self.urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
     }else{
+        
+//        img = [UIImage imageNamed:@"Mail_icon"];
+        /*
         NSLog(@"two");
         NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
         img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
@@ -136,6 +133,7 @@ int randomMobileInternalIndex;
         }
         NSLog(@"five");
         self.urlToImageDict[hostName] = img;
+         */
         return img;
     }
 }
