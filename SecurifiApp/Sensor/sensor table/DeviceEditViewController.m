@@ -306,7 +306,6 @@ static const int xIndent = 10;
 }
 - (SFIHighlightedButton *)addButton:(NSString *)buttonName button:(SFIHighlightedButton *)button color:(UIColor *)color{
     UIFont *heavy_font = [UIFont securifiBoldFontLarge];
-    
     CGSize stringBoundingBox = [buttonName sizeWithAttributes:@{NSFontAttributeName : heavy_font}];
     
     int button_width = (int) (stringBoundingBox.width + 20);
@@ -327,12 +326,11 @@ static const int xIndent = 10;
     button.layer.borderColor = whiteColor.CGColor;
     
     return button;
-
 }
 
 - (void)setUpLable:(UILabel*)label withPropertyName:(NSString*)propertyName{
     label.text = propertyName;
-    label.font = [UIFont securifiBoldFontLarge];
+    label.font = [UIFont standardHeadingBoldFont];
     label.textColor = [UIColor whiteColor];
 }
 
@@ -363,6 +361,7 @@ static const int xIndent = 10;
     [self showToast:@"Saving..."];
     mii = arc4random()%10000;
     [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:self.genericIndexVal mii:mii value:@"false"];
+    //tried to animate dismiss, currently not working. Need to fix this.
     [UIView animateWithDuration:2 delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:15 options:nil animations:^() {
         ///[DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:mii value:newValue];
         [self.dismisstamperedView removeFromSuperview];

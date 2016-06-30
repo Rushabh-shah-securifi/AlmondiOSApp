@@ -1162,7 +1162,7 @@
         "Name": "HUE_ZB",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "SLIDER",
+        "Layout": "HUE",
         "AppLabel": "hue",
         "Conditional": "true",
         "DefaultVisibility": "true",
@@ -1190,15 +1190,13 @@
         "Name": "COLOR_TEMPERATURE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "SLIDER",
+        "Layout": "TEXT_VIEW_ONLY",
         "AppLabel": "color_temp",
         "Conditional": "true",
         "DefaultIcon": "saturation_icon",
         "Formatter": {
             "Min": "1000",
-            "Max": "9000",
-            "Factor": "0.39",
-            "Unit": "%"
+            "Max": "9000"
         }
     },
     "34": {
@@ -2134,21 +2132,22 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "ringTone",
         "DefaultIcon": "alarm_on",
+        "ExcludeFrom": "Trigger",
         "Values": {
             "1": {
                 "Icon": "alarm_on",
-                "AppLabel": "tone1",
-                "Label": "tone1"
+                "AppLabel": "alarm",
+                "Label": "Alarm"
             },
             "2": {
                 "Icon": "alarm_on",
-                "AppLabel": "tone2",
-                "Label": "tone2"
+                "AppLabel": "siren",
+                "Label": "Siren"
             },
             "3":{
                 "Icon": "alarm_on",
-                "AppLabel": "tone3",
-                "Label": "tone3"
+                "AppLabel": "doorBell",
+                "Label": "Door Bell"
             }
         }
     },
@@ -2257,9 +2256,7 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "enable",
-        "ShowToggleInRules": "true",
         "DefaultIcon": "switch_on",
-        "ExcludeFrom": "Scene_Rule",
         "Values": {
             "true": {
                 "ToggleValue": "false",
@@ -2282,20 +2279,21 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "volume",
         "DefaultIcon": "alarm_on",
+        "ExcludeFrom": "Trigger",
         "Values": {
             "1": {
                 "Icon": "low_volume_icon",
-                "AppLabel": "low",
+                "AppLabel": "low_volume",
                 "Label": "Low"
             },
             "2": {
                 "Icon": "medium_volume_icon",
-                "AppLabel": "medium",
+                "AppLabel": "medium_volume",
                 "Label": "Medium"
             },
             "3":{
                 "Icon": "high_volume_icon",
-                "AppLabel": "high",
+                "AppLabel": "high_volume",
                 "Label": "High"
             }
         }
@@ -2306,19 +2304,18 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "blink",
-        "ShowToggleInRules": "true",
         "DefaultIcon": "switch_on",
         "Values": {
             "true": {
                 "ToggleValue": "false",
                 "Icon": "switch_on",
-                "AppLabel": "blinking",
-                "Label": "Blinking"
+                "AppLabel": "blink_start",
+                "Label": "Blink Start"
             },
             "false": {
                 "ToggleValue": "true",
                 "Icon": "switch_off",
-                "AppLabel": "off_camelcase",
+                "AppLabel": "blink_stop",
                 "Label": "Off"
             }
         }
@@ -2328,8 +2325,8 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW_ONLY",
-        "AppLabel": "rgb",
-        "ExcludeFrom": "Scene_Rule",
+        "AppLabel": "hue",
+        "ExcludeFrom": "Trigger",
         "DefaultIcon": "alarm_off",
         "Formatter": {
             "Min": "0",
@@ -2341,12 +2338,48 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW_ONLY",
-        "AppLabel": "seconds",
-        "ExcludeFrom": "Scene_Rule",
+        "AppLabel": "blinkTimer",
+        "ExcludeFrom": "Trigger",
         "DefaultIcon": "alarm_off",
         "Formatter": {
             "Min": "0",
             "Max": "65535"
         }
+    },
+    "101": {
+        "Name": "Siren Timer",
+        "Type": "Actuator",
+        "Placement": "Header_Detail_Primary",
+        "Layout": "TEXT_VIEW_ONLY",
+        "AppLabel": "buzzer_timer",
+        "ExcludeFrom": "Trigger",
+        "DefaultIcon": "alarm_off",
+        "Formatter": {
+            "Min": "0",
+            "Max": "65535"
+        }
+    },
+    "102": {
+        "Name": "Blink BINARY",
+        "Type": "Actuator",
+        "Placement": "Header",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "switch_off",
+        "DefaultIcon": "switch_on",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "switch_on",
+                "AppLabel": "led_on",
+                "Label": "ON"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "switch_off",
+                "AppLabel": "led_off",
+                "Label": "OFF"
+            }
+        }
     }
 }
+

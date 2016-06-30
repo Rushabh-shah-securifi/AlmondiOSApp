@@ -1299,7 +1299,7 @@
             },
             "5": {
                 "row_no": 5,
-                "genericIndexID": "13",
+                "genericIndexID": "101",
                 "Placement":"Detail"
             }
         }
@@ -1310,7 +1310,7 @@
         "defaultIcon": "switch_off",
         "Indexes": {
             "1": {
-                "genericIndexID": "1",
+                "genericIndexID": "102",
                 "row_no": 1
             },
             "2": {
@@ -1328,3 +1328,4 @@
         }
     }
 }
+
