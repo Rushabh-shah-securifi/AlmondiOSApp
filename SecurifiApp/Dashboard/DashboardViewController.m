@@ -63,7 +63,6 @@
     [Scroller addSubview:button];
     [Scroller addSubview:button1];
     [self SelectAlmond:@"AddAlmond"];
-    
     [self markNetworkStatusIcon];
     [self initializeNotification];
     [self initializeHUD];
@@ -157,6 +156,7 @@
 -(void)navigationBarStyle{
     self.navigationImg = [[UIImageView alloc] initWithImage:[CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]]];
     self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
+    self.navigationController.view.backgroundColor = [SFIColors lightOrangeDashColor];
     
     self.navigationImg.frame = CGRectMake(0, 0, self.navigationController.navigationBar.frame.size.width, self.navigationController.navigationBar.frame.size.height);
     [self.navigationController.navigationBar addSubview:self.navigationImg];
@@ -202,6 +202,7 @@
             self.navigationImg.image = [CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightBlueColor]];
             self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightBlueColor]];
             [self.buttonHome setBackgroundColor:[SFIColors lightBlueColor]];
+            self.navigationController.view.backgroundColor = [SFIColors lightBlueColor];
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
             [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
             [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
@@ -214,6 +215,7 @@
             self.navigationImg.image = [CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]];
             self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
             [self.buttonHomeAway setBackgroundColor:[SFIColors lightOrangeDashColor]];
+            self.navigationController.view.backgroundColor = [SFIColors lightOrangeDashColor];
             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
             [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1_white" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
             [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
@@ -860,6 +862,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         self.navigationImg.image = [CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightGrayColor]];
         self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightGrayColor]];
+        self.navigationController.view.backgroundColor = [SFIColors lightGrayColor];
         if (self.toolkit.mode_src ==2) {
             [self.buttonHome setBackgroundColor:[SFIColors lightGrayColor] ];
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];

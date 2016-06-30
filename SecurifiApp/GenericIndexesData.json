@@ -2324,7 +2324,7 @@
         "Name": "RGB ",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "TEXT_VIEW_ONLY",
+        "Layout": "HUE",
         "AppLabel": "hue",
         "ExcludeFrom": "Trigger",
         "DefaultIcon": "alarm_off",
