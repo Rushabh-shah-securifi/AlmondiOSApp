@@ -2127,6 +2127,10 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     else {
         DLog(@"Reason %@", obj.reason);
     }
+    
+   GenericCommand *cmd = [[SecurifiToolkit sharedInstance] makeAlmondListCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendCommand:cmd];
+    
     [self.HUD hide:YES];
 }
 

@@ -236,7 +236,7 @@
     [crossButtonBGView addSubview:self.crossButtonImage];
 }
 -(void)setUpTextField:(NSString*)textFieldText displayText:(NSString*)displayText suffix:(NSString *)suffix isScene:(BOOL)isScene isTrigger:(BOOL)isTrigger{
-  
+    self.isScene = isScene;
     if(isTrigger && !isScene){
         self.bgView = [[UIView alloc] initWithFrame:CGRectMake(65,0 , 65, 60)];
         self.bgView.backgroundColor = [UIColor clearColor];

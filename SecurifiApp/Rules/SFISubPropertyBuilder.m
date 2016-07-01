@@ -295,7 +295,7 @@ UILabel *topLabel;
         NSString *toptext = subProperties.deviceName;
         NSString *insideDisplayText = (isDimmbutton && !isScene) ? [NSString stringWithFormat:@"%@ %@",[subProperties getcondition],subProperties.displayText]:subProperties.displayText ;
         NSLog(@"insideDisplayText: %@", insideDisplayText);
-        if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
+        if((subProperties.deviceType == SFIDeviceType_HueLamp_48 || subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 || subProperties.deviceType == SFIDeviceType_AlmondBlink_64) && subProperties.index == 3)
             isDimmbutton = NO;//for we are putting images of hueLamp
         
         if(subProperties.deviceType == SFIDeviceType_Weather && subProperties.index == 1){
@@ -339,7 +339,7 @@ UILabel *topLabel;
             [switchButton setButtonCross:isCrossHidden];
             switchButton.userInteractionEnabled = disableUserInteraction;
             
-            if(subProperties.deviceType == SFIDeviceType_HueLamp_48){
+            if(subProperties.deviceType == SFIDeviceType_HueLamp_48 || subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 || subProperties.deviceType == SFIDeviceType_AlmondBlink_64){
                 if(subProperties.index == 2)
                     [switchButton changeImageColor:[UIColor whiteColor]];
                 else if(subProperties.index == 3)
@@ -352,7 +352,7 @@ UILabel *topLabel;
     else{
         PreDelayRuleButton *switchButton = [[PreDelayRuleButton alloc] initWithFrame:CGRectMake(xVal, 5, rulesButtonsViewWidth, rulesButtonsViewHeight)];
         
-        if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
+        if((subProperties.deviceType == SFIDeviceType_HueLamp_48 || subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 || subProperties.deviceType == SFIDeviceType_AlmondBlink_64) && subProperties.index == 3)
             isDimmbutton = NO;//for we are putting images of hueLamp
         if([subProperties.type isEqualToString:@"NetworkResult"])
             subProperties.deviceName = @"Almond Control";
@@ -373,7 +373,7 @@ UILabel *topLabel;
         (switchButton->actionbutton).isTrigger = isTrigger;
         [switchButton->actionbutton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         ////NSLog(@"HUE HERE");
-        if(subProperties.deviceType == SFIDeviceType_HueLamp_48){
+        if(subProperties.deviceType == SFIDeviceType_HueLamp_48 || subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 || subProperties.deviceType == SFIDeviceType_AlmondBlink_64){
             if(subProperties.index == 2)
                 [switchButton->actionbutton changeImageColor:[UIColor whiteColor]];
             else if(subProperties.index == 3)

@@ -432,6 +432,7 @@
 		A5F03F6D1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		CE08B3CC1C9A87C900ABAF6B /* DeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */; };
 		CE20BF3B1CB6331A002737F4 /* PerformanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CE20BF3A1CB6331A002737F4 /* PerformanceTest.m */; };
+		CE40FEF61D252BF3003E0DA9 /* ColorComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40FEF51D252BF3003E0DA9 /* ColorComponentView.m */; };
 		CE4DB3F61CEF340F00CBD6DE /* TriDimBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */; };
 		CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58276B1D10127400843B4C /* WeatherRuleButton.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
@@ -950,6 +951,8 @@
 		CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTableViewCell.m; sourceTree = "<group>"; };
 		CE20BF391CB6331A002737F4 /* PerformanceTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceTest.h; sourceTree = "<group>"; };
 		CE20BF3A1CB6331A002737F4 /* PerformanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceTest.m; sourceTree = "<group>"; };
+		CE40FEF41D252BF3003E0DA9 /* ColorComponentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorComponentView.h; sourceTree = "<group>"; };
+		CE40FEF51D252BF3003E0DA9 /* ColorComponentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorComponentView.m; sourceTree = "<group>"; };
 		CE4DB3F41CEF340D00CBD6DE /* TriDimBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriDimBtn.h; sourceTree = "<group>"; };
 		CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TriDimBtn.m; sourceTree = "<group>"; };
 		CE58276A1D10127400843B4C /* WeatherRuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherRuleButton.h; sourceTree = "<group>"; };
@@ -1275,6 +1278,8 @@
 			isa = PBXGroup;
 			children = (
 				1C7E7D2E1A41A0990026F0BA /* DrawerViewController.h */,
+				CE40FEF41D252BF3003E0DA9 /* ColorComponentView.h */,
+				CE40FEF51D252BF3003E0DA9 /* ColorComponentView.m */,
 				CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */,
 				CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */,
 				1C7E7D2F1A41A0990026F0BA /* DrawerViewController.m */,
@@ -2722,6 +2727,7 @@
 				CEEBE6201C902D0400DC3E3F /* clientTypeCell.m in Sources */,
 				1DF0318D09F8B1DBAF74C090 /* SFINotificationTableViewHeaderFooter.m in Sources */,
 				1C2F60981B69E69D001CCA34 /* SFIScenesTableViewCell.m in Sources */,
+				CE40FEF61D252BF3003E0DA9 /* ColorComponentView.m in Sources */,
 				CEF6F4DC1C92CAD600C68975 /* AddTriggerAndAddAction.m in Sources */,
 				1C2F15261BA7FB67009DB175 /* SFIMessageViewController.m in Sources */,
 				CE810C611C9C15D100F80777 /* ListButtonView.m in Sources */,

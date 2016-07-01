@@ -1164,8 +1164,7 @@
         "Placement": "Detail",
         "Layout": "HUE",
         "AppLabel": "hue",
-        "Conditional": "true",
-        "DefaultVisibility": "true",
+        "DefaultIcon": "light_on",
         "Formatter": {
             "Min": "0",
             "Max": "255",
@@ -2327,7 +2326,7 @@
         "Layout": "HUE",
         "AppLabel": "hue",
         "ExcludeFrom": "Trigger",
-        "DefaultIcon": "alarm_off",
+        "DefaultIcon": "light_on",
         "Formatter": {
             "Min": "0",
             "Max": "65535"
