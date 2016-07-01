@@ -28,7 +28,6 @@
     float ratio = self.maximumValue / (float) self.sensorMaxValue;
     float sliderValue = sensorValue * ratio;
     sliderValue = roundf(sliderValue);
-    self.alpha =  sensorValue / 255 + 0.3;
     [self setValue:sliderValue animated:NO];
 }
 
