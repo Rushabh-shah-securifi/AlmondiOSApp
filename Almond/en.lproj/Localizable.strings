@@ -756,7 +756,7 @@ Follow it, then login below.";
 "paincAlarm"="PAINC ALARM";
 "emergencyAlarm"="EMERGENCY ALARM";
 "lowBattery"="LOW BATTERY";
-"set_alarm_for"="RING ALARM FOR(sec)";
+"set_alarm_for"="ALARM FOR(sec)";
 "alarm_on"="RINGING";
 "alarm_off"="SILENT";
 "smoke_on"="SMOKE DETECTED!";
