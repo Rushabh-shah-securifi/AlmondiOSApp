@@ -14,6 +14,7 @@
 @property (nonatomic) BOOL isScene;
 @property(nonatomic)NSArray *subPropertiesArr;
 @property(nonatomic)SFIButtonSubProperties *subProperties;
+@property(nonatomic)CGFloat preValue;
 @end
 
 @implementation ColorComponentView
@@ -42,11 +43,15 @@
         [self.labelView setSelected:NO];
     [self.labelView setButtoncounter:previousCount isCountImageHiddn:self.isScene];//If self.isScene hide count button in select
     
-    
     self.huePicker = [[SFIHuePickerView alloc]initWithFrame:CGRectMake(0, hueSubViewSize,self.frame.size.width ,self.frame.size.height-hueSubViewSize)];
     self.huePicker.convertedValue = 0;
     self.huePicker.delegate = self;
     self.huePicker.allowSelection = YES;
+    NSLog(@"previous val = %f",self.preValue);
+    if(self.isScene){
+        [self.huePicker setConvertedValue:self.preValue];
+    }
+
     [self addSubview:self.huePicker];
     [self addSubview:self.labelView];
     
@@ -65,6 +70,8 @@
     if(self.isScene){
         [self.labelView setSelected:!sender.selected];
         [self.delegate subpropertiesUpdate:self.subProperties isSelected:(BOOL)sender.selected];
+        if(!sender.selected)
+            [self.huePicker setConvertedValue:0];
     }
     else{
         [self.labelView setSelected:YES];
@@ -77,6 +84,7 @@
     
 }
 -(void )saveNewValue:(int)sensor_value{
+    NSLog(@"saveNewValue: %d",sensor_value);
     self.subProperties.matchData = @(sensor_value).stringValue;
 }
 -(int )getPreviousCount{
@@ -85,7 +93,8 @@
     for (SFIButtonSubProperties *properties in self.subPropertiesArr) {
         NSLog(@"properties.index %d ,properties.deviceId %d \n",properties.index,properties.deviceId);
         if(properties.index == self.subProperties.index && properties.deviceId == self.subProperties.deviceId)
-            
+            self.preValue = properties.matchData.floatValue;
+        NSLog(@"properties.matchData %@",properties.matchData);
             count ++;
     }
     NSLog(@"count = %d",count);

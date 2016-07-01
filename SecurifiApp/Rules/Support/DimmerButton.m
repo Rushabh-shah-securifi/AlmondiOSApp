@@ -154,6 +154,7 @@
 
 - (void)setNewValue:(NSString*)text subProperties:(SFIButtonSubProperties *)subProperty{
     self.dimValue = text;
+    self.textField.text = text;
     [self.conditionBtn mainLabel:@"" text:[subProperty getcondition] size:35.0f];
     NSLog(@"condition label %@",[self.subProperties getcondition]);
     self.prefix = (self.prefix ==nil || self.prefix.length==0) ?@" ":self.prefix;
