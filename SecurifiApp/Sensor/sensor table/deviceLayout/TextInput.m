@@ -27,6 +27,7 @@
     return self;
 }
 -(void)drawTextField{
+    NSLog(@"self.genericIndexValue.index %@",self.genericIndexValue.genericIndex.ID);
     self.deviceNameField = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height - 5)];
 
     if(self.isSensor){
@@ -77,15 +78,43 @@
     [self addSubview:textCheckMarkView];
 }
 -(void)tapCheckMark{
+    
+    
     NSLog(@"tapCheckMark %@",self.deviceNameField.text);
     [self.deviceNameField resignFirstResponder];
-//    [self.delegate save:self.deviceNameField.text forIndex:_genericIndexValue.index deviceCommandType:_genericIndexValue.genericIndex.commandType];
-    if(self.deviceNameField.text.length == 0){
-//        [self showToast:[NSString stringWithFormat:@"Sorry, Could not update %@", genIndexVal.genericIndex.groupLabel]];
+    if(self.deviceNameField.text.length == 0)
+        [self showAlert:@"Please enter number"];
+    else if ([self isAllDigits:self.deviceNameField.text])
+    {   BOOL isNameLocationField = [self.genericIndexValue.genericIndex.ID isEqualToString:@"-1"] || [self.genericIndexValue.genericIndex.ID isEqualToString:@"-2"];
+        int type =  [Device getTypeForID:self.genericIndexValue.deviceID];
+        
+            if( !isNameLocationField && (type == SFIDeviceType_StandardWarningDevice_21 || type == SFIDeviceType_AlmondBlink_64 || type == SFIDeviceType_AlmondSiren_63)  && ([self.deviceNameField.text integerValue] >= 65536 || [self.deviceNameField.text integerValue] < 0 ))
+            {
+                [self showAlert:@"Please enter value between 0 - 65535"];
+               
+            }
+            else if(!isNameLocationField &&  type == SFIDeviceType_ZWtoACIRExtender_54 && ([self.deviceNameField.text integerValue] > 999 || [self.deviceNameField.text integerValue] < 0 ))
+            {
+                [self showAlert:@"Please enter value between 0 - 999"];
+     
+            }else if(!isNameLocationField &&  type == SFIDeviceType_Weather && ([self.deviceNameField.text integerValue] > 9999 || [self.deviceNameField.text integerValue] < 0 ))
+            {
+                [self showAlert:@"Please enter value between 0 - 9999"];
+               
+            }
+            else if(!isNameLocationField &&  type == SFIDeviceType_ColorDimmableLight_32 && ([self.deviceNameField.text integerValue] > 9000 || [self.deviceNameField.text integerValue] < 1000 ))
+            {
+                [self showAlert:@"Please enter value between 1000 - 9000"];
+            }
+            else
+                [self.delegate save:self.deviceNameField.text forGenericIndexValue:_genericIndexValue currentView:self];
     }
     else
-    [self.delegate save:self.deviceNameField.text forGenericIndexValue:_genericIndexValue currentView:self];
+        [self showAlert:@"Please enter numbers only"];
+    
 }
+
+
 
 -(void)setTextFieldValue:(NSString*)value{
     self.deviceNameField.text = value;
@@ -100,5 +129,20 @@
     {
         return YES;
     }
+}
+-(void)showAlert:(NSString *)string{
+    NSLog(@"self.deviceNameField.placeholder %@",string);
+    self.deviceNameField.text = @"";
+    NSDictionary *attrs = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
+    NSAttributedString *attrStr = [[NSAttributedString alloc] initWithString:string attributes:attrs];
+   
+    [self.deviceNameField setAttributedPlaceholder:attrStr];
+    self.deviceNameField.placeholder = string;
+}
+- (BOOL) isAllDigits:(NSString *)string
+{
+    NSCharacterSet* nonNumbers = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    NSRange r = [string rangeOfCharacterFromSet: nonNumbers];
+    return r.location == NSNotFound && string.length > 0;
 }
 @end
