@@ -693,7 +693,7 @@ int mii;
                 if (self.navigationController.topViewController == self  && self.isBUG) {
                     NSLog(@"cloud settings: %@", settings);
                     SFIRouterSettingsTableViewController *ctrl = [SFIRouterSettingsTableViewController new];
-                    ctrl.title = self.navigationItem.title;
+//                    ctrl.title = self.navigationItem.title;
                     ctrl.wirelessSettings = settings;
                     ctrl.almondMac = self.almondMac;
                     ctrl.enableRouterWirelessControl = YES;

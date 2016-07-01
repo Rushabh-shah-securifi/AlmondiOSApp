@@ -3580,7 +3580,7 @@
             //            s1.iconName = @"battery_ok";
             //            s1.notificationText = @"'s Battery is OK.";
             IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-            s2.matchType = MatchType_not_equals;
+            s2.matchType = MatchType_any;
             s2.matchData = @"0";
             s2.displayText=@"BATTERY";
             s2.layoutType = @"dimButton";
@@ -3588,7 +3588,7 @@
             s2.minValue = 0;
             s2.maxValue = 100;
             s2.valueFormatter.action = ValueFormatterAction_formatString;
-            s2.valueFormatter.notificationPrefix = NSLocalizedString(@"'s Battery is Low.", @"'s Battery is Low.");
+            s2.valueFormatter.notificationPrefix = @"'s Battery Status ";
             s2.valueFormatter.suffix = @"%";
             return @[s2];
         }
@@ -3600,7 +3600,15 @@
             s1.iconName = @"low_battery";
             s1.displayText=@"BATTERY\nLOW";
             s1.notificationText = NSLocalizedString(@"'s Battery is Low.", @"'s Battery is Low.");
-            return @[s1];
+            
+            IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+            s2.matchType = MatchType_equals;
+            s2.matchData = @"false";
+            s2.iconName = @"low_battery";
+            s2.displayText=@"BATTERY\nOK";
+            s2.notificationText = @"'s Battery is OK.";
+            
+            return @[s1, s2];
         }
             
         case SFIDevicePropertyType_TAMPER: {
@@ -3611,13 +3619,13 @@
             s1.displayText=@"TAMPER";
             s1.notificationText = NSLocalizedString(@" has been Tampered.", @" has been Tampered.");
             
-            //            IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-            //            s2.matchType = MatchType_equals;
-            //            s2.matchData = @"false";
-            //            s2.iconName = @"n_tamper";
-            //            s2.notificationText = NSLocalizedString(@" is reset from Tampered.", @" is reset from Tampered.");
+            IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+            s2.matchType = MatchType_equals;
+            s2.matchData = @"false";
+            s2.iconName = @"tamper";
+            s2.notificationText = NSLocalizedString(@" is reset from Tampered.", @" is reset from Tampered.");
             
-            return @[s1];
+            return @[s1, s2];
         }
         default: {
             return [NSArray array];
