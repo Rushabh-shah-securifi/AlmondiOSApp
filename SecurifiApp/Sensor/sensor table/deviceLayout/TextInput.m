@@ -9,6 +9,7 @@
 #import "TextInput.h"
 #import "UIFont+Securifi.h"
 #import "UIViewController+Securifi.h"
+#import "Colours.h"
 
 @interface TextInput ()<UITextFieldDelegate>
 @property (nonatomic)UITextField *deviceNameField;
@@ -133,7 +134,7 @@
 -(void)showAlert:(NSString *)string{
     NSLog(@"self.deviceNameField.placeholder %@",string);
     self.deviceNameField.text = @"";
-    NSDictionary *attrs = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
+    NSDictionary *attrs = @{ NSForegroundColorAttributeName : [UIColor colorFromHexString:@"C7C7CD"] };
     NSAttributedString *attrStr = [[NSAttributedString alloc] initWithString:string attributes:attrs];
    
     [self.deviceNameField setAttributedPlaceholder:attrStr];
