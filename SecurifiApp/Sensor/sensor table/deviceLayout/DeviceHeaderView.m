@@ -92,9 +92,9 @@
         
         if(self.genericParams.isSensor && (deviceType == SFIDeviceType_HueLamp_48 || deviceType == SFIDeviceType_ColorDimmableLight_32)&& [[Device getValueForIndex:2 deviceID:deviceID] isEqualToString:@"true"]){
             self.deviceImage.image = [self.deviceImage.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            if(deviceType == SFIDeviceType_HueLamp_48)
+            if(deviceType == SFIDeviceType_HueLamp_48)// 0 - 65535 for blink, hue
                 [self.deviceImage setTintColor:[UIColor colorFromHexString:[CommonMethods getColorHex:[Device getValueForIndex:3 deviceID:deviceID]]]];
-            else
+            else //0 - 255 only for color dimmable
                 [self.deviceImage setTintColor:[UIColor colorFromHexString:[CommonMethods getDimmableHex:[Device getValueForIndex:3 deviceID:deviceID]]]];
         }
         self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.displayText;

@@ -19,15 +19,15 @@
 
 @implementation ColorComponentView
 
--(id) initWithFrame:(CGRect)frame setUpValue:(NSString *)value ButtonTitle:(NSString *)title andIsScene:(BOOL)isScene list:(NSArray *)listArr subproperties:(SFIButtonSubProperties*)subproperties;
+-(id) initWithFrame:(CGRect)frame setUpValue:(NSString *)value ButtonTitle:(NSString *)title andIsScene:(BOOL)isScene list:(NSArray *)listArr subproperties:(SFIButtonSubProperties*)subproperties genricIndexVal:(GenericIndexValue *)genricIndexVal;
 {
     self = [super initWithFrame:frame];
     if(self){
-        [self setUpComponent:value ButtonTitle:title andIsScene:isScene list:listArr subproperties:(SFIButtonSubProperties*)subproperties];
+        [self setUpComponent:value ButtonTitle:title andIsScene:isScene list:listArr subproperties:(SFIButtonSubProperties*)subproperties genericIndexVal:genricIndexVal];
     }
     return self;
 }
--(void)setUpComponent:(NSString *)value ButtonTitle:(NSString *)title andIsScene:(BOOL)isScene list:(NSArray *)listArr subproperties:(SFIButtonSubProperties*)subproperties{
+-(void)setUpComponent:(NSString *)value ButtonTitle:(NSString *)title andIsScene:(BOOL)isScene list:(NSArray *)listArr subproperties:(SFIButtonSubProperties*)subproperties genericIndexVal:(GenericIndexValue *)genericIndexValue{
     NSLog(@"setUpComponent hue component");
     self.subProperties = subproperties;
     self.subPropertiesArr = listArr;
@@ -44,6 +44,8 @@
     [self.labelView setButtoncounter:previousCount isCountImageHiddn:self.isScene];//If self.isScene hide count button in select
     
     self.huePicker = [[SFIHuePickerView alloc]initWithFrame:CGRectMake(0, hueSubViewSize,self.frame.size.width ,self.frame.size.height-hueSubViewSize)];
+    self.huePicker.sensorMaxValue = genericIndexValue.genericIndex.formatter.max;
+    
     self.huePicker.convertedValue = 0;
     self.huePicker.delegate = self;
     self.huePicker.allowSelection = YES;

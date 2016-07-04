@@ -23,5 +23,5 @@
 
 
 
--(id) initWithFrame:(CGRect)frame setUpValue:(NSString *)value ButtonTitle:(NSString *)title andIsScene:(BOOL)isScene list:(NSArray *)listArr subproperties:(SFIButtonSubProperties*)subproperties;
+-(id) initWithFrame:(CGRect)frame setUpValue:(NSString *)value ButtonTitle:(NSString *)title andIsScene:(BOOL)isScene list:(NSArray *)listArr subproperties:(SFIButtonSubProperties*)subproperties genricIndexVal:(GenericIndexValue*)genricIndexVal;
 @end

@@ -148,7 +148,7 @@
 }
 
 - (NSString *)scaledValue:(NSString*)text{
-    return [NSString stringWithFormat:@"%d", (int) ([text intValue]/self.factor)];
+    return [NSString stringWithFormat:@"%d",  (int)roundf([text intValue]/self.factor)];
 }
 
 

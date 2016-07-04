@@ -1181,7 +1181,7 @@
         "Formatter": {
             "Min": "0",
             "Max": "100",
-            "Factor": "0.392",
+            "Factor": "0.394",
             "Unit": "%"
         }
     },

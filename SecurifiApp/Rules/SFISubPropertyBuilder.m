@@ -342,8 +342,9 @@ UILabel *topLabel;
             if(subProperties.deviceType == SFIDeviceType_HueLamp_48 || subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 || subProperties.deviceType == SFIDeviceType_AlmondBlink_64){
                 if(subProperties.index == 2)
                     [switchButton changeImageColor:[UIColor whiteColor]];
-                else if(subProperties.index == 3)
-                    [switchButton changeImageColor:[UIColor colorFromHexString:[self getColorHex:subProperties.matchData]]];
+                else if(subProperties.index == 3){
+                    [switchButton changeImageColor:[UIColor colorFromHexString:(subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 ?[CommonMethods getDimmableHex:subProperties.matchData] :[CommonMethods getColorHex:subProperties.matchData])]];
+                }
             }
             [triggersActionsScrollView addSubview:switchButton];
         }
@@ -376,8 +377,10 @@ UILabel *topLabel;
         if(subProperties.deviceType == SFIDeviceType_HueLamp_48 || subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 || subProperties.deviceType == SFIDeviceType_AlmondBlink_64){
             if(subProperties.index == 2)
                 [switchButton->actionbutton changeImageColor:[UIColor whiteColor]];
-            else if(subProperties.index == 3)
-                [switchButton->actionbutton changeImageColor:[UIColor colorFromHexString:[self getColorHex:subProperties.matchData]]];
+            else if(subProperties.index == 3){
+                [switchButton->actionbutton changeImageColor:[UIColor colorFromHexString:(subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 ?[CommonMethods getDimmableHex:subProperties.matchData] :[CommonMethods getColorHex:subProperties.matchData])]];
+            }
+            
         }
         (switchButton->delayButton).userInteractionEnabled = disableUserInteraction;
         [switchButton->delayButton addTarget:self action:@selector(onActionDelayClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -424,16 +427,6 @@ UILabel *topLabel;
     delayPicker.parentView = parentView;
     [delayPicker addPickerForButton:delayButton];
 }
-
-+ (NSString *)getColorHex:(NSString*)value {
-    if (!value) {
-        return @"";
-    }
-    float hue = [value floatValue];
-    hue = hue / 65535;
-    UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
-    return [color.hexString uppercaseString];
-};
 
 + (void)getDeviceTypeFor:(SFIButtonSubProperties*)buttonSubProperty{
     buttonSubProperty.deviceType = SFIDeviceType_UnknownDevice_0;

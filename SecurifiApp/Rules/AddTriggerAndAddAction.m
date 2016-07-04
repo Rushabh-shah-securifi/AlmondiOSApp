@@ -506,7 +506,7 @@ labelAndCheckButtonView *labelView;
 //    dimbtn.valueType=deviceIndex.valueType;
     dimbtn.minValue = genericIndexVal.genericIndex.formatter.min;
     dimbtn.maxValue = genericIndexVal.genericIndex.formatter.max;
-    dimbtn.factor=genericIndexVal.genericIndex.formatter.factor;
+    dimbtn.factor = genericIndexVal.genericIndex.formatter.factor;
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexVal.index matchData:gVal.iconText andEventType:nil deviceName:deviceName deviceType:deviceType];
     if(deviceType == SFIDeviceType_Weather)
         dimbtn.subProperties.type = @"WeatherTrigger";
@@ -568,7 +568,7 @@ labelAndCheckButtonView *labelView;
 }
 -(void)buildColorComponent:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
     SFIButtonSubProperties *subproperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType ];
-    ColorComponentView *colComp = [[ColorComponentView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height - 15) setUpValue:@"Hue" ButtonTitle:@"Select" andIsScene:self.isScene list:self.isTrigger?self.triggers:self.actions subproperties:subproperties];
+    ColorComponentView *colComp = [[ColorComponentView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height - 15) setUpValue:@"Hue" ButtonTitle:@"Select" andIsScene:self.isScene list:self.isTrigger?self.triggers:self.actions subproperties:subproperties genricIndexVal:genericIndexValue];
 
     colComp.delegate = self;
     [view addSubview:colComp];
@@ -1099,6 +1099,7 @@ labelAndCheckButtonView *labelView;
         newProperty.matchData = [dimmer scaledValue:newPickerValue];
         newProperty.displayedData=newPickerValue;
     }else{
+        NSLog(@"dim factor: %f", dimmer.factor);
         dimmer.subProperties.matchData = [dimmer scaledValue:newPickerValue];
         dimmer.subProperties.displayedData = newPickerValue;
     }
