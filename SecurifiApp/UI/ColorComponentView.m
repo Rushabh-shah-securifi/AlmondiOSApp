@@ -89,15 +89,12 @@
 }
 -(int )getPreviousCount{
     int count = 0;
-    NSLog(@"self.subProperties.index %d ,self.subProperties.deviceId %d \n",self.subProperties.index,self.subProperties.deviceId);
     for (SFIButtonSubProperties *properties in self.subPropertiesArr) {
-        NSLog(@"properties.index %d ,properties.deviceId %d \n",properties.index,properties.deviceId);
-        if(properties.index == self.subProperties.index && properties.deviceId == self.subProperties.deviceId)
+        if(properties.index == self.subProperties.index && properties.deviceId == self.subProperties.deviceId){
             self.preValue = properties.matchData.floatValue;
-        NSLog(@"properties.matchData %@",properties.matchData);
             count ++;
+        }
     }
-    NSLog(@"count = %d",count);
     return count;
 }
 @end
