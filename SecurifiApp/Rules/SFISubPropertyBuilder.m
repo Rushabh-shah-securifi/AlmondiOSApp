@@ -210,7 +210,7 @@ UILabel *topLabel;
                         text = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,(genericIndex.formatter.units == nil?@"":genericIndex.formatter.units)];
                          //NSLog(@"is dim button text %@",text);
                         if(buttonProperties.deviceType == SFIDeviceType_HueLamp_48){
-                            text = [NSString stringWithFormat:@"%@%@",@((buttonProperties.matchData.intValue * 100/255)).stringValue,genericIndex.formatter.units];
+                            text = [NSString stringWithFormat:@"%@%@",@(roundf(buttonProperties.matchData.intValue * genericIndex.formatter.factor)).stringValue,genericIndex.formatter.units];
                         }
                     }
                     else
