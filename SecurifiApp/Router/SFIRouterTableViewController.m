@@ -698,8 +698,8 @@ int mii;
                     ctrl.almondMac = self.almondMac;
                     ctrl.enableRouterWirelessControl = YES;
                     ctrl.isSimulator = self.isSimulator;
-                    UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-//                    [self presentViewController:nctrl animated:YES completion:nil];
+                    ctrl.hidesBottomBarWhenPushed = YES;
+                    //                    [self presentViewController:nctrl animated:YES completion:nil];
                     [self.navigationController pushViewController:ctrl animated:YES];
                 }
                 break;
