@@ -183,7 +183,7 @@
         return genericIndexObject.values[value]? genericIndexObject.values[value]: [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:nil value:value excludeFrom:nil eventType:nil];
     }
     else if(genericIndexObject.formatter != nil && ![genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] && ![genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
-        NSString *formattedValue=[genericIndexObject.formatter transform:value];
+        NSString *formattedValue=[genericIndexObject.formatter transform:value genericId:genericIndexID];
         GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:formattedValue
                                                                      iconText:formattedValue
                                                                         value:value
@@ -192,8 +192,8 @@
         return genericValue;
     }
     else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"])){
-        NSLog(@"slider icon - display text: %@, value: %@", [genericIndexObject.formatter transform:value], value);
-        return [[GenericValue alloc]initWithDisplayText:[genericIndexObject.formatter transform:value]
+        NSLog(@"slider icon - display text: %@, value: %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value);
+        return [[GenericValue alloc]initWithDisplayText:[genericIndexObject.formatter transform:value genericId:genericIndexID]
                                                    icon:genericIndexObject.icon
                                             toggleValue:nil
                                                   value:value
