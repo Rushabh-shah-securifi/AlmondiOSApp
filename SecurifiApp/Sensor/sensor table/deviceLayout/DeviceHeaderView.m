@@ -135,6 +135,7 @@
 -(void)handleNestThermostatAndSmokeDectect:(int)deviceType deviceID:(int)deviceID genericValue:(GenericValue*)genericValue{
     if(deviceType == SFIDeviceType_NestThermostat_57){
         BOOL isNestOnline = [[Device getValueForIndex:11 deviceID:deviceID] isEqualToString:@"true"];
+        BOOL isUsingEmergencyHeat = [[Device getValueForIndex:14 deviceID:deviceID] isEqualToString:@"true"];
 //        BOOL isNestOnline = NO;
         if(!isNestOnline){
             genericValue.icon = @"offline_icon";
@@ -144,6 +145,8 @@
                 self.tamperedImgView.hidden = NO;
                 self.tamperedImgView.image = [UIImage imageNamed:@"nest_offline"];
             }
+        }else if(isUsingEmergencyHeat){
+            genericValue.displayText = [genericValue.displayText stringByAppendingString:[NSString stringWithFormat:@", %@", NSLocalizedString(@"emergency_heat", @"USING EMERGENCY HEAT")]];
         }
     }else if(deviceType == SFIDeviceType_NestSmokeDetector_58){
         BOOL isSmokeOnline =  [[Device getValueForIndex:5 deviceID:deviceID] isEqualToString:@"true"];
@@ -151,7 +154,7 @@
             genericValue.icon = @"offline_icon";
             genericValue.iconText = nil;
             genericValue.displayText = @"Offline";
-            if(deviceType == SFIDeviceType_NestThermostat_57){
+            if(deviceType == SFIDeviceType_NestSmokeDetector_58){
                 self.tamperedImgView.hidden = NO;
                 self.tamperedImgView.image = [UIImage imageNamed:@"nest_offline"];
             }
