@@ -37,9 +37,9 @@
                                                         deviceIndexScrollView:self.deviceIndexScrollView
                                                          deviceListScrollView:self.deviceListScrollView
                                                                      triggers:self.triggers actions:self.actions
-                                                                      isScene:self.isScene];
+                                                                      isScene:self.isScene
+                                                                    ];
     self.addTriggerAction.delegate = self;
-    self.addTriggerAction.tap = self.tap;
     [self.addTriggerAction addDeviceNameList:isTrigger];
 }
 

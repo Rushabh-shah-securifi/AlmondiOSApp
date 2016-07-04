@@ -86,7 +86,6 @@ labelAndCheckButtonView *labelView;
     return self;
 }
 
-
 -(void)addDeviceNameList:(BOOL)isTrigger{
     self.isTrigger = isTrigger;
     //clear view
@@ -218,13 +217,6 @@ labelAndCheckButtonView *labelView;
 }
 
 -(void)onDeviceButtonClick:(RulesDeviceNameButton *)deviceBtn{
-    NSLog(@"onDeviceButtonClick");
-    if(deviceBtn.deviceType == SFIDeviceType_HueLamp_48)
-        [self.parentView removeGestureRecognizer:self.tap];
-    else
-        [self.parentView addGestureRecognizer:self.tap];
-    NSLog(@"subivews count: %d", self.parentView.subviews.count);
-    
     [self resetViews];
     self.currentClickedButton = deviceBtn;
     deviceBtn.selected = YES;
@@ -838,7 +830,7 @@ labelAndCheckButtonView *labelView;
         }
     }
     [self.triggers removeObjectsInArray:toBeDeletedSubProperties];
-    NSLog(@"self triggers count: %ld", self.triggers.count);
+    NSLog(@"self triggers count: %ld", (unsigned long)self.triggers.count);
 }
 
 - (BOOL)setActionButtonCount:(RuleButton *)indexButton isSlider:(BOOL)isSlider{
@@ -1273,7 +1265,5 @@ labelAndCheckButtonView *labelView;
     NSLog(@" g.index id %@",genericIndexValue.genericIndex.ID);
     
 }
-
-
 
 @end
