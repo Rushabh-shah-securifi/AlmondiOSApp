@@ -179,7 +179,7 @@ int mii;
             return;
         }
         if(!genericRouterCommand.commandSuccess){
-            [self showToast:@"Sorry!, unable to update."];
+            [self showToast:@"Sorry! unable to update."];
             return;
         }
         NSLog(@"genericRouterCommand.commandType %d",genericRouterCommand.commandType);
