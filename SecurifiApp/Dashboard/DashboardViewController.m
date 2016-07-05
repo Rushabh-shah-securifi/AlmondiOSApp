@@ -559,6 +559,8 @@
             cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
         }
     }
+    cell.textLabel.numberOfLines = 2;
+    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     cell.textLabel.font = [UIFont systemFontOfSize:12];
     cell.detailTextLabel.textColor = [SFIColors ruleGraycolor];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:10];
