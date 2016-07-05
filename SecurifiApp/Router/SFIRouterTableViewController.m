@@ -40,9 +40,9 @@
 #define FIRMWARE_UPDATE_TAG 2
 
 static const int networkingHeight = 100;
-static const int clientsHeight = 100;
-static const int settingsHeight = 120;
-static const int versionHeight = 110;
+static const int clientsHeight = 90;
+static const int settingsHeight = 70;
+static const int versionHeight = 100;
 static const int rebootHeight = 110;
 static const int logsHeight = 100;
 
@@ -289,7 +289,7 @@ int mii;
         case DEF_DEVICES_AND_USERS_SECTION:
             return clientsHeight;
         case DEF_WIRELESS_SETTINGS_SECTION:
-            return settingsHeight;
+            return [self getSettingsRowHeight];
         case DEF_ROUTER_VERSION_SECTION:
             return versionHeight;
         case DEF_ROUTER_REBOOT_SECTION:
@@ -302,7 +302,15 @@ int mii;
     }
 }
 
+-(int)getSettingsRowHeight{
+    NSArray *msgs = [self getWirelessSettingsSummary];
+    int lines = [SFICardView getLineCount:msgs];
+    NSLog(@"lines: %d", lines);
+    return settingsHeight + (lines * 12);
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    NSLog(@"isAlmondUnavailable: %d, isnetworkonline: %d, issimulator: %d", self.isAlmondUnavailable, ![[SecurifiToolkit sharedInstance] isNetworkOnline], self.isSimulator);
     if([self isNoAlmondLoaded]){
         tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];

@@ -97,4 +97,6 @@ typedef NS_ENUM(int, SFICardView_right_offset) {
 // The parameter "editing" controls the current visual state, which changes when the card is being edited or not.
 - (void)addEditIconTarget:(id)target action:(SEL)action editing:(BOOL)editing;
 
++ (NSInteger)getLineCount:(NSArray*)msgs;
+
 @end
