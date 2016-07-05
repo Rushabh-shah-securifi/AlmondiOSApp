@@ -47,6 +47,13 @@ int mii;
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
     self.navigationItem.title = toolkit.currentAlmond.almondplusName;
     
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
+                                   initWithTitle:@"Back"
+                                   style:UIBarButtonItemStylePlain
+                                   target:nil
+                                   action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+    
 //    UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
 //    self.navigationItem.rightBarButtonItem = done;
 

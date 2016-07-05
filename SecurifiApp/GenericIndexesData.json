@@ -742,7 +742,7 @@
         "Values": {
             "true": {
                 "Icon": "panic_icon",
-                "AppLabel": "yes",
+                "AppLabel": "paincAlarm",
                 "Label": "Panic Alarm"
             },
             "false": {
@@ -763,7 +763,7 @@
         "Values": {
             "true": {
                 "Icon": "emergency_icon",
-                "AppLabel": "yes",  
+                "AppLabel": "emergencyAlarm",  
                 "Label": "Emergency Alarm"
             },
             "false": {

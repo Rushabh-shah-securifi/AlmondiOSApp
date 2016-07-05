@@ -168,7 +168,7 @@ int mii;
     self.tableView.tableHeaderView = nil;
     
     //NSLog(@"connecton - is local: %d", self.local);
-    if(!self.local){
+    if(!self.local && ![self isNoAlmondLoaded]){
         [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
         
         [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];

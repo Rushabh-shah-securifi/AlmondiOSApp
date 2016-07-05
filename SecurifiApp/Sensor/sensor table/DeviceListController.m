@@ -93,7 +93,7 @@ int mii;
     self.enableDrawer = YES; //to enable navigation top left button
     dispatch_async(dispatch_get_main_queue(), ^{
         [self tryInstallRefreshControl];
-        if([self isDeviceListEmpty] && [self isClientListEmpty]){
+        if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC]){
             NSLog(@"device and client current list is empty");
             [self showHudWithTimeoutMsg:@"Loading Device data"];
         }
@@ -154,7 +154,7 @@ int mii;
     NSLog(@"showHudWithTimeoutMsg");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:hudMsg];
-        [self.HUD hide:YES afterDelay:15];
+        [self.HUD hide:YES afterDelay:10];
     });
 }
 
