@@ -79,36 +79,47 @@
     [self addSubview:textCheckMarkView];
 }
 -(void)tapCheckMark{
+    DeviceCommandType deviceCmdType = self.genericIndexValue.genericIndex.commandType;
+    if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
+        if(self.deviceNameField.text.length == 0)
+            [self showAlert:[NSString stringWithFormat:@"Please Enter %@", self.genericIndexValue.genericIndex.groupLabel]];
+        else{
+            [self.delegate save:self.deviceNameField.text forGenericIndexValue:_genericIndexValue currentView:self];
+        }
+        return;
+    }
     
-    
+        
+        
     NSLog(@"tapCheckMark %@",self.deviceNameField.text);
     [self.deviceNameField resignFirstResponder];
     if(self.deviceNameField.text.length == 0)
         [self showAlert:@"Please enter number"];
     else if ([self isAllDigits:self.deviceNameField.text])
-    {   BOOL isNameLocationField = [self.genericIndexValue.genericIndex.ID isEqualToString:@"-1"] || [self.genericIndexValue.genericIndex.ID isEqualToString:@"-2"];
+    {
+        BOOL isNameLocationField = [self.genericIndexValue.genericIndex.ID isEqualToString:@"-1"] || [self.genericIndexValue.genericIndex.ID isEqualToString:@"-2"];
         int type =  [Device getTypeForID:self.genericIndexValue.deviceID];
         
-            if( !isNameLocationField && (type == SFIDeviceType_StandardWarningDevice_21 || type == SFIDeviceType_AlmondBlink_64 || type == SFIDeviceType_AlmondSiren_63)  && ([self.deviceNameField.text integerValue] >= 65536 || [self.deviceNameField.text integerValue] < 0 ))
-            {
-                [self showAlert:@"Please enter value between 0 - 65535"];
-               
-            }
-            else if(!isNameLocationField &&  type == SFIDeviceType_ZWtoACIRExtender_54 && ([self.deviceNameField.text integerValue] > 999 || [self.deviceNameField.text integerValue] < 0 ))
-            {
-                [self showAlert:@"Please enter value between 0 - 999"];
-     
-            }else if(!isNameLocationField &&  type == SFIDeviceType_Weather && ([self.deviceNameField.text integerValue] > 9999 || [self.deviceNameField.text integerValue] < 0 ))
-            {
-                [self showAlert:@"Please enter value between 0 - 9999"];
-               
-            }
-            else if(!isNameLocationField &&  type == SFIDeviceType_ColorDimmableLight_32 && ([self.deviceNameField.text integerValue] > 9000 || [self.deviceNameField.text integerValue] < 1000 ))
-            {
-                [self showAlert:@"Please enter value between 1000 - 9000"];
-            }
-            else
-                [self.delegate save:self.deviceNameField.text forGenericIndexValue:_genericIndexValue currentView:self];
+        if( !isNameLocationField && (type == SFIDeviceType_StandardWarningDevice_21 || type == SFIDeviceType_AlmondBlink_64 || type == SFIDeviceType_AlmondSiren_63)  && ([self.deviceNameField.text integerValue] >= 65536 || [self.deviceNameField.text integerValue] < 0 ))
+        {
+            [self showAlert:@"Please enter value between 0 - 65535"];
+           
+        }
+        else if(!isNameLocationField &&  type == SFIDeviceType_ZWtoACIRExtender_54 && ([self.deviceNameField.text integerValue] > 999 || [self.deviceNameField.text integerValue] < 0 ))
+        {
+            [self showAlert:@"Please enter value between 0 - 999"];
+ 
+        }else if(!isNameLocationField &&  type == SFIDeviceType_Weather && ([self.deviceNameField.text integerValue] > 9999 || [self.deviceNameField.text integerValue] < 0 ))
+        {
+            [self showAlert:@"Please enter value between 0 - 9999"];
+           
+        }
+        else if(!isNameLocationField &&  type == SFIDeviceType_ColorDimmableLight_32 && ([self.deviceNameField.text integerValue] > 9000 || [self.deviceNameField.text integerValue] < 1000 ))
+        {
+            [self showAlert:@"Please enter value between 1000 - 9000"];
+        }
+        else
+            [self.delegate save:self.deviceNameField.text forGenericIndexValue:_genericIndexValue currentView:self];
     }
     else
         [self showAlert:@"Please enter numbers only"];
