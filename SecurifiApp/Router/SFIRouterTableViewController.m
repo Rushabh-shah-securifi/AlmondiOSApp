@@ -704,6 +704,12 @@ int mii;
                     ctrl.enableRouterWirelessControl = YES;
                     ctrl.isSimulator = self.isSimulator;
                     ctrl.hidesBottomBarWhenPushed = YES;
+                    UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
+                                                   initWithTitle:@"Back"
+                                                   style:UIBarButtonItemStylePlain
+                                                   target:nil
+                                                   action:nil];
+                    self.navigationItem.backBarButtonItem = backButton;
                     [self.navigationController pushViewController:ctrl animated:YES];
                 }
                 break;
