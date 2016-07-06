@@ -894,11 +894,14 @@
         if([name rangeOfString:@"An unknown device" options:NSCaseInsensitiveSearch].location != NSNotFound){
             NSArray *nameArr = [name componentsSeparatedByString:@"An unknown device"];
             deviceName = nameArr[1];
-        }else
-            deviceName = name;
-        if(deviceName ==Nil)
+        }
+        else
             deviceName = name;
     }
+    
+    if(deviceName == nil || deviceName.length == 0)
+        deviceName = @"unknown device";
+    
     NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:deviceName attributes:attr];
     attr = @{
              NSFontAttributeName : bold_font,
