@@ -753,12 +753,11 @@ Follow it, then login below.";
 "gas_on"="GAS DETECTED!";
 "fire_on"="FIRE DETECTED!";
 "tampered"="TAMPERED";
-"paincAlarm"="PAINCALARM";
+"paincAlarm"="PAINC ALARM";
 "emergencyAlarm"="EMERGENCY ALARM";
 "lowBattery"="LOW BATTERY";
-"set_alarm_for"="RING ALARM FOR(sec)";
+"set_alarm_for"="ALARM FOR(sec)";
 "alarm_on"="RINGING";
-"alarm"="ALARM";
 "alarm_off"="SILENT";
 "smoke_on"="SMOKE DETECTED!";
 "dimmer" ="DIMMER";
@@ -861,9 +860,9 @@ Follow it, then login below.";
 "occupied"="OCCUPIED";
 "unoccupied"="UNOCCUPIED";
 "ringTone"="RING TONE";
-"tone1"="Alarm";
-"tone2"="Siren";
-"tone3"="Door-Bell";
+"alarm"="Alarm";
+"siren"="Siren";
+"doorBell"="Door-Bell";
 "canBeBlocked" = "Can Be Blocked";
 "switch1" = "Switch 1";
 "switch2" = "Switch 2";
@@ -878,7 +877,6 @@ Follow it, then login below.";
 "resume" = "Resume";
 "shutter" = "SHUTTER";
 "lock_state" = "LOCK STATE";
-"alarm" = "ALARM";
 "ac_switch" = "AC SWITCH";
 "multilevel_switch" = "MULTILEVEL SWITCH";
 "one_press" = "One Press";
@@ -937,16 +935,26 @@ Follow it, then login below.";
 "enable" = "ENABLE";
 "enabled" = "Enabled";
 "disabled" = "Disabled";
+
 "volume" = "VOLUME";
-"low" = "Low";
+"low_volume" = "Vol: Low";
+"medium_volume" = "Vol: Medium";
+"high_volume" = "Vol: High";
 "high" = "High";
 
 "blink" = "Blink";
+"blink_start" = "Blink Start";
+"blink_stop" = "Blink Stop";
+
 "rgb" = "RGB";
 "seconds" = "SECONDS";
 "blinking" = "Blinking";
+"blinkTimer" = "Blink Timer";
 
-
+"browsingHistory" = "Browsing History";
+"buzzer_timer" = "Buzzer Timer";
+"led_off" = "LED OFF";
+"led_on" = "LED ON";
 /* ==================================================================== */
 
 /*

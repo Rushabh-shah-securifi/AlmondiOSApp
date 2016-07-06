@@ -223,7 +223,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 saturationSlider.continuous = YES;
                 saturationSlider.alpha = 0.3;
                 saturationSlider.allowToSlide = YES; // Initial value
-                saturationSlider.sensorMaxValue = 255;
+                saturationSlider.sensorMaxValue = roundf(genericIndex.formatter.max / genericIndex.formatter.factor);
                 saturationSlider.convertedValue = 0; // to be assigned
                 int sensor_value = [huePickerView convertToSensorValue];
                 huePickerView.subProperties.matchData = @(sensor_value).stringValue ;

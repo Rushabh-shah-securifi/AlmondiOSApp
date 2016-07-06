@@ -22,7 +22,9 @@
 #import "UILabel+ActionSheet.h"
 #import "UIFont+Securifi.h"
 
-@interface DashboardViewController ()<MBProgressHUDDelegate>
+@interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate>{
+    UIButton *button, *button1;
+}
 
 @property(nonatomic) SFICloudStatusBarButtonItem *leftButton;
 @property (nonatomic) SFINotificationStatusBarButtonItem *notificationButton;
@@ -50,20 +52,111 @@
     self.clientNotificationArr = [[NSMutableArray alloc]init];
     self.deviceNotificationArr = [[NSMutableArray alloc]init];
     [self navigationBarStyle];
-    
-    _labelAlmond.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(AlmondSelection:)];
-    [_labelAlmond addGestureRecognizer:tapGesture];
-    
+   
+    button = [[UIButton alloc]init];
+    button1 = [[UIButton alloc]init];
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    [button addTarget:self action:@selector(AlmondSelection:) forControlEvents:UIControlEventTouchUpInside];
+    button1 = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button1 addTarget:self action:@selector(AlmondSelection:) forControlEvents:UIControlEventTouchUpInside];
+    [Scroller addSubview:button];
+    [Scroller addSubview:button1];
+    [self SelectAlmond:@"AddAlmond"];
     [self markNetworkStatusIcon];
     [self initializeNotification];
     [self initializeHUD];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self
+               selector:@selector(onAlmondModeDidChange:)
+                   name:kSFIAlmondModeDidChange
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onDeviceListAndDynamicResponseParsed:) //for both sensors and clients
+                   name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onCurrentAlmondChanged:)
+                   name:kSFIDidChangeCurrentAlmond
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onNetworkUpNotifier:)
+                   name:NETWORK_UP_NOTIFIER
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onNetworkDownNotifier:)
+                   name:NETWORK_DOWN_NOTIFIER
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onNetworkConnectingNotifier:)
+                   name:NETWORK_CONNECTING_NOTIFIER
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onReachabilityDidChange:)
+                   name:kSFIReachabilityChangedNotification
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onDidReceiveNotifications)
+                   name:kSFINotificationDidStore
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationDidStore
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationBadgeCountDidChange
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationDidMarkViewed
+                 object:nil];
+    [self.toolkit tryRefreshNotifications];
+    [self initializeNotification];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.dashboardTable reloadData];
+    });
+    [self getDeviceClientNotification];
+    [self markNetworkStatusIcon];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+}
+
+-(void)initializeNotification{
+    [self updateMode:self.toolkit.mode_src];
+    [self updateDeviceClientListCount];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+- (void)SelectAlmond : (NSString *)title{
+    CGFloat strikeWidth;
+    CGSize textSize;
+    textSize = [title sizeWithAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Medium" size:18]}];
+    strikeWidth = textSize.width;
+    button.frame = CGRectMake(self.view.frame.size.width/2 - strikeWidth/2, 40.0,strikeWidth, 21.0);
+    button1.frame = CGRectMake(button.frame.origin.x+strikeWidth, button.frame.origin.y, 21.0, 21.0);
+    [button setTitle:title forState:UIControlStateNormal];
+    [button1 setBackgroundImage:[UIImage imageNamed:@"arrow_drop_down_black.pdf"] forState:UIControlStateNormal];
+}
+
+
 #pragma mark Navigation UI
 -(void)navigationBarStyle{
     self.navigationImg = [[UIImageView alloc] initWithImage:[CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]]];
     self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
+    self.navigationController.view.backgroundColor = [SFIColors lightOrangeDashColor];
     
     self.navigationImg.frame = CGRectMake(0, 0, self.navigationController.navigationBar.frame.size.width, self.navigationController.navigationBar.frame.size.height);
     [self.navigationController.navigationBar addSubview:self.navigationImg];
@@ -109,6 +202,7 @@
             self.navigationImg.image = [CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightBlueColor]];
             self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightBlueColor]];
             [self.buttonHome setBackgroundColor:[SFIColors lightBlueColor]];
+            self.navigationController.view.backgroundColor = [SFIColors lightBlueColor];
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
             [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
             [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
@@ -121,6 +215,7 @@
             self.navigationImg.image = [CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]];
             self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
             [self.buttonHomeAway setBackgroundColor:[SFIColors lightOrangeDashColor]];
+            self.navigationController.view.backgroundColor = [SFIColors lightOrangeDashColor];
             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
             [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1_white" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
             [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
@@ -128,16 +223,13 @@
     }
 }
 
--(void)initializeNotification{
-    [self updateMode:self.toolkit.mode_src];
-    [self updateDeviceClientListCount];
-}
-
 -(void)updateDeviceClientListCount{
     if(self.toolkit.currentAlmond != nil)
     {
         dispatch_async(dispatch_get_main_queue(), ^() {
-            _labelAlmond.text = self.toolkit.currentAlmond.almondplusName ;
+            //_labelAlmond.text = self.toolkit.currentAlmond.almondplusName ;
+            [self SelectAlmond:self.toolkit.currentAlmond.almondplusName];
+            [self.AddAlmond setTitle:self.toolkit.currentAlmond.almondplusName forState:UIControlStateNormal];
             _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.devices.count ];
             _networkConnectedDevices.text =[NSString stringWithFormat:@"%d ",[Client activeClientCount] ];
             _totalConnectedDevices.text = [NSString stringWithFormat: @"%lu", (unsigned long)(self.toolkit.devices.count + self.toolkit.clients.count)];
@@ -146,7 +238,9 @@
     else
     {
         dispatch_async(dispatch_get_main_queue(), ^() {
-            _labelAlmond.text = @"AddAlmond";
+            [self SelectAlmond:@"AddAlmond"];
+            [self.AddAlmond setTitle:@"AddAlmond" forState:UIControlStateNormal];
+            //_labelAlmond.text = @"AddAlmond";
             _labelHomeAway.hidden = YES;
             _labelHome.hidden = YES;
             [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
@@ -210,17 +304,9 @@
     self.HUD.labelText = text;
     [self.HUD show:YES];
 }
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
-        [self.HUD removeFromSuperview];
-    }
-}
-
+#pragma mark Update
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
-        [self updateDeviceClientListCount];
+    [self updateDeviceClientListCount];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.dashboardTable reloadData];
         [self.HUD hide:YES];
@@ -230,63 +316,6 @@
             [self.refreshControl endRefreshing];
         }
     });
-}
-
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:YES];
-    
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self
-               selector:@selector(onAlmondModeDidChange:)
-                   name:kSFIAlmondModeDidChange
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onDeviceListAndDynamicResponseParsed:) //for both sensors and clients
-                   name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onCurrentAlmondChanged:)
-                   name:kSFIDidChangeCurrentAlmond
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onNetworkUpNotifier:)
-                   name:NETWORK_UP_NOTIFIER
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onNetworkDownNotifier:)
-                   name:NETWORK_DOWN_NOTIFIER
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onNetworkConnectingNotifier:)
-                   name:NETWORK_CONNECTING_NOTIFIER
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onReachabilityDidChange:)
-                   name:kSFIReachabilityChangedNotification
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onDidReceiveNotifications)
-                   name:kSFINotificationDidStore
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onNotificationCountChanged:)
-                   name:kSFINotificationDidStore
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onNotificationCountChanged:)
-                   name:kSFINotificationBadgeCountDidChange
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onNotificationCountChanged:)
-                   name:kSFINotificationDidMarkViewed
-                 object:nil];
-    [self.toolkit tryRefreshNotifications];
-    [self initializeNotification];
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.dashboardTable reloadData];
-    });
-    [self getDeviceClientNotification];
-    [self markNetworkStatusIcon];
 }
 
 - (void)onNotificationCountChanged:(id)event {
@@ -328,7 +357,7 @@
 }
 
 - (void)onAlmondModeDidChange:(id)sender {
-    NSLog(@"Almond mode is changing %d",self.toolkit.mode_src);
+    //    NSLog(@"Almond mode is changing %d",self.toolkit.mode_src);
     [self markNetworkStatusIcon];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
@@ -346,6 +375,7 @@
     });
 }
 
+#pragma mark selectAlmond
 - (IBAction)AlmondSelection:(UIButton *)sender {
     enum SFIAlmondConnectionMode modeValue = [self.toolkit currentConnectionMode];
     NSArray *almondList = [self buildAlmondList:modeValue];
@@ -353,7 +383,7 @@
     viewC = [UIAlertController alertControllerWithTitle:@"Select Almond" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     UILabel * appearanceLabel = [UILabel appearanceWhenContainedIn:UIAlertController.class, nil];
-    [appearanceLabel setAppearanceFont:[UIFont securifiLightFont:16]];
+    [appearanceLabel setAppearanceFont:[UIFont securifiLightFont:14]];
     
     for(SFIAlmondPlus *name in almondList){
         if ([name.almondplusName isEqualToString:_labelAlmond.text]) {
@@ -365,7 +395,9 @@
                                 handler:^(UIAlertAction * action){
                                     SFIAlmondPlus *currentAlmond = name;
                                     [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
-                                    _labelAlmond.text = name.almondplusName;
+                                    [self SelectAlmond:name.almondplusName];
+                                    [self.AddAlmond setTitle:name.almondplusName forState:UIControlStateNormal];
+                                    //_labelAlmond.text = name.almondplusName;
                                     _labelAlmondStatus.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:14];
                                     _labelAlmond.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:18];
                                 }];
@@ -428,22 +460,20 @@
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
+
 
 - (IBAction)homeMode:(id)sender {
-     if(self.toolkit.currentAlmond != nil){
+    if(self.toolkit.currentAlmond != nil){
         [self showHudWithTimeoutMsg:@"Setting Almond to home mode." delay:5];
         [_toolkit asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:SFIAlmondMode_home];
-     }
+    }
 }
 
 - (IBAction)homeawayMode:(id)sender {
-     if(self.toolkit.currentAlmond != nil){
+    if(self.toolkit.currentAlmond != nil){
         [self showHudWithTimeoutMsg:@"Setting Almond to away mode." delay:5];
         [_toolkit asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:SFIAlmondMode_away];
-     }
+    }
 }
 
 - (void)notificationAction:(id)sender {
@@ -462,7 +492,7 @@
 
 -(void )getDeviceClientNotification{
     [self.deviceNotificationArr removeAllObjects];
-     [self.clientNotificationArr removeAllObjects];
+    [self.clientNotificationArr removeAllObjects];
     if(self.toolkit.currentAlmond != nil){
         for(int j = 0; j<10;j++){// for 10 days
             for (int i =0; i<150; i++) {
@@ -485,6 +515,8 @@
         }
     }
 }
+
+#pragma mark tableviewDelegate
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
@@ -538,6 +570,8 @@
             cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
         }
     }
+    cell.textLabel.numberOfLines = 2;
+    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     cell.textLabel.font = [UIFont systemFontOfSize:12];
     cell.detailTextLabel.textColor = [SFIColors ruleGraycolor];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:10];
@@ -598,7 +632,7 @@
     return self.clientNotificationArr.count == 0;
 }
 
-#pragma onConnectionStatus
+#pragma mark onConnectionStatus
 -(void)onConnection:(NSString *)Title subTitle:(NSString *)subTitle stmt:(enum SFIAlmondConnectionMode)mode{
     UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:@"Almond Connection" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     almondSelect.title = Title;
@@ -610,7 +644,6 @@
                                 [self configureNetworkSettings:mode];
                             }];
     [almondSelect addAction:Check];
-    [self presentViewController:almondSelect animated:YES completion:nil];
     UIAlertAction *Close = [UIAlertAction
                             actionWithTitle:@"Close"
                             style:UIAlertActionStyleDefault
@@ -619,28 +652,31 @@
                                 [almondSelect dismissViewControllerAnimated:YES completion:nil];
                             }];
     [almondSelect addAction:Close];
+    almondSelect.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0);
+    almondSelect.popoverPresentationController.sourceView = self.view;
+    almondSelect.popoverPresentationController.permittedArrowDirections = 0;
+    [self presentViewController:almondSelect animated:YES completion:nil];
 }
 
 -(void)onConnection2:(NSString *)Title subTitle1:(NSString *)subTitle1 subTitle2:(NSString *)subTitle2 stmt1:(enum SFIAlmondConnectionMode)mode1 stmt2:(enum SFIAlmondConnectionMode)mode2{
     UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:@"Almond Connection" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     almondSelect.title = Title;
     UIAlertAction *Check1 = [UIAlertAction
-                            actionWithTitle:subTitle1
-                            style:UIAlertActionStyleDefault
-                            handler:^(UIAlertAction * action)
-                            {
-                                [self configureNetworkSettings:mode1];
-                            }];
+                             actionWithTitle:subTitle1
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [self configureNetworkSettings:mode1];
+                             }];
     [almondSelect addAction:Check1];
     UIAlertAction *Check2 = [UIAlertAction
-                            actionWithTitle:subTitle2
-                            style:UIAlertActionStyleDefault
-                            handler:^(UIAlertAction * action)
-                            {
-                                [self configureNetworkSettings:mode2];
-                            }];
+                             actionWithTitle:subTitle2
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [self configureNetworkSettings:mode2];
+                             }];
     [almondSelect addAction:Check2];
-    [self presentViewController:almondSelect animated:YES completion:nil];
     UIAlertAction *Close = [UIAlertAction
                             actionWithTitle:@"Close"
                             style:UIAlertActionStyleDefault
@@ -649,6 +685,11 @@
                                 [almondSelect dismissViewControllerAnimated:YES completion:nil];
                             }];
     [almondSelect addAction:Close];
+    almondSelect.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0);
+    almondSelect.popoverPresentationController.sourceView = self.view;
+    almondSelect.popoverPresentationController.permittedArrowDirections = 0;
+    almondSelect.popoverPresentationController.permittedArrowDirections = 0;
+    [self presentViewController:almondSelect animated:YES completion:nil];
 }
 
 -(void)onConnection3:(NSString *)Title subTitle:(NSString *)subTitle{
@@ -662,7 +703,6 @@
                                 [self presentLocalNetworkSettingsEditor];
                             }];
     [almondSelect addAction:Check];
-    [self presentViewController:almondSelect animated:YES completion:nil];
     UIAlertAction *Close = [UIAlertAction
                             actionWithTitle:@"Close"
                             style:UIAlertActionStyleDefault
@@ -671,6 +711,30 @@
                                 [almondSelect dismissViewControllerAnimated:YES completion:nil];
                             }];
     [almondSelect addAction:Close];
+    almondSelect.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0);
+    almondSelect.popoverPresentationController.sourceView = self.view;
+    almondSelect.popoverPresentationController.permittedArrowDirections = 0;
+    [self presentViewController:almondSelect animated:YES completion:nil];
+
+}
+- (void)presentLocalNetworkSettingsEditor {
+    NSString *mac = self.toolkit.currentAlmond.almondplusMAC;
+    
+    _toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondLocalNetworkSettings *settings = [_toolkit localNetworkSettingsForAlmond:mac];
+    NSLog(@"sfitableview - presentlocalnetwork - mac: %@, settings: %@", mac, settings);
+    if (!settings) {
+        settings = [SFIAlmondLocalNetworkSettings new];
+        settings.almondplusMAC = mac;
+    }
+    
+    RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+    editor.delegate = self;
+    editor.settings = settings;
+    editor.enableUnlinkActionButton = ![_toolkit almondExists:mac]; // only allowed to unlink local almonds that are not affiliated with the cloud
+    
+    UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
+    [self presentViewController:ctrl animated:YES completion:nil];
 }
 
 - (void)onConnectionStatusButtonPressed:(id)sender {
@@ -766,24 +830,9 @@
     [toolkit.ruleList removeAllObjects];
 }
 
-- (void)presentLocalNetworkSettingsEditor {
-    NSString *mac = self.toolkit.currentAlmond.almondplusMAC;
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:mac];
-    if (!settings) {
-        settings = [SFIAlmondLocalNetworkSettings new];
-        settings.almondplusMAC = mac;
-    }
-    RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
-    editor.settings = settings;
-    editor.enableUnlinkActionButton = ![toolkit almondExists:mac]; // only allowed to unlink local almonds that are not affiliated with the cloud
-    UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
-    [self presentViewController:ctrl animated:YES completion:nil];
-}
-
 - (void)markNetworkStatusIcon {
     NSString *const almondMac = self.toolkit.currentAlmond.almondplusMAC;
-    NSLog(@"markNetworkStatusIcon");
+    //    NSLog(@"markNetworkStatusIcon");
     enum SFIAlmondConnectionMode connectionMode = [_toolkit connectionModeForAlmond:almondMac];
     enum SFIAlmondConnectionStatus status = [_toolkit connectionStatusForAlmond:almondMac];
     enum SFICloudStatusState state;
@@ -826,6 +875,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         self.navigationImg.image = [CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightGrayColor]];
         self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightGrayColor]];
+        self.navigationController.view.backgroundColor = [SFIColors lightGrayColor];
         if (self.toolkit.mode_src ==2) {
             [self.buttonHome setBackgroundColor:[SFIColors lightGrayColor] ];
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
@@ -851,15 +901,18 @@
     if (notification.deviceType==SFIDeviceType_WIFIClient) {
         NSArray * properties = [notification.deviceName componentsSeparatedByString:@"|"];
         NSString *name = properties[3];
-        NSLog(@" name notification Name == %@",name);
+        //        NSLog(@" name notification Name == %@",name);
         if([name rangeOfString:@"An unknown device" options:NSCaseInsensitiveSearch].location != NSNotFound){
             NSArray *nameArr = [name componentsSeparatedByString:@"An unknown device"];
             deviceName = nameArr[1];
-        }else
-            deviceName = name;
-        if(deviceName ==Nil)
+        }
+        else
             deviceName = name;
     }
+    
+    if(deviceName == nil || deviceName.length == 0)
+        deviceName = @"unknown device";
+    
     NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:deviceName attributes:attr];
     attr = @{
              NSFontAttributeName : bold_font,
@@ -899,7 +952,7 @@
     attr = @{
              NSFontAttributeName : [UIFont securifiBoldFontLarge],
              NSForegroundColorAttributeName : [UIColor lightGrayColor],
-            };
+             };
     formatter.dateFormat = @"a";
     str = [formatter stringFromDate:date];
     NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:str attributes:attr];
@@ -907,5 +960,34 @@
     [container appendAttributedString:nameStr];
     [container appendAttributedString:eventStr];
     return container;
+}
+
+
+#pragma mark - RouterNetworkSettingsEditorDelegate methods
+
+- (void)networkSettingsEditorDidLinkAlmond:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    
+}
+
+- (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit setLocalNetworkSettings:newSettings];
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidComplete:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {
+    NSString *almondMac = editor.settings.almondplusMAC;
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit removeLocalNetworkSettingsForAlmond:almondMac];
+    [editor dismissViewControllerAnimated:YES completion:nil];
 }
 @end

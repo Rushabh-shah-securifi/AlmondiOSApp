@@ -73,6 +73,8 @@
     if(self.genericParams.isSensor){
         if(deviceType == SFIDeviceType_NestThermostat_57 || deviceType == SFIDeviceType_NestSmokeDetector_58 ){
             [self handleNestThermostatAndSmokeDectect:deviceType deviceID:deviceID genericValue:_genericParams.headerGenericIndexValue.genericValue];
+        }else if(deviceType == SFIDeviceType_MultiLevelSwitch_2){
+            [self handleZwaveDimmerType_2];
         }
     }
     
@@ -88,14 +90,16 @@
         self.deviceImage.hidden = NO;
         self.deviceImage.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
         
-            if(self.genericParams.isSensor && deviceType == SFIDeviceType_HueLamp_48 && [[Device getValueForIndex:2 deviceID:deviceID] isEqualToString:@"true"]){
-                self.deviceImage.image = [self.deviceImage.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        if(self.genericParams.isSensor && (deviceType == SFIDeviceType_HueLamp_48 || deviceType == SFIDeviceType_ColorDimmableLight_32)&& [[Device getValueForIndex:2 deviceID:deviceID] isEqualToString:@"true"]){
+            self.deviceImage.image = [self.deviceImage.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            if(deviceType == SFIDeviceType_HueLamp_48)// 0 - 65535 for blink, hue
                 [self.deviceImage setTintColor:[UIColor colorFromHexString:[CommonMethods getColorHex:[Device getValueForIndex:3 deviceID:deviceID]]]];
-            }
+            else //0 - 255 only for color dimmable
+                [self.deviceImage setTintColor:[UIColor colorFromHexString:[CommonMethods getDimmableHex:[Device getValueForIndex:3 deviceID:deviceID]]]];
+        }
         self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.displayText;
     }
     
-    // || self.genericParams.headerGenericIndexValue.genericIndex.readOnly || self.cellType == ClientTable_Cell || _genericParams.headerGenericIndexValue.genericValue.iconText)
     if(self.genericParams.headerGenericIndexValue.genericValue.toggleValue == nil || self.genericParams.headerGenericIndexValue.genericValue.toggleValue.length == 0)
         self.deviceButton.userInteractionEnabled = NO;
     else
@@ -114,10 +118,24 @@
         [self isTamper];
 }
 
+-(void)handleZwaveDimmerType_2{
+    GenericValue *genericValue = self.genericParams.headerGenericIndexValue.genericValue;
+    if(genericValue){
+        if([genericValue.value isEqualToString:@"0"]){
+            genericValue.icon = @"switch_off";
+            genericValue.displayText = @"Off";
+            genericValue.toggleValue = @"100";
+        }else{//dimmer
+            self.genericParams.headerGenericIndexValue.genericIndex.icon = @"dimmer";
+            genericValue.toggleValue = @"0";
+        }
+    }
+    
+}
 -(void)handleNestThermostatAndSmokeDectect:(int)deviceType deviceID:(int)deviceID genericValue:(GenericValue*)genericValue{
-
     if(deviceType == SFIDeviceType_NestThermostat_57){
         BOOL isNestOnline = [[Device getValueForIndex:11 deviceID:deviceID] isEqualToString:@"true"];
+        BOOL isUsingEmergencyHeat = [[Device getValueForIndex:14 deviceID:deviceID] isEqualToString:@"true"];
 //        BOOL isNestOnline = NO;
         if(!isNestOnline){
             genericValue.icon = @"offline_icon";
@@ -127,6 +145,8 @@
                 self.tamperedImgView.hidden = NO;
                 self.tamperedImgView.image = [UIImage imageNamed:@"nest_offline"];
             }
+        }else if(isUsingEmergencyHeat){
+            genericValue.displayText = [genericValue.displayText stringByAppendingString:[NSString stringWithFormat:@", %@", NSLocalizedString(@"emergency_heat", @"USING EMERGENCY HEAT")]];
         }
     }else if(deviceType == SFIDeviceType_NestSmokeDetector_58){
         BOOL isSmokeOnline =  [[Device getValueForIndex:5 deviceID:deviceID] isEqualToString:@"true"];
@@ -134,7 +154,7 @@
             genericValue.icon = @"offline_icon";
             genericValue.iconText = nil;
             genericValue.displayText = @"Offline";
-            if(deviceType == SFIDeviceType_NestThermostat_57){
+            if(deviceType == SFIDeviceType_NestSmokeDetector_58){
                 self.tamperedImgView.hidden = NO;
                 self.tamperedImgView.image = [UIImage imageNamed:@"nest_offline"];
             }

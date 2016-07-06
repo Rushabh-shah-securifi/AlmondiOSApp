@@ -511,6 +511,18 @@
             "1": {
                 "genericIndexID": "89",
                 "row_no": 1
+            },
+            "11": {
+                "genericIndexID": "86",
+                "row_no": 2
+            },
+            "12": {
+                "genericIndexID": "52",
+                "row_no": 2
+            },
+            "13": {
+                "genericIndexID": "53",
+                "row_no": 3
             }
         }
     },
@@ -687,7 +699,6 @@
         "name": "ColorDimmableLight",
         "isActuator": "true",
         "defaultIcon": "light_off",
-        "ExcludeFrom":"Rule_Scene",
         "Indexes": {
             "1": {
                 "genericIndexID": "18",
@@ -703,11 +714,11 @@
             },
             "4": {
                 "genericIndexID": "32",
-                "row_no": 2
+                "row_no": 3
             },
             "5": {
                 "genericIndexID": "33",
-                "row_no": 3
+                "row_no": 4
             }
         }
     },
@@ -1216,21 +1227,6 @@
             }
         }
     },
-    "60": {
-        "name": "Securifi Siren",
-        "isActuator": "true",
-        "defaultIcon": "alarm_on",
-        "Indexes": {
-            "1": {
-                "genericIndexID": "88",
-                "row_no": 1
-            },
-            "2": {
-                "genericIndexID": "91",
-                "row_no": 2
-            }
-        }
-    },
     "61": {
         "name": "Securifi Button",
         "isActuator": "false",
@@ -1315,7 +1311,7 @@
             },
             "5": {
                 "row_no": 5,
-                "genericIndexID": "13",
+                "genericIndexID": "101",
                 "Placement":"Detail"
             }
         }
@@ -1326,7 +1322,7 @@
         "defaultIcon": "switch_off",
         "Indexes": {
             "1": {
-                "genericIndexID": "1",
+                "genericIndexID": "102",
                 "row_no": 1
             },
             "2": {
@@ -1344,3 +1340,4 @@
         }
     }
 }
+

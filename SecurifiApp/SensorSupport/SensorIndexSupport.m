@@ -350,14 +350,15 @@
             if (type == SFIDevicePropertyType_BASIC) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"0";
-                s1.iconName = DT6_ALARM_TRUE;
-                s1.displayText=@"RINGING";
+                s1.iconName = DT6_ALARM_FALSE;
+                s1.displayText=@"SILENT";
                 s1.notificationText = NSLocalizedString(@" is Silent.", @" is Silent.");
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"255";
-                s2.displayText=@"SILENT";
-                s2.iconName =DT6_ALARM_FALSE;
+                s2.matchType = MatchType_any;
+                s2.displayText=@"RINGING";
+                s2.iconName = DT6_ALARM_TRUE;
                 s2.notificationText = NSLocalizedString(@" is Ringing.", @" is Ringing.");
                 
                 return @[s1, s2];
@@ -1311,21 +1312,21 @@
              */
             
             if (type == SFIDevicePropertyType_ILLUMINANCE) {
-                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchData = @"0 lux";
-                s1.matchType = MatchType_equals;
-                s1.layoutType=@"dimButton";
-                s1.iconName = @"energy";
-                s1.displayText=@"LUX";
-                s1.minValue = 0;
-                s1.maxValue = 3000;
-                s1.valueFormatter.action = ValueFormatterAction_formatString;
-                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s light reading changed to ", @"'s light reading changed to ");
-                s1.valueFormatter.suffix = @"%";
+//                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+//                s1.matchData = @"0 lux";
+//                s1.matchType = MatchType_equals;
+//                s1.layoutType=@"dimButton";
+//                s1.iconName = @"energy";
+//                s1.displayText=@"LUX";
+//                s1.minValue = 0;
+//                s1.maxValue = 3000;
+//                s1.valueFormatter.action = ValueFormatterAction_formatString;
+//                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s light reading changed to ", @"'s light reading changed to ");
+//                s1.valueFormatter.suffix = @"%";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.matchData = @"0 lux";
-                s2.matchType = MatchType_not_equals;
+                s2.matchData = @"0";
+                s2.matchType = MatchType_any;
                 s2.layoutType=@"dimButton";
                 s2.iconName = @"light_on";
                 s2.displayText=@"LUX";
@@ -1333,8 +1334,9 @@
                 s2.maxValue = 3000;
                 s2.valueFormatter.action = ValueFormatterAction_formatString;
                 s2.valueFormatter.notificationPrefix = NSLocalizedString(@"'s light reading changed to ", @"'s light reading changed to ");
+                s2.valueFormatter.suffix = @" LUX";
                 
-                return @[s1, s2];
+                return @[s2];
             }
             
             break;
@@ -1532,13 +1534,14 @@
                 
                 return @[s1];
             }
-        }
             break;
+        }
+            
         case SFIDeviceType_PressureSensor_30:
             break;
         case SFIDeviceType_FlowSensor_31:
             break;
-        case SFIDeviceType_ColorDimmableLight_32:
+        case SFIDeviceType_ColorDimmableLight_32:{
             if (type == SFIDevicePropertyType_SWITCH_BINARY) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
@@ -1554,34 +1557,56 @@
                 
                 return @[s1, s2];
             }
-            if (type == SFIDevicePropertyType_CURRENT_HUE) {
+            if (type == SFIDevicePropertyType_COLOR_HUE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"0";
+                s1.iconName = DT25_LIGHT_SENSOR_TRUE;
                 s1.valueTransformer = ^NSString *(NSString *value) {
                     if (!value) {
                         return @"";
                     }
                     
                     float hue = [value floatValue];
-                    hue = hue / 65535;
+                    int intClolor = 255/8;
                     
-                    UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
-                    return [color.hexString uppercaseString];
+                    
+                    UIColor *color = [UIColor colorWithHue:(hue/255) saturation:100 brightness:100 alpha:1.0];
+                    //                    NSDictionary *attr = @{
+                    //                            NSBackgroundColorAttributeName : color,
+                    //                    }
+                    //                    NSAttributedString *a = [[NSAttributedString alloc] initWithString:@"\u25a1" attributes:attr];
+                    if(hue>=0 && hue <= 1*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"red shade",[color.hexString uppercaseString]];
+                    else if(hue>=1 && hue <= 2*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"orange shade",[color.hexString uppercaseString]];
+                    else if(hue>=2 && hue <= 3*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"yellow shade",[color.hexString uppercaseString]];
+                    else if(hue>=3 && hue <= 4*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"green shade",[color.hexString uppercaseString]];
+                    else if(hue>=5 && hue <= 6*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"indigo shade",[color.hexString uppercaseString]];
+                    else if(hue>=6 && hue <= 7*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"violet shade",[color.hexString uppercaseString]];
+                    else if(hue > 7 *intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"reddish shade",[color.hexString uppercaseString]];
+                    else
+                        return [NSString stringWithFormat:@"(%@)",[color.hexString uppercaseString]];
                 };
-                s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.layoutType=@"dimButton";
                 s1.displayText=@"HUE\nCOLOR";
                 s1.minValue = 0;
                 s1.maxValue = 255;
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" hue color changed to ", @" hue color changed to ");
                 return @[s1];
             }
-            if (type == SFIDevicePropertyType_CURRENT_SATURATION) {
+            if (type == SFIDevicePropertyType_SATURATION) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"0";
                 s1.displayText=@"SATURATION";
+                s1.iconName = @"saturation_icon";
                 s1.layoutType = @"dimButton";
                 s1.minValue = 0;
                 s1.maxValue = 255;
@@ -1596,6 +1621,7 @@
                 s1.matchType = MatchType_any;
                 s1.matchData = @"0";
                 s1.displayText=@"BRIGHTNESS";
+                s1.iconName = @"brightness-icon";
                 s1.layoutType = @"dimButton";
                 s1.minValue = 0;
                 s1.maxValue = 255;
@@ -1621,6 +1647,7 @@
             }
             
             break;
+        }
         case SFIDeviceType_HAPump_33:
             break;
         case SFIDeviceType_Shade_34:
@@ -1835,14 +1862,12 @@
             
             if (type == SFIDevicePropertyType_BASIC) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchType = MatchType_equals;
                 s1.matchData = @"0";
                 s1.iconName = DT40_MOISTURE_TRUE;
                 s1.displayText=@"NO\nWATER";
                 s1.notificationText = NSLocalizedString(@" stopped leaking.", @" stopped leaking.");
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.matchType = MatchType_equals;
                 s2.matchData = @"255";
                 s2.displayText=@"WATER";
                 s2.iconName = DT40_MOISTURE_FALSE;
@@ -1940,7 +1965,7 @@
              </Index>
              </Sensor>
              */
-            if (type == SFIDevicePropertyType_SENSOR_BINARY) {
+            if (type == SFIDevicePropertyType_SWITCH_BINARY) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = DT42_ALARM_FALSE;
@@ -2274,7 +2299,7 @@
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"0";
                 s2.layoutType=@"dimButton";
-                s2.matchType = MatchType_not_equals;
+                s2.matchType = MatchType_any;
                 s2.iconName = DT25_LIGHT_SENSOR_TRUE;
                 s2.displayText=@"ILLUMINANCE";
                 s2.minValue = 0;
@@ -2356,6 +2381,7 @@
             // Add a catch-all:
             // For now, because the cloud and Almond router are not sophisticated enough, we have to suppress
             // all notifications except for index 1
+            NSLog(@"ignore index");
             IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
             s1.notificationIgnoreIndex = YES;
             s1.matchType = MatchType_any;
@@ -2406,7 +2432,7 @@
             
             if (type == SFIDevicePropertyType_STOP) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchData = @"0";
+                s1.matchData = @"true";
                 s1.displayText=@"STOP";
                 s1.iconName = DT53_GARAGE_SENSOR_STOPPED;
                 s1.notificationText = NSLocalizedString(@" is Stopped.", @" is Stopped.");
@@ -2496,7 +2522,41 @@
                 s3.valueFormatter.action = ValueFormatterAction_formatString;
                 s3.valueFormatter.notificationPrefix = @" is set to ";
                 
-                return @[s1,s2,s3];
+                IndexValueSupport *s4 = [[IndexValueSupport alloc] initWithValueType:type];
+                s4.matchData = @"Resume";
+                s4.iconName = @"resume_icon";
+                s4.displayText = @"Resume";
+                s4.valueFormatter.action = ValueFormatterAction_formatString;
+                s4.valueFormatter.notificationPrefix = @" is set to ";
+                
+                IndexValueSupport *s5 = [[IndexValueSupport alloc] initWithValueType:type];
+                s5.matchData = @"Off";
+                s5.iconName = @"img_off";
+                s5.displayText = @"Off";
+                s5.valueFormatter.action = ValueFormatterAction_formatString;
+                s5.valueFormatter.notificationPrefix = @" is set to ";
+                
+                IndexValueSupport *s6 = [[IndexValueSupport alloc] initWithValueType:type];
+                s6.matchData = @"Fan Only";
+                s6.iconName = @"btn_fan_off";
+                s6.displayText = @"Fan Only";
+                s6.valueFormatter.action = ValueFormatterAction_formatString;
+                s6.valueFormatter.notificationPrefix = @" is set to ";
+                
+                IndexValueSupport *s7 = [[IndexValueSupport alloc] initWithValueType:type];
+                s7.matchData = @"Dry Air";
+                s7.iconName = @"water_off";
+                s7.displayText = @"Dry Air";
+                s7.valueFormatter.action = ValueFormatterAction_formatString;
+                s7.valueFormatter.notificationPrefix = @" is set to ";
+                
+                IndexValueSupport *s8 = [[IndexValueSupport alloc] initWithValueType:type];
+                s8.matchData = @"Auto Changeover";
+                s8.iconName = @"img_auto";
+                s8.displayText = @"Auto Changeover";
+                s8.valueFormatter.action = ValueFormatterAction_formatString;
+                s8.valueFormatter.notificationPrefix = @" is set to ";
+                return @[s1,s2,s3,s4,s5,s6,s7,s8];
                 
             }
             if(type == SFIDevicePropertyType_AC_SETPOINT_HEATING){
@@ -2532,7 +2592,7 @@
             
             if (type == SFIDevicePropertyType_AC_FAN_MODE) { // to do, icons
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchData = @"Auto";
+                s1.matchData = @"Auto Low";
                 s1.iconName = @"fan_auto";
                 s1.displayText=@"AUTO";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
@@ -2546,8 +2606,8 @@
                 s2.valueFormatter.notificationPrefix = @" Fan is set to ";
                 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
-                s3.matchData = @"Medium";
-                s3.iconName = @"an_medium";
+                s3.matchData = @"Unknown 5";
+                s3.iconName = @"fan_medium";
                 s3.displayText = @"MEDIUM";
                 s3.valueFormatter.action = ValueFormatterAction_formatString;
                 s3.valueFormatter.notificationPrefix = @" Fan is set to ";
@@ -2640,45 +2700,45 @@
             if(type == SFIDevicePropertyType_SWITCH_MULTILEVEL){
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"0";
-                s1.iconName = @"alarm_on"; //temp
+                s1.iconName = @"alarm_off"; //temp
                 s1.displayText=@"STOP";
-                s1.notificationText = NSLocalizedString(@" is Closed.", @" is Closed.");
+                s1.notificationText = @" Alarm Stopped";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"1";
                 s2.displayText=@"EMERGENCY";
                 s2.iconName = @"multisoundsiren_icon";
-                s2.notificationText = @"Alarm Ambulance";
+                s2.notificationText = @" Alarm Emergency";
                 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchData = @"2";
                 s3.displayText=@"FIRE";
                 s3.iconName = @"multisoundsiren_icon";
-                s3.notificationText = @"Alarm Fire";
+                s3.notificationText = @" Alarm Fire";
                 
                 IndexValueSupport *s4 = [[IndexValueSupport alloc] initWithValueType:type];
                 s4.matchData = @"3";
                 s4.displayText=@"AMBULANCE";
                 s4.iconName = @"multisoundsiren_icon";
-                s4.notificationText = @"Alarm Ambulance";
+                s4.notificationText = @" Alarm Ambulance";
                 
                 IndexValueSupport *s5 = [[IndexValueSupport alloc] initWithValueType:type];
                 s5.matchData = @"4";
                 s5.displayText=@"POLICE";
                 s5.iconName = @"multisoundsiren_icon";
-                s5.notificationText = @"Alarm Police";
+                s5.notificationText = @" Alarm Police";
                 
                 IndexValueSupport *s6 = [[IndexValueSupport alloc] initWithValueType:type];
                 s6.matchData = @"5";
                 s6.displayText=@"DOOR CHIME";
                 s6.iconName = @"multisoundsiren_icon";
-                s6.notificationText = @"Alarm Door Chime";
+                s6.notificationText = @" Alarm Door Chime";
                 
                 IndexValueSupport *s7 = [[IndexValueSupport alloc] initWithValueType:type];
                 s7.matchData = @"6";
                 s7.displayText=@"BEEP";
                 s7.iconName = @"multisoundsiren_icon";
-                s7.notificationText = @"Alarm BEEP";
+                s7.notificationText = @" Alarm Beep";
                 
                 return @[s1, s2, s3, s4, s5, s6, s7];
             }
@@ -2993,7 +3053,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_equals;
                 s1.matchData = @"true";
-                s1.iconName = DT1_BINARY_SWITCH_TRUE;
+                s1.iconName = @"offline_icon";
                 s1.displayText=@"Online";
                 s1.notificationText = @" is offline";
                 
@@ -3001,7 +3061,7 @@
                 s2.matchType = MatchType_equals;
                 s2.matchData = @"false";
                 s2.displayText=@"Offline";
-                s2.iconName = DT1_BINARY_SWITCH_FALSE;
+                s2.iconName = @"online_icon";
                 s2.notificationText = @" is now online";
                 
                 return @[s1, s2];
@@ -3009,12 +3069,63 @@
             
             if (type == SFIDevicePropertyType_IS_USING_EMERGENCY_HEAT) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchType = MatchType_equals;
                 s1.matchData = @"true";
                 s1.iconName = @"target_temperature";
                 s1.notificationText = @" is using Emergency Heat";
                 
-                return @[s1];
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"false";
+                s2.iconName = @"target_temperature";
+                s2.notificationText = @" is not using Emergency Heat";
+                return @[s1, s2];
+            }
+            
+            if(type == SFIDevicePropertyType_UNITS){
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"C";
+                s1.iconName = @"thermostat";
+                s1.displayText = @"UNITS";
+                s1.notificationText = @" units set ˚C";
+
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"F";
+                s2.iconName = @"thermostat";
+                s2.displayText = @"UNITS";
+                s2.notificationText = @" units set ˚F";
+                
+                return @[s1, s2];
+            }
+            
+            if(type == SFIDevicePropertyType_CAN_COOL){
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"true";
+                s1.iconName = @"img_cool";
+                s1.displayText = @"";
+                s1.notificationText = @" can cool now";
+
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"false";
+                s2.iconName = @"img_cool";
+                s2.displayText = @"";
+                s2.notificationText = @" cannot cool now";
+                
+                return @[s1, s2];
+            }
+            
+            if(type == SFIDevicePropertyType_CAN_HEAT){
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"true";
+                s1.iconName = @"img_heat";
+                s1.displayText = @"";
+                s1.notificationText = @" can heat now";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"false";
+                s2.iconName = @"img_heat";
+                s2.displayText = @"";
+                s2.notificationText = @" cannot heat now";
+                
+                return @[s1, s2];
             }
             
             if (type == SFIDevicePropertyType_RESPONSE_CODE) {
@@ -3427,19 +3538,19 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_equals;
                 s1.matchData = @"1";
-                s1.iconName = @"low-volume-icon";
+                s1.iconName = @"low_volume_icon";
                 s1.valueFormatter.notificationPrefix = @"set to Low.";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchType = MatchType_equals;
                 s2.matchData = @"2";
-                s2.iconName = @"medium-volume-icon";
+                s2.iconName = @"medium_volume_icon";
                 s2.valueFormatter.notificationPrefix = @"set to Medium.";
                 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchType = MatchType_equals;
                 s3.matchData = @"3";
-                s3.iconName = @"high-volume-icon";
+                s3.iconName = @"high_volume_icon";
                 s3.valueFormatter.notificationPrefix = @"set to High.";
                 return @[s1, s2, s3];
             }
@@ -3503,16 +3614,16 @@
             //            s1.matchData = @"0";
             //            s1.iconName = @"battery_ok";
             //            s1.notificationText = @"'s Battery is OK.";
-            
             IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-            s2.matchType = MatchType_not_equals;
+            s2.matchType = MatchType_any;
             s2.matchData = @"0";
             s2.displayText=@"BATTERY";
             s2.layoutType = @"dimButton";
             s2.iconName = @"low_battery";
             s2.minValue = 0;
             s2.maxValue = 100;
-            s2.notificationText = NSLocalizedString(@"'s Battery is Low.", @"'s Battery is Low.");
+            s2.valueFormatter.action = ValueFormatterAction_formatString;
+            s2.valueFormatter.notificationPrefix = @"'s Battery Status ";
             s2.valueFormatter.suffix = @"%";
             return @[s2];
         }
@@ -3524,7 +3635,15 @@
             s1.iconName = @"low_battery";
             s1.displayText=@"BATTERY\nLOW";
             s1.notificationText = NSLocalizedString(@"'s Battery is Low.", @"'s Battery is Low.");
-            return @[s1];
+            
+            IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+            s2.matchType = MatchType_equals;
+            s2.matchData = @"false";
+            s2.iconName = @"low_battery";
+            s2.displayText=@"BATTERY\nOK";
+            s2.notificationText = @"'s Battery is OK.";
+            
+            return @[s1, s2];
         }
             
         case SFIDevicePropertyType_TAMPER: {
@@ -3535,13 +3654,13 @@
             s1.displayText=@"TAMPER";
             s1.notificationText = NSLocalizedString(@" has been Tampered.", @" has been Tampered.");
             
-            //            IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-            //            s2.matchType = MatchType_equals;
-            //            s2.matchData = @"false";
-            //            s2.iconName = @"n_tamper";
-            //            s2.notificationText = NSLocalizedString(@" is reset from Tampered.", @" is reset from Tampered.");
+            IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+            s2.matchType = MatchType_equals;
+            s2.matchData = @"false";
+            s2.iconName = @"tamper";
+            s2.notificationText = NSLocalizedString(@" is reset from Tampered.", @" is reset from Tampered.");
             
-            return @[s1];
+            return @[s1, s2];
         }
         default: {
             return [NSArray array];

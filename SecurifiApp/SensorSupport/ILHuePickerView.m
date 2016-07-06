@@ -139,14 +139,16 @@
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"touchesBegan");
     if (!self.allowSelection) {
         return;
     }
     [self handleTouches:touches withEvent:event];
-    [self.delegate huePicked:_hue picker:self];
+//    [self.delegate huePicked:_hue picker:self];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"touchesMoved");
     if (!self.allowSelection) {
         return;
     }
@@ -154,6 +156,7 @@
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"touchesEnded");
     if (!self.allowSelection) {
         return;
     }

@@ -147,14 +147,25 @@
         msg = @"";
     }
     NSLog(@"wireless sumery msg = %@",msg);
-    NSUInteger lineCount = msgs.count;
+    NSUInteger lineCount = [SFICardView getLineCount:msgs];
     lineCount = (lineCount == 0) ? 1 : lineCount + 1;
 
     UILabel *label = [self makeMultiLineLabel:msg font:self.summaryFont alignment:NSTextAlignmentLeft numberOfLines:(int)lineCount rightOffset:self.rightOffset];
     [self addSubview:label];
     [self markYOffsetUsingRect:label.frame addAdditional:0];
-
     return label;
+}
+
++ (NSInteger)getLineCount:(NSArray*)msgs{
+    int lines = 0;
+    for(NSString *msg in msgs){
+        if(msg.length > 21){ //after 21 chars msg goes to 2 lines
+            lines += 2;
+        }else{
+            lines++;
+        }
+    }
+    return lines;
 }
 
 - (UILabel *)addLongSummary:(NSString*)msg {
@@ -243,13 +254,13 @@
     CGFloat width = CGRectGetWidth(self.frame);
     CGRect frame = CGRectMake(width - 40, 37, 23, 23);
 
-    UIImage *image = [UIImage imageNamed:@"icon_config"];
+   // UIImage *image = [UIImage imageNamed:@"icon_config"];
 
     UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     settingsButton.frame = frame;
     settingsButton.backgroundColor = [UIColor clearColor];
     [settingsButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    [settingsButton setImage:image forState:UIControlStateNormal];
+    [settingsButton setImage:[UIImage imageNamed:@"icon_config"] forState:UIControlStateNormal];
 
     self.settingsButton = settingsButton;
     [self setEditIconEditing:editing];
@@ -359,9 +370,6 @@
 
     CGFloat width = CGRectGetWidth(self.frame) - offset;
     CGFloat height = textFont.pointSize * lineCount;
-    NSLog(@"title.length %ld",title.length);
-    if(title.length > 21)
-        height += lineCount +1;
     height += textFont.pointSize; // padding
     CGRect frame = CGRectMake(10, self.baseYCoordinate, width, height);
 

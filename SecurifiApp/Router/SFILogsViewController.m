@@ -12,8 +12,9 @@
 #import "UIFont+Securifi.h"
 #import "RouterPayload.h"
 #import "MBProgressHUD.h"
+#import "UIViewController+Securifi.h"
 
-@interface SFILogsViewController ()<MBProgressHUDDelegate>
+@interface SFILogsViewController ()<MBProgressHUDDelegate, UITextFieldDelegate>
 @property (nonatomic) UITextField *textField;
 @property (nonatomic) UIView *logView;
 @property NSTimer *hudTimer;
@@ -79,8 +80,9 @@ int mii;
     self.textField.placeholder = @"Describe your problem here";
     self.textField.font = [UIFont securifiFont:14];
     self.textField.textColor = [UIColor whiteColor];
-    [self.textField becomeFirstResponder];
     self.textField.backgroundColor = [UIColor clearColor];
+    self.textField.delegate = self;
+    [self.textField becomeFirstResponder];
     [self.logView addSubview:self.textField];
     
     UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(5, 166, self.logView.frame.size.width -10, 1)];
@@ -130,6 +132,7 @@ int mii;
         [self.textField becomeFirstResponder];
     }else{
         [self showHudWithTimeout:@"Sending logs"];
+        [self.textField resignFirstResponder];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         [RouterPayload sendLogs:self.textField.text mii:mii isSimulator:toolkit.configuration.isSimulator mac:toolkit.currentAlmond.almondplusMAC];
     }
@@ -139,19 +142,24 @@ int mii;
     NSLog(@"onLogsRouterCommandResponse");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
+    
     if (data == nil) {
         return;
     }
     SFIGenericRouterCommand *genericRouterCommand = (SFIGenericRouterCommand *) [data valueForKey:@"data"];
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self || !genericRouterCommand.commandSuccess) {// || mii != genericRouterCommand.mii
+            [self showToast:@"Sorry! Unable to send logs."];
             return;
         }
         else if(genericRouterCommand.commandType == SFIGenericRouterCommandType_SEND_LOGS_RESPONSE){
             NSLog(@"success true");
-             [self dismissViewControllerAnimated:YES completion:nil];
-        }  
+            [self showToast:@"Logs successfully sent!"];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
     });
 }
 
@@ -164,6 +172,11 @@ int mii;
     });
 }
 
+- (void)showHUD:(NSString *)text {
+    self.HUD.labelText = text;
+    [self.HUD show:YES];
+}
+
 - (void)onHudTimeout:(id)sender {
     [self.hudTimer invalidate];
     self.hudTimer = nil;
@@ -173,8 +186,11 @@ int mii;
     });
 }
 
-- (void)showHUD:(NSString *)text {
-    self.HUD.labelText = text;
-    [self.HUD show:YES];
+#pragma mark uitextfielddelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)aTextField
+{
+    [aTextField resignFirstResponder];
+    return YES;
 }
+
 @end

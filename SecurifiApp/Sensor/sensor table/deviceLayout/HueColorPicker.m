@@ -23,8 +23,14 @@
     }
     return self;
 }
+
 -(void)drawHueColorPicker{
+    NSLog(@"initialize before");
     self.huePickerView = [[SFIHuePickerView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    //this will overwrite value in setup (which is currently 65535)
+    self.huePickerView.sensorMaxValue = self.genericIndexValue.genericIndex.formatter.max;
+
+    NSLog(@"initialize after");
     self.huePickerView.convertedValue = 0;
     self.huePickerView.allowSelection = YES;
     self.huePickerView.delegate = self;

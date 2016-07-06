@@ -91,6 +91,8 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 #pragma mark - Action methods
 
 - (void)onLink {
+    [self.view endEditing:YES];
+    
     NSString *code = self.linkCode;
 
     BOOL empty = (code.length == 0);

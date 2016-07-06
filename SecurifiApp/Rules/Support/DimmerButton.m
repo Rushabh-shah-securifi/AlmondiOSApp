@@ -148,12 +148,13 @@
 }
 
 - (NSString *)scaledValue:(NSString*)text{
-    return [NSString stringWithFormat:@"%d", (int) ([text intValue]/self.factor)];
+    return [NSString stringWithFormat:@"%d",  (int)roundf([text intValue]/self.factor)];
 }
 
 
 - (void)setNewValue:(NSString*)text subProperties:(SFIButtonSubProperties *)subProperty{
     self.dimValue = text;
+    self.textField.text = text;
     [self.conditionBtn mainLabel:@"" text:[subProperty getcondition] size:35.0f];
     NSLog(@"condition label %@",[self.subProperties getcondition]);
     self.prefix = (self.prefix ==nil || self.prefix.length==0) ?@" ":self.prefix;
@@ -236,7 +237,7 @@
     [crossButtonBGView addSubview:self.crossButtonImage];
 }
 -(void)setUpTextField:(NSString*)textFieldText displayText:(NSString*)displayText suffix:(NSString *)suffix isScene:(BOOL)isScene isTrigger:(BOOL)isTrigger{
-  
+    self.isScene = isScene;
     if(isTrigger && !isScene){
         self.bgView = [[UIView alloc] initWithFrame:CGRectMake(65,0 , 65, 60)];
         self.bgView.backgroundColor = [UIColor clearColor];

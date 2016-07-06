@@ -205,12 +205,12 @@ UILabel *topLabel;
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties]){
                     NSString *text;
                     if(isDimButton){
-                    buttonProperties.displayedData = [NSString stringWithFormat:@"%d",(int)ceil([buttonProperties.matchData intValue]*(genericIndex.formatter.factor == 0?1.0:genericIndex.formatter.factor))];
+                    buttonProperties.displayedData = [NSString stringWithFormat:@"%d",(int)roundf([buttonProperties.matchData intValue]*(genericIndex.formatter.factor == 0?1.0:genericIndex.formatter.factor))];
                          NSLog(@"buttonProperties.displayedData %@", buttonProperties.displayedData);
                         text = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,(genericIndex.formatter.units == nil?@"":genericIndex.formatter.units)];
                          //NSLog(@"is dim button text %@",text);
                         if(buttonProperties.deviceType == SFIDeviceType_HueLamp_48){
-                            text = [NSString stringWithFormat:@"%@%@",@((buttonProperties.matchData.intValue * 100/255)).stringValue,genericIndex.formatter.units];
+                            text = [NSString stringWithFormat:@"%@%@",@(roundf(buttonProperties.matchData.intValue * genericIndex.formatter.factor)).stringValue,genericIndex.formatter.units];
                         }
                     }
                     else
@@ -294,8 +294,8 @@ UILabel *topLabel;
     if(isTrigger){
         NSString *toptext = subProperties.deviceName;
         NSString *insideDisplayText = (isDimmbutton && !isScene) ? [NSString stringWithFormat:@"%@ %@",[subProperties getcondition],subProperties.displayText]:subProperties.displayText ;
-        
-        if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
+        NSLog(@"insideDisplayText: %@", insideDisplayText);
+        if((subProperties.deviceType == SFIDeviceType_HueLamp_48 || subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 || subProperties.deviceType == SFIDeviceType_AlmondBlink_64) && subProperties.index == 3)
             isDimmbutton = NO;//for we are putting images of hueLamp
         
         if(subProperties.deviceType == SFIDeviceType_Weather && subProperties.index == 1){
@@ -339,11 +339,12 @@ UILabel *topLabel;
             [switchButton setButtonCross:isCrossHidden];
             switchButton.userInteractionEnabled = disableUserInteraction;
             
-            if(subProperties.deviceType == SFIDeviceType_HueLamp_48){
+            if(subProperties.deviceType == SFIDeviceType_HueLamp_48 || subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 || subProperties.deviceType == SFIDeviceType_AlmondBlink_64){
                 if(subProperties.index == 2)
                     [switchButton changeImageColor:[UIColor whiteColor]];
-                else if(subProperties.index == 3)
-                    [switchButton changeImageColor:[UIColor colorFromHexString:[self getColorHex:subProperties.matchData]]];
+                else if(subProperties.index == 3){
+                    [switchButton changeImageColor:[UIColor colorFromHexString:(subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 ?[CommonMethods getDimmableHex:subProperties.matchData] :[CommonMethods getColorHex:subProperties.matchData])]];
+                }
             }
             [triggersActionsScrollView addSubview:switchButton];
         }
@@ -352,7 +353,7 @@ UILabel *topLabel;
     else{
         PreDelayRuleButton *switchButton = [[PreDelayRuleButton alloc] initWithFrame:CGRectMake(xVal, 5, rulesButtonsViewWidth, rulesButtonsViewHeight)];
         
-        if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
+        if((subProperties.deviceType == SFIDeviceType_HueLamp_48 || subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 || subProperties.deviceType == SFIDeviceType_AlmondBlink_64) && subProperties.index == 3)
             isDimmbutton = NO;//for we are putting images of hueLamp
         if([subProperties.type isEqualToString:@"NetworkResult"])
             subProperties.deviceName = @"Almond Control";
@@ -373,11 +374,13 @@ UILabel *topLabel;
         (switchButton->actionbutton).isTrigger = isTrigger;
         [switchButton->actionbutton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         ////NSLog(@"HUE HERE");
-        if(subProperties.deviceType == SFIDeviceType_HueLamp_48){
+        if(subProperties.deviceType == SFIDeviceType_HueLamp_48 || subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 || subProperties.deviceType == SFIDeviceType_AlmondBlink_64){
             if(subProperties.index == 2)
                 [switchButton->actionbutton changeImageColor:[UIColor whiteColor]];
-            else if(subProperties.index == 3)
-                [switchButton->actionbutton changeImageColor:[UIColor colorFromHexString:[self getColorHex:subProperties.matchData]]];
+            else if(subProperties.index == 3){
+                [switchButton->actionbutton changeImageColor:[UIColor colorFromHexString:(subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 ?[CommonMethods getDimmableHex:subProperties.matchData] :[CommonMethods getColorHex:subProperties.matchData])]];
+            }
+            
         }
         (switchButton->delayButton).userInteractionEnabled = disableUserInteraction;
         [switchButton->delayButton addTarget:self action:@selector(onActionDelayClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -424,16 +427,6 @@ UILabel *topLabel;
     delayPicker.parentView = parentView;
     [delayPicker addPickerForButton:delayButton];
 }
-
-+ (NSString *)getColorHex:(NSString*)value {
-    if (!value) {
-        return @"";
-    }
-    float hue = [value floatValue];
-    hue = hue / 65535;
-    UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
-    return [color.hexString uppercaseString];
-};
 
 + (void)getDeviceTypeFor:(SFIButtonSubProperties*)buttonSubProperty{
     buttonSubProperty.deviceType = SFIDeviceType_UnknownDevice_0;

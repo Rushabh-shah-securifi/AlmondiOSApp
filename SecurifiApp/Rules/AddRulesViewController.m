@@ -34,7 +34,7 @@
 #import "Analytics.h"
 #import "CommonMethods.h"
 
-@interface AddRulesViewController()<UIAlertViewDelegate, UITextFieldDelegate,UIGestureRecognizerDelegate>{
+@interface AddRulesViewController()<UIAlertViewDelegate, UITextFieldDelegate>{
     sfi_id dc_id;
     NSInteger randomMobileInternalIndex;
 }
@@ -45,7 +45,8 @@
 @property (nonatomic,strong)AddRuleSceneClass *addRuleScene;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property (nonatomic) CGRect ViewFrame;
-@property (nonatomic) NSInteger touchComp;
+@property (nonatomic) BOOL isDone;
+
 @end
 
 @implementation AddRulesViewController
@@ -63,10 +64,6 @@ UIAlertView *alert;
     [self setUpNavigationBar];
     
     self.addRuleScene = [[AddRuleSceneClass alloc]initWithParentView:self.view deviceIndexScrollView:self.deviceIndexButtonScrollView deviceListScrollView:self.deviceListScrollView topScrollView:self.triggersActionsScrollView informationLabel:self.informationLabel triggers:self.rule.triggers actions:self.rule.actions isScene:NO];
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTest:)];
-    [tap setDelegate:self];
-    self.addRuleScene.tap = tap;
     
     [self.addRuleScene buildTriggersAndActions];
     [self ifThenClick:YES infoText:@"To get started, please select a trigger" infoText2:@"Add another trigger or press THEN to define action"];
@@ -118,6 +115,7 @@ UIAlertView *alert;
                selector:@selector(onTabBarDidChange:)
                    name:@"TAB_BAR_CHANGED"
                  object:nil];
+    
     [center addObserver:self
                selector:@selector(onKeyboardDidShow:)
                    name:UIKeyboardDidShowNotification
@@ -299,7 +297,7 @@ UIAlertView *alert;
 
 
 -(void)btnSaveTap:(id)sender{
-    self.touchComp = 1;
+    self.isDone = YES;
     textField = [[UITextField alloc]init];
     if(self.isInitialized){
         textField.text = self.rule.name;
@@ -345,6 +343,7 @@ UIAlertView *alert;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == [alertView cancelButtonIndex]){
         //cancel clicked ...do your action
+        self.isDone = NO;
     }else{
         self.rule.name = textField.text;
         [self sendCreateRuleCommand];
@@ -359,6 +358,7 @@ UIAlertView *alert;
 #pragma mark textfield delegate
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
     NSLog(@"textFieldShouldReturn");
+    self.isDone = NO;
     [textField resignFirstResponder];
     [alert dismissWithClickedButtonIndex:0 animated:YES];
     return YES;
@@ -408,22 +408,16 @@ UIAlertView *alert;
         [toolkit asyncSendToCloud:cloudCommand];
     }
 }
-#pragma mark gesture recognizer
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
-    return YES;
-}
-
-- (void)tapTest:(UITapGestureRecognizer *)sender {
-    self.touchComp = [sender locationInView:self.view].y;
-    NSLog(@"add rules self.touch %ld",self.touchComp);
-}
 
 #pragma  mark uiwindow delegate methods
 - (void)onKeyboardDidShow:(id)notification {
     NSLog(@"%s",__PRETTY_FUNCTION__);
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+
+    if(_isDone)
+        return;
     
-    if(self.touchComp  > keyboardSize.height){
+    else{
         [UIView animateWithDuration:0.3 animations:^{
             
             CGRect f = self.view.frame;

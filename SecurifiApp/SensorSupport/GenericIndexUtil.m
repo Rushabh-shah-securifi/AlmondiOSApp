@@ -46,25 +46,37 @@
             genericValue = genericIndexValue.genericValue;
             genericIndex = genericIndexValue.genericIndex;
             
-            if([genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] && [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
+            if([genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
+                NSLog(@"type: %d, grouplabel: %@, display text: %@", device.type, genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.displayText);
                 headerText = [NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.displayText];
+                NSLog(@"header text: %@", headerText);
             }else{
                 headerText = genericIndexValue.genericValue.displayText;
             }
             if(genericIndexValue.genericValue.icon.length == 0)
                 headerText = @"";
+            
             index = genericIndexValue.index;
-        }else if([genericIndexValue.genericIndex.placement rangeOfString:HEADER options:NSCaseInsensitiveSearch].location != NSNotFound){ //contains
-            if(genericIndexValue.genericValue.iconText)
-                [detailText appendString:[NSString stringWithFormat:@"%@ %@ ", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.iconText]];
-            else
-                
-                [detailText appendString:[NSString stringWithFormat:@"%@ ", genericIndexValue.genericValue.displayText]];
         }
-        //NSLog(@"header text: %@, detail text: %@", headerText, detailText);
+        else if([genericIndexValue.genericIndex.placement rangeOfString:HEADER options:NSCaseInsensitiveSearch].location != NSNotFound){ //contains
+            if(genericIndexValue.genericValue.iconText){
+                if(detailText.length == 0)
+                    [detailText appendString:[NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.iconText]];
+                else[detailText appendString:[NSString stringWithFormat:@", %@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.iconText]];
+            }
+            
+            else{
+                if(detailText.length == 0)
+                    [detailText appendString:[NSString stringWithFormat:@"%@", genericIndexValue.genericValue.displayText]];
+                else
+                    [detailText appendString:[NSString stringWithFormat:@", %@", genericIndexValue.genericValue.displayText]];
+            }
+            
+        }
+        NSLog(@"header text: %@, detail text: %@", headerText, detailText);
     }//for
-    //NSLog(@"generic value: %@, generic Index: %@", genericValue, genericIndex);
-    //NSLog(@"generic value display text before: %@", genericValue.displayText);
+    NSLog(@"generic value: %@, generic Index: %@", genericValue, genericIndex);
+    NSLog(@"generic value display text before: %@", genericValue.displayText);
     if(genericValue == nil){
         genericValue = [GenericValue new];
         GenericDeviceClass *genericDevice = toolkit.genericDevices[@(device.type).stringValue];
@@ -73,8 +85,11 @@
     
     if(detailText.length > 0){
         genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:[NSString stringWithFormat:@"%@ %@", headerText, detailText]];
+    }else if(headerText.length > 0){
+        genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:[NSString stringWithFormat:@"%@", headerText]];
     }
-    //NSLog(@"generic value display text after: %@", genericValue.displayText);
+//    NSLog(@"generic value display text after: %@", genericValue.displayText);
+    NSLog(@"Final header text: %@, detail text: %@", headerText, detailText);
     return [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:index deviceID:device.ID];
 }
 
@@ -168,7 +183,7 @@
         return genericIndexObject.values[value]? genericIndexObject.values[value]: [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:nil value:value excludeFrom:nil eventType:nil];
     }
     else if(genericIndexObject.formatter != nil && ![genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] && ![genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
-        NSString *formattedValue=[genericIndexObject.formatter transform:value];
+        NSString *formattedValue=[genericIndexObject.formatter transform:value genericId:genericIndexID];
         GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:formattedValue
                                                                      iconText:formattedValue
                                                                         value:value
@@ -176,8 +191,15 @@
                                                              transformedValue:[genericIndexObject.formatter transformValue:value]];
         return genericValue;
     }
-    else if(genericIndexObject.formatter != nil && [genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] && [genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
-        return [[GenericValue alloc]initWithDisplayText:[genericIndexObject.formatter transform:value] icon:genericIndexObject.icon toggleValue:nil value:value excludeFrom:nil eventType:nil transformedValue:[genericIndexObject.formatter transformValue:value]]; //need icon aswell as transformedValue
+    else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"])){
+        NSLog(@"slider icon - display text: %@, value: %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value);
+        return [[GenericValue alloc]initWithDisplayText:[genericIndexObject.formatter transform:value genericId:genericIndexID]
+                                                   icon:genericIndexObject.icon
+                                            toggleValue:nil
+                                                  value:value
+                                            excludeFrom:nil
+                                              eventType:nil
+                                       transformedValue:[genericIndexObject.formatter transformValue:value]]; //need icon aswell as transformedValue
     }
     return [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:value value:value excludeFrom:genericIndexObject.excludeFrom eventType:nil];
 }

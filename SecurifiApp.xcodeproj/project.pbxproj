@@ -509,6 +509,8 @@
 		CEF6F5071C92CD2400C68975 /* GenericIndexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */; };
 		CEF6F50A1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
 		CEF6F50B1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
+		F401B0731D2D241200F64CE2 /* ColorComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F401B0721D2D241200F64CE2 /* ColorComponentView.m */; };
+		F401B0741D2D241200F64CE2 /* ColorComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F401B0721D2D241200F64CE2 /* ColorComponentView.m */; };
 		F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F426AE2E1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 /* End PBXBuildFile section */
@@ -1058,6 +1060,8 @@
 		CEF6F5041C92CD2400C68975 /* GenericIndexUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericIndexUtil.h; sourceTree = "<group>"; };
 		CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericIndexUtil.m; sourceTree = "<group>"; };
 		CEF6F5081C92CD3D00C68975 /* deviceListJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = deviceListJson.json; sourceTree = "<group>"; };
+		F401B0711D2D241200F64CE2 /* ColorComponentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorComponentView.h; sourceTree = "<group>"; };
+		F401B0721D2D241200F64CE2 /* ColorComponentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorComponentView.m; sourceTree = "<group>"; };
 		F426AE2B1D19515500AE60C8 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		F65023B0DECE8F15E5353C48 /* Pods-Almond.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Almond.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Almond/Pods-Almond.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1297,6 +1301,8 @@
 		1C7E7D2D1A41A0990026F0BA /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				F401B0711D2D241200F64CE2 /* ColorComponentView.h */,
+				F401B0721D2D241200F64CE2 /* ColorComponentView.m */,
 				1C7E7D2E1A41A0990026F0BA /* DrawerViewController.h */,
 				CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */,
 				CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */,
@@ -2623,6 +2629,7 @@
 				1C7E7DAA1A41A0990026F0BA /* SFIUserProfile.m in Sources */,
 				CEF6F4E31C92CAD600C68975 /* DeviceListAndValues.m in Sources */,
 				1C7E7DA81A41A0990026F0BA /* SFIPasswordChangeViewController.m in Sources */,
+				F401B0741D2D241200F64CE2 /* ColorComponentView.m in Sources */,
 				1C7E7DC41A41A0990026F0BA /* SFICopyLabel.m in Sources */,
 				1C7E7DAC1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,
 				1C7E7D961A41A0990026F0BA /* SFIRouterTableViewController.m in Sources */,
@@ -2778,6 +2785,7 @@
 				CE40BF171D225791007C2148 /* URIData.m in Sources */,
 				1DF034DCCD17E1C36BA3BF00 /* SensorSupport.m in Sources */,
 				CE65C4911D1A67B200C2E1C0 /* UILabel+ActionSheet.m in Sources */,
+				F401B0731D2D241200F64CE2 /* ColorComponentView.m in Sources */,
 				CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */,
 				CEF6F5061C92CD2400C68975 /* GenericIndexUtil.m in Sources */,
 				1DF0383EBD135988AEA6DF73 /* ValueFormatter.m in Sources */,

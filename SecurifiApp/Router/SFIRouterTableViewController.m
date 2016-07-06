@@ -27,6 +27,7 @@
 #import "RouterPayload.h"
 #import "SFILogsViewController.h"
 #import "SFIAlmondLocalNetworkSettings.h"
+#import "AlmondJsonCommandKeyConstants.h"
 
 #define DEF_NETWORKING_SECTION          0
 #define DEF_DEVICES_AND_USERS_SECTION   1
@@ -39,14 +40,14 @@
 #define FIRMWARE_UPDATE_TAG 2
 
 static const int networkingHeight = 100;
-static const int clientsHeight = 100;
-static const int settingsHeight = 120;
-static const int versionHeight = 110;
+static const int clientsHeight = 90;
+static const int settingsHeight = 70;
+static const int versionHeight = 100;
 static const int rebootHeight = 110;
 static const int logsHeight = 100;
 
 @interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate,UIAlertViewDelegate>{
-
+    
 }
 
 @property SFIAlmondPlus *currentAlmond;
@@ -65,6 +66,8 @@ static const int logsHeight = 100;
 @property(nonatomic) BOOL isSimulator;
 @property(nonatomic) BOOL local;
 
+@property(nonatomic) BOOL isBUG;
+
 @end
 
 @implementation SFIRouterTableViewController
@@ -75,7 +78,7 @@ int mii;
         //NSLog(@"router initWithStyle");
         // need to set initial state before the table view state is set up to ensure the correct view/layout is rendered.
         // the table's initial set up is done even prior to calling viewDidLoad
-//        [self checkRouterViewState:RouterViewReloadPolicy_never];
+        //        [self checkRouterViewState:RouterViewReloadPolicy_never];
     }
     
     return self;
@@ -100,6 +103,8 @@ int mii;
     
     [self initializeNotifications];
     self.routerSummary = nil;
+    
+    self.isBUG = NO;
     [self initializeAlmondData];
     self.local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -122,14 +127,18 @@ int mii;
     [center addObserver:self selector:@selector(onCurrentAlmondChanged:) name:kSFIDidChangeCurrentAlmond object:nil];
     
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidUpdateAlmondList object:nil];
-  
+    
     [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
+    
+    [center addObserver:self selector:@selector(onClientResponse:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
+    
+    
 }
 
 - (void)initializeRouterSummaryAndSettings {
     self.isRebooting = NO;
     self.enableDrawer = YES; //to enable navigation top left button
-   
+    
 }
 
 - (void)initializeAlmondData {
@@ -146,12 +155,12 @@ int mii;
         [self markTitle:plus.almondplusName];
     }
     
-//    if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud) {
-//        if (!self.shownHudOnce) {
-//            self.shownHudOnce = YES;
-//            [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
-//        }
-//    }
+    //    if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud) {
+    //        if (!self.shownHudOnce) {
+    //            self.shownHudOnce = YES;
+    //            [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
+    //        }
+    //    }
     
     // Reset New Version checking state and view
     self.newAlmondFirmwareVersionAvailable = NO;
@@ -159,7 +168,7 @@ int mii;
     self.tableView.tableHeaderView = nil;
     
     //NSLog(@"connecton - is local: %d", self.local);
-    if(!self.local){
+    if(!self.local && ![self isNoAlmondLoaded]){
         [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
         
         [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
@@ -280,7 +289,7 @@ int mii;
         case DEF_DEVICES_AND_USERS_SECTION:
             return clientsHeight;
         case DEF_WIRELESS_SETTINGS_SECTION:
-            return settingsHeight;
+            return [self getSettingsRowHeight];
         case DEF_ROUTER_VERSION_SECTION:
             return versionHeight;
         case DEF_ROUTER_REBOOT_SECTION:
@@ -293,7 +302,15 @@ int mii;
     }
 }
 
+-(int)getSettingsRowHeight{
+    NSArray *msgs = [self getWirelessSettingsSummary];
+    int lines = [SFICardView getLineCount:msgs];
+    NSLog(@"lines: %d", lines);
+    return settingsHeight + (lines * 12);
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    NSLog(@"isAlmondUnavailable: %d, isnetworkonline: %d, issimulator: %d", self.isAlmondUnavailable, ![[SecurifiToolkit sharedInstance] isNetworkOnline], self.isSimulator);
     if([self isNoAlmondLoaded]){
         tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
@@ -305,7 +322,7 @@ int mii;
         NSArray *summaries;
         switch (indexPath.section) {
             case DEF_NETWORKING_SECTION:{
-                 summaries = [self getNetworkSummary];
+                summaries = [self getNetworkSummary];
                 return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link") selector:@selector(onEditNetworkSettings:) cardColor:[UIColor securifiRouterTileGreenColor]];
             }
             case DEF_DEVICES_AND_USERS_SECTION:{
@@ -393,10 +410,10 @@ int mii;
     }
     
     return @[
-           [NSString stringWithFormat:NSLocalizedString(@"router.summary.IP Address : %@", @"IP Address"), host],
-           [NSString stringWithFormat:NSLocalizedString(@"router.summary.Admin Login : %@", @"Admin Login"), login],
-           ];
-
+             [NSString stringWithFormat:NSLocalizedString(@"router.summary.IP Address : %@", @"IP Address"), host],
+             [NSString stringWithFormat:NSLocalizedString(@"router.summary.Admin Login : %@", @"Admin Login"), login],
+             ];
+    
 }
 
 -(NSArray*)getWirelessSettingsSummary{
@@ -426,10 +443,10 @@ int mii;
         }
     }
     return @[
-           [NSString stringWithFormat:NSLocalizedString(@"router.devices-summary.%d Active, %d Inactive", @"%d ACTIVE, %d INACTIVE"),
-            activeClientsCount,
-            inActiveClientsCount],
-           ];
+             [NSString stringWithFormat:NSLocalizedString(@"router.devices-summary.%d Active, %d Inactive", @"%d ACTIVE, %d INACTIVE"),
+              activeClientsCount,
+              inActiveClientsCount],
+             ];
 }
 
 -(NSArray*)getRouterVersionSummary{
@@ -500,7 +517,7 @@ int mii;
     button.titleLabel.textAlignment = NSTextAlignmentRight;
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button addTarget:self action:selectorMethod forControlEvents:UIControlEventTouchUpInside];
-
+    
     [cell.cardView addSubview:button];
 }
 
@@ -585,6 +602,7 @@ int mii;
 }
 
 - (void)onEditWirelessSettingsCard:(id)sender {
+    self.isBUG = YES;
     [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
     [RouterPayload getWirelessSettings:mii isSimulator:_isSimulator mac:self.almondMac];
 }
@@ -680,34 +698,40 @@ int mii;
                     // do not show settings UI when the connection mode is local;
                     break;
                 }
-//                if (self.routerSummary) {
-//                    // keep the summary information up to date as settings are changed in the settings controller
-//                    [self.routerSummary updateWirelessSummaryWithSettings:settings];
-//                }
+                //                if (self.routerSummary) {
+                //                    // keep the summary information up to date as settings are changed in the settings controller
+                //                    [self.routerSummary updateWirelessSummaryWithSettings:settings];
+                //                }
                 
-                if (self.navigationController.topViewController == self) {
-                    //NSLog(@"cloud settings: %@", settings);
+                if (self.navigationController.topViewController == self  && self.isBUG) {
+                    NSLog(@"cloud settings: %@", settings);
                     SFIRouterSettingsTableViewController *ctrl = [SFIRouterSettingsTableViewController new];
-                    ctrl.title = self.navigationItem.title;
+                    //                    ctrl.title = self.navigationItem.title;
                     ctrl.wirelessSettings = settings;
                     ctrl.almondMac = self.almondMac;
                     ctrl.enableRouterWirelessControl = YES;
                     ctrl.isSimulator = self.isSimulator;
-                    UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-                    [self presentViewController:nctrl animated:YES completion:nil];
+                    ctrl.hidesBottomBarWhenPushed = YES;
+                    UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
+                                                   initWithTitle:@"Back"
+                                                   style:UIBarButtonItemStylePlain
+                                                   target:nil
+                                                   action:nil];
+                    self.navigationItem.backBarButtonItem = backButton;
+                    [self.navigationController pushViewController:ctrl animated:YES];
                 }
                 break;
             }
             case SFIGenericRouterCommandType_UPDATE_FIRMWARE_RESPONSE: {
                 //NSLog(@"firmware update response");
                 
-//                unsigned int percentage = genericRouterCommand.completionPercentage;
-//                if (percentage > 0) {
-//                    NSString *msg = NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.");
-//                    msg = [msg stringByAppendingFormat:@" (%i%%)", percentage];
-//                    
-//                    [self showToast:msg];
-//                }
+                //                unsigned int percentage = genericRouterCommand.completionPercentage;
+                //                if (percentage > 0) {
+                //                    NSString *msg = NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.");
+                //                    msg = [msg stringByAppendingFormat:@" (%i%%)", percentage];
+                //
+                //                    [self showToast:msg];
+                //                }
                 return; // to by-pass hud hide.
                 
                 break;
@@ -763,7 +787,7 @@ int mii;
 
 - (void)versionCheckerDidQueryVersion:(SFIAlmondPlus *)checkedAlmond result:(enum AlmondVersionCheckerResult)result currentVersion:(NSString *)currentVersion latestVersion:(NSString *)latestAlmondVersion {
     //NSLog(@"current version: %@, latest version: %@", currentVersion, latestAlmondVersion);
-
+    
     BOOL newVersionAvailable = (result == AlmondVersionCheckerResult_currentOlderThanLatest);
     dispatch_async(dispatch_get_main_queue(), ^() {
         SFIAlmondPlus *currentAlmond = self.currentAlmond;
@@ -818,6 +842,22 @@ int mii;
             self.tableView.tableHeaderView = nil;
         }];
     });
+}
+
+-(void )onClientResponse:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil || [data valueForKey:@"data"]==nil ) {
+        return;
+    }
+    
+    NSDictionary *mainDict = [data valueForKey:@"data"];
+    
+    if([[mainDict valueForKey:COMMAND_TYPE] isEqualToString:CLIENTLIST])
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            NSLog(@"onClientResponse");
+            [self.tableView reloadData];
+        });
 }
 
 @end

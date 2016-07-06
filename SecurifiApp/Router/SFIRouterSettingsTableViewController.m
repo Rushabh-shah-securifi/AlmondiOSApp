@@ -43,15 +43,13 @@ int mii;
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
             NSFontAttributeName : [UIFont standardNavigationTitleFont]
     };
-
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-    self.navigationItem.title = self.title;
-
-    UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
-    self.navigationItem.rightBarButtonItem = done;
-
+    self.navigationItem.title = toolkit.currentAlmond.almondplusName;
     
-    
+//    UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
+//    self.navigationItem.rightBarButtonItem = done;
+
     [[Analytics sharedInstance] markRouterSettingsScreen];
 }
 
@@ -66,7 +64,6 @@ int mii;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self];
     [self hideHUD];
@@ -75,6 +72,7 @@ int mii;
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
+    
 //    [center addObserver:self selector:@selector(onGenericNotificationCallback:) name:GENERIC_COMMAND_CLOUD_NOTIFIER object:nil];
 }
 
@@ -99,6 +97,7 @@ int mii;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSLog(@"self.wirelessSettings.count %ld",self.wirelessSettings.count);
     return self.wirelessSettings.count;
 }
 
@@ -112,8 +111,9 @@ int mii;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *const cell_id = @"wireless_settings";
-
+    
     SFIRouterSettingsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+
     if (cell == nil) {
         cell = [[SFIRouterSettingsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
@@ -162,7 +162,6 @@ int mii;
 }
 
 #pragma mark - Cloud command senders and handlers
-
 - (void)onAlmondRouterCommandResponse:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
@@ -180,7 +179,7 @@ int mii;
             return;
         }
         if(!genericRouterCommand.commandSuccess){
-            [self showToast:@"Sorry!, unable to update."];
+            [self showToast:@"Sorry! unable to update."];
             return;
         }
         NSLog(@"genericRouterCommand.commandType %d",genericRouterCommand.commandType);

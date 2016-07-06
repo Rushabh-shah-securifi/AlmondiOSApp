@@ -63,7 +63,7 @@ static const int xIndent = 10;
 @property(nonatomic) NSMutableDictionary *miiTable;
 @property (nonatomic) CGRect ViewFrame;
 @property (nonatomic) NSInteger touchComp;
-@property (nonatomic) CGRect hueBounds;
+@property (nonatomic) CGRect hueFrame;
 
 @end
 
@@ -216,6 +216,7 @@ static const int xIndent = 10;
         }
         
         else{
+            NSLog(@"ypos: %d", yPos);
             UIView *view = [[UIView alloc]initWithFrame:CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, 65)];
             UILabel *label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
             [self setUpLable:label withPropertyName:propertyName];
@@ -234,7 +235,8 @@ static const int xIndent = 10;
             else if ([genericIndexObj.layoutType isEqualToString:HUE]){
                 HueColorPicker *hueView = [[HueColorPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 hueView.delegate = self;
-                self.hueBounds = view.bounds;
+                self.hueFrame = view.frame;
+                NSLog(@"hue bounds: %@", NSStringFromCGRect(self.hueFrame));
                 [view addSubview:hueView];
             }
             else if ([genericIndexObj.layoutType isEqualToString: @"SLIDER"] || [genericIndexObj.layoutType isEqualToString:@"SLIDER_ICON"]){
@@ -306,7 +308,6 @@ static const int xIndent = 10;
 }
 - (SFIHighlightedButton *)addButton:(NSString *)buttonName button:(SFIHighlightedButton *)button color:(UIColor *)color{
     UIFont *heavy_font = [UIFont securifiBoldFontLarge];
-    
     CGSize stringBoundingBox = [buttonName sizeWithAttributes:@{NSFontAttributeName : heavy_font}];
     
     int button_width = (int) (stringBoundingBox.width + 20);
@@ -327,12 +328,11 @@ static const int xIndent = 10;
     button.layer.borderColor = whiteColor.CGColor;
     
     return button;
-
 }
 
 - (void)setUpLable:(UILabel*)label withPropertyName:(NSString*)propertyName{
     label.text = propertyName;
-    label.font = [UIFont securifiBoldFontLarge];
+    label.font = [UIFont standardHeadingBoldFont];
     label.textColor = [UIColor whiteColor];
 }
 
@@ -363,6 +363,7 @@ static const int xIndent = 10;
     [self showToast:@"Saving..."];
     mii = arc4random()%10000;
     [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:self.genericIndexVal mii:mii value:@"false"];
+    //tried to animate dismiss, currently not working. Need to fix this.
     [UIView animateWithDuration:2 delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:15 options:nil animations:^() {
         ///[DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:mii value:newValue];
         [self.dismisstamperedView removeFromSuperview];
@@ -425,10 +426,10 @@ static const int xIndent = 10;
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    if(!CGRectIsEmpty(self.hueBounds)){
-        NSLog(@"hue bounds: %@, \ntouch point: %@", NSStringFromCGRect(self.hueBounds), NSStringFromCGPoint([touch locationInView:self.view]));
-        CGRect actualFrame = self.hueBounds;
-        actualFrame.origin = CGPointMake(10.0, 105.0); //includeing height of header
+    if(!CGRectIsEmpty(self.hueFrame)){
+        NSLog(@"hue bounds: %@, \ntouch point: %@", NSStringFromCGRect(self.hueFrame), NSStringFromCGPoint([touch locationInView:self.view]));
+        CGRect actualFrame = self.hueFrame;
+        actualFrame.origin = CGPointMake(actualFrame.origin.x, 80.0 + actualFrame.origin.y); //includeing height of header
         NSLog(@"actual frame: %@", NSStringFromCGRect(actualFrame));
         if (CGRectContainsPoint(actualFrame, [touch locationInView:self.view])){
             NSLog(@"contains point");

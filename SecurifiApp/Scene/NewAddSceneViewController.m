@@ -32,14 +32,14 @@
 #define kAlertViewSave 1
 #define kAlertViewDelete 2
 
-@interface NewAddSceneViewController()<UITextFieldDelegate, UIAlertViewDelegate,UIGestureRecognizerDelegate>{
+@interface NewAddSceneViewController()<UITextFieldDelegate, UIAlertViewDelegate>{
     NSInteger randomMobileInternalIndex;
 }
 @property (nonatomic,strong)AddRuleSceneClass *addRuleScene;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property UIButton *buttonDelete;
 @property (nonatomic) CGRect ViewFrame;
-@property (nonatomic) NSInteger touchComp;
+@property (nonatomic) BOOL isDone;
 @end
 
 @implementation NewAddSceneViewController
@@ -61,10 +61,8 @@ UIAlertView *alert;
                                                     informationLabel:self.informationLabel
                                                             triggers:self.scene.triggers
                                                              actions:self.scene.actions
-                                                             isScene:YES];
-    UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTest:)];
-    [tap setDelegate:self];
-    self.addRuleScene.tap = tap;
+                                                             isScene:YES
+                                                           ];
     
     [self.addRuleScene updateInfoLabel];
     [self.addRuleScene buildTriggersAndActions];
@@ -123,7 +121,7 @@ UIAlertView *alert;
 
 #pragma mark button clicks
 -(void)btnSaveTap:(id)sender{
-    self.touchComp = 1;
+    self.isDone = YES;
     if(self.scene.triggers.count > 0){
         NSString *msg;
         msg = @"If you want this scene name to be compatible with Amazon Echo Voice Control, click Next.\nIf not, just enter the name in the below text box and click Done.";
@@ -233,6 +231,7 @@ UIAlertView *alert;
 #pragma mark alert view delegate method
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == [alertView cancelButtonIndex]){
+        self.isDone = NO;
         if(alertView.tag == kAlertViewSave){
             SceneNameViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SceneNameViewController"];
             viewController.scene = self.scene;
@@ -264,6 +263,7 @@ UIAlertView *alert;
 }
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
+    self.isDone = NO;
     [textField resignFirstResponder];
     [alert dismissWithClickedButtonIndex:nil animated:YES];
     return YES;
@@ -344,23 +344,14 @@ UIAlertView *alert;
     });
 }
 
-#pragma mark gesture recognizer
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
-    NSLog(@"gestureRecognizer:");
-    return YES;
-}
-
-- (void)tapTest:(UITapGestureRecognizer *)sender {
-    self.touchComp = [sender locationInView:self.view].y;
-    NSLog(@"new add scene self.touch %ld",(long)self.touchComp);
-}
-
 #pragma  mark uiwindow delegate methods
 - (void)onKeyboardDidShow:(id)notification {
     NSLog(@"%s",__PRETTY_FUNCTION__);
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
-    if(self.touchComp  > keyboardSize.height){
+    if(_isDone)
+        return;
+    else{
         [UIView animateWithDuration:0.3 animations:^{
             
             CGRect f = self.view.frame;
