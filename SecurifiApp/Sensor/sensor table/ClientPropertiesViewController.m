@@ -47,6 +47,9 @@
 int randomMobileInternalIndex;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.navigationBar.tintColor = [SFIColors ruleBlueColor];
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+    
     self.clientPropertiesTable.backgroundColor = self.genericParams.color;
     self.resetView.backgroundColor = self.genericParams.color;
     [self.resetButton setTitleColor: self.genericParams.color forState:UIControlStateNormal];
@@ -150,6 +153,9 @@ int randomMobileInternalIndex;
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"client properties - view will appear");
     [super viewWillAppear:YES];
+    self.navigationController.navigationBar.tintColor = [SFIColors ruleBlueColor];
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+    
     randomMobileInternalIndex = arc4random() % 10000;
     [self initializeNotifications];
     _toolkit=[SecurifiToolkit sharedInstance];
