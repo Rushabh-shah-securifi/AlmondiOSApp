@@ -15,11 +15,14 @@
 #import "NSDate+Convenience.h"
 #import "SearchTableViewController.h"
 
-@interface SearchTableViewController ()<UISearchResultsUpdating, UISearchBarDelegate>
+@interface SearchTableViewController ()<UISearchResultsUpdating, UISearchBarDelegate,UITextFieldDelegate>
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic) NSArray *searchResultsArray;
 @property (nonatomic) UITableView *searchTableView;
 @property (nonatomic) NSMutableArray *localSearchDayWiseHist;
+@property (nonatomic) NSArray *suggSearchArr;
+@property (nonatomic) NSMutableArray *recentSearch;
+@property (nonatomic)NSMutableArray *recentSearchObj;
 @end
 
 @implementation SearchTableViewController
@@ -27,9 +30,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.clipsToBounds = YES;
-    self.navigationController.view.backgroundColor = [SFIColors clientGreenColor];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.barTintColor = [SFIColors clientGreenColor];
+    self.navigationController.view.backgroundColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.tintColor = [SFIColors ruleBlueColor];
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     
     UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancleButton)];
     
@@ -43,6 +46,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [self.tableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
+    [self addSuggestionSearchObj];
     [self initializeSearchController ];
     }
 
@@ -56,22 +60,28 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.browsingHistoryDayWise.count;
+    if(tableView == self.tableView){
+        return 2;
+    }
+    else
+        return self.browsingHistoryDayWise.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 40;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView == self.tableView){
-        BrowsingHistory *browsHist = self.browsingHistoryDayWise[section];
-        return browsHist.URIs.count;
+        if(section == 0)
+            return self.suggSearchArr.count;
+        else
+            return  self.recentSearchObj.count;
     }
     else{
         BrowsingHistory *browsHist = self.localSearchDayWiseHist[section];
         return browsHist.URIs.count;
-
     }
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 40;
 }
@@ -81,32 +91,32 @@
     
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    
+   
+        
     return [self deviceHeader:section tableView:tableView];
 }
 -(UIView*)deviceHeader:(NSInteger)section tableView:(UITableView*)tableView{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
+    NSString *headerDate;
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
     view.backgroundColor = [UIColor whiteColor];
-//    if (section > 0) {
-//        UITableViewHeaderFooterView *foot = (UITableViewHeaderFooterView *)view;
-//        CGRect sepFrame = CGRectMake(0, 0, tableView.frame.size.width, 1);
-//        UIView *seperatorView =[[UIView alloc] initWithFrame:sepFrame];
-//        seperatorView.backgroundColor = [UIColor colorWithWhite:224.0/255.0 alpha:0.5];
-//        [foot addSubview:seperatorView];
-//    }
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
     [label setFont:[UIFont securifiBoldFont:13]];
-    NSString *headerDate = [self getHeaderDate:section];
-    label.text = section == 0? [NSString stringWithFormat:@"Today, %@",headerDate]: headerDate;
+    
+    if(tableView == self.tableView){
+        headerDate = (section == 0) ? @"Suggested Searches":@"Recent Searches";
+        label.text = headerDate;
+    }
+    else{
+        headerDate = [self getHeaderDate:section];
+        label.text = section == 0? [NSString stringWithFormat:@"Today, %@",headerDate]: headerDate;
+    }
+    
     label.textColor = [UIColor grayColor];
     [view addSubview:label];
-    
-//    CGRect sepFrame = CGRectMake(0, 32, tableView.frame.size.width, 1);
-//    UIView *seperatorView =[[UIView alloc] initWithFrame:sepFrame];
-//    seperatorView.backgroundColor = [UIColor colorWithWhite:224.0/255.0 alpha:0.5];
-//    [view addSubview:seperatorView];
+
     return view;
 }
+
 - (NSString*)getHeaderDate:(NSInteger)section{
     BrowsingHistory *browsHistory = self.browsingHistoryDayWise[section];
     return [browsHistory.date getDayMonthFormat];
@@ -122,20 +132,28 @@
         cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"abc"];
     }
     if(tableView == self.tableView){
-        BrowsingHistory *browsHist = [self.browsingHistoryDayWise objectAtIndex:indexPath.section];
-        NSArray *URIs = browsHist.URIs;
-        [cell setCell:[URIs objectAtIndex:indexPath.row]];
+
+        if(indexPath.section == 0)
+            [cell setCell:[self.suggSearchArr objectAtIndex:indexPath.row]hideItem:YES];
+        else
+            [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row]hideItem:YES];
     }
     else {
-       NSLog(@"searchArr inside table cell %@",self.searchResultsArray);
-//        cell.siteName.text = [self.searchResultsArray objectAtIndex:indexPath.row];
         BrowsingHistory *browsHist = [self.localSearchDayWiseHist objectAtIndex:indexPath.section];
         NSArray *URIs = browsHist.URIs;
-        [cell setCell:URIs[indexPath.row]];
+        [cell setCell:URIs[indexPath.row] hideItem:NO];
 
     }
     
     return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(tableView == self.tableView){
+        if(indexPath.section == 1){
+            self.searchController.searchBar.text = [self.recentSearch objectAtIndex:indexPath.row];
+            [self.searchController.searchBar becomeFirstResponder];
+        }
+    }
 }
 
 - (void)initializeSearchController {
@@ -173,6 +191,22 @@
     [self.searchTableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
     
 }
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    NSString *searchString = self.searchController.searchBar.text;
+    NSLog(@"searching string on search = %@",searchString);
+    URIData *recent = [[URIData alloc]init];
+    recent.hostName = searchString;
+    
+    if (![self.recentSearch containsObject:searchString]) {
+        [self.recentSearch addObject:searchString];
+    }
+    
+    [self.recentSearch addObject:searchString];
+    NSLog(@"self.recentSearch count = %ld",self.recentSearch.count);
+    [[NSUserDefaults standardUserDefaults] setObject:self.recentSearch forKey:@"recentSearch"];
+    
+
+}
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController{
     NSString *searchString = self.searchController.searchBar.text;
     NSPredicate *resultPredicate;
@@ -202,9 +236,55 @@
     [self updateSearchResultsForSearchController:self.searchController];
 }
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    
+    [self.tableView reloadData];
 }
 -(void)onCancleButton{
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+-(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:NO animated:YES];
+}
+//- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+//    NSLog(@"textField = %@",textField.text);
+//    URIData *recent = [[URIData alloc]init];
+//    recent.hostName = textField.text;
+//    
+//    [self.recentSearch addObject:recent];
+//    [[NSUserDefaults standardUserDefaults] setObject:self.recentSearch forKey:@"recentSearch"];
+//    NSLog(@"self.recentSearch count = %ld",self.recentSearch.count);
+//    [self.tableView reloadData];
+//    return YES;
+//}
+#pragma  mark customCell for suggestion search
+-(void)addSuggestionSearchObj{
+    URIData *lasthour = [[URIData alloc]init];
+    lasthour.hostName = @"Last Hour";
+    lasthour.image = [UIImage imageNamed:@"schedule_icon"];
+    
+    URIData *today = [[URIData alloc]init];
+    today.hostName = @"Today";
+    today.image = [UIImage imageNamed:@"schedule_icon"];
+    
+    URIData *thisWeek = [[URIData alloc]init];
+    thisWeek.hostName = @"This Week";
+    thisWeek.image = [UIImage imageNamed:@"event_icon"];
+    
+    self.suggSearchArr = [[NSArray alloc]initWithObjects:lasthour,today,thisWeek, nil];
+    
+    self.recentSearch = [[NSMutableArray alloc]init];
+    NSSet *set = [NSSet setWithArray:[NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"recentSearch"]]];
+    
+    self.recentSearch =  [NSMutableArray arrayWithArray:[set allObjects]];
+    
+    self.recentSearchObj = [[NSMutableArray alloc]init];
+    for (NSString *str in set) {
+        URIData *recent = [[URIData alloc]init];
+        recent.hostName = str;
+        recent.image = [UIImage imageNamed:@"search_icon"];
+        [self.recentSearchObj addObject:recent];
+    }
+    NSLog(@"self.recentSearch count = %ld",self.recentSearch.count);
+    
 }
 @end

@@ -513,6 +513,8 @@
     if (indexPath.section == 0 && self.deviceNotificationArr.count > indexPath.row) {
         SFINotification *notification = [self.deviceNotificationArr objectAtIndex:indexPath.row];
         [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
+        cell.textLabel.numberOfLines = 2;
+        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.textLabel.attributedText = [self setMessageLabelText:notification sensorSupport:sensorSupport];
         NSString *iconName = @"default_device";
         if(sensorSupport.valueSupport != nil)
@@ -525,6 +527,8 @@
         [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
         if ([notification.deviceName rangeOfString:@"joined" options:NSCaseInsensitiveSearch].location != NSNotFound){
             cell.imageView.image = [UIImage imageNamed:@"online"];
+            cell.textLabel.numberOfLines = 2;
+            cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
             cell.textLabel.attributedText = [self setMessageLabelText:notification sensorSupport:sensorSupport];
             cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
         }

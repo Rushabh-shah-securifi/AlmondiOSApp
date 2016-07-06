@@ -100,7 +100,7 @@
         <scene sceneID="25I-8c-UfE">
             <objects>
                 <tableViewController storyboardIdentifier="SearchTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Pha-de-25d" customClass="SearchTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" rowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="1" id="7De-7J-KPS">
+                    <tableView key="view" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" rowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="1" id="7De-7J-KPS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

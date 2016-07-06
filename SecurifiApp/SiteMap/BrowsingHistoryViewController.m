@@ -19,16 +19,21 @@
 @interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *browsingTable;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
+
 @property (nonatomic) dispatch_queue_t imageDownloadQueue;
 @property (nonatomic) NSMutableDictionary *urlToImageDict;
-
-
 @end
 
 @implementation BrowsingHistoryViewController
 
 - (void)viewDidLoad {
-
+    
+    [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     self.headerView.backgroundColor = [SFIColors clientGreenColor];
     self.navigationController.navigationBar.clipsToBounds = YES;
     self.navigationController.view.backgroundColor = [SFIColors clientGreenColor];
@@ -46,24 +51,17 @@
      @{NSForegroundColorAttributeName:[UIColor whiteColor],
        NSFontAttributeName:[UIFont securifiBoldFont:14]}];
     self.title = @"Browsing history";
-    [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
-//    [self.browsingTable reloadData];
-    [super viewDidLoad];
+    self.navigationController.navigationBar.topItem.title = @"Browsing history";
+    [self initializeNotification];
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
     dispatch_async(self.imageDownloadQueue, ^{
         [self fetchImagesInBackGround];
     });
-    // Do any additional setup after loading the view.
-}
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-     [self initializeNotification];
-    
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
-    self.navigationController.view.backgroundColor = [UIColor clearColor];
-    self.navigationController.navigationBar.topItem.title = nil;
+    self.navigationController.view.backgroundColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.topItem.title = @"";
     self.navigationController.navigationBar.tintColor = [UIColor blueColor];
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
 }
@@ -80,41 +78,7 @@
     [notification addObserver:self selector:@selector(onImageFetch:) name:NOTIFICATION_IMAGE_FETCH object:nil];
 }
 
-
--(void)fetchImagesInBackGround{
-    self.urlToImageDict = [NSMutableDictionary new];
-    for(BrowsingHistory *browsHist in self.browsingHistoryDayWise){
-        for(URIData *uri in browsHist.URIs){
-            if(!uri.image){
-                uri.image = [self getImage:uri.hostName];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.browsingTable reloadData];
-                });
-            }
-        }
-    }
-}
-
--(UIImage*)getImage:(NSString*)hostName{
-    NSLog(@"fetch image browsing");
-    UIImage *img;
-    if(self.urlToImageDict[hostName]){
-        NSLog(@"one");
-        return self.urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
-    }else{
-        NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
-        img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
-        if(!img){
-            NSLog(@"four");
-            img = [UIImage imageNamed:@"Mail_icon"];
-        }
-        NSLog(@"five");
-        self.urlToImageDict[hostName] = img;
-        return img;
-    }
-}
-
-#pragma mark tabledelegate methods
+#pragma mark table and search delegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 40;
 }
@@ -139,21 +103,21 @@
     NSLog(@"cell for row");
     HistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"HistorytableCell" forIndexPath:indexPath];
     if (cell == nil){
-    cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HistorytableCell"];
+        cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HistorytableCell"];
     }
     BrowsingHistory *browsHist = [self.browsingHistoryDayWise objectAtIndex:indexPath.section];
     NSArray *URIs = browsHist.URIs;
-    [cell setCell:URIs[indexPath.row]];
+    [cell setCell:URIs[indexPath.row] hideItem:NO];
     return cell;
 }
-
-- (BOOL)allowsHeaderViewsToFloat{
-    return NO;
-}
-
-- (BOOL)allowsFooterViewToFloat{
-    return NO;
-}
+//
+//- (BOOL)allowsHeaderViewsToFloat{
+//    return NO;
+//}
+//
+//- (BOOL)allowsFooterViewToFloat{
+//    return NO;
+//}
 
 -(UIView*)deviceHeader:(NSInteger)section tableView:(UITableView*)tableView{
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
@@ -203,6 +167,36 @@
         [self.browsingTable reloadData];
     });
 }
-
+-(void)fetchImagesInBackGround{
+    self.urlToImageDict = [NSMutableDictionary new];
+    for(BrowsingHistory *browsHist in self.browsingHistoryDayWise){
+        for(URIData *uri in browsHist.URIs){
+            if(!uri.image){
+                uri.image = [self getImage:uri.hostName];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.browsingTable reloadData];
+                });
+            }
+        }
+    }
+}
+-(UIImage*)getImage:(NSString*)hostName{
+    NSLog(@"fetch image browsing");
+    UIImage *img;
+    if(self.urlToImageDict[hostName]){
+        NSLog(@"one");
+        return self.urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
+    }else{
+        NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
+        img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+        if(!img){
+            NSLog(@"four");
+            img = [UIImage imageNamed:@"Mail_icon"];
+        }
+        NSLog(@"five");
+        self.urlToImageDict[hostName] = img;
+        return img;
+    }
+}
 
 @end

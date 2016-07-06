@@ -7,6 +7,11 @@
 //
 
 #import "HistoryCell.h"
+@interface HistoryCell()
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imgLeftConstrin;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *hostnameLeftConstrain;
+
+@end
 
 @implementation HistoryCell
 
@@ -21,7 +26,17 @@
 
     // Configure the view for the selected state
 }
--(void)setCell:(URIData*)uri{
+-(void)setCell:(URIData*)uri hideItem:(BOOL)hideItem{
+    if(hideItem){
+        self.imgLeftConstrin.constant = 17;
+        self.hostnameLeftConstrain.constant = -25;
+    }
+    else {
+        self.imgLeftConstrin.constant = 7;
+        self.hostnameLeftConstrain.constant = 5;
+    }
+    self.countLbl.hidden = hideItem;
+    self.settingImg.hidden = hideItem;
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.webImg.image = uri.image;
         self.siteName.text = uri.hostName;
