@@ -239,12 +239,13 @@ typedef NS_ENUM(int, TabBarMode) {
 
 - (UIViewController *)sensorTab {
     if (!_sensorTab) {
+        NSLog(@"sensortab");
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
         DeviceListController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"DeviceListController"];
         UIImage *icon = [UIImage imageNamed:@"icon_sensor"];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_DEVICES image:icon selectedImage:icon];
-        
+        ctrl.hidesBottomBarWhenPushed = YES;
         self.sensorTab = nav;
     }
     return _sensorTab;

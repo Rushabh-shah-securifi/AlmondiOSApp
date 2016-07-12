@@ -39,7 +39,10 @@
 
 @property(nonatomic, readonly) SFIColors *almondColor;
 @property(nonatomic) NSTimer *mobileCommandTimer;
-
+@property(nonatomic) UIView *bgView;
+@property(nonatomic) UIPageControl *pageControl;
+@property(nonatomic) UIView *trigGeoImg;
+@property(nonatomic) UILabel *trigDetail;
 
 @property(nonatomic) SecurifiToolkit *toolkit;
 @end
@@ -57,6 +60,7 @@ int mii;
     self.toolkit = [SecurifiToolkit sharedInstance];
     //ensure list is empty initially
     [self initializeAlmondData];
+    [self showHelpCenterPath];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -709,4 +713,207 @@ int mii;
     }
 }
 
+#pragma mark help screens
+
+-(void)showHelpCenterPath{
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
+    [self.bgView setBackgroundColor:[SFIColors maskColor]];
+    [self.navigationController.view addSubview:self.bgView];
+    
+    int helpViewHeight = 140;
+    UIView *helpView1 = [[UIView alloc] initWithFrame:CGRectMake(0, self.navigationController.view.frame.size.height - helpViewHeight, self.view.frame.size.width, helpViewHeight)];
+    helpView1.backgroundColor = [UIColor whiteColor];
+    [self.bgView addSubview:helpView1];
+    
+    UILabel *title2 = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 100, 20)];
+    title2.attributedText = [CommonMethods getAttributeString:@"Help Center" fontSize:HEADER_FONT_SIZE LightFont:NO];
+    [helpView1 addSubview:title2];
+    
+    UILabel *detail3 = [[UILabel alloc]initWithFrame:CGRectMake(10, 40,helpView1.frame.size.width - 20 , 50)];
+    [self setLableProperties:detail3 text:@"You can enable these help screens again from the help center. Tap \"More\" to access the help center." textColor:[SFIColors helpTextDescription]];
+    [helpView1 addSubview:detail3];
+    
+    [self addLineSeperator:helpView1 yPos:100];
+    
+    UIButton *gotItButton5 = [[UIButton alloc]initWithFrame:CGRectMake(helpView1.frame.size.width - 100, 111, 100, 20)];
+    [self setButtonProperties:gotItButton5 title:@"Ok, Got it" selector:@selector(onGotItTap:) titleColor:[SFIColors ruleBlueColor]];
+    [helpView1 addSubview:gotItButton5];
+}
+
+-(void)showTriggersHelpPrimary{
+    self.bgView = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height - 120 - self.tabBarController.tabBar.frame.size.height, self.view.frame.size.height, self.view.frame.size.width)];
+    self.bgView.backgroundColor = [UIColor whiteColor];
+    [self.navigationController.view addSubview:self.bgView];
+    
+    UIView *triggerBGView = [[UIView alloc]initWithFrame:CGRectMake(8, 8, self.view.frame.size.width-16, 110)];
+    triggerBGView.backgroundColor = [SFIColors helpYellowColor];
+    [self.bgView addSubview:triggerBGView];
+    
+    UILabel *title2 = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 200, 20)];
+    title2.attributedText = [CommonMethods getAttributeString:@"Wi-Fi Triggers" fontSize:HEADER_FONT_SIZE LightFont:NO];
+    [triggerBGView addSubview:title2];
+    
+    UILabel *detail3 = [[UILabel alloc]initWithFrame:CGRectMake(10, 40,triggerBGView.frame.size.width - 20 , 70)];
+    [self setLableProperties:detail3 text:@"Learn how Wi-Fi triggers can help you automate your home based on your presence. It's pretty close to magic. But don't take our word for it. Try it!" textColor:[SFIColors helpTextDescription]];
+    [triggerBGView addSubview:detail3];
+    
+    int buttonWidth = triggerBGView.frame.size.width/2;
+    UIButton *button3 = [[UIButton alloc]initWithFrame:CGRectMake(8, 119, buttonWidth, 40)];
+    [self setButtonProperties:button3 title:@"Show Me" selector:@selector(onShowMeTap:) titleColor:[UIColor blackColor]];
+    button3.backgroundColor = [SFIColors helpYellowColor];
+    [self.bgView addSubview:button3];
+    
+    UIButton *button4 = [[UIButton alloc]initWithFrame:CGRectMake(buttonWidth + 1 + 8, 119, buttonWidth-1, 40)];
+    [self setButtonProperties:button4 title:@"Hide" selector:@selector(onHideTap:) titleColor:[UIColor blackColor]];
+    button4.backgroundColor = [SFIColors helpYellowColor];
+    [self.bgView addSubview:button4];
+}
+
+-(void)addTriggerHelpPage{
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.navigationController.view.frame.size.width, self.navigationController.view.frame.size.height)];
+    [self.bgView setBackgroundColor:[SFIColors maskColor]];
+    [self.navigationController.view addSubview:self.bgView];
+    
+    int triggerHeight = 350;
+    UIView *triggerView = [[UIView alloc]initWithFrame:CGRectMake(0, self.navigationController.view.frame.size.height - triggerHeight, self.view.frame.size.width, triggerHeight)];
+    triggerView.backgroundColor = [UIColor whiteColor];
+    [self.bgView addSubview:triggerView];
+    
+    UIView *toolBarView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
+    [triggerView addSubview:toolBarView];
+    
+    UIButton *crossButton = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 30, 40)];
+    [crossButton setImage:[UIImage imageNamed:@"icon_cross_gray"] forState:UIControlStateNormal];
+    [crossButton addTarget:self action:@selector(onTriggerCrossTap:) forControlEvents:UIControlEventTouchUpInside];
+    [toolBarView addSubview:crossButton];
+    
+    UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 120, 40)];
+    title.attributedText = [CommonMethods getAttributeString:@"Wi-Fi Triggers" fontSize:HEADER_FONT_SIZE LightFont:NO];
+    title.center = toolBarView.center;
+    [toolBarView addSubview:title];
+    
+    UILabel *skip = [[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 40, 0, 40, 40)];
+    [self setLableProperties:skip text:@"Skip" textColor:[SFIColors ruleBlueColor]];
+    [toolBarView addSubview:skip];
+    
+    self.trigGeoImg = [[UIView alloc]initWithFrame:CGRectMake(0, 40, self.view.frame.size.width, 130)];
+    self.trigGeoImg.backgroundColor = [SFIColors helpBlueColor];
+    [triggerView addSubview:self.trigGeoImg];
+    
+    self.trigDetail = [[UILabel alloc]initWithFrame:CGRectMake(10, 170,triggerView.frame.size.width - 10 , 100)];
+    [self setLableProperties:self.trigDetail text:@"Almond can use your mobile device's connection to your home Wi-Fi to detect your presence. This is called a Wi-Fi trigger." textColor:[SFIColors helpTextDescription]];
+    [triggerView addSubview:self.trigDetail];
+    
+    
+    [self addLineSeperator:triggerView yPos:270];
+    
+    self.pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0,271,self.view.frame.size.width,40)];
+    [self setUpPageControl];
+    [triggerView addSubview:self.pageControl];
+    [self addLineSeperator:triggerView yPos:311];
+    
+    UIButton *helpCenterBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 312, 200, 39)];
+    [self setButtonProperties:helpCenterBtn title:@"Go to Help Center" selector:@selector(onGoToHelpCenterTap:) titleColor:[SFIColors ruleBlueColor]];
+    helpCenterBtn.center = CGPointMake(triggerView.bounds.size.width/2, helpCenterBtn.center.y);
+    [triggerView addSubview:helpCenterBtn];
+}
+
+#pragma mark pagecontrol methods
+-(void)setUpPageControl{
+    [self.pageControl addTarget:self action:@selector(changePage:) forControlEvents:UIControlEventValueChanged];
+    self.pageControl.numberOfPages = 3;
+    self.pageControl.pageIndicatorTintColor = [SFIColors ruleGraycolor];
+    self.pageControl.currentPageIndicatorTintColor = [SFIColors lightBlueColor];
+    
+    UIImageView *imgViewLeft = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 50, 39)];
+    imgViewLeft.backgroundColor = [UIColor yellowColor];
+    [self.pageControl addSubview:imgViewLeft];
+    
+    UIImageView *imgViewRight = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width-50, 0, 50, 39)];
+    imgViewRight.backgroundColor = [UIColor yellowColor];
+    [self.pageControl addSubview:imgViewRight];
+}
+
+#pragma mark help screen selector methods
+-(void)onGotItTap:(id)sender{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.bgView removeFromSuperview];
+        [self.tabBarController.tabBar setHidden:NO];
+        [self showTriggersHelpPrimary];
+    });
+}
+
+-(void)onShowMeTap:(id)sender{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.bgView removeFromSuperview];
+        [self addTriggerHelpPage];
+        [self.tabBarController.tabBar setHidden:YES];
+    });
+}
+
+-(void)onHideTap:(id)sender{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.bgView removeFromSuperview];
+    });
+}
+
+-(void)changePage:(UIPageControl *)pageControl {
+    NSLog(@"current page: %d", self.pageControl.currentPage);
+    UIView *triggerView = [pageControl superview];
+    switch (self.pageControl.currentPage) {
+        case 0:{
+            self.trigGeoImg.backgroundColor = [SFIColors helpBlueColor];
+            self.trigDetail.text = @"Almond can use your mobile device's connection to your home Wi-Fi to detect your presence. This is called a Wi-Fi trigger.";
+            break;
+        }
+        case 1:{
+            self.trigGeoImg.backgroundColor = [SFIColors helpGreenColor];
+            self.trigDetail.text = @"For example you could create a rule to turn on the porch lights for five minutes and set the thermostat to 70˚ when your phone joins your home Wi-Fi. You'll never have to arrive to find your home cold and dark again!";
+            break;
+        }
+        case 2:{
+            self.trigGeoImg.backgroundColor = [SFIColors helpOrangeColor];
+            self.trigDetail.text = @"You can use your devices as Wi-Fi triggers right away. To create a rule using a Wi-Fi trigger, open the rules tab by tapping More and selecting Rules.";
+            
+//            UIButton *gotItButton5 = [[UIButton alloc]initWithFrame:CGRectMake(helpView1.frame.size.width - 100, 111, 100, 20)];
+//            [self setButtonProperties:gotItButton5 title:@"Ok, Got it" selector:@selector(onGotItTap:) titleColor:[SFIColors ruleBlueColor]];
+            
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
+-(void)onTriggerCrossTap:(id)sender{
+    NSLog(@"onTriggerCrossTap");
+}
+
+-(void)onGoToHelpCenterTap:(id)sender{
+    NSLog(@"onGoToHelpCenterTap");
+}
+
+#pragma mark label methods
+-(void)setLableProperties:(UILabel*)label text:(NSString*)text textColor:(UIColor*)textColor{
+    label.text = text;
+    label.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:15];
+    label.numberOfLines = 0;
+    label.textAlignment = NSTextAlignmentLeft;
+    label.textColor = textColor;
+}
+
+#pragma mark button methods
+-(void)setButtonProperties:(UIButton*)button title:(NSString *)title selector:(SEL)selector titleColor:(UIColor*)titleColor{
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitleColor:titleColor forState:UIControlStateNormal];
+    [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+}
+
+#pragma mark uiview methods
+-(void)addLineSeperator:(UIView*)view yPos:(int)ypos{
+    UIView *lineSeperator = [[UIView alloc]initWithFrame:CGRectMake(0, ypos, view.frame.size.width, 1)];
+    lineSeperator.backgroundColor = [UIColor lightGrayColor];
+    [view addSubview:lineSeperator];
+}
 @end

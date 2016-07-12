@@ -129,6 +129,32 @@
 + (UIColor *)disableGreenColor{
     return [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
 }
+
++ (UIColor *)maskColor{
+    return [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5];
+}
+
++ (UIColor *)helpYellowColor{
+    return [UIColor colorFromHexString:@"fcd142"];
+}
+
++ (UIColor *)helpOrangeColor{
+    return [UIColor colorFromHexString:@"ff9800"];
+}
+
++ (UIColor *)helpGreenColor{
+    return [UIColor colorFromHexString:@"Bff2c6"];
+}
+
++ (UIColor *)helpBlueColor{
+    return [UIColor colorFromHexString:@"86DAFF"];
+}
+
++ (UIColor *)helpTextDescription{
+    return [UIColor colorFromHexString:@"444444"];
+}
+
+
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName {
     self = [super init];
     if (self) {
