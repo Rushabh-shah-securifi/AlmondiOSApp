@@ -24,6 +24,8 @@
 #import "URIData.h"
 #import "BrowsingHistory.h"
 #import "NSDate+Convenience.h"
+#import "DataBaseManager.h"
+
 
 #define CELLFRAME CGRectMake(8, 8, self.view.frame.size.width -16, 70)
 
@@ -75,36 +77,62 @@ int randomMobileInternalIndex;
 //        dispatch_async(self.imageDownloadQueue, ^{
             NSDictionary *historyData;
 //            historyData = [data objectFromJSONData];
-            historyData = [self parseJson:@"temp"];
+//            historyData = [DataBaseManager getHistoryData];
+            historyData = [self parseJson:@"temp_copy"];
             NSLog(@"historyData: %@", historyData);
             
             self.browsingHistoryDayWise = [NSMutableArray new];
             NSArray *history = historyData[@"Data"];
+    for(NSString *Day in [historyData allKeys]){
+        BrowsingHistory *browsingHist = [BrowsingHistory new];
+        browsingHist.date = [NSDate convertStirngToDate:Day];
+        NSDictionary *dayDict = historyData[Day];
+         NSMutableArray *urisArray = [NSMutableArray new];
+        for (NSString *time in [dayDict allKeys]) {
+            NSDictionary *uriDict = dayDict[time];
+            URIData *uri = [URIData new];
+            uri.hostName = uriDict[@"Hostname"];
+            uri.image = [self getImage:uriDict[@"Hostname"]];
+            uri.lastActiveTime = [NSDate getDateFromEpoch:uriDict[@"Epoch"]];
+            uri.count = [uriDict[@"Count"] intValue];
+            [urisArray addObject:uri];
+        }
+        browsingHist.URIs = urisArray;
+        [self.browsingHistoryDayWise addObject:browsingHist];[[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_IMAGE_FETCH object:nil];
+    }
  
-            for(NSDictionary *hisDict in history){
-                BrowsingHistory *browsingHist = [BrowsingHistory new];
-                browsingHist.date = [NSDate convertStirngToDate:hisDict[@"Date"]];
-                
-                NSLog(@"browsing history date: %@", browsingHist.date);
-                NSArray *URIs = hisDict[@"URIs"];
-                NSMutableArray *urisArray = [NSMutableArray new];
-                for(NSDictionary *uriDict in URIs){
-                    URIData *uri = [URIData new];
-                    uri.hostName = uriDict[@"Hostname"];
-                    uri.image = [self getImage:uriDict[@"Hostname"]];
-                    uri.lastActiveTime = [NSDate getDateFromEpoch:uriDict[@"Epoch"]];
-                    uri.count = [uriDict[@"Count"] intValue];
-                    NSLog(@"host: %@, image: %@, lasttime: %@, count: %d", uri.hostName, uri.image, uri.lastActiveTime, uri.count);
-                    [urisArray addObject:uri];
-                }
-                
-                browsingHist.URIs = urisArray;
-                [self.browsingHistoryDayWise addObject:browsingHist];
-                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_IMAGE_FETCH object:nil];
-            }
+//            for(NSDictionary *hisDict in history){
+//                BrowsingHistory *browsingHist = [BrowsingHistory new];
+//                browsingHist.date = [NSDate convertStirngToDate:hisDict[@"Date"]];
+//                
+//                NSLog(@"browsing history date: %@", browsingHist.date);
+//                NSArray *URIs = hisDict[@"URIs"];
+//                NSMutableArray *urisArray = [NSMutableArray new];
+//                for(NSDictionary *uriDict in URIs){
+//                    URIData *uri = [URIData new];
+//                    uri.hostName = uriDict[@"Hostname"];
+//                    uri.image = [self getImage:uriDict[@"Hostname"]];
+//                    uri.lastActiveTime = [NSDate getDateFromEpoch:uriDict[@"Epoch"]];
+//                    uri.count = [uriDict[@"Count"] intValue];
+//                    NSLog(@"host: %@, image: %@, lasttime: %@, count: %d", uri.hostName, uri.image, uri.lastActiveTime, uri.count);
+//                    [urisArray addObject:uri];
+//                }
+//                
+//                browsingHist.URIs = urisArray;
+//                [self.browsingHistoryDayWise addObject:browsingHist];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_IMAGE_FETCH object:nil];
+//            }
 //        });
 //    }] resume];
-    
+    NSDictionary *d = @{
+                        @"1":@{@"date1":@"data1",
+                                @"date2":@"data2"
+                                },
+                        @"2":@{@"date21":@"data21",
+                               @"date22":@"data22"
+                               }
+                };
+    [DataBaseManager InsertRecords:historyData];
     
     
 }

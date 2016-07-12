@@ -172,5 +172,20 @@
     
     return newImage;
 }
++ (NSString *)stringFromWeekday:(NSInteger)weekday
+{
+    static NSString *strings[] = {
+        @"Sunday",
+        @"Monday",
+        @"Tuesday",
+        @"Wednesday",
+        @"Thursday",
+        @"Friday",
+        @"Saturday",
+    };
+    
+    return strings[weekday - 1];
+}
+
 
 @end

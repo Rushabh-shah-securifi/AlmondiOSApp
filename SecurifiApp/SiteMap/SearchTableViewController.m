@@ -13,6 +13,7 @@
 #import "URIData.h"
 #import "BrowsingHistory.h"
 #import "NSDate+Convenience.h"
+#import "CommonMethods.h"
 #import "SearchTableViewController.h"
 
 @interface SearchTableViewController ()<UISearchResultsUpdating, UISearchBarDelegate,UITextFieldDelegate>
@@ -153,6 +154,9 @@
             self.searchController.searchBar.text = [self.recentSearch objectAtIndex:indexPath.row];
             [self.searchController.searchBar becomeFirstResponder];
         }
+        else if(indexPath.section == 0 && indexPath.row == 1){
+            [self.searchController.searchBar becomeFirstResponder];
+        }
     }
 }
 
@@ -219,8 +223,66 @@
         NSArray *URIs = browsHistory.URIs;
          resultPredicate = [NSPredicate predicateWithFormat:@"hostName CONTAINS[c] %@",searchString];
         NSArray *arr = [URIs filteredArrayUsingPredicate:resultPredicate];
-        
         newBrowsHistory.URIs = arr;
+        
+        NSMutableArray *dayAndMonth = [[NSMutableArray alloc]init];
+        
+        
+        for (URIData *uri in browsHistory.URIs){
+            NSDate *date = uri.lastActiveTime;
+            NSLog(@"date = %@",date);
+            NSDateComponents *components1 = [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:date];
+            NSLog(@"weekDay %@",[CommonMethods stringFromWeekday:[components1 weekday]]);
+            NSString *weekDay = [CommonMethods stringFromWeekday:[components1 weekday]];
+            
+            NSDateFormatter *df = [[NSDateFormatter alloc] init];
+            
+            [df setDateFormat:@"dd"];
+            NSString *myDayString = [df stringFromDate:date];
+            NSLog(@"mydayString  = %@",myDayString);
+            [df setDateFormat:@"MMM"];
+           NSString *myMonthString = [df stringFromDate:date];
+            
+            NSDate* myDate = [df dateFromString:myMonthString];
+            
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"MMMM"];
+            
+            NSString *stringFromDate = [formatter stringFromDate:myDate];
+            NSLog(@"stringFromDate = %@,%@,%@",stringFromDate,myMonthString,searchString);
+            //last hour
+            
+            NSCalendar *gregorianCal = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+            NSDateComponents *dataComps = [gregorianCal components: (NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:date];
+            
+            NSInteger minutes = [dataComps minute];
+            NSInteger hours = [dataComps hour];
+            
+            // last hour end
+            
+            
+            // today search
+            NSCalendar *cal = [NSCalendar currentCalendar];
+            NSDateComponents *components = [cal components:(NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:[NSDate date]];
+            NSDate *today = [cal dateFromComponents:components];
+            components = [cal components:(NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:date];
+            NSDate *otherDate = [cal dateFromComponents:components];
+            if([today isEqualToDate:otherDate]) {
+                NSLog(@"today to arr\n");
+                NSLog(@"uri info: %@,%@,%d \n",uri.hostName,uri.lastActiveTime,uri.count);
+                [dayAndMonth addObject:uri];
+            }//today search end
+            
+            if([myDayString rangeOfString:searchString].location != NSNotFound || [stringFromDate rangeOfString:searchString].location != NSNotFound || [weekDay rangeOfString:searchString].location != NSNotFound){
+                NSLog(@"adding to arr");
+               [dayAndMonth addObject:uri];
+            }
+        }
+        
+        if(dayAndMonth.count > 0){
+            NSLog(@"dayAndMonth.count %ld",dayAndMonth.count);
+            newBrowsHistory.URIs = dayAndMonth;
+        }
         [self.localSearchDayWiseHist addObject:newBrowsHistory];
     }
 //    NSArray *URIs = browsHist.URIs;
@@ -243,6 +305,7 @@
 }
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
+    NSLog(@"searchBarTextDidEndEditing");
     [searchBar setShowsCancelButton:NO animated:YES];
 }
 //- (BOOL)textFieldShouldReturn:(UITextField *)textField{

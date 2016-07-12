@@ -25,4 +25,6 @@
 +(UIImage *)MultiplyImageByConstantColor:(UIImage*)image andColor:(UIColor *)color;
 
 + (NSString *)getDimmableHex:(NSString*)value;
+
++ (NSString *)stringFromWeekday:(NSInteger)weekday;
 @end

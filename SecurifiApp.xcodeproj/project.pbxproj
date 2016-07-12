@@ -443,6 +443,7 @@
 		CE57E5321D1BBCC400493460 /* HistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE57E5301D1BBCC400493460 /* HistoryCell.xib */; };
 		CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58276B1D10127400843B4C /* WeatherRuleButton.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
+		CE64BDC41D2FACCB0009A26F /* temp_copy.json in Resources */ = {isa = PBXBuildFile; fileRef = CE64BDC31D2FACCA0009A26F /* temp_copy.json */; };
 		CE65C4911D1A67B200C2E1C0 /* UILabel+ActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = CE65C4901D1A67B200C2E1C0 /* UILabel+ActionSheet.m */; };
 		CE810C5E1C9BDAA000F80777 /* GridView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C5D1C9BDAA000F80777 /* GridView.m */; };
 		CE810C611C9C15D100F80777 /* ListButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C601C9C15D100F80777 /* ListButtonView.m */; };
@@ -979,6 +980,7 @@
 		CE58276B1D10127400843B4C /* WeatherRuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherRuleButton.m; sourceTree = "<group>"; };
 		CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPickerIndicatorView1.h; sourceTree = "<group>"; };
 		CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPickerIndicatorView1.m; sourceTree = "<group>"; };
+		CE64BDC31D2FACCA0009A26F /* temp_copy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = temp_copy.json; sourceTree = "<group>"; };
 		CE65C48F1D1A67B200C2E1C0 /* UILabel+ActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+ActionSheet.h"; sourceTree = "<group>"; };
 		CE65C4901D1A67B200C2E1C0 /* UILabel+ActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+ActionSheet.m"; sourceTree = "<group>"; };
 		CE810C5C1C9BDAA000F80777 /* GridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridView.h; sourceTree = "<group>"; };
@@ -1160,6 +1162,7 @@
 				A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */,
 				A545372A1C8ED35C00DC3EC8 /* scene_names.txt */,
 				CE40BF1A1D228650007C2148 /* temp.json */,
+				CE64BDC31D2FACCA0009A26F /* temp_copy.json */,
 				A54EB0341C45004B00CF2837 /* Common-Images.xcassets */,
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
 				1C7E7E2D1A41A26A0026F0BA /* Base.lproj */,
@@ -2422,6 +2425,7 @@
 				A58DB32D1BB16EAF00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB3101BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB4551BB3CD3F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
+				CE64BDC41D2FACCB0009A26F /* temp_copy.json in Resources */,
 				CEEC422E1C98560D00A2C35D /* DeviceHeaderView.xib in Resources */,
 				A58DB30B1BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
 				846414DB1B736B80008AB07F /* AvenirLTStd-Black.otf in Resources */,
