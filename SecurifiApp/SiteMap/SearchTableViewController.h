@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface SearchTableViewController : UITableViewController
-@property(nonatomic)NSArray *browsingHistoryDayWise;
+@property(nonatomic)NSMutableArray *browsingHistoryDayWise;
 @end

@@ -60,7 +60,7 @@ int mii;
     self.toolkit = [SecurifiToolkit sharedInstance];
     //ensure list is empty initially
     [self initializeAlmondData];
-    [self showHelpCenterPath];
+//    [self showHelpCenterPath];
 }
 
 - (void)viewWillAppear:(BOOL)animated{

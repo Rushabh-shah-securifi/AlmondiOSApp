@@ -24,6 +24,7 @@
 @property (nonatomic) NSArray *suggSearchArr;
 @property (nonatomic) NSMutableArray *recentSearch;
 @property (nonatomic)NSMutableArray *recentSearchObj;
+@property (nonatomic) NSMutableDictionary *urlToImageDict;
 @end
 
 @implementation SearchTableViewController
@@ -156,6 +157,9 @@
         }
         else if(indexPath.section == 0 && indexPath.row == 1){
             [self.searchController.searchBar becomeFirstResponder];
+            [self updteTodayHistory];
+            
+            
         }
     }
 }
@@ -227,7 +231,7 @@
         
         NSMutableArray *dayAndMonth = [[NSMutableArray alloc]init];
         
-        
+        // day by search,// november 2 or saturday
         for (URIData *uri in browsHistory.URIs){
             NSDate *date = uri.lastActiveTime;
             NSLog(@"date = %@",date);
@@ -308,6 +312,48 @@
     NSLog(@"searchBarTextDidEndEditing");
     [searchBar setShowsCancelButton:NO animated:YES];
 }
+-(void)updteTodayHistory{//temp, can be removed when response will come
+    self.urlToImageDict = [NSMutableDictionary new];
+    NSDictionary *historyData;
+    //            historyData = [data objectFromJSONData];
+    //            historyData = [DataBaseManager getHistoryData];
+    historyData = [self parseJson:@"temp_copy"];
+    NSLog(@"historyData: %@", historyData);
+    
+    self.browsingHistoryDayWise = [NSMutableArray new];
+    NSArray *history = historyData[@"Data"];
+    for(NSString *Day in [historyData allKeys]){
+        BrowsingHistory *browsingHist = [BrowsingHistory new];
+        browsingHist.date = [NSDate convertStirngToDate:Day];
+        NSDictionary *dayDict = historyData[Day];
+        NSMutableArray *urisArray = [NSMutableArray new];
+        for (NSString *time in [dayDict allKeys]) {
+            NSDictionary *uriDict = dayDict[time];
+            URIData *uri = [URIData new];
+            uri.hostName = uriDict[@"Hostname"];
+            uri.image = [self getImage:uriDict[@"Hostname"]];
+            uri.lastActiveTime = [NSDate getDateFromEpoch:uriDict[@"Epoch"]];
+            uri.count = [uriDict[@"Count"] intValue];
+            [urisArray addObject:uri];
+        }
+        browsingHist.URIs = urisArray;
+        [self.browsingHistoryDayWise addObject:browsingHist];
+        
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.searchTableView reloadData];
+    });
+}
+-(UIImage*)getImage:(NSString*)hostName{
+    NSLog(@"getImage");
+    UIImage *img;
+    if(self.urlToImageDict[hostName]){
+        NSLog(@"one");
+        return self.urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
+    }else{
+        return img;
+    }
+}
 //- (BOOL)textFieldShouldReturn:(UITextField *)textField{
 //    NSLog(@"textField = %@",textField.text);
 //    URIData *recent = [[URIData alloc]init];
@@ -349,5 +395,19 @@
     }
     NSLog(@"self.recentSearch count = %ld",self.recentSearch.count);
     
+}
+- (NSDictionary*)parseJson:(NSString*)fileName{
+    NSError *error = nil;
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName
+                                                         ofType:@"json"];
+    NSData *dataFromFile = [NSData dataWithContentsOfFile:filePath];
+    NSDictionary *data = [NSJSONSerialization JSONObjectWithData:dataFromFile
+                                                         options:kNilOptions
+                                                           error:&error];
+    
+    if (error != nil) {
+        NSLog(@"Error: was not able to load json file: %@.",fileName);
+    }
+    return data;
 }
 @end

@@ -77,8 +77,8 @@ int randomMobileInternalIndex;
 //        dispatch_async(self.imageDownloadQueue, ^{
             NSDictionary *historyData;
 //            historyData = [data objectFromJSONData];
-//            historyData = [DataBaseManager getHistoryData];
-            historyData = [self parseJson:@"temp_copy"];
+            historyData = [DataBaseManager getHistoryData];
+//            historyData = [self parseJson:@"temp_copy"];
             NSLog(@"historyData: %@", historyData);
             
             self.browsingHistoryDayWise = [NSMutableArray new];

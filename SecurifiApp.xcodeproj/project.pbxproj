@@ -448,6 +448,7 @@
 		CE810C5E1C9BDAA000F80777 /* GridView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C5D1C9BDAA000F80777 /* GridView.m */; };
 		CE810C611C9C15D100F80777 /* ListButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C601C9C15D100F80777 /* ListButtonView.m */; };
 		CEA4A82C1C86BEB00098C7BD /* SensorStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA4A82A1C86BEB00098C7BD /* SensorStoryBoard.storyboard */; };
+		CEB788E41D361FE1005F75F2 /* temp_jsonResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = CEB788E31D361FE1005F75F2 /* temp_jsonResponse.json */; };
 		CEEAB7AD1CAD26A2003C5290 /* UICommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */; };
 		CEEBE6201C902D0400DC3E3F /* clientTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */; };
 		CEEC42181C98560500A2C35D /* ClientPropertiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC420A1C98560500A2C35D /* ClientPropertiesViewController.m */; };
@@ -988,6 +989,7 @@
 		CE810C5F1C9C15D100F80777 /* ListButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListButtonView.h; sourceTree = "<group>"; };
 		CE810C601C9C15D100F80777 /* ListButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListButtonView.m; sourceTree = "<group>"; };
 		CEA4A82B1C86BEB00098C7BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SensorStoryBoard.storyboard; sourceTree = "<group>"; };
+		CEB788E31D361FE1005F75F2 /* temp_jsonResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = temp_jsonResponse.json; sourceTree = "<group>"; };
 		CEEAB7AB1CAD26A2003C5290 /* UICommonMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICommonMethods.h; sourceTree = "<group>"; };
 		CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICommonMethods.m; sourceTree = "<group>"; };
 		CEEBE61E1C902D0400DC3E3F /* clientTypeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = clientTypeCell.h; path = SecurifiApp/clientTypeCell.h; sourceTree = SOURCE_ROOT; };
@@ -1163,6 +1165,7 @@
 				A545372A1C8ED35C00DC3EC8 /* scene_names.txt */,
 				CE40BF1A1D228650007C2148 /* temp.json */,
 				CE64BDC31D2FACCA0009A26F /* temp_copy.json */,
+				CEB788E31D361FE1005F75F2 /* temp_jsonResponse.json */,
 				A54EB0341C45004B00CF2837 /* Common-Images.xcassets */,
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
 				1C7E7E2D1A41A26A0026F0BA /* Base.lproj */,
@@ -2412,6 +2415,7 @@
 				A58DB2F41BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				1C7E7DFA1A41A0B30026F0BA /* Almond-Images.xcassets in Resources */,
 				A58DB30A1BB16B9F00717C02 /* Localizable.strings in Resources */,
+				CEB788E41D361FE1005F75F2 /* temp_jsonResponse.json in Resources */,
 				A58DB3001BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB2F71BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB30C1BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
