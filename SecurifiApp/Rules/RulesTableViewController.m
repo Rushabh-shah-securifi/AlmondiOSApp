@@ -68,7 +68,7 @@ CGPoint tablePoint;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self removeAddSceneButton];
+    [self removeAddRuleButton];
     if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
@@ -91,6 +91,11 @@ CGPoint tablePoint;
                selector:@selector(onCurrentAlmondChanged:)
                    name:kSFIDidChangeCurrentAlmond
                  object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onAlmondListDidChange:)
+                   name:kSFIDidUpdateAlmondList
+                 object:nil];
 }
 
 -(void)markAlmondTitleAndMac{
@@ -108,6 +113,9 @@ CGPoint tablePoint;
 
 }
 - (void)onCurrentAlmondChanged:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self checkToShowUpdateScreen];
+    });
     [self.toolkit.ruleList removeAllObjects];
     
     [self markAlmondTitleAndMac];
@@ -117,6 +125,11 @@ CGPoint tablePoint;
     });
 }
 
+- (void)onAlmondListDidChange:(id)notice {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self checkToShowUpdateScreen];
+    });
+}
 -(void)initializeTableViewAttributes{
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -132,7 +145,7 @@ CGPoint tablePoint;
     });
 }
 
-- (void)removeAddSceneButton{
+- (void)removeAddRuleButton{
     if(self.buttonAdd)
         [self.buttonAdd removeFromSuperview];
 }
@@ -267,7 +280,6 @@ CGPoint tablePoint;
     lblNoSensor.textColor = [UIColor grayColor];
     [cell addSubview:lblNoSensor];
 
-    [self addAddRuleButton];
     return cell;
 }
 

@@ -19,6 +19,8 @@
 #import "AlertView.h"
 #import "MDJSON.h"
 #import "AlertViewAction.h"
+#import "CommonMethods.h"
+#import "SFIColors.h"
 
 @interface SFITableViewController () <MBProgressHUDDelegate, SWRevealViewControllerDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate>
 @property(nonatomic, readonly) SFINotificationStatusBarButtonItem *notificationsStatusButton;
@@ -29,6 +31,7 @@
 @property(nonatomic) UIEdgeInsets originalContentInsets;
 @property(nonatomic) UIEdgeInsets originalScrollIndicatorInsets;
 @property(nonatomic) AlertView *alert;
+@property(nonatomic) UIView *bgView;
 @end
 
 @implementation SFITableViewController
@@ -48,6 +51,7 @@
     [super viewDidLoad];
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    self.bgView = [[UIView alloc]init];
     
     SecurifiConfigurator *configurator = toolkit.configuration;
     _enableNotificationsView = configurator.enableNotifications;
@@ -105,6 +109,7 @@
                selector:@selector(onAlmondModeDidChange:)
                    name:kSFIAlmondModeDidChange
                  object:nil];
+
     [center addObserver:self
                selector:@selector(onNetworkDownNotifier:)
                    name:NETWORK_DOWN_NOTIFIER
@@ -888,6 +893,85 @@
     [self.tableView reloadData];
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma mark almond update screen
+-(void)checkToShowUpdateScreen{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *currentAlmond = toolkit.currentAlmond;
+    NSLog(@"currentalmond: %@", currentAlmond);
+    if(currentAlmond.firmware == nil)
+        return;
+    BOOL isNewVersion = [currentAlmond supportsGenericIndexes:currentAlmond.firmware];
+    if(!isNewVersion){
+        [self.tabBarController.tabBar setHidden:YES];
+        [self showAlmondUpdateAvailableScreen:self.navigationController.view];
+    }else{
+        [self.tabBarController.tabBar setHidden:NO];
+        [self.bgView removeFromSuperview];
+    }
+}
+
+-(void)showAlmondUpdateAvailableScreen:(UIView*)view{
+    int viewWidth = self.navigationController.view.frame.size.width;
+    
+    self.bgView.frame = CGRectMake(0, 0, viewWidth, self.navigationController.view.frame.size.height);
+    _bgView.backgroundColor = [UIColor whiteColor];
+    [view addSubview:self.bgView];
+    
+    SWRevealViewController *revealController = [self revealViewController];
+    UIButton *crossButton = [[UIButton alloc]initWithFrame:CGRectMake(10, 20, 30, 40)];
+    [crossButton setImage:[CommonMethods imageNamed:@"drawer" withColor:[UIColor blackColor]] forState:UIControlStateNormal];
+    crossButton.tintColor = [UIColor blackColor];
+    [crossButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+    [self.bgView addSubview:crossButton];
+    
+    UILabel *hdrTitle = [[UILabel alloc]initWithFrame:CGRectMake(0, 22, viewWidth, 40)];
+    [CommonMethods setLableProperties:hdrTitle text:@"Almond Update Available" textColor:[UIColor blackColor] fontName:@"AvenirLTStd-Heavy" fontSize:20 alignment:NSTextAlignmentCenter];
+    hdrTitle.center = CGPointMake(self.view.bounds.size.width/2 + 5, hdrTitle.center.y);
+    [self.bgView addSubview:hdrTitle];
+    
+    [CommonMethods addLineSeperator:self.bgView yPos:65];
+    
+    //image 200
+    UIImageView *routerSettingImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 100, 200, 180)];
+    routerSettingImg.center = CGPointMake(self.view.bounds.size.width/2, routerSettingImg.center.y);
+    routerSettingImg.image = [UIImage imageNamed:@"almond_settings"];
+    [self.bgView addSubview:routerSettingImg];
+    
+    //detail view
+    UIView *detailView = [[UIView alloc]initWithFrame:CGRectMake(0, 315, viewWidth,250)];
+    [self.bgView addSubview:detailView];
+    
+    UILabel *detailTitle = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, viewWidth, 20)];
+    [CommonMethods setLableProperties:detailTitle text:@"Your Almond requires an update." textColor:[SFIColors grayShade] fontName:@"AvenirLTStd-Heavy" fontSize:20 alignment:NSTextAlignmentCenter];
+    [detailView addSubview:detailTitle];
+    
+    UILabel *detail = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, viewWidth-15, 220)];
+    NSString *text = @"With this update, you will receive a new dashboard in your Almond app as well as improvements for stability under the hood. The Almond firmware needs to be updated to remain compatible with this version of the app. Please tap on \"Settings\" on the Almond LCD and follow the on screen instructions to update your firmware.";
+    [CommonMethods setLableProperties:detail text:text textColor:[SFIColors grayShade] fontName:@"AvenirLTStd-Light" fontSize:18 alignment:NSTextAlignmentCenter];
+    [CommonMethods setLineSpacing:detail text:text spacing:3];
+    [detail sizeToFit];
+    [detailView addSubview:detail];
+    
+    //button
+    //    UIButton *gotItButton = [[UIButton alloc]initWithFrame:CGRectMake(10, self.navigationController.view.frame.size.height - 50, viewWidth - 20, 40)];
+    //    [self setButtonProperties:gotItButton title:@"Ok, got it" selector:@selector(onGotItTap:) titleColor:[UIColor whiteColor]];
+    //    gotItButton.backgroundColor = [SFIColors helpPurpleColor];
+    //    [self.bgView addSubview:gotItButton];
+}
+
+
+//-(void)onCrossTap:(UIButton *)tapbutton{
+//    NSLog(@"onCrossTap");
+//    [self.bgView removeFromSuperview];
+//    [self.tabBarController.tabBar setHidden:NO];
+//}
+
+//-(void)onGotItTap:(UIButton *)button{
+//    NSLog(@"onGotItTap");
+//    [self.bgView removeFromSuperview];
+//    [self.tabBarController.tabBar setHidden:NO];
+//}
 
 
 @end

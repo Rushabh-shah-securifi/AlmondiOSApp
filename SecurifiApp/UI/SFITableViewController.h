@@ -62,4 +62,5 @@
 
 - (void)removeAlert;
 
+- (void)checkToShowUpdateScreen;
 @end

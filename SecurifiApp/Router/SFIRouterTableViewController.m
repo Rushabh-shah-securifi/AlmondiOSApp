@@ -207,6 +207,7 @@ int mii;
 
 - (void)onCurrentAlmondChanged:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
+        [self checkToShowUpdateScreen];
         self.shownHudOnce = NO;
         if (self.isViewLoaded && self.view.window) {
             // View is visible; reload now; otherwise, viewWillAppear will invoke it for us
@@ -218,6 +219,8 @@ int mii;
 
 - (void)onAlmondListDidChange:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
+        [self checkToShowUpdateScreen];
+        
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         SFIAlmondPlus *plus = [toolkit currentAlmond];
         

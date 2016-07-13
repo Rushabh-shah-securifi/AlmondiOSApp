@@ -188,4 +188,70 @@
 }
 
 
++ (UIColor *)colorWithHexString:(NSString *)str_HEX  alpha:(CGFloat)alpha_range{
+    int red = 0;
+    int green = 0;
+    int blue = 0;
+    sscanf([str_HEX UTF8String], "%02X%02X%02X", &red, &green, &blue);
+    return  [UIColor colorWithRed:red/255.0 green:green/255.0 blue:blue/255.0 alpha:alpha_range];
+}
+
++ (NSString *) UIColorToHexString:(UIColor *)uiColor{
+    CGFloat red,green,blue,alpha;
+    [uiColor getRed:&red green:&green blue:&blue alpha:&alpha];
+    
+    NSString *hexString  = [NSString stringWithFormat:@"%02x%02x%02x%02x",
+                            ((int)alpha),((int)red),((int)green),((int)blue)];
+    return hexString;
+}
+
++ (int )getRGBValueForBlink:(NSString*)hexColor{
+    UIColor *color = [UIColor colorFromHexString:hexColor];
+    CGFloat r,g,b,a;
+    [color getRed:&r green:&g blue:&b alpha:&a];
+    int red = (int)(r * 255);
+    int green = (int)(g * 255);
+    int blue = (int)(b * 255);
+    
+    NSLog(@"r= %f,g = %f,b = %f",r,g,b);
+    int colorRGB =  (((red & 0xF8) << 8) | ((green & 0xFC) << 3) | (blue >> 3));
+    NSLog(@"colorRGB %d",colorRGB)  ;
+    return colorRGB;
+}
+#pragma mark label methods
++(void)setLableProperties:(UILabel*)label text:(NSString*)text textColor:(UIColor*)textColor fontName:(NSString *)fontName fontSize:(float)size alignment:(NSTextAlignment)alignment{
+    label.text = text;
+    label.font = [UIFont fontWithName:fontName size:size];
+    label.numberOfLines = 0;
+    label.textAlignment = alignment;
+    label.textColor = textColor;
+}
+
+
++(void)setLineSpacing:(UILabel*)label text:(NSString *)text spacing:(int)spacing{
+    NSString *labelText = text;
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:labelText];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:spacing];
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [labelText length])];
+    label.attributedText = attributedString ;
+}
+
+#pragma mark button methods
++(void)setButtonProperties:(UIButton*)tapbutton title:(NSString *)title selector:(SEL)selector titleColor:(UIColor*)titleColor{
+    [tapbutton setTitle:title forState:UIControlStateNormal];
+    [tapbutton setTitleColor:titleColor forState:UIControlStateNormal];
+    [tapbutton addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+}
+
+#pragma mark ui methods
++(void)addLineSeperator:(UIView*)view yPos:(int)ypos{
+    UIView *lineSeperator = [[UIView alloc]initWithFrame:CGRectMake(0, ypos, view.frame.size.width, 1)];
+    lineSeperator.backgroundColor = [UIColor lightGrayColor];
+    [view addSubview:lineSeperator];
+}
+
+
 @end

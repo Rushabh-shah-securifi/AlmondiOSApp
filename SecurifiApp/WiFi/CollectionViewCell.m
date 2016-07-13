@@ -52,7 +52,8 @@
     }
 }
 -(void)handleCornerCells{
-    self.dayLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    if(self.dayLabel == nil)
+        self.dayLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
     self.dayLabel.text = @"";
     self.backgroundColor = [UIColor clearColor];
     self.userInteractionEnabled = NO;
@@ -61,6 +62,7 @@
     NSLog(@"setlabel");
     if(self.dayLabel == nil)
         self.dayLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    
     self.dayLabel.text = @"";
     self.dayLabel.font = [UIFont securifiLightFont:12];
     self.dayLabel.textAlignment = NSTextAlignmentCenter;

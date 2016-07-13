@@ -21,23 +21,24 @@
 #import "CommonMethods.h"
 #import "UILabel+ActionSheet.h"
 #import "UIFont+Securifi.h"
+#import "SWRevealViewController.h"
 
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate>{
     UIButton *button, *button1;
 }
 
 @property(nonatomic) SFICloudStatusBarButtonItem *leftButton;
-@property (nonatomic) SFINotificationStatusBarButtonItem *notificationButton;
+@property(nonatomic) SFINotificationStatusBarButtonItem *notificationButton;
 @property(nonatomic) SecurifiToolkit *toolkit;
-@property(nonatomic, readonly) MBProgressHUD *HUD;
-@property (nonatomic, strong, nullable) UIRefreshControl *refreshControl NS_AVAILABLE_IOS(6_0) __TVOS_PROHIBITED;
+@property(nonatomic) MBProgressHUD *HUD;
 @property(nonatomic) SFINotificationsViewController *notify;
 @property(nonatomic) id <SFINotificationStore> store;
-@property (nonatomic) NSMutableArray *clientNotificationArr;
-@property (nonatomic) NSMutableArray *deviceNotificationArr;
-@property(nonatomic, readonly) CircleLabel *countLabel;
-@property(nonatomic, readonly) UIButton *countButton;
+@property(nonatomic) NSMutableArray *clientNotificationArr;
+@property(nonatomic) NSMutableArray *deviceNotificationArr;
+@property(nonatomic) CircleLabel *countLabel;
+@property(nonatomic) UIButton *countButton;
 @property(nonatomic) UIImageView *navigationImg;
+@property(nonatomic) UIView *bgView;
 
 @end
 
@@ -45,14 +46,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.toolkit = [SecurifiToolkit sharedInstance];
+    self.bgView = [[UIView alloc]init];
     
     self.navigationController.navigationBar.clipsToBounds = YES;
-    self.toolkit = [SecurifiToolkit sharedInstance];
     [self loadNotification];
     self.clientNotificationArr = [[NSMutableArray alloc]init];
     self.deviceNotificationArr = [[NSMutableArray alloc]init];
     [self navigationBarStyle];
-   
+    
+    
     button = [[UIButton alloc]init];
     button1 = [[UIButton alloc]init];
     button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -67,6 +70,70 @@
     [self initializeNotification];
     [self initializeHUD];
 }
+
+#pragma mark help screen
+-(void)showAlmondUpdateAvailableScreen:(UIView*)view{
+    int viewWidth = self.navigationController.view.frame.size.width;
+    
+    self.bgView.frame = CGRectMake(0, 0, viewWidth, self.navigationController.view.frame.size.height);
+    _bgView.backgroundColor = [UIColor whiteColor];
+    [view addSubview:self.bgView];
+    
+    SWRevealViewController *revealController = [self revealViewController];
+    UIButton *crossButton = [[UIButton alloc]initWithFrame:CGRectMake(10, 20, 30, 40)];
+    [crossButton setImage:[CommonMethods imageNamed:@"drawer" withColor:[UIColor blackColor]] forState:UIControlStateNormal];
+    crossButton.tintColor = [UIColor blackColor];
+    [crossButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+    [self.bgView addSubview:crossButton];
+
+    UILabel *hdrTitle = [[UILabel alloc]initWithFrame:CGRectMake(0, 22, viewWidth, 40)];
+    [CommonMethods setLableProperties:hdrTitle text:@"Almond Update Available" textColor:[UIColor blackColor] fontName:@"AvenirLTStd-Heavy" fontSize:20 alignment:NSTextAlignmentCenter];
+    hdrTitle.center = CGPointMake(self.view.bounds.size.width/2 + 5, hdrTitle.center.y);
+    [self.bgView addSubview:hdrTitle];
+    
+    [CommonMethods addLineSeperator:self.bgView yPos:65];
+    
+    //image 200
+    UIImageView *routerSettingImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 100, 200, 180)];
+    routerSettingImg.center = CGPointMake(self.view.bounds.size.width/2, routerSettingImg.center.y);
+    routerSettingImg.image = [UIImage imageNamed:@"almond_settings"];
+    [self.bgView addSubview:routerSettingImg];
+    
+    //detail view
+    UIView *detailView = [[UIView alloc]initWithFrame:CGRectMake(0, 315, viewWidth,250)];
+    [self.bgView addSubview:detailView];
+    
+    UILabel *detailTitle = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, viewWidth, 20)];
+    [CommonMethods setLableProperties:detailTitle text:@"Your Almond requires an update." textColor:[SFIColors grayShade] fontName:@"AvenirLTStd-Heavy" fontSize:20 alignment:NSTextAlignmentCenter];
+    [detailView addSubview:detailTitle];
+    
+    UILabel *detail = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, viewWidth-15, 220)];
+    NSString *text = @"With this update, you will receive a new dashboard in your Almond app as well as improvements for stability under the hood. The Almond firmware needs to be updated to remain compatible with this version of the app. Please tap on \"Settings\" on the Almond LCD and follow the on screen instructions to update your firmware.";
+    [CommonMethods setLableProperties:detail text:text textColor:[SFIColors grayShade] fontName:@"AvenirLTStd-Light" fontSize:18 alignment:NSTextAlignmentCenter];
+    [CommonMethods setLineSpacing:detail text:text spacing:3];
+    [detail sizeToFit];
+    [detailView addSubview:detail];
+
+    //button
+//    UIButton *gotItButton = [[UIButton alloc]initWithFrame:CGRectMake(10, self.navigationController.view.frame.size.height - 50, viewWidth - 20, 40)];
+//    [self setButtonProperties:gotItButton title:@"Ok, got it" selector:@selector(onGotItTap:) titleColor:[UIColor whiteColor]];
+//    gotItButton.backgroundColor = [SFIColors helpPurpleColor];
+//    [self.bgView addSubview:gotItButton];
+}
+
+
+//-(void)onCrossTap:(UIButton *)tapbutton{
+//    NSLog(@"onCrossTap");
+//    [self.bgView removeFromSuperview];
+//    [self.tabBarController.tabBar setHidden:NO];
+//}
+
+//-(void)onGotItTap:(UIButton *)button{
+//    NSLog(@"onGotItTap");
+//    [self.bgView removeFromSuperview];
+//    [self.tabBarController.tabBar setHidden:NO];
+//}
+
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
@@ -83,6 +150,10 @@
     [center addObserver:self
                selector:@selector(onCurrentAlmondChanged:)
                    name:kSFIDidChangeCurrentAlmond
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onAlmondListDidChange:)
+                   name:kSFIDidUpdateAlmondList
                  object:nil];
     [center addObserver:self
                selector:@selector(onNetworkUpNotifier:)
@@ -116,6 +187,7 @@
                selector:@selector(onNotificationCountChanged:)
                    name:kSFINotificationDidMarkViewed
                  object:nil];
+
     [self.toolkit tryRefreshNotifications];
     [self initializeNotification];
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -255,9 +327,13 @@
 }
 
 - (void)onCurrentAlmondChanged:(id)sender {
+    NSLog(@"on Current almond changed");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self checkToShowUpdateScreen];
+    });
+    
     [self.toolkit.devices removeAllObjects];
     [self.toolkit.clients removeAllObjects];
-    [self initializeAlmondData];
     [self initializeNotification];
     [self markNetworkStatusIcon];
     [self.toolkit tryRefreshNotifications];
@@ -266,10 +342,27 @@
     });
 }
 
--(void)initializeAlmondData{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self tryInstallRefreshControl];
+- (void)onAlmondListDidChange:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self checkToShowUpdateScreen];
     });
+}
+
+
+-(void)checkToShowUpdateScreen{
+    SFIAlmondPlus *currentAlmond = self.toolkit.currentAlmond;
+    NSLog(@"current almond dash: %@", currentAlmond);
+    if(currentAlmond.firmware == nil)
+        return;
+    NSLog(@"passed");
+    BOOL isNewVersion = [currentAlmond supportsGenericIndexes:currentAlmond.firmware];
+    if(!isNewVersion){
+        [self.tabBarController.tabBar setHidden:YES];
+        [self showAlmondUpdateAvailableScreen:self.navigationController.view];
+    }else{
+        [self.tabBarController.tabBar setHidden:NO];
+        [self.bgView removeFromSuperview];
+    }
 }
 
 - (BOOL)isDeviceListEmpty {
@@ -278,18 +371,6 @@
 
 -(BOOL)isClientListEmpty{
     return self.toolkit.clients.count == 0;
-}
-
-- (void)tryInstallRefreshControl {
-    if ([self isDeviceListEmpty] && [self isClientListEmpty]) {
-        self.refreshControl = nil;
-    }
-    else {
-        UIRefreshControl *refresh = [UIRefreshControl new];
-        NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
-        refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force device data refresh" attributes:attributes];
-        self.refreshControl = refresh;
-    }
 }
 
 #pragma mark HUD
@@ -306,15 +387,11 @@
 }
 #pragma mark Update
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
+    NSLog(@"dash onDeviceListAndDynamicResponseParsed");
     [self updateDeviceClientListCount];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.dashboardTable reloadData];
         [self.HUD hide:YES];
-        if(self.refreshControl == nil){
-            [self tryInstallRefreshControl];
-        }else{
-            [self.refreshControl endRefreshing];
-        }
     });
 }
 
@@ -542,7 +619,10 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
     }
-    if (indexPath.section == 0 && self.deviceNotificationArr.count > indexPath.row) {
+    if (indexPath.section == 0) {
+        if(indexPath.row > (int)self.deviceNotificationArr.count-1)
+            return cell;
+        
         SFINotification *notification = [self.deviceNotificationArr objectAtIndex:indexPath.row];
         [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
         cell.textLabel.numberOfLines = 2;
@@ -554,7 +634,10 @@
         cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[SFIColors ruleBlueColor]];
         cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
     }
-    else if(indexPath.section == 1 && self.clientNotificationArr.count > indexPath.row){
+    else{
+        if(indexPath.row > (int)self.clientNotificationArr.count-1)
+            return cell;
+        
         SFINotification *notification = [self.clientNotificationArr objectAtIndex:indexPath.row];
         [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
         if ([notification.deviceName rangeOfString:@"joined" options:NSCaseInsensitiveSearch].location != NSNotFound){

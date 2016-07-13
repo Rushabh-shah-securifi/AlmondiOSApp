@@ -154,6 +154,13 @@
     return [UIColor colorFromHexString:@"444444"];
 }
 
++ (UIColor *)helpPurpleColor{
+    return [UIColor colorFromHexString:@"7b1fa2"];
+}
+
++ (UIColor *)grayShade{
+    return [UIColor colorFromHexString:@"444444"];
+}
 
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName {
     self = [super init];

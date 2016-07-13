@@ -94,7 +94,7 @@
     NSLog(@"tapCheckMark %@",self.deviceNameField.text);
     [self.deviceNameField resignFirstResponder];
     if(self.deviceNameField.text.length == 0)
-        [self showAlert:@"Please enter number"];
+        [self showAlert:@"Please enter"];
     else if ([self isAllDigits:self.deviceNameField.text])
     {
         BOOL isNameLocationField = [self.genericIndexValue.genericIndex.ID isEqualToString:@"-1"] || [self.genericIndexValue.genericIndex.ID isEqualToString:@"-2"];

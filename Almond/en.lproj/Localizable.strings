@@ -722,7 +722,7 @@ Follow it, then login below.";
 "inactiveGracePeriod"="Inactive Grace Period";
 "allowOnNetwork"="Allow On Network";
 "always"="Always";
-"blocked_"="Blocked";
+"blocked_"="BLOCKED";
 "onSchedule"="On Schedule";
 "signalStrength"="Signal Strength";
 "Can Be Blocked"="Can Be Blocked";

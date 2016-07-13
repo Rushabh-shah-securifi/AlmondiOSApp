@@ -29,7 +29,7 @@
 
 @interface SFIScenesTableViewController ()<UITableViewDataSource,UITableViewDelegate,SFIScenesTableViewCellDelegate,MBProgressHUDDelegate,MessageViewDelegate> {
     
-    IBOutlet UIButton *btnAdd;
+    UIButton *btnAdd;
     NSInteger randomMobileInternalIndex;
 }
 @property SFIAlmondPlus *currentAlmond;
@@ -102,6 +102,11 @@
     [center addObserver:self
                selector:@selector(onCurrentAlmondChanged:)
                    name:kSFIDidChangeCurrentAlmond
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onAlmondListDidChange:)
+                   name:kSFIDidUpdateAlmondList
                  object:nil];
     
     [center addObserver:self
@@ -371,6 +376,9 @@
 
 #pragma mark Notifications
 - (void)onCurrentAlmondChanged:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self checkToShowUpdateScreen];
+    });
     [self.toolkit.scenesArray removeAllObjects];
     
     [self markAlmondTitleAndMac];
@@ -380,6 +388,11 @@
     });
 }
 
+- (void)onAlmondListDidChange:(id)notice {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self checkToShowUpdateScreen];
+    });
+}
 - (void)gotResponseFor1064:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
