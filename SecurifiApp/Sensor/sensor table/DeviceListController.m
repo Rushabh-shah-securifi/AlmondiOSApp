@@ -39,7 +39,7 @@
 
 @property(nonatomic, readonly) SFIColors *almondColor;
 @property(nonatomic) NSTimer *mobileCommandTimer;
-@property(nonatomic) UIView *bgView;
+@property(nonatomic) UIView *maskView;
 @property(nonatomic) UIPageControl *pageControl;
 @property(nonatomic) UIView *trigGeoImg;
 @property(nonatomic) UILabel *trigDetail;
@@ -60,7 +60,6 @@ int mii;
     self.toolkit = [SecurifiToolkit sharedInstance];
     //ensure list is empty initially
     [self initializeAlmondData];
-//    [self showHelpCenterPath];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -73,6 +72,7 @@ int mii;
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
+//        [self showHelpCenterPath];
     });
 }
 
@@ -719,14 +719,15 @@ int mii;
 #pragma mark help screens
 
 -(void)showHelpCenterPath{
-    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
-    [self.bgView setBackgroundColor:[SFIColors maskColor]];
-    [self.navigationController.view addSubview:self.bgView];
+    [self.tabBarController.tabBar setHidden:YES];
+    self.maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
+    [self.maskView setBackgroundColor:[SFIColors maskColor]];
+    [self.navigationController.view addSubview:self.maskView];
     
     int helpViewHeight = 140;
     UIView *helpView1 = [[UIView alloc] initWithFrame:CGRectMake(0, self.navigationController.view.frame.size.height - helpViewHeight, self.view.frame.size.width, helpViewHeight)];
     helpView1.backgroundColor = [UIColor whiteColor];
-    [self.bgView addSubview:helpView1];
+    [self.maskView addSubview:helpView1];
     
     UILabel *title2 = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 100, 20)];
     title2.attributedText = [CommonMethods getAttributeString:@"Help Center" fontSize:HEADER_FONT_SIZE LightFont:NO];
@@ -744,13 +745,13 @@ int mii;
 }
 
 -(void)showTriggersHelpPrimary{
-    self.bgView = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height - 120 - self.tabBarController.tabBar.frame.size.height, self.view.frame.size.height, self.view.frame.size.width)];
-    self.bgView.backgroundColor = [UIColor whiteColor];
-    [self.navigationController.view addSubview:self.bgView];
+    self.maskView = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height - 120 - self.tabBarController.tabBar.frame.size.height, self.view.frame.size.height, self.view.frame.size.width)];
+    self.maskView.backgroundColor = [UIColor whiteColor];
+    [self.navigationController.view addSubview:self.maskView];
     
     UIView *triggerBGView = [[UIView alloc]initWithFrame:CGRectMake(8, 8, self.view.frame.size.width-16, 110)];
     triggerBGView.backgroundColor = [SFIColors helpYellowColor];
-    [self.bgView addSubview:triggerBGView];
+    [self.maskView addSubview:triggerBGView];
     
     UILabel *title2 = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 200, 20)];
     title2.attributedText = [CommonMethods getAttributeString:@"Wi-Fi Triggers" fontSize:HEADER_FONT_SIZE LightFont:NO];
@@ -764,23 +765,23 @@ int mii;
     UIButton *button3 = [[UIButton alloc]initWithFrame:CGRectMake(8, 119, buttonWidth, 40)];
     [self setButtonProperties:button3 title:@"Show Me" selector:@selector(onShowMeTap:) titleColor:[UIColor blackColor]];
     button3.backgroundColor = [SFIColors helpYellowColor];
-    [self.bgView addSubview:button3];
+    [self.maskView addSubview:button3];
     
     UIButton *button4 = [[UIButton alloc]initWithFrame:CGRectMake(buttonWidth + 1 + 8, 119, buttonWidth-1, 40)];
     [self setButtonProperties:button4 title:@"Hide" selector:@selector(onHideTap:) titleColor:[UIColor blackColor]];
     button4.backgroundColor = [SFIColors helpYellowColor];
-    [self.bgView addSubview:button4];
+    [self.maskView addSubview:button4];
 }
 
 -(void)addTriggerHelpPage{
-    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.navigationController.view.frame.size.width, self.navigationController.view.frame.size.height)];
-    [self.bgView setBackgroundColor:[SFIColors maskColor]];
-    [self.navigationController.view addSubview:self.bgView];
+    self.maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.navigationController.view.frame.size.width, self.navigationController.view.frame.size.height)];
+    [self.maskView setBackgroundColor:[SFIColors maskColor]];
+    [self.navigationController.view addSubview:self.maskView];
     
     int triggerHeight = 350;
     UIView *triggerView = [[UIView alloc]initWithFrame:CGRectMake(0, self.navigationController.view.frame.size.height - triggerHeight, self.view.frame.size.width, triggerHeight)];
     triggerView.backgroundColor = [UIColor whiteColor];
-    [self.bgView addSubview:triggerView];
+    [self.maskView addSubview:triggerView];
     
     UIView *toolBarView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
     [triggerView addSubview:toolBarView];
@@ -829,18 +830,18 @@ int mii;
     self.pageControl.currentPageIndicatorTintColor = [SFIColors lightBlueColor];
     
     UIImageView *imgViewLeft = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 50, 39)];
-    imgViewLeft.backgroundColor = [UIColor yellowColor];
+    imgViewLeft.image = [UIImage imageNamed:@"leftarrow-icon"];
     [self.pageControl addSubview:imgViewLeft];
     
     UIImageView *imgViewRight = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width-50, 0, 50, 39)];
-    imgViewRight.backgroundColor = [UIColor yellowColor];
+    imgViewRight.image = [UIImage imageNamed:@"rightarrow-icon"];
     [self.pageControl addSubview:imgViewRight];
 }
 
 #pragma mark help screen selector methods
 -(void)onGotItTap:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.bgView removeFromSuperview];
+        [self.maskView removeFromSuperview];
         [self.tabBarController.tabBar setHidden:NO];
         [self showTriggersHelpPrimary];
     });
@@ -848,7 +849,7 @@ int mii;
 
 -(void)onShowMeTap:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.bgView removeFromSuperview];
+        [self.maskView removeFromSuperview];
         [self addTriggerHelpPage];
         [self.tabBarController.tabBar setHidden:YES];
     });
@@ -856,7 +857,7 @@ int mii;
 
 -(void)onHideTap:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.bgView removeFromSuperview];
+        [self.maskView removeFromSuperview];
     });
 }
 

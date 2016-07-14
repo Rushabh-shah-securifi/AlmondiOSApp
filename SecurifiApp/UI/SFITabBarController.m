@@ -245,7 +245,6 @@ typedef NS_ENUM(int, TabBarMode) {
         UIImage *icon = [UIImage imageNamed:@"icon_sensor"];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_DEVICES image:icon selectedImage:icon];
-        ctrl.hidesBottomBarWhenPushed = YES;
         self.sensorTab = nav;
     }
     return _sensorTab;
