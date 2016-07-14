@@ -101,7 +101,9 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
     }
 
     NSString *msg = NSLocalizedString(@"Please wait while your Almond is being linked to cloud.", @"Please wait while your Almond is being linked to cloud.");
-    [self showHud:msg];
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self showHud:msg];
+    });
 
     [self sendAffiliationRequest:code];
 }

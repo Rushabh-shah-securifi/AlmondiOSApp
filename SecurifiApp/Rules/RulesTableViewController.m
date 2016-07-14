@@ -18,6 +18,7 @@
 #import "RulePayload.h"
 #import "Colours.h"
 #import "Analytics.h"
+#import "UIViewController+Securifi.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
@@ -87,6 +88,8 @@ CGPoint tablePoint;
                    name:SAVED_TABLEVIEW_RULE_COMMAND
                  object:nil];
     
+    [center addObserver:self selector:@selector(onRuleCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
+    
     [center addObserver:self
                selector:@selector(onCurrentAlmondChanged:)
                    name:kSFIDidChangeCurrentAlmond
@@ -129,7 +132,9 @@ CGPoint tablePoint;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self checkToShowUpdateScreen];
     });
+    [self markAlmondTitleAndMac];
 }
+
 -(void)initializeTableViewAttributes{
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -142,6 +147,33 @@ CGPoint tablePoint;
         [self.tableView reloadData];
         [self.HUD hide:YES];
         self.tableView.contentOffset = tablePoint;
+    });
+}
+
+-(void)onRuleCommandResponse:(id)sender{ //mobile command
+    NSLog(@"onUpdateDeviceIndexResponse");
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    SFIAlmondPlus *almond = [self.toolkit currentAlmond];
+    BOOL local = [self.toolkit useLocalNetwork:almond.almondplusMAC];
+    NSDictionary *payload;
+    if(local){
+        payload = [dataInfo valueForKey:@"data"];
+    }else{
+        payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
+    }
+    NSLog(@"devicelistcontroller - mobile - payload: %@", payload);
+    BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.HUD hide:YES];
+        if(isSuccessful == NO){
+            [self showToast:@"Sorry, Could not update!"];
+        }else{
+            [self showToast:@"Successfully updated!"];
+        }
     });
 }
 
@@ -297,22 +329,6 @@ CGPoint tablePoint;
         [self asyncSendCommand:cloudCommand];
     }
     [[Analytics sharedInstance] markDeleteRule];
-}
-
--(void)onRuleCommandResponse:(id)sender{ //for delete//need to be work
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    NSDictionary * mainDict = [data valueForKey:@"data"];
-    if (randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
-        return;
-    }
-    
-    NSString * success = [mainDict valueForKey:@"Success"];
-    if (![success isEqualToString:@"true"]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"scene.alert-title.Oops", @"Oops") message:NSLocalizedString(@"scene.alert-msg.Sorry, There was some problem with this request, try later!", @"Sorry, There was some problem with this request, try later!")
-                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
-        [alert show];
-    }
 }
 
 -(NSDictionary *)getdeleteAllPayload{

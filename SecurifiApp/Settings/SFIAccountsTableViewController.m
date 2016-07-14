@@ -1558,7 +1558,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }
     else {
         DLog(@"Reason Code %d", obj.reasonCode);
-        [self.HUD hide:YES];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.HUD hide:YES];
+        });
     }
 
     [self sendOwnedAlmondDataRequest];
@@ -1592,7 +1594,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
 
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
     if (!obj.isSuccessful) {
         DLog(@"Reason Code %d", obj.reasonCode);
         //Display appropriate reason
@@ -1672,7 +1676,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
 
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
     if (!obj.isSuccessful) {
 
         DLog(@"Reason Code %d", obj.reasonCode);
@@ -1830,7 +1836,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)sendUserInviteRequest:(NSString *)emailID almondMAC:(NSString *)almondMAC {
@@ -1916,7 +1924,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)sendDelSecondaryUserRequest:(NSString *)emailID almondMAC:(NSString *)almondMAC {
@@ -1998,7 +2008,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)sendAlmondNameChangeRequest:(NSString *)almondplusMAC {
@@ -2025,7 +2037,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [self.almondNameChangeTimer invalidate];
 
     if (!self.isAlmondNameChangeSuccessful) {
-        [self.HUD hide:YES];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.HUD hide:YES];
+        });
         NSLog(@"onChangeAlmondNameTimeout nnnnnn");
         [[[iToast makeText:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name111")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
@@ -2076,7 +2090,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         
         [[[iToast makeText:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name2222")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)mobileCommandResponseCallback:(id)sender {
@@ -2099,7 +2115,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         });
     }
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)sendSharedWithMeAlmondRequest {
@@ -2131,7 +2149,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
    GenericCommand *cmd = [[SecurifiToolkit sharedInstance] makeAlmondListCommand];
     [[SecurifiToolkit sharedInstance] asyncSendCommand:cmd];
     
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)sendDelMeAsSecondaryUserRequest:(NSString *)almondMAC {
@@ -2197,7 +2217,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {

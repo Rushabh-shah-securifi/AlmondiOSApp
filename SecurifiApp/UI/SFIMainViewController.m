@@ -141,7 +141,9 @@
     // Else try to connect
     if (onViewAppearing) {
         self.HUD.labelText = NSLocalizedString(@"mainviewcontroller_Connecting. Please wait!", @"Connecting. Please wait!");
-        [self.HUD show:YES];
+        dispatch_async(dispatch_get_main_queue(), ^(){
+            [self.HUD show:YES];
+        });
     }
 
     [toolkit initToolkit];

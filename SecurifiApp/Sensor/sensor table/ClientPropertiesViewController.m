@@ -301,7 +301,9 @@ int randomMobileInternalIndex;
 #pragma mark common cell delegate
 
 -(void)delegateClientPropertyEditSettingClick{
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self.HUD hide:YES];
+    });
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -370,7 +372,9 @@ int randomMobileInternalIndex;
         return;
     }
     NSDictionary *payload = dataInfo[@"data"];
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self.HUD hide:YES];
+    });
     
     NSString *commandType = payload[COMMAND_TYPE];
     if([commandType isEqualToString:@"DynamicAllClientsRemoved"] || [commandType isEqualToString:@"DynamicClientRemoved"]){

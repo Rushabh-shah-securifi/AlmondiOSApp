@@ -381,15 +381,18 @@
     NSLog(@"configureNetworkSettings handler method ");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit setConnectionMode:mode forAlmond:self.almondMac];
-    [self showHUD:@"Connecting..."];
-    [self.HUD hide:YES afterDelay:5]; // in case the request times out
-    [toolkit.devices removeAllObjects];
-    [toolkit.clients removeAllObjects];
-    [toolkit.scenesArray removeAllObjects];
-    [toolkit.ruleList removeAllObjects];
     dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:@"Connecting..."];
+        [self.HUD hide:YES afterDelay:5]; // in case the request times out
+        
+        [toolkit.devices removeAllObjects];
+        [toolkit.clients removeAllObjects];
+        [toolkit.scenesArray removeAllObjects];
+        [toolkit.ruleList removeAllObjects];
+        
         [self.tableView reloadData];
     });
+    
 }
 
 - (void)onAlmondModeButtonPressed:(id)sender {
@@ -420,9 +423,11 @@
     //        return;
     //    }
     NSLog(@"showHUD ");
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self showHUD:msg];
+        [self.HUD hide:YES afterDelay:10]; // in case the request times out
+    });
     
-    [self showHUD:msg];
-    [self.HUD hide:YES afterDelay:10]; // in case the request times out
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncRequestAlmondModeChange:self.almondMac mode:newMode];

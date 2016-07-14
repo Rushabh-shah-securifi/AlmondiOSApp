@@ -392,7 +392,9 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self checkToShowUpdateScreen];
     });
+    [self markAlmondTitleAndMac];
 }
+
 - (void)gotResponseFor1064:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];

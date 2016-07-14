@@ -266,7 +266,10 @@
 }
 
 - (IBAction)onForgetPasswordAction:(id)sender {
-    [self.HUD show:YES];
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self.HUD show:YES];
+    });
+    
     [self sendResetPasswordRequest];
 }
 
