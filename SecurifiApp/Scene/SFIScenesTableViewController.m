@@ -64,6 +64,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
+        [self initializeHelpScreensfirst:@"Scenes"];
     });
 }
 

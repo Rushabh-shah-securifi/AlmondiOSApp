@@ -22,7 +22,7 @@
 #import "CommonMethods.h"
 #import "SFIColors.h"
 
-@interface SFITableViewController () <MBProgressHUDDelegate, SWRevealViewControllerDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate>
+@interface SFITableViewController () <MBProgressHUDDelegate, SWRevealViewControllerDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate, HelpScreensDelegate>
 @property(nonatomic, readonly) SFINotificationStatusBarButtonItem *notificationsStatusButton;
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *connectionStatusBarButton;
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *almondModeBarButton;
@@ -32,6 +32,7 @@
 @property(nonatomic) UIEdgeInsets originalScrollIndicatorInsets;
 @property(nonatomic) AlertView *alert;
 @property(nonatomic) UIView *bgView;
+
 @end
 
 @implementation SFITableViewController
@@ -52,6 +53,7 @@
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.bgView = [[UIView alloc]init];
+    self.maskView = [[UIView alloc]init];
     
     SecurifiConfigurator *configurator = toolkit.configuration;
     _enableNotificationsView = configurator.enableNotifications;
@@ -904,13 +906,22 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *currentAlmond = toolkit.currentAlmond;
     NSLog(@"currentalmond: %@", currentAlmond);
-    if(currentAlmond.firmware == nil)
+    if(currentAlmond.firmware == nil){
+        [self tryRemoveBGView];
         return;
+    }
+    NSLog(@"passed");
     BOOL isNewVersion = [currentAlmond supportsGenericIndexes:currentAlmond.firmware];
     if(!isNewVersion){
         [self.tabBarController.tabBar setHidden:YES];
         [self showAlmondUpdateAvailableScreen:self.navigationController.view];
     }else{
+        [self tryRemoveBGView];
+    }
+}
+
+-(void)tryRemoveBGView{
+    if([self.navigationController.view.subviews containsObject:self.bgView]){
         [self.tabBarController.tabBar setHidden:NO];
         [self.bgView removeFromSuperview];
     }
@@ -957,26 +968,50 @@
     [CommonMethods setLineSpacing:detail text:text spacing:3];
     [detail sizeToFit];
     [detailView addSubview:detail];
+}
+
+-(void)initializeHelpScreensfirst:(NSString *)itemName{
+    NSLog(@"nav view heigt: %f, view ht: %f", self.navigationController.view.frame.size.height, self.view.frame.size.height);
+
+    self.helpScreensObj = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
+    self.helpScreensObj.delegate = self;
     
-    //button
-    //    UIButton *gotItButton = [[UIButton alloc]initWithFrame:CGRectMake(10, self.navigationController.view.frame.size.height - 50, viewWidth - 20, 40)];
-    //    [self setButtonProperties:gotItButton title:@"Ok, got it" selector:@selector(onGotItTap:) titleColor:[UIColor whiteColor]];
-    //    gotItButton.backgroundColor = [SFIColors helpPurpleColor];
-    //    [self.bgView addSubview:gotItButton];
+    [self.helpScreensObj expandView];
+    [self.helpScreensObj addHelpItem:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height-20)];
+    
+    self.helpScreensObj.backgroundColor = [UIColor grayColor];
+    
+    self.helpScreensObj.startScreen = [CommonMethods getDict:@"Guides" itemName:itemName];
+    [self.helpScreensObj initailizeFirstScreen];
+    [self.navigationController.view addSubview:self.helpScreensObj];
+    [self.tabBarController.tabBar setHidden:YES];
 }
 
 
-//-(void)onCrossTap:(UIButton *)tapbutton{
-//    NSLog(@"onCrossTap");
-//    [self.bgView removeFromSuperview];
-//    [self.tabBarController.tabBar setHidden:NO];
-//}
+- (void)showOkGotItView{
+    self.maskView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height);
+    
+    [self.maskView setBackgroundColor:[SFIColors maskColor]];
+    [self.navigationController.view addSubview:self.maskView];
+    
+    int helpViewHeight = 140;
+    self.helpScreensObj.frame = CGRectMake(0, self.navigationController.view.frame.size.height - helpViewHeight, self.view.frame.size.width, helpViewHeight);
+    [self.helpScreensObj addGotItView:CGRectMake(0, 0, self.view.frame.size.width, helpViewHeight)];
+    [self.maskView addSubview:self.helpScreensObj];
+}
 
-//-(void)onGotItTap:(UIButton *)button{
-//    NSLog(@"onGotItTap");
-//    [self.bgView removeFromSuperview];
-//    [self.tabBarController.tabBar setHidden:NO];
-//}
+#pragma mark helpscreens delegate methods
 
+- (void)resetViewDelegate{
+    NSLog(@"table view");
+    [self.maskView removeFromSuperview];
+    [self.helpScreensObj removeFromSuperview];
+    [self.tabBarController.tabBar setHidden:NO];
+}
+
+- (void)onSkipTapDelegate{
+    [self.tabBarController.tabBar setHidden:YES];
+    [self showOkGotItView];
+}
 
 @end

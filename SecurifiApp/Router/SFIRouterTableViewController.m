@@ -109,6 +109,7 @@ int mii;
     self.local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
+        [self initializeHelpScreensfirst:@"WiFi"];
     });
     
 }

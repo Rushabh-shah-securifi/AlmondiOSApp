@@ -11,6 +11,7 @@
 #import "SFIMessageViewController.h"
 #import "RulesTableViewController.h"
 #import "DeviceListController.h"
+#import "DashboardViewController.h"
 
 #define TAB_BAR_DEVICES @"Devices"
 #define TAB_BAR_ROUTER @"WiFi"
@@ -253,7 +254,8 @@ typedef NS_ENUM(int, TabBarMode) {
 - (UIViewController *)dashboardTab {
     if (!_dashboardTab) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainDashboard" bundle:nil];
-        UIViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"DashboardViewController"];
+        DashboardViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"DashboardViewController"];
+        
         UIImage *icon = [UIImage imageNamed:@"icon_dashboard"];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_DASHBOARD image:icon selectedImage:icon];

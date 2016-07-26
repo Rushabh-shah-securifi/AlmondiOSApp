@@ -92,4 +92,5 @@
 
 + (UIColor *)darkerColorForColor:(UIColor *)c;
 
++ (UIColor *)getHelpCenterColor:(NSString*)color;
 @end

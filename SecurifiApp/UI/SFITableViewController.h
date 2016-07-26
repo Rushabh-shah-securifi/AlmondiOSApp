@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RouterNetworkSettingsEditor.h"
+#import "HelpScreens.h"
 
 @class MBProgressHUD;
 
@@ -31,6 +32,10 @@
 
 // Current almond mac being displayed
 @property(nonatomic, readonly) NSString *almondMac;
+
+@property(nonatomic) HelpScreens *helpScreensObj;
+
+@property(nonatomic) UIView *maskView;
 
 // declares the almond mac being displayed
 - (void)markAlmondMac:(NSString *)almondMac;
@@ -63,4 +68,8 @@
 - (void)removeAlert;
 
 - (void)checkToShowUpdateScreen;
+
+- (void)initializeHelpScreensfirst:(NSString*)itemName;
+
+- (void)resetViewDelegate;
 @end

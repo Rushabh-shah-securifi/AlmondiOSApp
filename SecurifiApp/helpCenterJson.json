@@ -1,0 +1,187 @@
+{
+    "HelpItems": [{
+                  "name": "Guides",
+                  "icon": "video_library_ic",
+                  "color": "homemode",
+                  "items": [{
+                            "name": "Generic Guide",
+                            "screencount": "3",
+                            "screens": [{
+                                        "title": "Notifications",
+                                        "description": "Notifications_desc",
+                                        "image": "foreground"
+                                        }, {
+                                        "title": "Notifications",
+                                        "description": "Notifications_desc",
+                                        "image": "foreground"
+                                        }, {
+                                        "title": "Notifications",
+                                        "description": "Notifications_desc",
+                                        "image": "foreground"
+                                        }]
+                            },
+                            
+                            {
+                            "name": "Welcome",
+                            "screencount": "5",
+                            "screens": [{
+                                        "title": "Welcome",
+                                        "description": "Notifications_desc",
+                                        "image": "h_almond_logo"
+                                        }, {
+                                        "title": "The_Dashboard",
+                                        "description": "Notifications_desc",
+                                        "image": "h_modes"
+                                        }, {
+                                        "title": "Almond_Modes",
+                                        "description": "Notifications_desc",
+                                        "image": "h_home_away"
+                                        }, {
+                                        "title": "Almond_Notifications",
+                                        "description": "Notifications_desc",
+                                        "image": "h_notifications"
+                                        }, {
+                                        "title": "Theres_More",
+                                        "description": "Notifications_desc",
+                                        "image": "h_rules"
+                                        }]
+                            },
+                            
+                            {
+                            "name": "Devices",
+                            "screencount": "4",
+                            "screens": [{
+                                        "title": "Take_a_pick",
+                                        "description": "Take_a_pick_Desc",
+                                        "image": "h_sensorssmartdevices"
+                                        }, {
+                                        "title": "Adding_a_New_Device",
+                                        "description": "Adding_a_New_Device_Desc",
+                                        "image": "h_addnewdev"
+                                        }, {
+                                        "title": "Quick_Actions",
+                                        "description": "Quick_Actions_Desc",
+                                        "image": "h_deviceactions"
+                                        }, {
+                                        "title": "Device_Settings",
+                                        "description": "Device_Settings_Desc",
+                                        "image": "h_notificationpreferences"
+                                        }]
+                            }, {
+                            "name": "Scenes",
+                            "screencount": "4",
+                            "screens": [{
+                                        "title": "scene_mean",
+                                        "description": "What_is_scene_Desc",
+                                        "image": "h_scene_mean"
+                                        }, {
+                                        "title": "Creating_a_Scene",
+                                        "description": "Creating_a_Scene_Desc",
+                                        "image": "h_scene_create"
+                                        }, {
+                                        "title": "Scene_Behaviour",
+                                        "description": "Scene_Behaviour_Desc",
+                                        "image": "h_scene_behave"
+                                        }, {
+                                        "title": "Alexa_and_Scenes",
+                                        "description": "Alexa_and_Scenes_Desc",
+                                        "image": "h_scene_alexa"
+                                        }]
+                            }, {
+                            "name": "Rules",
+                            "screencount": "4",
+                            "screens": [{
+                                        "title": "Rules",
+                                        "description": "Rules_Desc",
+                                        "image": "h_rule_mean"
+                                        }, {
+                                        "title": "Creating_a_Rule",
+                                        "description": "Creating_a_Rule_Desc",
+                                        "image": "h_rule_create"
+                                        }, {
+                                        "title": "Rule_Chaining",
+                                        "description": "Rule_Chaining_Desc",
+                                        "image": "h_rule_chain"
+                                        }, {
+                                        "title": "IFTTT",
+                                        "description": "IFTTT_Desc",
+                                        "image": "foreground"
+                                        }]
+                            }, {
+                            "name": "WiFi",
+                            "screencount": "4",
+                            "screens": [{
+                                        "title": "More_to_Almond",
+                                        "description": "More_to_Almond_Desc",
+                                        "image": "h_rule_mean"
+                                        }, {
+                                        "title": "Guest_Network",
+                                        "description": "Guest_Network_Desc",
+                                        "image": "h_rule_create"
+                                        }, {
+                                        "title": "Share_Control",
+                                        "description": "Share_Control_Desc",
+                                        "image": "h_rule_chain"
+                                        }, {
+                                        "title": "Advanced_Features",
+                                        "description": "Advanced_Features_Desc",
+                                        "image": "foreground"
+                                        }]
+                            }, {
+                            "name": "Wi-Fi Triggers",
+                            "screencount": "3",
+                            "screens": [{
+                                        "title": "Nothing",
+                                        "description": "wifi_help",
+                                        "image": "foreground"
+                                        }, {
+                                        "title": "Nothing",
+                                        "description": "wifi_help1",
+                                        "image": "foreground"
+                                        }, {
+                                        "title": "Nothing",
+                                        "description": "wifi_help2",
+                                        "image": "foreground"
+                                        }]
+                            }
+                            ]
+                  }, {
+                  "name": "Help Topics",
+                  "icon": "help_outline_ic",
+                  "color": "awaymode",
+                  "items": [{
+                            "name": "The Dashboard",
+                            "screencount": "1",
+                            "screens": [{
+                                        "title": "Notifications",
+                                        "description": "Notifications_desc",
+                                        "image": "foreground"
+                                        }]
+                            }, {
+                            "name": "Managing Your Scenes",
+                            "screencount": "1",
+                            "screens": [{
+                                        "title": "Notifications",
+                                        "description": "Notifications_desc",
+                                        "image": "foreground"
+                                        }]
+                            
+                            }, {
+                            "name": "Tips on Home Security",
+                            "screencount": "1",
+                            "screens": [{
+                                        "title": "Notifications",
+                                        "description": "Notifications_desc",
+                                        "image": "foreground"
+                                        }]
+                            }]
+                  
+                  
+                  }, {
+                  "name": "Support",
+                  "icon": "chat_bubble_ic",
+                  "color": "support",
+                  "items": []
+                  }]
+    
+}

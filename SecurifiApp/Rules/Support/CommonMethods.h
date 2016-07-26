@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SFIButtonSubProperties.h"
+#import "URIData.h"
 
 @interface CommonMethods : NSObject
 + (BOOL) compareEntry:(BOOL)isSlider matchData:(NSString *)matchData eventType:(NSString *)eventType buttonProperties:(SFIButtonSubProperties *)buttonProperties;
@@ -41,4 +42,34 @@
 + (NSString *) UIColorToHexString:(UIColor *)uiColor;
 
 + (int )getRGBValueForBlink:(NSString*)hexColor;
+
+#pragma mark help screen methods
++ (NSDictionary*)parseJson:(NSString*)fileNam;
+
++ (NSDictionary *)getDict:(NSString*)helpItem itemName:(NSString*)itemName;
+
+#pragma mark site monitoring methods
++(BOOL)isContainWeeKday:(NSString*)search;
+
++(BOOL)isContainMonth:(NSString*)search;
+
++(NSArray*)searchLastWeek:(NSArray *)URIs;
+
++ (BOOL)isNumeric:(NSString *)code;
+
++(BOOL)checkValidation:(NSString*)search date:(NSString *)date monthname:(NSString *)monthName;
+
++ (BOOL) isAllDigits:(NSString *)string;
+
++(NSArray *)searchDate:(NSString*)search fromArr:(NSArray *)URIs;
+
++(NSArray *)searchToday:(NSArray *)URIs;
+
++(NSArray *)searchLastHour:(NSArray *)URIs;
+
++(NSArray *)searchByWeekDay:(NSString*)search fromArr:(NSArray *)URIs;
+
++(NSArray *)searchByRecent:(NSString*)search fromArr:(NSArray *)URIs;
+
+
 @end

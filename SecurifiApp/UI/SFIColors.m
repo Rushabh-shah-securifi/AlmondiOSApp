@@ -162,6 +162,23 @@
     return [UIColor colorFromHexString:@"444444"];
 }
 
++ (UIColor *)helpPinkColor{
+    return [UIColor colorFromHexString:@"e91e63"];
+}
+
++ (UIColor *)getHelpCenterColor:(NSString*)color{
+    if([color isEqualToString:@"homemode"])
+        return [self lightBlueColor];
+    else if([color isEqualToString:@"wizard"])
+        return [self clientGreenColor];
+    else if([color isEqualToString:@"awaymode"])
+        return [self lightOrangeDashColor];
+    else if([color isEqualToString:@"support"])
+        return [self helpPinkColor];
+    
+    return [UIColor grayColor];
+}
+                
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName {
     self = [super init];
     if (self) {

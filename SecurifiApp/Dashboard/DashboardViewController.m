@@ -22,8 +22,10 @@
 #import "UILabel+ActionSheet.h"
 #import "UIFont+Securifi.h"
 #import "SWRevealViewController.h"
+#import "HelpScreens.h"
 
-@interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate>{
+
+@interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate>{
     UIButton *button, *button1;
 }
 
@@ -39,7 +41,8 @@
 @property(nonatomic) UIButton *countButton;
 @property(nonatomic) UIImageView *navigationImg;
 @property(nonatomic) UIView *bgView;
-
+@property(nonatomic) HelpScreens *helpScreensObj;
+@property(nonatomic) UIView *maskView;
 @end
 
 @implementation DashboardViewController
@@ -48,6 +51,7 @@
     [super viewDidLoad];
     self.toolkit = [SecurifiToolkit sharedInstance];
     self.bgView = [[UIView alloc]init];
+    self.maskView = [[UIView alloc]init];
     
     self.navigationController.navigationBar.clipsToBounds = YES;
     [self loadNotification];
@@ -132,6 +136,7 @@
     });
     [self getDeviceClientNotification];
     [self markNetworkStatusIcon];
+    [self initializeHelpScreens];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -995,24 +1000,31 @@
 }
 
 
-#pragma mark help screen
+#pragma mark almond update screen
 
 -(void)checkToShowUpdateScreen{
     SFIAlmondPlus *currentAlmond = self.toolkit.currentAlmond;
     NSLog(@"current almond dash: %@", currentAlmond);
-    if(currentAlmond.firmware == nil)
+    if(currentAlmond.firmware == nil){
+        [self tryRemoveBGView];
         return;
+    }
     NSLog(@"passed");
     BOOL isNewVersion = [currentAlmond supportsGenericIndexes:currentAlmond.firmware];
     if(!isNewVersion){
         [self.tabBarController.tabBar setHidden:YES];
         [self showAlmondUpdateAvailableScreen:self.navigationController.view];
     }else{
+        [self tryRemoveBGView];
+    }
+}
+
+-(void)tryRemoveBGView{
+    if([self.navigationController.view.subviews containsObject:self.bgView]){
         [self.tabBarController.tabBar setHidden:NO];
         [self.bgView removeFromSuperview];
     }
 }
-
 -(void)showAlmondUpdateAvailableScreen:(UIView*)view{
     int viewWidth = self.navigationController.view.frame.size.width;
     
@@ -1062,18 +1074,53 @@
     //    [self.bgView addSubview:gotItButton];
 }
 
+#pragma mark help screens
+-(void)initializeHelpScreens{
+    NSLog(@"nav view heigt: %f, view ht: %f", self.navigationController.view.frame.size.height, self.view.frame.size.height);
+    
+    
+    self.helpScreensObj = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
+    self.helpScreensObj.delegate = self;
+    
+    [self.helpScreensObj expandView];
+    self.helpScreensObj.startScreen = [CommonMethods getDict:@"Guides" itemName:@"Welcome"];
+    [self.helpScreensObj initailizeFirstScreen];
 
-//-(void)onCrossTap:(UIButton *)tapbutton{
-//    NSLog(@"onCrossTap");
-//    [self.bgView removeFromSuperview];
-//    [self.tabBarController.tabBar setHidden:NO];
-//}
+    [self.helpScreensObj addHelpItem:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height-20)];
+    [self.navigationController.view addSubview:self.helpScreensObj];
+    self.helpScreensObj.backgroundColor = [UIColor grayColor];
+    [self.tabBarController.tabBar setHidden:YES];
+}
 
-//-(void)onGotItTap:(UIButton *)button{
-//    NSLog(@"onGotItTap");
-//    [self.bgView removeFromSuperview];
-//    [self.tabBarController.tabBar setHidden:NO];
-//}
+
+
+#pragma mark helpscreen delegate methods
+- (void)resetViewDelegate{
+    NSLog(@"dashboard reset view");
+    [self.helpScreensObj removeFromSuperview];
+    [self.maskView removeFromSuperview];
+    [self.tabBarController.tabBar setHidden:NO];
+    
+}
+
+- (void)onSkipTapDelegate{
+    NSLog(@"dashboard skip delegate");
+    [self.tabBarController.tabBar setHidden:YES];
+    [self showOkGotItView];
+}
+
+- (void)showOkGotItView{
+    NSLog(@"showokgotit");
+    self.maskView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height);
+    
+    [self.maskView setBackgroundColor:[SFIColors maskColor]];
+    [self.navigationController.view addSubview:self.maskView];
+    
+    int helpViewHeight = 140;
+    self.helpScreensObj.frame = CGRectMake(0, self.navigationController.view.frame.size.height - helpViewHeight, self.view.frame.size.width, helpViewHeight);
+    [self.helpScreensObj addGotItView:CGRectMake(0, 0, self.view.frame.size.width, helpViewHeight)];
+    [self.maskView addSubview:self.helpScreensObj];
+}
 
 
 @end
