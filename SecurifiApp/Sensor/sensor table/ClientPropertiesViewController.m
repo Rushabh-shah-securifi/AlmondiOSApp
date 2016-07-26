@@ -25,6 +25,8 @@
 #import "BrowsingHistory.h"
 #import "NSDate+Convenience.h"
 #import "DataBaseManager.h"
+#import "HistoryParser.h"
+#import "BrowsingHistoryDataBase.h"
 
 
 #define CELLFRAME CGRectMake(8, 8, self.view.frame.size.width -16, 70)
@@ -43,6 +45,7 @@
 @property (nonatomic) NSMutableArray *browsingHistoryDayWise;
 @property (nonatomic) dispatch_queue_t imageDownloadQueue;
 @property (nonatomic) NSMutableDictionary *urlToImageDict;
+@property (nonatomic) HistoryParser *historyParser;
 @end
 
 @implementation ClientPropertiesViewController
@@ -57,115 +60,13 @@ int randomMobileInternalIndex;
     [self setHeaderCell];
     [self setUpHUD];
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
-//    dispatch_async(self.imageDownloadQueue, ^{
-        [self getBrowserHistoryImages];
-//    });
+        dispatch_async(dispatch_get_global_queue(0,0), ^{
+    self.historyParser = [[HistoryParser alloc]init];
+    [self.historyParser insertInToDB:@"temp_copy"];
+        });
     
     
 }
-
--(void)getBrowserHistoryImages{
-    NSLog(@"getBrowserHistoryImages");
-    self.urlToImageDict = [NSMutableDictionary new];
-    
-//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-//    [request setURL:[NSURL URLWithString:@"https://push-data-mehnaazm.c9users.io/history"]];
-//    [request setHTTPMethod:@"POST"];
-//
-//    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-//    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-//        dispatch_async(self.imageDownloadQueue, ^{
-            NSDictionary *historyData;
-//            historyData = [data objectFromJSONData];
-            historyData = [DataBaseManager getHistoryData];
-//            historyData = [self parseJson:@"temp_copy"];
-            NSLog(@"historyData: %@", historyData);
-            
-            self.browsingHistoryDayWise = [NSMutableArray new];
-            NSArray *history = historyData[@"Data"];
-    for(NSString *Day in [historyData allKeys]){
-        BrowsingHistory *browsingHist = [BrowsingHistory new];
-        browsingHist.date = [NSDate convertStirngToDate:Day];
-        NSDictionary *dayDict = historyData[Day];
-         NSMutableArray *urisArray = [NSMutableArray new];
-        for (NSString *time in [dayDict allKeys]) {
-            NSDictionary *uriDict = dayDict[time];
-            URIData *uri = [URIData new];
-            uri.hostName = uriDict[@"Hostname"];
-            uri.image = [self getImage:uriDict[@"Hostname"]];
-            uri.lastActiveTime = [NSDate getDateFromEpoch:uriDict[@"Epoch"]];
-            uri.count = [uriDict[@"Count"] intValue];
-            [urisArray addObject:uri];
-        }
-        browsingHist.URIs = urisArray;
-        [self.browsingHistoryDayWise addObject:browsingHist];[[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_IMAGE_FETCH object:nil];
-    }
- 
-//            for(NSDictionary *hisDict in history){
-//                BrowsingHistory *browsingHist = [BrowsingHistory new];
-//                browsingHist.date = [NSDate convertStirngToDate:hisDict[@"Date"]];
-//                
-//                NSLog(@"browsing history date: %@", browsingHist.date);
-//                NSArray *URIs = hisDict[@"URIs"];
-//                NSMutableArray *urisArray = [NSMutableArray new];
-//                for(NSDictionary *uriDict in URIs){
-//                    URIData *uri = [URIData new];
-//                    uri.hostName = uriDict[@"Hostname"];
-//                    uri.image = [self getImage:uriDict[@"Hostname"]];
-//                    uri.lastActiveTime = [NSDate getDateFromEpoch:uriDict[@"Epoch"]];
-//                    uri.count = [uriDict[@"Count"] intValue];
-//                    NSLog(@"host: %@, image: %@, lasttime: %@, count: %d", uri.hostName, uri.image, uri.lastActiveTime, uri.count);
-//                    [urisArray addObject:uri];
-//                }
-//                
-//                browsingHist.URIs = urisArray;
-//                [self.browsingHistoryDayWise addObject:browsingHist];
-//                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_IMAGE_FETCH object:nil];
-//            }
-//        });
-//    }] resume];
-    NSDictionary *d = @{
-                        @"1":@{@"date1":@"data1",
-                                @"date2":@"data2"
-                                },
-                        @"2":@{@"date21":@"data21",
-                               @"date22":@"data22"
-                               }
-                };
-    [DataBaseManager InsertRecords:historyData];
-    
-    
-}
-
--(UIImage*)getImage:(NSString*)hostName{
-    NSLog(@"getImage");
-    UIImage *img;
-    if(self.urlToImageDict[hostName]){
-        NSLog(@"one");
-        return self.urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
-    }else{
-        
-//        img = [UIImage imageNamed:@"Mail_icon"];
-        /*
-        NSLog(@"two");
-        NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
-        img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
-        //        if(!img){
-        //            NSLog(@"three");
-        //            iconUrl = [NSString stringWithFormat:@"https://%@/favicon.ico", hostName];
-        //            img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
-        //        }
-        if(!img){
-            NSLog(@"four");
-            img = [UIImage imageNamed:@"Mail_icon"];
-        }
-        NSLog(@"five");
-        self.urlToImageDict[hostName] = img;
-         */
-        return img;
-    }
-}
-
 
 -(void)setUpHUD{
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -228,7 +129,7 @@ int randomMobileInternalIndex;
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark table delegate methods 
+#pragma mark table delegate methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -281,10 +182,14 @@ int randomMobileInternalIndex;
     NSLog(@"didSelectRowAtIndexPath");
     GenericIndexValue *gIval = [self.genericParams.indexValueList objectAtIndex:indexPath.row];
     if([gIval.genericIndex.groupLabel isEqualToString:@"Browsing History"]){
-       UIStoryboard *storyboard=[UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:[NSBundle mainBundle]];
+        UIStoryboard *storyboard=[UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:[NSBundle mainBundle]];
         BrowsingHistoryViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
-        ctrl.browsingHistoryDayWise = self.browsingHistoryDayWise;
-        [self.navigationController pushViewController:ctrl animated:YES];
+        ctrl.browsingHistoryDayWise = self.historyParser.browsingHistoryDayWise;
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            
+            [self.navigationController pushViewController:ctrl animated:YES];
+        });
+        
         
     }
     else
@@ -301,7 +206,8 @@ int randomMobileInternalIndex;
 #pragma mark common cell delegate
 
 -(void)delegateClientPropertyEditSettingClick{
-    dispatch_async(dispatch_get_main_queue(), ^(){
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        
         [self.HUD hide:YES];
     });
     [self.navigationController popViewControllerAnimated:YES];
@@ -349,14 +255,14 @@ int randomMobileInternalIndex;
     
     UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
     [self presentViewController:nav_ctrl animated:YES completion:nil];
-
+    
 }
 
 - (IBAction)resetButtontap:(id)sender {
     Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
     client = [client copy];
     NSLog(@"client mac %@, client id %@",client.deviceMAC,client.deviceID);
-//    [self]
+    //    [self]
     [self showHudWithTimeoutMsg:[NSString stringWithFormat:@"Resetting %@",client.name]];
     if(client.deviceID.length!=0  && client.deviceMAC.length!= 0)
         [ClientPayload resetClientCommand:client.deviceMAC clientID:client.deviceID mii:randomMobileInternalIndex];
@@ -372,7 +278,8 @@ int randomMobileInternalIndex;
         return;
     }
     NSDictionary *payload = dataInfo[@"data"];
-    dispatch_async(dispatch_get_main_queue(), ^(){
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        
         [self.HUD hide:YES];
     });
     
@@ -387,15 +294,15 @@ int randomMobileInternalIndex;
             });
         }
     }
-//    else{
-//        NSDictionary *clientPayload = payload[CLIENTS];
-//        NSString *clientID = clientPayload.allKeys.firstObject;
-//        if([clientID intValue] == self.genericParams.headerGenericIndexValue.deviceID){
-//            dispatch_async(dispatch_get_main_queue(), ^(){
-//                [self.navigationController popToRootViewControllerAnimated:YES];
-//            });
-//        }
-//    }
+    //    else{
+    //        NSDictionary *clientPayload = payload[CLIENTS];
+    //        NSString *clientID = clientPayload.allKeys.firstObject;
+    //        if([clientID intValue] == self.genericParams.headerGenericIndexValue.deviceID){
+    //            dispatch_async(dispatch_get_main_queue(), ^(){
+    //                [self.navigationController popToRootViewControllerAnimated:YES];
+    //            });
+    //        }
+    //    }
     
 }
 

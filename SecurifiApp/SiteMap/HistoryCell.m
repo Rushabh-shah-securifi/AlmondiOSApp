@@ -53,6 +53,7 @@
 }
 
 -(NSString*)getCounttext:(int)count{
+    NSLog(@"count uri = %d",count);
     if(count >= 0 && count <= 999)
         return @(count).stringValue;
     else{

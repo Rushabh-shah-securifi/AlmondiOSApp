@@ -15,22 +15,37 @@
 #import "NSDate+Convenience.h"
 #import "CommonMethods.h"
 #import "SearchTableViewController.h"
+#import "BrowsingHistoryDataBase.h"
+
+typedef NS_ENUM(NSInteger, SearchPatten) {
+    DefaultSearch,
+    RecentSearch,
+    TodaySearch,
+    LastHourSearch,
+    WeekDaySearch,
+    DateSearch,
+    WeekSearch
+};
 
 @interface SearchTableViewController ()<UISearchResultsUpdating, UISearchBarDelegate,UITextFieldDelegate>
 @property (nonatomic, strong) UISearchController *searchController;
-@property (nonatomic) NSArray *searchResultsArray;
 @property (nonatomic) UITableView *searchTableView;
-@property (nonatomic) NSMutableArray *localSearchDayWiseHist;
 @property (nonatomic) NSArray *suggSearchArr;
 @property (nonatomic) NSMutableArray *recentSearch;
-@property (nonatomic)NSMutableArray *recentSearchObj;
+@property (nonatomic) NSMutableArray *recentSearchObj;
 @property (nonatomic) NSMutableDictionary *urlToImageDict;
+@property (nonatomic) SearchPatten searchPatten;
+@property (nonatomic) NSMutableArray *dayArr;
+@property (nonatomic) dispatch_queue_t imageDownloadQueue;
+@property BOOL isManuelSearch ;
+@property (nonatomic) NSDictionary *historyDict;
 @end
 
 @implementation SearchTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
     self.navigationController.navigationBar.clipsToBounds = YES;
     self.navigationController.view.backgroundColor = [UIColor whiteColor];
     self.navigationController.navigationBar.tintColor = [SFIColors ruleBlueColor];
@@ -41,17 +56,17 @@
     NSArray *actionButtonItems = @[search];
     self.navigationItem.rightBarButtonItems = actionButtonItems;
 
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [self.tableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
     [self addSuggestionSearchObj];
     [self initializeSearchController ];
+    self.recentSearch = [[NSMutableArray alloc]init];
+    self.isManuelSearch = YES;
     }
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.isManuelSearch = YES;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -66,7 +81,7 @@
         return 2;
     }
     else
-        return self.browsingHistoryDayWise.count;
+       return self.dayArr.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 40;
@@ -79,8 +94,8 @@
             return  self.recentSearchObj.count;
     }
     else{
-        BrowsingHistory *browsHist = self.localSearchDayWiseHist[section];
-        return browsHist.URIs.count;
+        NSArray *browsHist = self.dayArr[section];
+        return browsHist.count;
     }
 }
 
@@ -109,7 +124,11 @@
         label.text = headerDate;
     }
     else{
-        headerDate = [self getHeaderDate:section];
+        NSString *str = [[self.historyDict[@"Data"] allKeys] objectAtIndex:section];
+        NSLog(@"str date string %@",str);
+        NSDate *date = [NSDate convertStirngToDate:str];
+        NSString *headerDate = [date getDayMonthFormat];
+//        headerDate = @"today";
         label.text = section == 0? [NSString stringWithFormat:@"Today, %@",headerDate]: headerDate;
     }
     
@@ -119,10 +138,10 @@
     return view;
 }
 
-- (NSString*)getHeaderDate:(NSInteger)section{
-    BrowsingHistory *browsHistory = self.browsingHistoryDayWise[section];
-    return [browsHistory.date getDayMonthFormat];
-}
+//- (NSString*)getHeaderDate:(NSInteger)section{
+//    BrowsingHistory *browsHistory = self.browsingHistoryDayWise[section];
+//    return [browsHistory.date getDayMonthFormat];
+//}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     HistoryCell *cell;
     if(tableView == self.tableView)
@@ -133,6 +152,7 @@
     if (cell == nil){
         cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"abc"];
     }
+    
     if(tableView == self.tableView){
 
         if(indexPath.section == 0)
@@ -141,9 +161,8 @@
             [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row]hideItem:YES];
     }
     else {
-        BrowsingHistory *browsHist = [self.localSearchDayWiseHist objectAtIndex:indexPath.section];
-        NSArray *URIs = browsHist.URIs;
-        [cell setCell:URIs[indexPath.row] hideItem:NO];
+        NSArray *browsHist = self.dayArr[indexPath.section];
+        [cell setCell:browsHist[indexPath.row] hideItem:NO];
 
     }
     
@@ -153,13 +172,33 @@
     if(tableView == self.tableView){
         if(indexPath.section == 1){
             self.searchController.searchBar.text = [self.recentSearch objectAtIndex:indexPath.row];
+            self.searchPatten = RecentSearch;
+            self.isManuelSearch = NO;
             [self.searchController.searchBar becomeFirstResponder];
         }
-        else if(indexPath.section == 0 && indexPath.row == 1){
+        else if(indexPath.section == 0 && indexPath.row == 0){
+            self.searchPatten = LastHourSearch;
+             self.searchController.searchBar.text = @" ";
+            self.isManuelSearch = NO;
             [self.searchController.searchBar becomeFirstResponder];
-            [self updteTodayHistory];
-            
-            
+//            [self.searchController.searchBar resignFirstResponder];
+//            [self.view endEditing:TRUE];
+        }
+        else if(indexPath.section == 0 && indexPath.row == 1){
+            self.searchPatten = TodaySearch;
+             self.searchController.searchBar.text = @" ";
+            self.isManuelSearch = NO;
+            [self.searchController.searchBar becomeFirstResponder];
+//            [self.searchController.searchBar resignFirstResponder];
+//            [self.view endEditing:TRUE];
+        }
+        else if(indexPath.section == 0 && indexPath.row == 2){
+            self.searchPatten = WeekSearch;
+             self.searchController.searchBar.text = @" ";
+            self.isManuelSearch = NO;
+            [self.searchController.searchBar becomeFirstResponder];
+//            [self.searchController.searchBar resignFirstResponder];
+//            [self.view endEditing:TRUE];
         }
     }
 }
@@ -197,6 +236,7 @@
     self.searchController.searchBar.delegate = self;
     self.searchTableView = ((UITableViewController *)self.searchController.searchResultsController).tableView;
     [self.searchTableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
+   
     
 }
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
@@ -205,166 +245,70 @@
     URIData *recent = [[URIData alloc]init];
     recent.hostName = searchString;
     
-    if (![self.recentSearch containsObject:searchString]) {
-        [self.recentSearch addObject:searchString];
-    }
-    
+    if(![searchString isEqualToString:@" "] && ![self.recentSearch containsObject:searchString])
     [self.recentSearch addObject:searchString];
+    
     NSLog(@"self.recentSearch count = %ld",self.recentSearch.count);
     [[NSUserDefaults standardUserDefaults] setObject:self.recentSearch forKey:@"recentSearch"];
+    [self addSuggestionSearchObj];
     
 
 }
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController{
-    NSString *searchString = self.searchController.searchBar.text;
-    NSPredicate *resultPredicate;
-    NSLog(@"searching string = %@",searchString);
-    self.localSearchDayWiseHist = [NSMutableArray new];
-    
-    for(BrowsingHistory *browsHistory in self.browsingHistoryDayWise){
-        BrowsingHistory *newBrowsHistory = [BrowsingHistory new];
-        
-        NSArray *URIs = browsHistory.URIs;
-         resultPredicate = [NSPredicate predicateWithFormat:@"hostName CONTAINS[c] %@",searchString];
-        NSArray *arr = [URIs filteredArrayUsingPredicate:resultPredicate];
-        newBrowsHistory.URIs = arr;
-        
-        NSMutableArray *dayAndMonth = [[NSMutableArray alloc]init];
-        
-        // day by search,// november 2 or saturday
-        for (URIData *uri in browsHistory.URIs){
-            NSDate *date = uri.lastActiveTime;
-            NSLog(@"date = %@",date);
-            NSDateComponents *components1 = [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:date];
-            NSLog(@"weekDay %@",[CommonMethods stringFromWeekday:[components1 weekday]]);
-            NSString *weekDay = [CommonMethods stringFromWeekday:[components1 weekday]];
-            
-            NSDateFormatter *df = [[NSDateFormatter alloc] init];
-            
-            [df setDateFormat:@"dd"];
-            NSString *myDayString = [df stringFromDate:date];
-            NSLog(@"mydayString  = %@",myDayString);
-            [df setDateFormat:@"MMM"];
-           NSString *myMonthString = [df stringFromDate:date];
-            
-            NSDate* myDate = [df dateFromString:myMonthString];
-            
-            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-            [formatter setDateFormat:@"MMMM"];
-            
-            NSString *stringFromDate = [formatter stringFromDate:myDate];
-            NSLog(@"stringFromDate = %@,%@,%@",stringFromDate,myMonthString,searchString);
-            //last hour
-            
-            NSCalendar *gregorianCal = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-            NSDateComponents *dataComps = [gregorianCal components: (NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:date];
-            
-            NSInteger minutes = [dataComps minute];
-            NSInteger hours = [dataComps hour];
-            
-            // last hour end
-            
-            
-            // today search
-            NSCalendar *cal = [NSCalendar currentCalendar];
-            NSDateComponents *components = [cal components:(NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:[NSDate date]];
-            NSDate *today = [cal dateFromComponents:components];
-            components = [cal components:(NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:date];
-            NSDate *otherDate = [cal dateFromComponents:components];
-            if([today isEqualToDate:otherDate]) {
-                NSLog(@"today to arr\n");
-                NSLog(@"uri info: %@,%@,%d \n",uri.hostName,uri.lastActiveTime,uri.count);
-                [dayAndMonth addObject:uri];
-            }//today search end
-            
-            if([myDayString rangeOfString:searchString].location != NSNotFound || [stringFromDate rangeOfString:searchString].location != NSNotFound || [weekDay rangeOfString:searchString].location != NSNotFound){
-                NSLog(@"adding to arr");
-               [dayAndMonth addObject:uri];
-            }
-        }
-        
-        if(dayAndMonth.count > 0){
-            NSLog(@"dayAndMonth.count %ld",dayAndMonth.count);
-            newBrowsHistory.URIs = dayAndMonth;
-        }
-        [self.localSearchDayWiseHist addObject:newBrowsHistory];
-    }
-//    NSArray *URIs = browsHist.URIs;
-//    NSInteger scope = self.searchController.searchBar.selectedScopeButtonIndex;
-//    resultPredicate = [NSPredicate predicateWithFormat:@"lastName CONTAINS[c]",searchString];
-//    
-//    self.searchResultsArray = [self.httpArr filteredArrayUsingPredicate:resultPredicate];
-    
-    [self.searchTableView reloadData];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope{
     [self updateSearchResultsForSearchController:self.searchController];
 }
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
     [self.tableView reloadData];
 }
 -(void)onCancleButton{
+    self.isManuelSearch = YES;
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+    NSLog(@"searchBarTextDidBeginEditing");
+    
+    
 }
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-    NSLog(@"searchBarTextDidEndEditing");
+    NSString *searchString = self.searchController.searchBar.text;
+        
+        if([CommonMethods isContainMonth:searchString] && self.isManuelSearch)
+            self.searchPatten = DateSearch;
+        if([CommonMethods isContainWeeKday:searchString] && self.isManuelSearch)
+            self.searchPatten = WeekDaySearch;
+        else if(self.isManuelSearch)
+            self.searchPatten = RecentSearch;
+        
+        NSLog(@"searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
+    if(self.searchPatten == RecentSearch){
+        self.historyDict = [BrowsingHistoryDataBase getSearchString:@"All" andSearchSting:searchString];
+    }
+    else if (self.searchPatten == WeekDaySearch){
+        self.historyDict = [BrowsingHistoryDataBase getManualString:@"weekDay" andSearchSting:searchString];
+    }
+    else if(self.searchPatten == TodaySearch){
+        self.historyDict = [BrowsingHistoryDataBase getManualString:@"Today" andSearchSting:searchString];
+    }
+    else if(self.searchPatten == DateSearch){
+        self.historyDict = [BrowsingHistoryDataBase getManualString:@"monthDay" andSearchSting:searchString];
+    }
+    else if(self.searchPatten == LastHourSearch){
+        self.historyDict = [BrowsingHistoryDataBase getManualString:@"lastHour" andSearchSting:searchString];
+    }
+    else if(self.searchPatten == WeekSearch){
+        self.historyDict = [BrowsingHistoryDataBase getManualString:@"lastWeek" andSearchSting:searchString];
+    }
+    [self getBrowserHistoryImages:self.historyDict];
+//    [self.searchTableView reloadData];
+    
     [searchBar setShowsCancelButton:NO animated:YES];
 }
--(void)updteTodayHistory{//temp, can be removed when response will come
-    self.urlToImageDict = [NSMutableDictionary new];
-    NSDictionary *historyData;
-    //            historyData = [data objectFromJSONData];
-    //            historyData = [DataBaseManager getHistoryData];
-    historyData = [self parseJson:@"temp_copy"];
-    NSLog(@"historyData: %@", historyData);
-    
-    self.browsingHistoryDayWise = [NSMutableArray new];
-    NSArray *history = historyData[@"Data"];
-    for(NSString *Day in [historyData allKeys]){
-        BrowsingHistory *browsingHist = [BrowsingHistory new];
-        browsingHist.date = [NSDate convertStirngToDate:Day];
-        NSDictionary *dayDict = historyData[Day];
-        NSMutableArray *urisArray = [NSMutableArray new];
-        for (NSString *time in [dayDict allKeys]) {
-            NSDictionary *uriDict = dayDict[time];
-            URIData *uri = [URIData new];
-            uri.hostName = uriDict[@"Hostname"];
-            uri.image = [self getImage:uriDict[@"Hostname"]];
-            uri.lastActiveTime = [NSDate getDateFromEpoch:uriDict[@"Epoch"]];
-            uri.count = [uriDict[@"Count"] intValue];
-            [urisArray addObject:uri];
-        }
-        browsingHist.URIs = urisArray;
-        [self.browsingHistoryDayWise addObject:browsingHist];
-        
-    }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.searchTableView reloadData];
-    });
-}
--(UIImage*)getImage:(NSString*)hostName{
-    NSLog(@"getImage");
-    UIImage *img;
-    if(self.urlToImageDict[hostName]){
-        NSLog(@"one");
-        return self.urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
-    }else{
-        return img;
-    }
-}
-//- (BOOL)textFieldShouldReturn:(UITextField *)textField{
-//    NSLog(@"textField = %@",textField.text);
-//    URIData *recent = [[URIData alloc]init];
-//    recent.hostName = textField.text;
-//    
-//    [self.recentSearch addObject:recent];
-//    [[NSUserDefaults standardUserDefaults] setObject:self.recentSearch forKey:@"recentSearch"];
-//    NSLog(@"self.recentSearch count = %ld",self.recentSearch.count);
-//    [self.tableView reloadData];
-//    return YES;
-//}
+
 #pragma  mark customCell for suggestion search
 -(void)addSuggestionSearchObj{
     URIData *lasthour = [[URIData alloc]init];
@@ -381,7 +325,7 @@
     
     self.suggSearchArr = [[NSArray alloc]initWithObjects:lasthour,today,thisWeek, nil];
     
-    self.recentSearch = [[NSMutableArray alloc]init];
+    
     NSSet *set = [NSSet setWithArray:[NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"recentSearch"]]];
     
     self.recentSearch =  [NSMutableArray arrayWithArray:[set allObjects]];
@@ -393,7 +337,7 @@
         recent.image = [UIImage imageNamed:@"search_icon"];
         [self.recentSearchObj addObject:recent];
     }
-    NSLog(@"self.recentSearch count = %ld",self.recentSearch.count);
+    NSLog(@"self.recentSearch count  %@ = %ld",self.recentSearch,self.recentSearch.count);
     
 }
 - (NSDictionary*)parseJson:(NSString*)fileName{
@@ -410,4 +354,65 @@
     }
     return data;
 }
+#pragma mark parser methods
+-(void)getBrowserHistoryImages:(NSDictionary *)historyDict{
+    self.dayArr = [[NSMutableArray alloc]init];
+    //    dayArr = [historyDict[@"Data"] all]
+    NSLog(@"historyDict %@",historyDict[@"Data"]);
+    NSDictionary *dict1 = historyDict[@"Data"];
+    for (NSString *dates in [dict1 allKeys]) {
+        NSArray *alldayArr = dict1[dates];
+        NSLog(@"\n alldayArr alldayDict %@",alldayArr);
+        NSMutableArray *oneDayUri = [[NSMutableArray alloc]init];
+        for (NSDictionary *uriDict in alldayArr) {
+            URIData *uriInfo = [URIData new];
+            uriInfo.hostName = uriDict[@"hostName"];
+            uriInfo.count = [uriDict[@"count"] intValue];
+            uriInfo.lastActiveTime = [NSDate getDateFromEpoch:uriDict[@"Epoc"]];
+            uriInfo.image = [self getImage:uriDict[@"hostName"]];
+            
+            [oneDayUri addObject:uriInfo];
+        }
+        [self.dayArr addObject:oneDayUri];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.searchTableView reloadData];
+        });//
+    }
+}
+//
+-(UIImage*)getImage:(NSString*)hostName{
+    NSLog(@"getImage");
+    
+    __block UIImage *img;
+    if(self.urlToImageDict[hostName]){
+        NSLog(@"one");
+        return self.urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
+    }else{
+        
+        //        img = [UIImage imageNamed:@"Mail_icon"];
+        
+        NSLog(@"two");
+        __block NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
+        NSLog(@"iconUrl %@",iconUrl);
+        img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+        if(!img){
+            NSLog(@"three");
+            dispatch_async(self.imageDownloadQueue, ^{
+                iconUrl = [NSString stringWithFormat:@"https://%@/favicon.ico", hostName];
+                img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+            });
+            
+        }
+        if(!img){
+            NSLog(@"four");
+            img = [UIImage imageNamed:@"Mail_icon"];
+        }
+        NSLog(@"five");
+        self.urlToImageDict[hostName] = img;
+        
+        return img;
+    }
+}
+
+
 @end
