@@ -15,7 +15,6 @@
 #import "BrowsingHistory.h"
 #import "NSDate+Convenience.h"
 #import "SearchTableViewController.h"
-#import "HistoryParser.h"
 #import "DataBaseManager.h"
 #import "BrowsingHistoryDataBase.h"
 
@@ -25,7 +24,6 @@
 @property (nonatomic) NSArray *UriDataOneDay ;
 @property (nonatomic)NSMutableArray *dayArr;
 @property (nonatomic) dispatch_queue_t imageDownloadQueue;
-@property (nonatomic)HistoryParser *historyParser;
 @property (nonatomic) NSMutableDictionary *urlToImageDict;
 @end
 
@@ -33,7 +31,7 @@
 
 - (void)viewDidLoad {
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
-//    [BrowsingHistoryDataBase insertRecordFromFile:@"responseMain"];
+    [BrowsingHistoryDataBase insertRecordFromFile:@"responseMain"];
     [self getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistory]];
     [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
     self.urlToImageDict = [NSMutableDictionary new];
@@ -43,7 +41,6 @@
     [super viewWillAppear:animated];
     [self loadNavigationBar];
     [self initializeNotification];
-    self.historyParser = [[HistoryParser alloc]init];
 
 
 }
@@ -233,7 +230,7 @@
 #pragma mark click handler
 - (void)onSearchButton1{
     dispatch_async(dispatch_get_global_queue(0,0), ^{
-        [self requestForNextHistoryEdit];
+//        [self requestForNextHistoryEdit];
     });
 }
 - (void)onSearchButton{
@@ -254,29 +251,7 @@
         [self.browsingTable reloadData];
     });
 }
--(void)requestForNextHistory{
-    [self.historyParser deletePrevious:@"temp_jsonResponse"];
-    self.browsingHistoryDayWise = self.historyParser.browsingHistoryDayWise;
-    NSLog(@"self.browsingHistoryDayWise count = %ld",self.browsingHistoryDayWise.count);
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.browsingTable reloadData];
-    });
-    
-    
-}
--(void)requestForNextHistoryEdit{
-    NSArray *responseArr = @[@"temp_jsonResponse",@"response2"];
-    for (NSString *fileName in responseArr) {
-        [self.historyParser insertInToDB:fileName];
-    }
-    
-    self.browsingHistoryDayWise = self.historyParser.browsingHistoryDayWise;
-    NSLog(@"self.browsingHistoryDayWise count = %ld",self.browsingHistoryDayWise.count);
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.browsingTable reloadData];
-    });
-    
-}
+
 
 
 

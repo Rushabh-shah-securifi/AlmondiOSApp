@@ -58,9 +58,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [self.tableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
+    self.recentSearch = [[NSMutableArray alloc]init];
     [self addSuggestionSearchObj];
     [self initializeSearchController ];
-    self.recentSearch = [[NSMutableArray alloc]init];
+    
     self.isManuelSearch = YES;
     }
 -(void)viewWillAppear:(BOOL)animated{

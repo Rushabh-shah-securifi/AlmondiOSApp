@@ -25,7 +25,6 @@
 #import "BrowsingHistory.h"
 #import "NSDate+Convenience.h"
 #import "DataBaseManager.h"
-#import "HistoryParser.h"
 #import "BrowsingHistoryDataBase.h"
 
 
@@ -42,10 +41,6 @@
 @property (nonatomic) DeviceHeaderView *commonView;
 @property (nonatomic)SecurifiToolkit *toolkit;
 @property (nonatomic, readonly) MBProgressHUD *HUD;
-@property (nonatomic) NSMutableArray *browsingHistoryDayWise;
-@property (nonatomic) dispatch_queue_t imageDownloadQueue;
-@property (nonatomic) NSMutableDictionary *urlToImageDict;
-@property (nonatomic) HistoryParser *historyParser;
 @end
 
 @implementation ClientPropertiesViewController
@@ -59,12 +54,6 @@ int randomMobileInternalIndex;
     
     [self setHeaderCell];
     [self setUpHUD];
-    self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
-        dispatch_async(dispatch_get_global_queue(0,0), ^{
-    self.historyParser = [[HistoryParser alloc]init];
-    [self.historyParser insertInToDB:@"temp_copy"];
-        });
-    
     
 }
 
@@ -184,7 +173,6 @@ int randomMobileInternalIndex;
     if([gIval.genericIndex.groupLabel isEqualToString:@"Browsing History"]){
         UIStoryboard *storyboard=[UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:[NSBundle mainBundle]];
         BrowsingHistoryViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
-        ctrl.browsingHistoryDayWise = self.historyParser.browsingHistoryDayWise;
         dispatch_async(dispatch_get_main_queue(), ^() {
             
             [self.navigationController pushViewController:ctrl animated:YES];

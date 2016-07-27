@@ -432,10 +432,11 @@
 		A5F03F6D1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		CE08B3CC1C9A87C900ABAF6B /* DeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */; };
 		CE20BF3B1CB6331A002737F4 /* PerformanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CE20BF3A1CB6331A002737F4 /* PerformanceTest.m */; };
+		CE3EDAF21D4742EC00C153A6 /* BrowsingHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3EDAEF1D4742EC00C153A6 /* BrowsingHistoryViewController.m */; };
+		CE3EDAF31D4742EC00C153A6 /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3EDAF11D4742EC00C153A6 /* SearchTableViewController.m */; };
+		CE3EDAF71D47754A00C153A6 /* responseMain.json in Resources */ = {isa = PBXBuildFile; fileRef = CE3EDAF61D47754A00C153A6 /* responseMain.json */; };
 		CE40BF131D225791007C2148 /* BrowsingHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF0A1D225791007C2148 /* BrowsingHistory.m */; };
-		CE40BF141D225791007C2148 /* BrowsingHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF0C1D225791007C2148 /* BrowsingHistoryViewController.m */; };
 		CE40BF151D225791007C2148 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF0E1D225791007C2148 /* HistoryCell.m */; };
-		CE40BF161D225791007C2148 /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF101D225791007C2148 /* SearchTableViewController.m */; };
 		CE40BF171D225791007C2148 /* URIData.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF121D225791007C2148 /* URIData.m */; };
 		CE40BF1C1D22867B007C2148 /* temp.json in Resources */ = {isa = PBXBuildFile; fileRef = CE40BF1A1D228650007C2148 /* temp.json */; };
 		CE4DB3F61CEF340F00CBD6DE /* TriDimBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */; };
@@ -979,14 +980,15 @@
 		CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTableViewCell.m; sourceTree = "<group>"; };
 		CE20BF391CB6331A002737F4 /* PerformanceTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceTest.h; sourceTree = "<group>"; };
 		CE20BF3A1CB6331A002737F4 /* PerformanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceTest.m; sourceTree = "<group>"; };
+		CE3EDAEE1D4742EC00C153A6 /* BrowsingHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistoryViewController.h; sourceTree = "<group>"; };
+		CE3EDAEF1D4742EC00C153A6 /* BrowsingHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistoryViewController.m; sourceTree = "<group>"; };
+		CE3EDAF01D4742EC00C153A6 /* SearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewController.h; sourceTree = "<group>"; };
+		CE3EDAF11D4742EC00C153A6 /* SearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewController.m; sourceTree = "<group>"; };
+		CE3EDAF61D47754A00C153A6 /* responseMain.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = responseMain.json; sourceTree = "<group>"; };
 		CE40BF091D225791007C2148 /* BrowsingHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistory.h; sourceTree = "<group>"; };
 		CE40BF0A1D225791007C2148 /* BrowsingHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistory.m; sourceTree = "<group>"; };
-		CE40BF0B1D225791007C2148 /* BrowsingHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistoryViewController.h; sourceTree = "<group>"; };
-		CE40BF0C1D225791007C2148 /* BrowsingHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistoryViewController.m; sourceTree = "<group>"; };
 		CE40BF0D1D225791007C2148 /* HistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCell.h; sourceTree = "<group>"; };
 		CE40BF0E1D225791007C2148 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
-		CE40BF0F1D225791007C2148 /* SearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewController.h; sourceTree = "<group>"; };
-		CE40BF101D225791007C2148 /* SearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewController.m; sourceTree = "<group>"; };
 		CE40BF111D225791007C2148 /* URIData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URIData.h; sourceTree = "<group>"; };
 		CE40BF121D225791007C2148 /* URIData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URIData.m; sourceTree = "<group>"; };
 		CE40BF1A1D228650007C2148 /* temp.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = temp.json; sourceTree = "<group>"; };
@@ -1197,6 +1199,7 @@
 				CE64BDC31D2FACCA0009A26F /* temp_copy.json */,
 				CEB788E31D361FE1005F75F2 /* temp_jsonResponse.json */,
 				F4D93AF21D3F629B00D55BD6 /* helpCenterJson.json */,
+				CE3EDAF61D47754A00C153A6 /* responseMain.json */,
 				A54EB0341C45004B00CF2837 /* Common-Images.xcassets */,
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
 				1C7E7E2D1A41A26A0026F0BA /* Base.lproj */,
@@ -1993,14 +1996,14 @@
 			children = (
 				CE40BF091D225791007C2148 /* BrowsingHistory.h */,
 				CE40BF0A1D225791007C2148 /* BrowsingHistory.m */,
-				CE40BF0B1D225791007C2148 /* BrowsingHistoryViewController.h */,
-				CE40BF0C1D225791007C2148 /* BrowsingHistoryViewController.m */,
 				CE40BF0D1D225791007C2148 /* HistoryCell.h */,
 				CE40BF0E1D225791007C2148 /* HistoryCell.m */,
-				CE40BF0F1D225791007C2148 /* SearchTableViewController.h */,
-				CE40BF101D225791007C2148 /* SearchTableViewController.m */,
 				CE40BF111D225791007C2148 /* URIData.h */,
 				CE40BF121D225791007C2148 /* URIData.m */,
+				CE3EDAEE1D4742EC00C153A6 /* BrowsingHistoryViewController.h */,
+				CE3EDAEF1D4742EC00C153A6 /* BrowsingHistoryViewController.m */,
+				CE3EDAF01D4742EC00C153A6 /* SearchTableViewController.h */,
+				CE3EDAF11D4742EC00C153A6 /* SearchTableViewController.m */,
 			);
 			path = SiteMap;
 			sourceTree = "<group>";
@@ -2375,6 +2378,7 @@
 				1C7E7E711A41A73B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */,
 				A58DB41A1BB2CD7D00717C02 /* InfoPlist.strings in Resources */,
 				A58DB2E51BB16B9F00717C02 /* InfoPlist.strings in Resources */,
+				CE3EDAF71D47754A00C153A6 /* responseMain.json in Resources */,
 				A58DB41D1BB2CD7D00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB4511BB3CD3F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2641BB168C400717C02 /* InfoPlist.strings in Resources */,
@@ -2773,7 +2777,6 @@
 				1C7E7DAB1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,
 				1C7E7D8B1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
 				1C7E7DCF1A41A0990026F0BA /* SFITableViewController.m in Sources */,
-				CE40BF141D225791007C2148 /* BrowsingHistoryViewController.m in Sources */,
 				1C7E7DD11A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				CEF6F4FE1C92CAD600C68975 /* RuleTextField.m in Sources */,
 				A5AC1E841CC7BA01009F362B /* RuleSceneUtil.m in Sources */,
@@ -2785,6 +2788,7 @@
 				8443277C1B763AD700BF2355 /* SFIScenesTableViewController.m in Sources */,
 				F4D93AF01D3F5C2500D55BD6 /* HelpCenterTableViewCell.m in Sources */,
 				1C7E7D891A41A0990026F0BA /* SFINotificationTableViewCell.m in Sources */,
+				CE3EDAF21D4742EC00C153A6 /* BrowsingHistoryViewController.m in Sources */,
 				1C7E7DAF1A41A0990026F0BA /* DrawerViewController.m in Sources */,
 				1C7E7D871A41A0990026F0BA /* SFINotificationsViewController.m in Sources */,
 				846414CB1B736B36008AB07F /* ILSaturationBrightnessPickerView.m in Sources */,
@@ -2807,7 +2811,6 @@
 				1C7E7DD31A41A0990026F0BA /* UIView+Borders.m in Sources */,
 				1C7E7D8D1A41A0990026F0BA /* SFIRouterDevicesTableViewCell.m in Sources */,
 				1C7E7DBD1A41A0990026F0BA /* SFICloudStatusBarButtonItem.m in Sources */,
-				CE40BF161D225791007C2148 /* SearchTableViewController.m in Sources */,
 				F4D93AD91D38E5D200D55BD6 /* HelpScreens.m in Sources */,
 				1C7E7D9B1A41A0990026F0BA /* ScoreboardEventViewController.m in Sources */,
 				1C7E7D931A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
@@ -2854,6 +2857,7 @@
 				1C2F15261BA7FB67009DB175 /* SFIMessageViewController.m in Sources */,
 				CE810C611C9C15D100F80777 /* ListButtonView.m in Sources */,
 				A5217EF61CBE29810089A8C3 /* SFILogsViewController.m in Sources */,
+				CE3EDAF31D4742EC00C153A6 /* SearchTableViewController.m in Sources */,
 				CEF6F4EE1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */,
 				CE40BF171D225791007C2148 /* URIData.m in Sources */,
 				1DF034DCCD17E1C36BA3BF00 /* SensorSupport.m in Sources */,
