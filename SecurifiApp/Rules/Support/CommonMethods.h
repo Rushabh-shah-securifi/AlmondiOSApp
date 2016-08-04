@@ -27,8 +27,6 @@
 
 + (NSString *)getDimmableHex:(NSString*)value;
 
-+ (NSString *)stringFromWeekday:(NSInteger)weekday;
-
 +(void)setLableProperties:(UILabel*)label text:(NSString*)text textColor:(UIColor*)textColor fontName:(NSString *)fontName fontSize:(float)size alignment:(NSTextAlignment)alignment;
 
 +(void)setLineSpacing:(UILabel*)label text:(NSString *)text spacing:(int)spacing;
@@ -49,6 +47,8 @@
 + (NSDictionary *)getDict:(NSString*)helpItem itemName:(NSString*)itemName;
 
 #pragma mark site monitoring methods
++ (NSString *)stringFromWeekday:(NSInteger)weekday;
+
 +(BOOL)isContainWeeKday:(NSString*)search;
 
 +(BOOL)isContainMonth:(NSString*)search;
@@ -71,5 +71,15 @@
 
 +(NSArray *)searchByRecent:(NSString*)search fromArr:(NSArray *)URIs;
 
+#pragma mark rgb methods
++ (int )getRGBForHex:(NSString*)hueValue sliderValue:(NSString*)slider;
+
++(float )getSatValue:(NSString *)value ;
+
++(float )getHueValue:(NSString *)value;
+
++(int)getRGBFromHSB:(int)hue saturation:(int)saturation ;
+
++(NSString *)getShortAlmondName:(NSString*)almondName;
 
 @end

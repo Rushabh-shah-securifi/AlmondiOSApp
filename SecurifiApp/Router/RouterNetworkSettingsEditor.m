@@ -36,7 +36,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = NSLocalizedString(@"router.network-title.Local Link", @"Local Link");
+        self.title = NSLocalizedString(@"Local Link Almond", @"Local Link");
     }
 
     return self;
@@ -170,7 +170,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
                 }
 
                 // only called when enableLocalAlmondLink is YES
-                return [self makeButtonCell:tableView id:@"cloud_link" buttonTag:editorMode buttonTitle:NSLocalizedString(@"router.btn-title.Back to Cloud Link", @"Back to Cloud Link") action:@selector(onCancelEdits) solidBackground:NO];
+                return [self makeButtonCell:tableView id:@"cloud_link" buttonTag:editorMode buttonTitle:NSLocalizedString(@"Back to Cloud Link", @"Back to Cloud Link") action:@selector(onCancelEdits) solidBackground:NO];
             }
         }
     }
@@ -179,7 +179,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
     switch (row) {
         case TABLE_ROW_IP_ADDR: {
             NSString *cell_id = @"host";
-            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:NSLocalizedString(@"router.label.IP Address", @"IP Address") fieldValue:self.workingSettings.host secureField:NO];
+            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:NSLocalizedString(@"IP Address", @"IP Address") fieldValue:self.workingSettings.host secureField:NO];
             return cell;
         }
         case TABLE_ROW_ADMIN_LOGIN: {
@@ -189,7 +189,8 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
         }
         case TABLE_ROW_ADMIN_PWD: {
             NSString *cell_id = @"pwd";
-            //NSLog(@"router network setting - tableView: - password: %@", self.workingSettings.password);
+            NSLog(@"router network setting - tableView: - password: %@", self.workingSettings.password);
+            NSLog(@"router password lenght: %d", self.workingSettings.password.length);
             UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:NSLocalizedString(@"router.label.Admin Password", @"Admin Password") fieldValue:self.workingSettings.password secureField:YES];
             return cell;
         }
@@ -353,7 +354,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
                     // in "Link Mode" we believe this is Almond is unknown to the app/system. In this case, it turns
                     // out we already know about it (settings already on file). So, we refuse to "link" (overwrite
                     // the settings).
-                    [self markErrorOnLink:NSLocalizedString(@"router.error-msg.This Almond is already linked.", @"This Almond is already linked.")];
+                    [self markErrorOnLink:NSLocalizedString(@"almond_already_linked", @"This Almond is already linked.")];
                     return;
                 }
 
@@ -375,9 +376,17 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
                 break;
             }
 
-            case TestConnectionResult_unknownError:
-            case TestConnectionResult_unknown:
+            case TestConnectionResult_unknownError:{
+                NSLog(@"unknown");
+                
+            }
+            case TestConnectionResult_unknown:{
+                NSLog(@"result unknown");
+            }
             case TestConnectionResult_macMismatch:
+            {
+                NSLog(@"result macMismatch");
+            }
             case TestConnectionResult_macMissing: {
                 // should not be possible to get mac-mismatch error right now because this is only relevant when
                 // editing settings on an unlinked Almond.
@@ -416,7 +425,9 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    str = [str stringByTrimmingCharactersInSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet]];
+    NSLog(@"str  brfore = %@",str);
+//    str = [str stringByTrimmingCharactersInSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet]];
+    NSLog(@"str = %@",str);
 
     enum TABLE_ROW row = (enum TABLE_ROW) textField.tag;
     switch (row) {

@@ -123,7 +123,7 @@
     if(genericValue){
         if([genericValue.value isEqualToString:@"0"]){
             genericValue.icon = @"switch_off";
-            genericValue.displayText = @"Off";
+            genericValue.displayText = NSLocalizedString(@"deviceHeaderView Off", @"Off");
             genericValue.toggleValue = @"100";
         }else{//dimmer
             self.genericParams.headerGenericIndexValue.genericIndex.icon = @"dimmer";
@@ -139,8 +139,8 @@
 //        BOOL isNestOnline = NO;
         if(!isNestOnline){
             genericValue.icon = @"offline_icon";
-            genericValue.iconText = nil;
-            genericValue.displayText = @"Offline";
+            genericValue.iconText = nil;//
+            genericValue.displayText = NSLocalizedString(@"offline", @"Offline");
             if(deviceType == SFIDeviceType_NestThermostat_57){
                 self.tamperedImgView.hidden = NO;
                 self.tamperedImgView.image = [UIImage imageNamed:@"nest_offline"];
@@ -153,7 +153,7 @@
         if(!isSmokeOnline){
             genericValue.icon = @"offline_icon";
             genericValue.iconText = nil;
-            genericValue.displayText = @"Offline";
+            genericValue.displayText = NSLocalizedString(@"offline", @"Offline");
             if(deviceType == SFIDeviceType_NestSmokeDetector_58){
                 self.tamperedImgView.hidden = NO;
                 self.tamperedImgView.image = [UIImage imageNamed:@"nest_offline"];
@@ -168,9 +168,9 @@
 
 -(NSString*)getSmokeStatus:(int)deviceID{
     NSString *status = @"NaN";
-    NSString *emergency = @"emergency";
-    NSString *warning = @"warning";
-    NSString *replace = @"replace";
+    NSString *emergency = NSLocalizedString(@"emergency", @"emergency");
+    NSString *warning =  NSLocalizedString(@"warning", @"warning");
+    NSString *replace = NSLocalizedString(@"replace", @"replace");
     
     NSString *coAlarm = [Device getValueForIndex:3 deviceID:deviceID];
     NSString *smokeAlarm = [Device getValueForIndex:4 deviceID:deviceID];
@@ -178,16 +178,16 @@
     
     //NSLog(@"coalarm: %@, smoke: %@", coAlarm, smokeAlarm);
     if([coAlarm isEqualToString:smokeAlarm]){
-        status = [coAlarm isEqualToString:@"ok"]? @"OK": [NSString stringWithFormat:@"%@ %@", @"SMOKE & CO", coAlarm.uppercaseString];
+        status = [coAlarm isEqualToString:@"ok"]? NSLocalizedString(@"ok", @"OK"): [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"smoke_and_co", @"SMOKE & CO"), coAlarm.uppercaseString];
     }else{
         if([coAlarm isEqualToString:emergency])
-            status = @"CO EMERGENCY";
+            status = NSLocalizedString(@"deviceHeaderView CO EMERGENCY", @"CO EMERGENCY");
         else if([smokeAlarm isEqualToString:emergency])
-            status = @"SMOKE EMERGENCY";
+            status = NSLocalizedString(@"smoke_emergency", @"SMOKE EMERGENCY");
         else if([coAlarm isEqualToString:warning])
-            status = @"CO WARNING";
+            status = NSLocalizedString(@"deviceHeaderView CO WARNING", @"CO WARNING");
         else if([smokeAlarm isEqualToString:warning])
-            status = @"SMOKE WARNING";
+            status = NSLocalizedString(@"smoke_warning", @"SMOKE WARNING");
     }
     if([coAlarm isEqualToString:emergency] || [smokeAlarm isEqualToString:emergency]){
         self.tamperedImgView.hidden = NO;

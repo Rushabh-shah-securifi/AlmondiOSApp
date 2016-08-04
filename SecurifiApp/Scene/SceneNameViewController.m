@@ -30,7 +30,7 @@ static const int sceneNameFont = 15;
     _filteredList = [NSMutableArray new];
     
     
-    _commonSceneNames = @[@"Good morning",@"Bedroom lights off",@"Going on vacation",@"Good night",@"Close the garage",@"Open the garage",@"All backyard lights on",@"Cooling the house",@"Basement lights off",@"Decorations on",@"Turn on kitchen lights"];
+    _commonSceneNames = @[@"Good Morning",@"Bedroom Lights Off",@"Going On Vacation",@"Good Night",@"Close Garage Door",@"Open Garage",@"All Backyard Lights On",@"Cooling The House",@"Basement Lights Off",@"Decorations On",@"Turn On Kitchen Lights"];
     [self readSceneNameFileContents];
     [self.sceneNameField becomeFirstResponder];
     [self.sceneNameField addTarget:self
@@ -72,7 +72,7 @@ static const int sceneNameFont = 15;
 -(void)setUpNavigationBar{
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(btnSaveTap:)];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
-    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"scene.button.Cancel", @"Cancel") style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
+    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
     self.navigationItem.leftBarButtonItem = leftBarButtonItem;
     
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName : UIColorFromRGB(0x02a8f3),
@@ -182,7 +182,7 @@ static const int sceneNameFont = 15;
 
 - (void)showMessageBox:(NSString *)message {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Scenes" message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"scene.cancel-title.OK", @"OK") otherButtonTitles:nil];
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Scenes" message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil];
         [alert show];
         alert = nil;
     });
@@ -235,8 +235,8 @@ static const int sceneNameFont = 15;
 
     NSString * success = [mainDict valueForKey:@"Success"];
     if (![success isEqualToString:@"true"]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"scene.alert-title.Oops", @"Oops") message:NSLocalizedString(@"scene.alert-msg.Sorry, There was some problem with this request, try later!", @"Sorry, There was some problem with this request, try again or later!")
-                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Oops") message:NSLocalizedString(@"scene.alert-msg.Sorry, There was some problem with this request, try later!", @"Sorry, There was some problem with this request, try again or later!")
+                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles: nil];
         [alert show];
     }else{
         dispatch_async(dispatch_get_main_queue(), ^() {

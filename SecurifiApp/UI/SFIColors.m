@@ -21,24 +21,24 @@
 // Returns the standard list of almond colors
 + (NSArray *)colors {
     return @[
-            [self blueColor],
-            [self greenColor],
-            [self redColor],
-            [self pinkColor],
-            [self purpleColor],
-            [self limeColor],
-            [self yellowColor],
-    ];
+             [self blueColor],
+             [self greenColor],
+             [self redColor],
+             [self pinkColor],
+             [self purpleColor],
+             [self limeColor],
+             [self yellowColor],
+             ];
 }
 
 + (SFIColors *)colorForIndex:(NSUInteger)colorCode {
     NSArray *colors = [SFIColors colors];
-
+    
     NSUInteger count = [colors count];
     if (colorCode >= count) {
         colorCode = colorCode % count;
     }
-
+    
     return colors[colorCode];
 }
 
@@ -178,7 +178,7 @@
     
     return [UIColor grayColor];
 }
-                
+
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName {
     self = [super init];
     if (self) {
@@ -187,21 +187,21 @@
         _brightness = brightness;
         _colorName = colorName;
     }
-
+    
     return self;
 }
 
 - (UIColor *)makeGradatedColorForPositionIndex:(NSUInteger)index {
-//    int positionIndex = index % 15; //need to remove for 0, 1, 7
-//
-//    int brightness = 0;
-//    if (positionIndex < 7) {
-//        brightness = self.brightness - (positionIndex * 10);
-//    }
-//    else {
-//        brightness = (self.brightness - 70) + ((positionIndex - 7) * 10);
-//    }
-//    NSLog(@"brightnes: %d", brightness);
+    //    int positionIndex = index % 15; //need to remove for 0, 1, 7
+    //
+    //    int brightness = 0;
+    //    if (positionIndex < 7) {
+    //        brightness = self.brightness - (positionIndex * 10);
+    //    }
+    //    else {
+    //        brightness = (self.brightness - 70) + ((positionIndex - 7) * 10);
+    //    }
+    //    NSLog(@"brightnes: %d", brightness);
     
     //
     int positionIndex = index % 10;
@@ -232,7 +232,7 @@
     _saturation = [decoder decodeIntForKey:@"SATURATION"];
     _brightness = [decoder decodeIntForKey:@"BRIGHTNESS"];
     _colorName = [decoder decodeObjectForKey:@"NAME"];
-
+    
     return self;
 }
 
@@ -241,7 +241,7 @@
     [encoder encodeInteger:self.saturation forKey:@"SATURATION"];
     [encoder encodeInteger:self.brightness forKey:@"BRIGHTNESS"];
     [encoder encodeObject:self.colorName forKey:@"NAME"];
-
+    
 }
 
 + (UIColor *)lighterColorForColor:(UIColor *)c
@@ -266,4 +266,16 @@
                                alpha:a];
     return nil;
 }
+
++ (UIColor*) getClientCellColor:(Client*)client{
+    if (client.deviceAllowedType == 1)
+        return [SFIColors clientBlockedGrayColor];
+    else if(client.isActive)
+        return [SFIColors clientGreenColor];
+    else if(!client.isActive)
+        return [SFIColors clientInActiveGrayColor];
+    
+    return [SFIColors clientGreenColor];
+}
+
 @end

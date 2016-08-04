@@ -137,19 +137,32 @@
         return [NSMutableArray new];
     NSDictionary *deviceIndexes = genericDevice.Indexes;
     NSMutableArray *genericIndexValues = [NSMutableArray new];
-    for(NSString *IndexId in deviceIndexes.allKeys){
+    NSMutableArray *deviceIndexArr = [NSMutableArray arrayWithArray:deviceIndexes.allKeys];
+//    if(device.type == SFIDeviceType_AlmondBlink_64){
+//        NSLog(@"SFIDeviceType_AlmondBlink_64 in getGenericIndexValuesByPlacementForDevice");
+//        NSLog(@"deviceIndexArr %@",deviceIndexArr);
+//        [deviceIndexArr addObject:@"5"];
+//    }
+    
+    for(NSString *IndexId in deviceIndexArr){
+        
         DeviceIndex *deviceIndex = deviceIndexes[IndexId];
         GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
+        if(device.type == SFIDeviceType_AlmondBlink_64){
+            NSLog(@"SFIDeviceType_AlmondBlink_64 in getGenericIndexValuesByPlacementForDevice %@",genericIndexObj.ID);
+          
+        }
+
         GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexObj];
         if(deviceIndex.placement != nil){
             //NSLog(@" device index place ment %@",deviceIndex.placement);
             copyGenericIndex.placement = deviceIndex.placement;
         }
         if([copyGenericIndex.placement rangeOfString:placement options:NSCaseInsensitiveSearch].location != NSNotFound){//contains
-            //NSLog(@"inside placement: %@", copyGenericIndex.placement);
+            NSLog(@"inside placement: %@", copyGenericIndex.placement);
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:copyGenericIndex.ID
                                                                                forValue:[self getHeaderValueFromKnownValuesForDevice:device indexID:IndexId]];
-            //NSLog(@"genericvalue: %@, genericValue.value: %@, transformedvalue: %@", genericValue, genericValue.value, genericValue.transformedValue);
+            NSLog(@"genericvalue: %@, genericValue.value: %@, transformedvalue: %@", genericValue, genericValue.value, genericValue.transformedValue);
             if(deviceIndex.min != nil && deviceIndex.max  != nil){
                 copyGenericIndex.formatter.min = deviceIndex.min.intValue;
                 copyGenericIndex.formatter.max = deviceIndex.max.intValue;
@@ -272,8 +285,9 @@
     if(!client.canBeBlocked){
         [clientGenericIndexes removeObjectsInArray:@[@-19, @-22]];
     }
-    if([client.deviceConnection isEqualToString:@"wired"])
+    if([client.deviceConnection isEqualToString:@"wired"] || !client.isActive)
         [clientGenericIndexes removeObjectsInArray:@[@-20]];
+
     return clientGenericIndexes;
 }
 

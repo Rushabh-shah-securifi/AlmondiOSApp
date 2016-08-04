@@ -18,6 +18,7 @@
 #import "Analytics.h"
 #import "RouterPayload.h"
 #import "UIViewController+Securifi.h"
+#import "CommonMethods.h"
 
 @interface SFIRouterSettingsTableViewController () <SFIRouterTableViewActions, TableHeaderViewDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -45,13 +46,15 @@ int mii;
     };
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-    self.navigationItem.title = toolkit.currentAlmond.almondplusName;
+    
+    self.navigationItem.title = [CommonMethods getShortAlmondName:toolkit.currentAlmond.almondplusName];
     
 //    UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
 //    self.navigationItem.rightBarButtonItem = done;
 
     [[Analytics sharedInstance] markRouterSettingsScreen];
 }
+
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
@@ -179,8 +182,8 @@ int mii;
             return;
         }
         if(!genericRouterCommand.commandSuccess){
-            [self showToast:@"Sorry! unable to update."];
-            return;
+            [self showToast:NSLocalizedString(@"ParseRouterCommand Sorry! unable to update.", @"Sorry! unable to update.")];
+            return;//
         }
         NSLog(@"genericRouterCommand.commandType %d",genericRouterCommand.commandType);
         switch (genericRouterCommand.commandType) {
@@ -188,7 +191,7 @@ int mii;
                 [self processSettings:genericRouterCommand.command];
                 // settings was null, reload in case they are late arriving and the view is waiting for them
                 NSLog(@"processRouterCommandResponse reload");
-                [self showToast:@"Successfully updated!"];
+                [self showToast:NSLocalizedString(@"DeviceList Successfully updated!", @"Successfully updated!")];//
                 [self.tableView reloadData];
 
                 break;

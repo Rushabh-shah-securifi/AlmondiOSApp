@@ -32,6 +32,7 @@
 #import "SFINotificationsViewController.h"
 #import "Analytics.h"
 #import "NotificationPreferenceResponse.h"
+#import "BlinkLedView.h"
 
 #define ITEM_SPACING  2.0
 #define LABELSPACING 20.0
@@ -45,7 +46,7 @@
 #define BUTTON_FRAME CGRectMake(0, LABELHEIGHT + LABELVALUESPACING,view.frame.size.width-10,  35)
 static const int xIndent = 10;
 
-@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,MultiButtonViewDelegate,GridViewDelegate,ListButtonDelegate,UIGestureRecognizerDelegate
+@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,MultiButtonViewDelegate,GridViewDelegate,ListButtonDelegate,UIGestureRecognizerDelegate,BlinkLedViewDelegate
 >
 //can be removed
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
@@ -239,6 +240,14 @@ static const int xIndent = 10;
                 NSLog(@"hue bounds: %@", NSStringFromCGRect(self.hueFrame));
                 [view addSubview:hueView];
             }
+            else if ([genericIndexObj.layoutType isEqualToString:@"HUE_BLINK"]){
+                view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, view.frame.size.height * 2 + 20);
+                
+                BlinkLedView * blinlk = [[BlinkLedView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height) color:self.genericParams.color genericIndexValue:genericIndexValue];
+                self.hueFrame = view.frame;
+                blinlk.delegate = self;
+                [view addSubview:blinlk];
+            }
             else if ([genericIndexObj.layoutType isEqualToString: @"SLIDER"] || [genericIndexObj.layoutType isEqualToString:@"SLIDER_ICON"]){
                 Slider *sliderView = [[Slider alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 sliderView.delegate = self;
@@ -343,7 +352,7 @@ static const int xIndent = 10;
     tamperedImgView.image = [UIImage imageNamed:@"tamper"];
     [self.dismisstamperedView addSubview:tamperedImgView];
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(50, 3, self.dismisstamperedView.frame.size.width - 60, 30)];
-    label.text = @"Device has been tampered";
+     label.text = NSLocalizedString(@"deviceedit Device has been tampered", @"Device has been tampered");
     label.textColor = [UIColor whiteColor];
     label.font = [UIFont securifiFont:12];
     [self.dismisstamperedView addSubview:label];
@@ -360,7 +369,7 @@ static const int xIndent = 10;
 }
 
 -(void)dimissTamperTap:(id)sender{
-    [self showToast:@"Saving..."];
+    [self showToast:NSLocalizedString(@"saving", @"Saving...")];
     mii = arc4random()%10000;
     [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:self.genericIndexVal mii:mii value:@"false"];
     //tried to animate dismiss, currently not working. Need to fix this.
@@ -509,13 +518,20 @@ static const int xIndent = 10;
     
     BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
     GenericIndexValue *genIndexVal = self.miiTable[payload[@"MobileInternalIndex"]];
+    int dType = [Device getTypeForID:genIndexVal.deviceID];
     
     if(self.genericParams.isSensor){
         NSLog(@"sensor");
         if(isSuccessful == NO){
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self revertToOldValue:genIndexVal];
-                [self showToast:[NSString stringWithFormat:@"Sorry, Could not update %@", genIndexVal.genericIndex.groupLabel]];
+                if(dType == SFIDeviceType_AlmondBlink_64){
+                    [self repaintBottomView:dType];
+                }else{
+                    [self revertToOldValue:genIndexVal];
+                }
+                NSString *str =NSLocalizedString(@"sorry_could_not_update", @"sorry_could_not_update");
+                
+                [self showToast:[NSString stringWithFormat:@"%@ %@",str,genIndexVal.genericIndex.groupLabel]];
             });
         }
         else{
@@ -528,12 +544,12 @@ static const int xIndent = 10;
             }
             NSLog(@"updated value: %@", [Device getValueForIndex:genIndexVal.index deviceID:genIndexVal.deviceID]);
             
-            int dType = [Device getTypeForID:genIndexVal.deviceID];
+            
             if(dType == SFIDeviceType_NestThermostat_57 || dType == SFIDeviceType_HueLamp_48 || dType == SFIDeviceType_AlmondSiren_63){
                 [self repaintBottomView:dType];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
+                [self showToast:[NSString stringWithFormat:NSLocalizedString(@"deviceEdit %@ successfully updated", @"%@ successfully updated"), genIndexVal.genericIndex.groupLabel]];
             });
             [self updateGenericIndexValueList:genIndexVal];
         }
@@ -549,9 +565,11 @@ static const int xIndent = 10;
     else{
         if(isSuccessful == NO){
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self showToast:[NSString stringWithFormat:@"Sorry, Could not update."]];
-                [self.navigationController popToRootViewControllerAnimated:YES];
+                [self showToast:[NSString stringWithFormat:NSLocalizedString(@"sorry_could_not_update", @"Sorry, Could not update.")]];
+                [self.navigationController popViewControllerAnimated:YES];
             });
+        }else{
+            [self showToast:[NSString stringWithFormat:NSLocalizedString(@"deviceEdit %@ successfully updated", @"%@ successfully updated"), genIndexVal.genericIndex.groupLabel]];
         }
     }
 }
@@ -650,6 +668,7 @@ static const int xIndent = 10;
             float val = [value floatValue];
             [hueView.huePickerView setConvertedValue:val];
         }
+        
         else if ([layout isEqualToString: @"SLIDER"] || [layout isEqualToString:@"SLIDER_ICON"]){
             Slider *sliderView = (Slider *)genIndexVal.clickedView;
             NSLog(@"slider update");
@@ -696,7 +715,8 @@ static const int xIndent = 10;
         NSLog(@"notify unsuccessful");
         dispatch_async(dispatch_get_main_queue(), ^{
             [self revertToOldValue:genIndexVal];
-            [self showToast:[NSString stringWithFormat:@"Sorry, Could not update %@", genIndexVal.genericIndex.groupLabel]];
+            NSString *str =NSLocalizedString(@"DeviceList Sorry, Could not update!", @"DeviceList Sorry, Could not update!");
+            [self showToast:[NSString stringWithFormat:@"%@ %@",str,genIndexVal.genericIndex.groupLabel]];
         });
     }
     else{
@@ -705,7 +725,7 @@ static const int xIndent = 10;
         
         [Device updateDeviceData:deviceCmdType value:genIndexVal.currentValue deviceID:genIndexVal.deviceID];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
+            [self showToast:[NSString stringWithFormat:NSLocalizedString(@"deviceEdit %@ successfully updated", @"%@ successfully updated"), genIndexVal.genericIndex.groupLabel]];
         });
         [self updateGenericIndexValueList:genIndexVal];
     }
@@ -733,7 +753,7 @@ static const int xIndent = 10;
     }
     if ([[mainDict valueForKey:@"Success"] isEqualToString:@"false"]) {
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [self showToast:[NSString stringWithFormat:@"Sorry, Could not update."]];
+            [self showToast:[NSString stringWithFormat:NSLocalizedString(@"sorry_could_not_update", @"Sorry, Could not update.")]];
             [self.navigationController popViewControllerAnimated:YES];
         });
         return;
@@ -777,7 +797,6 @@ static const int xIndent = 10;
 -(void)popViewController:(int)resClientID curClientID:(int)curClientID{
     if(resClientID == curClientID){
         dispatch_async(dispatch_get_main_queue(), ^(){
-            //                    [self.navigationController popToRootViewControllerAnimated:YES];
             [self.navigationController popViewControllerAnimated:YES];
         });
     }

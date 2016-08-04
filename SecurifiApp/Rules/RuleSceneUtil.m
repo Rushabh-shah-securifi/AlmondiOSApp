@@ -31,7 +31,7 @@
 }
 
 + (void)getToggleParms:(GenericIndexValue *)genericIndexValue isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene{
-    GenericValue *toggleValue = [[GenericValue alloc]initWithDisplayText:@"TOGGLE" icon:@"toggle_icon" toggleValue:@"toggle" value:@"toggle" excludeFrom:nil eventType:nil];
+    GenericValue *toggleValue = [[GenericValue alloc]initWithDisplayText:NSLocalizedString(@"toggle", @"TOGGLE") icon:@"toggle_icon" toggleValue:@"toggle" value:@"toggle" excludeFrom:nil eventType:nil];
     NSMutableDictionary *valuesDict = [genericIndexValue.genericIndex.values mutableCopy];
     [valuesDict setValue:toggleValue forKey:@"toggle"];
     if(isScene || (isTrigger && !isScene))

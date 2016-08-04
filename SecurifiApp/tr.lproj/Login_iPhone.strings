@@ -1,0 +1,45 @@
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "7Fl-1P-IHp"; */
+"7Fl-1P-IHp.placeholder" = "Password";
+
+/* Class = "UIButton"; normalTitle = "Continue"; ObjectID = "8dk-rt-Z1X"; */
+"8dk-rt-Z1X.normalTitle" = "Continue";
+
+/* Class = "UIButton"; normalTitle = "Login"; ObjectID = "9ZE-dj-qTz"; */
+"9ZE-dj-qTz.normalTitle" = "Login";
+
+/* Class = "UIButton"; normalTitle = "Create Almond Account"; ObjectID = "APV-X7-KCb"; */
+"APV-X7-KCb.normalTitle" = "Create Almond Account";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "OmU-Fu-hCA"; */
+"OmU-Fu-hCA.placeholder" = "Password";
+
+/* Class = "UIButton"; normalTitle = "Add Almond Locally"; ObjectID = "UMh-WG-lC3"; */
+"UMh-WG-lC3.normalTitle" = "Add Almond Locally";
+
+/* Class = "UITextField"; placeholder = "Email Address"; ObjectID = "Y3d-aA-TFm"; */
+"Y3d-aA-TFm.placeholder" = "Email Address";
+
+/* Class = "UILabel"; text = "Monitor and Control your home from anywhere."; ObjectID = "Zon-6Z-KzY"; */
+"Zon-6Z-KzY.text" = "Monitor and Control your home from anywhere.";
+
+/* Class = "UILabel"; text = "Almond"; ObjectID = "Zuk-ja-Rsi"; */
+"Zuk-ja-Rsi.text" = "Almond";
+
+/* Class = "UITextField"; placeholder = "Email Address"; ObjectID = "aVN-yM-ZEx"; */
+"aVN-yM-ZEx.placeholder" = "Email Address";
+
+/* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "agc-5v-Rrn"; */
+"agc-5v-Rrn.placeholder" = "Confirm Password";
+
+/* Class = "UILabel"; text = "Status message"; ObjectID = "iE9-mw-UCt"; */
+"iE9-mw-UCt.text" = "Status message";
+
+/* Class = "UIButton"; normalTitle = "Forgot?"; ObjectID = "slZ-Ce-Cut"; */
+"slZ-Ce-Cut.normalTitle" = "Forgot?";
+
+/* Class = "UILabel"; text = "Access your home devices from anywhere."; ObjectID = "t3G-Hy-bQo"; */
+"t3G-Hy-bQo.text" = "Access your home devices from anywhere.";
+
+/* Class = "UILabel"; text = "Alternatively, you can control your Almond and home devices locally, without a Securifi Almond Account."; ObjectID = "wee-4l-TQb"; */
+"wee-4l-TQb.text" = "Alternatively, you can control your Almond and home devices locally, without a Securifi Almond Account.";

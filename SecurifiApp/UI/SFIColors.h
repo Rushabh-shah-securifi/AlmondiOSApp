@@ -93,4 +93,6 @@
 + (UIColor *)darkerColorForColor:(UIColor *)c;
 
 + (UIColor *)getHelpCenterColor:(NSString*)color;
+
++ (UIColor*)getClientCellColor:(Client*)client;
 @end

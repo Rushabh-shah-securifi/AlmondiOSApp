@@ -160,7 +160,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 //subview
                 hueColorPickupLabelView = [[labelAndCheckButtonView alloc]initWithFrame:CGRectMake(view.frame.origin.x, 0, view.frame.size.width, hueSubViewSize)];
                 hueColorPickupLabelView.isScene = self.isScene;
-                [hueColorPickupLabelView setUpValues:@"  Hue" withSelectButtonTitle:@"Select"];
+                [hueColorPickupLabelView setUpValues:NSLocalizedString(@"   hue", @"  Hue") withSelectButtonTitle:NSLocalizedString(@"select", @"Select")];
                 [hueColorPickupLabelView.selectButton addTarget:self action:@selector(onHueColorPickerSelectButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                 //picker view
                 huePickerView = [[SFIHuePickerView alloc]initWithFrame:CGRectMake(view.frame.origin.x, hueSubViewSize,view.frame.size.width ,view.frame.size.height-hueSubViewSize)];
@@ -208,7 +208,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 //subview
                 saturationSliderLabelView = [[labelAndCheckButtonView alloc]initWithFrame:CGRectMake(view.frame.origin.x, 0, view.frame.size.width, hueSubViewSize)];
                 saturationSliderLabelView.isScene = self.isScene;
-                [saturationSliderLabelView setUpValues:@"  Saturation" withSelectButtonTitle:@"Select"];
+                [saturationSliderLabelView setUpValues:NSLocalizedString(@"saturation", @"  Saturation") withSelectButtonTitle:NSLocalizedString(@"select", @"Select")];
                 [saturationSliderLabelView.selectButton addTarget:self action:@selector(onSaturationCheckButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                 
                 //sliderview
@@ -273,8 +273,8 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 
                 //hue sub view
                 brightnessSliderLabelView = [[labelAndCheckButtonView alloc]initWithFrame:CGRectMake(view.frame.origin.x, 0, view.frame.size.width, hueSubViewSize)];
-                brightnessSliderLabelView.isScene = self.isScene;
-                [brightnessSliderLabelView setUpValues:@"  Brightness" withSelectButtonTitle:@"Select"];
+                brightnessSliderLabelView.isScene = self.isScene;//
+                [brightnessSliderLabelView setUpValues:NSLocalizedString(@"brightness", @"  Brightness") withSelectButtonTitle:NSLocalizedString(@"select", @"Select")];
                 [brightnessSliderLabelView.selectButton addTarget:self action:@selector(onBrightnessCheckButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                 
                 //slider view

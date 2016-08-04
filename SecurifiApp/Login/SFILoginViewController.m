@@ -76,8 +76,8 @@
 
             self.createAccountButton.hidden = YES;
 
-            self.localActionLabel.text = @"Did not receive any email?";
-            [self.localActionButton setTitle:@"Resend Activation Link" forState:UIControlStateNormal];
+            self.localActionLabel.text = NSLocalizedString(@"LoginViewController Did not receive any email?",@"Did not receive any email?");
+            [self.localActionButton setTitle:NSLocalizedString(@"LoginViewController Resend Activation Link",@"Resend Activation Link") forState:UIControlStateNormal];
 
             break;
         }

@@ -109,14 +109,14 @@ UIAlertView *alert;
 
 -(void) setUpNavigationBar{
     self.navigationController.navigationBar.translucent = YES;
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(btnSaveTap:)];
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"done",@"Done") style:UIBarButtonItemStylePlain target:self action:@selector(btnSaveTap:)];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
-    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
+    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"back",@"Back") style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
     self.navigationItem.leftBarButtonItem = leftBarButtonItem;
     
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName : UIColorFromRGB(0x02a8f3),
                                                                                                        NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Roman" size:17.5f]} forState:UIControlStateNormal];
-    self.title = self.isInitialized? [NSString stringWithFormat:@"%@", self.scene.name]: @"New Scene";
+    self.title = self.isInitialized? [NSString stringWithFormat:@"%@", self.scene.name]: NSLocalizedString(@"newScene",@"New Scene");
 }
 
 #pragma mark button clicks
@@ -124,15 +124,16 @@ UIAlertView *alert;
     self.isDone = YES;
     if(self.scene.triggers.count > 0){
         NSString *msg;
-        msg = @"If you want this scene name to be compatible with Amazon Echo Voice Control, click Next.\nIf not, just enter the name in the below text box and click Done.";
+        msg = NSLocalizedString(@"alexa_complatible_text",@"");
         if(self.isInitialized && [self isSceneNameCompatibleWithAlexa]){
-            msg = @"Your current scene name is already compatible with Amazon Echo Voice Control.\nClick Done to keep it as it is or Click Next to change it to a different Echo compatible name.";
+            msg = NSLocalizedString(@"sceneNameCompatible",@"");
+            
         }
-        alert = [[UIAlertView alloc] initWithTitle:@"Scene Name"
+        alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"scene_name",@"Scene Name")
                                            message:msg
                                           delegate:self
-                                 cancelButtonTitle:@"Next"
-                                 otherButtonTitles:@"Done",nil];
+                                 cancelButtonTitle:NSLocalizedString(@"next",@"Next")
+                                 otherButtonTitles:NSLocalizedString(@"done",@"Done"),nil];
         [alert setDelegate:self];
         alert.tag = kAlertViewSave;
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
@@ -150,8 +151,8 @@ UIAlertView *alert;
     }
     else
     {
-        alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Select atleast one Action."
-                                          delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
+        alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops",@"Oops") message:NSLocalizedString(@"AddRulesView Select atleast one Action",@"Select atleast one Action.")
+                                          delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles: nil];
         dispatch_async(dispatch_get_main_queue(), ^() {
             [alert show];
         });
@@ -167,11 +168,11 @@ UIAlertView *alert;
 
 
 - (void)btnDeleteSceneTap:(id)sender {
-    alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Are you sure, you want to delete this Scene?"]
+    alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"NewAddScene Are you sure, you want to delete this Scene?",@"Are you sure, you want to delete this Scene?")]
                                        message:@""
                                       delegate:self
-                             cancelButtonTitle:@"Cancel"
-                             otherButtonTitles:@"Delete", nil];
+                             cancelButtonTitle:NSLocalizedString(@"cancel",@"Cancel")
+                             otherButtonTitles:NSLocalizedString(@"delete",@"Delete"), nil];
     [alert setDelegate:self];
     alert.tag = kAlertViewDelete;
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -219,15 +220,14 @@ UIAlertView *alert;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
         if (![success isEqualToString:@"true"]) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"scene.alert-title.Oops", @"Oops") message:NSLocalizedString(@"scene.alert-msg.Sorry, There was some problem with this request, try later!", @"Sorry, There was some problem with this request, try later!")
-                                                           delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Oops") message:NSLocalizedString(@"try_later", @"Sorry, There was some problem with this request, try later!")
+                                                           delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles: nil];
             [alert show];
         }else{
                 [self.navigationController popViewControllerAnimated:YES];
         }
     });
 }
-
 #pragma mark alert view delegate method
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == [alertView cancelButtonIndex]){
@@ -279,7 +279,7 @@ UIAlertView *alert;
     //HUd methods.....
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Saving Scene...";
+    _HUD.labelText = NSLocalizedString(@"NewAddScene Saving Scene...", @"Saving Scene...");
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];

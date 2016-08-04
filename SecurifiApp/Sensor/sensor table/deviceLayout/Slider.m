@@ -10,6 +10,8 @@
 #import "SFISlider.h"
 #import "UIFont+Securifi.h"
 #import "SFIColors.h"
+#import "Colours.h"
+#import "CommonMethods.h"
 
 @interface Slider()
 @property (nonatomic)SFISlider *brightnessSlider;
@@ -42,8 +44,10 @@
     self.brightnessSlider = [[SFISlider alloc]initWithFrame:CGRectMake(self.frame.size.height , 0, self.frame.size.width - (2*self.frame.size.height), self.frame.size.height)];
     const CGFloat slider_x_offset = 10.0;
     const CGFloat slider_right_inset = 20.0;
+    
     float min = (float)self.genericIndexValue.genericIndex.formatter.min;
     float max = (float)self.genericIndexValue.genericIndex.formatter.max;
+    
     self.brightnessSlider = [self makeSlider:min maxValue:max propertyType:SFIDevicePropertyType_BRIGHTNESS sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset slider:self.brightnessSlider];
     
     self.brightnessSlider.continuous = YES;
@@ -52,7 +56,8 @@
     self.brightnessSlider.convertedValue = 0; // to be assigned
 //    brightnessSlider.backgroundColor = [SFIColors ruleOrangeColor];
     NSLog(@"slider transformed value: %d", [self.genericIndexValue.genericValue.transformedValue intValue]);
-    [self.brightnessSlider setValue:[self.genericIndexValue.genericValue.transformedValue intValue]];
+    
+       [self.brightnessSlider setValue:[self.genericIndexValue.genericValue.transformedValue intValue]];
     NSLog(@" brightness slider adding ");
     [self addSubview:self.brightnessSlider];
 }
@@ -90,6 +95,12 @@
     
     int sensorValue = [slider getConvertedValue:self.genericIndexValue.genericIndex.formatter.factor];
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
+    int deviceType = [Device getTypeForID:self.genericIndexValue.deviceID];
+    ;
+    if (deviceType ==  SFIDeviceType_AlmondBlink_64) {
+        [self.delegate blinkNew:newValue];
+        return;
+    }
     [self.delegate save:newValue forGenericIndexValue:_genericIndexValue currentView:self];
     
 }
@@ -109,7 +120,14 @@
     [slider setValue:value animated:YES];
     
     int sensorValue = [slider getConvertedValue:self.genericIndexValue.genericIndex.formatter.factor];
+    
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
+    int deviceType = [Device getTypeForID:self.genericIndexValue.deviceID];
+    ;
+    if (deviceType ==  SFIDeviceType_AlmondBlink_64) {
+        [self.delegate blinkNew:newValue];
+        return;
+    }
     [self.delegate save:newValue forGenericIndexValue:_genericIndexValue currentView:self];
 }
 
@@ -128,5 +146,4 @@
 -(void)setSliderValue:(int)value{
     [self.brightnessSlider setValue:value animated:YES];
 }
-
 @end

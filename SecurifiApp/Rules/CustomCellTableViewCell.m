@@ -44,12 +44,12 @@
 }
 
 
-- (IBAction)onDeleteButtonClick:(id)sender{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Are you sure, you want to delete rule - %@?",self.ruleNameLabel.text]
+- (IBAction)onDeleteButtonClick:(id)sender{//
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"CustomCell Are you sure, you want to delete rule - %@?", @"Are you sure, you want to delete rule - %@?"),self.ruleNameLabel.text]
                                                     message:@""
                                                    delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Delete", nil];
+                                          cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel")
+                                          otherButtonTitles:NSLocalizedString(@"delete", @"Delete"), nil];
     [alert setDelegate:self];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [alert show];

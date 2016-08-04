@@ -111,7 +111,7 @@
                selector:@selector(onAlmondModeDidChange:)
                    name:kSFIAlmondModeDidChange
                  object:nil];
-
+    
     [center addObserver:self
                selector:@selector(onNetworkDownNotifier:)
                    name:NETWORK_DOWN_NOTIFIER
@@ -227,13 +227,13 @@
         case SFICloudStatusStateConnecting: {
             _alert.message = NSLocalizedString(@"In process of connecting. Change connection method.", @"In process of connecting. Change connection method.");
             _alert.actions = @[
-                              [AlertViewAction actionWithTitle:NSLocalizedString(@"connection status Cloud Connection", @"Cloud Connection") handler:^(AlertViewAction *action) {
-                                  [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
-                              }],
-                              [AlertViewAction actionWithTitle:NSLocalizedString(@"connection status Local Connection", "Connection") handler:^(AlertViewAction *action) {
-                                  [self configureNetworkSettings:SFIAlmondConnectionMode_local];
-                              }]
-                              ];
+                               [AlertViewAction actionWithTitle:NSLocalizedString(@"connection status Cloud Connection", @"Cloud Connection") handler:^(AlertViewAction *action) {
+                                   [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
+                               }],
+                               [AlertViewAction actionWithTitle:NSLocalizedString(@"connection status Local Connection", "Connection") handler:^(AlertViewAction *action) {
+                                   [self configureNetworkSettings:SFIAlmondConnectionMode_local];
+                               }]
+                               ];
             break;
         };
             
@@ -242,18 +242,18 @@
             if (settings) {
                 _alert.message = NSLocalizedString(@"alert.message-Connected to your Almond via cloud.", @"Connected to your Almond via cloud.");
                 _alert.actions = @[
-                                  [AlertViewAction actionWithTitle:NSLocalizedString(@"alert.title-Switch to Local Connection", @"Switch to Local Connection") handler:^(AlertViewAction *action) {
-                                      [self configureNetworkSettings:SFIAlmondConnectionMode_local];
-                                  }],
-                                  ];
+                                   [AlertViewAction actionWithTitle:NSLocalizedString(@"alert.title-Switch to Local Connection", @"Switch to Local Connection") handler:^(AlertViewAction *action) {
+                                       [self configureNetworkSettings:SFIAlmondConnectionMode_local];
+                                   }],
+                                   ];
             }
             else {
                 _alert.message = NSLocalizedString(@"alertview -Connected to your Almond via cloud.", @"Connected to your Almond via cloud.");
                 _alert.actions = @[
-                                  [AlertViewAction actionWithTitle:NSLocalizedString(@"Add Local Connection Settings", @"Add Local Connection Settings") handler:^(AlertViewAction *action) {
-                                      [self presentLocalNetworkSettingsEditor];
-                                  }],
-                                  ];
+                                   [AlertViewAction actionWithTitle:NSLocalizedString(@"Add Local Connection Settings", @"Add Local Connection Settings") handler:^(AlertViewAction *action) {
+                                       [self presentLocalNetworkSettingsEditor];
+                                   }],
+                                   ];
             }
             
             break;
@@ -263,13 +263,13 @@
         case SFICloudStatusStateAlmondOffline: {
             _alert.message = NSLocalizedString(@"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection.", @"Cloud connection to your Almond failed. Tap retry or switch to local connection.");
             _alert.actions = @[
-                              [AlertViewAction actionWithTitle:NSLocalizedString(@"Alert view title-Retry Cloud Connection", "Retry Cloud Connection") handler:^(AlertViewAction *action) {
-                                  [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
-                              }],
-                              [AlertViewAction actionWithTitle:NSLocalizedString(@"Alert view title-Switch to Local Connection", @"Switch to Local Connection") handler:^(AlertViewAction *action) {
-                                  [self configureNetworkSettings:SFIAlmondConnectionMode_local];
-                              }],
-                              ];
+                               [AlertViewAction actionWithTitle:NSLocalizedString(@"Alert view title-Retry Cloud Connection", "Retry Cloud Connection") handler:^(AlertViewAction *action) {
+                                   [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
+                               }],
+                               [AlertViewAction actionWithTitle:NSLocalizedString(@"Alert view title-Switch to Local Connection", @"Switch to Local Connection") handler:^(AlertViewAction *action) {
+                                   [self configureNetworkSettings:SFIAlmondConnectionMode_local];
+                               }],
+                               ];
             break;
         };
             
@@ -281,13 +281,13 @@
         case SFICloudStatusStateConnectionError: {
             _alert.message = NSLocalizedString(@"alertview Can't connect to your Almond. Please select a connection method.", @"Can't connect to your Almond. Please select a connection method.");
             _alert.actions = @[
-                              [AlertViewAction actionWithTitle:NSLocalizedString(@"alert view error_Cloud Connection", @"Cloud Connection") handler:^(AlertViewAction *action) {
-                                  [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
-                              }],
-                              [AlertViewAction actionWithTitle:NSLocalizedString(@"alert view error_Local Connection", @"Local Connection") handler:^(AlertViewAction *action) {
-                                  [self configureNetworkSettings:SFIAlmondConnectionMode_local];
-                              }]
-                              ];
+                               [AlertViewAction actionWithTitle:NSLocalizedString(@"alert view error_Cloud Connection", @"Cloud Connection") handler:^(AlertViewAction *action) {
+                                   [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
+                               }],
+                               [AlertViewAction actionWithTitle:NSLocalizedString(@"alert view error_Local Connection", @"Local Connection") handler:^(AlertViewAction *action) {
+                                   [self configureNetworkSettings:SFIAlmondConnectionMode_local];
+                               }]
+                               ];
             break;
         };
         case SFICloudStatusStateLocalConnection: {
@@ -295,19 +295,19 @@
             if (settings) {
                 _alert.message = NSLocalizedString(@"alertview localconnection_Connected to your Almond locally.", @"Connected to your Almond locally.");
                 _alert.actions = @[
-                                  [AlertViewAction actionWithTitle:NSLocalizedString(@"alertview localconnection_Switch to Cloud Connection", @"Switch to Cloud Connection")
-                                                           handler:^(AlertViewAction *action) {
-                                                               [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
-                                                           }]
-                                  ];
+                                   [AlertViewAction actionWithTitle:NSLocalizedString(@"alertview localconnection_Switch to Cloud Connection", @"Switch to Cloud Connection")
+                                                            handler:^(AlertViewAction *action) {
+                                                                [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
+                                                            }]
+                                   ];
             }
             else {
                 _alert.message = NSLocalizedString(@"alertview Local connection settings are missing.", @"Local connection settings are missing.");
                 _alert.actions = @[
-                                  [AlertViewAction actionWithTitle:NSLocalizedString(@"alertview title Add Local Connection Settings", @"Add Local Connection Settings") handler:^(AlertViewAction *action) {
-                                      [self presentLocalNetworkSettingsEditor];
-                                  }]
-                                  ];
+                                   [AlertViewAction actionWithTitle:NSLocalizedString(@"alertview title Add Local Connection Settings", @"Add Local Connection Settings") handler:^(AlertViewAction *action) {
+                                       [self presentLocalNetworkSettingsEditor];
+                                   }]
+                                   ];
             }
             
             break;
@@ -316,33 +316,33 @@
         case SFICloudStatusStateLocalConnectionOffline: {
             _alert.message = NSLocalizedString(@"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection.", "Local connection to your Almond failed. Tap retry or switch to cloud connection.");
             _alert.actions = @[
-                              [AlertViewAction actionWithTitle:NSLocalizedString(@"alert title offline Local Retry Local Connection", @"Retry Local Connection") handler:^(AlertViewAction *action) {
-                                  [self configureNetworkSettings:SFIAlmondConnectionMode_local];
-                              }],
-                              [AlertViewAction actionWithTitle:NSLocalizedString(@"alert title offline Local Switch to Cloud Connection", @"Switch to Cloud Connection") handler:^(AlertViewAction *action) {
-                                  [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
-                              }],
-                              ];
+                               [AlertViewAction actionWithTitle:NSLocalizedString(@"alert title offline Local Retry Local Connection", @"Retry Local Connection") handler:^(AlertViewAction *action) {
+                                   [self configureNetworkSettings:SFIAlmondConnectionMode_local];
+                               }],
+                               [AlertViewAction actionWithTitle:NSLocalizedString(@"alert title offline Local Switch to Cloud Connection", @"Switch to Cloud Connection") handler:^(AlertViewAction *action) {
+                                   [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
+                               }],
+                               ];
             break;
         };
             
         case SFICloudStatusStateCloudConnectionNotSupported: {
             _alert.message = NSLocalizedString(@"alert msg offline Cloud connection not supported.", "Your Almond is not affiliated with the cloud. Only local connection to your Almond is supported.");
             _alert.actions = @[
-                              [AlertViewAction actionWithTitle:NSLocalizedString(@"Alert view title-Switch to Local Connection", @"Switch to Local Connection") handler:^(AlertViewAction *action) {
-                                  [self configureNetworkSettings:SFIAlmondConnectionMode_local];
-                              }],
-                              ];
+                               [AlertViewAction actionWithTitle:NSLocalizedString(@"Alert view title-Switch to Local Connection", @"Switch to Local Connection") handler:^(AlertViewAction *action) {
+                                   [self configureNetworkSettings:SFIAlmondConnectionMode_local];
+                               }],
+                               ];
             break;
         }
             
         case SFICloudStatusStateLocalConnectionNotSupported: {
             _alert.message = NSLocalizedString(@"alert msg offline Local connection not supported.", "Can't connect to your Almond because local connection settings are missing. Tap edit to add settings.");
             _alert.actions = @[
-                              [AlertViewAction actionWithTitle:NSLocalizedString(@"alert title offline Local Switch to Cloud Connection", @"Switch to Cloud Connection") handler:^(AlertViewAction *action) {
-                                  [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
-                              }],
-                              ];
+                               [AlertViewAction actionWithTitle:NSLocalizedString(@"alert title offline Local Switch to Cloud Connection", @"Switch to Cloud Connection") handler:^(AlertViewAction *action) {
+                                   [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
+                               }],
+                               ];
             break;
         }
             
@@ -905,8 +905,9 @@
 -(void)checkToShowUpdateScreen{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *currentAlmond = toolkit.currentAlmond;
-    NSLog(@"currentalmond: %@", currentAlmond);
-    if(currentAlmond.firmware == nil){
+    BOOL local = [toolkit useLocalNetwork:currentAlmond.almondplusMAC];
+    NSLog(@"current almond dash: %@", currentAlmond);
+    if(currentAlmond.firmware == nil || local){
         [self tryRemoveBGView];
         return;
     }
@@ -959,12 +960,12 @@
     [self.bgView addSubview:detailView];
     
     UILabel *detailTitle = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, viewWidth, 20)];
-    [CommonMethods setLableProperties:detailTitle text:@"Your Almond requires an update." textColor:[SFIColors grayShade] fontName:@"AvenirLTStd-Heavy" fontSize:20 alignment:NSTextAlignmentCenter];
+    [CommonMethods setLableProperties:detailTitle text:@"Your Almond requires an update." textColor:[SFIColors ruleGraycolor] fontName:@"AvenirLTStd-Heavy" fontSize:20 alignment:NSTextAlignmentCenter];
     [detailView addSubview:detailTitle];
     
-    UILabel *detail = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, viewWidth-15, 220)];
+    UILabel *detail = [[UILabel alloc]initWithFrame:CGRectMake(10, 35, viewWidth-15, 220)];
     NSString *text = @"With this update, you will receive a new dashboard in your Almond app as well as improvements for stability under the hood. The Almond firmware needs to be updated to remain compatible with this version of the app. Please tap on \"Settings\" on the Almond LCD and follow the on screen instructions to update your firmware.";
-    [CommonMethods setLableProperties:detail text:text textColor:[SFIColors grayShade] fontName:@"AvenirLTStd-Light" fontSize:18 alignment:NSTextAlignmentCenter];
+    [CommonMethods setLableProperties:detail text:text textColor:[SFIColors ruleGraycolor] fontName:@"AvenirLTStd-Roman" fontSize:16 alignment:NSTextAlignmentCenter];
     [CommonMethods setLineSpacing:detail text:text spacing:3];
     [detail sizeToFit];
     [detailView addSubview:detail];
@@ -972,7 +973,7 @@
 
 -(void)initializeHelpScreensfirst:(NSString *)itemName{
     NSLog(@"nav view heigt: %f, view ht: %f", self.navigationController.view.frame.size.height, self.view.frame.size.height);
-
+    
     self.helpScreensObj = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
     self.helpScreensObj.delegate = self;
     
@@ -1013,5 +1014,6 @@
     [self.tabBarController.tabBar setHidden:YES];
     [self showOkGotItView];
 }
+
 
 @end

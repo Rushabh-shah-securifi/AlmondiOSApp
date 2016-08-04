@@ -48,13 +48,15 @@ int randomMobileInternalIndex;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.clientPropertiesTable.backgroundColor = self.genericParams.color;
+    [self setButtonColors];
+    [self setHeaderCell];
+    [self setUpHUD];
+}
+
+- (void)setButtonColors{
     self.resetView.backgroundColor = self.genericParams.color;
     [self.resetButton setTitleColor: self.genericParams.color forState:UIControlStateNormal];
     [self.historyButton setTitleColor: self.genericParams.color forState:UIControlStateNormal];
-    
-    [self setHeaderCell];
-    [self setUpHUD];
-    
 }
 
 -(void)setUpHUD{
@@ -81,6 +83,7 @@ int randomMobileInternalIndex;
         self.genericParams.indexValueList = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self repaintHeader:self.genericParams.headerGenericIndexValue];
+            [self setButtonColors];
             [self.clientPropertiesTable reloadData];
         });
     }
@@ -194,8 +197,7 @@ int randomMobileInternalIndex;
 #pragma mark common cell delegate
 
 -(void)delegateClientPropertyEditSettingClick{
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        
+    dispatch_async(dispatch_get_main_queue(), ^(){
         [self.HUD hide:YES];
     });
     [self.navigationController popViewControllerAnimated:YES];
@@ -216,6 +218,7 @@ int randomMobileInternalIndex;
     GenericIndexValue *headerGenIndexVal = [GenericIndexUtil getClientHeaderGenericIndexValueForClient:client];
     self.genericParams.headerGenericIndexValue = headerGenIndexVal;
     self.genericParams.deviceName = client.name;
+    self.genericParams.color = [SFIColors getClientCellColor:client];
     [self.commonView initialize:self.genericParams cellType:ClientProperty_Cell];
 }
 
@@ -250,8 +253,7 @@ int randomMobileInternalIndex;
     Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
     client = [client copy];
     NSLog(@"client mac %@, client id %@",client.deviceMAC,client.deviceID);
-    //    [self]
-    [self showHudWithTimeoutMsg:[NSString stringWithFormat:@"Resetting %@",client.name]];
+    [self showHudWithTimeoutMsg:[NSString stringWithFormat:NSLocalizedString(@"ClientpropertyViewController Resetting %@", @"Resetting %@"),client.name]];
     if(client.deviceID.length!=0  && client.deviceMAC.length!= 0)
         [ClientPayload resetClientCommand:client.deviceMAC clientID:client.deviceID mii:randomMobileInternalIndex];
 }
@@ -266,8 +268,7 @@ int randomMobileInternalIndex;
         return;
     }
     NSDictionary *payload = dataInfo[@"data"];
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        
+    dispatch_async(dispatch_get_main_queue(), ^(){
         [self.HUD hide:YES];
     });
     

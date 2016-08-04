@@ -48,7 +48,7 @@ int segmentType;
 
 -(void)addTimeSegment{
     UIScrollView *scrollView = self.deviceIndexButtonScrollView;
-    NSArray *segmentItems = [NSArray arrayWithObjects:@"ANYTIME", @"PRECISELY AT", @"BETWEEN", nil];
+    NSArray *segmentItems = [NSArray arrayWithObjects:NSLocalizedString(@"anytime", @"ANYTIME"), NSLocalizedString(@"precisely_at", @"PRECISELY AT"), NSLocalizedString(@"between", @"BETWEEN"), nil];
     timeSegmentControl = [[UISegmentedControl alloc]initWithItems:segmentItems];
     
     timeSegmentControl.frame = CGRectMake(0, 20, scrollView.frame.size.width-40, timeSegmentHeight);
@@ -92,7 +92,7 @@ int segmentType;
 }
 
 -(void)addAnyTimeInfoLable{
-    [self addInfoLabelWithFrame:CGRectMake(0, 0, self.segmentDetailView.frame.size.width-40, infoLableHeight) text:@"The rule will trigger any time when sensor change their state"];
+    [self addInfoLabelWithFrame:CGRectMake(0, 0, self.segmentDetailView.frame.size.width-40, infoLableHeight) text:NSLocalizedString(@"rule_triggers_upon_sensor_change", @"The rule will trigger any time when sensor change their state")];
     infoLable.center = CGPointMake(self.segmentDetailView.bounds.size.width/2, self.segmentDetailView.bounds.size.height/2);
 }
 
@@ -295,13 +295,13 @@ int segmentType;
     if(segmentType == Precisely1){
         NSDate *date =preciselyDatePicker.date;
         NSString *time = [dateFormat stringFromDate:date];
-        [self setPreciseAndBetweenInfoLable:[NSString stringWithFormat:@"The Rule will trigger when sensor change their state at precisely at %@ on %@.",time,days]];
+        [self setPreciseAndBetweenInfoLable:[NSString stringWithFormat:NSLocalizedString(@"TimeView The Rule will trigger when sensor change their state at precisely at %@ on %@.",@"The Rule will trigger when sensor change their state at precisely at %@ on %@."),time,days]];
     }else if(segmentType == Between2){
         NSDate *dateFrom = DatePickerFrom.date;
         NSDate *dateTo = DatePickerTo.date;
         NSString *timeFrom = [dateFormat stringFromDate:dateFrom];
         NSString *timeTo = [dateFormat stringFromDate:dateTo];
-        [self setPreciseAndBetweenInfoLable:[NSString stringWithFormat:@"The Rule will trigger when sensor changes their state between %@ to %@ on %@.",timeFrom, timeTo,days]];
+        [self setPreciseAndBetweenInfoLable:[NSString stringWithFormat:NSLocalizedString(@"TimeView The Rule will trigger when sensor changes their state between %@ to %@ on %@.",@"The Rule will trigger when sensor changes their state between %@ to %@ on %@."),timeFrom, timeTo,days]];
     }
 }
 

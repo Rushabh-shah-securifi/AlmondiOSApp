@@ -117,11 +117,11 @@ UILabel *topLabel;
         if (![v isKindOfClass:[UIImageView class]])
             [v removeFromSuperview];
     }
-}
+}//
 
 + (void)addTopLabel{
     topLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 20)];
-    topLabel.text = [NSString stringWithFormat:@"Your %@ will appear here.", isScene? @"Scene": @"Rule"];
+    topLabel.text = [NSString stringWithFormat:NSLocalizedString(@"SubProperties Your %@ will appear here.",@"Your %@ will appear here."), isScene? NSLocalizedString(@"scene",@"Scene"): NSLocalizedString(@"rule",@"Rule")];
     topLabel.textAlignment = NSTextAlignmentCenter;
     topLabel.font = [UIFont systemFontOfSize:15];
     topLabel.textColor = [SFIColors test1GrayColor];
@@ -193,13 +193,13 @@ UILabel *topLabel;
         if (indexValue.index == buttonProperties.index) {
             if([buttonProperties.matchData isEqualToString:@"toggle"])
             {
-                return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"toggle_icon.png" text:@"Toggle" isTrigger:isTrigger isDimButton:NO bottomText:@"TOGGLE"];
+                return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"toggle_icon.png" text:@"Toggle" isTrigger:isTrigger isDimButton:NO bottomText:NSLocalizedString(@"toggle",@"TOGGLE")];//
             }
             
             for (NSString *value in genericValueKeys) {
                 //NSLog(@"values %@",value);
                 GenericValue *gVal = genericValueDic[value];
-                BOOL isDimButton = genericIndex.layoutType!=nil && ([genericIndex.layoutType isEqualToString: SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW] || [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndex.layoutType isEqualToString:@"HUE"]);
+                BOOL isDimButton = genericIndex.layoutType!=nil && ([genericIndex.layoutType isEqualToString: SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW] || [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndex.layoutType isEqualToString:@"HUE"] || [genericIndex.layoutType isEqualToString:@"HUE_BLINK"]);
                 
                 //NSLog(@"gaval.value: %@, propertyvalue: %@, displayeddata: %@", gVal.value, buttonProperties.matchData, buttonProperties.displayedData);
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties]){
@@ -260,12 +260,12 @@ UILabel *topLabel;
     [dateFormat setDateFormat:@"hh:mm aa"];
     int segmentType=timesubProperties.time.segmentType;
     if(segmentType==1){
-        [dimbutton setupValues:[dateFormat stringFromDate:timesubProperties.time.dateFrom] Title:@"Time" displayText:[CommonMethods getDays:timesubProperties.time.dayOfWeek] suffix:@""];
+        [dimbutton setupValues:[dateFormat stringFromDate:timesubProperties.time.dateFrom] Title:NSLocalizedString(@"time",@"Time") displayText:[CommonMethods getDays:timesubProperties.time.dayOfWeek] suffix:@""];
         
-    }
+    }//
     else{
         NSString *time = [NSString stringWithFormat:@"%@\n%@", [dateFormat stringFromDate:timesubProperties.time.dateFrom], [dateFormat stringFromDate:timesubProperties.time.dateTo]];
-        [dimbutton setupValues:time Title:@"Time Interval" displayText:[CommonMethods getDays:timesubProperties.time.dayOfWeek] suffix:@""];
+        [dimbutton setupValues:time Title:NSLocalizedString(@"time_interval",@"Time Interval") displayText:[CommonMethods getDays:timesubProperties.time.dayOfWeek] suffix:@""];
     }
     dimbutton.subProperties = timesubProperties;
     dimbutton.subProperties.positionId = positionId;
@@ -302,14 +302,14 @@ UILabel *topLabel;
             NSLog(@"delay: %@", subProperties.delay);
             WeatherRuleButton *weatherButton = [[WeatherRuleButton alloc]initWithFrame:CGRectMake(xVal, 5, 42, 42)];
             
-            NSString *insideText = @"0 min after";
+            NSString *insideText = NSLocalizedString(@"SubProperties 0 min after",@"0 min after");
             if(subProperties.delay.integerValue != 0){
-                NSString *suffix = (subProperties.delay.integerValue > 0)? @"after": @"before";
+                NSString *suffix = (subProperties.delay.integerValue > 0)? NSLocalizedString(@"after",@"after"): NSLocalizedString(@"before",@"before");
                 int delayVal = (subProperties.delay.integerValue < 0)? (subProperties.delay.intValue * -1): subProperties.delay.intValue;
-                insideText = [NSString stringWithFormat:@"%d min %@", delayVal, suffix];
+                insideText = [NSString stringWithFormat: NSLocalizedString(@"SubProperties %d min %@",@"%d min %@"), delayVal, suffix];
             }
-            
-            [weatherButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:toptext displayText:@"display" isDimmer:isDimmbutton bottomText:bottomText insideText:insideText isHideCross:isCrossHidden];
+           
+            [weatherButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:toptext displayText:NSLocalizedString(@"display",@"display") isDimmer:isDimmbutton bottomText:bottomText insideText:insideText isHideCross:isCrossHidden];
             weatherButton.switchButtonRight.subProperties = subProperties;
             weatherButton.switchButtonRight.isTrigger = YES;
             [weatherButton.switchButtonRight addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];

@@ -1989,12 +1989,12 @@
                 s1.matchData = @"false";
                 s1.displayText=@"SWITCH1\nOFF";
                 s1.iconName = @"switch_off";//md01 was @"44_switch_off";
-                s1.notificationText = NSLocalizedString(@" is switched Off.", @" is switched Off.");
+                s1.notificationText = NSLocalizedString(@"1 is switched Off.", @" is switched Off.");
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.displayText=@"SWITCH1\nON";
                 s2.iconName = @"switch_on";//md01 was @"44_switch_on";
-                s2.notificationText = NSLocalizedString(@" is switched On.", @" is switched On.");
+                s2.notificationText = NSLocalizedString(@"1 is switched On.", @" is switched On.");
                 
                 return @[s1, s2];
             }
@@ -2003,12 +2003,12 @@
                 s1.matchData = @"false";
                 s1.displayText=@"SWITCH2\nOFF";
                 s1.iconName = @"switch_off";//md01 was @"44_switch_off";
-                s1.notificationText = NSLocalizedString(@" is switched Off.", @" is switched Off.");
+                s1.notificationText = NSLocalizedString(@"2 is switched Off.", @" is switched Off.");
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.displayText=@"SWITCH2\nON";
                 s2.iconName = @"switch_on";//md01 was @"44_switch_on";
-                s2.notificationText = NSLocalizedString(@" is switched On.", @" is switched On.");
+                s2.notificationText = NSLocalizedString(@"2 is switched On.", @" is switched On.");
                 
                 return @[s1, s2];
             }
@@ -2177,6 +2177,24 @@
         }
             
         case SFIDeviceType_HueLamp_48:{
+            if (type == SFIDevicePropertyType_UNKNOWN) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"false";
+                s1.iconName = @"light_off";
+                s1.displayText=@"OFF";
+                s1.notificationText = NSLocalizedString(@" Not Reachable", @"");
+                
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"true";
+                s2.displayText=@"ON";
+                s2.iconName = @"light_on";
+                s2.notificationText = NSLocalizedString(@" Not Reachable", @"");
+                
+                
+                return @[s1, s2];
+            }
+            
             if (type == SFIDevicePropertyType_SWITCH_BINARY) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
@@ -3485,6 +3503,135 @@
             break;
             
         }
+        case SFIDeviceType_ZenThermostat_62: {
+            if (type == SFIDevicePropertyType_SENSOR_MULTILEVEL) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"70";
+                s1.iconName = @"target_temperature";
+                s1.displayText = @"TEMPERATURE";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature changed to ", @"'s temperature changed to ");
+                s1.valueFormatter.suffix = @"\u00B0F";
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"Heating";
+                s1.displayText=@"";
+                s1.iconName = @"thermostat";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                
+                s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is ", @" is ");
+                s1.valueFormatter.suffix = @"\u00B0F";
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"70";
+                s1.displayText=@"COOL";
+                s1.iconName = @"thermostat";
+                s1.layoutType=@"dimButton";
+                s1.displayText = @"COOLING TEMP";
+                s1.minValue = 35;
+                s1.maxValue = 95;
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is cooling down to ", @" is cooling down to ");
+                s1.valueFormatter.suffix = @"\u00B0F";
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"70";
+                s1.layoutType=@"dimButton";
+                s1.iconName = @"thermostat";
+                s1.displayText = @"HEATING TEMP";
+                s1.minValue = 35;
+                s1.maxValue = 95;
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is heating up to ", @" is heating up to ");
+                s1.valueFormatter.suffix = @"\u00B0F";
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_THERMOSTAT_MODE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_equals;
+                s1.matchData = @"Auto";
+                s1.displayText=@"AUTO";
+                s1.iconName = @"img_auto";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is set to ", @" is set to ");
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchType = MatchType_equals;
+                s2.matchData = @"Heat";
+                s2.displayText = @"HEAT";
+                s2.iconName = @"img_heat";
+                s2.valueFormatter.action = ValueFormatterAction_formatString;
+                s2.valueFormatter.notificationPrefix = NSLocalizedString(@" is set to ", @" is set to ");
+                
+                IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
+                s3.matchType = MatchType_equals;
+                s3.matchData = @"Cool";
+                s3.iconName = @"img_cool";
+                s3.displayText = @"COOL";
+                s3.valueFormatter.action = ValueFormatterAction_formatString;
+                s3.valueFormatter.notificationPrefix = NSLocalizedString(@" is set to ", @" is set to ");
+                
+                IndexValueSupport *s4 = [[IndexValueSupport alloc] initWithValueType:type];
+                s4.matchType = MatchType_equals;
+                s4.matchData = @"Off";
+                s4.iconName = @"img_off";
+                s4.displayText = @"OFF";
+                s4.valueFormatter.action = ValueFormatterAction_formatString;
+                s4.valueFormatter.notificationPrefix = NSLocalizedString(@" is set to ", @" is set to ");
+                
+                return @[s1,s2,s3,s4];
+                
+            }
+            if (type == SFIDevicePropertyType_THERMOSTAT_FAN_MODE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_equals;
+                s1.matchData = @"Auto Low";
+                s1.iconName = @"btn_fan_on";
+                s1.displayText=@"AUTO";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = NSLocalizedString(@" Fan is set to ", @" Fan is set to ");
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchType = MatchType_equals;
+                s2.matchData = @"On Low";
+                s2.iconName = @"btn_fan_off";
+                s2.displayText = @"ON LOW";
+                s2.valueFormatter.action = ValueFormatterAction_formatString;
+                s2.valueFormatter.notificationPrefix = NSLocalizedString(@" Fan is set to ", @" Fan is set to ");
+                
+                return @[s1,s2];
+            }
+            if (type == SFIDevicePropertyType_THERMOSTAT_FAN_STATE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"On";
+                s1.iconName = @"btn_fan_on";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = NSLocalizedString(@" Fan is ", @" Fan is ");
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_HUMIDITY) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = @"humidity";
+                s1.displayText = nil;
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = NSLocalizedString(@" humidity is ", @" humidity is ");
+                return @[s1];
+            }
+            
+            break;
+        }
+            
         case SFIDeviceType_AlmondSiren_63: {
             
             if (type == SFIDevicePropertyType_ENABLE) {

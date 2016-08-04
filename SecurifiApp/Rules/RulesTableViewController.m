@@ -46,7 +46,7 @@ CGPoint tablePoint;
     [super viewWillAppear:animated];
     self.enableDrawer = YES;
     randomMobileInternalIndex = arc4random() % 10000;
-
+    
     self.tableView.contentOffset = tablePoint;
     
     [self addAddRuleButton];
@@ -114,7 +114,7 @@ CGPoint tablePoint;
         [self markAlmondMac:self.currentAlmond.almondplusMAC];
         [self markTitle: self.currentAlmond.almondplusName];
     }
-
+    
 }
 - (void)onCurrentAlmondChanged:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -123,7 +123,7 @@ CGPoint tablePoint;
     [self.toolkit.ruleList removeAllObjects];
     
     [self markAlmondTitleAndMac];
-    [self showHudWithTimeoutMsg:@"Loading Rules..."];
+    [self showHudWithTimeoutMsg:NSLocalizedString(@"RulesViewController Loading Rules...",@"Loading Rules...")];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
@@ -171,9 +171,9 @@ CGPoint tablePoint;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.HUD hide:YES];
         if(isSuccessful == NO){
-            [self showToast:@"Sorry, Could not update!"];
+            [self showToast:NSLocalizedString(@"DeviceList Sorry, Could not update!",@"Sorry, Could not update!")];
         }else{
-            [self showToast:@"Successfully updated!"];
+            [self showToast:NSLocalizedString(@"RulesViewController Successfully updated!",@"Successfully updated!")];
         }
     });
 }
@@ -192,6 +192,7 @@ CGPoint tablePoint;
         self.buttonAdd.backgroundColor = [UIColor clearColor];
         [self.buttonAdd addTarget:self action:@selector(btnAddNewRuleTap:) forControlEvents:UIControlEventTouchUpInside];
     }
+    
     [self.navigationController.view addSubview:self.buttonAdd];
 }
 
@@ -292,7 +293,7 @@ CGPoint tablePoint;
 
 - (UITableViewCell *)createEmptyCell:(UITableView *)tableView {
     static NSString *empty_cell_id = @"EmptyCell";
-
+    
     UITableViewCell *cell  = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:empty_cell_id];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -301,7 +302,7 @@ CGPoint tablePoint;
     UILabel *lblNewScene = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, table_width-20, 130)];
     lblNewScene.textAlignment = NSTextAlignmentCenter;
     [lblNewScene setFont:[UIFont fontWithName:AVENIR_ROMAN size:18]];
-    lblNewScene.text = @"New Rule";
+    lblNewScene.text = NSLocalizedString(@"newRule",@"New Rule");
     lblNewScene.textColor = [UIColor grayColor];
     [cell addSubview:lblNewScene];
     
@@ -309,10 +310,10 @@ CGPoint tablePoint;
     lblNoSensor.textAlignment = NSTextAlignmentCenter;
     [lblNoSensor setFont:[UIFont fontWithName:AVENIR_ROMAN size:15]];
     lblNoSensor.numberOfLines = 10;
-    lblNoSensor.text = @"Tap on add button to create your rule";
+    lblNoSensor.text = NSLocalizedString(@"RulesViewController Tap on add button to create your rule",@"Tap on add button to create your rule");
     lblNoSensor.textColor = [UIColor grayColor];
     [cell addSubview:lblNoSensor];
-
+    
     return cell;
 }
 
@@ -321,7 +322,7 @@ CGPoint tablePoint;
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     if(self.toolkit.ruleList==nil || self.toolkit.ruleList.count==0 || indexPath.row >= self.toolkit.ruleList.count)
         return;
-    [self showHudWithTimeoutMsg:[NSString stringWithFormat:@"Deleting rule %@...",cell.ruleNameLabel.text]];
+    [self showHudWithTimeoutMsg:[NSString stringWithFormat:NSLocalizedString(@"RulesViewController Deleting rule %@...",@"Deleting rule %@..."),cell.ruleNameLabel.text]];
     NSDictionary *payload = [self getDeleteRulePayload:indexPath.row];
     if(payload!=nil){
         GenericCommand *cloudCommand = [[GenericCommand alloc] init];
@@ -382,8 +383,8 @@ CGPoint tablePoint;
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     if(self.toolkit.ruleList==nil || self.toolkit.ruleList.count==0 || indexPath.row >= self.toolkit.ruleList.count)
         return;
-    
-    NSString *msg = cell.activeDeactiveSwitch.selected? [NSString stringWithFormat:@"Activating rule - %@...",cell.ruleNameLabel.text]: [NSString stringWithFormat:@"Deactivating rule - %@...",cell.ruleNameLabel.text];
+    //
+    NSString *msg = cell.activeDeactiveSwitch.selected? [NSString stringWithFormat: NSLocalizedString(@"RulesViewController Activating rule - %@...",@"Activating rule - %@..."),cell.ruleNameLabel.text]: [NSString stringWithFormat:NSLocalizedString(@"RulesViewController Deactivating rule - %@...",@"Deactivating rule - %@..."),cell.ruleNameLabel.text];
     [self showHudWithTimeoutMsg:msg];
     Rule *rule = self.toolkit.ruleList[indexPath.row];
     RulePayload *rulePayload = [RulePayload new];

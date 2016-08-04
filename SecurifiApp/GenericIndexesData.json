@@ -2323,7 +2323,7 @@
         "Name": "RGB ",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "HUE",
+        "Layout": "HUE_BLINK",
         "AppLabel": "hue",
         "ExcludeFrom": "Trigger",
         "DefaultIcon": "light_on",

@@ -97,7 +97,7 @@ int mii;
         [self tryInstallRefreshControl];
         if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC]){
             NSLog(@"device and client current list is empty");
-            [self showHudWithTimeoutMsg:@"Loading Device data"];
+            [self showHudWithTimeoutMsg:NSLocalizedString(@"DeviceList Loading Device data", @"Loading Device data")];
         }
     });
     
@@ -195,7 +195,7 @@ int mii;
         // Pull down to refresh device values
         UIRefreshControl *refresh = [UIRefreshControl new];
         NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
-        refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force device data refresh" attributes:attributes];
+        refresh.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"deviceList Force device data refresh", @"Force device data refresh") attributes:attributes];
         [refresh addTarget:self action:@selector(onRefreshSensorData:) forControlEvents:UIControlEventValueChanged];
         self.refreshControl = refresh;
     }
@@ -258,13 +258,13 @@ int mii;
 -(UIView*)deviceHeader:(NSInteger)section tableView:(UITableView*)tableView{
     NSString *header,*headerVal;
     if(section == 0){
-        header = @"Sensors ";
+        header = NSLocalizedString(@"Smart Devices", @"Smart Devices");
         headerVal = [NSString stringWithFormat:@"(%ld)",(long int)self.toolkit.devices.count];
     }
     else{
         //headerVal = [NSString stringWithFormat:@"(%ld )",(long int)self.toolkit.clients.count];
          headerVal = [NSString stringWithFormat:@"(%d Active)",[Client activeClientCount]];
-        header = @"Network Devices ";
+        header =  NSLocalizedString(@"deviceList Network Devices", @"Network Devices");
     }
     
     NSMutableAttributedString *aAttrString = [CommonMethods getAttributeString:header fontSize:HEADER_FONT_SIZE LightFont:NO];
@@ -335,7 +335,7 @@ int mii;
             return cell;
         }
         Client *client = [self.toolkit.clients objectAtIndex:indexPath.row];
-        UIColor *clientCellColor = [self getClientCellColor:client];
+        UIColor *clientCellColor = [SFIColors getClientCellColor:client];
         genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getClientHeaderGenericIndexValueForClient:client]
                                                          indexValueList:nil
                                                              deviceName:client.name
@@ -363,7 +363,7 @@ int mii;
         UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, table_width, 30)];
         lblNoSensor.textAlignment = NSTextAlignmentCenter;
         [lblNoSensor setFont:[UIFont securifiLightFont:20]];
-        lblNoSensor.text = NSLocalizedString(@"sensors.no-sensors.label.You don't have any sensors yet.", @"You don't have any sensors yet.");
+        lblNoSensor.text = NSLocalizedString(@"noSensors", @"You don't have any sensors yet.");
         lblNoSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblNoSensor];
         
@@ -487,17 +487,6 @@ int mii;
     _almondColor = [SFIColors colorForIndex:colorCode];
 }
 
-- (UIColor*) getClientCellColor:(Client*)client{
-    if (client.deviceAllowedType == 1)
-        return [SFIColors clientBlockedGrayColor];
-    else if(client.isActive)
-        return [SFIColors clientGreenColor];
-    else if(!client.isActive)
-        return [SFIColors clientInActiveGrayColor];
-    
-    return [SFIColors clientGreenColor];
-}
-
 #pragma mark messageViewDelegate
 
 - (void)messageViewDidPressButton:(MessageView *)msgView {
@@ -582,10 +571,10 @@ int mii;
     if(isSuccessful == NO){
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
-            [self showToast:@"Sorry, Could not update!"];
+            [self showToast:NSLocalizedString(@"DeviceList Sorry, Could not update!", @"Sorry, Could not update!")];
         });
     }else{
-        [self showToast:@"Successfully updated!"];
+        [self showToast:NSLocalizedString(@"DeviceList Successfully updated!", @"Successfully updated!")];
     }
 }
 
@@ -703,7 +692,7 @@ int mii;
         NSString *failureReason;
         switch (obj.reasonCode) {
             case 1:
-                failureReason = NSLocalizedString(@"sensor.activation.The username was not found", @"The username was not found");
+                failureReason = NSLocalizedString(@"no_username_found", @"The username was not found");
                 break;
             case 2:
                 failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");

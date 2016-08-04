@@ -10,6 +10,7 @@
 #import "UIFont+Securifi.h"
 #import "Colours.h"
 #import "AlmondJsonCommandKeyConstants.h"
+#import "SFIColors.h"
 
 @implementation CommonMethods
 
@@ -20,9 +21,9 @@
     bool isWifiClient=![buttonProperties.eventType isEqualToString:@"AlmondModeUpdated"];
     BOOL isWeather = [buttonProperties.type isEqualToString:@"WeatherTrigger"];
     return (buttonProperties.eventType==nil && compareValue) ||
-            (compareValue && compareEvents) ||
-            (isWifiClient && compareEvents) ||
-            (isWeather && compareValue);
+    (compareValue && compareEvents) ||
+    (isWifiClient && compareEvents) ||
+    (isWeather && compareValue);
 }
 
 +(NSString*)getDays:(NSArray*)earlierSelection{
@@ -347,7 +348,6 @@
     return arr;
 }
 
-
 +(NSArray *)searchByWeekDay:(NSString*)search fromArr:(NSArray *)URIs{
     NSMutableArray *arrObj = [[NSMutableArray alloc]init];
     for(URIData *uri in URIs) {
@@ -452,6 +452,7 @@
         return  NO;
     }
 }
+
 +(NSArray*)searchLastWeek:(NSArray *)URIs
 {
     NSDate *currentTime = [NSDate date];
@@ -468,5 +469,151 @@
         }
     }
     return arrObj;
+}
+
++ (int )getRGBForHex:(NSString*)hueValue sliderValue:(NSString*)slider{
+    NSLog(@"hueValue Slidr value %@,%@",hueValue,slider);
+    NSString *colorHex = [CommonMethods getColorHex:hueValue];
+    UIColor *color = [UIColor colorFromHexString:colorHex];
+    CGFloat r,g,b,a;
+    int sliderValue = [slider intValue];
+    [color getRed:&r green:&g blue:&b alpha:&a];
+    int red = (int)((r * 255 )  );
+    int green = (int)((g * 255 ) );
+    int blue = (int)((b * 255 ) );
+    CGFloat h, s, l;
+    RVNColorRGBtoHSL(r, g, b,
+                     &h, &s, &l);
+    NSLog(@"r= %f,g = %f,b = %f",r,g,b);
+    
+    int colorRGB =  (((red & 0xF8) << 8) | ((green & 0xFC) << 3) | (blue >> 3));
+    NSLog(@"colorRGB %d",colorRGB)  ;
+    colorRGB = [self getRGBFromHSB:[hueValue intValue] saturation:sliderValue];
+    return colorRGB;
+}
+
+static void RVNColorRGBtoHSL(CGFloat red, CGFloat green, CGFloat blue, CGFloat *hue, CGFloat *saturation, CGFloat *lightness)
+{
+    CGFloat r = red / 255.0f;
+    CGFloat g = green / 255.0f;
+    CGFloat b = blue / 255.0f;
+    
+    CGFloat max = MAX(r, g);
+    max = MAX(max, b);
+    CGFloat min = MIN(r, g);
+    min = MIN(min, b);
+    
+    CGFloat h;
+    CGFloat s;
+    CGFloat l = (max + min) / 2.0f;
+    
+    if (max == min) {
+        h = 0.0f;
+        s = 0.0f;
+    }
+    
+    else {
+        CGFloat d = max - min;
+        s = l > 0.5f ? d / (2.0f - max - min) : d / (max + min);
+        
+        if (max == r) {
+            h = (g - b) / d + (g < b ? 6.0f : 0.0f);
+        }
+        
+        else if (max == g) {
+            h = (b - r) / d + 2.0f;
+        }
+        
+        else if (max == b) {
+            h = (r - g) / d + 4.0f;
+        }
+        
+        h /= 6.0f;
+    }
+    
+    if (hue) {
+        *hue = roundf(h * 255.0f);
+    }
+    
+    if (saturation) {
+        *saturation = roundf(s * 255.0f);
+    }
+    
+    if (lightness) {
+        *lightness = roundf(l * 255.0f);
+    }
+}
+
++(int)getRGBFromHSB:(int)hue saturation:(int)saturation {
+    CGFloat red;
+    CGFloat green;
+    CGFloat blue;
+    CGFloat alpha;
+    
+    float h = (float)hue/65535;
+    float s = (float)(saturation)/255;
+    float l = 100.0;
+    //    h = 55.0/255.0;
+    //    s = 100.0;
+    //    l = 126.0 * 100.0/255.0;
+    NSLog(@"hue %d,and sat = %d ",hue,saturation);
+    NSLog(@"h: %f, s: %f, l: %f", h, s, l);
+    UIColor *color = [UIColor colorWithHue:h saturation:s
+                                brightness:l alpha:1.0];
+    
+    
+    if ( [color getRed:&red green:&green blue:&blue alpha:&alpha]) {
+        // color converted
+    }
+    
+    NSLog(@"red = %f green =%f blue = %f",red*255  ,green*255  ,blue*255  );
+    int colorRGB =  ((((int)(red*255) & 0xF8) << 8) | (((int)(green*255) & 0xFC) << 3) | ((int)(blue*255) >> 3));
+    NSLog(@"Colorrgb: %d", colorRGB);
+    return colorRGB;
+}
+
++(float )getHueValue:(NSString *)value{
+    int RGB = value.intValue;
+    
+    int r =  ((RGB & 0xF800) >> 8);
+    int g = ((RGB & 0x7E0) >> 3);
+    int b = ((RGB & 0x1F) << 3);
+    NSLog(@"r= %d,g= %d,b=%d",r,g,b);
+    
+    CGFloat h, s, l;
+    RVNColorRGBtoHSL(r, g, b,
+                     &h, &s, &l);
+    
+    NSLog(@" h== %f,s== %f l== %f",h,s,l);
+    float hueVal = h*(65535/255);
+    NSLog(@"hue val: %f", hueVal);
+    return hueVal;
+    
+}
++(float )getSatValue:(NSString *)value{
+    
+    int RGB = value.intValue;
+    
+    int r =  ((RGB & 0xF800) >> 8);
+    int g = ((RGB & 0x7E0) >> 3);
+    int b = ((RGB & 0x1F) << 3);
+    
+    NSLog(@"r= %d,g= %d,b=%d",r,g,b);
+    CGFloat h, s, l;
+    RVNColorRGBtoHSL(r, g, b,
+                     &h, &s, &l);
+    NSLog(@"h: %f, s: %f, l: %f", h, s, l);
+    NSLog(@"saturation val: %f", s);
+    return s;
+}
++(NSString *)getShortAlmondName:(NSString*)almondName{
+    
+    NSString *newName = almondName;
+    if(almondName.length >= 20){
+        newName = [almondName substringToIndex:19];
+        newName = [NSString stringWithFormat:@"%@..", newName];
+    }
+    NSLog(@"new name: %@", newName);
+    return newName;
 }
 @end

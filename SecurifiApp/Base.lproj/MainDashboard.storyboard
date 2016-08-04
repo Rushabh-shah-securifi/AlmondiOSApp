@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="R9I-V5-k50">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="R9I-V5-k50">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -176,7 +176,7 @@
                                                         <rect key="frame" x="6" y="5" width="140" height="74"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3CK-OQ-lob" userLabel="home">
-                                                                <rect key="frame" x="1" y="2" width="70" height="70"/>
+                                                                <rect key="frame" x="1" y="0.0" width="70" height="70"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="70" id="jbf-RL-Udt"/>
                                                                     <constraint firstAttribute="height" constant="70" id="lXI-nE-rQw"/>
@@ -193,12 +193,12 @@
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aCO-CR-KQe" userLabel="homeaway">
-                                                                <rect key="frame" x="71" y="0.0" width="70" height="74"/>
+                                                                <rect key="frame" x="71" y="0.0" width="70" height="70"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="70" id="KUG-Zl-t2y"/>
-                                                                    <constraint firstAttribute="height" constant="74" id="c06-mA-HUE"/>
+                                                                    <constraint firstAttribute="height" constant="70" id="c06-mA-HUE"/>
                                                                 </constraints>
-                                                                <state key="normal" image="homeaway_icon1_white"/>
+                                                                <state key="normal" image="away_white"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                         <integer key="value" value="35"/>
@@ -215,7 +215,7 @@
                                                         <constraints>
                                                             <constraint firstItem="aCO-CR-KQe" firstAttribute="baseline" secondItem="3CK-OQ-lob" secondAttribute="baseline" id="UZ7-vy-MlH"/>
                                                             <constraint firstItem="3CK-OQ-lob" firstAttribute="leading" secondItem="0d1-EN-vZ3" secondAttribute="leading" constant="1" id="XMA-n6-0eE"/>
-                                                            <constraint firstItem="3CK-OQ-lob" firstAttribute="centerY" secondItem="0d1-EN-vZ3" secondAttribute="centerY" id="jYu-BN-xCD"/>
+                                                            <constraint firstItem="3CK-OQ-lob" firstAttribute="centerY" secondItem="0d1-EN-vZ3" secondAttribute="centerY" constant="-2" id="jYu-BN-xCD"/>
                                                             <constraint firstAttribute="trailing" secondItem="aCO-CR-KQe" secondAttribute="trailing" constant="-1" id="nxY-jX-tXx"/>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
@@ -260,13 +260,13 @@
                                             <constraint firstItem="wmQ-Wm-9ba" firstAttribute="top" secondItem="QzF-MZ-zZN" secondAttribute="bottom" constant="8" symbolic="YES" id="Cbz-pw-tgm"/>
                                             <constraint firstAttribute="trailing" secondItem="QzF-MZ-zZN" secondAttribute="trailing" constant="22" id="D8F-pi-dfE"/>
                                             <constraint firstItem="GMh-sX-mwO" firstAttribute="top" secondItem="Xkz-Xh-1r6" secondAttribute="bottom" constant="2" id="G8z-Qj-xM1"/>
-                                            <constraint firstItem="wmQ-Wm-9ba" firstAttribute="top" secondItem="3CK-OQ-lob" secondAttribute="bottom" constant="15" id="J8O-Mo-lit"/>
+                                            <constraint firstItem="wmQ-Wm-9ba" firstAttribute="top" secondItem="3CK-OQ-lob" secondAttribute="bottom" constant="17" id="J8O-Mo-lit"/>
                                             <constraint firstItem="GMh-sX-mwO" firstAttribute="centerX" secondItem="QzF-MZ-zZN" secondAttribute="centerX" id="Jap-aY-zIV"/>
                                             <constraint firstItem="Xkz-Xh-1r6" firstAttribute="leading" secondItem="Cy3-qg-eGW" secondAttribute="leading" constant="22" id="Qj3-zo-29F"/>
                                             <constraint firstItem="wMA-qN-Fdi" firstAttribute="leading" secondItem="wmQ-Wm-9ba" secondAttribute="trailing" constant="39" id="U88-Xj-WOz"/>
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="194" id="VFa-Gm-bTx"/>
                                             <constraint firstAttribute="bottom" secondItem="QzF-MZ-zZN" secondAttribute="bottom" constant="29" id="WGc-uN-Js5"/>
-                                            <constraint firstItem="wMA-qN-Fdi" firstAttribute="top" secondItem="aCO-CR-KQe" secondAttribute="bottom" constant="13" id="Xtx-Og-pxK"/>
+                                            <constraint firstItem="wMA-qN-Fdi" firstAttribute="top" secondItem="aCO-CR-KQe" secondAttribute="bottom" constant="17" id="Xtx-Og-pxK"/>
                                             <constraint firstItem="QzF-MZ-zZN" firstAttribute="top" secondItem="GMh-sX-mwO" secondAttribute="bottom" constant="2" id="YTE-bQ-ZqK"/>
                                             <constraint firstAttribute="height" constant="166" id="d4J-Ct-L7W"/>
                                             <constraint firstItem="wmQ-Wm-9ba" firstAttribute="leading" secondItem="Cy3-qg-eGW" secondAttribute="leading" constant="44" id="d5j-32-GiK"/>
@@ -445,8 +445,8 @@
     <resources>
         <image name="Main" width="28" height="56"/>
         <image name="MainBackground" width="500" height="166"/>
+        <image name="away_white" width="42" height="42"/>
         <image name="home_icon1_white" width="42" height="42"/>
-        <image name="homeaway_icon1_white" width="42" height="42"/>
     </resources>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

@@ -62,13 +62,13 @@ int mii;
     self.logView.backgroundColor = [[SFIColors yellowColor] color];
     
     UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 5, self.logView.frame.size.width -10, 20)];
-    titleLabel.text = @"Report a problem";
+    titleLabel.text = NSLocalizedString(@"SFILogsViewController Report a problem",@"Report a problem");
     titleLabel.font = [UIFont securifiFont:16];
     titleLabel.textColor = [UIColor whiteColor];
     [self.logView addSubview:titleLabel];
     
     UILabel *msgLable = [[UILabel alloc]initWithFrame:CGRectMake(5, 35, self.logView.frame.size.width -10, 100)];
-    msgLable.text = @"Along with your message,this will send Almond debug infiormation and logs to our cloud.This information will help us to resolve your problem faster.Please note that we do not send any sensitive information like your passwords.";
+    msgLable.text = NSLocalizedString(@"SFILogsViewController Along with your message,this will send Almond debug infiormation and logs to our cloud.This information will help us to resolve your problem faster.Please note that we do not send any sensitive information like your passwords.", @"");
     msgLable.lineBreakMode = NSLineBreakByWordWrapping;
     msgLable.numberOfLines = 0;
     msgLable.font = [UIFont securifiLightFont:13];
@@ -77,7 +77,7 @@ int mii;
     [self.logView addSubview:msgLable];
     
     self.textField = [[UITextField alloc]initWithFrame:CGRectMake(5, 145, self.logView.frame.size.width -10, 20)];
-    self.textField.placeholder = @"Describe your problem here";
+    self.textField.placeholder = NSLocalizedString(@"SFILogsViewController Describe your problem here",@"Describe your problem here");
     self.textField.font = [UIFont securifiFont:14];
     self.textField.textColor = [UIColor whiteColor];
     self.textField.backgroundColor = [UIColor clearColor];
@@ -91,7 +91,7 @@ int mii;
     
     
     UIButton *doneButton = [[UIButton alloc]initWithFrame:CGRectMake(self.logView.frame.size.width - 110 , 176,100, 40)];
-    [doneButton setTitle:@"Done" forState:UIControlStateNormal];
+    [doneButton setTitle:NSLocalizedString(@"SFILogsViewController Send",@"Send") forState:UIControlStateNormal];//
     doneButton.backgroundColor = [UIColor whiteColor];
     [doneButton setTitleColor:[[SFIColors yellowColor] color] forState:UIControlStateNormal];
     [doneButton addTarget:self action:@selector(onSendLogsPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -101,7 +101,7 @@ int mii;
 }
 -(void)addValidationLable{
     UILabel *alertLable = [[UILabel alloc]initWithFrame:CGRectMake(5, 176, self.view.frame.size.width -120, 40)];
-    alertLable.text = @"Please write description between 10 and 180 characters.";
+    alertLable.text = NSLocalizedString(@"SFILogsViewController Please write description between 10 and 180 characters.",@"Please write description between 10 and 180 characters.");
     alertLable.lineBreakMode = NSLineBreakByWordWrapping;
     alertLable.numberOfLines = 0;
     alertLable.font = [UIFont securifiLightFont:13];
@@ -117,7 +117,7 @@ int mii;
 
 -(void) setUpNavigationBar{
     self.navigationController.navigationBar.translucent = YES;
-    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
+    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"back",@"Back") style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
     self.navigationItem.leftBarButtonItem = leftBarButtonItem;
 }
 
@@ -131,7 +131,7 @@ int mii;
         [self addValidationLable];
         [self.textField becomeFirstResponder];
     }else{
-        [self showHudWithTimeout:@"Sending logs"];
+        [self showHudWithTimeout:NSLocalizedString(@"sendingLogs",@"Sending logs")];
         [self.textField resignFirstResponder];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         [RouterPayload sendLogs:self.textField.text mii:mii isSimulator:toolkit.configuration.isSimulator mac:toolkit.currentAlmond.almondplusMAC];
@@ -152,12 +152,12 @@ int mii;
     SFIGenericRouterCommand *genericRouterCommand = (SFIGenericRouterCommand *) [data valueForKey:@"data"];
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self || !genericRouterCommand.commandSuccess) {// || mii != genericRouterCommand.mii
-            [self showToast:@"Sorry! Unable to send logs."];
+            [self showToast:NSLocalizedString(@"SFILogsViewController Sorry! Unable to send logs.",@"Sorry! Unable to send logs.")];
             return;
         }
         else if(genericRouterCommand.commandType == SFIGenericRouterCommandType_SEND_LOGS_RESPONSE){
             NSLog(@"success true");
-            [self showToast:@"Logs successfully sent!"];
+            [self showToast:NSLocalizedString(@"SFILogsViewController Logs successfully sent!",@"Logs successfully sent!")];
             [self dismissViewControllerAnimated:YES completion:nil];
         }
     });

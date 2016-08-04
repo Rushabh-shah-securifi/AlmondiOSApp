@@ -91,11 +91,11 @@ int mins;
     
     UILabel *minsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, subView.frame.size.height/2 - lableHeight/2, lableWidth,lableHeight)];
     minsLabel.textAlignment = NSTextAlignmentCenter;
-    minsLabel.text = @"Mins";
+    minsLabel.text = NSLocalizedString(@"Mins", @"Mins");
     minsLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:lableFontSize];
     
     UILabel *secsLabel = [[UILabel alloc] initWithFrame:CGRectMake(lableWidth + pickerRangeWidth + 2*pickerSpacing, subView.frame.size.height/2 - lableHeight/2, lableWidth,lableHeight)];
-    secsLabel.text = @"Secs";
+    secsLabel.text = NSLocalizedString(@"sec", @"Secs");
     secsLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:lableFontSize];
     secsLabel.textAlignment = NSTextAlignmentCenter;
     

@@ -40,7 +40,7 @@ NSString *blockedType;
 }
 
 -(void)addSegmentControll{
-    NSArray *itemArray = [NSArray arrayWithObjects: @"Always", @"Schedule", @"Block", nil];
+    NSArray *itemArray = [NSArray arrayWithObjects: NSLocalizedString(@"always", @"Always"), NSLocalizedString(@"schedule", @"Schedule"), NSLocalizedString(@"block", @"Block"), nil];
     self.allowOnNetworkSegment = [[UISegmentedControl alloc]initWithItems:itemArray];
     self.allowOnNetworkSegment.frame = CGRectMake(5,10, self.frame.size.width - 10, 25);
     self.allowOnNetworkSegment.center = CGPointMake(CGRectGetMidX(self.bounds), self.allowOnNetworkSegment.center.y);
@@ -147,7 +147,8 @@ NSString *blockedType;
     [self.scrollView addSubview:infoView];
     UILabel *infoLabel = [[UILabel alloc]
                           initWithFrame:CGRectMake(0, infoView.frame.size.height, self.scrollView.frame.size.width, 80)];
-    infoLabel.text = @"Tap on the 24/7 grid to create a schedule during which this device is blocked/unblocked on the network. Also, you can tap on (Su,Mo..) to block/unblock device on that particular day or (0,1..) for particular hour.";
+    
+    infoLabel.text = NSLocalizedString(@"scheduleDescription", @"24/7");
     infoLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     infoLabel.backgroundColor = [UIColor clearColor];
     infoLabel.font = [UIFont securifiLightFont:12];
@@ -349,7 +350,7 @@ NSString *blockedType;
     saveButton.backgroundColor = [UIColor whiteColor];
     saveButton.titleLabel.font = [UIFont securifiFont:14];
     [saveButton setTitleColor:self.color forState:UIControlStateNormal];
-    [saveButton setTitle:@"SAVE" forState:UIControlStateNormal];
+    [saveButton setTitle:NSLocalizedString(@"save", @"SAVE") forState:UIControlStateNormal];
     [saveButton addTarget:self action:@selector(saveButtonTap:) forControlEvents:UIControlEventTouchUpInside];
     saveButton.center = CGPointMake(CGRectGetMidX(self.scrollView.bounds), saveButton.center.y);
     [self.scrollView addSubview:saveButton];

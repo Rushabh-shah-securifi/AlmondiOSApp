@@ -11,6 +11,9 @@
 
 @protocol SliderViewDelegate
 -(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue currentView:(UIView*)currentView;
+@optional
+-(void)blinkNew:(NSString *)newValue;
+
 @end
 
 @interface Slider : UIView

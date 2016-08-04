@@ -72,4 +72,5 @@
 - (void)initializeHelpScreensfirst:(NSString*)itemName;
 
 - (void)resetViewDelegate;
+
 @end

@@ -186,9 +186,9 @@ labelAndCheckButtonView *labelView;
     [self.parentView addSubview:pickerView];
 
     
-    NSArray *rows = @[@[@"Day", @"Night"],@[@"C", @"Db", @"D", @"Eb", @"E", @"F", @"Gb", @"G", @"Ab", @"A", @"Bb", @"B"]];
+   NSArray *rows = @[@[NSLocalizedString(@"AddTriggerAction Day", @"Day"), NSLocalizedString(@"night", @"Night")],@[@"C", @"Db", @"D", @"Eb", @"E", @"F", @"Gb", @"G", @"Ab", @"A", @"Bb", @"B"]];
     NSArray *initialSelection = @[@2, @4];
-    [ActionSheetMultipleStringPicker showPickerWithTitle:@"Select scale"
+    [ActionSheetMultipleStringPicker showPickerWithTitle:NSLocalizedString(@"AddTriggerAction Select scale", @"Select scale")
                                                     rows:rows
                                         initialSelection:initialSelection
                                                doneBlock:^(ActionSheetMultipleStringPicker *picker,
@@ -260,7 +260,11 @@ labelAndCheckButtonView *labelView;
         genericIndexValues = [RulesNestThermostat handleNestThermostat:deviceId genericIndexValues:genericIndexValues modeFilter:_isScene triggers:_triggers];
     }else if(deviceType == SFIDeviceType_HueLamp_48){
         genericIndexValues = [RulesHue handleHue:deviceId genericIndexValues:genericIndexValues modeFilter:self.isScene triggers:self.triggers];
-    }else if(deviceType == SFIDeviceType_Weather){
+    }else if(deviceType == SFIDeviceType_AlmondSiren_63){
+        genericIndexValues = [self handleSiren:deviceId genericIndexValues:genericIndexValues modeFilter:self.isScene triggers:self.triggers];
+    }
+    
+    else if(deviceType == SFIDeviceType_Weather){
         genericIndexValues =[self handleWeather:deviceId genericIndexValues:genericIndexValues triggers:self.triggers];
     }
 
@@ -408,8 +412,8 @@ labelAndCheckButtonView *labelView;
 }
 
 -(void)showAlert:(NSString *)string{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"scene.alert-title.Oops", @"Oops")  message:string
-        delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Oops")  message:string
+        delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles: nil];
     [alert show];
 }
 #pragma mark RuleTextField delegate
@@ -417,26 +421,30 @@ labelAndCheckButtonView *labelView;
     
     NSLog(@" textvalue %ld, text: %@",(unsigned long)[textField.text integerValue], textField.text);
     if(textField.text.length == 0)
-        [self showAlert:@"Please enter number"];
+        [self showAlert:NSLocalizedString(@"TextInput Please Enter Number", @"Please Enter Number")];
     
     else if ([self isAllDigits:textField.text]) {
         int type = dimerButton.subProperties.deviceType;
         if( (type == SFIDeviceType_StandardWarningDevice_21 || type == SFIDeviceType_AlmondBlink_64 || type == SFIDeviceType_AlmondSiren_63)  && ([textField.text integerValue] >= 65536 || [textField.text integerValue] < 0 )){
-            [self showAlert:@"Please enter value between 0 - 65535"];
+            NSString *locStr =NSLocalizedString(@"please_enter_value_between", @"Please Enter Value between 0 - 65535");
+            [self showAlert:[NSString stringWithFormat:@"%@ 0 - 65535",locStr]];
             if(self.isTrigger)
             dimerButton.selected = NO;
         }
         else if( dimerButton.subProperties.deviceType == SFIDeviceType_ZWtoACIRExtender_54 && ([textField.text integerValue] > 999 || [textField.text integerValue] < 0 )){
-            [self showAlert:@"Please enter value between 0 - 999"];
+            NSString *locStr =NSLocalizedString(@"please_enter_value_between", @"Please Enter Value between 0 - 999");
+            [self showAlert:[NSString stringWithFormat:@"%@ 0 - 999",locStr]];
             if(self.isTrigger)
             dimerButton.selected = NO;
         }else if( dimerButton.subProperties.deviceType == SFIDeviceType_Weather && ([textField.text integerValue] > 9999 || [textField.text integerValue] < 0 )){
-            [self showAlert:@"Please enter value between 0 - 9999"];
+            NSString *locStr =NSLocalizedString(@"please_enter_value_between", @"Please Enter Value between 0 - 9999");
+            [self showAlert:[NSString stringWithFormat:@"%@ 0 - 9999",locStr]];
             if(self.isTrigger)
             dimerButton.selected = NO;
         }
         else if( dimerButton.subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 && ([textField.text integerValue] > 9000 || [textField.text integerValue] < 1000 )){
-            [self showAlert:@"Please enter value between 1000 - 9000"];
+            NSString *locStr =NSLocalizedString(@"please_enter_value_between", @"Please Enter Value between 1000 - 9000");
+            [self showAlert:[NSString stringWithFormat:@"%@ 1000 - 9000",locStr]];
             if(self.isTrigger)
                 dimerButton.selected = NO;
         }
@@ -467,7 +475,7 @@ labelAndCheckButtonView *labelView;
 
     }
     else {
-        [self showAlert:@"Please enter only numbers"];
+        [self showAlert:NSLocalizedString(@"TextInput Please enter numbers only", @"Please enter numbers only")];
         // ( or ) are present
     }
     
@@ -556,7 +564,7 @@ labelAndCheckButtonView *labelView;
     view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, view.frame.size.height - 35);
     labelView = [[labelAndCheckButtonView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, 20)];
     labelView.isScene = self.isScene;
-    [labelView setUpValues:genericIndexValue.genericIndex.groupLabel withSelectButtonTitle:@"Select"];
+    [labelView setUpValues:genericIndexValue.genericIndex.groupLabel withSelectButtonTitle:NSLocalizedString(@"select", @"Select")];
     [labelView.selectButton addTarget:self action:@selector(onHueColorPickerSelectButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     Slider *hueSlider = [[Slider alloc]initWithFrame:CGRectMake(0, 20, view.frame.size.width, view.frame.size.height -20) color:[SFIColors ruleOrangeColor] genericIndexValue:genericIndexValue];
     
@@ -568,7 +576,7 @@ labelAndCheckButtonView *labelView;
 }
 -(void)buildColorComponent:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
     SFIButtonSubProperties *subproperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType ];
-    ColorComponentView *colComp = [[ColorComponentView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height - 15) setUpValue:@"Hue" ButtonTitle:@"Select" andIsScene:self.isScene list:self.isTrigger?self.triggers:self.actions subproperties:subproperties genricIndexVal:genericIndexValue];
+    ColorComponentView *colComp = [[ColorComponentView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height - 15) setUpValue:@"Hue" ButtonTitle:NSLocalizedString(@"select", @"Select") andIsScene:self.isScene list:self.isTrigger?self.triggers:self.actions subproperties:subproperties genricIndexVal:genericIndexValue];
 
     colComp.delegate = self;
     [view addSubview:colComp];
@@ -577,7 +585,7 @@ labelAndCheckButtonView *labelView;
 -(void)buildHueColorPicker:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
     labelView = [[labelAndCheckButtonView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, 20)];
     labelView.isScene = self.isScene;
-    [labelView setUpValues:genericIndexValue.genericIndex.groupLabel withSelectButtonTitle:@"Select"];
+    [labelView setUpValues:genericIndexValue.genericIndex.groupLabel withSelectButtonTitle:NSLocalizedString(@"select", @"Select")];
     [labelView.selectButton addTarget:self action:@selector(onHueColorPickerSelectButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     HueColorPicker *huePicker = [[HueColorPicker alloc]initWithFrame:CGRectMake(0, 20, view.frame.size.width, view.frame.size.height -20) color:[SFIColors ruleOrangeColor] genericIndexValue:genericIndexValue];
     huePicker.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
@@ -725,7 +733,7 @@ labelAndCheckButtonView *labelView;
             }else if ([genericIndex.layoutType isEqualToString:@"HueColorPicker"]){
             [self buildHueColorPicker:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
-            else if([genericIndex.layoutType isEqualToString:@"HUE"]){
+            else if([genericIndex.layoutType isEqualToString:@"HUE"]|| [genericIndex.layoutType isEqualToString:@"HUE_BLINK"]){
                 [self buildColorComponent:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
                 
             }
@@ -882,10 +890,15 @@ labelAndCheckButtonView *labelView;
         
         
         if(self.isScene && indexSwitchButton.subProperties.deviceType == SFIDeviceType_NestThermostat_57 && indexSwitchButton.subProperties.index == 2){
-            //RulesNestThermostat *nest=[RulesNestThermostat new];
             [RulesNestThermostat removeTemperatureIndexes:indexSwitchButton.subProperties.deviceId mode:indexSwitchButton.subProperties.matchData entries:self.triggers];
             [self.delegate redrawDeviceIndexView:indexSwitchButton.subProperties.deviceId clientEvent:@""];
-        }else if(self.isScene && indexSwitchButton.subProperties.deviceType == SFIDeviceType_HueLamp_48 && indexSwitchButton.subProperties.index == 2){
+        }else if(self.isScene && indexSwitchButton.subProperties.deviceType == SFIDeviceType_AlmondSiren_63 && indexSwitchButton.subProperties.index == 1){
+            [self removeSirenEntriesOnDisable:buttonId value:matchData entries:self.triggers];
+            [self.delegate redrawDeviceIndexView:indexSwitchButton.subProperties.deviceId clientEvent:@""];
+        }
+        
+        
+        else if(self.isScene && indexSwitchButton.subProperties.deviceType == SFIDeviceType_HueLamp_48 && indexSwitchButton.subProperties.index == 2){
             [self.delegate redrawDeviceIndexView:indexSwitchButton.subProperties.deviceId clientEvent:@""];
         }else if(indexSwitchButton.subProperties.deviceType == SFIDeviceType_Weather){
             if (indexSwitchButton.selected){
@@ -932,12 +945,12 @@ labelAndCheckButtonView *labelView;
         for(int i=0;i<60;i++){
             [displayArr addObject:@(i).stringValue];
         }
-        rows = @[displayArr,@[@"Before",@"After"]];
+rows = @[displayArr,@[NSLocalizedString(@"before", @"Before"),NSLocalizedString(@"after", @"After")]];
     }
     
 //    valueArr enumerateObjectsUsingBlock:
     NSLog(@"subproperties match data %@",subproperties.matchData);
-    NSString *title = (subproperties.index == 2)?@"Condition":@"Minutes";
+    NSString *title = (subproperties.index == 2)?NSLocalizedString(@"sunnycondition", @"Condition"):NSLocalizedString(@"Minutes", @"Minutes");
     NSArray *initialSelection = @[@0,@0];
     [ActionSheetMultipleStringPicker showPickerWithTitle:title
                                                     rows:rows
@@ -1265,6 +1278,47 @@ labelAndCheckButtonView *labelView;
     NSLog(@"new value %@",newValue);
     NSLog(@" g.index id %@",genericIndexValue.genericIndex.ID);
     
+}
+
+#pragma mark siren cases
+-(NSArray *)handleSiren:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues modeFilter:(BOOL)modeFilter triggers:(NSMutableArray*)triggers{
+    NSLog(@"entries: %@", triggers);
+    NSMutableArray *newGenIndexVals = [genericIndexValues mutableCopy];
+    if(modeFilter){
+        NSString *matchData = nil;
+        for(SFIButtonSubProperties *subProperty in triggers){
+            if(subProperty.deviceId == deviceID && subProperty.index == 1){
+                matchData = subProperty.matchData;
+            }
+        }
+        NSLog(@"siren md: %@", matchData);
+        if(matchData == nil)
+            return newGenIndexVals;
+        
+        if([matchData isEqualToString:@"false"]){
+            NSMutableArray *toberemoved = [NSMutableArray new];
+            for(GenericIndexValue *genIndexVal in genericIndexValues){
+                if(genIndexVal.index != 1)
+                    [toberemoved addObject:genIndexVal];
+            }
+            [newGenIndexVals removeObjectsInArray:toberemoved];
+        }
+    }
+    NSLog(@"Siren new generic index vals: %@", newGenIndexVals);
+    return newGenIndexVals;
+}
+
+-(void)removeSirenEntriesOnDisable:(int)deviceID value:(NSString*)value entries:(NSMutableArray*)entries{
+    if([value isEqualToString:@"true"])
+        return;
+    
+    NSMutableArray *toBeDeletedEntries = [NSMutableArray new];
+    
+    for(SFIButtonSubProperties *entry in entries){
+        if(entry.deviceId == deviceID && entry.index != 1)
+            [toBeDeletedEntries addObject:entry];
+    }
+    [entries removeObjectsInArray:toBeDeletedEntries];
 }
 
 @end

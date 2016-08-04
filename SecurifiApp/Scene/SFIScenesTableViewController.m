@@ -280,7 +280,7 @@
         UILabel *lblNewScene = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, table_width-20, 130)];
         lblNewScene.textAlignment = NSTextAlignmentCenter;
         [lblNewScene setFont:[UIFont fontWithName:AVENIR_ROMAN size:18]];
-        lblNewScene.text = @"New Scene";
+        lblNewScene.text = NSLocalizedString(@"newScene",@"New Scene");
         lblNewScene.textColor = [UIColor grayColor];
         [cell addSubview:lblNewScene];
         
@@ -332,7 +332,7 @@
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_UPDATE_REQUEST;
     cloudCommand.command = [activateScenePayload JSONString];
-
+    
     [self showHudWithTimeoutMsg:NSLocalizedString(@"scenes.hud.activatingScene", @"Activating scene...")];
     [self asyncSendCommand:cloudCommand];
     

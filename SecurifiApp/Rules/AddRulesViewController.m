@@ -66,7 +66,7 @@ UIAlertView *alert;
     self.addRuleScene = [[AddRuleSceneClass alloc]initWithParentView:self.view deviceIndexScrollView:self.deviceIndexButtonScrollView deviceListScrollView:self.deviceListScrollView topScrollView:self.triggersActionsScrollView informationLabel:self.informationLabel triggers:self.rule.triggers actions:self.rule.actions isScene:NO];
     
     [self.addRuleScene buildTriggersAndActions];
-    [self ifThenClick:YES infoText:@"To get started, please select a trigger" infoText2:@"Add another trigger or press THEN to define action"];
+    [self ifThenClick:YES infoText:NSLocalizedString(@"selectTriggerInitial", @"To get started, please select a trigger") infoText2:NSLocalizedString(@"add_trigger_or_add_action", @"Add another trigger or press THEN to define action")];
     self.ViewFrame = self.view.frame;
 }
 
@@ -147,10 +147,10 @@ UIAlertView *alert;
         return;
     }
     
-    NSString * success = [mainDict valueForKey:@"Success"];
-    if (![success isEqualToString:@"true"]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"scene.alert-title.Oops", @"Oops") message:NSLocalizedString(@"scene.alert-msg.Sorry, There was some problem with this request, try later!", @"Sorry, There was some problem with this request, try later!")
-                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
+    BOOL success = [mainDict[@"Success"] boolValue];
+    if (!success)  {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Oops") message:NSLocalizedString(@"try_later", @"Sorry, There was some problem with this request, try later!")
+                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles: nil];
         dispatch_async(dispatch_get_main_queue(), ^() {
             [alert show];
         });
@@ -181,21 +181,21 @@ UIAlertView *alert;
 
 -(void) setUpNavigationBar{
     self.navigationController.navigationBar.translucent = YES;
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(btnSaveTap:)];
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"done", @"Done") style:UIBarButtonItemStylePlain target:self action:@selector(btnSaveTap:)];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
-    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
+    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"back", @"Back") style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
     self.navigationItem.leftBarButtonItem = leftBarButtonItem;
     
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName : UIColorFromRGB(0x02a8f3),
                                                                                                        NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Roman" size:17.5f]} forState:UIControlStateNormal];
-    self.title = self.isInitialized? [NSString stringWithFormat:@"%@", self.rule.name]: @"New Rule";
+    self.title = self.isInitialized? [NSString stringWithFormat:@"%@", self.rule.name]: NSLocalizedString(@"New Rule", @"New Rule");
 }
 
 
 
 #pragma mark buttonclickedMetghods
 - (IBAction)ifButtonClicked:(id)sender {
-    [self ifThenClick:YES infoText:@"To get started, please select a trigger" infoText2:@"Add another trigger or press THEN to define action"];
+    [self ifThenClick:YES infoText:NSLocalizedString(@"selectTriggerInitial", @"To get started, please select a trigger") infoText2:NSLocalizedString(@"AddRulesView Add another trigger or press THEN to define action", @"Add another trigger or press THEN to define action")];
     
 }
 
@@ -205,7 +205,7 @@ UIAlertView *alert;
 }
 
 - (IBAction)thenButtonClicked:(id)sender {
-    [self ifThenClick:NO infoText:@"Select Triggers First" infoText2:@"Select action for your trigger"];
+    [self ifThenClick:NO infoText:NSLocalizedString(@"AddRulesView Select Triggers First", @"Select Triggers First") infoText2:NSLocalizedString(@"selectActionInitial", @"Select action for your trigger")];
 }
 
 -(void)ifThenClick:(BOOL)isTrigger infoText:(NSString*)text1 infoText2:(NSString*)text2{
@@ -301,13 +301,13 @@ UIAlertView *alert;
     textField = [[UITextField alloc]init];
     if(self.isInitialized){
         textField.text = self.rule.name;
-    }
+    }//
     if(self.rule.triggers.count > 0 && self.rule.actions.count > 0){
-        alert = [[UIAlertView alloc] initWithTitle:@"Rule Name"
+        alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"rule_name", @"Rule Name")
                                                         message:@""
                                                        delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Done", nil];
+                                              cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel")
+                                              otherButtonTitles:NSLocalizedString(@"done", @"Done"), nil];
         [alert setDelegate:self];
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
         textField = [alert textFieldAtIndex:0];
@@ -327,11 +327,11 @@ UIAlertView *alert;
     {
         NSString *msg;
         if(self.rule.triggers.count == 0)
-            msg = @"Select atleast one Trigger.";
+            msg = NSLocalizedString(@"AddRulesView Select atleast one Trigger", @"Select atleast one Trigger");
         else if(self.rule.actions.count == 0)
-            msg = @"Select atleast one Action";
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:msg
-                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
+            msg = NSLocalizedString(@"AddRulesView Select atleast one Action", @"Select atleast one Action");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Oops") message:msg
+                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles: nil];
         dispatch_async(dispatch_get_main_queue(), ^() {
             [alert show];
         });
@@ -373,7 +373,7 @@ UIAlertView *alert;
     //HUd methods.....
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Saving Rule...";
+    _HUD.labelText = NSLocalizedString(@"AddRulesView Saving Rule...", @"Saving Rule...");
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
