@@ -69,7 +69,6 @@ int mii;
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
-//        [self showHelpCenterPath];
         [self initializeHelpScreensfirst:@"Devices"];
     });
 }
