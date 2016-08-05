@@ -25,7 +25,6 @@
 #import "HelpScreens.h"
 
 
-
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate>{
     UIButton *button, *button1;
 }
@@ -136,7 +135,7 @@
     });
     [self getDeviceClientNotification];
     [self markNetworkStatusIcon];
-    [self initializeHelpScreens];
+//    [self initializeHelpScreens];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -1096,12 +1095,6 @@
     [CommonMethods setLineSpacing:detail text:text spacing:3];
     [detail sizeToFit];
     [detailView addSubview:detail];
-    
-    //button
-    //    UIButton *gotItButton = [[UIButton alloc]initWithFrame:CGRectMake(10, self.navigationController.view.frame.size.height - 50, viewWidth - 20, 40)];
-    //    [self setButtonProperties:gotItButton title:@"Ok, got it" selector:@selector(onGotItTap:) titleColor:[UIColor whiteColor]];
-    //    gotItButton.backgroundColor = [SFIColors helpPurpleColor];
-    //    [self.bgView addSubview:gotItButton];
 }
 
 #pragma mark help screens

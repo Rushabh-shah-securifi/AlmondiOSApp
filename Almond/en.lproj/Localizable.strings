@@ -1258,5 +1258,5 @@ Contact us at support@securifi.com";
 "Can't connect to your Almond. Please select a connection method." = "Can't connect to your Almond. Please select a connection method.";
 "Connected to your Almond locally." = "Connected to your Almond locally.";
 "Back to Cloud Link" = "Back to Cloud Link";
-
+"ssid_is" = "%@ is %@";
 

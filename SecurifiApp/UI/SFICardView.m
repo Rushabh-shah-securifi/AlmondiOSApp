@@ -146,7 +146,7 @@
     else {
         msg = @"";
     }
-    NSLog(@"wireless sumery msg = %@",msg);
+    NSLog(@"cardview summary msg = %@",msg);
     NSUInteger lineCount = [SFICardView getLineCount:msgs];
     lineCount = (lineCount == 0) ? 1 : lineCount + 1;
 

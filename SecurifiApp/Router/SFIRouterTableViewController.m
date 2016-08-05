@@ -112,7 +112,7 @@ int mii;
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
-        [self initializeHelpScreensfirst:@"WiFi"];
+//        [self initializeHelpScreensfirst:@"WiFi"];
     });
     
 }
@@ -449,15 +449,16 @@ int mii;
 -(NSArray*)getWirelessSettingsSummary{
     //NSLog(@"getWirelessSettingsSummary");
     NSMutableArray *summary = [NSMutableArray array];
+ 
     if(self.routerSummary){
         for (SFIWirelessSummary *sum in self.routerSummary.wirelessSummaries) {
             NSString *enabled = sum.enabled ? NSLocalizedString(@"enabled", @"enabled") : NSLocalizedString(@"disabled", @"disabled");
-            [summary addObject:[NSString stringWithFormat:NSLocalizedString(@"is:",@"%@ is %@"), sum.ssid, enabled]];
+            [summary addObject:[NSString stringWithFormat:NSLocalizedString(@"ssid_is",@"%@ is %@"), sum.ssid, enabled]];
         }
     }else{
         return @[NSLocalizedString(@"Settings are not available.", @"Settings are not available.")];
     }
-    
+    NSLog(@"wireless summary: %@", summary);
     return summary;
 }
 

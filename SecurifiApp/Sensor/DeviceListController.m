@@ -69,7 +69,7 @@ int mii;
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
-        [self initializeHelpScreensfirst:@"Devices"];
+//        [self initializeHelpScreensfirst:@"Devices"];
     });
 }
 

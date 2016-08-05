@@ -47,9 +47,6 @@
     
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
     // Do any additional setup after loading the view.
-    
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -64,7 +61,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
-        [self initializeHelpScreensfirst:@"Scenes"];
+//        [self initializeHelpScreensfirst:@"Scenes"];
     });
 }
 

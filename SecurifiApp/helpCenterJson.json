@@ -105,7 +105,7 @@
                                         }, {
                                         "title": "IFTTT",
                                         "description": "IFTTT_Desc",
-                                        "image": "foreground"
+                                        "image": "h_rule_ifttt"
                                         }]
                             }, {
                             "name": "WiFi",
@@ -113,19 +113,19 @@
                             "screens": [{
                                         "title": "More_to_Almond",
                                         "description": "More_to_Almond_Desc",
-                                        "image": "h_rule_mean"
+                                        "image": "h_wifi_more"
                                         }, {
                                         "title": "Guest_Network",
                                         "description": "Guest_Network_Desc",
-                                        "image": "h_rule_create"
+                                        "image": "h_wifi_guest"
                                         }, {
                                         "title": "Share_Control",
                                         "description": "Share_Control_Desc",
-                                        "image": "h_rule_chain"
+                                        "image": "h_wifi_share"
                                         }, {
                                         "title": "Advanced_Features",
                                         "description": "Advanced_Features_Desc",
-                                        "image": "foreground"
+                                        "image": "h_wifi_advanced"
                                         }]
                             }, {
                             "name": "Wi-Fi Triggers",
