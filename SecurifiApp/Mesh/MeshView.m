@@ -9,9 +9,12 @@
 #import "MeshView.h"
 #import "MeshPayload.h"
 #import "AlmondJsonCommandKeyConstants.h"
-
+#import <QuartzCore/QuartzCore.h>
 
 @interface MeshView()
+@property(nonatomic) NSTimer *timer;
+@property(nonatomic) CFTimeInterval startTime;
+
 @property (strong, nonatomic) IBOutlet UIView *interfaceView;
 @property (strong, nonatomic) IBOutlet UIView *almondsView;
 @property (strong, nonatomic) IBOutlet UIView *addingAlmondView;
@@ -157,14 +160,14 @@
 //adding almond view / blinkled view
 - (IBAction)onNoLEDBlinking:(UIButton *)noButton {
     _mii = arc4random() % 10000;
-    [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..."];
+    [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:5];
     self.currentView = [noButton superview];
     [self requestAddSlave:NO];
 }
 
 - (IBAction)onYesLEDBlinking:(UIButton *)yesButton {
     _mii = arc4random() % 10000;
-    [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..."];
+    [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:5];
     self.currentView = [yesButton superview];
     [self requestAddSlave:YES];
 }
@@ -175,7 +178,7 @@
 
 - (IBAction)onNextButtonTap:(UIButton*)nextButton {
     _mii = arc4random() % 10000;
-    [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..."];
+    [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:120];
     [self sendCommand:[nextButton superview]];
 }
 
@@ -287,10 +290,33 @@
 
 #pragma mark command requests
 -(void)requestAddableSlave{
+    [self sendAddableSlaveCmd];
+    self.startTime = CACurrentMediaTime();
+    //timer repeats itself for every 2 seconds until it is invalidated
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:2.0
+                                                   target:self
+                                                 selector:@selector(onTimeout:)
+                                                 userInfo:nil
+                                                  repeats:YES];
+}
+-(void)sendAddableSlaveCmd{
     if(self.wiredBtn.selected)
         [MeshPayload requestCheckForAddableWiredSlave:self.mii];//mii
     else
         [MeshPayload requestCheckForAddableWirelessSlave:self.mii];
+}
+
+-(void)onTimeout:(id)sender{
+    //on cmd success timer will be invalidated
+    NSLog(@"on time out");
+    CFTimeInterval elapsedTime = CACurrentMediaTime() - self.startTime;
+    NSLog(@"elapsed time: %f", elapsedTime);
+    if(elapsedTime >= 120){
+        [self.timer invalidate];
+        return;
+    }
+        
+    [self sendAddableSlaveCmd];
 }
 
 -(void)requestAddSlave:(BOOL)isBlinking{
@@ -315,7 +341,6 @@
 -(void)onMeshCommandResponse:(id)sender{
     NSLog(@"onmeshcommandresponse");
     //load next view
-    [self.delegate hideHUDDelegate];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
@@ -334,9 +359,13 @@
     if([payload[MOBILE_INTERNAL_INDEX] intValue]!=  self.mii|| ![payload[COMMAND_MODE] isEqualToString:@"Reply"])
         return;
     BOOL isSuccessful = [payload[@"Success"] boolValue];
-    if(YES){
-        NSString *commandType = payload[COMMAND_TYPE];
+    NSString *commandType = payload[COMMAND_TYPE];
+    if(isSuccessful){
+        [self.delegate hideHUDDelegate];
+        
         if([commandType isEqualToString:@"CheckForAddableWiredSlave"] || [commandType isEqualToString:@"CheckForAddableWirelessSlave"]){
+            [self.timer invalidate];
+            
             self.almondTitles = payload[SLAVES];
             self.almondTitle = self.almondTitles[0]==nil? @"": self.almondTitles[0];
         }
@@ -351,7 +380,10 @@
         }
         [self loadNextView];
     }else{
-       //show toast or something
+       //don't miss the not
+        if(![commandType isEqualToString:@"CheckForAddableWiredSlave"] || ![commandType isEqualToString:@"CheckForAddableWirelessSlave"]){
+            [self.delegate hideHUDDelegate];
+        }
     }
     
 }

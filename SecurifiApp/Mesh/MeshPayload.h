@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface MeshPayload : NSObject
-+(void)requestMestList:(int)mii;
 
 +(void)requestCheckForAddableWiredSlave:(int)mii;
 
@@ -22,4 +21,8 @@
 +(void)requestAddWireLessSlave:(int)mii slaveName:(NSString *)slaveName;
 
 +(void)requestSetSlaveName:(int)mii;
+
++(void)requestRemoveSlave:(int)mii uniqueName:(NSString*)uniqueName;
+
++(void)requestSlaveDetails:(int)mii slaveUniqueName:(NSString*)uniqueName;
 @end

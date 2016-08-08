@@ -23,7 +23,7 @@
 #import "UIFont+Securifi.h"
 #import "SWRevealViewController.h"
 #import "HelpScreens.h"
-
+#import "UICommonMethods.h"
 
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate>{
     UIButton *button, *button1;
@@ -1066,41 +1066,12 @@
     [crossButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
     [self.bgView addSubview:crossButton];
     
-    UILabel *hdrTitle = [[UILabel alloc]initWithFrame:CGRectMake(0, 22, viewWidth, 40)];
-    
-    [CommonMethods setLableProperties:hdrTitle text:NSLocalizedString(@"almond_update_available", @"Almond Update Available") textColor:[UIColor blackColor] fontName:@"AvenirLTStd-Heavy" fontSize:20 alignment:NSTextAlignmentCenter];
-    
-    hdrTitle.center = CGPointMake(self.view.bounds.size.width/2 + 5, hdrTitle.center.y);
-    [self.bgView addSubview:hdrTitle];
-    
-    [CommonMethods addLineSeperator:self.bgView yPos:65];
-    
-    //image 200
-    UIImageView *routerSettingImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 100, 200, 180)];
-    routerSettingImg.center = CGPointMake(self.view.bounds.size.width/2, routerSettingImg.center.y);
-    routerSettingImg.image = [UIImage imageNamed:@"almond_settings"];
-    [self.bgView addSubview:routerSettingImg];
-    
-    //detail view
-    UIView *detailView = [[UIView alloc]initWithFrame:CGRectMake(0, 315, viewWidth,250)];
-    [self.bgView addSubview:detailView];
-    
-    UILabel *detailTitle = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, viewWidth, 20)];
-    [CommonMethods setLableProperties:detailTitle text:NSLocalizedString(@"almond_requires_update", @"Your Almond requires an update.") textColor:[SFIColors ruleGraycolor] fontName:@"AvenirLTStd-Heavy" fontSize:20 alignment:NSTextAlignmentCenter];
-    [detailView addSubview:detailTitle];
-    
-    UILabel *detail = [[UILabel alloc]initWithFrame:CGRectMake(10, 35, viewWidth-15, 220)];
-    NSString *text = NSLocalizedString(@"updateAlmondScreen", @"dashBoard Your Almond update... ");
-    [CommonMethods setLableProperties:detail text:text textColor:[SFIColors ruleGraycolor] fontName:@"AvenirLTStd-Roman" fontSize:16 alignment:NSTextAlignmentCenter];
-    [CommonMethods setLineSpacing:detail text:text spacing:3];
-    [detail sizeToFit];
-    [detailView addSubview:detail];
+    [UICommonMethods setupUpdateAvailableScreen:self.bgView selfView:self.view viewWidth:viewWidth];
 }
 
 #pragma mark help screens
 -(void)initializeHelpScreens{
     NSLog(@"nav view heigt: %f, view ht: %f", self.navigationController.view.frame.size.height, self.view.frame.size.height);
-    
     
     self.helpScreensObj = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
     self.helpScreensObj.delegate = self;
@@ -1114,8 +1085,6 @@
     self.helpScreensObj.backgroundColor = [UIColor grayColor];
     [self.tabBarController.tabBar setHidden:YES];
 }
-
-
 
 #pragma mark helpscreen delegate methods
 - (void)resetViewDelegate{

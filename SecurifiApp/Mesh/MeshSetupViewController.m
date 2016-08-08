@@ -50,8 +50,8 @@
         //more to be done depending upon connection status images need to be updated
         //will put set of images in a view and hide/unhide the view.
         self.removeBtn.hidden = YES;
-        self.tableBottomContraint.constant = 0;
-        [self toggleImages:NO weakImg:YES text:self.almondStatObj.isConnected? @"Online":@"Offline"];
+        self.tableBottomContraint.constant = 0; //to hide remove button.
+        [self toggleImages:NO weakImg:YES text:self.almondStatObj.internetStat? @"Online":@"Offline"];
     }else{
         [self toggleImages:YES weakImg:NO text:@"Text should be shown based on signal strength"];
     }
@@ -148,7 +148,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)showHudWithTimeoutMsgDelegate:(NSString*)hudMsg {
+- (void)showHudWithTimeoutMsgDelegate:(NSString*)hudMsg time:(NSTimeInterval)sec{
     NSLog(@"showHudWithTimeoutMsg");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:hudMsg];

@@ -10,17 +10,6 @@
 
 @implementation MeshPayload
 
-+(void)requestMestList:(int)mii{
-    
-    NSDictionary *payload = @{
-                              @"CommandMode":@"Request",
-                              @"CommandType":@"MeshList",
-                              @"MobileInternalIndex":@(mii).stringValue
-                              };
-
-    [self sendRequest:payload commandType:CommandType_UPDATE_REQUEST];
-}
-
 +(void)requestCheckForAddableWiredSlave:(int)mii{
     NSDictionary *payload = @{
                                   @"CommandMode":@"Request",
@@ -82,17 +71,29 @@
                               };
     [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
 }
-/*
- {
- "CommandMode":"Request",
- "CommandType":"RemoveSlave",
- "SlaveUniqueName":"Almond123",
- "MobileInternalIndex":"ttWsbWY91duqYuxOz2v5C2IrGFCm65Yz"
- }
- */
-+(void)requestRemoveSlave{
-    
+
++(void)requestRemoveSlave:(int)mii uniqueName:(NSString*)uniqueName{
+    NSDictionary *payload = @{
+                              @"CommandMode":@"Request",
+                              @"CommandType":@"RemoveSlave",
+                              @"SlaveUniqueName":uniqueName,
+                              @"MobileInternalIndex":@(mii).stringValue
+                              
+                              };
+    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
 }
+
++(void)requestSlaveDetails:(int)mii slaveUniqueName:(NSString*)uniqueName{
+    NSDictionary *payload = @{
+                              @"CommandMode":@"Request",
+                              @"CommandType":@"SlaveDetails",
+                              @"SlaveUniqueName":uniqueName,
+                              @"MobileInternalIndex":@(mii).stringValue
+                              
+                              };
+    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+}
+
 +(void)sendRequest:(NSDictionary *)payload commandType:(enum CommandType)commandType{
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:commandType];
     genericCmd.isMesh = YES;

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MeshList.h"
+#import "AlmondStatus.h"
 
 @interface MeshSetupViewController : UIViewController
 @property (nonatomic) AlmondStatus *almondStatObj;

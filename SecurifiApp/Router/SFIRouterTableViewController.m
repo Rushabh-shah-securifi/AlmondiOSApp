@@ -32,7 +32,7 @@
 #import "MeshSetupViewController.h"
 #import "CommonMethods.h"
 #import "MeshPayload.h"
-#import "MeshList.h"
+#import "AlmondStatus.h"
 
 #define DEF_NETWORKING_SECTION          0
 #define DEF_DEVICES_AND_USERS_SECTION   1
@@ -63,7 +63,6 @@ static const int logsHeight = 100;
 @property NSTimer *hudTimer;
 
 @property(nonatomic, strong) SFIRouterSummary *routerSummary;
-@property(nonatomic) MeshList *meshListObj;
 
 @property BOOL isRebooting;
 @property BOOL isAlmondUnavailable;
@@ -138,7 +137,6 @@ int mii;
     
     [center addObserver:self selector:@selector(onMeshResponse:) name:NOTIFICATION_CommandType_MESH_RESPONSE object:nil];
     
-    
 }
 
 - (void)initializeRouterSummaryAndSettings {
@@ -160,7 +158,6 @@ int mii;
         [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
         [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
     }
-    [MeshPayload requestMestList:mii];
 }
 
 -(void)markAlmondTitleAndMac{
@@ -375,7 +372,8 @@ int mii;
     }
     cell.delegate = self;
     [cell markReuse];
-    [cell setHeading:@"Almond Network" titles:[self getAlmondTitles] almCount:self.meshListObj.statusArray.count];
+    NSArray *almonds = [self getAlmondTitles];
+    [cell setHeading:@"Almond Network" titles:almonds almCount:almonds.count];
     //    [cell setHeading:@"Almond Network" titles:@[@"almond 1"] almCount:1];
     
     [cell createAlmondNetworkView];
@@ -384,8 +382,8 @@ int mii;
 
 -(NSArray *)getAlmondTitles{
     NSMutableArray *titles = [NSMutableArray new];
-    for(AlmondStatus *stat in self.meshListObj.statusArray){
-        [titles addObject:stat.name];
+    for(NSDictionary *dict in self.routerSummary.almondsList){
+        [titles addObject:dict[NAME]];
     }
     return titles;
 }
@@ -894,34 +892,52 @@ int mii;
      
 #pragma mark mesh command resposne
  - (void)onMeshResponse:(id)sender{
+     NSLog(@"slave list mesh response");
      NSNotification *notifier = (NSNotification *) sender;
      NSDictionary *data = [notifier userInfo];
      if (data == nil || [data valueForKey:@"data"]==nil ) {
          return;
      }
      
-     NSDictionary *meshList = [data valueForKey:@"data"];
-     NSLog(@"mesh list: %@", meshList);
-     self.meshListObj = [[MeshList alloc]initWithMeshList:meshList];
-     dispatch_async(dispatch_get_main_queue(), ^{
-         [self.tableView reloadData];
-     });
+     NSDictionary *payload = [data valueForKey:@"data"];
+     NSLog(@"slave details: %@", payload);
+     if([payload[MOBILE_INTERNAL_INDEX] intValue]!= mii|| ![payload[COMMAND_MODE] isEqualToString:@"Reply"] || [payload[COMMAND_TYPE] isEqualToString:@"SlaveDetails"])
+         return;
+     BOOL isSuccessful = [payload[SUCCESS] boolValue];
+     if(isSuccessful){
+         AlmondStatus *slaveStatus = [AlmondStatus getSlaveStatus:payload routerSummary:self.routerSummary];
+         [self pushMeshController:slaveStatus];
+     }else{
+         [self showToast:@"Sorry! Please try after sometime."];
+     }
      
  }
-     
+
 #pragma mark almondnetworkcelldelegate methods
  -(void)onAlmondTapDelegate:(int)almondCount{
      NSLog(@"onAlmondTapDelegate");
-     
-     //need to send a command, to fetch masterstatus/slavestatus
-     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Mesh" bundle:nil];
-     MeshSetupViewController *meshController = [storyboard instantiateViewControllerWithIdentifier:@"MeshSetupViewController"];
-     meshController.hidesBottomBarWhenPushed = YES;
-     meshController.isStatusView = YES;
-     meshController.almondStatObj = self.meshListObj.statusArray[almondCount];
-     [self.navigationController pushViewController:meshController animated:YES];
+     //master - straight forward assemble data and send
+     if(almondCount == 0){
+         [self pushMeshController:[AlmondStatus getMasterAlmondStatus:self.routerSummary]];
+     }else{
+         //send a command, to fetch slavestatus
+         NSDictionary *slaveDict = self.routerSummary.almondsList[almondCount];
+         [MeshPayload requestSlaveDetails:mii slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]];
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [self showHudWithTimeout:@"Requesting, Please Wait!"];
+         });
+     }
  }
- 
+
+-(void)pushMeshController:(AlmondStatus*)almondStat{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Mesh" bundle:nil];
+    MeshSetupViewController *meshController = [storyboard instantiateViewControllerWithIdentifier:@"MeshSetupViewController"];
+    meshController.hidesBottomBarWhenPushed = YES;
+    meshController.isStatusView = YES;
+    meshController.almondStatObj = almondStat;
+    [self.navigationController pushViewController:meshController animated:YES];
+}
+
  -(void)onAddAlmondTapDelegate{
      NSLog(@"on add almond tap delegate");
      dispatch_async(dispatch_get_main_queue(), ^{
@@ -932,5 +948,6 @@ int mii;
          [self.navigationController pushViewController:mesh animated:YES];
      });
  }
- 
+
+
  @end

@@ -486,8 +486,8 @@
 		F401B0741D2D241200F64CE2 /* ColorComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F401B0721D2D241200F64CE2 /* ColorComponentView.m */; };
 		F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F426AE2E1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
-		F4B875431D5382D500DCF76F /* MeshList.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753A1D5382D500DCF76F /* MeshList.m */; };
-		F4B875441D5382D500DCF76F /* MeshList.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753A1D5382D500DCF76F /* MeshList.m */; };
+		F4B875431D5382D500DCF76F /* AlmondStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753A1D5382D500DCF76F /* AlmondStatus.m */; };
+		F4B875441D5382D500DCF76F /* AlmondStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753A1D5382D500DCF76F /* AlmondStatus.m */; };
 		F4B875451D5382D500DCF76F /* MeshPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753C1D5382D500DCF76F /* MeshPayload.m */; };
 		F4B875461D5382D500DCF76F /* MeshPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753C1D5382D500DCF76F /* MeshPayload.m */; };
 		F4B875471D5382D500DCF76F /* MeshSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753E1D5382D500DCF76F /* MeshSetupViewController.m */; };
@@ -1083,8 +1083,8 @@
 		F401B0721D2D241200F64CE2 /* ColorComponentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorComponentView.m; sourceTree = "<group>"; };
 		F426AE2B1D19515500AE60C8 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
-		F4B875391D5382D500DCF76F /* MeshList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshList.h; sourceTree = "<group>"; };
-		F4B8753A1D5382D500DCF76F /* MeshList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeshList.m; sourceTree = "<group>"; };
+		F4B875391D5382D500DCF76F /* AlmondStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondStatus.h; sourceTree = "<group>"; };
+		F4B8753A1D5382D500DCF76F /* AlmondStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlmondStatus.m; sourceTree = "<group>"; };
 		F4B8753B1D5382D500DCF76F /* MeshPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshPayload.h; sourceTree = "<group>"; };
 		F4B8753C1D5382D500DCF76F /* MeshPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeshPayload.m; sourceTree = "<group>"; };
 		F4B8753D1D5382D500DCF76F /* MeshSetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshSetupViewController.h; sourceTree = "<group>"; };
@@ -2181,8 +2181,8 @@
 		F4B875381D5382D500DCF76F /* Mesh */ = {
 			isa = PBXGroup;
 			children = (
-				F4B875391D5382D500DCF76F /* MeshList.h */,
-				F4B8753A1D5382D500DCF76F /* MeshList.m */,
+				F4B875391D5382D500DCF76F /* AlmondStatus.h */,
+				F4B8753A1D5382D500DCF76F /* AlmondStatus.m */,
 				F4B8753B1D5382D500DCF76F /* MeshPayload.h */,
 				F4B8753C1D5382D500DCF76F /* MeshPayload.m */,
 				F4B8753D1D5382D500DCF76F /* MeshSetupViewController.h */,
@@ -2864,7 +2864,7 @@
 				1C7E7D961A41A0990026F0BA /* SFIRouterTableViewController.m in Sources */,
 				CEF6F5011C92CAD600C68975 /* SwitchButton.m in Sources */,
 				1DF03AD70C1C051CA6F74073 /* SFIPreferences.m in Sources */,
-				F4B875441D5382D500DCF76F /* MeshList.m in Sources */,
+				F4B875441D5382D500DCF76F /* AlmondStatus.m in Sources */,
 				1DF036E2B7339D81255297B9 /* NSData+Conversion.m in Sources */,
 				CEF6F4FF1C92CAD600C68975 /* RuleTextField.m in Sources */,
 				CEF6F4D91C92CAD600C68975 /* AddRuleSceneClass.m in Sources */,
@@ -2974,7 +2974,7 @@
 				1C7E7D831A41A0990026F0BA /* SFILoginViewController.m in Sources */,
 				1C7E7DC71A41A0990026F0BA /* SFIMainViewController.m in Sources */,
 				CEF6F4DE1C92CAD600C68975 /* CustomCellTableViewCell.m in Sources */,
-				F4B875431D5382D500DCF76F /* MeshList.m in Sources */,
+				F4B875431D5382D500DCF76F /* AlmondStatus.m in Sources */,
 				1C7E7DA71A41A0990026F0BA /* SFIPasswordChangeViewController.m in Sources */,
 				CEF6F4F81C92CAD600C68975 /* PreDelayRuleButton.m in Sources */,
 				1C7E7DCD1A41A0990026F0BA /* SFISlider.m in Sources */,

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @protocol MeshViewDelegate
 - (void)dismissControllerDelegate;
-- (void)showHudWithTimeoutMsgDelegate:(NSString*)hudMsg;
+- (void)showHudWithTimeoutMsgDelegate:(NSString*)hudMsg time:(NSTimeInterval)sec;
 - (void)hideHUDDelegate;
 @end
 

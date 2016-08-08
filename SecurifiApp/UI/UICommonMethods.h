@@ -10,4 +10,6 @@
 
 @interface UICommonMethods : NSObject
 +(CGRect)adjustDeviceNameWidth:(NSString*)name fontSize:(int)fontSize maxLength:(int)maxLength;
+
++(void)setupUpdateAvailableScreen:(UIView *)bgView selfView:(UIView*)view viewWidth:(CGFloat)viewWidth;
 @end
