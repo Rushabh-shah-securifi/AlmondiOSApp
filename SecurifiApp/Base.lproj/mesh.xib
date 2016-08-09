@@ -16,6 +16,10 @@
             <string>AvenirLTStd-Roman</string>
             <string>AvenirLTStd-Roman</string>
             <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -23,9 +27,16 @@
             <connections>
                 <outlet property="addingAlmondView" destination="35J-KO-Gru" id="ReH-L1-ddl"/>
                 <outlet property="almondsView" destination="Nsc-ph-bro" id="HPb-pk-vDK"/>
+                <outlet property="backBtn" destination="3dd-dx-lE1" id="FRN-bH-oSx"/>
+                <outlet property="helpDescr" destination="4pY-FP-Ray" id="XeN-SH-ovN"/>
+                <outlet property="helpImg" destination="wvO-zO-5QN" id="x6c-ux-dXT"/>
+                <outlet property="helpTitle" destination="mS0-3a-rBm" id="gcJ-1i-C9v"/>
+                <outlet property="infoScreen" destination="RpA-no-pW1" id="lbc-Jo-o91"/>
                 <outlet property="interfaceView" destination="iN0-l3-epB" id="WoQ-Uj-ba3"/>
                 <outlet property="nameField" destination="EGC-Tm-eSc" id="oje-gz-r1r"/>
                 <outlet property="namingView" destination="k8i-dQ-bjY" id="2bK-aO-EGg"/>
+                <outlet property="nextBtn" destination="Eco-3z-gxc" id="hyV-Ex-Qdw"/>
+                <outlet property="pageControl" destination="PXT-d8-4ft" id="85X-eN-X72"/>
                 <outlet property="setupCompleteView" destination="ULR-I4-gxI" id="Evi-zF-B3f"/>
                 <outlet property="wiredBtn" destination="JYV-nP-yd6" id="JQi-cI-6S2"/>
                 <outlet property="wirelessBtn" destination="4Qb-ia-mOc" id="IRL-u4-aCY"/>
@@ -633,8 +644,143 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="507" y="757"/>
         </view>
+        <view contentMode="scaleToFill" id="RpA-no-pW1">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v3c-Ju-L19" userLabel="lineView">
+                    <rect key="frame" x="0.0" y="45" width="320" height="1"/>
+                    <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="c7v-iw-6D2"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4pY-FP-Ray">
+                    <rect key="frame" x="10" y="112" width="300" height="100"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="100" id="aYB-Ub-HZf"/>
+                        <constraint firstAttribute="width" constant="300" id="zEQ-TK-R2f"/>
+                    </constraints>
+                    <string key="text">The Almond WiFi system is higyly flexible. The primary Almond has to be directly connected to your ISP modem. The additional Almonds can be connected via Wired interface or Wireless.</string>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
+                    <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="back_icon" translatesAutoresizingMaskIntoConstraints="NO" id="WCQ-ZD-g1A">
+                    <rect key="frame" x="10" y="10" width="25" height="25"/>
+                    <color key="tintColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="imageRenderingMode">
+                            <integer key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UDh-yr-l6o">
+                    <rect key="frame" x="0.0" y="0.0" width="66" height="46"/>
+                    <connections>
+                        <action selector="onBackBtnTap:" destination="-1" eventType="touchUpInside" id="bfa-gI-rnD"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Almond" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ptC-MH-67D">
+                    <rect key="frame" x="107" y="14" width="107" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="F5h-vm-qfH"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="18"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="itB-95-Bbv" userLabel="toplineview">
+                    <rect key="frame" x="0.0" y="530" width="320" height="1"/>
+                    <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="mwH-P3-KX0"/>
+                    </constraints>
+                </view>
+                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="PXT-d8-4ft">
+                    <rect key="frame" x="0.0" y="531" width="320" height="37"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="37" id="gZC-x3-Sw7"/>
+                    </constraints>
+                    <color key="pageIndicatorTintColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="currentPageIndicatorTintColor" red="0.29803921568627451" green="0.68627450980392157" blue="0.31372549019607843" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <action selector="onPageControlValueChange:" destination="-1" eventType="valueChanged" id="C2v-0k-1zg"/>
+                    </connections>
+                </pageControl>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Almond-no_cloud" translatesAutoresizingMaskIntoConstraints="NO" id="wvO-zO-5QN">
+                    <rect key="frame" x="8" y="230" width="304" height="261"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="261" id="Ii6-fK-TrW"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wired or Wirelessly?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mS0-3a-rBm">
+                    <rect key="frame" x="50" y="70" width="220" height="33"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="33" id="re7-ND-WHW"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="24"/>
+                    <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3dd-dx-lE1">
+                    <rect key="frame" x="8" y="539" width="40" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="czK-z8-t66"/>
+                        <constraint firstAttribute="height" constant="21" id="vcn-Yx-yDO"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
+                    <state key="normal" title="Back">
+                        <color key="titleColor" red="0.29803921568627451" green="0.68627450980392157" blue="0.31372549019607843" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eco-3z-gxc">
+                    <rect key="frame" x="272" y="539" width="40" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="JzT-Rt-GpJ"/>
+                        <constraint firstAttribute="height" constant="21" id="k5P-cD-tUx"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
+                    <state key="normal" title="Next">
+                        <color key="titleColor" red="0.29803921568627451" green="0.68627450980392157" blue="0.31372549019607843" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onNextBtnTap:" destination="-1" eventType="touchUpInside" id="JG6-hL-rrW"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="v3c-Ju-L19" secondAttribute="trailing" id="63R-NY-ad6"/>
+                <constraint firstItem="PXT-d8-4ft" firstAttribute="leading" secondItem="RpA-no-pW1" secondAttribute="leading" id="6X3-j1-h0g"/>
+                <constraint firstItem="v3c-Ju-L19" firstAttribute="leading" secondItem="RpA-no-pW1" secondAttribute="leading" id="8cE-Cy-x1T"/>
+                <constraint firstItem="wvO-zO-5QN" firstAttribute="top" secondItem="4pY-FP-Ray" secondAttribute="bottom" constant="18" id="MBv-YN-AO7"/>
+                <constraint firstItem="4pY-FP-Ray" firstAttribute="centerX" secondItem="RpA-no-pW1" secondAttribute="centerX" id="Qty-yv-9mr"/>
+                <constraint firstItem="PXT-d8-4ft" firstAttribute="top" secondItem="itB-95-Bbv" secondAttribute="bottom" id="STs-j4-IT5"/>
+                <constraint firstItem="v3c-Ju-L19" firstAttribute="top" secondItem="ptC-MH-67D" secondAttribute="bottom" constant="10" id="SXT-2z-chl"/>
+                <constraint firstItem="mS0-3a-rBm" firstAttribute="centerX" secondItem="RpA-no-pW1" secondAttribute="centerX" id="UI3-G7-9lj"/>
+                <constraint firstItem="3dd-dx-lE1" firstAttribute="top" secondItem="itB-95-Bbv" secondAttribute="bottom" constant="8" id="Vgp-V1-r2U"/>
+                <constraint firstAttribute="bottom" secondItem="PXT-d8-4ft" secondAttribute="bottom" id="Z84-O3-OAG"/>
+                <constraint firstItem="3dd-dx-lE1" firstAttribute="leading" secondItem="RpA-no-pW1" secondAttribute="leading" constant="8" id="coL-IR-ywY"/>
+                <constraint firstAttribute="trailing" secondItem="wvO-zO-5QN" secondAttribute="trailing" constant="8" id="dTN-7o-nGZ"/>
+                <constraint firstItem="ptC-MH-67D" firstAttribute="centerX" secondItem="RpA-no-pW1" secondAttribute="centerX" id="dWp-Jz-axG"/>
+                <constraint firstAttribute="trailing" secondItem="Eco-3z-gxc" secondAttribute="trailing" constant="8" id="lAv-JE-thQ"/>
+                <constraint firstItem="wvO-zO-5QN" firstAttribute="leading" secondItem="RpA-no-pW1" secondAttribute="leading" constant="8" id="ntU-tI-66S"/>
+                <constraint firstItem="itB-95-Bbv" firstAttribute="leading" secondItem="RpA-no-pW1" secondAttribute="leading" id="nug-ID-yY2"/>
+                <constraint firstItem="ptC-MH-67D" firstAttribute="top" secondItem="RpA-no-pW1" secondAttribute="top" constant="14" id="oeJ-c4-92Z"/>
+                <constraint firstAttribute="trailing" secondItem="PXT-d8-4ft" secondAttribute="trailing" id="p7q-KR-s9l"/>
+                <constraint firstAttribute="trailing" secondItem="itB-95-Bbv" secondAttribute="trailing" id="pwI-u6-Byi"/>
+                <constraint firstItem="mS0-3a-rBm" firstAttribute="top" secondItem="v3c-Ju-L19" secondAttribute="bottom" constant="24" id="tcs-Qg-gCg"/>
+                <constraint firstItem="Eco-3z-gxc" firstAttribute="top" secondItem="itB-95-Bbv" secondAttribute="bottom" constant="8" id="yix-ta-it7"/>
+                <constraint firstItem="4pY-FP-Ray" firstAttribute="top" secondItem="v3c-Ju-L19" secondAttribute="bottom" constant="66" id="zMH-9R-Bjp"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="116" y="1370"/>
+        </view>
     </objects>
     <resources>
+        <image name="Almond-no_cloud" width="640" height="960"/>
         <image name="LED_blinking" width="600" height="500"/>
         <image name="almond_icon" width="120" height="120"/>
         <image name="back_icon" width="64" height="64"/>

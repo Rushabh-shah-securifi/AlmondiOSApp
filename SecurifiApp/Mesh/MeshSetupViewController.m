@@ -57,6 +57,18 @@
     }
 }
 
+- (void)setupMeshView{
+    self.meshView = [[MeshView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height-20)];
+    NSLog(@"nav viewheight: %f", CGRectGetHeight(self.navigationController.view.frame));
+    self.meshView.delegate = self;
+    
+    [self.meshView initializeFirstScreen:[CommonMethods getMeshDict:@"Interface"]];
+    [self.meshView addInfoScreen:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height-20)];
+    
+    [self.navigationController.view addSubview:self.meshView];
+    self.meshView.backgroundColor = [UIColor grayColor];
+    //    [self.tabBarController.tabBar setHidden:YES];
+}
 -(void)toggleImages:(BOOL)onlineHidden weakImg:(BOOL)weakHidden text:(NSString*)text{
     self.meshOnlineImg.hidden = onlineHidden;
     self.meshWeakImg.hidden = weakHidden;
@@ -82,21 +94,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark meshsetup
 
-- (void)setupMeshView{
-    self.meshView = [[MeshView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height-20)];
-    NSLog(@"nav viewheight: %f", CGRectGetHeight(self.navigationController.view.frame));
-    self.meshView.delegate = self;
-    
-    
-    [self.meshView addInterfaceView:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height-20)];
-    [self.navigationController.view addSubview:self.meshView];
-    self.meshView.backgroundColor = [UIColor grayColor];
-    //    [self.tabBarController.tabBar setHidden:YES];
-}
 
-#pragma mark mesh status
+#pragma mark table delegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 //    return self.isMaster? 3: 1;
@@ -127,8 +127,6 @@
     return view;
 }
 
-
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //NSLog(@"self.almond mac: %@", self.almondMac);
     NSString *CELL_IDENTIFIER = @"statuscell";
@@ -143,6 +141,7 @@
     return cell;
 }
 
+
 #pragma mark meshview delegates
 -(void)dismissControllerDelegate{
     [self.navigationController popViewControllerAnimated:YES];
@@ -152,7 +151,7 @@
     NSLog(@"showHudWithTimeoutMsg");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:hudMsg];
-        [self.HUD hide:YES afterDelay:5];
+        [self.HUD hide:YES afterDelay:sec];
     });
 }
 

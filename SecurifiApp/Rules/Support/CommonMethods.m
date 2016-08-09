@@ -278,6 +278,10 @@
     return [CommonMethods getDictForName:itemName array:guide[ITEMS]];
 }
 
++ (NSDictionary *)getMeshDict:(NSString *)itemName{
+    NSArray *meshItems = [[CommonMethods parseJson:@"helpCenterJson"] valueForKey:@"Mesh"];
+    return [self getDictForName:itemName array:meshItems];
+}
 + (NSDictionary *)getDictForName:(NSString*)name array:(NSArray*)array{
     for(NSDictionary *dict in array){
         if([dict[@"name"] isEqualToString:name]){

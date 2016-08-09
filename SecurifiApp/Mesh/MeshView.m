@@ -10,6 +10,7 @@
 #import "MeshPayload.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import <QuartzCore/QuartzCore.h>
+#import "CommonMethods.h"
 
 @interface MeshView()
 @property(nonatomic) NSTimer *timer;
@@ -24,6 +25,19 @@
 @property (weak, nonatomic) IBOutlet UIButton *wiredBtn;
 @property (weak, nonatomic) IBOutlet UIButton *wirelessBtn;
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
+
+/* Mesh-help Start*/
+@property NSDictionary *item;
+
+@property (strong, nonatomic) IBOutlet UIView *infoScreen;
+@property (weak, nonatomic) IBOutlet UILabel *helpTitle;
+@property (weak, nonatomic) IBOutlet UILabel *helpDescr;
+@property (weak, nonatomic) IBOutlet UIImageView *helpImg;
+@property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
+@property (weak, nonatomic) IBOutlet UIButton *backBtn;
+@property (weak, nonatomic) IBOutlet UIButton *nextBtn;
+/* Mesh-help End*/
+
 @property (nonatomic) UIView *currentView;
 @property (nonatomic) NSArray *almondTitles;
 @property (nonatomic) NSString *almondTitle;
@@ -59,8 +73,7 @@
 }
 
 - (void)addInterfaceView:(CGRect)frame{
-    self.interfaceView.frame = frame;
-    [self addSubview:self.interfaceView];
+    [self addView:self.interfaceView frame:frame];
 }
 
 //interface view
@@ -85,6 +98,7 @@
 
 //add almond view
 - (IBAction)onCannotFindAlmondTap:(id)sender {
+    
 }
 
 #pragma mark UIPickerViewDelegate Methods
@@ -161,14 +175,12 @@
 - (IBAction)onNoLEDBlinking:(UIButton *)noButton {
     _mii = arc4random() % 10000;
     [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:5];
-    self.currentView = [noButton superview];
     [self requestAddSlave:NO];
 }
 
 - (IBAction)onYesLEDBlinking:(UIButton *)yesButton {
     _mii = arc4random() % 10000;
     [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:5];
-    self.currentView = [yesButton superview];
     [self requestAddSlave:YES];
 }
 
@@ -179,12 +191,11 @@
 - (IBAction)onNextButtonTap:(UIButton*)nextButton {
     _mii = arc4random() % 10000;
     [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:120];
-    [self sendCommand:[nextButton superview]];
+    [self sendCommand:self.currentView];
 }
 
 - (void)sendCommand:(UIView*)view{
     //tags to views are assigned in xib files
-    self.currentView = view;
     int tag = (int)view.tag;
     switch (tag) {
         case 1:{
@@ -219,8 +230,16 @@
     [self.currentView removeFromSuperview];
     
     switch (tag) {
+        case 0:{//for info screen
+            if([self.item[S_NAME] isEqualToString:@"Interface"])
+                [self addView:self.interfaceView frame:frame];
+            else if([self.item[S_NAME] isEqualToString:@"Wiring"])
+                [self addView:self.almondsView frame:frame];
+            break;
+        }
         case 1:{
-            [self addView:self.almondsView frame:frame];
+            [self initializeFirstScreen:[CommonMethods getMeshDict:@"Wiring"]];
+            [self addView:self.infoScreen frame:frame];
             break;
         }
         case 2:{
@@ -243,6 +262,13 @@
             break;
     }
 }
+
+-(void)manageInfo{
+    //for infoInterface next is interface view
+    
+    //for info wired next is almonds view
+}
+
 - (IBAction)onBackBtnTap:(UIButton *)backBtn {
     NSLog(@"on back button tap");
     [self loadPrevView:[backBtn superview]];
@@ -251,15 +277,26 @@
 -(void)loadPrevView:(UIView*)view{
     //tags to views are assigned in xib files
     int tag = (int)view.tag;
+    NSLog(@"view tag: %d", tag);
     CGRect frame = view.frame;
     [view removeFromSuperview];
     switch (tag) {
+        case 0:{
+            if([self.item[S_NAME] isEqualToString:@"Interface"])
+                [self dismissView];
+            else if([self.item[S_NAME] isEqualToString:@"Wiring"])
+                [self addView:self.interfaceView frame:frame];
+            break;
+        }
         case 1:{
-            [self dismissView];
+            [self.timer invalidate];
+            [self initializeFirstScreen:[CommonMethods getMeshDict:@"Interface"]];
+            [self addView:self.infoScreen frame:frame];
             break;
         }
         case 2:{
-            [self addView:self.interfaceView frame:frame];
+            [self initializeFirstScreen:[CommonMethods getMeshDict:@"Wiring"]];
+            [self addView:self.infoScreen frame:frame];
             break;
         }
         case 3:{
@@ -284,6 +321,7 @@
     [self.delegate dismissControllerDelegate];
 }
 -(void)addView:(UIView*)view frame:(CGRect)frame{
+    self.currentView = view;
     view.frame = frame;
     [self addSubview:view];
 }
@@ -355,11 +393,19 @@
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
     }
     NSLog(@"mesh payload: %@", payload);
-
+    NSString *commandType = payload[COMMAND_TYPE];
+    
+    //special case
+    if([commandType isEqualToString:@"MeshDynamicSlaveAdded"]){
+        [self.delegate hideHUDDelegate];
+        [self loadNextView];
+        return;
+    }
+    
     if([payload[MOBILE_INTERNAL_INDEX] intValue]!=  self.mii|| ![payload[COMMAND_MODE] isEqualToString:@"Reply"])
         return;
     BOOL isSuccessful = [payload[@"Success"] boolValue];
-    NSString *commandType = payload[COMMAND_TYPE];
+    
     if(isSuccessful){
         [self.delegate hideHUDDelegate];
         
@@ -372,6 +418,7 @@
         else if([commandType isEqualToString:@"AddWiredSlave"] || [commandType isEqualToString:@"AddWirelessSlave"]){
             
         }
+
         else if([commandType isEqualToString:@"BlinkLed"]){
             
         }
@@ -379,12 +426,61 @@
             
         }
         [self loadNextView];
-    }else{
+    }
+    else{
        //don't miss the not
         if(![commandType isEqualToString:@"CheckForAddableWiredSlave"] || ![commandType isEqualToString:@"CheckForAddableWirelessSlave"]){
             [self.delegate hideHUDDelegate];
         }
     }
-    
 }
+
+/* Meshhelp -Start */
+#pragma mark meshhelp screen
+-(void)addInfoScreen:(CGRect)frame{
+    self.infoScreen.tag = 0;
+    [self addView:self.infoScreen frame:frame];
+}
+
+-(void)initializeFirstScreen:(NSDictionary *)item{
+    self.item = item;
+    NSArray *screens = item[SCREENS];
+    NSDictionary *screen = screens.firstObject;
+    self.helpTitle.text = NSLocalizedString(screen[TITLE], @"");
+    self.helpDescr.text = NSLocalizedString(screen[DESCRIPTION], @"");
+    self.helpImg.image = [UIImage imageNamed:screen[IMAGE]];
+    self.pageControl.numberOfPages = [item[SCREENCOUNT] intValue];
+    [self.pageControl setCurrentPage:0];
+    [self.backBtn setHidden:YES];
+    [self.backBtn setEnabled:NO];
+    [self.nextBtn setEnabled:NO];
+}
+
+- (IBAction)onPageControlValueChange:(UIPageControl* )pageControl {
+    int currntPg = (int)pageControl.currentPage;
+    NSArray *screens = self.item[SCREENS];
+    NSDictionary *screen = [screens objectAtIndex:currntPg];
+    
+    self.helpTitle.text = NSLocalizedString(screen[TITLE], @"");
+    self.helpDescr.text = NSLocalizedString(screen[DESCRIPTION], @"");
+    self.helpImg.image = [UIImage imageNamed:screen[IMAGE]];
+    
+    if(pageControl.currentPage == 0)
+        self.backBtn.hidden = YES;
+    else
+        self.backBtn.hidden = NO;
+    
+    if(pageControl.currentPage == screens.count-1){
+        [self.nextBtn setEnabled:YES];
+    }else{
+        [self.nextBtn setEnabled:NO];
+    }
+}
+
+//next of page control
+- (IBAction)onNextBtnTap:(id)sender {
+    [self loadNextView];
+}
+
+/* Meshhelp -End */
 @end

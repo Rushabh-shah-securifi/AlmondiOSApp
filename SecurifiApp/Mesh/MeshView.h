@@ -13,8 +13,13 @@
 - (void)hideHUDDelegate;
 @end
 
+
 @interface MeshView : UIView
 @property (nonatomic) id<MeshViewDelegate> delegate;
-
 - (void)addInterfaceView:(CGRect)frame;
+
+/* meshhekp - start */
+- (void)addInfoScreen:(CGRect)frame;
+- (void)initializeFirstScreen:(NSDictionary *)item;
+/* meshhelp - end */
 @end

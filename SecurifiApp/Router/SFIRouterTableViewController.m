@@ -302,7 +302,7 @@ int mii;
 
 -(int)getSettingsRowHeight{
     NSArray *msgs = [self getWirelessSettingsSummary];
-    int lines = [SFICardView getLineCount:msgs];
+    int lines = (int)[SFICardView getLineCount:msgs];
     NSLog(@"lines: %d", lines);
     return settingsHeight + (lines * 12);
 }

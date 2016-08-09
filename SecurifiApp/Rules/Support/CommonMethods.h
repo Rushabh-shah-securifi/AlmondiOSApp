@@ -46,6 +46,7 @@
 
 + (NSDictionary *)getDict:(NSString*)helpItem itemName:(NSString*)itemName;
 
++ (NSDictionary *)getMeshDict:(NSString *)itemName;
 #pragma mark site monitoring methods
 + (NSString *)stringFromWeekday:(NSInteger)weekday;
 

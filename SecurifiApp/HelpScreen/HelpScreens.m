@@ -74,7 +74,7 @@
 
 -(void)initailizeFirstScreen{
     NSArray *screens = self.startScreen[SCREENS];
-    NSDictionary *screen = [screens objectAtIndex:0];
+    NSDictionary *screen = screens.firstObject;
     
     self.hlpTitle.text = NSLocalizedString(self.startScreen[@"name"], @"");
     self.imgView.image = [UIImage imageNamed:screen[IMAGE]];
@@ -106,7 +106,7 @@
 
 - (IBAction)onPageControlValueChange:(id)sender {
     UIPageControl *pageControl = sender;
-    int currntPg = pageControl.currentPage;
+    int currntPg = (int)pageControl.currentPage;
     NSArray *screens = self.startScreen[SCREENS];
     NSDictionary *screen = [screens objectAtIndex:currntPg];
     
