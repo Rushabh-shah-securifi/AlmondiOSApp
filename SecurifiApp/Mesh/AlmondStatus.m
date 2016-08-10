@@ -12,21 +12,17 @@
 @implementation AlmondStatus
 
 +(AlmondStatus *)getMasterAlmondStatus:(SFIRouterSummary*)routerSummary{
-    AlmondStatus *masterStatus = [AlmondStatus new];
     NSString *name = [SecurifiToolkit sharedInstance].currentAlmond.almondplusName;
     NSDictionary *ssid = [self getSSIDs:routerSummary];
     
-    [self getStatus:name location:name connetedVia:@"Directly" interface:@"Wired" signalStrength:@"" ssid1:ssid[@"2G"] ssid2:ssid[@"5G"] internetStat:YES isMaster:YES active:YES];
-    return masterStatus;
+    return [self getStatus:name location:name connetedVia:@"Directly" interface:@"Wired" signalStrength:@"" ssid1:ssid[@"2G"] ssid2:ssid[@"5G"] internetStat:YES isMaster:YES active:YES];
 }
 
 +(AlmondStatus *)getSlaveStatus:(NSDictionary *)payload routerSummary:(SFIRouterSummary*)routerSummary{
-    AlmondStatus *stat = [AlmondStatus new];
     NSString *masterName = [SecurifiToolkit sharedInstance].currentAlmond.almondplusName;
     NSDictionary *ssid = [self getSSIDs:routerSummary];
     
-    [self getStatus:payload[NAME] location:payload[NAME] connetedVia:masterName interface:payload[INTERFACE] signalStrength:payload[SIGNAL_STRENGTH] ssid1:ssid[@"2G"] ssid2:ssid[@"5G"] internetStat:[payload[@"InternetStatus"] boolValue] isMaster:NO active:[payload[ACTIVE] boolValue]];
-    return stat;
+    return [self getStatus:payload[NAME] location:payload[NAME] connetedVia:masterName interface:payload[INTERFACE] signalStrength:payload[SIGNAL_STRENGTH] ssid1:ssid[@"2G"] ssid2:ssid[@"5G"] internetStat:[payload[@"InternetStatus"] boolValue] isMaster:NO active:[payload[ACTIVE] boolValue]];
 }
 
 + (AlmondStatus *)getStatus:(NSString*)name location:(NSString*)location connetedVia:(NSString*)connetedVia interface:(NSString*)interface signalStrength:(NSString*)signalStrength ssid1:(NSString*)ssid1 ssid2:(NSString*)ssid2 internetStat:(BOOL)internetStat isMaster:(BOOL)isMaster active:(BOOL)isactive{
