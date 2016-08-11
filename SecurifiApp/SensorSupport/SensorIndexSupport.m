@@ -1134,10 +1134,10 @@
                 s2.maxValue = 65535;
                 s2.valueFormatter.action = ValueFormatterAction_formatString;
                 s2.valueFormatter.notificationPrefix = NSLocalizedString(@" is turned on for ", @" is turned on for ");
-               // s2.valueFormatter.suffix = NSLocalizedString(@" seconds", @" seconds");
+                // s2.valueFormatter.suffix = NSLocalizedString(@" seconds", @" seconds");
                 s2.valueFormatter.suffix = @"sec";
                 
-
+                
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchData = @"65535";
                 s3.displayText=@"RINGING";
@@ -1195,6 +1195,36 @@
                 return @[s1, s2];
             }
             
+            if (type == SFIDevicePropertyType_RMS_CURRENT) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = DT50_SECURIFI_SMART_SWITCH_TRUE;
+                s1.valueFormatter.notificationPrefix = @" RMS CURRENT ";
+                s1.valueFormatter.suffix = @"A";
+                
+                return @[s1];
+            }
+            
+            if (type == SFIDevicePropertyType_RMS_VOLTAGE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = DT50_SECURIFI_SMART_SWITCH_TRUE;
+                s1.valueFormatter.notificationPrefix = @" RMS VOLTAGE ";
+                s1.valueFormatter.suffix = @"V";
+                
+                return @[s1];
+            }
+            
+            if (type == SFIDevicePropertyType_ACTIVE_POWER) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = DT50_SECURIFI_SMART_SWITCH_TRUE;
+                s1.valueFormatter.notificationPrefix = @" ACTIVE POWER ";
+                s1.valueFormatter.suffix = @"W";
+                
+                return @[s1];
+            }
+            
             // Add a catch-all:
             // For now, because the cloud and Almond router are not sophisticated enough, we have to suppress
             // all notifications except for index 1
@@ -1220,6 +1250,36 @@
                 s2.notificationText = NSLocalizedString(@" is turned On.", @" is turned On.");
                 
                 return @[s1, s2];
+            }
+            
+            if (type == SFIDevicePropertyType_RMS_CURRENT) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = DT50_SECURIFI_SMART_SWITCH_TRUE;
+                s1.valueFormatter.notificationPrefix = @" RMS CURRENT ";
+                s1.valueFormatter.suffix = @"A";
+                
+                return @[s1];
+            }
+            
+            if (type == SFIDevicePropertyType_RMS_VOLTAGE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = DT50_SECURIFI_SMART_SWITCH_TRUE;
+                s1.valueFormatter.notificationPrefix = @" RMS VOLTAGE ";
+                s1.valueFormatter.suffix = @"V";
+                
+                return @[s1];
+            }
+            
+            if (type == SFIDevicePropertyType_ACTIVE_POWER) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = DT50_SECURIFI_SMART_SWITCH_TRUE;
+                s1.valueFormatter.notificationPrefix = @" ACTIVE POWER ";
+                s1.valueFormatter.suffix = @"W";
+                
+                return @[s1];
             }
             
             // Add a catch-all:
@@ -1312,17 +1372,17 @@
              */
             
             if (type == SFIDevicePropertyType_ILLUMINANCE) {
-//                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-//                s1.matchData = @"0 lux";
-//                s1.matchType = MatchType_equals;
-//                s1.layoutType=@"dimButton";
-//                s1.iconName = @"energy";
-//                s1.displayText=@"LUX";
-//                s1.minValue = 0;
-//                s1.maxValue = 3000;
-//                s1.valueFormatter.action = ValueFormatterAction_formatString;
-//                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s light reading changed to ", @"'s light reading changed to ");
-//                s1.valueFormatter.suffix = @"%";
+                //                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                //                s1.matchData = @"0 lux";
+                //                s1.matchType = MatchType_equals;
+                //                s1.layoutType=@"dimButton";
+                //                s1.iconName = @"energy";
+                //                s1.displayText=@"LUX";
+                //                s1.minValue = 0;
+                //                s1.maxValue = 3000;
+                //                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                //                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s light reading changed to ", @"'s light reading changed to ");
+                //                s1.valueFormatter.suffix = @"%";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"0";
@@ -1989,12 +2049,12 @@
                 s1.matchData = @"false";
                 s1.displayText=@"SWITCH1\nOFF";
                 s1.iconName = @"switch_off";//md01 was @"44_switch_off";
-                s1.notificationText = NSLocalizedString(@"1 is switched Off.", @" is switched Off.");
+                s1.notificationText = @" Switch 1 is turned Off.";
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.displayText=@"SWITCH1\nON";
                 s2.iconName = @"switch_on";//md01 was @"44_switch_on";
-                s2.notificationText = NSLocalizedString(@"1 is switched On.", @" is switched On.");
+                s2.notificationText = @" Switch 1 is turned On.";
                 
                 return @[s1, s2];
             }
@@ -2003,12 +2063,13 @@
                 s1.matchData = @"false";
                 s1.displayText=@"SWITCH2\nOFF";
                 s1.iconName = @"switch_off";//md01 was @"44_switch_off";
-                s1.notificationText = NSLocalizedString(@"2 is switched Off.", @" is switched Off.");
+                s1.notificationText = @" Switch 2 is turned Off.";
+                
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.displayText=@"SWITCH2\nON";
                 s2.iconName = @"switch_on";//md01 was @"44_switch_on";
-                s2.notificationText = NSLocalizedString(@"2 is switched On.", @" is switched On.");
+                s2.notificationText = @" Switch 1 is turned On.";
                 
                 return @[s1, s2];
             }
@@ -2302,17 +2363,17 @@
                 return @[s1, s2];
             }
             if (type == SFIDevicePropertyType_ILLUMINANCE) {
-//                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-//                s1.matchType = MatchType_equals;
-//                s1.matchData = @"lux";
-//                s1.layoutType=@"dimButton";
-//                s1.iconName = DT25_LIGHT_SENSOR_TRUE;
-//                s1.displayText=@"";
-//                s1.minValue = 0;
-//                s1.maxValue = 100;
-//                s1.valueFormatter.action = ValueFormatterAction_formatString;
-//                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s light reading changed to ", @"'s light reading changed to ");
-//                s1.valueFormatter.suffix = @"%";
+                //                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                //                s1.matchType = MatchType_equals;
+                //                s1.matchData = @"lux";
+                //                s1.layoutType=@"dimButton";
+                //                s1.iconName = DT25_LIGHT_SENSOR_TRUE;
+                //                s1.displayText=@"";
+                //                s1.minValue = 0;
+                //                s1.maxValue = 100;
+                //                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                //                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s light reading changed to ", @"'s light reading changed to ");
+                //                s1.valueFormatter.suffix = @"%";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"0";
@@ -2395,6 +2456,46 @@
                 
                 return @[s1, s2];
             }
+            
+            if (type == SFIDevicePropertyType_RMS_CURRENT) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = DT50_SECURIFI_SMART_SWITCH_TRUE;
+                s1.valueFormatter.notificationPrefix = @" RMS CURRENT ";
+                s1.valueFormatter.suffix = @"A";
+                
+                return @[s1];
+            }
+            
+            if (type == SFIDevicePropertyType_RMS_VOLTAGE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = DT50_SECURIFI_SMART_SWITCH_TRUE;
+                s1.valueFormatter.notificationPrefix = @" RMS VOLTAGE ";
+                s1.valueFormatter.suffix = @"V";
+                
+                return @[s1];
+            }
+            
+            if (type == SFIDevicePropertyType_ACTIVE_POWER) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = DT50_SECURIFI_SMART_SWITCH_TRUE;
+                s1.valueFormatter.notificationPrefix = @" ACTIVE POWER ";
+                s1.valueFormatter.suffix = @"W";
+                
+                return @[s1];
+            }
+            //            IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+            //            s1.matchType = MatchType_any;
+            //            s1.matchData = @"0";
+            //            s1.iconName = @"saturation_icon";
+            //            s1.displayText=@"SATURATION";
+            //            s1.layoutType = @"dimButton";
+            //            s1.valueFormatter.maxValue = 255;
+            //            s1.valueFormatter.scaledMaxValue = 100;
+            //            s1.valueFormatter.notificationPrefix = NSLocalizedString(@" saturation changed to ", @" saturation changed to ");
+            //            s1.valueFormatter.suffix = @"%";
             
             // Add a catch-all:
             // For now, because the cloud and Almond router are not sophisticated enough, we have to suppress
@@ -2658,16 +2759,16 @@
                 s1.iconName = @"swingon_icon";
                 s1.displayText=@"SWING ON";
                 s1.notificationText = @" AC SWING is set to ON";
-//                s1.valueFormatter.action = ValueFormatterAction_formatString;
-//                s1.valueFormatter.notificationPrefix = @" AC is set to ";
+                //                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                //                s1.valueFormatter.notificationPrefix = @" AC is set to ";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"1";
                 s2.iconName = @"swingoff_icon";
                 s2.displayText = @"SWING OFF";
                 s2.notificationText = @" AC SWING is set to OFF";
-//                s2.valueFormatter.action = ValueFormatterAction_formatString;
-//                s2.valueFormatter.notificationPrefix = @" AC is set to ";
+                //                s2.valueFormatter.action = ValueFormatterAction_formatString;
+                //                s2.valueFormatter.notificationPrefix = @" AC is set to ";
                 
                 return @[s1,s2];
             }
@@ -2775,7 +2876,7 @@
                 s1.displayText=@"POWER";
                 s1.minValue = 0;
                 s1.maxValue = 9999;
-                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s power reading changed to ", @"'s power reading changed to ");
+                s1.valueFormatter.notificationPrefix = @" Power ";
                 s1.valueFormatter.suffix = @"W";
                 return @[s1];
                 
@@ -2790,7 +2891,7 @@
                 s1.minValue = 0;
                 s1.maxValue = 9999;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
-                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s power reading changed to ", @"'s power reading changed to ");
+                s1.valueFormatter.notificationPrefix = @" Energy ";
                 s1.valueFormatter.suffix = @"kWh";
                 return @[s1];
                 
@@ -2805,7 +2906,7 @@
                 s1.minValue = 0;
                 s1.maxValue = 9999;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
-                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s power reading changed to ", @"'s power reading changed to ");
+                s1.valueFormatter.notificationPrefix = @" Clamp 1 Power ";
                 s1.valueFormatter.suffix = @"W";
                 return @[s1];
                 
@@ -2820,7 +2921,7 @@
                 s1.displayText=@"CLAMP1_ENERGY";
                 s1.minValue = 0;
                 s1.maxValue = 9999;
-                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s power reading changed to ", @"'s power reading changed to ");
+                s1.valueFormatter.notificationPrefix = @" Clamp 1 Energy ";
                 s1.valueFormatter.suffix = @"kWh";
                 return @[s1];
                 
@@ -2835,8 +2936,8 @@
                 s1.displayText=@"CLAMP2_POWER";
                 s1.minValue = 0;
                 s1.maxValue = 9999;
-                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s power reading changed to ", @"'s power reading changed to ");
-                s1.valueFormatter.suffix = @"Watts";
+                s1.valueFormatter.notificationPrefix = @" Clamp 2 Power ";
+                s1.valueFormatter.suffix = @"W";
                 return @[s1];
                 
             }
@@ -2850,7 +2951,7 @@
                 s1.displayText=@"CLAMP2_ENERGY";
                 s1.minValue = 0;
                 s1.maxValue = 9999;
-                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s power reading changed to ", @"'s power reading changed to ");
+                s1.valueFormatter.notificationPrefix = @" Clamp 2 Energy ";
                 s1.valueFormatter.suffix = @"kWh";
                 return @[s1];
                 
@@ -3104,7 +3205,7 @@
                 s1.iconName = @"thermostat";
                 s1.displayText = @"UNITS";
                 s1.notificationText = @" units set ˚C";
-
+                
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"F";
                 s2.iconName = @"thermostat";
@@ -3120,7 +3221,7 @@
                 s1.iconName = @"img_cool";
                 s1.displayText = @"";
                 s1.notificationText = @" can cool now";
-
+                
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"false";
                 s2.iconName = @"img_cool";
@@ -3659,7 +3760,7 @@
                 s2.notificationText = @" is Ringing.";
                 return @[s1, s2];
             }
-
+            
             if (type == SFIDevicePropertyType_TONE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_equals;
@@ -3808,6 +3909,14 @@
             s2.notificationText = NSLocalizedString(@" is reset from Tampered.", @" is reset from Tampered.");
             
             return @[s1, s2];
+        }
+            
+        case SFIDevicePropertyType_UNKNOWN:{
+            IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+            s1.matchType = MatchType_any;
+            s1.displayText=@"";
+            s1.notificationText = NSLocalizedString(@" Not Reachable", @"");
+            return @[s1];
         }
         default: {
             return [NSArray array];
@@ -4457,7 +4566,7 @@
             deviceIndex3.indexValues=[self resolve:device index:SFIDevicePropertyType_ILLUMINANCE];
             deviceIndex3.indexID=3;
             deviceIndex3.cellId = 1;
-
+            
             SFIDeviceIndex *deviceIndex4=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_TEMPERATURE];
             deviceIndex4.indexValues=[self resolve:device index:SFIDevicePropertyType_TEMPERATURE];
             deviceIndex4.indexID=4;
@@ -4541,20 +4650,20 @@
             deviceIndex2.indexValues=[self resolve:device index:SFIDevicePropertyType_AC_SETPOINT_HEATING];
             deviceIndex2.indexID=3;
             deviceIndex2.cellId = 2;
-             deviceIndex2.isEditableIndex=YES;
+            deviceIndex2.isEditableIndex=YES;
             
             
             SFIDeviceIndex *deviceIndex3=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_AC_SETPOINT_COOLING];
             deviceIndex3.indexValues=[self resolve:device index:SFIDevicePropertyType_AC_SETPOINT_COOLING];
             deviceIndex3.indexID=4;
             deviceIndex3.cellId = 2;
-             deviceIndex3.isEditableIndex=YES;
+            deviceIndex3.isEditableIndex=YES;
             
             SFIDeviceIndex *deviceIndex4=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_AC_FAN_MODE];
             deviceIndex4.indexValues=[self resolve:device index:SFIDevicePropertyType_AC_FAN_MODE];
             deviceIndex4.indexID=5;
             deviceIndex4.cellId = 4;
-             deviceIndex4.isEditableIndex=YES;
+            deviceIndex4.isEditableIndex=YES;
             
             SFIDeviceIndex *deviceIndex5 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_BATTERY];
             deviceIndex5.indexValues = [self resolve:device index:SFIDevicePropertyType_BATTERY];
@@ -4635,7 +4744,7 @@
             
             return @[deviceIndex1, deviceIndex2, deviceIndex3, deviceIndex4, deviceIndex5, deviceIndex6, deviceIndex7];
         }
-        
+            
         case SFIDeviceType_NestThermostat_57:{
             
             SFIDeviceIndex *deviceIndex1=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
@@ -4704,7 +4813,7 @@
             
             return @[deviceIndex1, deviceIndex2];
         }
-          
+            
             
         case SFIDeviceType_REBOOT_ALMOND: {
             SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_REBOOT];

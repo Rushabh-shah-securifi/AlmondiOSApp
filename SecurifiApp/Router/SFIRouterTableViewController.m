@@ -48,7 +48,7 @@ static const int networkingHeight = 100;
 //static const int clientsHeight = 90;
 static const int clientsHeight = 200;
 static const int settingsHeight = 70;
-static const int versionHeight = 100;
+static const int versionHeight = 130;
 static const int rebootHeight = 110;
 static const int logsHeight = 100;
 
@@ -289,7 +289,7 @@ int mii;
         case DEF_WIRELESS_SETTINGS_SECTION:
             return [self getSettingsRowHeight];
         case DEF_ROUTER_VERSION_SECTION:
-            return versionHeight;
+            return self.newAlmondFirmwareVersionAvailable? versionHeight: versionHeight - 20;
         case DEF_ROUTER_REBOOT_SECTION:
             return rebootHeight;
         case DEF_ROUTER_SEND_LOGS_SECTION:
@@ -341,14 +341,14 @@ int mii;
                 summaries = [self getRouterVersionSummary];
                 SFICardViewSummaryCell *cell = (SFICardViewSummaryCell *)[self createSummaryCell:tableView summaries:summaries title:title selector:nil cardColor:[UIColor securifiRouterTileYellowColor]];
                 if(self.newAlmondFirmwareVersionAvailable)
-                    [self addButton:cell buttonLabel:NSLocalizedString(@"UPDATE FIRMWARE", @"UPDATE FIRMWARE") selector:@selector(onFirmwareUpdate:)];
+                    [self addButton:cell buttonLabel:NSLocalizedString(@"router.card-buttonLabel UPDATE FIRMWARE", @"UPDATE FIRMWARE") selector:@selector(onFirmwareUpdate:) frameHeight:versionHeight];
                 return cell;
             }
                 
             case DEF_ROUTER_REBOOT_SECTION:{
                 summaries = [self getRebootSummary];
                 SFICardViewSummaryCell *cell = (SFICardViewSummaryCell *)[self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"reboot router", @"Router Reboot") selector:nil cardColor:[UIColor securifiRouterTileRedColor]];
-                [self addButton:cell buttonLabel:NSLocalizedString(@"REBOOT NOW", @"REBOOT NOW") selector:@selector(onRebootButtonPressed:)];
+                [self addButton:cell buttonLabel:NSLocalizedString(@"router.card-buttonLabel REBOOT NOW", @"REBOOT NOW") selector:@selector(onRebootButtonPressed:) frameHeight:rebootHeight];
                 return cell;
             }
                 
@@ -534,8 +534,8 @@ int mii;
 }
 
 
--(void)addButton:(SFICardViewSummaryCell*)cell buttonLabel:(NSString *)label selector:(SEL)selectorMethod{
-    UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(self.tableView.frame.size.width - 160, rebootHeight - 25, 140, 20)];
+-(void)addButton:(SFICardViewSummaryCell*)cell buttonLabel:(NSString *)label selector:(SEL)selectorMethod frameHeight:(int)frameHeight{
+    UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(self.tableView.frame.size.width - 160, frameHeight - 25, 140, 20)];
     button.enabled = YES;
     button.titleLabel.font = [UIFont standardUIButtonFont];
     

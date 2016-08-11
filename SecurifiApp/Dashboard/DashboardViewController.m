@@ -1047,9 +1047,9 @@
 
 -(void)tryRemoveBGView{
     if([self.navigationController.view.subviews containsObject:self.bgView]){
-        [self.tabBarController.tabBar setHidden:NO];
         [self.bgView removeFromSuperview];
     }
+    [self.tabBarController.tabBar setHidden:NO];
 }
 
 -(void)showAlmondUpdateAvailableScreen:(UIView*)view{
