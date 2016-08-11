@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 @property (nonatomic) NSArray *suggSearchArr;
 @property (nonatomic) NSMutableArray *recentSearch;
 @property (nonatomic) NSMutableArray *recentSearchObj;
-@property (nonatomic) NSMutableDictionary *urlToImageDict;
+
 @property (nonatomic) SearchPatten searchPatten;
 @property (nonatomic) NSMutableArray *dayArr;
 @property (nonatomic) dispatch_queue_t imageDownloadQueue;
@@ -145,10 +145,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 //}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     HistoryCell *cell;
-    if(tableView == self.tableView)
-        cell = [tableView dequeueReusableCellWithIdentifier:@"abc" forIndexPath:indexPath];
-    else
-        cell = [tableView dequeueReusableCellWithIdentifier:@"abc" forIndexPath:indexPath];
+    cell = [tableView dequeueReusableCellWithIdentifier:@"abc" forIndexPath:indexPath];
     
     if (cell == nil){
         cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"abc"];
@@ -172,36 +169,27 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(tableView == self.tableView){
         if(indexPath.section == 1){
-            self.searchController.searchBar.text = [self.recentSearch objectAtIndex:indexPath.row];
-            self.searchPatten = RecentSearch;
-            self.isManuelSearch = NO;
-            [self.searchController.searchBar becomeFirstResponder];
+             [self setSearchpattenMethod:RecentSearch];
         }
         else if(indexPath.section == 0 && indexPath.row == 0){
-            self.searchPatten = LastHourSearch;
-             self.searchController.searchBar.text = @" ";
-            self.isManuelSearch = NO;
-            [self.searchController.searchBar becomeFirstResponder];
-//            [self.searchController.searchBar resignFirstResponder];
-//            [self.view endEditing:TRUE];
+             [self setSearchpattenMethod:LastHourSearch];
         }
         else if(indexPath.section == 0 && indexPath.row == 1){
-            self.searchPatten = TodaySearch;
-             self.searchController.searchBar.text = @" ";
-            self.isManuelSearch = NO;
-            [self.searchController.searchBar becomeFirstResponder];
-//            [self.searchController.searchBar resignFirstResponder];
-//            [self.view endEditing:TRUE];
+             [self setSearchpattenMethod:TodaySearch];
         }
         else if(indexPath.section == 0 && indexPath.row == 2){
-            self.searchPatten = WeekSearch;
-             self.searchController.searchBar.text = @" ";
-            self.isManuelSearch = NO;
-            [self.searchController.searchBar becomeFirstResponder];
-//            [self.searchController.searchBar resignFirstResponder];
-//            [self.view endEditing:TRUE];
+            [self setSearchpattenMethod:WeekSearch];
         }
     }
+}
+-(void)setSearchpattenMethod:(SearchPatten)searchpatten{
+    self.searchPatten = searchpatten;
+    self.searchController.searchBar.text = @" ";
+    self.isManuelSearch = NO;
+    [self.searchController.searchBar becomeFirstResponder];
+    //            [self.searchController.searchBar resignFirstResponder];
+    //            [self.view endEditing:TRUE];
+
 }
 
 - (void)initializeSearchController {
@@ -286,24 +274,9 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
             self.searchPatten = RecentSearch;
         
         NSLog(@"searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
-    if(self.searchPatten == RecentSearch){
-        self.historyDict = [BrowsingHistoryDataBase getSearchString:@"All" andSearchSting:searchString];
-    }
-    else if (self.searchPatten == WeekDaySearch){
-        self.historyDict = [BrowsingHistoryDataBase getManualString:@"weekDay" andSearchSting:searchString];
-    }
-    else if(self.searchPatten == TodaySearch){
-        self.historyDict = [BrowsingHistoryDataBase getManualString:@"Today" andSearchSting:searchString];
-    }
-    else if(self.searchPatten == DateSearch){
-        self.historyDict = [BrowsingHistoryDataBase getManualString:@"monthDay" andSearchSting:searchString];
-    }
-    else if(self.searchPatten == LastHourSearch){
-        self.historyDict = [BrowsingHistoryDataBase getManualString:@"lastHour" andSearchSting:searchString];
-    }
-    else if(self.searchPatten == WeekSearch){
-        self.historyDict = [BrowsingHistoryDataBase getManualString:@"lastWeek" andSearchSting:searchString];
-    }
+    
+    [self getHistoryFromDB:searchString];
+    
     [self getBrowserHistoryImages:self.historyDict];
 //    [self.searchTableView reloadData];
     
@@ -355,6 +328,28 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     }
     return data;
 }
+
+-(void)getHistoryFromDB:(NSString *)searchString{
+    if(self.searchPatten == RecentSearch){
+        self.historyDict = [BrowsingHistoryDataBase getSearchString:@"All" andSearchSting:searchString];
+    }
+    else if (self.searchPatten == WeekDaySearch){
+        self.historyDict = [BrowsingHistoryDataBase getManualString:@"weekDay" andSearchSting:searchString];
+    }
+    else if(self.searchPatten == TodaySearch){
+        self.historyDict = [BrowsingHistoryDataBase getManualString:@"Today" andSearchSting:searchString];
+    }
+    else if(self.searchPatten == DateSearch){
+        self.historyDict = [BrowsingHistoryDataBase getManualString:@"monthDay" andSearchSting:searchString];
+    }
+    else if(self.searchPatten == LastHourSearch){
+        self.historyDict = [BrowsingHistoryDataBase getManualString:@"lastHour" andSearchSting:searchString];
+    }
+    else if(self.searchPatten == WeekSearch){
+        self.historyDict = [BrowsingHistoryDataBase getManualString:@"lastWeek" andSearchSting:searchString];
+    }
+}
+
 #pragma mark parser methods
 -(void)getBrowserHistoryImages:(NSDictionary *)historyDict{
     self.dayArr = [[NSMutableArray alloc]init];
@@ -370,7 +365,9 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
             uriInfo.hostName = uriDict[@"hostName"];
             uriInfo.count = [uriDict[@"count"] intValue];
             uriInfo.lastActiveTime = [NSDate getDateFromEpoch:uriDict[@"Epoc"]];
-            uriInfo.image = [self getImage:uriDict[@"hostName"]];
+            dispatch_async(self.imageDownloadQueue,^(){
+                uriInfo.image = [self getImage:uriDict[@"hostName"]];
+            });
             
             [oneDayUri addObject:uriInfo];
         }
@@ -398,10 +395,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
         if(!img){
             NSLog(@"three");
-            dispatch_async(self.imageDownloadQueue, ^{
                 iconUrl = [NSString stringWithFormat:@"https://%@/favicon.ico", hostName];
                 img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
-            });
             
         }
         if(!img){

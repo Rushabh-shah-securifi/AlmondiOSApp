@@ -31,7 +31,7 @@
 
 - (void)viewDidLoad {
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
-    [BrowsingHistoryDataBase insertRecordFromFile:@"responseMain"];
+//    [BrowsingHistoryDataBase insertRecordFromFile:@"responseMain"];
     [self getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistory]];
     [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
     self.urlToImageDict = [NSMutableDictionary new];
@@ -98,12 +98,16 @@
         NSArray *alldayArr = dict1[dates];
         NSLog(@"\n alldayArr alldayDict %@",alldayArr);
         NSMutableArray *oneDayUri = [[NSMutableArray alloc]init];
-        for (NSDictionary *uriDict in alldayArr) {
+        for (NSMutableDictionary *uriDict in alldayArr) {
+            
             URIData *uriInfo = [URIData new];
             uriInfo.hostName = uriDict[@"hostName"];
             uriInfo.count = [uriDict[@"count"] intValue];
+            
             uriInfo.lastActiveTime = [NSDate getDateFromEpoch:uriDict[@"Epoc"]];
             dispatch_async(self.imageDownloadQueue,^(){
+//            [uriDict setObject:@"sddddd" forKey:@"image"];
+//            uriDict[@"image"] = [self getImage:uriDict[@"hostName"]];
             uriInfo.image = [self getImage:uriDict[@"hostName"]];
             });
             
@@ -133,10 +137,8 @@
         img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
         if(!img){
             NSLog(@"three");
-            dispatch_async(self.imageDownloadQueue, ^{
                 iconUrl = [NSString stringWithFormat:@"https://%@/favicon.ico", hostName];
                 img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
-            });
             
         }
         if(!img){
@@ -234,10 +236,12 @@
     });
 }
 - (void)onSearchButton{
-//    NSLog(@" dict search = %@ ",[BrowsingHistoryDataBase getManualString:@"lastHour" andSearchSting:@"Tuesday"]);
+  NSLog(@" dict count = = %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount]);
 //
+//    [BrowsingHistoryDataBase GetHistoryDatabaseCount];
     SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    ctrl.urlToImageDict = self.urlToImageDict;
     [self presentViewController:nav_ctrl animated:YES completion:nil];
 }
 - (void)onBackButton{
