@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="AvenirLTStd-Roman.otf">
@@ -709,10 +710,10 @@
                         <action selector="onPageControlValueChange:" destination="-1" eventType="valueChanged" id="C2v-0k-1zg"/>
                     </connections>
                 </pageControl>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Almond-no_cloud" translatesAutoresizingMaskIntoConstraints="NO" id="wvO-zO-5QN">
-                    <rect key="frame" x="8" y="230" width="304" height="261"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="h_wireless" translatesAutoresizingMaskIntoConstraints="NO" id="wvO-zO-5QN">
+                    <rect key="frame" x="0.0" y="230" width="320" height="265"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="261" id="Ii6-fK-TrW"/>
+                        <constraint firstAttribute="width" secondItem="wvO-zO-5QN" secondAttribute="height" multiplier="64:53" id="cCN-W7-xXI"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wired or Wirelessly?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mS0-3a-rBm">
@@ -755,7 +756,8 @@
                 <constraint firstAttribute="trailing" secondItem="v3c-Ju-L19" secondAttribute="trailing" id="63R-NY-ad6"/>
                 <constraint firstItem="PXT-d8-4ft" firstAttribute="leading" secondItem="RpA-no-pW1" secondAttribute="leading" id="6X3-j1-h0g"/>
                 <constraint firstItem="v3c-Ju-L19" firstAttribute="leading" secondItem="RpA-no-pW1" secondAttribute="leading" id="8cE-Cy-x1T"/>
-                <constraint firstItem="wvO-zO-5QN" firstAttribute="top" secondItem="4pY-FP-Ray" secondAttribute="bottom" constant="18" id="MBv-YN-AO7"/>
+                <constraint firstItem="wvO-zO-5QN" firstAttribute="top" secondItem="4pY-FP-Ray" secondAttribute="bottom" constant="18" id="Apn-OU-uaC"/>
+                <constraint firstAttribute="trailing" secondItem="wvO-zO-5QN" secondAttribute="trailing" id="Bpk-9F-8X6"/>
                 <constraint firstItem="4pY-FP-Ray" firstAttribute="centerX" secondItem="RpA-no-pW1" secondAttribute="centerX" id="Qty-yv-9mr"/>
                 <constraint firstItem="PXT-d8-4ft" firstAttribute="top" secondItem="itB-95-Bbv" secondAttribute="bottom" id="STs-j4-IT5"/>
                 <constraint firstItem="v3c-Ju-L19" firstAttribute="top" secondItem="ptC-MH-67D" secondAttribute="bottom" constant="10" id="SXT-2z-chl"/>
@@ -763,14 +765,13 @@
                 <constraint firstItem="3dd-dx-lE1" firstAttribute="top" secondItem="itB-95-Bbv" secondAttribute="bottom" constant="8" id="Vgp-V1-r2U"/>
                 <constraint firstAttribute="bottom" secondItem="PXT-d8-4ft" secondAttribute="bottom" id="Z84-O3-OAG"/>
                 <constraint firstItem="3dd-dx-lE1" firstAttribute="leading" secondItem="RpA-no-pW1" secondAttribute="leading" constant="8" id="coL-IR-ywY"/>
-                <constraint firstAttribute="trailing" secondItem="wvO-zO-5QN" secondAttribute="trailing" constant="8" id="dTN-7o-nGZ"/>
                 <constraint firstItem="ptC-MH-67D" firstAttribute="centerX" secondItem="RpA-no-pW1" secondAttribute="centerX" id="dWp-Jz-axG"/>
                 <constraint firstAttribute="trailing" secondItem="Eco-3z-gxc" secondAttribute="trailing" constant="8" id="lAv-JE-thQ"/>
-                <constraint firstItem="wvO-zO-5QN" firstAttribute="leading" secondItem="RpA-no-pW1" secondAttribute="leading" constant="8" id="ntU-tI-66S"/>
                 <constraint firstItem="itB-95-Bbv" firstAttribute="leading" secondItem="RpA-no-pW1" secondAttribute="leading" id="nug-ID-yY2"/>
                 <constraint firstItem="ptC-MH-67D" firstAttribute="top" secondItem="RpA-no-pW1" secondAttribute="top" constant="14" id="oeJ-c4-92Z"/>
                 <constraint firstAttribute="trailing" secondItem="PXT-d8-4ft" secondAttribute="trailing" id="p7q-KR-s9l"/>
                 <constraint firstAttribute="trailing" secondItem="itB-95-Bbv" secondAttribute="trailing" id="pwI-u6-Byi"/>
+                <constraint firstItem="wvO-zO-5QN" firstAttribute="leading" secondItem="RpA-no-pW1" secondAttribute="leading" id="s7X-kd-9cc"/>
                 <constraint firstItem="mS0-3a-rBm" firstAttribute="top" secondItem="v3c-Ju-L19" secondAttribute="bottom" constant="24" id="tcs-Qg-gCg"/>
                 <constraint firstItem="Eco-3z-gxc" firstAttribute="top" secondItem="itB-95-Bbv" secondAttribute="bottom" constant="8" id="yix-ta-it7"/>
                 <constraint firstItem="4pY-FP-Ray" firstAttribute="top" secondItem="v3c-Ju-L19" secondAttribute="bottom" constant="66" id="zMH-9R-Bjp"/>
@@ -780,10 +781,10 @@
         </view>
     </objects>
     <resources>
-        <image name="Almond-no_cloud" width="640" height="960"/>
         <image name="LED_blinking" width="600" height="500"/>
         <image name="almond_icon" width="120" height="120"/>
         <image name="back_icon" width="64" height="64"/>
+        <image name="h_wireless" width="750" height="620"/>
         <image name="wifi_icon" width="110" height="110"/>
         <image name="wired_active" width="256" height="256"/>
         <image name="wireless_icon" width="256" height="256"/>

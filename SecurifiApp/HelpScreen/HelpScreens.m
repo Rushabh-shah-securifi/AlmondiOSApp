@@ -9,6 +9,7 @@
 #import "HelpScreens.h"
 #import "SFIColors.h"
 #import "AlmondJsonCommandKeyConstants.h"
+#import "Colours.h"
 
 @interface HelpScreens()
 @property (strong, nonatomic) IBOutlet UIView *helpPrompt;
@@ -78,6 +79,7 @@
     
     self.hlpTitle.text = NSLocalizedString(self.startScreen[@"name"], @"");
     self.imgView.image = [UIImage imageNamed:screen[IMAGE]];
+    self.imgView.backgroundColor = [UIColor colorFromHexString:screen[COLOR]];
     self.subTitle.text = NSLocalizedString(screen[TITLE], @"");
     self.desc.text = NSLocalizedString(screen[DESCRIPTION], @"");
     
@@ -113,6 +115,7 @@
     self.subTitle.text = NSLocalizedString(screen[TITLE], @"");
     self.desc.text = NSLocalizedString(screen[DESCRIPTION], @"");
     self.imgView.image = [UIImage imageNamed:screen[IMAGE]];
+    self.imgView.backgroundColor = [UIColor colorFromHexString:screen[COLOR]];
     
     NSLog(@"current count: %d, screens count: %d", pageControl.currentPage, screens.count);
     //current page starts from 0

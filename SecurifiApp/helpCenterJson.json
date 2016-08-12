@@ -9,14 +9,17 @@
                             "screens": [{
                                         "title": "Notifications",
                                         "description": "Notifications_desc",
+                                        "color" : "FFD893",
                                         "image": "foreground"
                                         }, {
                                         "title": "Notifications",
                                         "description": "Notifications_desc",
+                                        "color" : "FFD893",
                                         "image": "foreground"
                                         }, {
                                         "title": "Notifications",
                                         "description": "Notifications_desc",
+                                        "color" : "FFD893",
                                         "image": "foreground"
                                         }]
                             },
@@ -27,22 +30,27 @@
                             "screens": [{
                                         "title": "Welcome",
                                         "description": "Notifications_desc",
+                                        "color" : "FFD893",
                                         "image": "h_almond_logo"
                                         }, {
                                         "title": "The_Dashboard",
                                         "description": "Notifications_desc",
+                                        "color" : "81D4FA",
                                         "image": "h_modes"
                                         }, {
                                         "title": "Almond_Modes",
                                         "description": "Notifications_desc",
+                                        "color" : "FFD893",
                                         "image": "h_home_away"
                                         }, {
                                         "title": "Almond_Notifications",
                                         "description": "Notifications_desc",
+                                        "color" : "BBF3C7",
                                         "image": "h_notifications"
                                         }, {
                                         "title": "Theres_More",
                                         "description": "Notifications_desc",
+                                        "color" : "FFD893",
                                         "image": "h_rules"
                                         }]
                             },
@@ -53,18 +61,22 @@
                             "screens": [{
                                         "title": "Take_a_pick",
                                         "description": "Take_a_pick_Desc",
+                                        "color" : "BAFFFF",
                                         "image": "h_sensorssmartdevices"
                                         }, {
                                         "title": "Adding_a_New_Device",
                                         "description": "Adding_a_New_Device_Desc",
+                                        "color" : "BDF5C9",
                                         "image": "h_addnewdev"
                                         }, {
                                         "title": "Quick_Actions",
                                         "description": "Quick_Actions_Desc",
+                                        "color" : "FCA3C3",
                                         "image": "h_deviceactions"
                                         }, {
                                         "title": "Device_Settings",
                                         "description": "Device_Settings_Desc",
+                                        "color" : "FFD893",
                                         "image": "h_notificationpreferences"
                                         }]
                             }, {
@@ -73,18 +85,22 @@
                             "screens": [{
                                         "title": "scene_mean",
                                         "description": "What_is_scene_Desc",
+                                        "color" : "F7AEC7",
                                         "image": "h_scene_mean"
                                         }, {
                                         "title": "Creating_a_Scene",
                                         "description": "Creating_a_Scene_Desc",
+                                        "color" : "F7AEC7",
                                         "image": "h_scene_create"
                                         }, {
                                         "title": "Scene_Behaviour",
                                         "description": "Scene_Behaviour_Desc",
+                                        "color" : "F7AEC7",
                                         "image": "h_scene_behave"
                                         }, {
                                         "title": "Alexa_and_Scenes",
                                         "description": "Alexa_and_Scenes_Desc",
+                                        "color" : "BAFFFF",
                                         "image": "h_scene_alexa"
                                         }]
                             }, {
@@ -93,18 +109,22 @@
                             "screens": [{
                                         "title": "Rules",
                                         "description": "Rules_Desc",
+                                        "color" : "FFD893",
                                         "image": "h_rule_mean"
                                         }, {
                                         "title": "Creating_a_Rule",
                                         "description": "Creating_a_Rule_Desc",
+                                        "color" : "FFD893",
                                         "image": "h_rule_create"
                                         }, {
                                         "title": "Rule_Chaining",
                                         "description": "Rule_Chaining_Desc",
+                                        "color" : "FFD893",
                                         "image": "h_rule_chain"
                                         }, {
                                         "title": "IFTTT",
                                         "description": "IFTTT_Desc",
+                                        "color" : "FFD893",
                                         "image": "h_rule_ifttt"
                                         }]
                             }, {
@@ -113,18 +133,22 @@
                             "screens": [{
                                         "title": "More_to_Almond",
                                         "description": "More_to_Almond_Desc",
+                                        "color" : "FFB6A0",
                                         "image": "h_wifi_more"
                                         }, {
                                         "title": "Guest_Network",
                                         "description": "Guest_Network_Desc",
+                                        "color" : "BAFFFF",
                                         "image": "h_wifi_guest"
                                         }, {
                                         "title": "Share_Control",
                                         "description": "Share_Control_Desc",
+                                        "color" : "FFD893",
                                         "image": "h_wifi_share"
                                         }, {
                                         "title": "Advanced_Features",
                                         "description": "Advanced_Features_Desc",
+                                        "color" : "FFB6A0",
                                         "image": "h_wifi_advanced"
                                         }]
                             }, {
@@ -133,14 +157,17 @@
                             "screens": [{
                                         "title": "Nothing",
                                         "description": "wifi_help",
+                                        "color" : "FFB6A0",
                                         "image": "foreground"
                                         }, {
                                         "title": "Nothing",
                                         "description": "wifi_help1",
+                                        "color" : "FFB6A0",
                                         "image": "foreground"
                                         }, {
                                         "title": "Nothing",
                                         "description": "wifi_help2",
+                                        "color" : "FFB6A0",
                                         "image": "foreground"
                                         }]
                             }
@@ -155,6 +182,7 @@
                             "screens": [{
                                         "title": "Notifications",
                                         "description": "Notifications_desc",
+                                        "color" : "FFB6A0",
                                         "image": "foreground"
                                         }]
                             }, {
@@ -163,6 +191,7 @@
                             "screens": [{
                                         "title": "Notifications",
                                         "description": "Notifications_desc",
+                                        "color" : "FFB6A0",
                                         "image": "foreground"
                                         }]
                             
@@ -172,6 +201,7 @@
                             "screens": [{
                                         "title": "Notifications",
                                         "description": "Notifications_desc",
+                                        "color" : "FFB6A0",
                                         "image": "foreground"
                                         }]
                             }]
@@ -187,17 +217,17 @@
              "name": "Interface",
              "screencount": "3",
              "screens": [{
-                         "title": "scene_mean",
-                         "description": "What_is_scene_Desc",
-                         "image": "h_scene_mean"
+                         "title": "wired_or_wireless",
+                         "description": "wired_or_wireless_desc",
+                         "image": "h_wired_wireless"
                          }, {
-                         "title": "Creating_a_Scene",
-                         "description": "Creating_a_Scene_Desc",
-                         "image": "h_scene_create"
+                         "title": "wired_interface",
+                         "description": "wired_interface_desc",
+                         "image": "h_wired"
                          }, {
-                         "title": "Scene_Behaviour",
-                         "description": "Scene_Behaviour_Desc",
-                         "image": "h_scene_behave"
+                         "title": "wireless_interface",
+                         "description": "wireless_interface_desc",
+                         "image": "h_wireless"
                          }]
              },
              
@@ -205,18 +235,20 @@
              "name": "Wiring",
              "screencount": "3",
              "screens": [{
-                         "title": "Welcome",
-                         "description": "Notifications_desc",
-                         "image": "h_almond_logo"
+                         "title": "wiring_primary",
+                         "description": "wiring_primary_desc",
+                         "image": "h_wiring_primary"
                          }, {
-                         "title": "The_Dashboard",
-                         "description": "Notifications_desc",
-                         "image": "h_modes"
+                         "title": "connecting_newAl",
+                         "description": "connecting_newAl_desc",
+                         "image": "h_connecting_new"
                          }, {
-                         "title": "Almond_Modes",
-                         "description": "Notifications_desc",
-                         "image": "h_home_away"
+                         "title": "using_network_switch",
+                         "description": "using_network_switch_desc",
+                         "image": "h_network_switch"
                          }]
-             }]
+             }
+             ]
+    
     
 }

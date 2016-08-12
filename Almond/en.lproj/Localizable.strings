@@ -753,7 +753,7 @@ Follow it, then login below.";
 "led_off" = "LED OFF";
 "led_on" = "LED ON";
 
-
+/******** After localization *********/
 /* help screens */
 "Welcome" = "Welcome";
 "The_Dashboard" = "The Dashboard";
@@ -810,6 +810,20 @@ Follow it, then login below.";
 "Device_Settings" = "Device Settings";
 "Device_Settings_Desc" = "Tap a device’s settings button to view and edit its settings. Apart from settings that are unique to that device type, you can modify its name and choose which notifications the device should send you. Just tap on the wrench icon, and select “Notify Me”.";
 "Quick_Actions_Desc" = "The quick action button allows you to control your devices with a quick tap. Each device has its own quick action. For example, you can turn a smart lightbulb on or off by tapping the button, while dimming and other features might be available in its settings.";
+
+
+"wiring_primary" = "Wiring your Primary Almond ";
+"wiring_primary_desc" = "For your network to function properly, it\u00b4s important to place it in the correct order.";
+"connecting_newAl" = "Connecting your New Almond";
+"connecting_newAl_desc" = "Connecting your New Almond";
+"using_network_switch" = "Using a Network Switch";
+"using_network_switch_desc" = "Using a Network Switch";
+"wired_or_wireless" = "Wired or Wireless?";
+"wired_or_wireless_desc" = "The Almond WiFi system is highly flexible.The primary Almond has to be directly connected to your ISP modem. The additional Almonds can be connected via Wired interface or Wirelessly";
+"wired_interface" = "Wired Interface";
+"wireless_interface" = "Wireless Interface";
+"wireless_interface_desc" = "If your house doesn't have internet cabling across rooms, you can simply choose \"Wireless\" mode for your additional Almonds.";
+"wired_interface_desc" = "WiFi quality is best when your additional Almonds are connected via interace. If you have Internet cabling across rooms in your house, you can choose this mode.";
 
 /* ==================================================================== */
 

@@ -69,7 +69,7 @@ int mii;
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
-//        [self initializeHelpScreensfirst:@"Devices"];
+        [self initializeHelpScreensfirst:@"Devices"];
     });
 }
 
@@ -729,8 +729,8 @@ int mii;
     [self.navigationController.view addSubview:self.maskView];
     
     NSLog(@"helpScreensObj: %@", self.helpScreensObj);
-    int triggerHeight = 500;
-    self.helpScreensObj.frame = CGRectMake(0, self.navigationController.view.frame.size.height - triggerHeight, self.view.frame.size.width, triggerHeight);
+    int triggerHeight = self.navigationController.view.frame.size.height - 50;
+    self.helpScreensObj.frame = CGRectMake(0, 50, self.view.frame.size.width, triggerHeight);
     [self.helpScreensObj resetBottonConstraint];
     [self.maskView addSubview:self.helpScreensObj];
     [self.helpScreensObj addHelpItem:CGRectMake(0, 0, self.view.frame.size.width, triggerHeight)];
