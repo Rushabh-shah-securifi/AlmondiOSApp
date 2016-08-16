@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     WeekSearch
 };
 
-@interface SearchTableViewController ()<UISearchResultsUpdating, UISearchBarDelegate,UITextFieldDelegate>
+@interface SearchTableViewController ()<UISearchResultsUpdating, UISearchBarDelegate,UITextFieldDelegate,BrowsingHistoryDelegate>
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic) UITableView *searchTableView;
 @property (nonatomic) NSArray *suggSearchArr;
@@ -276,8 +276,11 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         NSLog(@"searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
     
     [self getHistoryFromDB:searchString];
-    
-    [self getBrowserHistoryImages:self.historyDict];
+    self.dayArr = [[NSMutableArray alloc]init];
+    BrowsingHistory *Bhistory =[[BrowsingHistory alloc]init];
+//    [self getBrowserHistoryImages:self.historyDict];
+    Bhistory.delegate = self;
+    [Bhistory getBrowserHistoryImages:self.historyDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
 //    [self.searchTableView reloadData];
     
     [searchBar setShowsCancelButton:NO animated:YES];
@@ -285,17 +288,17 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 
 #pragma  mark customCell for suggestion search
 -(void)addSuggestionSearchObj{
-    URIData *lasthour = [[URIData alloc]init];
-    lasthour.hostName = @"Last Hour";
-    lasthour.image = [UIImage imageNamed:@"schedule_icon"];
+    NSDictionary *lasthour = @{@"hostName":@"Last Hour",
+                               @"image" : [UIImage imageNamed:@"schedule_icon"]
+                               };
+   
+    NSDictionary *today = @{@"hostName":@"Today",
+                               @"image" : [UIImage imageNamed:@"schedule_icon"]
+                               };
+    NSDictionary *thisWeek = @{@"hostName":@"this Week",
+                            @"image" : [UIImage imageNamed:@"schedule_icon"]
+                            };
     
-    URIData *today = [[URIData alloc]init];
-    today.hostName = @"Today";
-    today.image = [UIImage imageNamed:@"schedule_icon"];
-    
-    URIData *thisWeek = [[URIData alloc]init];
-    thisWeek.hostName = @"This Week";
-    thisWeek.image = [UIImage imageNamed:@"event_icon"];
     
     self.suggSearchArr = [[NSArray alloc]initWithObjects:lasthour,today,thisWeek, nil];
     
@@ -306,9 +309,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
     self.recentSearchObj = [[NSMutableArray alloc]init];
     for (NSString *str in set) {
-        URIData *recent = [[URIData alloc]init];
-        recent.hostName = str;
-        recent.image = [UIImage imageNamed:@"search_icon"];
+        NSDictionary *recent = @{@"hostName":str,
+                                   @"image" : [UIImage imageNamed:@"search_icon"]
+                                   };
+        
         [self.recentSearchObj addObject:recent];
     }
     NSLog(@"self.recentSearch count  %@ = %ld",self.recentSearch,self.recentSearch.count);
@@ -349,66 +353,15 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         self.historyDict = [BrowsingHistoryDataBase getManualString:@"lastWeek" andSearchSting:searchString];
     }
 }
-
 #pragma mark parser methods
--(void)getBrowserHistoryImages:(NSDictionary *)historyDict{
-    self.dayArr = [[NSMutableArray alloc]init];
-    //    dayArr = [historyDict[@"Data"] all]
-    NSLog(@"historyDict %@",historyDict[@"Data"]);
-    NSDictionary *dict1 = historyDict[@"Data"];
-    for (NSString *dates in [dict1 allKeys]) {
-        NSArray *alldayArr = dict1[dates];
-        NSLog(@"\n alldayArr alldayDict %@",alldayArr);
-        NSMutableArray *oneDayUri = [[NSMutableArray alloc]init];
-        for (NSDictionary *uriDict in alldayArr) {
-            URIData *uriInfo = [URIData new];
-            uriInfo.hostName = uriDict[@"hostName"];
-            uriInfo.count = [uriDict[@"count"] intValue];
-            uriInfo.lastActiveTime = [NSDate getDateFromEpoch:uriDict[@"Epoc"]];
-            dispatch_async(self.imageDownloadQueue,^(){
-                uriInfo.image = [self getImage:uriDict[@"hostName"]];
-            });
-            
-            [oneDayUri addObject:uriInfo];
-        }
-        [self.dayArr addObject:oneDayUri];
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.searchTableView reloadData];
-        });//
-    }
+-(void)reloadTable{
+    NSLog(@"reload called");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.searchTableView reloadData];
+    });
 }
-//
--(UIImage*)getImage:(NSString*)hostName{
-    NSLog(@"getImage");
-    
-    __block UIImage *img;
-    if(self.urlToImageDict[hostName]){
-        NSLog(@"one");
-        return self.urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
-    }else{
-        
-        //        img = [UIImage imageNamed:@"Mail_icon"];
-        
-        NSLog(@"two");
-        __block NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
-        NSLog(@"iconUrl %@",iconUrl);
-        img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
-        if(!img){
-            NSLog(@"three");
-                iconUrl = [NSString stringWithFormat:@"https://%@/favicon.ico", hostName];
-                img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
-            
-        }
-        if(!img){
-            NSLog(@"four");
-            img = [UIImage imageNamed:@"Mail_icon"];
-        }
-        NSLog(@"five");
-        self.urlToImageDict[hostName] = img;
-        
-        return img;
-    }
-}
+
+
 
 
 @end

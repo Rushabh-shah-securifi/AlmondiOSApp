@@ -42,6 +42,10 @@
         self.siteName.text = uri.hostName;
         self.countLbl.text = [self getCounttext:uri.count];
         self.lastActTime.text = [uri.lastActiveTime stringFromDate];
+//        self.webImg.image = uri[@"image"];
+//        self.siteName.text = uri[@"hostName"];
+//        self.countLbl.text = uri[@"count"];
+//        self.lastActTime.text = [uri[@"TimeEpoc"] stringFromDate];
         
     });
 }

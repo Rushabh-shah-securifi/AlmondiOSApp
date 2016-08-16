@@ -16,7 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lastActTime;//temp
 @property (weak, nonatomic) IBOutlet UIImageView *settingImg;//temp
 @property (nonatomic) NSString *httpString;
+//-(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem;
 -(void)setCell:(URIData*)uri hideItem:(BOOL)hideItem;
 -(void)setName:(URIData*)uri;
-
 @end

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "idiom" : "universal",
+      "filename" : "help-outlined-icon-50x50.pdf"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}
