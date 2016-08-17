@@ -659,6 +659,9 @@
 - (void)markTitle:(NSString *)title {
     UIView *titleView = [[UIView alloc] initWithFrame:CGRectZero];
     
+    if(titleView == nil)
+        return;
+    
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     titleLabel.font = [UIFont boldSystemFontOfSize:20.f];
     
@@ -904,6 +907,8 @@
 
 #pragma mark almond update screen
 -(void)checkToShowUpdateScreen{
+    return;
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *currentAlmond = toolkit.currentAlmond;
     BOOL local = [toolkit useLocalNetwork:currentAlmond.almondplusMAC];
@@ -915,8 +920,8 @@
     NSLog(@"passed");
     BOOL isNewVersion = [currentAlmond supportsGenericIndexes:currentAlmond.firmware];
     if(!isNewVersion){
-        [self.tabBarController.tabBar setHidden:YES];
         [self showAlmondUpdateAvailableScreen:self.navigationController.view];
+        [self.tabBarController.tabBar setHidden:YES];
     }else{
         [self tryRemoveBGView];
     }

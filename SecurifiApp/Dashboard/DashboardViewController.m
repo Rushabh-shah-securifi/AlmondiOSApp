@@ -33,10 +33,9 @@
 @property(nonatomic) SFINotificationStatusBarButtonItem *notificationButton;
 @property(nonatomic) SecurifiToolkit *toolkit;
 @property(nonatomic) MBProgressHUD *HUD;
-@property(nonatomic) SFINotificationsViewController *notify;
 @property(nonatomic) id <SFINotificationStore> store;
-@property(nonatomic) NSMutableArray *clientNotificationArr;
-@property(nonatomic) NSMutableArray *deviceNotificationArr;
+@property(nonatomic) NSArray *clientNotificationArr;
+@property(nonatomic) NSArray *deviceNotificationArr;
 @property(nonatomic) CircleLabel *countLabel;
 @property(nonatomic) UIButton *countButton;
 @property(nonatomic) UIImageView *navigationImg;
@@ -71,8 +70,8 @@
     [Scroller addSubview:button1];
     [self SelectAlmond:NSLocalizedString(@"dashBoard AddAlmond", @"AddAlmond")];
     [self markNetworkStatusIcon];
-    [self initializeNotification];
     [self initializeHUD];
+    [self initializeHelpScreens];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -128,14 +127,13 @@
                    name:kSFINotificationDidMarkViewed
                  object:nil];
     
+    [self getRecentNotification];
     [self.toolkit tryRefreshNotifications];
-    [self initializeNotification];
+    [self initializeUI];
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.dashboardTable reloadData];
+        [self checkToShowUpdateScreen];
     });
-    [self getDeviceClientNotification];
     [self markNetworkStatusIcon];
-//    [self initializeHelpScreens];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -144,7 +142,7 @@
     
 }
 
--(void)initializeNotification{
+-(void)initializeUI{
     [self updateMode:self.toolkit.mode_src];
     [self updateDeviceClientListCount];
 }
@@ -196,10 +194,7 @@
 
 #pragma mark notification
 -(void)loadNotification{
-    self.notify = [[SFINotificationsViewController alloc] init];
-    _store = [self.notify pickNotificationStore];
-    self.notify.store = _store;
-    [self.notify resetBucketsAndNotifications];
+    self.store = [[SecurifiToolkit sharedInstance] newNotificationStore];
 }
 
 -(void)initializeHUD{
@@ -278,12 +273,11 @@
     
     [self.toolkit.devices removeAllObjects];
     [self.toolkit.clients removeAllObjects];
-    [self initializeNotification];
+    [self initializeUI];
     [self markNetworkStatusIcon];
+    // getrecentnotification to instantly show onclick
+    [self getRecentNotification];
     [self.toolkit tryRefreshNotifications];
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.dashboardTable reloadData];
-    });
 }
 
 - (void)onAlmondListDidChange:(id)sender {
@@ -318,7 +312,6 @@
     NSLog(@"dash onDeviceListAndDynamicResponseParsed");
     [self updateDeviceClientListCount];
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.dashboardTable reloadData];
         [self.HUD hide:YES];
     });
 }
@@ -328,13 +321,8 @@
 }
 
 -(void)onDidReceiveNotifications{
-    _store = [self.notify pickNotificationStore];
-    self.notify.store = _store;
-    [self.notify resetBucketsAndNotifications];
-    [self getDeviceClientNotification];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.dashboardTable reloadData];
-    });
+    NSLog(@"onDidReceiveNotifications");
+    [self getRecentNotification];
 }
 
 - (void)onNetworkUpNotifier:(id)sender {
@@ -382,6 +370,10 @@
 
 #pragma mark selectAlmond
 - (IBAction)AlmondSelection:(UIButton *)sender {
+    if(![UIAlertController class]){ // to not support ios 7 or before
+        return;
+    }
+    
     enum SFIAlmondConnectionMode modeValue = [self.toolkit currentConnectionMode];
     NSArray *almondList = [self buildAlmondList:modeValue];
     UIAlertController *viewC;
@@ -518,30 +510,14 @@
     });
 }
 
--(void )getDeviceClientNotification{
-    [self.deviceNotificationArr removeAllObjects];
-    [self.clientNotificationArr removeAllObjects];
-    if(self.toolkit.currentAlmond != nil){
-        for(int j = 0; j<10;j++){// for 10 days
-            for (int i =0; i<150; i++) {
-                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:j];
-                SFINotification *notification = [self.notify notificationForIndexPath:indexPath];
-                
-                if(notification.deviceType != SFIDeviceType_WIFIClient && notification!=Nil && [notification.almondMAC isEqualToString: self.toolkit.currentAlmond.almondplusMAC]){
-                    if(self.deviceNotificationArr.count < 3)
-                        [self.deviceNotificationArr addObject:notification];
-                    else if (self.deviceNotificationArr.count > 3 && self.clientNotificationArr.count > 2)
-                        return;
-                }
-                else if(notification!=Nil && [notification.almondMAC isEqualToString: self.toolkit.currentAlmond.almondplusMAC]){
-                    if(self.clientNotificationArr.count < 2)
-                        [self.clientNotificationArr addObject:notification];
-                    else if (self.deviceNotificationArr.count > 3 && self.clientNotificationArr.count > 2)
-                        return;
-                }
-            }
-        }
-    }
+-(void )getRecentNotification{
+    NSLog(@"getDeviceClientNotification");
+    self.deviceNotificationArr = [self.store fetchRecentNotifications:self.toolkit.currentAlmond.almondplusMAC isSensor:YES];
+    self.clientNotificationArr = [self.store fetchRecentNotifications:self.toolkit.currentAlmond.almondplusMAC isSensor:NO];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.dashboardTable reloadData];
+    });
 }
 
 #pragma mark tableviewDelegate
@@ -668,6 +644,10 @@
 
 #pragma mark onConnectionStatus
 -(void)onConnection:(NSString *)Title subTitle:(NSString *)subTitle stmt:(enum SFIAlmondConnectionMode)mode{
+    if(![UIAlertController class]){ // to not support ios 7 or before
+        return;
+    }
+    
     UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"almond_connection", @"Almond Connection") message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     almondSelect.title = Title;
     UIAlertAction *Check = [UIAlertAction
@@ -885,11 +865,7 @@
         case SFIAlmondConnectionStatus_connected: {
             state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateConnected : SFICloudStatusStateLocalConnection;
             [self.leftButton markState:state];
-            [self getDeviceClientNotification];
             [self updateMode:self.toolkit.mode_src];
-            dispatch_async(dispatch_get_main_queue(), ^() {
-                [self.dashboardTable reloadData];
-            });
             break;
         };
         case SFIAlmondConnectionStatus_error: {
@@ -922,15 +898,17 @@
 }
 
 - (NSAttributedString *)setMessageLabelText:(SFINotification *)notification sensorSupport:(SensorSupport*)sensorSupport {
+    if (notification == nil) {
+        return [[NSAttributedString alloc] initWithString:@"" attributes:@{}];
+    }
+    
     NSDictionary *attr;
     UIFont *bold_font = [UIFont securifiBoldFont];
     attr = @{
              NSFontAttributeName : bold_font,
              NSForegroundColorAttributeName : [UIColor blackColor],
              };
-    if (notification == nil) {
-        return [[NSAttributedString alloc] initWithString:@"" attributes:attr];
-    }
+
     NSString *deviceName = notification.deviceName;
     if (notification.deviceType==SFIDeviceType_WIFIClient) {
         NSArray * properties = [notification.deviceName componentsSeparatedByString:@"|"];
@@ -954,34 +932,36 @@
              };
     NSString *message;
     message = sensorSupport.notificationText;
-    NSMutableAttributedString *mutableAttributedString = nil;
-    if (message == nil) {
-        message = @"";
-    }
-    if (!mutableAttributedString) {
-        NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:message attributes:attr];
-        NSMutableAttributedString *container = [NSMutableAttributedString new];
-        [container appendAttributedString:nameStr];
-        [container appendAttributedString:eventStr];
-        return  container;
-    }else{
-        return  mutableAttributedString;
-    }
+    
+    message = message == nil? @"": message;
+    NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:message attributes:attr];
+    
+    NSMutableAttributedString *container = [NSMutableAttributedString new];
+    [container appendAttributedString:nameStr];
+    [container appendAttributedString:eventStr];
+    return  container;
 }
 
 - (NSAttributedString *)setDateLabelText:(SFINotification *)notification {
+    if (notification == nil) {
+        return [[NSAttributedString alloc] initWithString:@"" attributes:@{}];
+    }
     NSDateFormatter *formatter = [NSDateFormatter new];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:notification.time];
+    
+    if(date == nil)
+        return [[NSAttributedString alloc] initWithString:@"" attributes:@{}];
+    
     NSDictionary *attr;
     NSString *str;
     attr = @{
              NSFontAttributeName : [UIFont securifiBoldFontLarge],
              NSForegroundColorAttributeName : [UIColor grayColor],
              };
-    if (notification == nil)
-        return [[NSAttributedString alloc] initWithString:@"" attributes:attr];
     formatter.dateFormat = @"dd/MM - hh:mm";
     str = [formatter stringFromDate:date];
+    str = (str == nil)? @"": str;
+    
     NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:str attributes:attr];
     attr = @{
              NSFontAttributeName : [UIFont securifiBoldFontLarge],
@@ -989,6 +969,8 @@
              };
     formatter.dateFormat = @"a";
     str = [formatter stringFromDate:date];
+    str = (str == nil)? @"": str;
+    
     NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:str attributes:attr];
     NSMutableAttributedString *container = [NSMutableAttributedString new];
     [container appendAttributedString:nameStr];
@@ -1028,6 +1010,8 @@
 
 
 -(void)checkToShowUpdateScreen{
+    return;
+    
     SFIAlmondPlus *currentAlmond = self.toolkit.currentAlmond;
     BOOL local = [self.toolkit useLocalNetwork:currentAlmond.almondplusMAC];
     NSLog(@"current almond dash: %@", currentAlmond);
@@ -1038,8 +1022,8 @@
     NSLog(@"passed");
     BOOL isNewVersion = [currentAlmond supportsGenericIndexes:currentAlmond.firmware];
     if(!isNewVersion){
-        [self.tabBarController.tabBar setHidden:YES];
         [self showAlmondUpdateAvailableScreen:self.navigationController.view];
+        [self.tabBarController.tabBar setHidden:YES];
     }else{
         [self tryRemoveBGView];
     }

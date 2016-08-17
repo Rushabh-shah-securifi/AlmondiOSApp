@@ -270,7 +270,7 @@ typedef NS_ENUM(int, TabBarMode) {
         SFIMessageViewController *ctrl = [SFIMessageViewController new];
         
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
-        nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:nil image:nil selectedImage:nil];
+        nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"" image:nil selectedImage:nil];
         
         self.messageTab = nav;
     }

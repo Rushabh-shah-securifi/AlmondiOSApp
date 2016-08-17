@@ -3915,6 +3915,7 @@
             IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
             s1.matchType = MatchType_any;
             s1.displayText=@"";
+            s1.iconName = @"default_device";
             s1.notificationText = NSLocalizedString(@" Not Reachable", @"");
             return @[s1];
         }

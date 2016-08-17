@@ -39,6 +39,9 @@ CGPoint tablePoint;
     
     [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self initializeHelpScreensfirst:@"Rules"];
+    });
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -54,8 +57,8 @@ CGPoint tablePoint;
     [self initializeNotifications];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
+        [self checkToShowUpdateScreen];
         [self.tableView reloadData];
-//        [self initializeHelpScreensfirst:@"Rules"];
     });
     [[Analytics sharedInstance] markRuleScreen];
 }
