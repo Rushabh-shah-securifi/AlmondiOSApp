@@ -75,7 +75,7 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
     [self updateNavi:[UIColor whiteColor] title:@"" tintColor:[UIColor blueColor] tintBarColor:[UIColor whiteColor]];
-    [BrowsingHistoryDataBase deleteDB];
+//    [BrowsingHistoryDataBase deleteDB];
 
 }
 -(void)updateNavi:(UIColor *)backGroundColor title:(NSString *)title tintColor:(UIColor *)tintColor tintBarColor:(UIColor *)tintBarColor{
@@ -140,7 +140,11 @@
 //    /*post notification for read database history and */
 //    /*after insert again send request untill response is not null*/
 //    [self upateBrowsingTable];
-    [self getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistory]];
+//    [self getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistory]];
+    BrowsingHistory *Bhistory =[[BrowsingHistory alloc]init];
+    //    [self getBrowserHistoryImages:self.historyDict];
+    Bhistory.delegate = self;
+    [Bhistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistory] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
     NSLog(@"end tag = %@",endTag);
     
     [self sendRequest:endTag];
@@ -231,10 +235,25 @@
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
     [label setFont:[UIFont securifiBoldFont:13]];
     NSDictionary * dict = [BrowsingHistoryDataBase getAllBrowsingHistory];
-//    NSLog(@"dict == %@",dict);
+    NSMutableArray *myMutableArray = [NSMutableArray arrayWithArray:[dict[@"Data"] allKeys]];
+    
+    NSArray *aUnsorted = [dict[@"Data"] allKeys];
+    NSArray *arrKeys = [aUnsorted sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        [df setDateFormat:@"dd-MM-yyyy"];
+        NSDate *d1 = [df dateFromString:(NSString*) obj1];
+        NSDate *d2 = [df dateFromString:(NSString*) obj2];
+        return [d1 compare: d2];
+    }];
+    
+//    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Date" ascending:FALSE];
+//    [myMutableArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    
     NSString *str = [[dict[@"Data"] allKeys] objectAtIndex:section];
-//    NSLog(@"str date string %@",str);
+   
     NSDate *date = [NSDate convertStirngToDate:str];
+     NSLog(@"date = %@",date);
+    
     /*
      historyDict[@"Data"]);
      NSDictionary *dict1 = historyDict[@"Data"];
@@ -264,9 +283,10 @@
     });
 }
 - (void)onSearchButton{
-  NSLog(@" dict count = = %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount]);
-//
-//    [BrowsingHistoryDataBase GetHistoryDatabaseCount];
+//    [BrowsingHistoryDataBase todaySearch];
+//    [BrowsingHistoryDataBase LastHourSearch];
+    
+    
     SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
     ctrl.urlToImageDict = self.urlToImageDict;
@@ -289,43 +309,42 @@
         [self.browsingTable reloadData];
     });
 }
-
+//-(NSDate *)getDateFromString:(NSArray *)dateArr{
+//    
+//    for (NSString *dateArr in dateArr) {
+//        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+//        [formatter setDateFormat:@"dd-MM-yyyy"];
+//        NSDate *date = [formatter dateFromString:dateArr];
+//    }
+//    
+//    return date;
+//}
+//-(NSMutableArray *)getDateSortedArr:(NSArray *)dateArr{
+//     NSMutableArray *myMutableArray = [NSMutableArray new];
+//    
+//    myMutableArray = [NSMutableArray arrayWithArray:dateArr];
+//    
+//    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"beginDate" ascending:FALSE];
+//    [myMutableArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+//}
 -(void)getBrowserHistoryImages:(NSDictionary *)historyDict{
     self.dayArr = [[NSMutableArray alloc]init];
     //    dayArr = [historyDict[@"Data"] all]
-    NSLog(@"historyDict %@",historyDict[@"Data"]);
+    NSLog(@"historyDict data... %@",historyDict[@"Data"]);
     NSDictionary *dict1 = historyDict[@"Data"];
+
     for (NSString *dates in [dict1 allKeys]) {
-        NSArray *alldayArr = dict1[dates];
-        NSLog(@"\n alldayArr alldayDict %@",alldayArr);
+        NSMutableArray *alldayArr = dict1[dates];
+
         NSMutableArray *oneDayUri = [[NSMutableArray alloc]init];
-        for (NSMutableDictionary *uriDict in alldayArr) {
-            
-            URIData *uriInfo = [URIData new];
-            uriInfo.hostName = uriDict[@"hostName"];
-            uriInfo.count = [uriDict[@"count"] intValue];
-            
-            uriInfo.lastActiveTime = [NSDate getDateFromEpoch:uriDict[@"Epoc"]];
+        for (NSMutableDictionary *uriDict in alldayArr)
+        {
             dispatch_async(self.imageDownloadQueue,^(){
-                //            [uriDict setObject:@"sddddd" forKey:@"image"];
-                //            uriDict[@"image"] = [self getImage:uriDict[@"hostName"]];
-                uriInfo.image = [self getImage:uriDict[@"hostName"]];
+                [uriDict setObject:[self getImage:uriDict[@"hostName"]] forKey:@"image"];
             });
             
-            [oneDayUri addObject:uriInfo];
+            [oneDayUri addObject:uriDict];
         }
-//        {
-//            NSMutableDictionary *uriInfoDict = [NSMutableDictionary new];
-//            
-//            //            [uriDict setObject:@"sddddd" forKey:@"image"];
-//            [uriInfoDict setObject:uriDict[@"hostName"] forKey:@"hostName"];
-//            [uriInfoDict setObject:uriDict[@"count"] forKey:@"count"];
-//            [uriInfoDict setObject:[NSDate getDateFromEpoch:uriDict[@"Epoc"]] forKey:@"TimeEpoc"];
-//            dispatch_async(self.imageDownloadQueue,^(){
-//                [uriInfoDict setObject:[self getImage:uriDict[@"hostName"]] forKey:@"image"];
-//            });
-//            [oneDayUri addObject:uriInfoDict];
-//        }
         [self.dayArr addObject:oneDayUri];
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.browsingTable reloadData];
@@ -341,9 +360,6 @@
         NSLog(@"one");
         return self.urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
     }else{
-        
-        //        img = [UIImage imageNamed:@"Mail_icon"];
-        
         NSLog(@"two");
         __block NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
         NSLog(@"iconUrl %@",iconUrl);

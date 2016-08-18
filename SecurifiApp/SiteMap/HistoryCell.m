@@ -26,7 +26,7 @@
 
     // Configure the view for the selected state
 }
--(void)setCell:(URIData*)uri hideItem:(BOOL)hideItem{
+-(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem{
     if(hideItem){
         self.imgLeftConstrin.constant = 17;
         self.hostnameLeftConstrain.constant = -25;
@@ -37,22 +37,21 @@
     }
     self.countLbl.hidden = hideItem;
     self.settingImg.hidden = hideItem;
+    self.lastActTime.hidden = hideItem;
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
-        self.webImg.image = uri.image;
-        self.siteName.text = uri.hostName;
-        self.countLbl.text = [self getCounttext:uri.count];
-        self.lastActTime.text = [uri.lastActiveTime stringFromDate];
-//        self.webImg.image = uri[@"image"];
-//        self.siteName.text = uri[@"hostName"];
-//        self.countLbl.text = uri[@"count"];
-//        self.lastActTime.text = [uri[@"TimeEpoc"] stringFromDate];
+
+        self.webImg.image = uri[@"image"];
+        self.siteName.text = uri[@"hostName"];
+        self.countLbl.text = uri[@"count"];
+        NSDate *dat = [NSDate getDateFromEpoch:uri[@"Epoc"]];
+        self.lastActTime.text = [dat stringFromDate];
         
     });
 }
 -(void)setName:(URIData *)uri{
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.siteName.text = uri.hostName;
-        NSLog(@"uri.hostName %@",uri.hostName);
     });
 }
 

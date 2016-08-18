@@ -45,6 +45,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.dayArr = [[NSMutableArray alloc]init];
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
     self.navigationController.navigationBar.clipsToBounds = YES;
     self.navigationController.view.backgroundColor = [UIColor whiteColor];
@@ -125,7 +126,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         label.text = headerDate;
     }
     else{
-        NSString *str = [[self.historyDict[@"Data"] allKeys] objectAtIndex:section];
+        NSLog(@"[self.historyDict allKeys] %@",[self.historyDict[@"Data"] allKeys]);
+        NSString *str;
+        if([self.historyDict[@"Data"] allKeys] != NULL)
+        str = [[self.historyDict[@"Data"] allKeys] objectAtIndex:section];
         NSLog(@"str date string %@",str);
         NSDate *date = [NSDate convertStirngToDate:str];
         NSString *headerDate = [date getDayMonthFormat];
@@ -169,7 +173,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(tableView == self.tableView){
         if(indexPath.section == 1){
-             [self setSearchpattenMethod:RecentSearch];
+             [self setSearchpattenMethod:RecentSearch indexPath:indexPath];
         }
         else if(indexPath.section == 0 && indexPath.row == 0){
              [self setSearchpattenMethod:LastHourSearch];
@@ -187,47 +191,18 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.searchController.searchBar.text = @" ";
     self.isManuelSearch = NO;
     [self.searchController.searchBar becomeFirstResponder];
-    //            [self.searchController.searchBar resignFirstResponder];
-    //            [self.view endEditing:TRUE];
 
 }
-
-- (void)initializeSearchController {
-    
-    //instantiate a search results controller for presenting the search/filter results (will be presented on top of the parent table view)
-    UITableViewController *searchResultsController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
-    
-    searchResultsController.tableView.dataSource = self;
-    
-    searchResultsController.tableView.delegate = self;
-    
-    //instantiate a UISearchController - passing in the search results controller table
-    self.searchController = [[UISearchController alloc] initWithSearchResultsController:searchResultsController];
-    
-    //this view controller can be covered by theUISearchController's view (i.e. search/filter table)
-    self.definesPresentationContext = YES;
-    
-    
-    //define the frame for the UISearchController's search bar and tint
-    self.searchController.searchBar.frame = CGRectMake(self.searchController.searchBar.frame.origin.x, self.searchController.searchBar.frame.origin.y, self.searchController.searchBar.frame.size.width, 44.0);
-    
-    self.searchController.searchBar.tintColor = [UIColor whiteColor];
-    
-    //add the UISearchController's search bar to the header of this table
-    self.tableView.tableHeaderView = self.searchController.searchBar;
-    
-    
-    //this ViewController will be responsible for implementing UISearchResultsDialog protocol method(s) - so handling what happens when user types into the search bar
-    self.searchController.searchResultsUpdater = self;
-    
-    
-    //this ViewController will be responsisble for implementing UISearchBarDelegate protocol methods(s)
-    self.searchController.searchBar.delegate = self;
-    self.searchTableView = ((UITableViewController *)self.searchController.searchResultsController).tableView;
-    [self.searchTableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
-   
+-(void)setSearchpattenMethod:(SearchPatten)searchpatten indexPath:(NSIndexPath *)indexPath{
+    self.searchPatten = searchpatten;
+    self.searchController.searchBar.text = [self.recentSearch objectAtIndex:indexPath.row];
+    self.isManuelSearch = YES;
+    [self.searchController.searchBar becomeFirstResponder];
+ 
     
 }
+
+
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     NSString *searchString = self.searchController.searchBar.text;
     NSLog(@"searching string on search = %@",searchString);
@@ -239,7 +214,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
     NSLog(@"self.recentSearch count = %ld",self.recentSearch.count);
     [[NSUserDefaults standardUserDefaults] setObject:self.recentSearch forKey:@"recentSearch"];
-    [self addSuggestionSearchObj];
+//    [self addSuggestionSearchObj];
     
 
 }
@@ -264,11 +239,15 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 }
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
+    
     NSString *searchString = self.searchController.searchBar.text;
-        
-        if([CommonMethods isContainMonth:searchString] && self.isManuelSearch)
+        NSLog(@"abpve searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
+    
+    if([CommonMethods isContainMonth:searchString]){
             self.searchPatten = DateSearch;
-        if([CommonMethods isContainWeeKday:searchString] && self.isManuelSearch)
+        NSLog(@"month search String %@",searchString);
+    }
+       else if([CommonMethods isContainWeeKday:searchString] && self.isManuelSearch)
             self.searchPatten = WeekDaySearch;
         else if(self.isManuelSearch)
             self.searchPatten = RecentSearch;
@@ -276,7 +255,6 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         NSLog(@"searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
     
     [self getHistoryFromDB:searchString];
-    self.dayArr = [[NSMutableArray alloc]init];
     BrowsingHistory *Bhistory =[[BrowsingHistory alloc]init];
 //    [self getBrowserHistoryImages:self.historyDict];
     Bhistory.delegate = self;
@@ -299,7 +277,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
                             @"image" : [UIImage imageNamed:@"schedule_icon"]
                             };
     
-    
+
     self.suggSearchArr = [[NSArray alloc]initWithObjects:lasthour,today,thisWeek, nil];
     
     
@@ -312,7 +290,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         NSDictionary *recent = @{@"hostName":str,
                                    @"image" : [UIImage imageNamed:@"search_icon"]
                                    };
-        
+   
         [self.recentSearchObj addObject:recent];
     }
     NSLog(@"self.recentSearch count  %@ = %ld",self.recentSearch,self.recentSearch.count);
@@ -334,20 +312,22 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 }
 
 -(void)getHistoryFromDB:(NSString *)searchString{
+    NSLog(@"self.searchPatten %ld..%@",(long)self.searchPatten,searchString);
     if(self.searchPatten == RecentSearch){
         self.historyDict = [BrowsingHistoryDataBase getSearchString:@"All" andSearchSting:searchString];
     }
     else if (self.searchPatten == WeekDaySearch){
         self.historyDict = [BrowsingHistoryDataBase getManualString:@"weekDay" andSearchSting:searchString];
+        NSLog(@"self.historyDict weekDay %@",self.historyDict);
     }
     else if(self.searchPatten == TodaySearch){
-        self.historyDict = [BrowsingHistoryDataBase getManualString:@"Today" andSearchSting:searchString];
+        self.historyDict = [BrowsingHistoryDataBase todaySearch];
     }
     else if(self.searchPatten == DateSearch){
         self.historyDict = [BrowsingHistoryDataBase getManualString:@"monthDay" andSearchSting:searchString];
     }
     else if(self.searchPatten == LastHourSearch){
-        self.historyDict = [BrowsingHistoryDataBase getManualString:@"lastHour" andSearchSting:searchString];
+        self.historyDict = [BrowsingHistoryDataBase LastHourSearch];
     }
     else if(self.searchPatten == WeekSearch){
         self.historyDict = [BrowsingHistoryDataBase getManualString:@"lastWeek" andSearchSting:searchString];
@@ -360,8 +340,90 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         [self.searchTableView reloadData];
     });
 }
+-(void)getBrowserHistoryImages:(NSDictionary *)historyDict{
+    [self.dayArr removeAllObjects];
+    NSLog(@"historyDict data... %@",historyDict[@"Data"]);
+    NSDictionary *dict1 = historyDict[@"Data"];
+    for (NSString *dates in [dict1 allKeys]) {
+        NSArray *alldayArr = dict1[dates];
+        NSMutableArray *oneDayUri = [[NSMutableArray alloc]init];
+        for (NSMutableDictionary *uriDict in alldayArr)
+
+        {
+           
+            dispatch_async(self.imageDownloadQueue,^(){
+                [uriDict setObject:[self getImage:uriDict[@"hostName"]] forKey:@"image"];
+            });
+            [oneDayUri addObject:uriDict];
+        }
+        [self.dayArr addObject:oneDayUri];
+        
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.searchTableView reloadData];
+        });//
+    }
+    NSLog(@"self.day arr count %ld",self.dayArr.count);
+}
+//
+-(UIImage*)getImage:(NSString*)hostName{
+    NSLog(@"getImage");
+    
+    __block UIImage *img;
+    if(self.urlToImageDict[hostName]){
+        NSLog(@"one");
+        return self.urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
+    }else{
+        
+        
+        NSLog(@"two");
+        __block NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
+        NSLog(@"iconUrl %@",iconUrl);
+        img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+        if(!img){
+            NSLog(@"three");
+            iconUrl = [NSString stringWithFormat:@"https://%@/favicon.ico", hostName];
+            img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+            
+        }
+        if(!img){
+            NSLog(@"four");
+            img = [UIImage imageNamed:@"help-icon"];
+        }
+        NSLog(@"five");
+        self.urlToImageDict[hostName] = img;
+        
+        return img;
+    }
+}
 
 
 
+- (void)initializeSearchController {
+    
+
+    UITableViewController *searchResultsController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
+    
+    searchResultsController.tableView.dataSource = self;
+    
+    searchResultsController.tableView.delegate = self;
+    
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:searchResultsController];
+    
+    self.definesPresentationContext = YES;
+    
+    self.searchController.searchBar.frame = CGRectMake(self.searchController.searchBar.frame.origin.x, self.searchController.searchBar.frame.origin.y, self.searchController.searchBar.frame.size.width, 44.0);
+    
+    self.searchController.searchBar.tintColor = [UIColor whiteColor];
+    
+    self.tableView.tableHeaderView = self.searchController.searchBar;
+    
+    self.searchController.searchResultsUpdater = self;
+    
+    self.searchController.searchBar.delegate = self;
+    self.searchTableView = ((UITableViewController *)self.searchController.searchResultsController).tableView;
+    [self.searchTableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
+    
+    
+}
 
 @end

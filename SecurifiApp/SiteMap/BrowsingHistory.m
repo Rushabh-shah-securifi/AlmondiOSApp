@@ -20,17 +20,12 @@
         NSArray *alldayArr = dict1[dates];
         NSLog(@"\n alldayArr alldayDict %@",alldayArr);
         NSMutableArray *oneDayUri = [[NSMutableArray alloc]init];
-        for (NSDictionary *uriDict in alldayArr) {
-            NSMutableDictionary *uriInfoDict = [NSMutableDictionary new];
+        for (NSMutableDictionary *uriDict in alldayArr) {
             
-            //            [uriDict setObject:@"sddddd" forKey:@"image"];
-            [uriInfoDict setObject:uriDict[@"hostName"] forKey:@"hostName"];
-            [uriInfoDict setObject:uriDict[@"count"] forKey:@"count"];
-            [uriInfoDict setObject:[NSDate getDateFromEpoch:uriDict[@"Epoc"]] forKey:@"TimeEpoc"];
             dispatch_async(imageDownloadQueue,^(){
-                [uriInfoDict setObject:[self getImage:uriDict[@"hostName"]] forKey:@"image"];
+                [uriDict setObject:[self getImage:uriDict[@"hostName"]] forKey:@"image"];
             });
-            [oneDayUri addObject:uriInfoDict];
+            [oneDayUri addObject:uriDict];
         }
         [dayArr addObject:oneDayUri];
         dispatch_async(dispatch_get_main_queue(), ^() {
@@ -63,7 +58,7 @@
         }
         if(!img){
             NSLog(@"four");
-            img = [UIImage imageNamed:@"Mail_icon"];
+            img = [UIImage imageNamed:@"help-icon"];
         }
         NSLog(@"five");
         self.urlToImageDict[hostName] = img;
