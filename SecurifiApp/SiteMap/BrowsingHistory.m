@@ -9,12 +9,13 @@
 #import "BrowsingHistory.h"
 @interface BrowsingHistory ()
 @property (nonatomic) NSMutableDictionary *urlToImageDict;
+@property (nonatomic) NSMutableData *responseData;
 @end
 @implementation BrowsingHistory
 -(void)getBrowserHistoryImages:(NSDictionary *)historyDict dispatchQueue:(dispatch_queue_t)imageDownloadQueue dayArr:(NSMutableArray *)dayArr{
 //    self.dayArr = [[NSMutableArray alloc]init];
     //    dayArr = [historyDict[@"Data"] all]
-    NSLog(@"historyDict %@",historyDict[@"Data"]);
+    NSLog(@"historyDict:-- %@",historyDict[@"Data"]);
     NSDictionary *dict1 = historyDict[@"Data"];
     for (NSString *dates in [dict1 allKeys]) {
         NSArray *alldayArr = dict1[dates];
@@ -28,11 +29,9 @@
             [oneDayUri addObject:uriDict];
         }
         [dayArr addObject:oneDayUri];
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            //call self.delegate reloadtable
-            [self.delegate reloadTable];
-        });//
+        
     }
+        [self.delegate reloadTable];
 }
 //
 -(UIImage*)getImage:(NSString*)hostName{
@@ -66,6 +65,4 @@
         return img;
     }
 }
-
-
 @end

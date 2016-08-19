@@ -93,10 +93,9 @@
     // Dispose of any resources that can be recreated.
 }
 - (void)initializeNotification{
-    NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
     
-    [notification addObserver:self selector:@selector(onImageFetch:) name:NOTIFICATION_IMAGE_FETCH object:nil];
 }
+#pragma mark HttpReqDelegateMethods
 -(void)sendHttpRequest:(NSString *)startTag endTag:(NSString *)endTag{// make it paramater CMAC AMAC StartTag EndTag
     //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
     
@@ -139,10 +138,9 @@
 
 //    /*post notification for read database history and */
 //    /*after insert again send request untill response is not null*/
-//    [self upateBrowsingTable];
+
 //    [self getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistory]];
     BrowsingHistory *Bhistory =[[BrowsingHistory alloc]init];
-    //    [self getBrowserHistoryImages:self.historyDict];
     Bhistory.delegate = self;
     [Bhistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistory] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
     NSLog(@"end tag = %@",endTag);
@@ -176,14 +174,6 @@
         NSLog(@"sending http req");
     }
 }
--(void)upateBrowsingTable{
-    BrowsingHistory *Bhistory =[[BrowsingHistory alloc]init];
-    
-    Bhistory.delegate = self;
-    NSLog(@"dbDict %@",[BrowsingHistoryDataBase getAllBrowsingHistory]);
-    [Bhistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistory] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
-}
-#pragma mark parser methods
 #pragma mark table and search delegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 40;
@@ -209,7 +199,6 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"cell for row");
     HistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"HistorytableCell" forIndexPath:indexPath];
     if (cell == nil){
         cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HistorytableCell"];
@@ -253,14 +242,14 @@
    
     NSDate *date = [NSDate convertStirngToDate:str];
      NSLog(@"date = %@",date);
-    
-    /*
-     historyDict[@"Data"]);
-     NSDictionary *dict1 = historyDict[@"Data"];
-     for (NSString *dates in [dict1 allKeys]
-                                                                */
+
     NSString *headerDate = [date getDayMonthFormat];
-    label.text = section == 0? [NSString stringWithFormat:@"Today, %@",headerDate]: headerDate;
+    NSLog(@"today date %@ == %@",[BrowsingHistoryDataBase getTodayDate],@"10-8-2016");
+    if([str isEqualToString:@"10-8-2016"])
+        label.text = [NSString stringWithFormat:@"Today, %@",headerDate];
+    else
+        label.text = headerDate;
+    
     label.textColor = [UIColor grayColor];
     [view addSubview:label];
     
@@ -277,15 +266,10 @@
 }
 
 #pragma mark click handler
-- (void)onSearchButton1{
-    dispatch_async(dispatch_get_global_queue(0,0), ^{
-//        [self requestForNextHistoryEdit];
-    });
-}
 - (void)onSearchButton{
 //    [BrowsingHistoryDataBase todaySearch];
 //    [BrowsingHistoryDataBase LastHourSearch];
-    
+//    
     
     SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
@@ -300,85 +284,6 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.browsingTable reloadData];
     });
-}
-
-#pragma mark notification call backs
--(void)onImageFetch:(id)sender{
-    NSLog(@"onImageFetch");
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.browsingTable reloadData];
-    });
-}
-//-(NSDate *)getDateFromString:(NSArray *)dateArr{
-//    
-//    for (NSString *dateArr in dateArr) {
-//        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-//        [formatter setDateFormat:@"dd-MM-yyyy"];
-//        NSDate *date = [formatter dateFromString:dateArr];
-//    }
-//    
-//    return date;
-//}
-//-(NSMutableArray *)getDateSortedArr:(NSArray *)dateArr{
-//     NSMutableArray *myMutableArray = [NSMutableArray new];
-//    
-//    myMutableArray = [NSMutableArray arrayWithArray:dateArr];
-//    
-//    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"beginDate" ascending:FALSE];
-//    [myMutableArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-//}
--(void)getBrowserHistoryImages:(NSDictionary *)historyDict{
-    self.dayArr = [[NSMutableArray alloc]init];
-    //    dayArr = [historyDict[@"Data"] all]
-    NSLog(@"historyDict data... %@",historyDict[@"Data"]);
-    NSDictionary *dict1 = historyDict[@"Data"];
-
-    for (NSString *dates in [dict1 allKeys]) {
-        NSMutableArray *alldayArr = dict1[dates];
-
-        NSMutableArray *oneDayUri = [[NSMutableArray alloc]init];
-        for (NSMutableDictionary *uriDict in alldayArr)
-        {
-            dispatch_async(self.imageDownloadQueue,^(){
-                [uriDict setObject:[self getImage:uriDict[@"hostName"]] forKey:@"image"];
-            });
-            
-            [oneDayUri addObject:uriDict];
-        }
-        [self.dayArr addObject:oneDayUri];
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.browsingTable reloadData];
-        });//
-    }
-}
-//
--(UIImage*)getImage:(NSString*)hostName{
-    NSLog(@"getImage");
-    
-    __block UIImage *img;
-    if(self.urlToImageDict[hostName]){
-        NSLog(@"one");
-        return self.urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
-    }else{
-        NSLog(@"two");
-        __block NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
-        NSLog(@"iconUrl %@",iconUrl);
-        img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
-        if(!img){
-            NSLog(@"three");
-            iconUrl = [NSString stringWithFormat:@"https://%@/favicon.ico", hostName];
-            img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
-            
-        }
-        if(!img){
-            NSLog(@"four");
-            img = [UIImage imageNamed:@"help-icon"];
-        }
-        NSLog(@"five");
-        self.urlToImageDict[hostName] = img;
-        
-        return img;
-    }
 }
 
 

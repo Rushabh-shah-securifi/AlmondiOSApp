@@ -128,7 +128,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     else{
         NSLog(@"[self.historyDict allKeys] %@",[self.historyDict[@"Data"] allKeys]);
         NSString *str;
-        if([self.historyDict[@"Data"] allKeys] != NULL)
+        if([self.historyDict[@"Data"] allKeys].count >0 )
         str = [[self.historyDict[@"Data"] allKeys] objectAtIndex:section];
         NSLog(@"str date string %@",str);
         NSDate *date = [NSDate convertStirngToDate:str];
@@ -163,9 +163,11 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
             [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row]hideItem:YES];
     }
     else {
+        NSLog(@"self.dayArr count = %ld",self.dayArr.count);
+        if(self.dayArr.count > 0){
         NSArray *browsHist = self.dayArr[indexPath.section];
         [cell setCell:browsHist[indexPath.row] hideItem:NO];
-
+        }
     }
     
     return cell;
@@ -186,6 +188,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         }
     }
 }
+#pragma mark searchDelegate methods
 -(void)setSearchpattenMethod:(SearchPatten)searchpatten{
     self.searchPatten = searchpatten;
     self.searchController.searchBar.text = @" ";
@@ -256,10 +259,9 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
     [self getHistoryFromDB:searchString];
     BrowsingHistory *Bhistory =[[BrowsingHistory alloc]init];
-//    [self getBrowserHistoryImages:self.historyDict];
     Bhistory.delegate = self;
+    [self.dayArr removeAllObjects];
     [Bhistory getBrowserHistoryImages:self.historyDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
-//    [self.searchTableView reloadData];
     
     [searchBar setShowsCancelButton:NO animated:YES];
 }
@@ -313,24 +315,25 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 
 -(void)getHistoryFromDB:(NSString *)searchString{
     NSLog(@"self.searchPatten %ld..%@",(long)self.searchPatten,searchString);
+    
     if(self.searchPatten == RecentSearch){
         self.historyDict = [BrowsingHistoryDataBase getSearchString:@"All" andSearchSting:searchString];
     }
     else if (self.searchPatten == WeekDaySearch){
-        self.historyDict = [BrowsingHistoryDataBase getManualString:@"weekDay" andSearchSting:searchString];
+        self.historyDict = [BrowsingHistoryDataBase weekDaySearch:searchString];
         NSLog(@"self.historyDict weekDay %@",self.historyDict);
     }
     else if(self.searchPatten == TodaySearch){
         self.historyDict = [BrowsingHistoryDataBase todaySearch];
     }
     else if(self.searchPatten == DateSearch){
-        self.historyDict = [BrowsingHistoryDataBase getManualString:@"monthDay" andSearchSting:searchString];
+        self.historyDict = [BrowsingHistoryDataBase DaySearch:searchString];
     }
     else if(self.searchPatten == LastHourSearch){
         self.historyDict = [BrowsingHistoryDataBase LastHourSearch];
     }
     else if(self.searchPatten == WeekSearch){
-        self.historyDict = [BrowsingHistoryDataBase getManualString:@"lastWeek" andSearchSting:searchString];
+        self.historyDict = [BrowsingHistoryDataBase ThisWeekSearch];
     }
 }
 #pragma mark parser methods
@@ -340,63 +343,6 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         [self.searchTableView reloadData];
     });
 }
--(void)getBrowserHistoryImages:(NSDictionary *)historyDict{
-    [self.dayArr removeAllObjects];
-    NSLog(@"historyDict data... %@",historyDict[@"Data"]);
-    NSDictionary *dict1 = historyDict[@"Data"];
-    for (NSString *dates in [dict1 allKeys]) {
-        NSArray *alldayArr = dict1[dates];
-        NSMutableArray *oneDayUri = [[NSMutableArray alloc]init];
-        for (NSMutableDictionary *uriDict in alldayArr)
-
-        {
-           
-            dispatch_async(self.imageDownloadQueue,^(){
-                [uriDict setObject:[self getImage:uriDict[@"hostName"]] forKey:@"image"];
-            });
-            [oneDayUri addObject:uriDict];
-        }
-        [self.dayArr addObject:oneDayUri];
-        
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.searchTableView reloadData];
-        });//
-    }
-    NSLog(@"self.day arr count %ld",self.dayArr.count);
-}
-//
--(UIImage*)getImage:(NSString*)hostName{
-    NSLog(@"getImage");
-    
-    __block UIImage *img;
-    if(self.urlToImageDict[hostName]){
-        NSLog(@"one");
-        return self.urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
-    }else{
-        
-        
-        NSLog(@"two");
-        __block NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
-        NSLog(@"iconUrl %@",iconUrl);
-        img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
-        if(!img){
-            NSLog(@"three");
-            iconUrl = [NSString stringWithFormat:@"https://%@/favicon.ico", hostName];
-            img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
-            
-        }
-        if(!img){
-            NSLog(@"four");
-            img = [UIImage imageNamed:@"help-icon"];
-        }
-        NSLog(@"five");
-        self.urlToImageDict[hostName] = img;
-        
-        return img;
-    }
-}
-
-
 
 - (void)initializeSearchController {
     
