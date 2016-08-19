@@ -18,6 +18,7 @@
 #define TAB_BAR_SCENES @"Scenes"
 #define TAB_BAR_RULES @"Rules"
 #define TAB_BAR_DASHBOARD @"Dashboard"
+#define TAB_BAR_HELPCENTER @"HelpCenter"
 
 typedef NS_ENUM(int, TabBarMode) {
     TabBarMode_cloud = 1,
@@ -33,6 +34,7 @@ typedef NS_ENUM(int, TabBarMode) {
 @property(nonatomic) UIViewController *scenesTab;
 @property(nonatomic) UIViewController *rulesTab;
 @property(nonatomic) UIViewController *dashboardTab;
+@property(nonatomic) UIViewController *helpTab;
 
 @property(nonatomic) UIViewController *scoreboardTab;
 @property(nonatomic) BOOL isDismissed;
@@ -152,7 +154,7 @@ typedef NS_ENUM(int, TabBarMode) {
                  self.scenesTab,
                  self.rulesTab,
                  self.routerTab,
-                 
+                 self.helpTab
                  ];
     }
     else {
@@ -173,7 +175,7 @@ typedef NS_ENUM(int, TabBarMode) {
              self.scenesTab,
              self.rulesTab,
              self.routerTab,
-             
+             self.helpTab
              ];
 }
 
@@ -264,6 +266,18 @@ typedef NS_ENUM(int, TabBarMode) {
     return _dashboardTab;
 }
 
+- (UIViewController *)helpTab {
+    if (!_helpTab) {
+        NSLog(@"helpTab");
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HelpScreenStoryboard" bundle:nil];
+        DeviceListController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"HelpCenter"];
+        UIImage *icon = [UIImage imageNamed:@"help-icon"];
+//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
+        ctrl.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_HELPCENTER image:icon selectedImage:icon];
+        self.helpTab = ctrl;
+    }
+    return _helpTab;
+}
 
 - (UIViewController *)messageTab {
     if (!_messageTab) {

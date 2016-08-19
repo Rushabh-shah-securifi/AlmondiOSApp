@@ -11,18 +11,28 @@
 #import "HelpCenterTableViewCell.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "HelpItemsTableViewController.h"
+#import "SupportViewController.h"
 
 @interface HelpCenter ()
 @property NSArray *helpItems;
-@property (weak, nonatomic) IBOutlet UITableView *helpTableView;
+//@property (weak, nonatomic) IBOutlet UITableView *helpTableView;
 @end
 
 @implementation HelpCenter
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"Help Center";
     [self initializeData];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -48,6 +58,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    NSLog(@"section count: %d", self.helpItems.count);
     return self.helpItems.count;
 }
 
@@ -73,40 +84,46 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"section: %d", indexPath.section);
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HelpScreenStoryboard" bundle:nil];
-        HelpItemsTableViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"HelpItemsTableViewController"];
-        viewController.helpItem = [self.helpItems objectAtIndex:indexPath.section];
-        
-//        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
-//                                       initWithTitle:@"Back"
-//                                       style:UIBarButtonItemStylePlain
-//                                       target:nil
-//                                       action:nil];
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back_icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
-        self.navigationItem.backBarButtonItem = backButton;
-        [self.navigationController pushViewController:viewController animated:YES];
+        if(indexPath.section == 0 || indexPath.section ==1){//guide, helptopics
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HelpScreenStoryboard" bundle:nil];
+            HelpItemsTableViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"HelpItemsTableViewController"];
+            viewController.helpItem = [self.helpItems objectAtIndex:indexPath.section];
+
+            [self.navigationController pushViewController:viewController animated:YES];
+        }
+        else if(indexPath.section == 2){ //support
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HelpScreenStoryboard" bundle:nil];
+            SupportViewController *supportContorller = [storyboard instantiateViewControllerWithIdentifier:@"SupportViewController"];
+            [self.navigationController pushViewController:supportContorller animated:YES];
+        }
     });
 }
 
-- (void)setCustomNavigationBackButton
-{
+
+#pragma button taps
+- (IBAction)onBackBtnTap:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)onSearchBtnTap:(id)sender {
     
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *backBtnImage = [CommonMethods imageNamed:@"back_icon" withColor:[UIColor grayColor]];
-    [backBtn setBackgroundImage:backBtnImage forState:UIControlStateNormal];
-    [backBtn addTarget:self action:@selector(goback) forControlEvents:UIControlEventTouchUpInside];
-    backBtn.frame = CGRectMake(0, 0, 54, 30);
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithCustomView:backBtn] ;
-    self.navigationItem.leftBarButtonItem = backButton;
-    
-    /*
-    UIImage *backBtn = [UIImage imageNamed:@"back_icon"];
-    backBtn = [backBtn imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.navigationItem.backBarButtonItem.title=@"";
-    self.navigationController.navigationBar.backIndicatorImage = backBtn;
-    self.navigationController.navigationBar.backIndicatorTransitionMaskImage = backBtn;
-     */
+}
+
+- (IBAction)onProductsButtonTap:(id)sender {
+    NSURL *url = [NSURL URLWithString:@"https://www.securifi.com/rg/products"];
+    [[UIApplication sharedApplication] openURL:url];
+}
+
+- (IBAction)onWifiButtonTap:(id)sender {
+    NSURL *url = [NSURL URLWithString:@"https://www.securifi.com/rg/wifi"];
+    [[UIApplication sharedApplication] openURL:url];
+}
+
+- (IBAction)onSmartHomeButtonTap:(id)sender {
+    NSURL *url = [NSURL URLWithString:@"https://www.securifi.com/rg/smart-home"];
+    [[UIApplication sharedApplication] openURL:url];
 }
 
 @end

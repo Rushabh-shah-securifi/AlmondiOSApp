@@ -32,6 +32,4 @@
 
 - (void)addGotItView:(CGRect)frame;
 
-- (void)onSkipTapDelegate;
-
 @end

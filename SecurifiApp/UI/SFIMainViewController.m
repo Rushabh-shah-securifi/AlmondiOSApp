@@ -379,7 +379,11 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)ctrl {
     NSString *title = ctrl.tabBarItem.title;
-
+    
+    if (tabBarController.moreNavigationController == ctrl) {
+        title = ctrl.title;
+    }
+    
     if ([title isEqualToString:TAB_BAR_SENSORS]) {
         [[Analytics sharedInstance] markSensorScreen];
     }

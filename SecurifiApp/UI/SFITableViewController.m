@@ -953,6 +953,14 @@
 
 -(void)initializeHelpScreensfirst:(NSString *)itemName{
     NSLog(@"nav view heigt: %f, view ht: %f", self.navigationController.view.frame.size.height, self.view.frame.size.height);
+    if([itemName isEqualToString:@"Devices"])
+        [[SecurifiToolkit sharedInstance] setScreenDefault:@"devices"];
+    else if([itemName isEqualToString:@"Scenes"])
+        [[SecurifiToolkit sharedInstance] setScreenDefault:@"scenes"];
+    else if([itemName isEqualToString:@"Rules"])
+        [[SecurifiToolkit sharedInstance] setScreenDefault:@"rules"];
+    else if([itemName isEqualToString:@"WiFi"])
+        [[SecurifiToolkit sharedInstance] setScreenDefault:@"wifi"];
     
     self.helpScreensObj = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
     self.helpScreensObj.delegate = self;
@@ -975,7 +983,7 @@
     [self.maskView setBackgroundColor:[SFIColors maskColor]];
     [self.navigationController.view addSubview:self.maskView];
     
-    int helpViewHeight = 140;
+    int helpViewHeight = 155;
     self.helpScreensObj.frame = CGRectMake(0, self.navigationController.view.frame.size.height - helpViewHeight, self.view.frame.size.width, helpViewHeight);
     [self.helpScreensObj addGotItView:CGRectMake(0, 0, self.view.frame.size.width, helpViewHeight)];
     [self.maskView addSubview:self.helpScreensObj];

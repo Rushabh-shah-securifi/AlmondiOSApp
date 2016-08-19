@@ -68,8 +68,10 @@ int mii;
     [self initializeNotifications];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if([self.toolkit isScreenShown:@"devices"] == NO)
+            [self initializeHelpScreensfirst:@"Devices"];
+        
         [self.tableView reloadData];
-        [self initializeHelpScreensfirst:@"Devices"];
         [self checkToShowUpdateScreen];
     });
 }

@@ -11,6 +11,7 @@
 #import "CommonMethods.h"
 #import "SFIColors.h"
 
+//This class is linked with multiple cells
 @interface HelpCenterTableViewCell()
 //help center cell
 @property (weak, nonatomic) IBOutlet UIImageView *leftImg;
@@ -19,6 +20,12 @@
 //help center items cell
 @property (weak, nonatomic) IBOutlet UILabel *itemLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *itemImg;
+
+
+//support
+@property (weak, nonatomic) IBOutlet UIImageView *flagImgView;
+@property (weak, nonatomic) IBOutlet UIImageView *flagImg2;
+@property (weak, nonatomic) IBOutlet UILabel *numberLbl;
 
 @end
 
@@ -44,6 +51,18 @@
 - (void)setUpHelpItemCell:(NSDictionary*)helpItem row:(int)row{
     self.itemLabel.text = [[helpItem[ITEMS] objectAtIndex:row] valueForKey:@"name"];
     self.itemImg.image = [CommonMethods imageNamed:helpItem[S_ICON] withColor:[UIColor grayColor]];
+}
+
+- (void)setUpSupportCell:(NSDictionary*)countryNumber row:(NSInteger)row{
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    if(row == 0){
+        self.flagImgView.hidden = NO;
+        self.flagImgView.image = [UIImage imageNamed:@"us"];
+    }else{
+        self.flagImgView.hidden = YES;
+    }
+    self.flagImg2.image = [UIImage imageNamed:countryNumber.allKeys.firstObject];
+    self.numberLbl.text = countryNumber.allValues.firstObject;
 }
 
 @end

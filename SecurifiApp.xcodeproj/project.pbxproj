@@ -482,6 +482,8 @@
 		CEF6F5071C92CD2400C68975 /* GenericIndexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */; };
 		CEF6F50A1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
 		CEF6F50B1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
+		F400B6C11D65ECCD00DDEE50 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */; };
+		F400B6C21D65ECCD00DDEE50 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */; };
 		F401B0731D2D241200F64CE2 /* ColorComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F401B0721D2D241200F64CE2 /* ColorComponentView.m */; };
 		F401B0741D2D241200F64CE2 /* ColorComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F401B0721D2D241200F64CE2 /* ColorComponentView.m */; };
 		F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
@@ -1079,6 +1081,8 @@
 		CEF6F5041C92CD2400C68975 /* GenericIndexUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericIndexUtil.h; sourceTree = "<group>"; };
 		CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericIndexUtil.m; sourceTree = "<group>"; };
 		CEF6F5081C92CD3D00C68975 /* deviceListJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = deviceListJson.json; path = ../deviceListJson.json; sourceTree = "<group>"; };
+		F400B6BF1D65ECCD00DDEE50 /* SupportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportViewController.h; sourceTree = "<group>"; };
+		F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportViewController.m; sourceTree = "<group>"; };
 		F401B0711D2D241200F64CE2 /* ColorComponentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorComponentView.h; sourceTree = "<group>"; };
 		F401B0721D2D241200F64CE2 /* ColorComponentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorComponentView.m; sourceTree = "<group>"; };
 		F426AE2B1D19515500AE60C8 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
@@ -2277,6 +2281,8 @@
 				F4D93AEF1D3F5C2500D55BD6 /* HelpCenterTableViewCell.m */,
 				F4D93AF51D3F882300D55BD6 /* HelpItemsTableViewController.h */,
 				F4D93AF61D3F882300D55BD6 /* HelpItemsTableViewController.m */,
+				F400B6BF1D65ECCD00DDEE50 /* SupportViewController.h */,
+				F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */,
 			);
 			path = HelpScreen;
 			sourceTree = "<group>";
@@ -2903,6 +2909,7 @@
 				842651AE1BE0C86C001F79C1 /* TimeText.m in Sources */,
 				1DF033F4DF8C6A502EB12289 /* ScoreboardTextEditorViewController.m in Sources */,
 				F4B876891D54653500DCF76F /* GenericIndexValue.m in Sources */,
+				F400B6C21D65ECCD00DDEE50 /* SupportViewController.m in Sources */,
 				1DF031DB440397B975511290 /* UIColor+GetHSB.m in Sources */,
 				F4B876691D54653500DCF76F /* ClientPropertiesViewController.m in Sources */,
 				CEF6F4EF1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */,
@@ -2947,6 +2954,7 @@
 				F4B876661D54653500DCF76F /* ClientPropertiesCell.m in Sources */,
 				1C7E7D8B1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
 				1C7E7DCF1A41A0990026F0BA /* SFITableViewController.m in Sources */,
+				F400B6C11D65ECCD00DDEE50 /* SupportViewController.m in Sources */,
 				1C7E7DD11A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				CEF6F4FE1C92CAD600C68975 /* RuleTextField.m in Sources */,
 				A5AC1E841CC7BA01009F362B /* RuleSceneUtil.m in Sources */,

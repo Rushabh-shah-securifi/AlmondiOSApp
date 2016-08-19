@@ -13,4 +13,6 @@
 - (void)setUpHelpCell:(NSDictionary *)helpItem;
 
 - (void)setUpHelpItemCell:(NSDictionary*)helpItem row:(int)row;
+
+- (void)setUpSupportCell:(NSDictionary *)countryNumber row:(NSInteger)row;
 @end

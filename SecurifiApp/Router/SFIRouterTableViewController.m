@@ -94,9 +94,6 @@ int mii;
     
     [self addRefreshControl];
     [self initializeRouterSummaryAndSettings];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self initializeHelpScreensfirst:@"WiFi"];
-    });
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -112,6 +109,8 @@ int mii;
     [self initializeAlmondData];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if([[SecurifiToolkit sharedInstance] isScreenShown:@"wifi"] == NO)
+            [self initializeHelpScreensfirst:@"WiFi"];
         [self checkToShowUpdateScreen];
         [self.tableView reloadData];
     });

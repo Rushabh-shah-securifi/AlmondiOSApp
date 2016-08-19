@@ -46,10 +46,6 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
-    // Do any additional setup after loading the view.
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self initializeHelpScreensfirst:@"Scenes"];
-    });
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -63,6 +59,9 @@
     [self initializeNotifications];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if([[SecurifiToolkit sharedInstance] isScreenShown:@"scenes"] == NO)
+            [self initializeHelpScreensfirst:@"Scenes"];
+        
         [self checkToShowUpdateScreen];
         [self.tableView reloadData];
     });

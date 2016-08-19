@@ -151,7 +151,7 @@
 }
 
 + (UIColor *)helpTextDescription{
-    return [UIColor colorFromHexString:@"444444"];
+    return [UIColor colorFromHexString:@"757575"];
 }
 
 + (UIColor *)helpPurpleColor{
