@@ -317,11 +317,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSLog(@"self.searchPatten %ld..%@",(long)self.searchPatten,searchString);
     
     if(self.searchPatten == RecentSearch){
-        self.historyDict = [BrowsingHistoryDataBase getSearchString:@"All" andSearchSting:searchString];
+        self.historyDict = [BrowsingHistoryDataBase getSearchString:searchString];
     }
     else if (self.searchPatten == WeekDaySearch){
         self.historyDict = [BrowsingHistoryDataBase weekDaySearch:searchString];
-        NSLog(@"self.historyDict weekDay %@",self.historyDict);
     }
     else if(self.searchPatten == TodaySearch){
         self.historyDict = [BrowsingHistoryDataBase todaySearch];
