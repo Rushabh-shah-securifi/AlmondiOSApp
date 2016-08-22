@@ -34,6 +34,7 @@
 @implementation RulesTableViewController
 CGPoint tablePoint;
 - (void)viewDidLoad {
+    self.needBackButton = YES;
     [super viewDidLoad];
     self.toolkit = [SecurifiToolkit sharedInstance];
     
@@ -258,19 +259,6 @@ CGPoint tablePoint;
     // Configure the cell...
     [cell.scrollView setContentOffset:CGPointMake(0,0) animated:YES];
     return cell;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, tableView.frame.size.width-20, 25)];
-    lbl.alpha = 0.95;
-    lbl.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:15.0f];
-    lbl.textAlignment = NSTextAlignmentCenter;
-    lbl.backgroundColor = [UIColor whiteColor];
-    lbl.numberOfLines = 0;
-    //    lbl.text = @"Triggers -> Actions";
-    return lbl;
-    
-    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

@@ -251,7 +251,7 @@
 #pragma mark ui methods
 +(void)addLineSeperator:(UIView*)view yPos:(int)ypos{
     UIView *lineSeperator = [[UIView alloc]initWithFrame:CGRectMake(0, ypos, view.frame.size.width, 1)];
-    lineSeperator.backgroundColor = [UIColor lightGrayColor];
+    lineSeperator.backgroundColor = [SFIColors lineColor];
     [view addSubview:lineSeperator];
 }
 

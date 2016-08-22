@@ -66,8 +66,14 @@
     SWRevealViewController *revealController = [self revealViewController];
     
     UIBarButtonItem *revealButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"drawer.png"] style:UIBarButtonItemStylePlain target:revealController action:@selector(revealToggle:)];
-    self.navigationItem.leftBarButtonItem = revealButton;
-    self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
+    if(self.needBackButton){
+        
+    }
+    else{
+        self.navigationItem.leftBarButtonItem = revealButton;
+        self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
+    }
+    
     self.enableDrawer = _enableDrawer; // in case it was set before view loaded
     
     if (enableLocalNetworking) {

@@ -166,6 +166,10 @@
     return [UIColor colorFromHexString:@"e91e63"];
 }
 
++ (UIColor *)lineColor{
+    return [UIColor colorFromHexString:@"E5E5E5"];
+}
+
 + (UIColor *)getHelpCenterColor:(NSString*)color{
     if([color isEqualToString:@"homemode"])
         return [self lightBlueColor];

@@ -575,6 +575,12 @@
 		F4D93AF41D3F629B00D55BD6 /* helpCenterJson.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D93AF21D3F629B00D55BD6 /* helpCenterJson.json */; };
 		F4D93AF71D3F882300D55BD6 /* HelpItemsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D93AF61D3F882300D55BD6 /* HelpItemsTableViewController.m */; };
 		F4D93AF81D3F882300D55BD6 /* HelpItemsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D93AF61D3F882300D55BD6 /* HelpItemsTableViewController.m */; };
+		F4EA081D1D6AD9F900D6CC28 /* More.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4EA081B1D6AD9F900D6CC28 /* More.storyboard */; };
+		F4EA081E1D6AD9F900D6CC28 /* More.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4EA081B1D6AD9F900D6CC28 /* More.storyboard */; };
+		F4EA08221D6ADB2C00D6CC28 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EA08211D6ADB2C00D6CC28 /* MoreViewController.m */; };
+		F4EA08231D6ADB2C00D6CC28 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EA08211D6ADB2C00D6CC28 /* MoreViewController.m */; };
+		F4EA08261D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EA08251D6ADBFF00D6CC28 /* MoreCellTableViewCell.m */; };
+		F4EA08271D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EA08251D6ADBFF00D6CC28 /* MoreCellTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1215,6 +1221,11 @@
 		F4D93AF21D3F629B00D55BD6 /* helpCenterJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = helpCenterJson.json; path = ../helpCenterJson.json; sourceTree = "<group>"; };
 		F4D93AF51D3F882300D55BD6 /* HelpItemsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpItemsTableViewController.h; sourceTree = "<group>"; };
 		F4D93AF61D3F882300D55BD6 /* HelpItemsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpItemsTableViewController.m; sourceTree = "<group>"; };
+		F4EA081C1D6AD9F900D6CC28 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = More.storyboard; sourceTree = "<group>"; };
+		F4EA08201D6ADB2C00D6CC28 /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
+		F4EA08211D6ADB2C00D6CC28 /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreViewController.m; sourceTree = "<group>"; };
+		F4EA08241D6ADBFF00D6CC28 /* MoreCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreCellTableViewCell.h; sourceTree = "<group>"; };
+		F4EA08251D6ADBFF00D6CC28 /* MoreCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreCellTableViewCell.m; sourceTree = "<group>"; };
 		F65023B0DECE8F15E5353C48 /* Pods-Almond.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Almond.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Almond/Pods-Almond.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1308,6 +1319,7 @@
 				1C7E7E2D1A41A26A0026F0BA /* Base.lproj */,
 				F4B876391D54646500DCF76F /* JsonFiles */,
 				F4D93AD61D38E5BB00D55BD6 /* HelpScreen */,
+				F4EA081F1D6ADB0500D6CC28 /* More */,
 				CE40BF081D225791007C2148 /* SiteMap */,
 				2A4C24341D0FC3BF001191E8 /* Dashboard */,
 				CEF6F4AA1C92CAD600C68975 /* Rules */,
@@ -1596,12 +1608,13 @@
 				1C7E7E2E1A41A26A0026F0BA /* AccountsStoryboard_iPhone.storyboard */,
 				1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */,
 				CE57E52D1D1BB82800493460 /* SiteMapStoryBoard.storyboard */,
+				F4D93ADB1D390B4B00D55BD6 /* HelpScreenStoryboard.storyboard */,
+				F4B875591D5383B500DCF76F /* Mesh.storyboard */,
+				F4EA081B1D6AD9F900D6CC28 /* More.storyboard */,
+				F4B876491D54653500DCF76F /* DeviceHeaderView.xib */,
 				CE57E5301D1BBCC400493460 /* HistoryCell.xib */,
 				F4D93ACF1D38DDFE00D55BD6 /* HelpScreen.xib */,
-				F4D93ADB1D390B4B00D55BD6 /* HelpScreenStoryboard.storyboard */,
 				F4B8754D1D5382FF00DCF76F /* mesh.xib */,
-				F4B875591D5383B500DCF76F /* Mesh.storyboard */,
-				F4B876491D54653500DCF76F /* DeviceHeaderView.xib */,
 			);
 			path = Base.lproj;
 			sourceTree = "<group>";
@@ -2285,6 +2298,17 @@
 			path = HelpScreen;
 			sourceTree = "<group>";
 		};
+		F4EA081F1D6ADB0500D6CC28 /* More */ = {
+			isa = PBXGroup;
+			children = (
+				F4EA08201D6ADB2C00D6CC28 /* MoreViewController.h */,
+				F4EA08211D6ADB2C00D6CC28 /* MoreViewController.m */,
+				F4EA08241D6ADBFF00D6CC28 /* MoreCellTableViewCell.h */,
+				F4EA08251D6ADBFF00D6CC28 /* MoreCellTableViewCell.m */,
+			);
+			path = More;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2433,6 +2457,7 @@
 				A58DB3E71BB1960900717C02 /* termsofuse.html in Resources */,
 				A58DB3CB1BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB43A1BB2DA3F00717C02 /* Scenes_Iphone.strings in Resources */,
+				F4EA081E1D6AD9F900D6CC28 /* More.storyboard in Resources */,
 				F4D93AE31D390D2300D55BD6 /* Common-Images.xcassets in Resources */,
 				A58DB3F71BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB48A1BB3CD6800717C02 /* InfoPlist.strings in Resources */,
@@ -2559,6 +2584,7 @@
 				A58DB2EF1BB16B9F00717C02 /* Localizable.strings in Resources */,
 				846414E01B736B80008AB07F /* AvenirLTStd-HeavyOblique.otf in Resources */,
 				846414DD1B736B80008AB07F /* AvenirLTStd-Book.otf in Resources */,
+				F4EA081D1D6AD9F900D6CC28 /* More.storyboard in Resources */,
 				A5C68C991C92D93000110B74 /* GenericIndexesData.json in Resources */,
 				A58DB4711BB3CD5200717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB32C1BB16EAF00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
@@ -2913,10 +2939,12 @@
 				CEF6F4EF1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */,
 				CEF6F4F11C92CAD600C68975 /* CommonMethods.m in Sources */,
 				1DF038A445EB0F3A6476DC32 /* SFIHuePickerView.m in Sources */,
+				F4EA08271D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */,
 				1C709A0A1B5A3157007D397C /* SFICloudLinkViewController.m in Sources */,
 				1DF0385A73D7AE7E9208F510 /* UIColor+Securifi.m in Sources */,
 				CEF6F4F31C92CAD600C68975 /* CrossButton.m in Sources */,
 				CEF6F4F51C92CAD600C68975 /* DimmerButton.m in Sources */,
+				F4EA08231D6ADB2C00D6CC28 /* MoreViewController.m in Sources */,
 				1DF03BDF11E412D1A07CE913 /* TableHeaderView.m in Sources */,
 				1DF038979554DAC51D42A7C8 /* SFIRouterSendLogsTableViewCell.m in Sources */,
 				1DF03DD5059A3900235BD95B /* SFIRouterVersionTableViewCell.m in Sources */,
@@ -3040,6 +3068,7 @@
 				F4B8766C1D54653500DCF76F /* DeviceEditViewController.m in Sources */,
 				1C2F60981B69E69D001CCA34 /* SFIScenesTableViewCell.m in Sources */,
 				CEF6F4DC1C92CAD600C68975 /* AddTriggerAndAddAction.m in Sources */,
+				F4EA08221D6ADB2C00D6CC28 /* MoreViewController.m in Sources */,
 				1C2F15261BA7FB67009DB175 /* SFIMessageViewController.m in Sources */,
 				A5217EF61CBE29810089A8C3 /* SFILogsViewController.m in Sources */,
 				CE3EDAF31D4742EC00C153A6 /* SearchTableViewController.m in Sources */,
@@ -3085,6 +3114,7 @@
 				F4B875471D5382D500DCF76F /* MeshSetupViewController.m in Sources */,
 				F4B8767A1D54653500DCF76F /* ListButtonView.m in Sources */,
 				F4D93AF71D3F882300D55BD6 /* HelpItemsTableViewController.m in Sources */,
+				F4EA08261D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */,
 				1DF031024A2F8810074C455A /* TemperatureView.m in Sources */,
 				1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */,
 				1DF0333217E77760651C98F7 /* ScoreboardNetworkSettingsViewController.m in Sources */,
@@ -4866,6 +4896,14 @@
 				F4D93ADC1D390B4B00D55BD6 /* Base */,
 			);
 			name = HelpScreenStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+		F4EA081B1D6AD9F900D6CC28 /* More.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F4EA081C1D6AD9F900D6CC28 /* Base */,
+			);
+			name = More.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

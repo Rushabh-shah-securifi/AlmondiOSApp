@@ -755,13 +755,6 @@ int mii;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HelpScreenStoryboard" bundle:nil];
     HelpCenter *helpCenter = [storyboard instantiateViewControllerWithIdentifier:@"HelpCenter"];
     
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
-                                   initWithTitle:@"Back"
-                                   style:UIBarButtonItemStylePlain
-                                   target:nil
-                                   action:nil];
-    backButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back_icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:helpCenter animated:YES];
 }
 

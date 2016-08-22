@@ -195,11 +195,11 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="146"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aje-gw-sXH">
-                                            <rect key="frame" x="0.0" y="144" width="600" height="2"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aje-gw-sXH" userLabel="bottomGrayView">
+                                            <rect key="frame" x="0.0" y="140" width="600" height="5"/>
                                             <color key="backgroundColor" red="0.85490196080000003" green="0.85490196080000003" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="2" id="I5H-MN-CIa"/>
+                                                <constraint firstAttribute="height" constant="5" id="I5H-MN-CIa"/>
                                             </constraints>
                                         </view>
                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="IeF-d6-F28">
@@ -212,10 +212,17 @@
                                                 <action selector="onActivateButtonTap:" destination="jnu-CP-wWH" eventType="valueChanged" id="wpS-NH-0Or"/>
                                             </connections>
                                         </switch>
-                                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="md5-Cg-HTy">
-                                            <rect key="frame" x="0.0" y="35" width="600" height="109"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lwS-HU-v5V" userLabel="lineView">
+                                            <rect key="frame" x="10" y="33" width="579" height="1"/>
+                                            <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="109" id="6CA-N7-d7H"/>
+                                                <constraint firstAttribute="height" constant="1" id="5g9-Yo-cKL"/>
+                                            </constraints>
+                                        </view>
+                                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="md5-Cg-HTy">
+                                            <rect key="frame" x="0.0" y="35" width="600" height="105"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="105" id="6CA-N7-d7H"/>
                                             </constraints>
                                         </scrollView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKn-kv-oIc">
@@ -252,6 +259,9 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="aje-gw-sXH" secondAttribute="trailing" id="0F0-jU-4Jk"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="lwS-HU-v5V" secondAttribute="trailing" constant="3" id="1Cc-8U-OP7"/>
+                                        <constraint firstItem="lwS-HU-v5V" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leadingMargin" constant="2" id="1h3-9g-SMI"/>
+                                        <constraint firstItem="lwS-HU-v5V" firstAttribute="top" secondItem="eVB-up-CZ8" secondAttribute="bottom" constant="4" id="AM4-fr-5QV"/>
                                         <constraint firstItem="IeF-d6-F28" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" identifier="rtvid-19" id="HVy-pb-IWm"/>
                                         <constraint firstItem="aje-gw-sXH" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" id="J0r-i5-NX7"/>
                                         <constraint firstAttribute="trailing" secondItem="kIZ-nt-yDQ" secondAttribute="trailing" identifier="rtvid-22" id="Obq-E4-6qx"/>

@@ -233,8 +233,8 @@ static const int sceneNameFont = 15;
         [self.HUD hide:YES];
     });
 
-    NSString * success = [mainDict valueForKey:@"Success"];
-    if (![success isEqualToString:@"true"]) {
+    BOOL success = [mainDict[@"Success"] boolValue];
+    if (success == NO) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Oops") message:NSLocalizedString(@"scene.alert-msg.Sorry, There was some problem with this request, try later!", @"Sorry, There was some problem with this request, try again or later!")
                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles: nil];
         [alert show];

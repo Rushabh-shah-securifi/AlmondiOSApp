@@ -57,6 +57,7 @@
 // the user to tap to present the Notification Viewer.
 @property(nonatomic, readonly) BOOL enableNotificationsView;
 @property(nonatomic, readonly) BOOL enableNotificationsHomeAwayMode;
+@property(nonatomic)BOOL needBackButton;
 
 // Enabled by default; when NO, the Reveal button is disabled. Useful when the UI needs to be locked during updates.
 @property(nonatomic) BOOL enableDrawer;
