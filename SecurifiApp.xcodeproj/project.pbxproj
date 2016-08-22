@@ -673,7 +673,6 @@
 		1C7E7E2F1A41A26A0026F0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = AccountsStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		1C7E7E311A41A26A0026F0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = "Common-Localizable.strings"; sourceTree = "<group>"; };
 		1C7E7E331A41A26A0026F0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = "Common-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
-		1C7E7E351A41A26A0026F0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		1C7E7E371A41A26A0026F0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		1C996C771AB94E2800CB2C23 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		1C9B1D591A3EE9EF00097D8F /* HomeScreen-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "HomeScreen-Images.xcassets"; sourceTree = "<group>"; };
@@ -1595,7 +1594,6 @@
 				F4B875671D53886700DCF76F /* Scenes_Iphone.storyboard */,
 				F4B875691D53886700DCF76F /* SensorStoryBoard.storyboard */,
 				1C7E7E2E1A41A26A0026F0BA /* AccountsStoryboard_iPhone.storyboard */,
-				1C7E7E341A41A26A0026F0BA /* MainStoryboard_iPad.storyboard */,
 				1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */,
 				CE57E52D1D1BB82800493460 /* SiteMapStoryBoard.storyboard */,
 				CE57E5301D1BBCC400493460 /* HistoryCell.xib */,
@@ -3128,14 +3126,6 @@
 				1C7E7E331A41A26A0026F0BA /* Base */,
 			);
 			name = "Common-MainStoryboard_iPhone.strings";
-			sourceTree = "<group>";
-		};
-		1C7E7E341A41A26A0026F0BA /* MainStoryboard_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1C7E7E351A41A26A0026F0BA /* Base */,
-			);
-			name = MainStoryboard_iPad.storyboard;
 			sourceTree = "<group>";
 		};
 		1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */ = {
