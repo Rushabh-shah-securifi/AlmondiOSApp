@@ -4,42 +4,21 @@
                   "icon": "video_library_ic",
                   "color": "homemode",
                   "items": [{
-                            "name": "Generic Guide",
-                            "screencount": "3",
-                            "screens": [{
-                                        "title": "Notifications",
-                                        "description": "Notifications_desc",
-                                        "color" : "FFD893",
-                                        "image": "foreground"
-                                        }, {
-                                        "title": "Notifications",
-                                        "description": "Notifications_desc",
-                                        "color" : "FFD893",
-                                        "image": "foreground"
-                                        }, {
-                                        "title": "Notifications",
-                                        "description": "Notifications_desc",
-                                        "color" : "FFD893",
-                                        "image": "foreground"
-                                        }]
-                            },
-                            
-                            {
                             "name": "Welcome",
                             "screencount": "5",
                             "screens": [{
                                         "title": "Welcome",
-                                        "description": "Notifications_desc",
+                                        "description": "welcome_desc",
                                         "color" : "FFD893",
                                         "image": "h_almond_logo"
                                         }, {
                                         "title": "The_Dashboard",
-                                        "description": "Notifications_desc",
+                                        "description": "theDashboard_desc",
                                         "color" : "81D4FA",
                                         "image": "h_modes"
                                         }, {
                                         "title": "Almond_Modes",
-                                        "description": "Notifications_desc",
+                                        "description": "almond_modes_desc",
                                         "color" : "FFD893",
                                         "image": "h_home_away"
                                         }, {
@@ -49,7 +28,7 @@
                                         "image": "h_notifications"
                                         }, {
                                         "title": "Theres_More",
-                                        "description": "Notifications_desc",
+                                        "description": "more_desc",
                                         "color" : "FFD893",
                                         "image": "h_rules"
                                         }]
@@ -61,7 +40,7 @@
                             "screens": [{
                                         "title": "Take_a_pick",
                                         "description": "Take_a_pick_Desc",
-                                        "color" : "BAFFFF",
+                                        "color" : "80D8FF",
                                         "image": "h_sensorssmartdevices"
                                         }, {
                                         "title": "Adding_a_New_Device",
@@ -158,17 +137,17 @@
                                         "title": "Nothing",
                                         "description": "wifi_help",
                                         "color" : "FFB6A0",
-                                        "image": "foreground"
+                                        "image": "h_wifi_trigger_1"
                                         }, {
                                         "title": "Nothing",
                                         "description": "wifi_help1",
-                                        "color" : "FFB6A0",
-                                        "image": "foreground"
+                                        "color" : "FFD893",
+                                        "image": "h_rule_mean"
                                         }, {
                                         "title": "Nothing",
                                         "description": "wifi_help2",
-                                        "color" : "FFB6A0",
-                                        "image": "foreground"
+                                        "color" : "FFD893",
+                                        "image": "h_rules_wifi"
                                         }]
                             }
                             ]
@@ -180,8 +159,8 @@
                             "name": "The Dashboard",
                             "screencount": "1",
                             "screens": [{
-                                        "title": "Notifications",
-                                        "description": "Notifications_desc",
+                                        "title": "The_Dashboard",
+                                        "description": "help_topics_dashboard",
                                         "color" : "FFB6A0",
                                         "image": "foreground"
                                         }]
@@ -189,8 +168,8 @@
                             "name": "Managing Your Scenes",
                             "screencount": "1",
                             "screens": [{
-                                        "title": "Notifications",
-                                        "description": "Notifications_desc",
+                                        "title": "Explaining_Scenes",
+                                        "description": "Explaining_Scenes_desc",
                                         "color" : "FFB6A0",
                                         "image": "foreground"
                                         }]
@@ -199,8 +178,8 @@
                             "name": "Tips on Home Security",
                             "screencount": "1",
                             "screens": [{
-                                        "title": "Notifications",
-                                        "description": "Notifications_desc",
+                                        "title": "tips_homeSecurity",
+                                        "description": "tips_homeSecurity_desc",
                                         "color" : "FFB6A0",
                                         "image": "foreground"
                                         }]
