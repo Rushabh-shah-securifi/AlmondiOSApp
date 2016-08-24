@@ -11,8 +11,8 @@
 #import "AlmondJsonCommandKeyConstants.h"
 #import "Colours.h"
 
-@interface HelpScreens()
-@property (strong, nonatomic) IBOutlet UIView *helpPrompt;
+@interface HelpScreens()<UIGestureRecognizerDelegate>
+@property (strong, nonatomic) IBOutlet UIView *helpPrompt; //[showme, hide]
 @property (strong, nonatomic) IBOutlet UIView *triggerHelp;
 @property (strong, nonatomic) IBOutlet UIView *okGotItView;
 
@@ -27,6 +27,8 @@
 @property (weak, nonatomic) IBOutlet UITextView *desc;
 @property (weak, nonatomic) IBOutlet UIButton *goToHelp;
 @property (weak, nonatomic) IBOutlet UIImageView *imgCross;
+@property (weak, nonatomic) IBOutlet UIImageView *imgBack;
+@property (weak, nonatomic) IBOutlet UIButton *BtnSkip;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConst;
 
@@ -53,7 +55,34 @@
 
 - (void)addHelpItem:(CGRect)frame{
     self.triggerHelp.frame = frame;
+    [self addSwipeToView:self.triggerHelp];
     [self addSubview:self.triggerHelp];
+}
+
+-(void)addSwipeToView:(UIView*)view{
+    [self addGestureRecognizer:view direction:UISwipeGestureRecognizerDirectionRight];
+    [self addGestureRecognizer:view direction:UISwipeGestureRecognizerDirectionLeft];
+}
+
+-(void)addGestureRecognizer:(UIView*)view direction:(UISwipeGestureRecognizerDirection)direction{
+     UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
+    recognizer.delegate = self;
+    [recognizer setDirection:(direction)];
+    [view addGestureRecognizer:recognizer];
+}
+
+
+-(void)handleSwipeFrom:(UISwipeGestureRecognizer *)gestureRecognizer{
+    NSLog(@"handle swipe from directrion: %d", gestureRecognizer.direction);
+    NSLog(@"self pagecontrol: %d", self.pageControl.currentPage);
+    
+    if(gestureRecognizer.direction == UISwipeGestureRecognizerDirectionLeft){
+        [self.pageControl setCurrentPage:self.pageControl.currentPage+1];
+    }else{
+        [self.pageControl setCurrentPage:self.pageControl.currentPage-1];
+    }
+    
+    [self onPageControlValueChange:self.pageControl];
 }
 
 - (void)addGotItView:(CGRect)frame{
@@ -64,12 +93,19 @@
 -(void)expandView{
     self.goToHelp.hidden = YES;
     self.imgCross.hidden = YES;
+    if(self.isOnMainScreen){
+        self.imgBack.hidden = YES;
+    }else{
+        self.imgBack.hidden = NO;
+    }
     self.bottomConst.constant = -40;
 }
 
 -(void)resetBottonConstraint{
     self.imgCross.hidden = NO;
     self.goToHelp.hidden = NO;
+    self.imgBack.hidden = YES;
+    self.BtnSkip.hidden = NO;
     self.bottomConst.constant = 0;
 }
 
@@ -106,14 +142,14 @@
     [self removeFromSuperview];
 }
 
-- (IBAction)onPageControlValueChange:(id)sender {
-    UIPageControl *pageControl = sender;
+- (IBAction)onPageControlValueChange:(UIPageControl *)pageControl {
     int currntPg = (int)pageControl.currentPage;
     NSArray *screens = self.startScreen[SCREENS];
     NSDictionary *screen = [screens objectAtIndex:currntPg];
     
     self.subTitle.text = NSLocalizedString(screen[TITLE], @"");
     self.desc.text = NSLocalizedString(screen[DESCRIPTION], @"");
+    [self.desc setContentOffset:CGPointZero animated:YES];
     self.imgView.image = [UIImage imageNamed:screen[IMAGE]];
     self.imgView.backgroundColor = [UIColor colorFromHexString:screen[COLOR]];
     
@@ -129,8 +165,6 @@
 }
 
 - (IBAction)onCrossButtonTap:(id)sender {
-    if(self.imgCross.hidden)
-        return;
     [self resetViews];
 }
 

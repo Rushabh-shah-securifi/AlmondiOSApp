@@ -22,6 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self initializeData];
 }
 
@@ -91,7 +92,9 @@
             HelpItemsTableViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"HelpItemsTableViewController"];
             viewController.helpItem = [self.helpItems objectAtIndex:indexPath.section];
 
+//            [self presentViewController:navController animated:YES completion:nil];
             [self.navigationController pushViewController:viewController animated:YES];
+            
         }
         else if(indexPath.section == 2){ //support
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HelpScreenStoryboard" bundle:nil];

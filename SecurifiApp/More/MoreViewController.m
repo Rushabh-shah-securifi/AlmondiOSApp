@@ -146,6 +146,10 @@
             //will do it later
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Rules" bundle:nil];
             RulesTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"RulesTableViewController"];
+            //back button with empty title
+            UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+            [self.navigationItem setBackBarButtonItem:backItem];
+            
             [self.navigationController pushViewController:controller animated:YES];
         }
         else if(row == 1){//add almond
@@ -187,7 +191,7 @@
     //You can retrieve the actual UIImage
     UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
     //Or you can get the image url from AssetsLibrary
-    NSURL *path = [info valueForKey:UIImagePickerControllerReferenceURL];
+//    NSURL *path = [info valueForKey:UIImagePickerControllerReferenceURL];
     
     NSLog(@"image: %@", image);
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];

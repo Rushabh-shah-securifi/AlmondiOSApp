@@ -9,11 +9,9 @@
 #import "HelpItemsTableViewController.h"
 #import "HelpCenterTableViewCell.h"
 #import "AlmondJsonCommandKeyConstants.h"
-#import "HelpScreens.h"
-#import "CommonMethods.h"
+#import "HelpViewController.h"
 
-@interface HelpItemsTableViewController ()<HelpScreensDelegate>
-@property(nonatomic) HelpScreens *helpScreens;
+@interface HelpItemsTableViewController ()
 @property(nonatomic) NSArray *items;
 @end
 
@@ -22,8 +20,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"title name: %@", self.helpItem[@"name"]);
-    self.navigationItem.title = self.helpItem[@"name"];
-    [self initializeHelpScreens];
+    self.navigationItem.title = NSLocalizedString(self.helpItem[@"name"], @"");
+    self.items = self.helpItem[ITEMS];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -31,17 +29,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark help screens
--(void)initializeHelpScreens{
-    self.items = self.helpItem[ITEMS];
-    
-    self.helpScreens = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height)];
-    self.helpScreens.delegate = self;
-    [self.helpScreens expandView];
-    
-    self.helpScreens.backgroundColor = [UIColor grayColor];
-    [self.helpScreens addHelpItem:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-20)];
-}
+
 
 #pragma mark - Table view data source
 
@@ -71,20 +59,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self.tabBarController.tabBar setHidden:YES];
-    self.helpScreens.startScreen = [self.items objectAtIndex:indexPath.row];
-    [self.helpScreens initailizeFirstScreen];
-    [self.navigationController.view addSubview:self.helpScreens];
-}
-
-#pragma mark helpscreen delegate methods
-- (void)resetViewDelegate{
-    [self.helpScreens removeFromSuperview];
-    [self.tabBarController.tabBar setHidden:NO];
-}
-
-- (void)onSkipTapDelegate{
-    
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"HelpScreenStoryboard" bundle:nil];
+    HelpViewController *ctrl = [storyBoard instantiateViewControllerWithIdentifier:@"HelpViewController"];
+    ctrl.startScreen = [self.items objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:ctrl animated:YES];
 }
 
 @end

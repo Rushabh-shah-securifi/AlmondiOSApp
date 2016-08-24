@@ -41,7 +41,6 @@
 @property(nonatomic, readonly) SFIColors *almondColor;
 @property(nonatomic) NSTimer *mobileCommandTimer;
 @property(nonatomic) SecurifiToolkit *toolkit;
-@property(nonatomic) BOOL isTriggerScrInitialized;
 @end
 
 @implementation DeviceListController
@@ -252,8 +251,8 @@ int mii;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     NSLog(@"Did Scroll");
-    if(self.isTriggerScrInitialized == NO)
-        [self initializeTriggerHelpScreens];
+    if([self.toolkit isScreenShown:@"wifitrigger"] == NO)
+        [self initializeWiFiPresence];
     
 }
 
@@ -715,10 +714,11 @@ int mii;
 
 #pragma mark help screens
 
--(void)initializeTriggerHelpScreens{
+-(void)initializeWiFiPresence{
     [self resetViewDelegate];
-    self.isTriggerScrInitialized = YES;
   
+    [[SecurifiToolkit sharedInstance] setScreenDefault:@"wifitrigger"];
+    
     self.helpScreensObj.frame = CGRectMake(0, self.view.frame.size.height - 120 - self.tabBarController.tabBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height);
 //    self.helpScreensObj.delegate = self;
     self.helpScreensObj.backgroundColor = [UIColor grayColor];
@@ -742,7 +742,9 @@ int mii;
 #pragma mark helpscreen delegate methods
 - (void)onShowMeTapDelegate{
     NSLog(@"onShowMeTapDelegate");
-    self.helpScreensObj.startScreen = [CommonMethods getDict:@"Guides" itemName:@"Wi-Fi Triggers"];
+    
+    
+    self.helpScreensObj.startScreen = [CommonMethods getDict:@"Quick_Tips" itemName:@"Wi_Fi_Triggers"]; //dont localize
     NSLog(@"start screen: %@", self.helpScreensObj.startScreen);
     [self.helpScreensObj initailizeFirstScreen];
     [self addTriggerHelpPage];

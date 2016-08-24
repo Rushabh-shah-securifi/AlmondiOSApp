@@ -32,9 +32,9 @@
 @property (strong, nonatomic) IBOutlet UILabel *labelHome;
 @property (strong, nonatomic) IBOutlet UILabel *labelHomeAway;
 
-@property (strong, nonatomic) IBOutlet UILabel *totalConnectedDevices;
-@property (strong, nonatomic) IBOutlet UILabel *smartHomeConnectedDevices;
-@property (strong, nonatomic) IBOutlet UILabel *networkConnectedDevices;
+@property (strong, nonatomic) IBOutlet UILabel *smartHomeDevices;
+@property (strong, nonatomic) IBOutlet UILabel *activeNetworkDevices;
+@property (strong, nonatomic) IBOutlet UILabel *inactiveNetworkDevices;
 
 - (IBAction)AlmondSelection:(UIButton *)sender;
 

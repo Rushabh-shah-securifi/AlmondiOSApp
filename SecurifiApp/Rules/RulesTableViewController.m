@@ -56,7 +56,7 @@ CGPoint tablePoint;
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         if([[SecurifiToolkit sharedInstance] isScreenShown:@"rules"] == NO)
-            [self initializeHelpScreensfirst:@"Rules"];
+            [self initializeHelpScreensfirst:@"rules"];
         [self checkToShowUpdateScreen];
         [self.tableView reloadData];
     });

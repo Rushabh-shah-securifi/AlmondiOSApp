@@ -43,13 +43,13 @@
 
 - (void)setUpHelpCell:(NSDictionary *)helpItem{
     NSLog(@"name :%@, image: %@", helpItem[@"name"], helpItem[S_ICON]);
-    self.helpLabel.text = helpItem[@"name"];
+    self.helpLabel.text = NSLocalizedString(helpItem[@"name"], @"");
     self.leftImg.image = [UIImage imageNamed:helpItem[S_ICON]];
     self.backgroundColor = [SFIColors getHelpCenterColor:helpItem[COLOR]];
 }
 
 - (void)setUpHelpItemCell:(NSDictionary*)helpItem row:(int)row{
-    self.itemLabel.text = [[helpItem[ITEMS] objectAtIndex:row] valueForKey:@"name"];
+    self.itemLabel.text = NSLocalizedString([[helpItem[ITEMS] objectAtIndex:row] valueForKey:@"name"], @"");
     self.itemImg.image = [CommonMethods imageNamed:helpItem[S_ICON] withColor:[UIColor grayColor]];
 }
 

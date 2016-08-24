@@ -959,24 +959,25 @@
 
 -(void)initializeHelpScreensfirst:(NSString *)itemName{
     NSLog(@"nav view heigt: %f, view ht: %f", self.navigationController.view.frame.size.height, self.view.frame.size.height);
+    //dont localize any thing here
     if([itemName isEqualToString:@"Devices"])
         [[SecurifiToolkit sharedInstance] setScreenDefault:@"devices"];
     else if([itemName isEqualToString:@"Scenes"])
         [[SecurifiToolkit sharedInstance] setScreenDefault:@"scenes"];
-    else if([itemName isEqualToString:@"Rules"])
+    else if([itemName isEqualToString:@"rules"])
         [[SecurifiToolkit sharedInstance] setScreenDefault:@"rules"];
-    else if([itemName isEqualToString:@"WiFi"])
+    else if([itemName isEqualToString:@"wifi"])
         [[SecurifiToolkit sharedInstance] setScreenDefault:@"wifi"];
     
     self.helpScreensObj = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
     self.helpScreensObj.delegate = self;
-    
+    self.helpScreensObj.isOnMainScreen = YES;
     [self.helpScreensObj expandView];
     [self.helpScreensObj addHelpItem:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height-20)];
     
     self.helpScreensObj.backgroundColor = [UIColor grayColor];
     
-    self.helpScreensObj.startScreen = [CommonMethods getDict:@"Guides" itemName:itemName];
+    self.helpScreensObj.startScreen = [CommonMethods getDict:@"Quick_Tips" itemName:itemName]; //dont localize
     [self.helpScreensObj initailizeFirstScreen];
     [self.navigationController.view addSubview:self.helpScreensObj];
     [self.tabBarController.tabBar setHidden:YES];

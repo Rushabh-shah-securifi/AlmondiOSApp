@@ -243,9 +243,9 @@
             //_labelAlmond.text = self.toolkit.currentAlmond.almondplusName ;
             [self SelectAlmond:self.toolkit.currentAlmond.almondplusName];
             [self.AddAlmond setTitle:self.toolkit.currentAlmond.almondplusName forState:UIControlStateNormal];
-            _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.devices.count ];
-            _networkConnectedDevices.text =[NSString stringWithFormat:@"%d ",[Client activeClientCount] ];
-            _totalConnectedDevices.text = [NSString stringWithFormat: @"%lu", (unsigned long)(self.toolkit.devices.count + self.toolkit.clients.count)];
+            self.smartHomeDevices.text = [NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.devices.count ];
+            self.activeNetworkDevices.text =[NSString stringWithFormat:@"%d ",[Client activeClientCount] ];
+            self.inactiveNetworkDevices.text = [NSString stringWithFormat: @"%lu", (unsigned long)[Client inactiveClientCount]];
         });
     }
     else
@@ -260,9 +260,9 @@
             [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
-            _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%d ",0 ];
-            _networkConnectedDevices.text =[NSString stringWithFormat:@"%d ",0 ];
-            _totalConnectedDevices.text = [NSString stringWithFormat: @"%d",0];
+            self.smartHomeDevices.text = [NSString stringWithFormat:@"%d ",0 ];
+            self.activeNetworkDevices.text =[NSString stringWithFormat:@"%d ",0 ];
+            self.inactiveNetworkDevices.text = [NSString stringWithFormat: @"%d",0];
         });
     }
 }
@@ -1062,9 +1062,10 @@
     
     self.helpScreensObj = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
     self.helpScreensObj.delegate = self;
-    
+    self.helpScreensObj.isOnMainScreen = YES;
     [self.helpScreensObj expandView];
-    self.helpScreensObj.startScreen = [CommonMethods getDict:@"Guides" itemName:@"Welcome"];
+    
+    self.helpScreensObj.startScreen = [CommonMethods getDict:@"Quick_Tips" itemName:@"Welcome"];
     [self.helpScreensObj initailizeFirstScreen];
     
     [self.helpScreensObj addHelpItem:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height-20)];

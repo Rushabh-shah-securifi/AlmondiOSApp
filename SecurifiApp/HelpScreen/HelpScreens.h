@@ -18,6 +18,7 @@
 @interface HelpScreens : UIView
 
 @property(nonatomic) NSDictionary *startScreen;
+@property(nonatomic) BOOL isOnMainScreen;
 
 @property(nonatomic)id<HelpScreensDelegate> delegate;
 - (void)addHelpPromptSubView:(CGRect)frame;
@@ -26,7 +27,7 @@
 
 - (void)expandView;
 
--(void)resetBottonConstraint;
+- (void)resetBottonConstraint;
 
 - (void)initailizeFirstScreen;
 

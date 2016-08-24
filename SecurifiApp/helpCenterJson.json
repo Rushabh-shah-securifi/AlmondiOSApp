@@ -1,6 +1,6 @@
 {
     "HelpItems": [{
-                  "name": "Guides",
+                  "name": "Quick_Tips",
                   "icon": "video_library_ic",
                   "color": "homemode",
                   "items": [{
@@ -53,8 +53,8 @@
                                         "color" : "FCA3C3",
                                         "image": "h_deviceactions"
                                         }, {
-                                        "title": "Device_Settings",
-                                        "description": "Device_Settings_Desc",
+                                        "title": "Notifications_Settings",
+                                        "description": "Notifications_Settings_Desc",
                                         "color" : "FFD893",
                                         "image": "h_notificationpreferences"
                                         }]
@@ -83,8 +83,8 @@
                                         "image": "h_scene_alexa"
                                         }]
                             }, {
-                            "name": "Rules",
-                            "screencount": "4",
+                            "name": "rules",
+                            "screencount": "3",
                             "screens": [{
                                         "title": "Rules",
                                         "description": "Rules_Desc",
@@ -96,19 +96,14 @@
                                         "color" : "FFD893",
                                         "image": "h_rule_create"
                                         }, {
-                                        "title": "Rule_Chaining",
-                                        "description": "Rule_Chaining_Desc",
-                                        "color" : "FFD893",
-                                        "image": "h_rule_chain"
-                                        }, {
                                         "title": "IFTTT",
                                         "description": "IFTTT_Desc",
                                         "color" : "FFD893",
                                         "image": "h_rule_ifttt"
                                         }]
                             }, {
-                            "name": "WiFi",
-                            "screencount": "4",
+                            "name": "wifi",
+                            "screencount": "3",
                             "screens": [{
                                         "title": "More_to_Almond",
                                         "description": "More_to_Almond_Desc",
@@ -119,19 +114,14 @@
                                         "description": "Guest_Network_Desc",
                                         "color" : "BAFFFF",
                                         "image": "h_wifi_guest"
-                                        }, {
-                                        "title": "Share_Control",
-                                        "description": "Share_Control_Desc",
-                                        "color" : "FFD893",
-                                        "image": "h_wifi_share"
-                                        }, {
+                                        },{
                                         "title": "Advanced_Features",
                                         "description": "Advanced_Features_Desc",
                                         "color" : "FFB6A0",
                                         "image": "h_wifi_advanced"
                                         }]
                             }, {
-                            "name": "Wi-Fi Triggers",
+                            "name": "Wi_Fi_Triggers",
                             "screencount": "3",
                             "screens": [{
                                         "title": "Nothing",
@@ -152,20 +142,20 @@
                             }
                             ]
                   }, {
-                  "name": "Help Topics",
+                  "name": "Help_Topics",
                   "icon": "help_outline_ic",
                   "color": "awaymode",
                   "items": [{
-                            "name": "The Dashboard",
+                            "name": "The_Dashboard",
                             "screencount": "1",
                             "screens": [{
-                                        "title": "The_Dashboard",
+                                        "title": "Dashboard",
                                         "description": "help_topics_dashboard",
                                         "color" : "FFB6A0",
                                         "image": "foreground"
                                         }]
                             }, {
-                            "name": "Managing Your Scenes",
+                            "name": "Managing_Your_Scenes",
                             "screencount": "1",
                             "screens": [{
                                         "title": "Explaining_Scenes",
@@ -175,7 +165,7 @@
                                         }]
                             
                             }, {
-                            "name": "Tips on Home Security",
+                            "name": "Tips_on_Home_Security",
                             "screencount": "1",
                             "screens": [{
                                         "title": "tips_homeSecurity",

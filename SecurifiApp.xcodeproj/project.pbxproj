@@ -581,6 +581,8 @@
 		F4EA08231D6ADB2C00D6CC28 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EA08211D6ADB2C00D6CC28 /* MoreViewController.m */; };
 		F4EA08261D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EA08251D6ADBFF00D6CC28 /* MoreCellTableViewCell.m */; };
 		F4EA08271D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EA08251D6ADBFF00D6CC28 /* MoreCellTableViewCell.m */; };
+		F4EA082A1D6C551F00D6CC28 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EA08291D6C551F00D6CC28 /* HelpViewController.m */; };
+		F4EA082B1D6C551F00D6CC28 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EA08291D6C551F00D6CC28 /* HelpViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1226,6 +1228,8 @@
 		F4EA08211D6ADB2C00D6CC28 /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreViewController.m; sourceTree = "<group>"; };
 		F4EA08241D6ADBFF00D6CC28 /* MoreCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreCellTableViewCell.h; sourceTree = "<group>"; };
 		F4EA08251D6ADBFF00D6CC28 /* MoreCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreCellTableViewCell.m; sourceTree = "<group>"; };
+		F4EA08281D6C551F00D6CC28 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
+		F4EA08291D6C551F00D6CC28 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		F65023B0DECE8F15E5353C48 /* Pods-Almond.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Almond.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Almond/Pods-Almond.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2294,6 +2298,8 @@
 				F4D93AF61D3F882300D55BD6 /* HelpItemsTableViewController.m */,
 				F400B6BF1D65ECCD00DDEE50 /* SupportViewController.h */,
 				F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */,
+				F4EA08281D6C551F00D6CC28 /* HelpViewController.h */,
+				F4EA08291D6C551F00D6CC28 /* HelpViewController.m */,
 			);
 			path = HelpScreen;
 			sourceTree = "<group>";
@@ -2863,6 +2869,7 @@
 				1C7E7D9A1A41A0990026F0BA /* Analytics.m in Sources */,
 				1C7E7D9E1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
 				2A4C24381D0FC3FA001191E8 /* DashboardViewController.m in Sources */,
+				F4EA082B1D6C551F00D6CC28 /* HelpViewController.m in Sources */,
 				F4D93AE21D390B8400D55BD6 /* HelpCenter.m in Sources */,
 				1C7E7DD21A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				1C7E7D941A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
@@ -3094,6 +3101,7 @@
 				F4B876841D54653500DCF76F /* DevicePayload.m in Sources */,
 				1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */,
 				1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */,
+				F4EA082A1D6C551F00D6CC28 /* HelpViewController.m in Sources */,
 				1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */,
 				1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */,
 				CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */,

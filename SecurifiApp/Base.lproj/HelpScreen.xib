@@ -25,12 +25,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HelpScreens">
             <connections>
+                <outlet property="BtnSkip" destination="6Ba-F0-ba4" id="YLc-Bx-EkD"/>
                 <outlet property="bottomConst" destination="k63-K9-UVn" id="RnH-rd-YwY"/>
                 <outlet property="desc" destination="dqE-Im-UT9" id="V8X-w2-aHn"/>
                 <outlet property="goToHelp" destination="Vh8-lH-boG" id="iRy-K7-Cey"/>
                 <outlet property="gotIt" destination="xUO-A6-ajw" id="S3G-k9-tjI"/>
                 <outlet property="helpPrompt" destination="iN0-l3-epB" id="pLk-I5-3Tf"/>
                 <outlet property="hlpTitle" destination="7el-UQ-BGl" id="Dad-eM-3LQ"/>
+                <outlet property="imgBack" destination="kc3-13-CCK" id="B26-vK-dWF"/>
                 <outlet property="imgCross" destination="OoA-pd-DSp" id="Mj4-zu-wst"/>
                 <outlet property="imgView" destination="8HL-xO-aMH" id="reK-0l-YLe"/>
                 <outlet property="leftArrow" destination="ZfX-IC-rgg" id="i3F-Lw-l5D"/>
@@ -49,7 +51,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nKs-nK-Jfo">
                     <rect key="frame" x="8" y="8" width="377" height="145"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wi-Fi Triggers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7yx-Kd-YpE">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WiFi Based Presence" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7yx-Kd-YpE">
                             <rect key="frame" x="10" y="10" width="359" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="e4g-hL-wNu"/>
@@ -58,9 +60,8 @@
                             <color key="textColor" red="0.3411764705882353" green="0.28235294117647058" blue="0.058823529411764705" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l0O-7g-ovp">
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="Know when your kids come home using our WiFi presence sensing. It's pretty close to magic." translatesAutoresizingMaskIntoConstraints="NO" id="l0O-7g-ovp">
                             <rect key="frame" x="7" y="45" width="359" height="100"/>
-                            <string key="text">Learn how Wi-Fi triggers can help you automate your home based on your presence. It's pretty close to magic. But don't take our word for it. Try it!</string>
                             <color key="textColor" red="0.3411764705882353" green="0.28235294117647058" blue="0.058823529411764705" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -174,13 +175,28 @@
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="back_icon" translatesAutoresizingMaskIntoConstraints="NO" id="kc3-13-CCK">
+                            <rect key="frame" x="8" y="7" width="25" height="25"/>
+                            <color key="tintColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="q0x-Vz-Yh6"/>
+                                <constraint firstAttribute="width" constant="25" id="rYi-kc-x9a"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="imageRenderingMode">
+                                    <integer key="value" value="2"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </imageView>
                     </subviews>
                     <constraints>
                         <constraint firstItem="7el-UQ-BGl" firstAttribute="top" secondItem="Zp6-Zl-cvx" secondAttribute="top" id="Cbs-xX-oKQ"/>
+                        <constraint firstItem="kc3-13-CCK" firstAttribute="top" secondItem="Zp6-Zl-cvx" secondAttribute="top" constant="7" id="Djb-Tt-N2b"/>
                         <constraint firstItem="6Ba-F0-ba4" firstAttribute="top" secondItem="Zp6-Zl-cvx" secondAttribute="top" id="HY2-RC-Mea"/>
                         <constraint firstItem="7el-UQ-BGl" firstAttribute="leading" secondItem="M3t-Ia-f1c" secondAttribute="trailing" constant="16" id="LEf-v1-gcW"/>
                         <constraint firstItem="OoA-pd-DSp" firstAttribute="leading" secondItem="Zp6-Zl-cvx" secondAttribute="leading" constant="10" id="N8l-19-SyR"/>
                         <constraint firstItem="6Ba-F0-ba4" firstAttribute="leading" secondItem="7el-UQ-BGl" secondAttribute="trailing" constant="-3" id="Q9Z-xJ-bNK"/>
+                        <constraint firstItem="kc3-13-CCK" firstAttribute="leading" secondItem="Zp6-Zl-cvx" secondAttribute="leading" constant="8" id="TNL-mO-4bQ"/>
                         <constraint firstAttribute="height" constant="40" id="VrO-w7-LJf"/>
                         <constraint firstItem="M3t-Ia-f1c" firstAttribute="top" secondItem="Zp6-Zl-cvx" secondAttribute="top" id="cSb-bf-amh"/>
                         <constraint firstAttribute="trailing" secondItem="6Ba-F0-ba4" secondAttribute="trailing" id="gC6-DP-Sq5"/>
@@ -404,6 +420,7 @@
         </view>
     </objects>
     <resources>
+        <image name="back_icon" width="64" height="64"/>
         <image name="foreground" width="750" height="750"/>
         <image name="icon_cross_gray" width="30" height="30"/>
         <image name="leftarrow-icon" width="64" height="64"/>

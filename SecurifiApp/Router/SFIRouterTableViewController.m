@@ -110,7 +110,7 @@ int mii;
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         if([[SecurifiToolkit sharedInstance] isScreenShown:@"wifi"] == NO)
-            [self initializeHelpScreensfirst:@"WiFi"];
+            [self initializeHelpScreensfirst:@"wifi"];
         [self checkToShowUpdateScreen];
         [self.tableView reloadData];
     });

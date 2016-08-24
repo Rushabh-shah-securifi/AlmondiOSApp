@@ -10,6 +10,11 @@
             <string>AvenirLTStd-Roman</string>
             <string>AvenirLTStd-Roman</string>
             <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
         </mutableArray>
         <mutableArray key="Changeling NeoBold.otf">
             <string>ChangelingNeoW01-Bold</string>
@@ -80,6 +85,7 @@
                                             <constraint firstAttribute="width" constant="90" id="9hz-xW-z0j"/>
                                             <constraint firstAttribute="height" constant="30" id="lqz-qH-LAt"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
                                         <state key="normal" title="Wi-Fi">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -93,6 +99,7 @@
                                             <constraint firstAttribute="width" constant="106" id="Ik2-Hf-MU3"/>
                                             <constraint firstAttribute="height" constant="30" id="Orw-wi-hrW"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
                                         <state key="normal" title="Smart Home">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -116,6 +123,7 @@
                                             <constraint firstAttribute="width" constant="95" id="HHL-5M-Ymt"/>
                                             <constraint firstAttribute="height" constant="30" id="Q86-3t-o3y"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
                                         <state key="normal" title="Products">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -182,8 +190,8 @@
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="cmf-lt-qkJ"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="18"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rightarrow-icon" translatesAutoresizingMaskIntoConstraints="NO" id="52c-Wb-lJS">
@@ -270,7 +278,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="2av-nj-ec2"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -299,6 +307,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yfO-yU-hCM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="375" y="-233"/>
+        </scene>
+        <!--Help View Controller-->
+        <scene sceneID="w18-mm-6as">
+            <objects>
+                <viewController storyboardIdentifier="HelpViewController" hidesBottomBarWhenPushed="YES" id="L6Z-ac-r28" customClass="HelpViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="oe3-oS-ue3"/>
+                        <viewControllerLayoutGuide type="bottom" id="YjN-de-lJ0"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TVN-lN-LZX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PEi-uy-kK8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="763" y="-233"/>
         </scene>
         <!--Support View Controller-->
         <scene sceneID="Bcs-G2-wKp">

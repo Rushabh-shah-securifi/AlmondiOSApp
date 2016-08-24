@@ -758,58 +758,68 @@ Follow it, then login below.";
 "Welcome" = "Welcome";
 "The_Dashboard" = "The Dashboard";
 "Theres_More" = "There's More!";
-"Almond_Notifications" = "Almond Notifications";
+"Almond_Notifications" = "Notifications";
 "loginSuccess" = "You've successfully logged into your Almond account!\nThis guide will help you make the most of your Almond. Read on to learn about Almond features and how they can turn your home into a smart home.";
 "theDashboard" = "The Almond dashboard puts the status of your home at your fingertips. Know what mode your system is in right away and change it by tapping the icons. Scroll down to review smart home alerts, network activity and bandwidth usage.";
 "almModes" = "You can use the Almond modes to arm or disarm your home, just like you would do for your car. The Home mode means that you are at home, while the Away mode means that the Almond is put on alert. Secure and automate your home conveniently by writing rules to set the Almond mode, and then use the mode to write more rules.";
 "scene_mean" = "What is a Scene?";
-"What_is_scene_Desc" = "A scene is a collection of simultaneous actions that you can activate in one go. For example you can create a scene named \"Good Night\" and include turning all the lights in your home off in the scene. Then, activating the \"Good Night\" scene will then turn the selected lights off with the tap of a button.";
+"What_is_scene_Desc"="A scene is a collection of actions that you can activate in one go. For example, your \"Good Night\" scene can turn off all your lights, and set your thermostat to 68˚F.";
+
 "Creating_a_Scene" = "Creating a Scene";
-"Creating_a_Scene_Desc" = "Tap the add button in the Scenes tab to get started. Then, add a device by tapping the device name and choosing the state of the device from the options. Add as many devices as you need this way, then tap on \"Save\". Follow the onscreen instructions to complete creating your scene.";
+"Creating_a_Scene_Desc"="Go to the Scenes tab, and tap the add button. And then tap on a device and select one or more actions from the available options. Repeat this process for as many devices as you need and then tap on  \"Save\". Follow the onscreen instructions to complete creating your scene.";
+
 "Scene_Behaviour" = "Scene Behaviour";
+"Scene_Behaviour_Desc"="A scene might appear to be active even if you haven't turned it on. That is because, a scene is set to active whenever all the actions that make up that scene are turned on.";
+
+
 "Scene_Behaviour_Desc" = "A Scene is active if and only if all of its devices are in the status you’ve set for the scene. This means that a scene can be turned off if a device in it changes state, or another scene modifies the state of its devices. Don’t be alarmed if a scene you’ve turned on is turned off by another scene or device!";
 "Alexa_and_Scenes" = "Alexa and Scenes";
 "Alexa_and_Scenes_Desc" = "If you have an Amazon Alexa device, you can control scenes with voice commands. To get started, open your Alexa account and activate the Almond Skill.";
-"Rules_Desc" = "Rules allow you to automate your smarthome by setting up actions that will be performed automatically when the conditions you choose are met.You could create a rule like “Everyday, if My iPhone joins home wifi between 6pm and 10pm, then turn on living room lights and set the thermostat to 70°” to have your home welcome you with a comfortable atmosphere after a long day at work.";
+"Rules_Desc"="Rules allow you to automate your smarthome by setting up actions that will be performed automatically when the conditions you choose are met.You could create a rule like \"Everyday, if My iPhone joins home wifi between 6pm and 10pm, then turn on living room lights and set the thermostat to 70°\" to have your home welcome you with a comfortable atmosphere after a long day at work.";
+
 "Creating_a_Rule" = "Creating a Rule";
-"Creating_a_Rule_Desc" = "To begin creating a rule, tap the add button on the Rules screen.Every rule needs at least one IF trigger (shown in blue) and one THEN action (shown in orange).";
-"Rule_Chaining" = "Rule Chaining";
-"Rule_Chaining_Desc" = "Once you are comfortable with creating and using rules, you can try rule chaining.For example, you could create a rule like “If my iPhone leaves Home Wi-Fi network, set Almond mode to away” and another rule “If Almond mode is set to away, turn off bedroom light”. If you would like, you could also attach another rule to the chain, using the bedroom light as the trigger.Rules set up this way allow you to modify one part of the chain without disturbing the other parts.";
+"Creating_a_Rule_Desc"="Go to the Rules tab, and tap the add button. Every rule needs at least one trigger (shown in blue) and one action (shown in orange). Almond lets you use a variety of triggers and actions including the weather, Home and Away modes, sensors, your mobile phone, time and the day of the week.";
+
+
 "IFTTT" = "IFTTT Now Works With Almond";
-"IFTTT_Desc" = "Almond now works with IFTTT. Add the Almond channel to your IFTTT recipes to start using your Almond with Google Drive, GPS Location, Email, SMS and more!";
-"More_to_Almond" = "There’s More To Almond Than Meets The Eye";
-"More_to_Almond_Desc" = "Almond makes WiFi easy for you. Share it with guests and friends, and even let another person manage your Almond. If you are a power user, you can use the Web UI to access the advanced features Almond offers, including port forwarding, VPN, FTP and more.";
+"IFTTT_Desc"="While Almond’s Rules provide lot of flexibility (with multiple triggers and actions in a single rule), our integration with IFTTT also lets your smart home interact with hundreds of their channels (Google Drive, GPS Location, Email, SMS and more).";
+
+"More_to_Almond"="There's More To Almond Than Meets The Eye";
+"More_to_Almond_Desc"="Learn how Almond makes WiFi easy for you.";
+
 "Guest_Network" = "Guest Network";
-"Guest_Network_Desc" = "You can enable a guest network on your Almond for your guests and friends to use temporarily. To configure a guest network, tap on the Wireless app on the Almond LCD and choose Guest Network.";
-"Share_Control" = "Share Control of your Almond";
-"Share_Control_Desc" = "You can share control of your Almond with family and trusted friends. Go to More in the Almond app and tap on Almond Sharing. Enter the email id of the person to start sharing control.";
-"Advanced_Features" = "Use Advanced Features";
-"Advanced_Features_Desc" = "To use Almond’s advanced features, you will need to access the Web UI. On the Almond LCD Screen, tap on the Status app and choose Web Admin to see the IP address and login details for the Web UI.";
+"Guest_Network_Desc"="You can enable a guest WiFi network for your friends. To configure a guest network, tap on the “Wireless” icon on the Almond LCD and choose \"Guest Network\".";
+"Advanced_Features"="Advanced Features";
+"Advanced_Features_Desc"="You can also access advanced features like port forwarding, FTP and more from the local Web interface of your Almond. You can find the credentials for this web page from the Almond LCD. Tap on the \"Status\" icon and choose \"Web Admin\".";
 
 
 
 "show_me" = "Show Me";
-"wifi_help" = "Almond can use your mobile device's wifi connection to your home wifi to detect your presence. This is called Wi-Fi trigger. ";
-"wifi_help1" = "For example you could create rule to turn on the porch lights and set the thermostat to 70˚ when your phone joins your home WI-Fi. You'll never have to arrive to find your home cold and dark again!";
-"wifi_help2" = "You can use your devices as Wi-Fi triggers right away. To create a rule using a Wi-Fi trigger, click on \"Rules\" component on below tab.";
+"wifi_help"="Almond can use your mobile device’s connection to your home WiFi to detect your presence. This is called a WiFi trigger. Note that Almond only detects devices that are connected to it directly.";
+"wifi_help1"="You can also create a rule to turn on the porch lights for five minutes and set the thermostat to 70˚F when your iPhone joins your home Wi-Fi and the Almond mode is set to away. You’ll never have to arrive to a cold and dark home again!";
+"wifi_help2"="To create a rule using a WiFi trigger, go to the rules tab.";
+
 "Notifications" = "Notifications";
-"Notifications_desc" = "Tap the notifications icons to see the history of events on your smartphone. Notifications are generated when devices ae turned on or off, and can be enabled or disabled for each device individually.";
-"Almond_Modes" = "Almond Modes";
+"Notifications_desc"="Tap the Notifications icon to see the history of your recent notifications. Notifications let you know what’s going on with your devices. Tap on a device to set notifications that you want to receive.";
+
+"Almond_Modes" = "Modes";
 "Almond_Modes_Desc" = "Use the Almond modes to arm or disarm your home, just like you would do for your car. Write rules to automatically set the Almond mode based on your presence and trigger further functions. ";
-"Almond_Rules" = "Almond Rules";
+"Almond_Rules" = "Rules";
 "Almond_Rules_Desc" = "Almond's native rule engine allows you to automate and secure your home. To begin creating and editing rules, tap \"More\" and select \"Rules\"";
-"Take_a_pick" = "Take a pick";
+"Take_a_pick" = "Take a Pick";
 "Adding_a_New_Device" = "Adding a New Device";
 "Adding_a_New_Device_Desc" = "Tap the Add Sensor icon on Almond's LCD and follow on screen instructions to add a new device.";
 "Device_Actions" = "Device Actions";
 "Device_Actions_Desc" = "Each device has it's own set of unique features. Simple devices like smart switches and lights can easily be controlled by tapping the device icon.";
 "Notification_Preferences" = "Notification Preferences";
-"Notification_Preferences_Desc" = "Managing the notifications you recieve from smart devices is easy. Simply select a device, and choose the desired setting under Notify Me. ";
-"Take_a_pick_Desc" = "Almond is compatible with more than 100 smart devices, including your favorites like Nest and Philips Hue.";
+"Notification_Preferences_Desc" = "Managing the notifications you recieve from smart devices is easy. Simply select a device, and choose the desired setting under Notify Me.";
+"Take_a_pick_Desc"="Almond is compatible with more than 100 smart home devices including products from  Nest and Philips Hue.\n\nView the complete compatibility list here.";
+
 "Quick_Actions" = "Quick Actions";
-"Device_Settings" = "Device Settings";
-"Device_Settings_Desc" = "Tap a device’s settings button to view and edit its settings. Apart from settings that are unique to that device type, you can modify its name and choose which notifications the device should send you. Just tap on the wrench icon, and select \"Notify Me\".";
-"Quick_Actions_Desc" = "The quick action button allows you to control your devices with a quick tap. Each device has its own quick action. For example, you can turn a smart lightbulb on or off by tapping the button, while dimming and other features might be available in its settings.";
+"Quick_Actions_Desc"="The quick action button allows you to control some of your smart home devices with a quick tap. For example, you can turn a smart lightbulb on or off by tapping the button.";
+
+"Nothing"="";
+
 
 
 "wiring_primary" = "Wiring your Primary Almond ";
@@ -825,26 +835,37 @@ Follow it, then login below.";
 "wireless_interface_desc" = "If your house doesn't have internet cabling across rooms, you can simply choose \"Wireless\" mode for your additional Almonds.";
 "wired_interface_desc" = "WiFi quality is best when your additional Almonds are connected via interace. If you have Internet cabling across rooms in your house, you can choose this mode.";
 
-
-"welcome_desc"="You’ve successfully logged into your Almond account! This guide will help you make the most of your Almond. Read on to learn about Almond features and how they can turn your home into a smart home.";
-"theDashboard_desc"="Dashboard illustration with only the modes, and a downward arrow in the content area (to indicate scrolling down) highlight one of the modes to show where to find modes.The Almond dashboard puts the status of your home at your fingertips. Know what mode your system is in right away and chan by tapping the icons. Scroll down to review smart home alerts, network activity and bandwidth usage.";
-
-"almond_modes_desc"="You can use the Almond modes to arm or disarm your home, just like you would do for your car. The Home mode means that you are at home, while the Away mode means that the Almond is put on alert. Secure and automate your home conveniently by writing rules to set the Almond mode, and then use the mode to write more rules.";
-
-"more_desc"="Tap More to subscribe to our end to end VPN services, set parental controls, create or edit rules, and visit our Help Center. The Help Center lets you revisit this guide and other guides, launch wizards to configure your account, and contact technical support.";
-
+"welcome_desc"="You've successfully logged into your Almond account. Here are a few quick tips to get the most out of your Almond.";
+"theDashboard_desc"="The dashboard puts the status of your home at your fingertips. Get an overview of your recent Smart Home and Wi-Fi device notifications.";
+"almond_modes_desc"="Home and Away modes – or arm and disarm - are a key part of any home security or automation system. They are necessary because when you are home, you don’t need your sensors to trigger an alarm. Go to Rules to personalize how your system responds in these modes.";
+"more_desc"="Tap \"More\" to create rules and visit our Help Center. The Help Center lets you revisit this guide and other help topics, and contact technical support.";
 
 "Explaining_Scenes"="Explaining Scenes";
-"Explaining_Scenes_desc"="Scenes are a great way to simplify routine tasks. You can group devices around your house to create a scene that gets the lighting and temperature just right for a special visitor, or you could use it to just turn off all the lights outside the house at bedtime without having to flip the switch for each of them.You can create and manage Scenes from the Scenes tab in the Almond app. Tap on the quick action icon to activate the scene, and tap the options icon to change the devices in the Scene and rename it.You can’t turn off a Scene because it only describes what states the devices should be in, it is a shortcut for a group of devices being in the states you chose for them. To put it simply, a Scene for lights is the group of the lights you choose and whether you want them to be on or off. If one of those lights were to be flipped, your Scene is deactivated because that light is no longer in the state you chose in the Scene.Almond scenes can now be activated using Alexa. To begin using Alexa with Almond Scenes, activate the Almond skill on Alexa. For best results, rename your scene with a name from the list of suggestions that comes up. These names are easiest for Alexa to understand. Once you are done setting up the Almond skill and a Scene, you could say “Alexa, tell Almond to activate Outside Lights Off!” Where ‘Outside Lights Off’ is the name of the Scene. If you choose a name suited for use with Alexa, you will see a small Alexa icon on the Scene’s tile on the Almond app.";
+"Explaining_Scenes_desc"="Scenes make adjusting multiple smart devices much easier and faster. For example, when you go to bed you might have two or three lights to turn off, the temperature on the thermostat to adjust, and set the alarm to activate. A Scene means you can do all of them with just one tap.\n\nYou can create and manage Scenes from the Scenes tab in the Almond app. Tap the add button to create a scene. And then tap on a device and select one or more actions from the available options. Repeat this process for as many devices as you need and then tap on “Save”. Follow the onscreen instructions to complete creating your scene.\n\nTo manage a scene, tap on the quick action icon to activate the scene, and tap the options icon to change the devices in the Scene and rename it.\n\nA scene might appear to be active even if you haven’t turned it on. That is because a scene is set to active whenever all the actions that make up that scene are turned on. For example, using the Scene above, you may have decided to adjust the lights and thermostat over the course of the evening. In doing so you matched the functions in the Scene and it registers as on.\n\nNow, Almond scenes can be activated using Alexa. To begin using Alexa with Almond Scenes, activate the Almond skill on Alexa. If you are prompted to rename a Scene, choose one from the list of suggestions that comes up. These names are easiest for Alexa to understand. Once you have renamed a Scene, you will see a small Alexa icon on the Scene’s tile on the Almond app. When finished, to activate a Scene, you could say “Alexa, tell Almond to activate Outside Lights Off!” Where ‘Outside Lights Off’ is the name of the Scene.";
+
 
 "tips_homeSecurity"="Tips For Setting Up Home Security";
-"tips_homeSecurity_desc"="You can secure your home with an Almond 2015, Almond+ or an Almond 3, and the appropriate security sensors. The Almond devices work best with products from Securifi, but also support a wide range of sensors from various manufacturers, listed here: https://www.securifi.com/sensors. With Almond, you can build your Home Security, using Rules and the Almond Modes: Home and Away. The Almond Mode works similar to arming and disarming your car alarm. With Almond though, you don’t need to do this yourself every time. Use our Rules engine to automate this process using WiFi Triggers.For example, you could create rules like \"If my iPhone disconnects from Home WiFi, set Almond mode to Away\" and \"If my iPhone joins Home WiFi, set Almond mode to Home\" to automatically change the mode when you leave home and when you come back. You can then add more rules, for example \"If Almond mode is Away and motion is detected, sound alarm” to harden your home against intruders while you are away, but ignore any motion events that occur when you are home.Experiment with Rules to build your own scenarios. Our Rules engine is versatile and offers a large number of components with which you can build Rules, including the time, the Almond Mode, and sensors, to make your home behave exactly as you want it to.You also need to configure the sensors to send you notifications when they are triggered, so that you are alerted when important events occur. You can choose one of three levels for notifications: Never, When I’m Away and Always.Each level is useful in different situations. For example, you might want to be alerted of movement in the living room only when you are away, but you might want to be alerted every time if a wall safe is opened, or a flood sensor detects water in your basement. On the other hand, you might not want to be alerted at all if a smart plug in your daughter’s room is turned on or off.Rules, Modes and Notifications together can help you stay in command of the situation in your home. Try building your own rules as you add more sensors to have your Smart Home respond to your needs.";
+"tips_homeSecurity_desc"="With the appropriate sensors, you can use an Almond 2015, an Almond+, or an Almond 3, to create a robust and powerful DIY home security system. Almond devices  support a wide range of sensors from various manufacturers including Securifi. There is a full list here: https://www.securifi.com/sensors.\n\nWith Almond, you can build your Home Security using Rules and the Almond Modes: Home and Away.\n\nThe Almond Mode works similar to arming and disarming your car alarm or home security system. With Almond though, you don’t need to do this yourself every time. Use our Rules engine to automate this process using your WiFi presence.\n\nFor example, you could create rules like “If my iPhone disconnects from Home WiFi, set Almond mode to Away” and “If my iPhone joins Home WiFi, set Almond mode to Home” to automatically change the mode when you leave home and when you come back. You can then add another rule to make sure the alarm is sounded. For example, “If Almond mode is Away, and motion is detected, sound alarm.”\n\nExperiment with Rules to build your own scenarios. Our Rules engine is versatile and offers a large number of components with which you can build Rules, including: time, Almond Modes, and sensors.\n\nSensors may not be automatically configured to send notifications; therefore, you will need to configure them. To do so, tap on the settings icon next to the sensor and look for notifications in the menu.\n\nYou can choose one of three levels for notifications: Never, When I’m Away and Always. Each level is useful in different situations. For example, you might want to be alerted of movement in the living room only when you are away, but you might want to be alerted every time if a wall safe is opened, or a flood sensor detects water in your basement. On the other hand, you might not want to be alerted at all if a smart plug in your daughter’s room is turned on or off.";
+
+"help_topics_dashboard"="The dashboard has been designed to give you an overview  of your home and quick access to key functions. You can see: recent Smart Home and Wi-Fi device notifications and how many network and smart devices are online and active. You can also set your Almond to Home or Away mode with a quick tap.\n\nIf you own more than one Almond, you can quickly switch between them by tapping on the device’s name above the mode control, and picking another Almond from the list.\n\nAs we continue to improve Almond, and add more features, the Dashboard will be central to controlling your Smart Home. Stay tuned!";
 
 
-"help_topics_dashboard"="The Dashboard has been designed to help you stay up to date on the status of your Smart Home. You can see your Smart Home Sensors and Network Devices at a glance, and set your Almond to Home or Away mode with a quick tap.If you own more than one Almond, you can quickly switch between them by tapping on the device’s name above the mode control, and picking another Almond from the list.As we continue to improve Almond, and add more features, the Dashboard will be central to controlling your Smart Home. Stay tuned!";
+"Quick_Tips"="Quick Tips";
+
+"Notifications_Settings"="Notifications & Settings";
+"Notifications_Settings_Desc"="Tap the icon on the right to manage a device’s settings, set notifications, and change its name. To set notifications, tap on \"Notify me\" in settings.";
+
+"Wifihelp_txt"="Know when your kids come home using our WiFi presence sensing. It's pretty close to magic.";
 
 
-
+"rules" = "Rules";
+"wifi"="WiFi";
+"Wi_Fi_Triggers"="Wi-Fi Triggers";
+"Help_Topics"="Help Topics";
+"Dashboard"="Dashboard";
+"Managing_Your_Scenes"="Managing Your Scenes";
+"Tips_on_Home_Security"="Tips on Home Security";
+"Support"="Support";
 /* ==================================================================== */
 
 /*

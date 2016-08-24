@@ -1,6 +1,6 @@
 
 /* Class = "UILabel"; text = "ACTIVE NETWORK DEVICES"; ObjectID = "1yr-pN-i8A"; */
-"1yr-pN-i8A.text" = "ACTIVE NETWORK DEVICES";
+"1yr-pN-i8A.text" = "INACTIVE NETWORK DEVICES";
 
 /* Class = "UIButton"; normalTitle = "Done"; ObjectID = "FbR-XR-S4X"; */
 "FbR-XR-S4X.normalTitle" = "Done";
@@ -12,7 +12,7 @@
 "He5-pq-OVf.text" = "Almond Settings";
 
 /* Class = "UILabel"; text = "SMART HOME DEVICES"; ObjectID = "OIj-tJ-Ux3"; */
-"OIj-tJ-Ux3.text" = "SMART HOME DEVICES";
+"OIj-tJ-Ux3.text" = "ACTIVE NETWORK DEVICES";
 
 /* Class = "UILabel"; text = "0"; ObjectID = "Rz9-Pa-fTV"; */
 "Rz9-Pa-fTV.text" = "0";
@@ -21,7 +21,7 @@
 "Xkz-Xh-1r6.normalTitle" = "Add Almond";
 
 /* Class = "UILabel"; text = "CONNECTED DEVICES"; ObjectID = "exw-pf-RKs"; */
-"exw-pf-RKs.text" = "CONNECTED DEVICES";
+"exw-pf-RKs.text" = "SMART HOME DEVICES";
 
 /* Class = "UILabel"; text = "0"; ObjectID = "pPW-br-umt"; */
 "pPW-br-umt.text" = "0";

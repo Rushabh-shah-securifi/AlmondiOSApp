@@ -53,7 +53,7 @@
                                     <action selector="buttonDone:" destination="wN5-hc-CtY" eventType="touchUpInside" id="uhu-cZ-tEg"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Almond Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="He5-pq-OVf">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Almond Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="He5-pq-OVf">
                                 <rect key="frame" x="137" y="28" width="151" height="36"/>
                                 <fontDescription key="fontDescription" name="AvenirLTStd-Medium" family="Avenir LT Std" pointSize="20"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -240,13 +240,13 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="HOME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wmQ-Wm-9ba">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HOME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wmQ-Wm-9ba">
                                                 <rect key="frame" x="44" y="145" width="38" height="12"/>
                                                 <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="12"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="AWAY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wMA-qN-Fdi">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AWAY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wMA-qN-Fdi">
                                                 <rect key="frame" x="121" y="145" width="36" height="12"/>
                                                 <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="12"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -288,7 +288,7 @@
                                                         <color key="textColor" white="0.48314090720538433" alpha="1" colorSpace="calibratedWhite"/>
                                                         <color key="highlightedColor" red="0.85398260250000002" green="0.85398260250000002" blue="0.85398260250000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CONNECTED DEVICES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="exw-pf-RKs">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SMART HOME DEVICES" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="exw-pf-RKs">
                                                         <rect key="frame" x="8" y="50" width="108" height="51"/>
                                                         <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="12"/>
                                                         <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -316,7 +316,7 @@
                                                         <color key="textColor" white="0.47613146551724139" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SMART HOME DEVICES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OIj-tJ-Ux3">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ACTIVE NETWORK DEVICES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OIj-tJ-Ux3">
                                                         <rect key="frame" x="8" y="50" width="108" height="51"/>
                                                         <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="12"/>
                                                         <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -344,7 +344,7 @@
                                                         <color key="textColor" white="0.47613146550000002" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ACTIVE NETWORK DEVICES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yr-pN-i8A">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="INACTIVE NETWORK DEVICES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yr-pN-i8A">
                                                         <rect key="frame" x="8" y="50" width="108" height="51"/>
                                                         <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="12"/>
                                                         <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -425,16 +425,16 @@
                     <connections>
                         <outlet property="AddAlmond" destination="Xkz-Xh-1r6" id="fHf-El-cgw"/>
                         <outlet property="Scroller" destination="afY-Gl-ZDn" id="6pH-Vv-zxb"/>
+                        <outlet property="activeNetworkDevices" destination="pPW-br-umt" id="IwC-ld-e8R"/>
                         <outlet property="bannerImage" destination="Jow-Db-Und" id="maU-l1-qXr"/>
                         <outlet property="buttonHome" destination="3CK-OQ-lob" id="GP7-Ox-XuS"/>
                         <outlet property="buttonHomeAway" destination="aCO-CR-KQe" id="W0v-ed-ti7"/>
                         <outlet property="dashboardTable" destination="BSm-N8-ckF" id="RSA-sM-ADk"/>
+                        <outlet property="inactiveNetworkDevices" destination="van-2Y-GZf" id="uXr-fX-FWf"/>
                         <outlet property="labelAlmondStatus" destination="GMh-sX-mwO" id="Cid-wx-wFz"/>
                         <outlet property="labelHome" destination="wmQ-Wm-9ba" id="ccZ-5Q-uU9"/>
                         <outlet property="labelHomeAway" destination="wMA-qN-Fdi" id="AJN-uG-nwY"/>
-                        <outlet property="networkConnectedDevices" destination="van-2Y-GZf" id="Ejy-ey-VAq"/>
-                        <outlet property="smartHomeConnectedDevices" destination="pPW-br-umt" id="Smv-WK-xhk"/>
-                        <outlet property="totalConnectedDevices" destination="Rz9-Pa-fTV" id="Cdk-n1-L8H"/>
+                        <outlet property="smartHomeDevices" destination="Rz9-Pa-fTV" id="Jrx-bI-PGP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iLP-hV-y02" userLabel="First Responder" sceneMemberID="firstResponder"/>
