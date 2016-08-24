@@ -45,8 +45,8 @@
 #define FIRMWARE_UPDATE_TAG 2
 
 static const int networkingHeight = 100;
-//static const int clientsHeight = 90;
-static const int clientsHeight = 200;
+static const int clientsHeight = 90;
+//static const int clientsHeight = 200;
 static const int settingsHeight = 70;
 static const int versionHeight = 130;
 static const int rebootHeight = 110;
@@ -156,7 +156,7 @@ int mii;
     
     //NSLog(@"connecton - is local: %d", self.local);
     if(!self.local && ![self isNoAlmondLoaded]){
-        [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
+        [self showHudWithTimeout:NSLocalizedString(@"Loading router data", @"Loading router data")];
         [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
     }
 }
@@ -325,10 +325,10 @@ int mii;
                 return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link") selector:@selector(onEditNetworkSettings:) cardColor:[UIColor securifiRouterTileGreenColor]];
             }
             case DEF_DEVICES_AND_USERS_SECTION:{
-                //                summaries = [self getDevicesAndUsersSummary];
-                //                return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users") selector:nil cardColor:[UIColor securifiRouterTileBlueColor]];
+                summaries = [self getDevicesAndUsersSummary];
+                return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users") selector:nil cardColor:[UIColor securifiRouterTileBlueColor]];
                 
-                return [self createAlmondNetworkCell:tableView];
+//                return [self createAlmondNetworkCell:tableView];
             }
             case DEF_WIRELESS_SETTINGS_SECTION:{
                 summaries = [self getWirelessSettingsSummary];
@@ -342,14 +342,14 @@ int mii;
                 summaries = [self getRouterVersionSummary];
                 SFICardViewSummaryCell *cell = (SFICardViewSummaryCell *)[self createSummaryCell:tableView summaries:summaries title:title selector:nil cardColor:[UIColor securifiRouterTileYellowColor]];
                 if(self.newAlmondFirmwareVersionAvailable)
-                    [self addButton:cell buttonLabel:NSLocalizedString(@"router.card-buttonLabel UPDATE FIRMWARE", @"UPDATE FIRMWARE") selector:@selector(onFirmwareUpdate:) frameHeight:versionHeight];
+                    [self addButton:cell buttonLabel:NSLocalizedString(@"UPDATE FIRMWARE", @"UPDATE FIRMWARE") selector:@selector(onFirmwareUpdate:) frameHeight:versionHeight];
                 return cell;
             }
                 
             case DEF_ROUTER_REBOOT_SECTION:{
                 summaries = [self getRebootSummary];
                 SFICardViewSummaryCell *cell = (SFICardViewSummaryCell *)[self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"reboot router", @"Router Reboot") selector:nil cardColor:[UIColor securifiRouterTileRedColor]];
-                [self addButton:cell buttonLabel:NSLocalizedString(@"router.card-buttonLabel REBOOT NOW", @"REBOOT NOW") selector:@selector(onRebootButtonPressed:) frameHeight:rebootHeight];
+                [self addButton:cell buttonLabel:NSLocalizedString(@"REBOOT NOW", @"REBOOT NOW") selector:@selector(onRebootButtonPressed:) frameHeight:rebootHeight];
                 return cell;
             }
                 
@@ -639,11 +639,11 @@ int mii;
 }
      
  -(void)onFirmwareUpdate:(id)sender{
-     [self createAlertViewForTitle:NSLocalizedString(@"router Are you sure, you want to Update Firmware?", @"Are you sure, you want to Update Firmware?") otherTitle:NSLocalizedString(@"router Update","Update") tag:FIRMWARE_UPDATE_TAG];
+     [self createAlertViewForTitle:NSLocalizedString(@"router Are you sure, you want to Update Firmware?", @"") otherTitle:NSLocalizedString(@"Update","") tag:FIRMWARE_UPDATE_TAG];
  }
  
  -(void)onRebootButtonPressed:(id)sender{
-     [self createAlertViewForTitle:NSLocalizedString(@"router Are you sure, you want to Update Firmware?", @"Are you sure, you want to Update Firmware?") otherTitle:NSLocalizedString(@"Update","Update") tag:FIRMWARE_UPDATE_TAG];
+     [self createAlertViewForTitle:NSLocalizedString(@"router Are you sure, you want to Reboot?", @"") otherTitle:NSLocalizedString(@"router Reboot","") tag:REBOOT_TAG];
  }
  
  -(void)onLogsCard:(id)sender{

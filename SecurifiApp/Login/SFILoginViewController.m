@@ -53,7 +53,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     NSLog(@"login view will appear");
-    [[SecurifiToolkit sharedInstance] initializeHelpScreenUserDefaults];
+    //[[SecurifiToolkit sharedInstance] initializeHelpScreenUserDefaults];
     
     self.emailID.delegate = self;
     self.password.delegate = self;

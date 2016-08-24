@@ -62,13 +62,13 @@ int mii;
     self.logView.backgroundColor = [[SFIColors yellowColor] color];
     
     UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 5, self.logView.frame.size.width -10, 20)];
-    titleLabel.text = NSLocalizedString(@"SFILogsViewController Report a problem",@"Report a problem");
+    titleLabel.text = NSLocalizedString(@"router.card-title.Send Logs",@"Report a problem");
     titleLabel.font = [UIFont securifiFont:16];
     titleLabel.textColor = [UIColor whiteColor];
     [self.logView addSubview:titleLabel];
     
     UILabel *msgLable = [[UILabel alloc]initWithFrame:CGRectMake(5, 35, self.logView.frame.size.width -10, 100)];
-    msgLable.text = NSLocalizedString(@"SFILogsViewController Along with your message,this will send Almond debug infiormation and logs to our cloud.This information will help us to resolve your problem faster.Please note that we do not send any sensitive information like your passwords.", @"");
+    msgLable.text = NSLocalizedString(@"SFILogsViewController_logs_msg_title", @"");
     msgLable.lineBreakMode = NSLineBreakByWordWrapping;
     msgLable.numberOfLines = 0;
     msgLable.font = [UIFont securifiLightFont:13];

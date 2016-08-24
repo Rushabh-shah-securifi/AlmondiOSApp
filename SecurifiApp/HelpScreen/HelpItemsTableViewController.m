@@ -62,7 +62,9 @@
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"HelpScreenStoryboard" bundle:nil];
     HelpViewController *ctrl = [storyBoard instantiateViewControllerWithIdentifier:@"HelpViewController"];
     ctrl.startScreen = [self.items objectAtIndex:indexPath.row];
-    [self.navigationController pushViewController:ctrl animated:YES];
+    [self presentViewController:ctrl animated:YES completion:nil];
+    
+//    [self.navigationController pushViewController:ctrl animated:YES];
 }
 
 @end

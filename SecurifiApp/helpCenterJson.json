@@ -9,28 +9,28 @@
                             "screens": [{
                                         "title": "Welcome",
                                         "description": "welcome_desc",
-                                        "color" : "FFD893",
+                                        "color" : "ffd893",
                                         "image": "h_almond_logo"
                                         }, {
                                         "title": "The_Dashboard",
                                         "description": "theDashboard_desc",
-                                        "color" : "81D4FA",
-                                        "image": "h_modes"
+                                        "color" : "81d4fa",
+                                        "image": "h_dashboard_status"
                                         }, {
                                         "title": "Almond_Modes",
                                         "description": "almond_modes_desc",
-                                        "color" : "FFD893",
+                                        "color" : "ffd893",
                                         "image": "h_home_away"
                                         }, {
                                         "title": "Almond_Notifications",
                                         "description": "Notifications_desc",
-                                        "color" : "BBF3C7",
+                                        "color" : "bbf3c7",
                                         "image": "h_notifications"
                                         }, {
                                         "title": "Theres_More",
                                         "description": "more_desc",
-                                        "color" : "FFD893",
-                                        "image": "h_rules"
+                                        "color" : "ffd893",
+                                        "image": "h_more"
                                         }]
                             },
                             
@@ -40,22 +40,22 @@
                             "screens": [{
                                         "title": "Take_a_pick",
                                         "description": "Take_a_pick_Desc",
-                                        "color" : "80D8FF",
+                                        "color" : "80d8ff",
                                         "image": "h_sensorssmartdevices"
                                         }, {
                                         "title": "Adding_a_New_Device",
                                         "description": "Adding_a_New_Device_Desc",
-                                        "color" : "BDF5C9",
+                                        "color" : "b9f6ca",
                                         "image": "h_addnewdev"
                                         }, {
                                         "title": "Quick_Actions",
                                         "description": "Quick_Actions_Desc",
-                                        "color" : "FCA3C3",
+                                        "color" : "f7aec7",
                                         "image": "h_deviceactions"
                                         }, {
                                         "title": "Notifications_Settings",
                                         "description": "Notifications_Settings_Desc",
-                                        "color" : "FFD893",
+                                        "color" : "ffd893",
                                         "image": "h_notificationpreferences"
                                         }]
                             }, {
@@ -64,22 +64,22 @@
                             "screens": [{
                                         "title": "scene_mean",
                                         "description": "What_is_scene_Desc",
-                                        "color" : "F7AEC7",
+                                        "color" : "f7aec7",
                                         "image": "h_scene_mean"
                                         }, {
                                         "title": "Creating_a_Scene",
                                         "description": "Creating_a_Scene_Desc",
-                                        "color" : "F7AEC7",
+                                        "color" : "f7aec7",
                                         "image": "h_scene_create"
                                         }, {
                                         "title": "Scene_Behaviour",
                                         "description": "Scene_Behaviour_Desc",
-                                        "color" : "F7AEC7",
+                                        "color" : "f7aec7",
                                         "image": "h_scene_behave"
                                         }, {
                                         "title": "Alexa_and_Scenes",
                                         "description": "Alexa_and_Scenes_Desc",
-                                        "color" : "BAFFFF",
+                                        "color" : "baffff",
                                         "image": "h_scene_alexa"
                                         }]
                             }, {
@@ -88,17 +88,17 @@
                             "screens": [{
                                         "title": "Rules",
                                         "description": "Rules_Desc",
-                                        "color" : "FFD893",
+                                        "color" : "ffd893",
                                         "image": "h_rule_mean"
                                         }, {
                                         "title": "Creating_a_Rule",
                                         "description": "Creating_a_Rule_Desc",
-                                        "color" : "FFD893",
+                                        "color" : "ffd893",
                                         "image": "h_rule_create"
                                         }, {
                                         "title": "IFTTT",
                                         "description": "IFTTT_Desc",
-                                        "color" : "FFD893",
+                                        "color" : "00a9f5",
                                         "image": "h_rule_ifttt"
                                         }]
                             }, {
@@ -107,17 +107,17 @@
                             "screens": [{
                                         "title": "More_to_Almond",
                                         "description": "More_to_Almond_Desc",
-                                        "color" : "FFB6A0",
+                                        "color" : "ffb6a0",
                                         "image": "h_wifi_more"
                                         }, {
                                         "title": "Guest_Network",
                                         "description": "Guest_Network_Desc",
-                                        "color" : "BAFFFF",
+                                        "color" : "baffff",
                                         "image": "h_wifi_guest"
                                         },{
                                         "title": "Advanced_Features",
                                         "description": "Advanced_Features_Desc",
-                                        "color" : "FFB6A0",
+                                        "color" : "ffb6a0",
                                         "image": "h_wifi_advanced"
                                         }]
                             }, {
@@ -126,17 +126,17 @@
                             "screens": [{
                                         "title": "Nothing",
                                         "description": "wifi_help",
-                                        "color" : "FFB6A0",
+                                        "color" : "fbd490",
                                         "image": "h_wifi_trigger_1"
                                         }, {
                                         "title": "Nothing",
                                         "description": "wifi_help1",
-                                        "color" : "FFD893",
+                                        "color" : "ffd893",
                                         "image": "h_rule_mean"
                                         }, {
                                         "title": "Nothing",
                                         "description": "wifi_help2",
-                                        "color" : "FFD893",
+                                        "color" : "ffd893",
                                         "image": "h_rules_wifi"
                                         }]
                             }

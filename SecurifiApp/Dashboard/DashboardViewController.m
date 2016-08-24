@@ -51,6 +51,7 @@
     self.toolkit = [SecurifiToolkit sharedInstance];
     self.bgView = [[UIView alloc]init];
     self.maskView = [[UIView alloc]init];
+    self.helpScreensObj = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
     
     self.navigationController.navigationBar.clipsToBounds = YES;
     [self loadNotification];
@@ -1060,7 +1061,7 @@
     NSLog(@"nav view heigt: %f, view ht: %f", self.navigationController.view.frame.size.height, self.view.frame.size.height);
     [self.toolkit setScreenDefault:@"dashboard"];
     
-    self.helpScreensObj = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
+    self.helpScreensObj.frame = CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height);
     self.helpScreensObj.delegate = self;
     self.helpScreensObj.isOnMainScreen = YES;
     [self.helpScreensObj expandView];

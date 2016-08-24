@@ -10,7 +10,7 @@
 #import "SWRevealViewController.h"
 #import "HelpScreens.h"
 
-@interface HelpViewController ()<HelpScreensDelegate, UIGestureRecognizerDelegate>
+@interface HelpViewController ()<HelpScreensDelegate>
 @property(nonatomic) HelpScreens *helpScreens;
 @end
 
@@ -19,21 +19,8 @@
 - (void)viewDidLoad {
     NSLog(@"viewdidload");
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    SWRevealViewController *revealController = [self revealViewController];
-    revealController.panGestureRecognizer.delegate = self;
     
     [self initializeHelpScreens];
-}
-
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:YES];
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
-}
-
--(void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:YES];
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -60,16 +47,12 @@
 - (void)resetViewDelegate{
     [self.helpScreens removeFromSuperview];
     self.helpScreens = nil;
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)onSkipTapDelegate{
     
 }
 
-#pragma mark - UIGestureRecognizerDelegate methods
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    return NO;
-}
 
 @end
