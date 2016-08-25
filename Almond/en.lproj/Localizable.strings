@@ -771,11 +771,10 @@ Follow it, then login below.";
 "Scene_Behaviour" = "Scene Behaviour";
 "Scene_Behaviour_Desc"="A scene might appear to be active even if you haven't turned it on. That is because, a scene is set to active whenever all the actions that make up that scene are turned on.";
 
-
-"Scene_Behaviour_Desc" = "A Scene is active if and only if all of its devices are in the status you’ve set for the scene. This means that a scene can be turned off if a device in it changes state, or another scene modifies the state of its devices. Don’t be alarmed if a scene you’ve turned on is turned off by another scene or device!";
 "Alexa_and_Scenes" = "Alexa and Scenes";
 "Alexa_and_Scenes_Desc" = "If you have an Amazon Alexa device, you can control scenes with voice commands. To get started, open your Alexa account and activate the Almond Skill.";
 "Rules_Desc"="Rules allow you to automate your smarthome by setting up actions that will be performed automatically when the conditions you choose are met.You could create a rule like \"Everyday, if My iPhone joins home wifi between 6pm and 10pm, then turn on living room lights and set the thermostat to 70°\" to have your home welcome you with a comfortable atmosphere after a long day at work.";
+"Rules_Desc"="Rules enable your smart home devices to tell each other what to do. They also let you automate devices on a schedule. For example:\n\n \"On weekdays, if I come home between 6pm and 10pm, turn on living room lights and set the thermostat to 70˚F\".";
 
 "Creating_a_Rule" = "Creating a Rule";
 "Creating_a_Rule_Desc"="Go to the Rules tab, and tap the add button. Every rule needs at least one trigger (shown in blue) and one action (shown in orange). Almond lets you use a variety of triggers and actions including the weather, Home and Away modes, sensors, your mobile phone, time and the day of the week.";

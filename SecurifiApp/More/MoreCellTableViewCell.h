@@ -19,7 +19,7 @@
 
 @property (weak, nonatomic)id<MoreCellTableViewCellDelegate> delegate;
 
--(void)setUpMoreCell1;
+-(void)setUpMoreCell1:(NSString *)name;
 
 -(void)setUpMoreCell2:(NSDictionary*)moreFeature;
 

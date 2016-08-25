@@ -18,6 +18,7 @@
 @interface MoreViewController ()<MoreCellTableViewCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RouterNetworkSettingsEditorDelegate>
 @property (nonatomic) NSArray *moreFeatures;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic) NSString *userName;
 @property (nonatomic) BOOL isLocal;
 @end
 
@@ -26,12 +27,87 @@
 - (void)viewDidLoad {
     NSLog(@"more controller view did load");
     [super viewDidLoad];
-    
     self.title = @"More";
-    self.moreFeatures= @[@{@"rule_forward_icon":@"Rules"},
-                           @{@"link_almond_icon":@"Link Almond to Account"},
-                           @{@"help_center_icon":@"Help Center"}];
+    self.userName = @"";
+    [self loadProfileImage];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    self.isLocal = [[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local;
+    self.moreFeatures= [self getFeaturesArray];
+    [self initializeNotification];
     
+    if(!self.isLocal)
+        [self sendUserProfileRequest];
+    
+    dispatch_async(dispatch_get_main_queue(),^{
+        [self.tableView reloadData];
+    });
+    
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)initializeNotification{
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self
+               selector:@selector(userProfileResponseCallback:)
+                   name:USER_PROFILE_NOTIFIER
+                 object:nil];
+    
+}
+
+- (void)sendUserProfileRequest {
+    UserProfileRequest *userProfileRequest = [[UserProfileRequest alloc] init];
+    
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = CommandType_USER_PROFILE_REQUEST;
+    cloudCommand.command = userProfileRequest;
+
+    
+    [[SecurifiToolkit sharedInstance] asyncSendCommand:cloudCommand];
+}
+
+- (void)userProfileResponseCallback:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    UserProfileResponse *obj = (UserProfileResponse *) [data valueForKey:@"data"];
+    NSLog(@"User profile response: %@", obj);
+    if (obj.isSuccessful) {
+        //Store user profile information
+        self.userName = [NSString stringWithFormat:@"%@ %@", obj.firstName, obj.lastName];
+
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.tableView reloadData];
+        });
+    }
+    else {
+        DLog(@"Reason Code %d", obj.reasonCode);
+    }
+}
+
+    
+-(NSArray *)getFeaturesArray{
+    NSMutableArray *moreFeatures = [NSMutableArray new];
+    [moreFeatures addObject:@{@"rule_forward_icon":@"Rules"}];
+    [moreFeatures addObject:@{@"link_almond_icon":@"Link Almond to Account"}];
+    if(!self.isLocal)
+        [moreFeatures addObject:@{@"help_center_icon":@"Almond Sharing"}];
+    [moreFeatures addObject:@{@"almond_sharing_icon":@"Help Center"}];
+    return moreFeatures;
+}
+
+-(void)loadProfileImage{
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *imgPath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", PROFILE_PIC, @"jpg"]];
     NSLog(@"image path: %@", imgPath);
@@ -45,7 +121,6 @@
         NSLog(@"image account: %@", [UIImage imageNamed:@"help_center_icon"]);
         [self saveImage:[UIImage imageNamed:@"help_center_icon"] withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
     }
-    
 }
 
 -(void)saveImage:(UIImage *)image withFileName:(NSString *)imageName ofType:(NSString *)extension inDirectory:(NSString *)directoryPath {
@@ -77,19 +152,6 @@
     }
 }
 
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:YES];
-    self.isLocal = [[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local;
-    dispatch_async(dispatch_get_main_queue(),^{
-        [self.tableView reloadData];
-    });
-    
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 #pragma mark tableView delegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -100,7 +162,7 @@
     if(self.isLocal){
         return section == 0? 3: 1;
     }else{
-        return section == 1? 3: 1;
+        return section == 1? 4: 1;
     }
 }
 
@@ -119,7 +181,7 @@
     }else{
         if(section == 0){
             cell = [self getMorecell:tableView identifier:@"morecell1" indexPath:indexPath accessory:YES];
-            [cell setUpMoreCell1];
+            [cell setUpMoreCell1:self.userName];
         }
         else if(section == 1){
             cell = [self getMorecell:tableView identifier:@"morecell2" indexPath:indexPath accessory:YES];
@@ -133,8 +195,6 @@
             cell = [self getMorecell:tableView identifier:@"morecell4" indexPath:indexPath accessory:NO];
         }
     }
-    
-
     return cell;
 }
 
@@ -217,9 +277,19 @@
             UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
             [self presentViewController:ctrl animated:YES completion:nil];
         }
+    }
+    
+    else if(row == 2){//help center
+        if(self.isLocal){
+            HelpCenter *helpCenter = (HelpCenter *)[self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"HelpCenter"];
+            [self.navigationController pushViewController:helpCenter animated:YES];
+        }else{
+            [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:UI_ON_PRESENT_ACCOUNTS object:nil]];
+        }
         
     }
-    else if(row == 2){//help center
+    
+    else if(row == 3){
         HelpCenter *helpCenter = (HelpCenter *)[self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"HelpCenter"];
         [self.navigationController pushViewController:helpCenter animated:YES];
     }

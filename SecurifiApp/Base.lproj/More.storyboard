@@ -145,7 +145,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version Number" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MD0-C7-q0a">
-                                                    <rect key="frame" x="188" y="8" width="124" height="25"/>
+                                                    <rect key="frame" x="186" y="8" width="124" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="6NU-Bw-rIA"/>
                                                         <constraint firstAttribute="width" constant="124" id="fBQ-iC-6qE"/>
@@ -155,7 +155,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="App Version" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ll3-34-Rio">
-                                                    <rect key="frame" x="8" y="8" width="124" height="25"/>
+                                                    <rect key="frame" x="10" y="8" width="124" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="124" id="wdB-ji-r3z"/>
                                                         <constraint firstAttribute="height" constant="25" id="yIk-8q-Cyx"/>
@@ -166,8 +166,8 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="ll3-34-Rio" firstAttribute="leading" secondItem="BS9-PN-q6H" secondAttribute="leadingMargin" id="o8I-Xs-pr0"/>
-                                                <constraint firstItem="MD0-C7-q0a" firstAttribute="trailing" secondItem="BS9-PN-q6H" secondAttribute="trailingMargin" id="pdb-sY-zrV"/>
+                                                <constraint firstItem="ll3-34-Rio" firstAttribute="leading" secondItem="BS9-PN-q6H" secondAttribute="leadingMargin" constant="2" id="o8I-Xs-pr0"/>
+                                                <constraint firstItem="MD0-C7-q0a" firstAttribute="trailing" secondItem="BS9-PN-q6H" secondAttribute="trailingMargin" constant="-2" id="pdb-sY-zrV"/>
                                                 <constraint firstItem="ll3-34-Rio" firstAttribute="top" secondItem="BS9-PN-q6H" secondAttribute="topMargin" id="sdf-YF-6bE"/>
                                                 <constraint firstItem="MD0-C7-q0a" firstAttribute="top" secondItem="BS9-PN-q6H" secondAttribute="topMargin" id="v5E-Tr-Go8"/>
                                             </constraints>

@@ -36,13 +36,14 @@
     // Configure the view for the selected state
 }
 
--(void)setUpMoreCell1{
+-(void)setUpMoreCell1:(NSString *)name{
     NSString * documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     UIImage * image = [self loadImageWithFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
     
     NSLog(@"cell image: %@", image);
     self.imgView.clipsToBounds = YES;
     self.imgView.image = image;
+    self.name.text = name;
 }
 
 -(UIImage *)loadImageWithFileName:(NSString *)fileName ofType:(NSString *)extension inDirectory:(NSString *)directoryPath {

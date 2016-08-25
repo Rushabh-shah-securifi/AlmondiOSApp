@@ -161,12 +161,11 @@
     self.pageControl.numberOfPages = [self.startScreen[SCREENCOUNT] intValue];
     [self.pageControl setCurrentPage:0];
     
+    self.leftArrow.hidden = YES;
     if(screens.count == 1){
-        self.leftArrow.hidden = YES;
         self.rightArrow3.hidden = YES;
         self.gotIt.hidden = NO;
     }else{
-        self.leftArrow.hidden = NO;
         self.rightArrow3.hidden = NO;
         self.gotIt.hidden = YES;
     }
@@ -194,10 +193,17 @@
     
     NSLog(@"current count: %d, screens count: %d", pageControl.currentPage, screens.count);
     //current page starts from 0
-    if(pageControl.currentPage == screens.count - 1){
+    if(pageControl.currentPage == 0){
+        self.leftArrow.hidden = YES;
+        self.rightArrow3.hidden = NO;
+        self.gotIt.hidden = YES;
+    }
+    else if(pageControl.currentPage == screens.count - 1){
+        self.leftArrow.hidden = NO;
         self.rightArrow3.hidden = YES;
         self.gotIt.hidden = NO;
     }else{
+        self.leftArrow.hidden = NO;
         self.rightArrow3.hidden = NO;
         self.gotIt.hidden = YES;
     }
