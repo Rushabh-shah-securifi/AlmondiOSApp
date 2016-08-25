@@ -431,6 +431,10 @@
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
 		CE64BDC41D2FACCB0009A26F /* temp_copy.json in Resources */ = {isa = PBXBuildFile; fileRef = CE64BDC31D2FACCA0009A26F /* temp_copy.json */; };
 		CE65C4911D1A67B200C2E1C0 /* UILabel+ActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = CE65C4901D1A67B200C2E1C0 /* UILabel+ActionSheet.m */; };
+		CEABC6581D6F147B00C2DCD4 /* CategoryMap.json in Resources */ = {isa = PBXBuildFile; fileRef = CEABC6571D6F147B00C2DCD4 /* CategoryMap.json */; };
+		CEABC65B1D6F14A000C2DCD4 /* CategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEABC65A1D6F14A000C2DCD4 /* CategoryView.m */; };
+		CEABC65E1D6F14A900C2DCD4 /* ChangeCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEABC65D1D6F14A900C2DCD4 /* ChangeCategoryViewController.m */; };
+		CEABC6611D6F14CD00C2DCD4 /* categoryTab.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEABC65F1D6F14CD00C2DCD4 /* categoryTab.xib */; };
 		CEB788E41D361FE1005F75F2 /* temp_jsonResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = CEB788E31D361FE1005F75F2 /* temp_jsonResponse.json */; };
 		CEEAB7AD1CAD26A2003C5290 /* UICommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */; };
 		CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEF425C1C47E0E300E36C9B /* ScenePayload.m */; };
@@ -1037,6 +1041,12 @@
 		CE64BDC31D2FACCA0009A26F /* temp_copy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = temp_copy.json; path = ../temp_copy.json; sourceTree = "<group>"; };
 		CE65C48F1D1A67B200C2E1C0 /* UILabel+ActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+ActionSheet.h"; sourceTree = "<group>"; };
 		CE65C4901D1A67B200C2E1C0 /* UILabel+ActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+ActionSheet.m"; sourceTree = "<group>"; };
+		CEABC6571D6F147B00C2DCD4 /* CategoryMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CategoryMap.json; path = SecurifiApp/CategoryMap.json; sourceTree = SOURCE_ROOT; };
+		CEABC6591D6F14A000C2DCD4 /* CategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryView.h; sourceTree = "<group>"; };
+		CEABC65A1D6F14A000C2DCD4 /* CategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryView.m; sourceTree = "<group>"; };
+		CEABC65C1D6F14A900C2DCD4 /* ChangeCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeCategoryViewController.h; sourceTree = "<group>"; };
+		CEABC65D1D6F14A900C2DCD4 /* ChangeCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeCategoryViewController.m; sourceTree = "<group>"; };
+		CEABC6601D6F14CD00C2DCD4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = categoryTab.xib; sourceTree = "<group>"; };
 		CEB788E31D361FE1005F75F2 /* temp_jsonResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = temp_jsonResponse.json; path = ../temp_jsonResponse.json; sourceTree = "<group>"; };
 		CEEAB7AB1CAD26A2003C5290 /* UICommonMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICommonMethods.h; sourceTree = "<group>"; };
 		CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICommonMethods.m; sourceTree = "<group>"; };
@@ -1624,6 +1634,7 @@
 				CE57E5301D1BBCC400493460 /* HistoryCell.xib */,
 				F4D93ACF1D38DDFE00D55BD6 /* HelpScreen.xib */,
 				F4B8754D1D5382FF00DCF76F /* mesh.xib */,
+				CEABC65F1D6F14CD00C2DCD4 /* categoryTab.xib */,
 			);
 			path = Base.lproj;
 			sourceTree = "<group>";
@@ -2123,6 +2134,10 @@
 		CE40BF081D225791007C2148 /* SiteMap */ = {
 			isa = PBXGroup;
 			children = (
+				CEABC65C1D6F14A900C2DCD4 /* ChangeCategoryViewController.h */,
+				CEABC65D1D6F14A900C2DCD4 /* ChangeCategoryViewController.m */,
+				CEABC6591D6F14A000C2DCD4 /* CategoryView.h */,
+				CEABC65A1D6F14A000C2DCD4 /* CategoryView.m */,
 				CE40BF091D225791007C2148 /* BrowsingHistory.h */,
 				CE40BF0A1D225791007C2148 /* BrowsingHistory.m */,
 				CE40BF0D1D225791007C2148 /* HistoryCell.h */,
@@ -2252,6 +2267,7 @@
 		F4B876391D54646500DCF76F /* JsonFiles */ = {
 			isa = PBXGroup;
 			children = (
+				CEABC6571D6F147B00C2DCD4 /* CategoryMap.json */,
 				A5C68C981C92D93000110B74 /* GenericIndexesData.json */,
 				CEF6F5081C92CD3D00C68975 /* deviceListJson.json */,
 				A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */,
@@ -2595,6 +2611,7 @@
 				A58DB2EF1BB16B9F00717C02 /* Localizable.strings in Resources */,
 				846414E01B736B80008AB07F /* AvenirLTStd-HeavyOblique.otf in Resources */,
 				846414DD1B736B80008AB07F /* AvenirLTStd-Book.otf in Resources */,
+				CEABC6611D6F14CD00C2DCD4 /* categoryTab.xib in Resources */,
 				F4EA081D1D6AD9F900D6CC28 /* More.storyboard in Resources */,
 				A5C68C991C92D93000110B74 /* GenericIndexesData.json in Resources */,
 				A58DB4711BB3CD5200717C02 /* MainStoryboard_iPhone.strings in Resources */,
@@ -2610,6 +2627,7 @@
 				A58DB3031BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2671BB168C400717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2F91BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
+				CEABC6581D6F147B00C2DCD4 /* CategoryMap.json in Resources */,
 				A58DB3041BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
 				CEF6F50A1C92CD3D00C68975 /* deviceListJson.json in Resources */,
 				1C7E7E751A41A7470026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */,
@@ -3019,6 +3037,7 @@
 				1C7E7DC51A41A0990026F0BA /* SFIHighlightedButton.m in Sources */,
 				1C7E7D831A41A0990026F0BA /* SFILoginViewController.m in Sources */,
 				1C7E7DC71A41A0990026F0BA /* SFIMainViewController.m in Sources */,
+				CEABC65B1D6F14A000C2DCD4 /* CategoryView.m in Sources */,
 				CEF6F4DE1C92CAD600C68975 /* CustomCellTableViewCell.m in Sources */,
 				F4B875431D5382D500DCF76F /* AlmondStatus.m in Sources */,
 				1C7E7DA71A41A0990026F0BA /* SFIPasswordChangeViewController.m in Sources */,
@@ -3063,6 +3082,7 @@
 				F4B8767E1D54653500DCF76F /* Slider.m in Sources */,
 				1C7E7D851A41A0990026F0BA /* SFILogoutAllViewController.m in Sources */,
 				1C7E7D8F1A41A0990026F0BA /* SFIRouterReboot.m in Sources */,
+				CEABC65E1D6F14A900C2DCD4 /* ChangeCategoryViewController.m in Sources */,
 				846414CA1B736B36008AB07F /* ILColorPickerView.m in Sources */,
 				1DF031661E380BA4D0E0EB07 /* SFIPreferences.m in Sources */,
 				1DF0390452B5D28DECBE4F68 /* NSData+Conversion.m in Sources */,
@@ -4778,6 +4798,14 @@
 				CE57E5311D1BBCC400493460 /* Base */,
 			);
 			name = HistoryCell.xib;
+			sourceTree = "<group>";
+		};
+		CEABC65F1D6F14CD00C2DCD4 /* categoryTab.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CEABC6601D6F14CD00C2DCD4 /* Base */,
+			);
+			name = categoryTab.xib;
 			sourceTree = "<group>";
 		};
 		F4B8754D1D5382FF00DCF76F /* mesh.xib */ = {

@@ -17,6 +17,8 @@
 #import "SearchTableViewController.h"
 #import "DataBaseManager.h"
 #import "BrowsingHistoryDataBase.h"
+#import "BrowsingHistory.h"
+#import "ChangeCategoryViewController.h"
 
 @interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource,BrowsingHistoryDelegate,NSURLConnectionDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *browsingTable;
@@ -24,10 +26,13 @@
 @property (nonatomic) NSArray *UriDataOneDay ;
 @property (nonatomic)NSMutableArray *dayArr;
 @property (nonatomic) dispatch_queue_t imageDownloadQueue;
+@property (nonatomic) dispatch_queue_t sendReqQueue;
 @property (nonatomic) NSMutableDictionary *urlToImageDict;
 @property (nonatomic) NSMutableData *responseData;
+@property (nonatomic) BrowsingHistory *browsingHistory;
 @property BOOL sendReq;
-@property BOOL reqStartTag;
+@property int count;
+@property BOOL isEmptyDb;
 
 
 @end
@@ -35,14 +40,32 @@
 @implementation BrowsingHistoryViewController
 
 - (void)viewDidLoad {
+    self.count = 10;
+//    [BrowsingHistoryDataBase initializeDataBase];
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
-    
-//    [BrowsingHistoryDataBase insertRecordFromFile:@"responseMain"];
-//    [self getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistory]];
+    self.sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
+
     self.dayArr = [[NSMutableArray alloc]init];
-    [self sendRequest:@""];
+//    [self sendRequest:@""];
     [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
     self.urlToImageDict = [NSMutableDictionary new];
+    self.browsingHistory = [[BrowsingHistory alloc]init];
+    self.browsingHistory.delegate = self;
+//    [BrowsingHistoryDataBase insertRecordFromFile:@"CategoryMap"];
+    NSLog(@"dbcount %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount]);
+     NSLog(@"very fiest entry = %@",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10]);
+   
+    if([BrowsingHistoryDataBase GetHistoryDatabaseCount]>0){
+       
+        
+        [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+        [self sendHttpRequest:[BrowsingHistoryDataBase getStartTag] endTag:@""];
+    }
+    else{
+        self.isEmptyDb = YES;
+        [self sendHttpRequest:@"" endTag:@""];
+        
+    }
     [super viewDidLoad];
    
 }
@@ -86,6 +109,9 @@
 
 }
 -(void)viewDidDisappear:(BOOL)animated{
+    NSLog(@"dbCount1 = %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount]);
+    [BrowsingHistoryDataBase deleteOldEntries];
+    NSLog(@"dbCount2 = %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount]);
     [super viewDidDisappear:YES];
 }
 - (void)didReceiveMemoryWarning {
@@ -98,7 +124,7 @@
 #pragma mark HttpReqDelegateMethods
 -(void)sendHttpRequest:(NSString *)startTag endTag:(NSString *)endTag{// make it paramater CMAC AMAC StartTag EndTag
     //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
-    
+        
    NSString *post = [NSString stringWithFormat: @"AMAC=%@&CMAC=%@&EndTag=%@&StartTag=%@",@"e4:71:85:20:0b:c4",@"10:60:4b:d9:60:84",endTag,startTag];
     NSLog(@"post req = %@",post);
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -110,6 +136,7 @@
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
     [request setHTTPBody:postData];
     [NSURLConnection connectionWithRequest:request delegate:self];
+
     //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
 }
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response { _responseData = [[NSMutableData alloc] init];
@@ -139,10 +166,11 @@
 //    /*post notification for read database history and */
 //    /*after insert again send request untill response is not null*/
 
-//    [self getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistory]];
-    BrowsingHistory *Bhistory =[[BrowsingHistory alloc]init];
-    Bhistory.delegate = self;
-    [Bhistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistory] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+    if(self.isEmptyDb == YES){
+    [self.dayArr removeAllObjects];
+    [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+        self.isEmptyDb = NO;
+    }
     NSLog(@"end tag = %@",endTag);
     
     [self sendRequest:endTag];
@@ -157,20 +185,24 @@
     NSString *startTag = [BrowsingHistoryDataBase getStartTag];
     NSLog(@"DBCount %d, start tag %@, end tag %@",DBCount,startTag,endTag);
     
-    if(DBCount != 0){
+//    if(DBCount != 0){
         if(self.sendReq == YES){
-            [self sendHttpRequest:@"" endTag:endTag];
-            self.reqStartTag = YES;
+                [self sendHttpRequest:@"" endTag:endTag];
+            
+//            self.reqStartTag = YES;
         }
-        else if(self.reqStartTag == NO){
-            NSLog(@"sending request with startTag only one time...............................................");
-            [self sendHttpRequest:startTag endTag:@""];
-            self.reqStartTag = YES;
-        }
-    }
+//        else if(self.reqStartTag == NO){
+//            NSLog(@"sending request with startTag only one time...............................................");
+//                [self sendHttpRequest:startTag endTag:@""];
+//
+//            
+//            self.reqStartTag = YES;
+//        }
+//    }
     else
     {
-        [self sendHttpRequest:@"" endTag:@""];
+//           [self sendHttpRequest:@"" endTag:@""];
+        
         NSLog(@"sending http req");
     }
 }
@@ -205,14 +237,46 @@
     }
     
 //    self.UriDataOneDay = [self.browsingHistoryObj.allDateRecord valueForKey: self.browsingHistoryDayWise[indexPath.section]];
+    
     NSArray *browsHist = self.dayArr[indexPath.section];
+     NSLog(@"uriDict = %@",browsHist[indexPath.row]);
     [cell setCell:browsHist[indexPath.row] hideItem:NO];
+
+
     return cell;
 }
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSInteger lastSectionIndex = [tableView numberOfSections] - 1;
+    NSInteger lastRowIndex = [tableView numberOfRowsInSection:lastSectionIndex] - 1;
+    
+    if ((indexPath.section == lastSectionIndex) && (indexPath.row == lastRowIndex)) {
+        // This is the last cell
+        NSLog(@"reached to last db count = %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount]);
+        
+        if([BrowsingHistoryDataBase GetHistoryDatabaseCount] > self.count)
+        {
+        self.count+=10;
+            [self.dayArr removeAllObjects];
+        [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:self.count] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+            
+            NSLog(@"self.count =  %d",self.count);
+            
+        }
+        else{
+            [self sendHttpRequest:@"" endTag:[BrowsingHistoryDataBase getEndTag]];
+            NSLog( @"Ask for new Req");
+        }
+//        [self loadMore];
+    }
+}
+
+
 
 
 -(UIView*)deviceHeader:(NSInteger)section tableView:(UITableView*)tableView{
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
+    
     view.backgroundColor = [UIColor whiteColor];
     if (section > 0) {
         UITableViewHeaderFooterView *foot = (UITableViewHeaderFooterView *)view;
@@ -223,23 +287,26 @@
     }
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
     [label setFont:[UIFont securifiBoldFont:13]];
-    NSDictionary * dict = [BrowsingHistoryDataBase getAllBrowsingHistory];
-    NSMutableArray *myMutableArray = [NSMutableArray arrayWithArray:[dict[@"Data"] allKeys]];
-    
-    NSArray *aUnsorted = [dict[@"Data"] allKeys];
-    NSArray *arrKeys = [aUnsorted sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        NSDateFormatter *df = [[NSDateFormatter alloc] init];
-        [df setDateFormat:@"dd-MM-yyyy"];
-        NSDate *d1 = [df dateFromString:(NSString*) obj1];
-        NSDate *d2 = [df dateFromString:(NSString*) obj2];
-        return [d1 compare: d2];
-    }];
+    NSLog(@"deviceHeader count %d",self.count);
+    NSDictionary * dict = [BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:self.count];
+//    NSMutableArray *myMutableArray = [NSMutableArray arrayWithArray:[dict[@"Data"] allKeys]];
+//    
+//    NSArray *aUnsorted = [dict[@"Data"] allKeys];
+//    NSArray *arrKeys = [aUnsorted sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+//        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+//        [df setDateFormat:@"dd-MM-yyyy"];
+//        NSDate *d1 = [df dateFromString:(NSString*) obj1];
+//        NSDate *d2 = [df dateFromString:(NSString*) obj2];
+//        return [d1 compare: d2];
+//    }];
     
 //    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Date" ascending:FALSE];
 //    [myMutableArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    
-    NSString *str = [[dict[@"Data"] allKeys] objectAtIndex:section];
-   
+    NSString *str;
+    NSLog(@"self.dayArr Count = %ld",self.dayArr.count);
+    NSArray *browsHist = self.dayArr[section];
+    NSDictionary *dict2 = browsHist[0];
+    str = dict2[@"date"];
     NSDate *date = [NSDate convertStirngToDate:str];
      NSLog(@"date = %@",date);
 
@@ -265,10 +332,36 @@
     return [browsHistory.date getDayMonthFormat];
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSArray *browsHist = self.dayArr[indexPath.section];
+    NSDictionary *uriDict = browsHist[indexPath.row];
+    NSLog(@"uriDict = %@",uriDict);
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+    ChangeCategoryViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ChangeCategoryViewController"];
+    viewController.uriDict = uriDict;
+    [self.navigationController pushViewController:viewController animated:YES];
+//    UIView *view = [[UIView alloc]init];
+//    view.backgroundColor = [UIColor yellowColor];
+//    [UIView animateWithDuration:0.5
+//                          delay:0.1
+//                        options: UIViewAnimationOptionTransitionCurlUp
+//                     animations:^{
+//                         view.frame = CGRectMake(0, 0, 100, 100);
+//                     }
+//                     completion:^(BOOL finished){
+//                     }];
+//    [self.view addSubview:view];
+
+}
 #pragma mark click handler
 - (void)onSearchButton{
 //    [BrowsingHistoryDataBase todaySearch];
 //    [BrowsingHistoryDataBase LastHourSearch];
+//    
+
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+//    ChangeCategoryViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ChangeCategoryViewController"];
+//    [self.navigationController pushViewController:viewController animated:YES];
 //    
     
     SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];

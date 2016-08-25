@@ -35,15 +35,38 @@
         self.imgLeftConstrin.constant = 7;
         self.hostnameLeftConstrain.constant = 5;
     }
-    self.countLbl.hidden = hideItem;
+    self.categoryImg.hidden = hideItem;
     self.settingImg.hidden = hideItem;
     self.lastActTime.hidden = hideItem;
+    
     
     dispatch_async(dispatch_get_main_queue(), ^() {
 
         self.webImg.image = uri[@"image"];
         self.siteName.text = uri[@"hostName"];
-        self.countLbl.text = uri[@"count"];
+        if([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"NC-17"]){
+            self.categoryImg.image = [UIImage imageNamed:@"Adults_Only"];
+            
+        }
+        else if ([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"R"]){
+            self.categoryImg.image = [UIImage imageNamed:@"Restricted"];
+            
+        }
+        else if ([[uri[@"categoryObj"]valueForKey:@"categoty"]isEqualToString:@"PG-13"]){
+            self.categoryImg.image = [UIImage imageNamed:@"Parents_Strongly_Cautioned"];
+            
+        }
+        else if ([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"PG"]){
+            self.categoryImg.image = [UIImage imageNamed:@"Parental_Guidance"];
+            
+        }
+        else if ([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"G"]){
+            self.categoryImg.image = [UIImage imageNamed:@"General_Audiences"];
+        }
+        else{
+            self.categoryImg.image = [UIImage imageNamed:@"help-icon"];
+        }
+//        self.categoryImg.image = [UIImage imageNamed:@"help-icon"];
         NSDate *dat = [NSDate getDateFromEpoch:uri[@"Epoc"]];
         self.lastActTime.text = [dat stringFromDate];
         

@@ -24,7 +24,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     LastHourSearch,
     WeekDaySearch,
     DateSearch,
-    WeekSearch
+    WeekSearch,
+    CategorySearch
 };
 
 @interface SearchTableViewController ()<UISearchResultsUpdating, UISearchBarDelegate,UITextFieldDelegate,BrowsingHistoryDelegate>
@@ -33,12 +34,14 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 @property (nonatomic) NSArray *suggSearchArr;
 @property (nonatomic) NSMutableArray *recentSearch;
 @property (nonatomic) NSMutableArray *recentSearchObj;
+@property (nonatomic) NSArray *categorySearch;
 
 @property (nonatomic) SearchPatten searchPatten;
 @property (nonatomic) NSMutableArray *dayArr;
 @property (nonatomic) dispatch_queue_t imageDownloadQueue;
 @property BOOL isManuelSearch ;
 @property (nonatomic) NSDictionary *historyDict;
+
 @end
 
 @implementation SearchTableViewController
@@ -80,7 +83,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if(tableView == self.tableView){
-        return 2;
+        return 3;
     }
     else
        return self.dayArr.count;
@@ -92,6 +95,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     if(tableView == self.tableView){
         if(section == 0)
             return self.suggSearchArr.count;
+        else if(section == 1)
+            return self.categorySearch.count;
         else
             return  self.recentSearchObj.count;
     }
@@ -122,7 +127,14 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     [label setFont:[UIFont securifiBoldFont:13]];
     
     if(tableView == self.tableView){
-        headerDate = (section == 0) ? @"Suggested Searches":@"Recent Searches";
+        if(section == 0)
+            headerDate =  @"Suggested Searches";
+        else if(section == 1)
+            headerDate =  @"Categories";
+        else
+            headerDate =  @"Recent Searches";
+       
+        
         label.text = headerDate;
     }
     else{
@@ -159,6 +171,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 
         if(indexPath.section == 0)
             [cell setCell:[self.suggSearchArr objectAtIndex:indexPath.row]hideItem:YES];
+        else if(indexPath.section == 1)
+            [cell setCell:[self.categorySearch objectAtIndex:indexPath.row]hideItem:YES];
         else
             [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row]hideItem:YES];
     }
@@ -174,7 +188,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(tableView == self.tableView){
-        if(indexPath.section == 1){
+        if(indexPath.section == 2){
              [self setSearchpattenMethod:RecentSearch indexPath:indexPath];
         }
         else if(indexPath.section == 0 && indexPath.row == 0){
@@ -186,12 +200,35 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         else if(indexPath.section == 0 && indexPath.row == 2){
             [self setSearchpattenMethod:WeekSearch];
         }
+        else if (indexPath.section == 1 && indexPath.row == 0){
+            [self categorySearch:@"NC-17"];
+        }
+        else if (indexPath.section == 1 && indexPath.row == 1){
+            [self categorySearch:@"R"];
+        }
+        else if (indexPath.section == 1 && indexPath.row == 2){
+            [self categorySearch:@"PG-13"];
+        }
+        else if (indexPath.section == 1 && indexPath.row == 3){
+            [self categorySearch:@"PG"];
+        }
+        else if (indexPath.section == 1 && indexPath.row == 4){
+            [self categorySearch:@"G"];
+        }
     }
 }
 #pragma mark searchDelegate methods
 -(void)setSearchpattenMethod:(SearchPatten)searchpatten{
     self.searchPatten = searchpatten;
     self.searchController.searchBar.text = @" ";
+    self.isManuelSearch = NO;
+    [self.searchController.searchBar becomeFirstResponder];
+
+}
+
+-(void)categorySearch:(NSString *)searchstr{
+    self.searchPatten = CategorySearch;
+    self.searchController.searchBar.text = searchstr;
     self.isManuelSearch = NO;
     [self.searchController.searchBar becomeFirstResponder];
 
@@ -281,7 +318,25 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
 
     self.suggSearchArr = [[NSArray alloc]initWithObjects:lasthour,today,thisWeek, nil];
+    NSDictionary *adults = @{@"hostName":@"Adults Only",
+                               @"image" : [UIImage imageNamed:@"Adults_Only"]
+                               };
     
+    NSDictionary *restricted = @{@"hostName":@"Restricted",
+                            @"image" : [UIImage imageNamed:@"Restricted"]
+                            };
+    NSDictionary *PG_13 = @{@"hostName":@"Parents Strongly Cautioned",
+                               @"image" : [UIImage imageNamed:@"Parents_Strongly_Cautioned"]
+                               };
+    NSDictionary *PG = @{@"hostName":@"Parential Guidence Suggested",
+                               @"image" : [UIImage imageNamed:@"Parental_Guidance"]
+                               };
+    
+    NSDictionary *General = @{@"hostName":@"General Audiences",
+                            @"image" : [UIImage imageNamed:@"General_Audiences"]
+                            };
+   
+    self.categorySearch = [NSArray arrayWithObjects:adults,restricted,PG_13,PG,General, nil];
     
     NSSet *set = [NSSet setWithArray:[NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"recentSearch"]]];
     
@@ -315,7 +370,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 
 -(void)getHistoryFromDB:(NSString *)searchString{
     NSLog(@"self.searchPatten %ld..%@",(long)self.searchPatten,searchString);
-    
+    if(self.searchPatten == CategorySearch){
+        self.historyDict = [BrowsingHistoryDataBase searchBYCategoty:searchString];
+        NSLog(@"CategorySearch reached");
+    }
     if(self.searchPatten == RecentSearch){
         self.historyDict = [BrowsingHistoryDataBase getSearchString:searchString];
     }

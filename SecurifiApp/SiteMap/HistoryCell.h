@@ -11,7 +11,7 @@
 
 @interface HistoryCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *webImg;//temp
-@property (weak, nonatomic) IBOutlet UILabel *countLbl;//temp
+@property (weak, nonatomic) IBOutlet UIImageView *categoryImg;
 @property (weak, nonatomic) IBOutlet UILabel *siteName;//temp
 @property (weak, nonatomic) IBOutlet UILabel *lastActTime;//temp
 @property (weak, nonatomic) IBOutlet UIImageView *settingImg;//temp

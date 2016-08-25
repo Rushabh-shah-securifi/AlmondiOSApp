@@ -2,8 +2,7 @@
 
 /* Class = "IBUILabel"; text = "By tapping Continue you are indicating that
 you have read and agreed to our"; ObjectID = "2vg-ti-ElJ"; */
-"2vg-ti-ElJ.text" = "By tapping Continue you are indicating that
-you have read and agreed to our";
+"2vg-ti-ElJ.text" = "By tapping Continue you are indicating that you have read and agreed to our";
 
 /* Class = "IBUIButton"; normalTitle = "Forgot your password?"; ObjectID = "5GG-3f-pqZ"; */
 "5GG-3f-pqZ.normalTitle" = "Forgot your password?";
