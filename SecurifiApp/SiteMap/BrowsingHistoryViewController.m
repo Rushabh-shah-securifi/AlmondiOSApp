@@ -287,8 +287,7 @@
     }
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
     [label setFont:[UIFont securifiBoldFont:13]];
-    NSLog(@"deviceHeader count %d",self.count);
-    NSDictionary * dict = [BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:self.count];
+    
 //    NSMutableArray *myMutableArray = [NSMutableArray arrayWithArray:[dict[@"Data"] allKeys]];
 //    
 //    NSArray *aUnsorted = [dict[@"Data"] allKeys];
@@ -316,7 +315,6 @@
         label.text = [NSString stringWithFormat:@"Today, %@",headerDate];
     else
         label.text = headerDate;
-    
     label.textColor = [UIColor grayColor];
     [view addSubview:label];
     
