@@ -37,8 +37,7 @@ CGPoint tablePoint;
     self.needBackButton = YES;
     [super viewDidLoad];
     self.toolkit = [SecurifiToolkit sharedInstance];
-    if([[SecurifiToolkit sharedInstance] isScreenShown:@"rules"] == NO)
-        [self initializeHelpScreensfirst:@"rules"];
+    
     
     [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
@@ -56,8 +55,10 @@ CGPoint tablePoint;
     [self markAlmondTitleAndMac];
     [self initializeNotifications];
     
+    if([[SecurifiToolkit sharedInstance] isScreenShown:@"rules"] == NO)
+        [self initializeHelpScreensfirst:@"rules"];
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self checkToShowUpdateScreen];
         [self.tableView reloadData];
     });
     [[Analytics sharedInstance] markRuleScreen];
@@ -120,9 +121,6 @@ CGPoint tablePoint;
     
 }
 - (void)onCurrentAlmondChanged:(id)sender {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self checkToShowUpdateScreen];
-    });
     [self.toolkit.ruleList removeAllObjects];
     
     [self markAlmondTitleAndMac];
@@ -133,9 +131,6 @@ CGPoint tablePoint;
 }
 
 - (void)onAlmondListDidChange:(id)notice {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self checkToShowUpdateScreen];
-    });
     [self markAlmondTitleAndMac];
 }
 

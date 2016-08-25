@@ -24,20 +24,20 @@
     return textRect;
 }
 
-+(void)setupUpdateAvailableScreen:(UIView *)bgView selfView:(UIView*)view viewWidth:(CGFloat)viewWidth{
++(void)setupUpdateAvailableScreen:(UIView *)bgView viewWidth:(CGFloat)viewWidth{
 
     UILabel *hdrTitle = [[UILabel alloc]initWithFrame:CGRectMake(0, 22, viewWidth, 40)];
     
     [CommonMethods setLableProperties:hdrTitle text:NSLocalizedString(@"almond_update_available", @"Almond Update Available") textColor:[UIColor blackColor] fontName:@"AvenirLTStd-Heavy" fontSize:20 alignment:NSTextAlignmentCenter];
     
-    hdrTitle.center = CGPointMake(view.bounds.size.width/2 + 5, hdrTitle.center.y);
+    hdrTitle.center = CGPointMake(viewWidth/2 + 5, hdrTitle.center.y);
     [bgView addSubview:hdrTitle];
     
     [CommonMethods addLineSeperator:bgView yPos:65];
     
     //image 200
     UIImageView *routerSettingImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 100, 200, 180)];
-    routerSettingImg.center = CGPointMake(view.bounds.size.width/2, routerSettingImg.center.y);
+    routerSettingImg.center = CGPointMake(viewWidth/2, routerSettingImg.center.y);
     routerSettingImg.image = [UIImage imageNamed:@"almond_settings"];
     [bgView addSubview:routerSettingImg];
     

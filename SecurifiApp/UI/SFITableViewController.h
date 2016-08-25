@@ -68,8 +68,6 @@
 
 - (void)removeAlert;
 
-- (void)checkToShowUpdateScreen;
-
 - (void)initializeHelpScreensfirst:(NSString*)itemName;
 
 - (void)resetViewDelegate;

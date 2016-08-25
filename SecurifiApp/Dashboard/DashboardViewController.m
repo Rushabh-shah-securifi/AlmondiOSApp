@@ -39,7 +39,6 @@
 @property(nonatomic) CircleLabel *countLabel;
 @property(nonatomic) UIButton *countButton;
 @property(nonatomic) UIImageView *navigationImg;
-@property(nonatomic) UIView *bgView;
 @property(nonatomic) HelpScreens *helpScreensObj;
 @property(nonatomic) UIView *maskView;
 @end
@@ -51,10 +50,7 @@
     self.toolkit = [SecurifiToolkit sharedInstance];
     if([self.toolkit isScreenShown:@"dashboard"] == NO)
         [self initializeHelpScreens];
-    
-    self.bgView = [[UIView alloc]init]; //for almond update available
-    
-    
+
     self.navigationController.navigationBar.clipsToBounds = YES;
     [self loadNotification];
     self.clientNotificationArr = [[NSMutableArray alloc]init];
@@ -74,7 +70,6 @@
     [self SelectAlmond:NSLocalizedString(@"dashBoard AddAlmond", @"AddAlmond")];
     [self markNetworkStatusIcon];
     [self initializeHUD];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -133,9 +128,7 @@
     [self getRecentNotification];
     [self.toolkit tryRefreshNotifications];
     [self initializeUI];
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self checkToShowUpdateScreen];
-    });
+
     [self markNetworkStatusIcon];
 }
 
@@ -270,9 +263,7 @@
 
 - (void)onCurrentAlmondChanged:(id)sender {
     NSLog(@"on Current almond changed");
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self checkToShowUpdateScreen];
-    });
+
     
     [self.toolkit.devices removeAllObjects];
     [self.toolkit.clients removeAllObjects];
@@ -284,9 +275,7 @@
 }
 
 - (void)onAlmondListDidChange:(id)sender {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self checkToShowUpdateScreen];
-    });
+
 }
 
 
@@ -1009,53 +998,6 @@
     [toolkit removeLocalNetworkSettingsForAlmond:almondMac];
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
-
-
-
--(void)checkToShowUpdateScreen{
-    return;
-    
-    SFIAlmondPlus *currentAlmond = self.toolkit.currentAlmond;
-    BOOL local = [self.toolkit useLocalNetwork:currentAlmond.almondplusMAC];
-    NSLog(@"current almond dash: %@", currentAlmond);
-    if(currentAlmond.firmware == nil || local){
-        [self tryRemoveBGView];
-        return;
-    }
-    NSLog(@"passed");
-    BOOL isNewVersion = [currentAlmond supportsGenericIndexes:currentAlmond.firmware];
-    if(!isNewVersion){
-        [self showAlmondUpdateAvailableScreen:self.navigationController.view];
-        [self.tabBarController.tabBar setHidden:YES];
-    }else{
-        [self tryRemoveBGView];
-    }
-}
-
--(void)tryRemoveBGView{
-    if([self.navigationController.view.subviews containsObject:self.bgView]){
-        [self.bgView removeFromSuperview];
-    }
-    [self.tabBarController.tabBar setHidden:NO];
-}
-
--(void)showAlmondUpdateAvailableScreen:(UIView*)view{
-    int viewWidth = self.navigationController.view.frame.size.width;
-    
-    self.bgView.frame = CGRectMake(0, 0, viewWidth, self.navigationController.view.frame.size.height);
-    _bgView.backgroundColor = [UIColor whiteColor];
-    [view addSubview:self.bgView];
-    
-    SWRevealViewController *revealController = [self revealViewController];
-    UIButton *crossButton = [[UIButton alloc]initWithFrame:CGRectMake(10, 20, 30, 40)];
-    [crossButton setImage:[CommonMethods imageNamed:@"drawer" withColor:[UIColor blackColor]] forState:UIControlStateNormal];
-    crossButton.tintColor = [UIColor blackColor];
-    [crossButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-    [self.bgView addSubview:crossButton];
-    
-    [UICommonMethods setupUpdateAvailableScreen:self.bgView selfView:self.view viewWidth:viewWidth];
-}
-
 
 #pragma mark help screens
 -(void)initializeHelpScreens{

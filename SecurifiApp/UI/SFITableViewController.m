@@ -32,7 +32,6 @@
 @property(nonatomic) UIEdgeInsets originalContentInsets;
 @property(nonatomic) UIEdgeInsets originalScrollIndicatorInsets;
 @property(nonatomic) AlertView *alert;
-@property(nonatomic) UIView *bgView;
 
 @end
 
@@ -52,9 +51,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.bgView = [[UIView alloc]init];
-    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];    
     
     SecurifiConfigurator *configurator = toolkit.configuration;
     _enableNotificationsView = configurator.enableNotifications;
@@ -911,52 +908,7 @@
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark almond update screen
--(void)checkToShowUpdateScreen{
-    return;
-    
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *currentAlmond = toolkit.currentAlmond;
-    BOOL local = [toolkit useLocalNetwork:currentAlmond.almondplusMAC];
-    NSLog(@"current almond dash: %@", currentAlmond);
-    if(currentAlmond.firmware == nil || local){
-        [self tryRemoveBGView];
-        return;
-    }
-    NSLog(@"passed");
-    BOOL isNewVersion = [currentAlmond supportsGenericIndexes:currentAlmond.firmware];
-    if(!isNewVersion){
-        [self showAlmondUpdateAvailableScreen:self.navigationController.view];
-        [self.tabBarController.tabBar setHidden:YES];
-    }else{
-        [self tryRemoveBGView];
-    }
-}
-
--(void)tryRemoveBGView{
-    if([self.navigationController.view.subviews containsObject:self.bgView]){
-        [self.bgView removeFromSuperview];
-    }
-    [self.tabBarController.tabBar setHidden:NO];
-}
-
--(void)showAlmondUpdateAvailableScreen:(UIView*)view{
-    int viewWidth = self.navigationController.view.frame.size.width;
-    
-    self.bgView.frame = CGRectMake(0, 0, viewWidth, self.navigationController.view.frame.size.height);
-    _bgView.backgroundColor = [UIColor whiteColor];
-    [view addSubview:self.bgView];
-    
-    SWRevealViewController *revealController = [self revealViewController];
-    UIButton *crossButton = [[UIButton alloc]initWithFrame:CGRectMake(10, 20, 30, 40)];
-    [crossButton setImage:[CommonMethods imageNamed:@"drawer" withColor:[UIColor blackColor]] forState:UIControlStateNormal];
-    crossButton.tintColor = [UIColor blackColor];
-    [crossButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-    [self.bgView addSubview:crossButton];
-    
-    [UICommonMethods setupUpdateAvailableScreen:self.bgView selfView:self.view viewWidth:viewWidth];
-}
-
+#pragma mark helpscreens
 -(void)initializeHelpScreensfirst:(NSString *)itemName{
     NSLog(@"nav view heigt: %f, view ht: %f", self.navigationController.view.frame.size.height, self.view.frame.size.height);
     //dont localize any thing here

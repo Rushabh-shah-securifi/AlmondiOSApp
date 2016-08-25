@@ -70,10 +70,7 @@ int mii;
     [self initializeNotifications];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
-        
-        
         [self.tableView reloadData];
-        [self checkToShowUpdateScreen];
     });
 }
 
@@ -584,9 +581,6 @@ int mii;
 #pragma mark cloud callbacks
 - (void)onCurrentAlmondChanged:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self checkToShowUpdateScreen];
-    });
     
     [self.toolkit.devices removeAllObjects];
     [self.toolkit.clients removeAllObjects];
@@ -599,9 +593,6 @@ int mii;
 }
 
 - (void)onAlmondListDidChange:(id)sender {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self checkToShowUpdateScreen];
-    });
     NSLog(@"%s 1", __PRETTY_FUNCTION__);
     if (!self) {
         return;

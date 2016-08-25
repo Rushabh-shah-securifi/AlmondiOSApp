@@ -41,8 +41,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.toolkit = [SecurifiToolkit sharedInstance];
-    if([[SecurifiToolkit sharedInstance] isScreenShown:@"scenes"] == NO)
-        [self initializeHelpScreensfirst:@"Scenes"];
+    
     
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -60,8 +59,10 @@
     [self markAlmondTitleAndMac];
     [self initializeNotifications];
     
+    if([[SecurifiToolkit sharedInstance] isScreenShown:@"scenes"] == NO)
+        [self initializeHelpScreensfirst:@"Scenes"];
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self checkToShowUpdateScreen];
         [self.tableView reloadData];
     });
 }
@@ -375,9 +376,6 @@
 
 #pragma mark Notifications
 - (void)onCurrentAlmondChanged:(id)sender {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self checkToShowUpdateScreen];
-    });
     [self.toolkit.scenesArray removeAllObjects];
     
     [self markAlmondTitleAndMac];
@@ -388,9 +386,6 @@
 }
 
 - (void)onAlmondListDidChange:(id)notice {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self checkToShowUpdateScreen];
-    });
     [self markAlmondTitleAndMac];
 }
 

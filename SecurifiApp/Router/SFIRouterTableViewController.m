@@ -112,7 +112,6 @@ int mii;
     [self initializeAlmondData];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self checkToShowUpdateScreen];
         [self.tableView reloadData];
     });
     
@@ -208,7 +207,6 @@ int mii;
 
 - (void)onCurrentAlmondChanged:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self checkToShowUpdateScreen];
         self.shownHudOnce = NO;
         if (self.isViewLoaded && self.view.window) {
             // View is visible; reload now; otherwise, viewWillAppear will invoke it for us
@@ -220,9 +218,7 @@ int mii;
 
 - (void)onAlmondListDidChange:(id)sender {
     NSLog(@"on almond list did change router");
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self checkToShowUpdateScreen];
-        
+    dispatch_async(dispatch_get_main_queue(), ^() {        
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         SFIAlmondPlus *plus = [toolkit currentAlmond];
         NSLog(@"plus: %@", plus);
