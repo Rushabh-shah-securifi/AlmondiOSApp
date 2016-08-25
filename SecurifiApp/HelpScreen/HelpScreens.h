@@ -21,6 +21,15 @@
 @property(nonatomic) BOOL isOnMainScreen;
 
 @property(nonatomic)id<HelpScreensDelegate> delegate;
+
++ (HelpScreens *)initializeHelpScreen:(UIView *)navView isOnMainScreen:(BOOL)isOnMainScreen startScreen:(NSDictionary *)startScreen;
+
++ (void)initializeGotItView:(HelpScreens *)helpView navView:(UIView *)navView;
+
++ (void)initializeWifiPresence:(HelpScreens *)helpView view:(UIView *)mainView tabHt:(CGFloat)tabHeight;
+
++ (void)addTriggerHelpPage:(HelpScreens *)helpView startScreen:(NSDictionary *)startScreen navView:(UIView*)navView;
+
 - (void)addHelpPromptSubView:(CGRect)frame;
 
 - (void)addHelpItem:(CGRect)frame;

@@ -29,17 +29,11 @@
 }
 
 #pragma mark help screens
+
 -(void)initializeHelpScreens{
-    self.helpScreens = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height)];
+    self.helpScreens = [HelpScreens initializeHelpScreen:self.view isOnMainScreen:NO startScreen:self.startScreen];
     self.helpScreens.delegate = self;
-    self.helpScreens.isOnMainScreen = NO;
-    [self.helpScreens expandView];
-    
-    self.helpScreens.backgroundColor = [UIColor grayColor];
-    [self.helpScreens addHelpItem:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-20)];
-    
-    self.helpScreens.startScreen = self.startScreen;
-    [self.helpScreens initailizeFirstScreen];
+
     [self.view addSubview:self.helpScreens];
 }
 

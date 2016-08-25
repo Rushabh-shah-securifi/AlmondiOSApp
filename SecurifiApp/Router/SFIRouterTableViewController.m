@@ -89,6 +89,9 @@ int mii;
     self.isSimulator = NO;
     [super viewDidLoad];
     
+    if([[SecurifiToolkit sharedInstance] isScreenShown:@"wifi"] == NO)
+        [self initializeHelpScreensfirst:@"wifi"];
+    
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -109,8 +112,6 @@ int mii;
     [self initializeAlmondData];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
-        if([[SecurifiToolkit sharedInstance] isScreenShown:@"wifi"] == NO)
-            [self initializeHelpScreensfirst:@"wifi"];
         [self checkToShowUpdateScreen];
         [self.tableView reloadData];
     });

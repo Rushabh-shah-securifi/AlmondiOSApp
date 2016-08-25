@@ -54,8 +54,7 @@
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.bgView = [[UIView alloc]init];
-    self.maskView = [[UIView alloc]init];
-    self.helpScreensObj = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
+    
     
     SecurifiConfigurator *configurator = toolkit.configuration;
     _enableNotificationsView = configurator.enableNotifications;
@@ -969,17 +968,12 @@
         [[SecurifiToolkit sharedInstance] setScreenDefault:@"rules"];
     else if([itemName isEqualToString:@"wifi"])
         [[SecurifiToolkit sharedInstance] setScreenDefault:@"wifi"];
-    self.helpScreensObj.frame = CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height);
     
+    
+    self.maskView = [[UIView alloc]init];
+    self.helpScreensObj = [HelpScreens initializeHelpScreen:self.navigationController.view isOnMainScreen:YES startScreen:[CommonMethods getDict:@"Quick_Tips" itemName:itemName]];
     self.helpScreensObj.delegate = self;
-    self.helpScreensObj.isOnMainScreen = YES;
-    [self.helpScreensObj expandView];
-    [self.helpScreensObj addHelpItem:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height-20)];
     
-    self.helpScreensObj.backgroundColor = [UIColor grayColor];
-    
-    self.helpScreensObj.startScreen = [CommonMethods getDict:@"Quick_Tips" itemName:itemName]; //dont localize
-    [self.helpScreensObj initailizeFirstScreen];
     [self.navigationController.view addSubview:self.helpScreensObj];
     [self.tabBarController.tabBar setHidden:YES];
 }
@@ -987,13 +981,10 @@
 
 - (void)showOkGotItView{
     self.maskView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height);
-    
     [self.maskView setBackgroundColor:[SFIColors maskColor]];
     [self.navigationController.view addSubview:self.maskView];
-    
-    int helpViewHeight = 155;
-    self.helpScreensObj.frame = CGRectMake(0, self.navigationController.view.frame.size.height - helpViewHeight, self.view.frame.size.width, helpViewHeight);
-    [self.helpScreensObj addGotItView:CGRectMake(0, 0, self.view.frame.size.width, helpViewHeight)];
+
+    [HelpScreens initializeGotItView:self.helpScreensObj navView:self.navigationController.view];
     [self.maskView addSubview:self.helpScreensObj];
 }
 
@@ -1002,7 +993,7 @@
 - (void)resetViewDelegate{
     NSLog(@"table view");
     [self.maskView removeFromSuperview];
-    [self.helpScreensObj removeFromSuperview];
+    [self.helpScreensObj removeFromSuperview]; //perhaps you should also remove subviews
     [self.tabBarController.tabBar setHidden:NO];
 }
 

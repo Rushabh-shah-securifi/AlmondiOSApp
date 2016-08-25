@@ -49,9 +49,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.toolkit = [SecurifiToolkit sharedInstance];
-    self.bgView = [[UIView alloc]init];
-    self.maskView = [[UIView alloc]init];
-    self.helpScreensObj = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
+    if([self.toolkit isScreenShown:@"dashboard"] == NO)
+        [self initializeHelpScreens];
+    
+    self.bgView = [[UIView alloc]init]; //for almond update available
+    
     
     self.navigationController.navigationBar.clipsToBounds = YES;
     [self loadNotification];
@@ -132,8 +134,6 @@
     [self.toolkit tryRefreshNotifications];
     [self initializeUI];
     dispatch_async(dispatch_get_main_queue(), ^() {
-        if([self.toolkit isScreenShown:@"dashboard"] == NO)
-            [self initializeHelpScreens];
         [self checkToShowUpdateScreen];
     });
     [self markNetworkStatusIcon];
@@ -1056,22 +1056,18 @@
     [UICommonMethods setupUpdateAvailableScreen:self.bgView selfView:self.view viewWidth:viewWidth];
 }
 
+
 #pragma mark help screens
 -(void)initializeHelpScreens{
     NSLog(@"nav view heigt: %f, view ht: %f", self.navigationController.view.frame.size.height, self.view.frame.size.height);
     [self.toolkit setScreenDefault:@"dashboard"];
     
-    self.helpScreensObj.frame = CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height);
+    NSDictionary *startScreen = [CommonMethods getDict:@"Quick_Tips" itemName:@"Welcome"];
+    
+    self.helpScreensObj = [HelpScreens initializeHelpScreen:self.navigationController.view isOnMainScreen:YES startScreen:startScreen];
     self.helpScreensObj.delegate = self;
-    self.helpScreensObj.isOnMainScreen = YES;
-    [self.helpScreensObj expandView];
     
-    self.helpScreensObj.startScreen = [CommonMethods getDict:@"Quick_Tips" itemName:@"Welcome"];
-    [self.helpScreensObj initailizeFirstScreen];
-    
-    [self.helpScreensObj addHelpItem:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height-20)];
     [self.navigationController.view addSubview:self.helpScreensObj];
-    self.helpScreensObj.backgroundColor = [UIColor grayColor];
     [self.tabBarController.tabBar setHidden:YES];
 }
 
@@ -1090,16 +1086,16 @@
     [self showOkGotItView];
 }
 
+
 - (void)showOkGotItView{
     NSLog(@"showokgotit");
+    self.maskView = [[UIView alloc]init];
     self.maskView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height);
-    
     [self.maskView setBackgroundColor:[SFIColors maskColor]];
     [self.navigationController.view addSubview:self.maskView];
     
-    int helpViewHeight = 155;
-    self.helpScreensObj.frame = CGRectMake(0, self.navigationController.view.frame.size.height - helpViewHeight, self.view.frame.size.width, helpViewHeight);
-    [self.helpScreensObj addGotItView:CGRectMake(0, 0, self.view.frame.size.width, helpViewHeight)];
+    [HelpScreens initializeGotItView:self.helpScreensObj navView:self.navigationController.view];
+
     [self.maskView addSubview:self.helpScreensObj];
 }
 

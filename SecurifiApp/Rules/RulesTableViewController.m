@@ -37,6 +37,8 @@ CGPoint tablePoint;
     self.needBackButton = YES;
     [super viewDidLoad];
     self.toolkit = [SecurifiToolkit sharedInstance];
+    if([[SecurifiToolkit sharedInstance] isScreenShown:@"rules"] == NO)
+        [self initializeHelpScreensfirst:@"rules"];
     
     [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
@@ -55,8 +57,6 @@ CGPoint tablePoint;
     [self initializeNotifications];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
-        if([[SecurifiToolkit sharedInstance] isScreenShown:@"rules"] == NO)
-            [self initializeHelpScreensfirst:@"rules"];
         [self checkToShowUpdateScreen];
         [self.tableView reloadData];
     });

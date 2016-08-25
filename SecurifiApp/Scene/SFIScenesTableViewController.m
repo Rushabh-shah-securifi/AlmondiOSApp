@@ -41,6 +41,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.toolkit = [SecurifiToolkit sharedInstance];
+    if([[SecurifiToolkit sharedInstance] isScreenShown:@"scenes"] == NO)
+        [self initializeHelpScreensfirst:@"Scenes"];
     
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -59,9 +61,6 @@
     [self initializeNotifications];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
-        if([[SecurifiToolkit sharedInstance] isScreenShown:@"scenes"] == NO)
-            [self initializeHelpScreensfirst:@"Scenes"];
-        
         [self checkToShowUpdateScreen];
         [self.tableView reloadData];
     });

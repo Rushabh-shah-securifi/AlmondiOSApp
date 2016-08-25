@@ -48,6 +48,45 @@
     return self;
 }
 
+
++ (HelpScreens *)initializeHelpScreen:(UIView *)navView isOnMainScreen:(BOOL)isOnMainScreen startScreen:(NSDictionary *)startScreen {
+    HelpScreens *view = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, navView.frame.size.width, navView.frame.size.height)];
+    view.isOnMainScreen = isOnMainScreen;
+    [view expandView];
+    
+    view.startScreen = startScreen;
+    [view initailizeFirstScreen];
+    
+    [view addHelpItem:CGRectMake(0, 0, navView.frame.size.width, navView.frame.size.height-20)];
+    
+    return view;
+}
+
++ (void)initializeGotItView:(HelpScreens *)helpView navView:(UIView *)navView{
+    int helpViewHeight = 155;
+    helpView.frame = CGRectMake(0, navView.frame.size.height - helpViewHeight, navView.frame.size.width, helpViewHeight);
+    [helpView addGotItView:CGRectMake(0, 0, navView.frame.size.width, helpViewHeight)];
+}
+
++ (void)initializeWifiPresence:(HelpScreens *)helpView view:(UIView *)mainView tabHt:(CGFloat)tabHeight{
+    CGFloat helpHt = 120;
+    helpView.frame = CGRectMake(0, mainView.frame.size.height - helpHt - tabHeight, mainView.frame.size.width, mainView.frame.size.height);
+    [helpView addHelpPromptSubView:CGRectMake(0, 0, mainView.frame.size.width, mainView.frame.size.height)];
+}
+
++ (void)addTriggerHelpPage:(HelpScreens *)helpView startScreen:(NSDictionary *)startScreen navView:(UIView*)navView{
+    int triggerHeight = navView.frame.size.height - 50;
+    helpView.frame = CGRectMake(0, 50, navView.frame.size.width, triggerHeight);
+    
+    //is on main screen is not required, as resetbottomconstraint is called here
+    [helpView resetBottonConstraint];
+    
+    helpView.startScreen = startScreen; 
+    [helpView initailizeFirstScreen];
+    
+    [helpView addHelpItem:CGRectMake(0, 0, navView.frame.size.width, triggerHeight)];
+}
+
 - (void)addHelpPromptSubView:(CGRect)frame{
     self.helpPrompt.frame = frame;
     [self addSubview:self.helpPrompt];

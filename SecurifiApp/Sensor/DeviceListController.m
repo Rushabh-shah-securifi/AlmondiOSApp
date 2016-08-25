@@ -49,11 +49,14 @@ int mii;
 - (void)viewDidLoad {
     NSLog(@"devicelist - viewDidLoad");
     [super viewDidLoad];
+    self.toolkit = [SecurifiToolkit sharedInstance];
+    if([self.toolkit isScreenShown:@"devices"] == NO)
+        [self initializeHelpScreensfirst:@"Devices"];
+    
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
     
-    self.toolkit = [SecurifiToolkit sharedInstance];
     //ensure list is empty initially
     [self initializeAlmondData];
 }
@@ -67,8 +70,7 @@ int mii;
     [self initializeNotifications];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
-        if([self.toolkit isScreenShown:@"devices"] == NO)
-            [self initializeHelpScreensfirst:@"Devices"];
+        
         
         [self.tableView reloadData];
         [self checkToShowUpdateScreen];
@@ -716,38 +718,23 @@ int mii;
 
 -(void)initializeWiFiPresence{
     [self resetViewDelegate];
-  
     [[SecurifiToolkit sharedInstance] setScreenDefault:@"wifitrigger"];
     
-    self.helpScreensObj.frame = CGRectMake(0, self.view.frame.size.height - 120 - self.tabBarController.tabBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height);
-//    self.helpScreensObj.delegate = self;
-    self.helpScreensObj.backgroundColor = [UIColor grayColor];
-    [self.navigationController.view addSubview:self.helpScreensObj];
-    [self.helpScreensObj addHelpPromptSubView:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-}
-
--(void)addTriggerHelpPage{
-    self.maskView.frame = CGRectMake(0, 0, self.navigationController.view.frame.size.width, self.navigationController.view.frame.size.height);
-    [self.maskView setBackgroundColor:[SFIColors maskColor]];
-    [self.navigationController.view addSubview:self.maskView];
+    [HelpScreens initializeWifiPresence:self.helpScreensObj view:self.view tabHt:self.tabBarController.tabBar.frame.size.height];
     
-    NSLog(@"helpScreensObj: %@", self.helpScreensObj);
-    int triggerHeight = self.navigationController.view.frame.size.height - 50;
-    self.helpScreensObj.frame = CGRectMake(0, 50, self.view.frame.size.width, triggerHeight);
-    [self.helpScreensObj resetBottonConstraint];
-    [self.maskView addSubview:self.helpScreensObj];
-    [self.helpScreensObj addHelpItem:CGRectMake(0, 0, self.view.frame.size.width, triggerHeight)];
+    [self.navigationController.view addSubview:self.helpScreensObj];
 }
 
 #pragma mark helpscreen delegate methods
 - (void)onShowMeTapDelegate{
     NSLog(@"onShowMeTapDelegate");
+    self.maskView.frame = CGRectMake(0, 0, self.navigationController.view.frame.size.width, self.navigationController.view.frame.size.height);
+    [self.maskView setBackgroundColor:[SFIColors maskColor]];
+    [self.navigationController.view addSubview:self.maskView];
     
+    [HelpScreens addTriggerHelpPage:self.helpScreensObj startScreen:[CommonMethods getDict:@"Quick_Tips" itemName:@"Wi_Fi_Triggers"] navView:self.navigationController.view]; //dont localize
     
-    self.helpScreensObj.startScreen = [CommonMethods getDict:@"Quick_Tips" itemName:@"Wi_Fi_Triggers"]; //dont localize
-    NSLog(@"start screen: %@", self.helpScreensObj.startScreen);
-    [self.helpScreensObj initailizeFirstScreen];
-    [self addTriggerHelpPage];
+    [self.maskView addSubview:self.helpScreensObj];
     [self.tabBarController.tabBar setHidden:YES];
 }
 

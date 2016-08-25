@@ -34,12 +34,16 @@
     
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *imgPath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", PROFILE_PIC, @"jpg"]];
+    NSLog(@"image path: %@", imgPath);
+    //image should be fetched from accounts command
     if(imgPath){
         UIImage *image = [UIImage imageWithContentsOfFile:imgPath];
+        NSLog(@"image: %@", image);
         [self saveImage:image withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
     }
     else{
-        [self saveImage:[UIImage imageNamed:@"help-icon"] withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
+        NSLog(@"image account: %@", [UIImage imageNamed:@"help_center_icon"]);
+        [self saveImage:[UIImage imageNamed:@"help_center_icon"] withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
     }
     
 }
@@ -51,6 +55,25 @@
         [UIImageJPEGRepresentation(image, 1.0) writeToFile:[directoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", imageName, @"jpg"]] options:NSAtomicWrite error:nil];
     } else {
         NSLog(@"Image Save Failed\nExtension: (%@) is not recognized, use (PNG/JPG)", extension);
+    }
+}
+
+//currently not being used, should be used when user wants to delete his dp
+- (void)removeImage:(NSString *)filename
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSString *filePath = [documentsPath stringByAppendingPathComponent:filename];
+    NSError *error;
+    BOOL success = [fileManager removeItemAtPath:filePath error:&error];
+    if (success) {
+        UIAlertView *removedSuccessFullyAlert = [[UIAlertView alloc] initWithTitle:@"Congratulations:" message:@"Successfully removed" delegate:self cancelButtonTitle:@"Close" otherButtonTitles:nil];
+        [removedSuccessFullyAlert show];
+    }
+    else
+    {
+        NSLog(@"Could not delete file -:%@ ",[error localizedDescription]);
     }
 }
 
