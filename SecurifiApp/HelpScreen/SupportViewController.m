@@ -19,13 +19,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationItem.title = @"Support";
-    self.countryNumbers= @[@{@"canada":@"+1-855-969-7328"},
-                               @{@"germany":@"+49-800-723-7994"},
-                               @{@"france":@"+33-805-080-447"},
-                               @{@"uk":@"+44-800-078-6277"},
-                               @{@"taiwan":@"+886-800-000-152"},
-                               @{@"uae":@"+800-0357-04234"},
-                               @{@"singapore":@"+800-101-3371"}];
+    self.countryNumbers= @[@[@"canada",@"can",@"+1-855-969-7328"],
+                               @[@"germany",@"deu",@"+49-800-723-7994"],
+                               @[@"france",@"fra",@"+33-805-080-447"],
+                               @[@"uk",@"gbr",@"+44-800-078-6277"],
+                               @[@"taiwan",@"twn",@"+886-800-000-152"],
+                                @[@"uae",@"are",@"+800-0357-04234"],
+                               @[@"singapore",@"sgp",@"+800-101-3371"]];
     
 }
 
@@ -58,7 +58,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *number = [self.countryNumbers[indexPath.row] allValues].firstObject;
+    NSString *number = [self.countryNumbers[indexPath.row] objectAtIndex:2];
     NSLog(@"number: %@", number);
 
     NSString *phoneNumber = [@"telprompt://" stringByAppendingString:number];
