@@ -41,8 +41,8 @@
 
 #pragma mark helpscreen delegate methods
 - (void)resetViewDelegate{
-    [self.helpScreens removeFromSuperview];
-    self.helpScreens = nil;
+//    [self.helpScreens removeFromSuperview];
+//    self.helpScreens = nil;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

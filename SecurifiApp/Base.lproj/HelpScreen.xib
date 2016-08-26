@@ -29,6 +29,7 @@
             <string>AvenirLTStd-Roman</string>
             <string>AvenirLTStd-Roman</string>
             <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -500,6 +501,7 @@
                                             <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="17"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                         </textView>
                                     </subviews>
                                 </view>
@@ -679,20 +681,28 @@
                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tgv-Tl-Sw8">
                                     <rect key="frame" x="8" y="0.0" width="304" height="1342"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IW0-9F-sDp">
-                                            <rect key="frame" x="0.0" y="65" width="304" height="1277"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <mutableString key="text">With the appropriate sensors, you can use an Almond 2015, an Almond+, or an Almond 3, to create a robust and powerful DIY home security system. Almond devices  support a wide range of sensors from various manufacturers including Securifi. There is a full list here: https://www.securifi.com/sensors.  With Almond, you can build your Home Security using Rules and the Almond Modes: Home and Away.  The Almond Mode works similar to arming and disarming your car alarm or home security system. With Almond though, you don’t need to do this yourself every time. Use our Rules engine to automate this process using your WiFi presence.  For example, you could create rules like “If my iPhone disconnects from Home WiFi, set Almond mode to Away” and “If my iPhone joins Home WiFi, set Almond mode to Home” to automatically change the mode when you leave home and when you come back. You can then add another rule to make sure the alarm is sounded. For example, “If Almond mode is Away, and motion is detected, sound alarm.”  Experiment with Rules to build your own scenarios. Our Rules engine is versatile and offers a large number of components with which you can build Rules, including: time, Almond Modes, and sensors.  Sensors may not be automatically configured to send notifications; therefore, you will need to configure them. To do so, tap on the settings icon next to the sensor and look for notifications in the menu.  You can choose one of three levels for notifications: Never, When I’m Away and Always. Each level is useful in different situations. For example, you might want to be alerted of movement in the living room only when you are away, but you might want to be alerted every time if a wall safe is opened, or a flood sensor detects water in your basement. On the other hand, you might not want to be alerted at all if a smart plug in your daughter’s room is turned on or off.</mutableString>
-                                            <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
-                                            <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="17"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                        </textView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tips For Setting Up Home Security" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="29W-7E-AIZ">
                                             <rect key="frame" x="8" y="12" width="296" height="56"/>
                                             <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="22"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IW0-9F-sDp">
+                                            <rect key="frame" x="0.0" y="265" width="304" height="1077"/>
+                                            <mutableString key="text">With Almond, you can build your Home Security using Rules and the Almond Modes: Home and Away.  The Almond Mode works similar to arming and disarming your car alarm or home security system. With Almond though, you don’t need to do this yourself every time. Use our Rules engine to automate this process using your WiFi presence.  For example, you could create rules like “If my iPhone disconnects from Home WiFi, set Almond mode to Away” and “If my iPhone joins Home WiFi, set Almond mode to Home” to automatically change the mode when you leave home and when you come back. You can then add another rule to make sure the alarm is sounded. For example, “If Almond mode is Away, and motion is detected, sound alarm.”  Experiment with Rules to build your own scenarios. Our Rules engine is versatile and offers a large number of components with which you can build Rules, including: time, Almond Modes, and sensors.  Sensors may not be automatically configured to send notifications; therefore, you will need to configure them. To do so, tap on the settings icon next to the sensor and look for notifications in the menu.  You can choose one of three levels for notifications: Never, When I’m Away and Always. Each level is useful in different situations. For example, you might want to be alerted of movement in the living room only when you are away, but you might want to be alerted every time if a wall safe is opened, or a flood sensor detects water in your basement. On the other hand, you might not want to be alerted at all if a smart plug in your daughter’s room is turned on or off.</mutableString>
+                                            <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="17"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                        <textView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8EL-K3-6VP">
+                                            <rect key="frame" x="0.0" y="65" width="304" height="200"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <mutableString key="text">With the appropriate sensors, you can use an Almond 2015, an Almond+, or an Almond 3, to create a robust and powerful DIY home security system. Almond devices  support a wide range of sensors from various manufacturers including Securifi. There is a full list here: https://www.securifi.com/sensors.</mutableString>
+                                            <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="17"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                                        </textView>
                                     </subviews>
                                 </view>
                             </subviews>

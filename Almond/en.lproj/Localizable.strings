@@ -807,7 +807,7 @@ Follow it, then login below.";
 "Almond_Rules_Desc" = "Almond's native rule engine allows you to automate and secure your home. To begin creating and editing rules, tap \"More\" and select \"Rules\"";
 "Take_a_pick" = "Take a Pick";
 "Adding_a_New_Device" = "Adding a New Device";
-"Adding_a_New_Device_Desc" = "Tap the Add Sensor icon on Almond's LCD and follow on screen instructions to add a new device.";
+"Adding_a_New_Device_Desc" = "To add a new smart home device, tap the Add Sensor icon on Almond’s LCD and follow the on-screen instructions.\n\nFor adding Nest devices, follow this link.";
 "Device_Actions" = "Device Actions";
 "Device_Actions_Desc" = "Each device has it's own set of unique features. Simple devices like smart switches and lights can easily be controlled by tapping the device icon.";
 "Notification_Preferences" = "Notification Preferences";

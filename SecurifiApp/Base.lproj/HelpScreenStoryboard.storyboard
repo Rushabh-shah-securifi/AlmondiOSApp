@@ -350,18 +350,8 @@
                                 <color key="textColor" red="0.46274509803921571" green="0.46274509803921571" blue="0.46274509803921571" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We're available 24 hours a day, 7 days a week" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wpj-Lp-nJs">
-                                <rect key="frame" x="33" y="68" width="255" height="67"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="67" id="kdM-72-PY9"/>
-                                    <constraint firstAttribute="width" constant="255" id="mfs-cF-7Mf"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
-                                <color key="textColor" red="0.46274509803921571" green="0.46274509803921571" blue="0.46274509803921571" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sUX-9r-Xbp">
-                                <rect key="frame" x="63" y="143" width="194" height="40"/>
+                                <rect key="frame" x="63" y="151" width="194" height="40"/>
                                 <color key="backgroundColor" red="0.9882352941176471" green="0.81960784313725488" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="DOB-fS-gSh"/>
@@ -452,6 +442,16 @@
                                     <outlet property="delegate" destination="8RX-IZ-tpK" id="fSW-1X-fUy"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We’re available 24 hours a day and 7 days a week. Tap on the below links to email or call us." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wpj-Lp-nJs">
+                                <rect key="frame" x="33" y="76" width="255" height="67"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="67" id="kdM-72-PY9"/>
+                                    <constraint firstAttribute="width" constant="255" id="mfs-cF-7Mf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
+                                <color key="textColor" red="0.46274509803921571" green="0.46274509803921571" blue="0.46274509803921571" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -461,8 +461,8 @@
                             <constraint firstItem="HAe-FJ-n8J" firstAttribute="top" secondItem="KCP-fQ-PPm" secondAttribute="bottom" constant="15" id="GZp-7Y-8LV"/>
                             <constraint firstItem="VYn-tE-QKM" firstAttribute="centerX" secondItem="lWP-MB-sy0" secondAttribute="centerX" constant="-4" id="NST-cs-B32"/>
                             <constraint firstItem="WHk-PR-b38" firstAttribute="top" secondItem="VYn-tE-QKM" secondAttribute="bottom" id="Qr4-jN-sD2"/>
-                            <constraint firstItem="Wpj-Lp-nJs" firstAttribute="top" secondItem="KCP-fQ-PPm" secondAttribute="bottom" constant="48" id="TDZ-Si-PRn"/>
-                            <constraint firstItem="VYn-tE-QKM" firstAttribute="top" secondItem="sUX-9r-Xbp" secondAttribute="bottom" constant="37" id="bRw-pN-oor"/>
+                            <constraint firstItem="Wpj-Lp-nJs" firstAttribute="top" secondItem="KCP-fQ-PPm" secondAttribute="bottom" constant="56" id="TDZ-Si-PRn"/>
+                            <constraint firstItem="VYn-tE-QKM" firstAttribute="top" secondItem="sUX-9r-Xbp" secondAttribute="bottom" constant="29" id="bRw-pN-oor"/>
                             <constraint firstItem="Wpj-Lp-nJs" firstAttribute="centerX" secondItem="lWP-MB-sy0" secondAttribute="centerX" id="cCB-XH-RII"/>
                         </constraints>
                     </view>

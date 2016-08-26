@@ -19,13 +19,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationItem.title = @"Support";
-    self.countryNumbers= @[@[@"canada",@"can",@"+1-855-969-7328"],
-                               @[@"germany",@"deu",@"+49-800-723-7994"],
-                               @[@"france",@"fra",@"+33-805-080-447"],
-                               @[@"uk",@"gbr",@"+44-800-078-6277"],
-                               @[@"taiwan",@"twn",@"+886-800-000-152"],
-                                @[@"uae",@"are",@"+800-0357-04234"],
-                               @[@"singapore",@"sgp",@"+800-101-3371"]];
+    self.countryNumbers= @[@[@"canada",@"ca",@"+1-855-969-7328"],
+                               @[@"germany",@"de",@"+49-800-723-7994"],
+                               @[@"france",@"fr",@"+33-805-080-447"],
+                               @[@"uk",@"gb",@"+44-800-078-6277"],
+                               @[@"taiwan",@"tw",@"+886-800-000-152"],
+                                @[@"uae",@"ae",@"+800-0357-04234"],
+                               @[@"singapore",@"sg",@"+800-101-3371"]];
     
 }
 

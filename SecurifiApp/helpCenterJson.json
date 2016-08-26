@@ -41,12 +41,14 @@
                                         "title": "Take_a_pick",
                                         "description": "Take_a_pick_Desc",
                                         "color" : "80d8ff",
-                                        "image": "h_sensorssmartdevices"
+                                        "image": "h_sensorssmartdevices",
+                                        "url":"https://www.securifi.com/sensors"
                                         }, {
                                         "title": "Adding_a_New_Device",
                                         "description": "Adding_a_New_Device_Desc",
                                         "color" : "b9f6ca",
-                                        "image": "h_addnewdev"
+                                        "image": "h_addnewdev",
+                                        "url":"local"
                                         }, {
                                         "title": "Quick_Actions",
                                         "description": "Quick_Actions_Desc",

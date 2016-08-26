@@ -187,8 +187,8 @@
     self.imgView.image = [UIImage imageNamed:screen[IMAGE]];
     self.imgView.backgroundColor = [UIColor colorFromHexString:screen[COLOR]];
     self.subTitle.text = NSLocalizedString(screen[TITLE], @"");
-    self.desc.text = NSLocalizedString(screen[DESCRIPTION], @"");
     
+    [self setDescText:screen];
     self.pageControl.numberOfPages = [self.startScreen[SCREENCOUNT] intValue];
     [self.pageControl setCurrentPage:0];
     
@@ -200,6 +200,31 @@
         self.rightArrow3.hidden = NO;
         self.gotIt.hidden = YES;
     }
+}
+
+-(void)setDescText:(NSDictionary *)screen{
+    //we need to have hasLink and urls in json, do it!
+    NSString *desc = NSLocalizedString(screen[DESCRIPTION], @"");
+    if(screen[S_URL] != nil){
+        NSDictionary *attribs = @{
+                                  NSForegroundColorAttributeName: self.desc.textColor,
+                                  NSFontAttributeName: self.desc.font, //has font name and size perhaps
+                                  };
+        
+        
+        NSMutableAttributedString * attrStr = [[NSMutableAttributedString alloc] initWithString:desc attributes:attribs];
+        NSURL *link = ![screen[S_URL] isEqualToString:@"local"]? [NSURL URLWithString:screen[S_URL]]: [self getLocalURL];
+        [attrStr addAttribute:NSLinkAttributeName value:link range:NSMakeRange(attrStr.length-5, 4)];
+        [attrStr addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(attrStr.length-5, 4)];
+        self.desc.attributedText = attrStr;
+    }
+    else{
+        self.desc.text = desc;
+    }
+}
+
+-(NSURL *)getLocalURL{
+    return [NSURL URLWithString:@""];
 }
 
 - (IBAction)onShowMeTap:(id)sender {
@@ -217,7 +242,7 @@
     NSDictionary *screen = [screens objectAtIndex:currntPg];
     
     self.subTitle.text = NSLocalizedString(screen[TITLE], @"");
-    self.desc.text = NSLocalizedString(screen[DESCRIPTION], @"");
+    [self setDescText:screen];
     [self.desc setContentOffset:CGPointZero animated:YES];
     self.imgView.image = [UIImage imageNamed:screen[IMAGE]];
     self.imgView.backgroundColor = [UIColor colorFromHexString:screen[COLOR]];
