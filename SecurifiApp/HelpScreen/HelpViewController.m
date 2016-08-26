@@ -19,7 +19,6 @@
 - (void)viewDidLoad {
     NSLog(@"viewdidload");
     [super viewDidLoad];
-    
     [self initializeHelpScreens];
 }
 
@@ -31,9 +30,12 @@
 #pragma mark help screens
 
 -(void)initializeHelpScreens{
-    self.helpScreens = [HelpScreens initializeHelpScreen:self.view isOnMainScreen:NO startScreen:self.startScreen];
+    if(self.isHelpTopic)
+        self.helpScreens = [HelpScreens addHelpTopic:self.view HelpTopicType:self.helpTopic];
+    else
+        self.helpScreens = [HelpScreens initializeHelpScreen:self.view isOnMainScreen:NO startScreen:self.startScreen];
+    
     self.helpScreens.delegate = self;
-
     [self.view addSubview:self.helpScreens];
 }
 

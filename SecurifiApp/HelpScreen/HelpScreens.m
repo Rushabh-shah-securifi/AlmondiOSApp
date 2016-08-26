@@ -30,7 +30,12 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgBack;
 @property (weak, nonatomic) IBOutlet UIButton *BtnSkip;
 
+//help topics
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConst;
+@property (strong, nonatomic) IBOutlet UIView *dashboard;
+@property (strong, nonatomic) IBOutlet UIView *scene;
+@property (strong, nonatomic) IBOutlet UIView *securiti;
 
 @end
 
@@ -50,16 +55,27 @@
 
 
 + (HelpScreens *)initializeHelpScreen:(UIView *)navView isOnMainScreen:(BOOL)isOnMainScreen startScreen:(NSDictionary *)startScreen {
-    HelpScreens *view = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, navView.frame.size.width, navView.frame.size.height)];
-    view.isOnMainScreen = isOnMainScreen;
-    [view expandView];
+    HelpScreens *helpView = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, navView.frame.size.width, navView.frame.size.height)];
+    helpView.isOnMainScreen = isOnMainScreen;
+    [helpView expandView];
     
-    view.startScreen = startScreen;
-    [view initailizeFirstScreen];
+    helpView.startScreen = startScreen;
+    [helpView initailizeFirstScreen];
     
-    [view addHelpItem:CGRectMake(0, 0, navView.frame.size.width, navView.frame.size.height-20)];
+    [helpView addHelpItem:CGRectMake(0, 0, navView.frame.size.width, navView.frame.size.height-20)];
     
-    return view;
+    return helpView;
+}
+
++ (HelpScreens *)addHelpTopic:(UIView *)view HelpTopicType:(HelpTopic)type{
+    HelpScreens *helpView = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, view.frame.size.width, view.frame.size.height)];
+    if(type == HelpTopic_Dashboard)
+        [helpView addDashboard:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
+    else if(type == HelpTopic_Scene)
+        [helpView addScene:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
+    else if(type == HelpTopic_Securiti)
+        [helpView addSecuriti:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
+    return helpView;
 }
 
 + (void)initializeGotItView:(HelpScreens *)helpView navView:(UIView *)navView{
@@ -90,6 +106,21 @@
 - (void)addHelpPromptSubView:(CGRect)frame{
     self.helpPrompt.frame = frame;
     [self addSubview:self.helpPrompt];
+}
+
+- (void)addDashboard:(CGRect)frame{
+    self.dashboard.frame = frame;
+    [self addSubview:self.dashboard];
+}
+
+- (void)addScene:(CGRect)frame{
+    self.scene.frame = frame;
+    [self addSubview:self.scene];
+}
+
+- (void)addSecuriti:(CGRect)frame{
+    self.securiti.frame = frame;
+    [self addSubview:self.securiti];
 }
 
 - (void)addHelpItem:(CGRect)frame{

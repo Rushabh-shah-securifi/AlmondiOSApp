@@ -86,24 +86,25 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"section: %d", indexPath.section);
+    NSInteger section = indexPath.section;
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(indexPath.section == 0 || indexPath.section ==1){//guide, helptopics
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HelpScreenStoryboard" bundle:nil];
-            HelpItemsTableViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"HelpItemsTableViewController"];
-            viewController.helpItem = [self.helpItems objectAtIndex:indexPath.section];
-
-//            [self presentViewController:navController animated:YES completion:nil];
+        if(section == 0 || section ==1){//guide, helptopics
+            HelpItemsTableViewController *viewController = [self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"HelpItemsTableViewController"];
+            viewController.helpItem = [self.helpItems objectAtIndex:indexPath.section]; //based on json
+            viewController.isHelpTopic = section == 0? NO: YES;
             [self.navigationController pushViewController:viewController animated:YES];
-            
         }
-        else if(indexPath.section == 2){ //support
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HelpScreenStoryboard" bundle:nil];
-            SupportViewController *supportContorller = [storyboard instantiateViewControllerWithIdentifier:@"SupportViewController"];
+        else if(section == 2){ //support
+            SupportViewController *supportContorller = [self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"SupportViewController"];
             [self.navigationController pushViewController:supportContorller animated:YES];
         }
     });
 }
 
+- (id)getStoryBoardController:(NSString *)StoryBoardName ctrlID:(NSString*)ctrlID{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:StoryBoardName bundle:nil];
+    return [storyboard instantiateViewControllerWithIdentifier:ctrlID];
+}
 
 #pragma button taps
 - (IBAction)onBackBtnTap:(id)sender {

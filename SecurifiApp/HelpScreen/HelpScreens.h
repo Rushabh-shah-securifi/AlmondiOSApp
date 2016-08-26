@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HelpViewController.h"
+
 @protocol HelpScreensDelegate
 - (void)resetViewDelegate;
 - (void)onSkipTapDelegate;
@@ -23,6 +25,8 @@
 @property(nonatomic)id<HelpScreensDelegate> delegate;
 
 + (HelpScreens *)initializeHelpScreen:(UIView *)navView isOnMainScreen:(BOOL)isOnMainScreen startScreen:(NSDictionary *)startScreen;
+
++ (HelpScreens *)addHelpTopic:(UIView *)view HelpTopicType:(HelpTopic)type;
 
 + (void)initializeGotItView:(HelpScreens *)helpView navView:(UIView *)navView;
 
@@ -41,5 +45,11 @@
 - (void)initailizeFirstScreen;
 
 - (void)addGotItView:(CGRect)frame;
+
+- (void)addDashboard:(CGRect)frame;
+
+- (void)addScene:(CGRect)frame;
+
+- (void)addSecuriti:(CGRect)frame;
 
 @end

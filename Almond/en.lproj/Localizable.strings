@@ -276,8 +276,8 @@ Follow it, then login below.";
 "scene.hud.Loading router data" = "Loading router data";
 "scene.hud.Loading sensor data" = "Loading sensor data";
 "scene.text.Choose one or more Actions" = "Select all the actions that should be executed as part of this scene. Every gray icon below represents an action.";
-"sensor.text.%ld SENSORS" = "SENSORS";
-"sensor.text.%ld SENSOR" = "SENSOR";
+"sensor.text.%ld SENSORS" = "%ld SENSORS";
+"sensor.text.%ld SENSOR" = "%ld SENSOR";
 
 
 "DIM"="DIM";
@@ -1159,7 +1159,7 @@ Contact us at support@securifi.com";
 "RulesViewController Deleting rule %@..." = "Deleting rule %@...";
 "RulesViewController Activating rule - %@..." = "Activating rule - %@...";
 "RulesViewController Deactivating rule - %@..." = "Deactivating rule - %@...";
-
+"RulesViewController Successfully updated!" = "Successfully updated!";
 /*subproperties */
 "SubProperties Your %@ will appear here." = "Your %@ will appear here.";
 "scene" = "Scene";

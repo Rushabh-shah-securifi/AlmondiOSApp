@@ -10,4 +10,5 @@
 
 @interface HelpItemsTableViewController : UITableViewController
 @property (nonatomic) NSDictionary *helpItem;
+@property (nonatomic) BOOL isHelpTopic;
 @end

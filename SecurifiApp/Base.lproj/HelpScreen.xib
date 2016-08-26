@@ -9,8 +9,17 @@
             <string>AvenirLTStd-Heavy</string>
             <string>AvenirLTStd-Heavy</string>
             <string>AvenirLTStd-Heavy</string>
+            <string>AvenirLTStd-Heavy</string>
+            <string>AvenirLTStd-Heavy</string>
+            <string>AvenirLTStd-Heavy</string>
         </mutableArray>
         <mutableArray key="AvenirLTStd-Roman.otf">
+            <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
+            <string>AvenirLTStd-Roman</string>
             <string>AvenirLTStd-Roman</string>
             <string>AvenirLTStd-Roman</string>
             <string>AvenirLTStd-Roman</string>
@@ -27,6 +36,7 @@
             <connections>
                 <outlet property="BtnSkip" destination="6Ba-F0-ba4" id="YLc-Bx-EkD"/>
                 <outlet property="bottomConst" destination="k63-K9-UVn" id="RnH-rd-YwY"/>
+                <outlet property="dashboard" destination="TcM-nA-gvc" id="6Ak-Bn-IyX"/>
                 <outlet property="desc" destination="dqE-Im-UT9" id="V8X-w2-aHn"/>
                 <outlet property="goToHelp" destination="Vh8-lH-boG" id="iRy-K7-Cey"/>
                 <outlet property="gotIt" destination="xUO-A6-ajw" id="S3G-k9-tjI"/>
@@ -39,6 +49,8 @@
                 <outlet property="okGotItView" destination="cjQ-bJ-RdT" id="vZW-wa-28h"/>
                 <outlet property="pageControl" destination="1Xh-Xn-Fhi" id="HhD-v7-Yb0"/>
                 <outlet property="rightArrow3" destination="Iyz-do-mKC" id="diI-Jh-3bL"/>
+                <outlet property="scene" destination="yS1-fx-eaP" id="7ws-X8-LhO"/>
+                <outlet property="securiti" destination="C5N-Ec-uET" id="ath-rF-kt4"/>
                 <outlet property="subTitle" destination="VLR-et-ORC" id="Af3-es-qVQ"/>
                 <outlet property="triggerHelp" destination="3k6-iA-t7Q" id="zoj-xY-CcO"/>
             </connections>
@@ -122,7 +134,73 @@
                 <constraint firstItem="UbX-Zt-Ihq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="vdP-kn-hyS"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="153.5" y="-526.5"/>
+            <point key="canvasLocation" x="-180.5" y="-593.5"/>
+        </view>
+        <view contentMode="scaleToFill" id="cjQ-bJ-RdT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="155"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="You can enable these help screens again from the help center. Tap &quot;More&quot; to access the help center." translatesAutoresizingMaskIntoConstraints="NO" id="UGF-jx-hYR">
+                    <rect key="frame" x="6" y="40" width="302" height="70"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="iMC-oQ-516"/>
+                    </constraints>
+                    <color key="textColor" red="0.46274509803921571" green="0.46274509803921571" blue="0.46274509803921571" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Help Center" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nOa-PQ-7fe">
+                    <rect key="frame" x="10" y="15" width="310" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="310" id="NZV-i0-swP"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="nn6-on-gDT"/>
+                        <constraint firstAttribute="height" constant="20" id="pRe-Y6-U7P"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="20"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ELu-4z-Y2H">
+                    <rect key="frame" x="0.0" y="115" width="320" height="1"/>
+                    <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="7je-ar-3Zl"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tTR-q4-9of">
+                    <rect key="frame" x="231" y="115" width="89" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="89" id="DgA-EE-PvY"/>
+                        <constraint firstAttribute="height" constant="40" id="uZr-Lw-7h7"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="16"/>
+                    <state key="normal" title="Ok, Got it">
+                        <color key="titleColor" red="0.12941176470588234" green="0.67843137254901964" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onHelpOkGotItTap:" destination="-1" eventType="touchUpInside" id="cq8-Fa-gJp"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="UGF-jx-hYR" firstAttribute="top" secondItem="nOa-PQ-7fe" secondAttribute="bottom" constant="5" id="81X-MX-lzH"/>
+                <constraint firstItem="nOa-PQ-7fe" firstAttribute="leading" secondItem="cjQ-bJ-RdT" secondAttribute="leading" constant="10" id="Bca-to-rEQ"/>
+                <constraint firstAttribute="trailing" secondItem="UGF-jx-hYR" secondAttribute="trailing" constant="12" id="Ghl-NP-za7"/>
+                <constraint firstItem="nOa-PQ-7fe" firstAttribute="top" secondItem="cjQ-bJ-RdT" secondAttribute="top" constant="15" id="O6S-gv-Mxk"/>
+                <constraint firstAttribute="trailing" secondItem="tTR-q4-9of" secondAttribute="trailing" id="RPT-cR-mSu"/>
+                <constraint firstAttribute="trailing" secondItem="ELu-4z-Y2H" secondAttribute="trailing" id="Ro5-SF-j1S"/>
+                <constraint firstAttribute="trailing" secondItem="nOa-PQ-7fe" secondAttribute="trailing" id="Tqg-5C-5Cl"/>
+                <constraint firstItem="tTR-q4-9of" firstAttribute="top" secondItem="ELu-4z-Y2H" secondAttribute="bottom" constant="-1" id="XgV-RJ-vD3"/>
+                <constraint firstItem="nOa-PQ-7fe" firstAttribute="top" secondItem="cjQ-bJ-RdT" secondAttribute="top" constant="15" id="YaP-KP-iMx"/>
+                <constraint firstItem="UGF-jx-hYR" firstAttribute="leading" secondItem="cjQ-bJ-RdT" secondAttribute="leading" constant="6" id="c32-00-Y89"/>
+                <constraint firstItem="ELu-4z-Y2H" firstAttribute="leading" secondItem="cjQ-bJ-RdT" secondAttribute="leading" id="jat-Ws-vdk"/>
+                <constraint firstItem="nOa-PQ-7fe" firstAttribute="leading" secondItem="cjQ-bJ-RdT" secondAttribute="leading" constant="10" id="mYQ-vg-p27"/>
+                <constraint firstItem="ELu-4z-Y2H" firstAttribute="top" secondItem="UGF-jx-hYR" secondAttribute="bottom" constant="5" id="pHe-r1-JF1"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-208" y="226.5"/>
         </view>
         <view contentMode="scaleToFill" id="3k6-iA-t7Q">
             <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
@@ -350,73 +428,301 @@
                 <constraint firstAttribute="bottom" secondItem="Vh8-lH-boG" secondAttribute="bottom" id="u0x-gm-RiS"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="164" y="-87"/>
+            <point key="canvasLocation" x="-208" y="-151"/>
         </view>
-        <view contentMode="scaleToFill" id="cjQ-bJ-RdT">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="155"/>
+        <view contentMode="scaleToFill" id="TcM-nA-gvc" userLabel="Dashboard">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="525"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="You can enable these help screens again from the help center. Tap &quot;More&quot; to access the help center." translatesAutoresizingMaskIntoConstraints="NO" id="UGF-jx-hYR">
-                    <rect key="frame" x="6" y="40" width="302" height="70"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="70" id="iMC-oQ-516"/>
-                    </constraints>
-                    <color key="textColor" red="0.46274509803921571" green="0.46274509803921571" blue="0.46274509803921571" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                </textView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Help Center" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nOa-PQ-7fe">
-                    <rect key="frame" x="10" y="15" width="310" height="20"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="310" id="NZV-i0-swP"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="nn6-on-gDT"/>
-                        <constraint firstAttribute="height" constant="20" id="pRe-Y6-U7P"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="20"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ELu-4z-Y2H">
-                    <rect key="frame" x="0.0" y="115" width="320" height="1"/>
-                    <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="1" id="7je-ar-3Zl"/>
-                    </constraints>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pIq-0E-iVG" userLabel="topView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="back_icon" translatesAutoresizingMaskIntoConstraints="NO" id="KOX-pR-fzt">
+                            <rect key="frame" x="8" y="7" width="25" height="25"/>
+                            <color key="tintColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="imageRenderingMode">
+                                    <integer key="value" value="2"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uoF-fl-vBb">
+                            <rect key="frame" x="0.0" y="0.0" width="50" height="38"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <state key="normal">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="onCrossButtonTap:" destination="-1" eventType="touchUpInside" id="l3I-1K-E5e"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="The Dashboard" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BYZ-bb-KIc">
+                            <rect key="frame" x="66" y="0.0" width="188" height="40"/>
+                            <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="18"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0IB-bs-gFJ">
+                            <rect key="frame" x="251" y="0.0" width="69" height="40"/>
+                            <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="16"/>
+                            <state key="normal" title="Skip">
+                                <color key="titleColor" red="0.12941176469999999" green="0.67843137249999996" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="onSkipButtonTap:" destination="-1" eventType="touchUpInside" id="Pfj-qV-v77"/>
+                            </connections>
+                        </button>
+                    </subviews>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tTR-q4-9of">
-                    <rect key="frame" x="231" y="115" width="89" height="40"/>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WqU-uM-11t" userLabel="line">
+                    <rect key="frame" x="0.0" y="40" width="320" height="1"/>
+                    <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UtC-Aj-zsl">
+                    <rect key="frame" x="0.0" y="41" width="320" height="485"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uiX-Tb-Oec">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="485"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="905-67-7vI">
+                                    <rect key="frame" x="8" y="0.0" width="304" height="485"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Dashboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fKd-Rf-fdi">
+                                            <rect key="frame" x="5" y="15" width="595" height="25"/>
+                                            <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="22"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1i-qW-EFS">
+                                            <rect key="frame" x="0.0" y="45" width="304" height="440"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <mutableString key="text">The dashboard has been designed to give you an overview  of your home and quick access to key functions. You can see: recent Smart Home and Wi-Fi device notifications and how many network and smart devices are online and active. You can also set your Almond to Home or Away mode with a quick tap.  If you own more than one Almond, you can quickly switch between them by tapping on the device’s name above the mode control, and picking another Almond from the list.  As we continue to improve Almond, and add more features, the Dashboard will be central to controlling your Smart Home. Stay tuned!</mutableString>
+                                            <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="17"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
+                                </view>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="485" id="22B-zL-Vqu"/>
+                            </constraints>
+                        </view>
+                    </subviews>
                     <constraints>
-                        <constraint firstAttribute="width" constant="89" id="DgA-EE-PvY"/>
-                        <constraint firstAttribute="height" constant="40" id="uZr-Lw-7h7"/>
+                        <constraint firstItem="uiX-Tb-Oec" firstAttribute="centerX" secondItem="UtC-Aj-zsl" secondAttribute="centerX" id="1dY-2X-zlu"/>
+                        <constraint firstAttribute="bottom" secondItem="uiX-Tb-Oec" secondAttribute="bottom" id="CJW-6C-JTf"/>
+                        <constraint firstAttribute="trailing" secondItem="uiX-Tb-Oec" secondAttribute="trailing" id="YON-h7-MWS"/>
+                        <constraint firstItem="uiX-Tb-Oec" firstAttribute="leading" secondItem="UtC-Aj-zsl" secondAttribute="leading" id="riw-OW-uIH"/>
+                        <constraint firstItem="uiX-Tb-Oec" firstAttribute="top" secondItem="UtC-Aj-zsl" secondAttribute="top" id="t41-K3-gPM"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="16"/>
-                    <state key="normal" title="Ok, Got it">
-                        <color key="titleColor" red="0.12941176470588234" green="0.67843137254901964" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="onHelpOkGotItTap:" destination="-1" eventType="touchUpInside" id="cq8-Fa-gJp"/>
-                    </connections>
-                </button>
+                </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="UGF-jx-hYR" firstAttribute="top" secondItem="nOa-PQ-7fe" secondAttribute="bottom" constant="5" id="81X-MX-lzH"/>
-                <constraint firstItem="nOa-PQ-7fe" firstAttribute="leading" secondItem="cjQ-bJ-RdT" secondAttribute="leading" constant="10" id="Bca-to-rEQ"/>
-                <constraint firstAttribute="trailing" secondItem="UGF-jx-hYR" secondAttribute="trailing" constant="12" id="Ghl-NP-za7"/>
-                <constraint firstItem="nOa-PQ-7fe" firstAttribute="top" secondItem="cjQ-bJ-RdT" secondAttribute="top" constant="15" id="O6S-gv-Mxk"/>
-                <constraint firstAttribute="trailing" secondItem="tTR-q4-9of" secondAttribute="trailing" id="RPT-cR-mSu"/>
-                <constraint firstAttribute="trailing" secondItem="ELu-4z-Y2H" secondAttribute="trailing" id="Ro5-SF-j1S"/>
-                <constraint firstAttribute="trailing" secondItem="nOa-PQ-7fe" secondAttribute="trailing" id="Tqg-5C-5Cl"/>
-                <constraint firstItem="tTR-q4-9of" firstAttribute="top" secondItem="ELu-4z-Y2H" secondAttribute="bottom" constant="-1" id="XgV-RJ-vD3"/>
-                <constraint firstItem="nOa-PQ-7fe" firstAttribute="top" secondItem="cjQ-bJ-RdT" secondAttribute="top" constant="15" id="YaP-KP-iMx"/>
-                <constraint firstItem="UGF-jx-hYR" firstAttribute="leading" secondItem="cjQ-bJ-RdT" secondAttribute="leading" constant="6" id="c32-00-Y89"/>
-                <constraint firstItem="ELu-4z-Y2H" firstAttribute="leading" secondItem="cjQ-bJ-RdT" secondAttribute="leading" id="jat-Ws-vdk"/>
-                <constraint firstItem="nOa-PQ-7fe" firstAttribute="leading" secondItem="cjQ-bJ-RdT" secondAttribute="leading" constant="10" id="mYQ-vg-p27"/>
-                <constraint firstItem="ELu-4z-Y2H" firstAttribute="top" secondItem="UGF-jx-hYR" secondAttribute="bottom" constant="5" id="pHe-r1-JF1"/>
+                <constraint firstItem="UtC-Aj-zsl" firstAttribute="leading" secondItem="TcM-nA-gvc" secondAttribute="leading" id="8lz-st-k74"/>
+                <constraint firstItem="UtC-Aj-zsl" firstAttribute="top" secondItem="TcM-nA-gvc" secondAttribute="top" constant="41" id="9dr-Gh-KFS"/>
+                <constraint firstAttribute="trailing" secondItem="UtC-Aj-zsl" secondAttribute="trailing" id="Ngj-jA-Yhq"/>
+                <constraint firstAttribute="bottom" secondItem="UtC-Aj-zsl" secondAttribute="bottom" constant="-1" id="xZK-RB-zMx"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="549" y="93"/>
+            <point key="canvasLocation" x="256" y="-419.5"/>
+        </view>
+        <view contentMode="scaleToFill" id="yS1-fx-eaP" userLabel="Scene">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="1187"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3GC-dn-tJE" userLabel="topView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="back_icon" translatesAutoresizingMaskIntoConstraints="NO" id="yHM-G5-19L">
+                            <rect key="frame" x="8" y="7" width="25" height="25"/>
+                            <color key="tintColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="imageRenderingMode">
+                                    <integer key="value" value="2"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8rh-T9-SYS">
+                            <rect key="frame" x="0.0" y="0.0" width="50" height="38"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <state key="normal">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="onCrossButtonTap:" destination="-1" eventType="touchUpInside" id="4k4-bw-1xQ"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zRj-hi-OLy">
+                            <rect key="frame" x="251" y="0.0" width="69" height="40"/>
+                            <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="16"/>
+                            <state key="normal" title="Skip">
+                                <color key="titleColor" red="0.12941176469999999" green="0.67843137249999996" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="onSkipButtonTap:" destination="-1" eventType="touchUpInside" id="FcT-Qa-htb"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Managing Your Scene" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="apb-mm-j6x">
+                            <rect key="frame" x="62" y="0.0" width="196" height="40"/>
+                            <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="18"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                </view>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FRy-j1-DPo" userLabel="line">
+                    <rect key="frame" x="0.0" y="40" width="320" height="1"/>
+                    <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Bg-2f-lI3">
+                    <rect key="frame" x="0.0" y="41" width="320" height="1147"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9cb-fc-R03">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1147"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jXV-RP-3BZ">
+                                    <rect key="frame" x="8" y="0.0" width="304" height="1119"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Explaining Scenes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iSX-rS-3dF">
+                                            <rect key="frame" x="5" y="15" width="595" height="25"/>
+                                            <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="22"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zYz-OS-fLw">
+                                            <rect key="frame" x="0.0" y="45" width="304" height="1074"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <mutableString key="text">Scenes make adjusting multiple smart devices much easier and faster. For example, when you go to bed you might have two or three lights to turn off, the temperature on the thermostat to adjust, and set the alarm to activate. A Scene means you can do all of them with just one tap.  You can create and manage Scenes from the Scenes tab in the Almond app. Tap the add button to create a scene. And then tap on a device and select one or more actions from the available options. Repeat this process for as many devices as you need and then tap on “Save”. Follow the onscreen instructions to complete creating your scene.  To manage a scene, tap on the quick action icon to activate the scene, and tap the options icon to change the devices in the Scene and rename it.  A scene might appear to be active even if you haven’t turned it on. That is because a scene is set to active whenever all the actions that make up that scene are turned on. For example, using the Scene above, you may have decided to adjust the lights and thermostat over the course of the evening. In doing so you matched the functions in the Scene and it registers as on.  Now, Almond scenes can be activated using Alexa. To begin using Alexa with Almond Scenes, activate the Almond skill on Alexa. If you are prompted to rename a Scene, choose one from the list of suggestions that comes up. These names are easiest for Alexa to understand. Once you have renamed a Scene, you will see a small Alexa icon on the Scene’s tile on the Almond app. When finished, to activate a Scene, you could say “Alexa, tell Almond to activate Outside Lights Off!” Where ‘Outside Lights Off’ is the name of the Scene.</mutableString>
+                                            <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="17"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
+                                </view>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1147" id="kLj-wk-siH"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="9cb-fc-R03" secondAttribute="trailing" id="GHO-QB-QK3"/>
+                        <constraint firstAttribute="bottom" secondItem="9cb-fc-R03" secondAttribute="bottom" id="RIU-DA-VGr"/>
+                        <constraint firstItem="9cb-fc-R03" firstAttribute="leading" secondItem="6Bg-2f-lI3" secondAttribute="leading" id="YPS-kY-pz1"/>
+                        <constraint firstItem="9cb-fc-R03" firstAttribute="centerX" secondItem="6Bg-2f-lI3" secondAttribute="centerX" id="dTJ-V8-1ZU"/>
+                        <constraint firstItem="9cb-fc-R03" firstAttribute="top" secondItem="6Bg-2f-lI3" secondAttribute="top" id="smD-YO-1OH"/>
+                    </constraints>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="6Bg-2f-lI3" firstAttribute="leading" secondItem="yS1-fx-eaP" secondAttribute="leading" id="9Sz-ln-Blb"/>
+                <constraint firstAttribute="bottom" secondItem="6Bg-2f-lI3" secondAttribute="bottom" constant="-1" id="ARS-YZ-d2V"/>
+                <constraint firstAttribute="trailing" secondItem="6Bg-2f-lI3" secondAttribute="trailing" id="lA2-FW-F5X"/>
+                <constraint firstItem="6Bg-2f-lI3" firstAttribute="top" secondItem="yS1-fx-eaP" secondAttribute="top" constant="41" id="zmt-xs-TFF"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="622" y="-88.5"/>
+        </view>
+        <view contentMode="scaleToFill" id="C5N-Ec-uET" userLabel="Securiti">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="1420"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g6O-Y4-fdG" userLabel="topView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="back_icon" translatesAutoresizingMaskIntoConstraints="NO" id="jnJ-3d-fhg">
+                            <rect key="frame" x="8" y="7" width="25" height="25"/>
+                            <color key="tintColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="imageRenderingMode">
+                                    <integer key="value" value="2"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="clF-dC-VhB">
+                            <rect key="frame" x="0.0" y="0.0" width="50" height="38"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <state key="normal">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="onCrossButtonTap:" destination="-1" eventType="touchUpInside" id="Hws-Dh-Ajh"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DRd-w7-grO">
+                            <rect key="frame" x="251" y="0.0" width="69" height="40"/>
+                            <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="16"/>
+                            <state key="normal" title="Skip">
+                                <color key="titleColor" red="0.12941176469999999" green="0.67843137249999996" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="onSkipButtonTap:" destination="-1" eventType="touchUpInside" id="3Ma-Cs-1EU"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tips on Home Security" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nzR-my-6Dd">
+                            <rect key="frame" x="62" y="0.0" width="196" height="40"/>
+                            <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="18"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                </view>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OX2-2v-yQK">
+                    <rect key="frame" x="0.0" y="41" width="320" height="1379"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3RO-NB-KmO">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1379"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tgv-Tl-Sw8">
+                                    <rect key="frame" x="8" y="0.0" width="304" height="1342"/>
+                                    <subviews>
+                                        <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IW0-9F-sDp">
+                                            <rect key="frame" x="0.0" y="65" width="304" height="1277"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <mutableString key="text">With the appropriate sensors, you can use an Almond 2015, an Almond+, or an Almond 3, to create a robust and powerful DIY home security system. Almond devices  support a wide range of sensors from various manufacturers including Securifi. There is a full list here: https://www.securifi.com/sensors.  With Almond, you can build your Home Security using Rules and the Almond Modes: Home and Away.  The Almond Mode works similar to arming and disarming your car alarm or home security system. With Almond though, you don’t need to do this yourself every time. Use our Rules engine to automate this process using your WiFi presence.  For example, you could create rules like “If my iPhone disconnects from Home WiFi, set Almond mode to Away” and “If my iPhone joins Home WiFi, set Almond mode to Home” to automatically change the mode when you leave home and when you come back. You can then add another rule to make sure the alarm is sounded. For example, “If Almond mode is Away, and motion is detected, sound alarm.”  Experiment with Rules to build your own scenarios. Our Rules engine is versatile and offers a large number of components with which you can build Rules, including: time, Almond Modes, and sensors.  Sensors may not be automatically configured to send notifications; therefore, you will need to configure them. To do so, tap on the settings icon next to the sensor and look for notifications in the menu.  You can choose one of three levels for notifications: Never, When I’m Away and Always. Each level is useful in different situations. For example, you might want to be alerted of movement in the living room only when you are away, but you might want to be alerted every time if a wall safe is opened, or a flood sensor detects water in your basement. On the other hand, you might not want to be alerted at all if a smart plug in your daughter’s room is turned on or off.</mutableString>
+                                            <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="17"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tips For Setting Up Home Security" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="29W-7E-AIZ">
+                                            <rect key="frame" x="8" y="12" width="296" height="56"/>
+                                            <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="22"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </view>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1379" id="Ish-1c-3SZ"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="3RO-NB-KmO" firstAttribute="centerX" secondItem="OX2-2v-yQK" secondAttribute="centerX" id="0wT-wi-puD"/>
+                        <constraint firstAttribute="bottom" secondItem="3RO-NB-KmO" secondAttribute="bottom" id="0xX-jy-1ge"/>
+                        <constraint firstItem="3RO-NB-KmO" firstAttribute="leading" secondItem="OX2-2v-yQK" secondAttribute="leading" id="2kM-qJ-gks"/>
+                        <constraint firstItem="3RO-NB-KmO" firstAttribute="top" secondItem="OX2-2v-yQK" secondAttribute="top" id="Ms5-1g-Zzy"/>
+                        <constraint firstAttribute="trailing" secondItem="3RO-NB-KmO" secondAttribute="trailing" id="Tvl-oT-RVh"/>
+                    </constraints>
+                </scrollView>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jSN-aH-9yY" userLabel="line">
+                    <rect key="frame" x="0.0" y="41" width="320" height="1"/>
+                    <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="OX2-2v-yQK" firstAttribute="leading" secondItem="C5N-Ec-uET" secondAttribute="leading" id="0lh-8V-nNT"/>
+                <constraint firstAttribute="bottom" secondItem="OX2-2v-yQK" secondAttribute="bottom" id="KhV-5a-PnJ"/>
+                <constraint firstItem="OX2-2v-yQK" firstAttribute="top" secondItem="C5N-Ec-uET" secondAttribute="top" constant="41" id="UGg-9w-4gM"/>
+                <constraint firstAttribute="trailing" secondItem="OX2-2v-yQK" secondAttribute="trailing" id="uYe-jm-diQ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="1001" y="28"/>
         </view>
     </objects>
     <resources>
