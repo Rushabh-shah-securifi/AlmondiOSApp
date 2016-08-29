@@ -18,13 +18,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.parentsControlDict = @{@"0":@{@"img":@"icon1",
+    self.parentsControlDict = @{@"0":@{@"img":@"parental_controls_icon",
                                        @"text":@"Moniter this Device",
                                        @"Button":@"YES"},
-                                @"1":@{@"img":@"icon2",
+                                @"1":@{@"img":@"log_browsing_history_icon",
                                        @"text":@"Log Browsing History",
                                        @"Button":@"YES"},
-                                @"2":@{@"img":@"icon3",
+                                @"2":@{@"img":@"view_browsing_history_icon",
                                        @"text":@"View Browsing History",
                                        @"Button":@"YES"}
                                 };
@@ -76,5 +76,10 @@
         [self.navigationController pushViewController:viewController animated:YES];
     }
 
+}
+- (IBAction)backButton:(id)sender {
+
+        [self.navigationController popViewControllerAnimated:YES];
+    
 }
 @end

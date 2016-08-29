@@ -362,15 +362,15 @@
 //    [BrowsingHistoryDataBase LastHourSearch];
 //    
 
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
-    ParentalControlsViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ParentalControlsViewController"];
-    [self.navigationController pushViewController:viewController animated:YES];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+//    ParentalControlsViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ParentalControlsViewController"];
+//    [self.navigationController pushViewController:viewController animated:YES];
 //
     
-//    SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-//    UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-//    ctrl.urlToImageDict = self.urlToImageDict;
-//    [self presentViewController:nav_ctrl animated:YES completion:nil];
+    SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    ctrl.urlToImageDict = self.urlToImageDict;
+    [self presentViewController:nav_ctrl animated:YES completion:nil];
 }
 - (void)onBackButton{
     [self.navigationController popViewControllerAnimated:YES];

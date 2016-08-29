@@ -13,11 +13,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *lable;
 @property (weak, nonatomic) IBOutlet UIImageView *Image;
 
+
 @end
 
 @implementation ParentControlCell
 
 - (void)awakeFromNib {
+    self.Switch.transform = CGAffineTransformMakeScale(0.75, 0.75);
     [super awakeFromNib];
     // Initialization code
 }
@@ -30,6 +32,7 @@
 
 -(void)setUpCell:(NSString *)label andImage:(UIImage *)image isHideSwich:(BOOL)isHide{
     self.lable.text = label;
+    self.imageView.image = image;
     if(isHide == YES){
         self.Switch.hidden = YES;
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

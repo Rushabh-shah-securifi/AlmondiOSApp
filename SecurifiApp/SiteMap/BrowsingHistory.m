@@ -39,7 +39,7 @@
 //
 -(UIImage*)getImage:(NSString*)hostName imageDict:(NSMutableDictionary*)uriToImgDic2t{
 //    UrlImgDict *imgDict = [UrlImgDict sharedInstance];
-//    NSLog(@"imgDict:: %@",imgDict.imgDict);
+    NSLog(@"imgDict:: %@",self.urlToImageDict);
     __block UIImage *img;
     if(_urlToImageDict[hostName]){
         return _urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
@@ -56,7 +56,8 @@
         if(!img){
             img = [UIImage imageNamed:@"help-icon"];
         }
-        _urlToImageDict[hostName] = img;
+        [self.urlToImageDict setObject:img forKey:hostName];
+//        _urlToImageDict[hostName] = img;
          [self.delegate reloadTable];
         return img;
     }

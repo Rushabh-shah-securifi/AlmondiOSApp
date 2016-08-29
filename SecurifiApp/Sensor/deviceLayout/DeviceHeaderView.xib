@@ -5,6 +5,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="AvenirLTStd-LightOblique.otf">
+            <string>AvenirLTStd-LightOblique</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DeviceHeaderView">
             <connections>
@@ -14,6 +19,7 @@
                 <outlet property="deviceValue" destination="yrJ-vh-54N" id="Qdj-GD-aP0"/>
                 <outlet property="deviceValueImgLable" destination="OS7-Nq-qpX" id="7LK-TN-cmS"/>
                 <outlet property="lowBatteryImgView" destination="cfV-XV-1jL" id="tBV-TG-UCl"/>
+                <outlet property="parentrolBtn" destination="x5J-IW-RdQ" id="lFq-ju-BHO"/>
                 <outlet property="settingButton" destination="j4p-JD-Gxj" id="bl0-Pt-J7q"/>
                 <outlet property="tamperedImgView" destination="lQZ-cc-ceE" id="tDh-Cg-EXl"/>
                 <outlet property="view" destination="iN0-l3-epB" id="hvv-er-uHx"/>
@@ -103,6 +109,21 @@
                         <constraint firstAttribute="height" constant="28" id="gwN-VU-tec"/>
                     </constraints>
                 </imageView>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x5J-IW-RdQ">
+                    <rect key="frame" x="103" y="38" width="153" height="21"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="4xj-VI-WhQ"/>
+                        <constraint firstAttribute="width" constant="153" id="BHZ-KW-JEX"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-LightOblique" family="Avenir LT Std" pointSize="12"/>
+                    <state key="normal" title="Parental Controll">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="onParentalControllClicked:" destination="-1" eventType="touchUpInside" id="F3p-TL-qq3"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="MTY-vq-YbM" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="3hL-d1-cr3"/>
@@ -112,6 +133,7 @@
                 <constraint firstItem="lQZ-cc-ceE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="-6" id="C8R-56-2vo"/>
                 <constraint firstItem="cfV-XV-1jL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="-9" id="LhU-cR-WfW"/>
                 <constraint firstAttribute="trailing" secondItem="lQZ-cc-ceE" secondAttribute="trailing" constant="-8" id="LyX-eg-Kmy"/>
+                <constraint firstAttribute="bottom" secondItem="x5J-IW-RdQ" secondAttribute="bottom" constant="5" id="PlM-xB-S04"/>
                 <constraint firstItem="4cw-Ky-R3V" firstAttribute="leading" secondItem="A4N-3J-OpT" secondAttribute="trailing" constant="-1" id="Se7-6F-e1N"/>
                 <constraint firstItem="LIr-It-ARc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="UP8-TY-pn4"/>
                 <constraint firstItem="MTY-vq-YbM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="Wh3-2G-g8Q"/>
@@ -123,6 +145,7 @@
                 <constraint firstAttribute="bottom" secondItem="A4N-3J-OpT" secondAttribute="bottom" id="gHq-eF-qWu"/>
                 <constraint firstAttribute="trailing" secondItem="rnu-yv-UlO" secondAttribute="trailing" constant="19" id="hHi-lM-7Tt"/>
                 <constraint firstItem="OS7-Nq-qpX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" constant="-8" id="ipd-F4-S2j"/>
+                <constraint firstItem="x5J-IW-RdQ" firstAttribute="leading" secondItem="4cw-Ky-R3V" secondAttribute="trailing" constant="39" id="qTX-oK-grr"/>
                 <constraint firstItem="LIr-It-ARc" firstAttribute="leading" secondItem="4cw-Ky-R3V" secondAttribute="trailing" constant="6" id="qej-5J-Txw"/>
                 <constraint firstAttribute="bottom" secondItem="j4p-JD-Gxj" secondAttribute="bottom" id="s5I-9r-JpQ"/>
                 <constraint firstItem="cfV-XV-1jL" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="-6" id="uFn-SJ-tKG"/>
