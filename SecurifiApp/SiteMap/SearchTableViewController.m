@@ -17,6 +17,7 @@
 #import "SearchTableViewController.h"
 #import "BrowsingHistoryDataBase.h"
 
+
 typedef NS_ENUM(NSInteger, SearchPatten) {
     DefaultSearch,
     RecentSearch,
@@ -32,6 +33,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic) UITableView *searchTableView;
 @property (nonatomic) NSArray *suggSearchArr;
+@property (nonatomic) BrowsingHistory *browsingHistory;
+
 @property (nonatomic) NSMutableArray *recentSearch;
 @property (nonatomic) NSMutableArray *recentSearchObj;
 @property (nonatomic) NSArray *categorySearch;
@@ -49,6 +52,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.dayArr = [[NSMutableArray alloc]init];
+        self.browsingHistory =[[BrowsingHistory alloc]init];
+        self.browsingHistory.delegate = self;
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
     self.navigationController.navigationBar.clipsToBounds = YES;
     self.navigationController.view.backgroundColor = [UIColor whiteColor];
@@ -89,7 +94,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
        return self.dayArr.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 40;
+    return 30;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView == self.tableView){
@@ -297,11 +302,12 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         NSLog(@"searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
     
     [self getHistoryFromDB:searchString];
-    BrowsingHistory *Bhistory =[[BrowsingHistory alloc]init];
-    Bhistory.delegate = self;
+    NSLog(@"self.historyDict search %@",self.historyDict);
+
     [self.dayArr removeAllObjects];
-    [Bhistory getBrowserHistoryImages:self.historyDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
+    [self.browsingHistory getBrowserHistoryImages:self.historyDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
     
+    [self reloadTable];
     [searchBar setShowsCancelButton:NO animated:YES];
 }
 

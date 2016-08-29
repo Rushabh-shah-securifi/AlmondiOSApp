@@ -25,10 +25,10 @@
         for (NSMutableDictionary *uriDict in alldayArr)
             
             {
-            dispatch_async(imageDownloadQueue,^(){
-                [uriDict setObject:[self getImage:uriDict[@"hostName"] imageDict:uriToImgDict] forKey:@"image"];
+//            dispatch_async(imageDownloadQueue,^(){
+                [uriDict setObject:[self getImage:uriDict[@"hostName"] imageDict:uriToImgDict dispatchQueue:imageDownloadQueue] forKey:@"image"];
                 NSLog(@"downloading img...");
-            });
+//            });
             [oneDayUri addObject:uriDict];
         }
         [dayArr addObject:oneDayUri];
@@ -37,7 +37,7 @@
     
 }
 //
--(UIImage*)getImage:(NSString*)hostName imageDict:(NSMutableDictionary*)uriToImgDic2t{
+-(UIImage*)getImage:(NSString*)hostName imageDict:(NSMutableDictionary*)uriToImgDic2t dispatchQueue:(dispatch_queue_t)imageDownloadQueue{
 //    UrlImgDict *imgDict = [UrlImgDict sharedInstance];
     NSLog(@"imgDict:: %@",self.urlToImageDict);
     __block UIImage *img;
@@ -47,11 +47,14 @@
         
 
         __block NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
-        img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+        dispatch_async(imageDownloadQueue,^(){
+            img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+        });
         if(!img){
             iconUrl = [NSString stringWithFormat:@"https://%@/favicon.ico", hostName];
+            dispatch_async(imageDownloadQueue,^(){
             img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
-            
+             });
         }
         if(!img){
             img = [UIImage imageNamed:@"help-icon"];
