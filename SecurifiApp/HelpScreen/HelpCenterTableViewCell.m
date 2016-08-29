@@ -59,7 +59,7 @@
     if(row == 0){
         self.flagImgView.hidden = NO;
         self.flagImgView.image = [UIImage imageNamed:@"us"];
-        self.countryCode.text = @"(us,uk)";
+        self.countryCode.text = @"(US,CA)";
     }else{
         self.flagImgView.hidden = YES;
         self.countryCode.text = [NSString stringWithFormat:@"(%@)", countryNumber[1]];

@@ -369,18 +369,28 @@
                                     <action selector="onSupportMailTap:" destination="8RX-IZ-tpK" eventType="touchUpInside" id="f9U-rd-08B"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap on the below links to email or call us." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wpj-Lp-nJs">
+                                <rect key="frame" x="33" y="76" width="255" height="67"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="67" id="kdM-72-PY9"/>
+                                    <constraint firstAttribute="width" constant="255" id="mfs-cF-7Mf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
+                                <color key="textColor" red="0.46274509803921571" green="0.46274509803921571" blue="0.46274509803921571" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VYn-tE-QKM">
-                                <rect key="frame" x="20" y="220" width="272" height="348"/>
+                                <rect key="frame" x="15" y="220" width="291" height="348"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="272" id="PZw-67-Qym"/>
+                                    <constraint firstAttribute="width" constant="291" id="PZw-67-Qym"/>
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="helpcentercell" id="70N-mx-k1N" customClass="HelpCenterTableViewCell">
-                                        <rect key="frame" x="0.0" y="28" width="272" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="291" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="70N-mx-k1N" id="sVV-Pf-4yH">
-                                            <rect key="frame" x="0.0" y="0.0" width="272" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="291" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="taiwan" translatesAutoresizingMaskIntoConstraints="NO" id="L3e-ur-ykc">
@@ -398,9 +408,9 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mak" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vnP-cL-nJh">
-                                                    <rect key="frame" x="75" y="12" width="44" height="21"/>
+                                                    <rect key="frame" x="75" y="12" width="55" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="44" id="H7i-qb-D7l"/>
+                                                        <constraint firstAttribute="width" constant="55" id="H7i-qb-D7l"/>
                                                         <constraint firstAttribute="height" constant="21" id="i5q-O9-seP"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="14"/>
@@ -408,7 +418,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+49-800-723-7994" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IfM-cL-eK6">
-                                                    <rect key="frame" x="124" y="11" width="148" height="21"/>
+                                                    <rect key="frame" x="130" y="11" width="148" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="148" id="2a5-VM-bLF"/>
                                                         <constraint firstAttribute="height" constant="21" id="TZn-Th-8HR"/>
@@ -426,7 +436,7 @@
                                                 <constraint firstItem="13g-F7-XLz" firstAttribute="top" secondItem="sVV-Pf-4yH" secondAttribute="topMargin" constant="-1" id="ZaK-Bc-cMl"/>
                                                 <constraint firstItem="13g-F7-XLz" firstAttribute="leading" secondItem="L3e-ur-ykc" secondAttribute="trailing" constant="5" id="qFi-u5-Hfn"/>
                                                 <constraint firstItem="IfM-cL-eK6" firstAttribute="top" secondItem="sVV-Pf-4yH" secondAttribute="topMargin" constant="3" id="r6f-0m-blu"/>
-                                                <constraint firstItem="IfM-cL-eK6" firstAttribute="leading" secondItem="vnP-cL-nJh" secondAttribute="trailing" constant="5" id="sEI-Xe-HxY"/>
+                                                <constraint firstItem="IfM-cL-eK6" firstAttribute="leading" secondItem="vnP-cL-nJh" secondAttribute="trailing" id="sEI-Xe-HxY"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -442,16 +452,6 @@
                                     <outlet property="delegate" destination="8RX-IZ-tpK" id="fSW-1X-fUy"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap on the below links to email or call us." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wpj-Lp-nJs">
-                                <rect key="frame" x="33" y="76" width="255" height="67"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="67" id="kdM-72-PY9"/>
-                                    <constraint firstAttribute="width" constant="255" id="mfs-cF-7Mf"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
-                                <color key="textColor" red="0.46274509803921571" green="0.46274509803921571" blue="0.46274509803921571" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -459,7 +459,7 @@
                             <constraint firstItem="HAe-FJ-n8J" firstAttribute="centerX" secondItem="lWP-MB-sy0" secondAttribute="centerX" id="BiP-fx-RA0"/>
                             <constraint firstItem="sUX-9r-Xbp" firstAttribute="centerX" secondItem="lWP-MB-sy0" secondAttribute="centerX" id="FNG-GK-3bf"/>
                             <constraint firstItem="HAe-FJ-n8J" firstAttribute="top" secondItem="KCP-fQ-PPm" secondAttribute="bottom" constant="15" id="GZp-7Y-8LV"/>
-                            <constraint firstItem="VYn-tE-QKM" firstAttribute="centerX" secondItem="lWP-MB-sy0" secondAttribute="centerX" constant="-4" id="NST-cs-B32"/>
+                            <constraint firstItem="VYn-tE-QKM" firstAttribute="centerX" secondItem="lWP-MB-sy0" secondAttribute="centerX" constant="0.5" id="NST-cs-B32"/>
                             <constraint firstItem="WHk-PR-b38" firstAttribute="top" secondItem="VYn-tE-QKM" secondAttribute="bottom" id="Qr4-jN-sD2"/>
                             <constraint firstItem="Wpj-Lp-nJs" firstAttribute="top" secondItem="KCP-fQ-PPm" secondAttribute="bottom" constant="56" id="TDZ-Si-PRn"/>
                             <constraint firstItem="VYn-tE-QKM" firstAttribute="top" secondItem="sUX-9r-Xbp" secondAttribute="bottom" constant="29" id="bRw-pN-oor"/>
