@@ -13,7 +13,7 @@
 
 @implementation SFICloudStatusBarButtonItem
 
-- (instancetype)initWithTarget:(id)target action:(SEL)action enableLocalNetworking:(BOOL)enableLocal {
+- (instancetype)initWithTarget:(id)target action:(SEL)action enableLocalNetworking:(BOOL)enableLocal isDashBoard:(BOOL)isDashboard{
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0, 0, 30, 25);
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
@@ -26,7 +26,7 @@
         _button = button;
         _state = initialState;
         _enableLocalNetworking = enableLocal;
-        _isDashBoard = NO;
+        _isDashBoard = isDashboard;
 
         [self setStatusImage:initialState];
     }

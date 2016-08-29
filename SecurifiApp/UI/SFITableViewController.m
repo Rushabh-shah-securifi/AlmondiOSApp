@@ -50,7 +50,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];    
     
     SecurifiConfigurator *configurator = toolkit.configuration;
@@ -60,24 +60,22 @@
     
     self.navigationController.navigationBar.translucent = NO;
     
-    SWRevealViewController *revealController = [self revealViewController];
     
-    UIBarButtonItem *revealButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"drawer.png"] style:UIBarButtonItemStylePlain target:revealController action:@selector(revealToggle:)];
-    if(self.needBackButton){
-        
+    if(self.needAddButton){
+        UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add_almond_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddBtnTap:)];
+        self.navigationItem.rightBarButtonItem = addButton;
     }
     else{
-        self.navigationItem.leftBarButtonItem = revealButton;
-        self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
+        
     }
     
     self.enableDrawer = _enableDrawer; // in case it was set before view loaded
     
     if (enableLocalNetworking) {
-        _connectionStatusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES];
+        _connectionStatusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES isDashBoard:NO];
     }
     else {
-        _connectionStatusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:nil action:nil enableLocalNetworking:NO];
+        _connectionStatusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:nil action:nil enableLocalNetworking:NO isDashBoard:NO];
     }
     
     //
@@ -90,7 +88,7 @@
         
         // make the button but do not install; will be installed after connection state is determined
         NSLog(@"_almondModeBarButton");
-        _almondModeBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onAlmondModeButtonPressed:) enableLocalNetworking:enableLocalNetworking];
+        _almondModeBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onAlmondModeButtonPressed:) enableLocalNetworking:enableLocalNetworking isDashBoard:NO];
         [_almondModeBarButton markState:SFICloudStatusStateAtHome];
         
         [self setBarButtons:NO];
@@ -219,6 +217,9 @@
 }
 
 #pragma Event handling
+- (void)onAddBtnTap:(id)sender{
+    NSLog(@"on add btn tap");
+}
 
 - (void)onConnectionStatusButtonPressed:(id)sender {
     self.alert = [AlertView new];
@@ -479,12 +480,12 @@
         NSString *name = [m isEqualToString:@"2"]?@"almond_mode_home":@"almond_mode_away";
         
         UIImage *image = [UIImage imageNamed:name];
-        UIColor *color = [UIColor blackColor];
-        [self.almondModeBarButton modeUpdate:image color:color mode:m];
-        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        spacer.width = 20;
+//        UIColor *color = [UIColor blackColor];
+//        [self.almondModeBarButton modeUpdate:image color:color mode:m];
+//        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+//        spacer.width = 25;
         
-        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.almondModeBarButton, spacer, self.notificationsStatusButton];
+//        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.almondModeBarButton, spacer, self.notificationsStatusButton];
         
         
         
@@ -621,14 +622,14 @@
 
 - (void)setBarButtons:(BOOL)showAlmondHome {
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    spacer.width = 20;
-    
-    if (showAlmondHome) {
-        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.almondModeBarButton, spacer, self.notificationsStatusButton];
-    }
-    else {
-        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.notificationsStatusButton];
-    }
+    spacer.width = 25;
+    self.navigationItem.leftBarButtonItems = @[self.connectionStatusBarButton,self.notificationsStatusButton, spacer];
+//    if (showAlmondHome) {
+//        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.almondModeBarButton, spacer, self.notificationsStatusButton];
+//    }
+//    else {
+//        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.notificationsStatusButton];
+//    }
 }
 
 - (void)hideAlmondModeButton {
@@ -679,7 +680,6 @@
     frame = titleView.frame;
     frame.size = bar_size;
     titleView.frame = frame;
-    
     // Ensure text is on one line, centered and truncates if the bounds are restricted
     titleLabel.numberOfLines = 1;
     titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;

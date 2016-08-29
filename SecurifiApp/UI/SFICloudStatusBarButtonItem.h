@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, SFICloudStatusState) {
 
 @property(nonatomic) BOOL isDashBoard;
 
-- (instancetype)initWithTarget:(id)target action:(SEL)action enableLocalNetworking:(BOOL)enableLocal;
+- (instancetype)initWithTarget:(id)target action:(SEL)action enableLocalNetworking:(BOOL)enableLocal isDashBoard:(BOOL)isDashboard;
 
 - (void)markState:(SFICloudStatusState)newState;
 

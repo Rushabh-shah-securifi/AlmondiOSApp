@@ -39,14 +39,12 @@
 @implementation SFIScenesTableViewController
 
 - (void)viewDidLoad {
+    self.needAddButton = YES;
     [super viewDidLoad];
     self.toolkit = [SecurifiToolkit sharedInstance];
     
-    
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -55,7 +53,6 @@
     self.enableDrawer = YES;
     randomMobileInternalIndex = arc4random() % 10000;
     
-    [self addAddSceneButton];
     [self markAlmondTitleAndMac];
     [self initializeNotifications];
     
@@ -78,21 +75,6 @@
         [self markAlmondMac:self.currentAlmond.almondplusMAC];
         [self markTitle: self.currentAlmond.almondplusName];
     }
-}
-
-- (void)addAddSceneButton{
-    if (!btnAdd) {
-        btnAdd = [UIButton buttonWithType:UIButtonTypeCustom];
-        btnAdd.frame = CGRectMake((self.navigationController.view.frame.size.width - 65)/2, self.navigationController.view.frame.size.height-130, 65, 65);
-        [btnAdd setImage:[UIImage imageNamed:@"btnAdd"] forState:UIControlStateNormal];
-        btnAdd.backgroundColor = [UIColor clearColor];
-        [btnAdd addTarget:self action:@selector(btnAddNewSceneTap:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    [self.navigationController.view addSubview:btnAdd];
-}
-
-- (void)removeAddSceneButton{
-    [btnAdd removeFromSuperview];
 }
 
 - (void)initializeNotifications{
@@ -124,7 +106,6 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self removeAddSceneButton];
     if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
@@ -339,7 +320,7 @@
 }
 
 #pragma mark
-- (IBAction)btnAddNewSceneTap:(id)sender {
+- (void)btnAddNewSceneTap:(id)sender {
     [self removeAlert];
     NewAddSceneViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewAddSceneViewController"];
     viewController.scene = [[Rule alloc]init];
@@ -429,11 +410,11 @@
 - (void)hideHude{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.HUD hide:YES];
-        if ([[self.navigationController topViewController] isKindOfClass:[SFIScenesTableViewController class]]) {
-            [self addAddSceneButton];
-        }
     });
-    
-    
+}
+#pragma mark event
+- (void)onAddBtnTap:(id)sender{
+    NSLog(@"scene on add btn tap");
+    [self btnAddNewSceneTap:sender];
 }
 @end

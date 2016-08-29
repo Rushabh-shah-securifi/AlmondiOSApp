@@ -56,7 +56,6 @@ int mii;
     
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
     
     //ensure list is empty initially
     [self initializeAlmondData];

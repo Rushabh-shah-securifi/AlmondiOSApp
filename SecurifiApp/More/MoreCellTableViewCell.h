@@ -12,6 +12,7 @@
 
 @protocol MoreCellTableViewCellDelegate
 -(void)onLogoutTapDelegate;
+-(void)onLogoutAllTapDelegate;
 -(void)onImageTapDelegate:(UIButton *)button;
 @end
 

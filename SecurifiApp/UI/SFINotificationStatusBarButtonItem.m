@@ -86,11 +86,5 @@
         return [UIImage imageNamed:self.isDashBoard?@"bell_icon_White":@"bell_icon_tilted"];
     }
 }
--(void)setMiddleButtonIcon:(UILabel *)label
-{
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(0, 0, 30, 25);
-    
-}
 
 @end

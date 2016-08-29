@@ -34,12 +34,12 @@
 @implementation RulesTableViewController
 CGPoint tablePoint;
 - (void)viewDidLoad {
-    self.needBackButton = YES;
+    self.needAddButton = YES;
     [super viewDidLoad];
     self.toolkit = [SecurifiToolkit sharedInstance];
+    self.tableView.separatorColor = [UIColor clearColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    
-    [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
 }
 
@@ -51,7 +51,6 @@ CGPoint tablePoint;
     
     self.tableView.contentOffset = tablePoint;
     
-    [self addAddRuleButton];
     [self markAlmondTitleAndMac];
     [self initializeNotifications];
     
@@ -74,7 +73,6 @@ CGPoint tablePoint;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self removeAddRuleButton];
     if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
@@ -134,11 +132,6 @@ CGPoint tablePoint;
     [self markAlmondTitleAndMac];
 }
 
--(void)initializeTableViewAttributes{
-    self.tableView.separatorColor = [UIColor clearColor];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
-}
 
 - (void)onRuleUpdateCommandResponse:(id)sender{
     NSLog(@"onRuleUpdateCommandResponse ");
@@ -175,25 +168,6 @@ CGPoint tablePoint;
         }
     });
 }
-
-- (void)removeAddRuleButton{
-    if(self.buttonAdd)
-        [self.buttonAdd removeFromSuperview];
-}
-
-
-- (void)addAddRuleButton{
-    if (!self.buttonAdd) {
-        self.buttonAdd = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.buttonAdd.frame = CGRectMake((self.navigationController.view.frame.size.width - 65)/2, self.navigationController.view.frame.size.height-130, 65, 65);
-        [self.buttonAdd setImage:[UIImage imageNamed:@"btnAdd"] forState:UIControlStateNormal];
-        self.buttonAdd.backgroundColor = [UIColor clearColor];
-        [self.buttonAdd addTarget:self action:@selector(btnAddNewRuleTap:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    
-    [self.navigationController.view addSubview:self.buttonAdd];
-}
-
 
 #pragma mark - HUD and Toast mgt
 - (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
@@ -403,4 +377,9 @@ CGPoint tablePoint;
     }
 }
 
+#pragma mark event
+- (void)onAddBtnTap:(id)sender{
+    NSLog(@"on add btn tap");
+    [self btnAddNewRuleTap:sender];
+}
 @end

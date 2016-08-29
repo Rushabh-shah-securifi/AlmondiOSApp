@@ -155,7 +155,7 @@
 
 #pragma mark tableView delegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.isLocal ?2: 4;
+    return self.isLocal ?2: 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -193,6 +193,9 @@
         }
         else if(section == 3){
             cell = [self getMorecell:tableView identifier:@"morecell4" indexPath:indexPath accessory:NO];
+        }
+        else if(section == 4){
+            cell = [self getMorecell:tableView identifier:@"morecell5" indexPath:indexPath accessory:NO];
         }
     }
     return cell;
@@ -310,6 +313,10 @@
     NSLog(@"onLogoutTapDelegate");
     [[SecurifiToolkit sharedInstance] asyncSendLogout];
     //main view will catch the response.
+}
+
+-(void)onLogoutAllTapDelegate{
+    
 }
 
 -(void)onImageTapDelegate:(UIButton *)button{

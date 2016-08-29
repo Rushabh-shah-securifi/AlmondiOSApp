@@ -76,5 +76,8 @@
 - (IBAction)onImageButtonTap:(UIButton *)button {
     [self.delegate onImageTapDelegate:button];
 }
+- (IBAction)onLogoutAllTap:(id)sender {
+    [self.delegate onLogoutAllTapDelegate];
+}
 
 @end
