@@ -7,12 +7,16 @@
 //
 
 #import "BrowsingHistory.h"
+#import "UrlImgDict.h"
 @interface BrowsingHistory ()
-@property (nonatomic) NSMutableDictionary *urlToImageDict;
 @property (nonatomic) NSMutableData *responseData;
+@property (nonatomic) NSMutableDictionary *urlToImageDict;
+
 @end
 @implementation BrowsingHistory
--(void)getBrowserHistoryImages:(NSDictionary *)historyDict dispatchQueue:(dispatch_queue_t)imageDownloadQueue dayArr:(NSMutableArray *)dayArr{
+-(void)getBrowserHistoryImages:(NSDictionary *)historyDict dispatchQueue:(dispatch_queue_t)imageDownloadQueue dayArr:(NSMutableArray *)dayArr imageDict:(NSMutableDictionary*)uriToImgDict{
+
+
 
     NSDictionary *dict1 = historyDict[@"Data"];
     for (NSString *dates in [dict1 allKeys]) {
@@ -22,21 +26,23 @@
             
             {
             dispatch_async(imageDownloadQueue,^(){
-                [uriDict setObject:[self getImage:uriDict[@"hostName"]] forKey:@"image"];
+                [uriDict setObject:[self getImage:uriDict[@"hostName"] imageDict:uriToImgDict] forKey:@"image"];
+                NSLog(@"downloading img...");
             });
             [oneDayUri addObject:uriDict];
         }
         [dayArr addObject:oneDayUri];
         
     }
-        [self.delegate reloadTable];
+    
 }
 //
--(UIImage*)getImage:(NSString*)hostName{
-    
+-(UIImage*)getImage:(NSString*)hostName imageDict:(NSMutableDictionary*)uriToImgDic2t{
+//    UrlImgDict *imgDict = [UrlImgDict sharedInstance];
+//    NSLog(@"imgDict:: %@",imgDict.imgDict);
     __block UIImage *img;
-    if(self.urlToImageDict[hostName]){
-        return self.urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
+    if(_urlToImageDict[hostName]){
+        return _urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
     }else{
         
 
@@ -50,8 +56,8 @@
         if(!img){
             img = [UIImage imageNamed:@"help-icon"];
         }
-        self.urlToImageDict[hostName] = img;
-        
+        _urlToImageDict[hostName] = img;
+         [self.delegate reloadTable];
         return img;
     }
 }

@@ -178,8 +178,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     }
     else {
         NSLog(@"self.dayArr count = %ld",self.dayArr.count);
-        if(self.dayArr.count > 0){
+        if(self.dayArr.count > indexPath.section){
         NSArray *browsHist = self.dayArr[indexPath.section];
+            NSLog(@"browsing hist %@, count %ld,row = %ld",browsHist,browsHist.count,indexPath.row);
+            if(browsHist.count>indexPath.row)
         [cell setCell:browsHist[indexPath.row] hideItem:NO];
         }
     }
@@ -298,7 +300,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     BrowsingHistory *Bhistory =[[BrowsingHistory alloc]init];
     Bhistory.delegate = self;
     [self.dayArr removeAllObjects];
-    [Bhistory getBrowserHistoryImages:self.historyDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+    [Bhistory getBrowserHistoryImages:self.historyDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
     
     [searchBar setShowsCancelButton:NO animated:YES];
 }
@@ -347,7 +349,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         NSDictionary *recent = @{@"hostName":str,
                                    @"image" : [UIImage imageNamed:@"search_icon"]
                                    };
-   
+       
         [self.recentSearchObj addObject:recent];
     }
     NSLog(@"self.recentSearch count  %@ = %ld",self.recentSearch,self.recentSearch.count);

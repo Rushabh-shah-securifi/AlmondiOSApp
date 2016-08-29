@@ -19,12 +19,13 @@
 #import "BrowsingHistoryDataBase.h"
 #import "BrowsingHistory.h"
 #import "ChangeCategoryViewController.h"
+#import "ParentalControlsViewController.h"
 
 @interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource,BrowsingHistoryDelegate,NSURLConnectionDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *browsingTable;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (nonatomic) NSArray *UriDataOneDay ;
-@property (nonatomic)NSMutableArray *dayArr;
+@property (nonatomic) NSMutableArray *dayArr;
 @property (nonatomic) dispatch_queue_t imageDownloadQueue;
 @property (nonatomic) dispatch_queue_t sendReqQueue;
 @property (nonatomic) NSMutableDictionary *urlToImageDict;
@@ -57,8 +58,9 @@
    
     if([BrowsingHistoryDataBase GetHistoryDatabaseCount]>0){
        
-        
-        [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+        NSLog(@"url to img3 %@",self.urlToImageDict);
+        [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
+         NSLog(@"url to img3 after %@",self.urlToImageDict);
         [self sendHttpRequest:[BrowsingHistoryDataBase getStartTag] endTag:@""];
     }
     else{
@@ -168,8 +170,10 @@
 
     if(self.isEmptyDb == YES){
     [self.dayArr removeAllObjects];
-    [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+    NSLog(@"url to img1 %@",self.urlToImageDict);
+    [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
         self.isEmptyDb = NO;
+        NSLog(@"url to img1 after %@",self.urlToImageDict);
     }
     NSLog(@"end tag = %@",endTag);
     
@@ -237,10 +241,12 @@
     }
     
 //    self.UriDataOneDay = [self.browsingHistoryObj.allDateRecord valueForKey: self.browsingHistoryDayWise[indexPath.section]];
+    if(self.dayArr.count > indexPath.section){
+        NSArray *browsHist = self.dayArr[indexPath.section];
+        if(browsHist.count>indexPath.row)
+            [cell setCell:browsHist[indexPath.row] hideItem:NO];
+    }
     
-    NSArray *browsHist = self.dayArr[indexPath.section];
-     NSLog(@"uriDict = %@",browsHist[indexPath.row]);
-    [cell setCell:browsHist[indexPath.row] hideItem:NO];
 
 
     return cell;
@@ -258,9 +264,8 @@
         {
         self.count+=10;
             [self.dayArr removeAllObjects];
-        [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:self.count] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+        [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:self.count] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
             
-            NSLog(@"self.count =  %d",self.count);
             
         }
         else{
@@ -357,15 +362,15 @@
 //    [BrowsingHistoryDataBase LastHourSearch];
 //    
 
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
-//    ChangeCategoryViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ChangeCategoryViewController"];
-//    [self.navigationController pushViewController:viewController animated:YES];
-//    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+    ParentalControlsViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ParentalControlsViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+//
     
-    SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-    ctrl.urlToImageDict = self.urlToImageDict;
-    [self presentViewController:nav_ctrl animated:YES completion:nil];
+//    SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+//    UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+//    ctrl.urlToImageDict = self.urlToImageDict;
+//    [self presentViewController:nav_ctrl animated:YES completion:nil];
 }
 - (void)onBackButton{
     [self.navigationController popViewControllerAnimated:YES];

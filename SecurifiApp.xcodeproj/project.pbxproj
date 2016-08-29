@@ -425,6 +425,9 @@
 		CE40BF171D225791007C2148 /* URIData.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF121D225791007C2148 /* URIData.m */; };
 		CE40BF1C1D22867B007C2148 /* temp.json in Resources */ = {isa = PBXBuildFile; fileRef = CE40BF1A1D228650007C2148 /* temp.json */; };
 		CE4DB3F61CEF340F00CBD6DE /* TriDimBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */; };
+		CE57A3461D7008C800F14B25 /* UrlImgDict.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57A3451D7008C800F14B25 /* UrlImgDict.m */; };
+		CE57A3491D70591A00F14B25 /* ParentalControlsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57A3481D70591A00F14B25 /* ParentalControlsViewController.m */; };
+		CE57A34C1D705B5300F14B25 /* ParentControlCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57A34B1D705B5300F14B25 /* ParentControlCell.m */; };
 		CE57E52F1D1BB82800493460 /* SiteMapStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE57E52D1D1BB82800493460 /* SiteMapStoryBoard.storyboard */; };
 		CE57E5321D1BBCC400493460 /* HistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE57E5301D1BBCC400493460 /* HistoryCell.xib */; };
 		CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58276B1D10127400843B4C /* WeatherRuleButton.m */; };
@@ -1031,6 +1034,12 @@
 		CE40BF1A1D228650007C2148 /* temp.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = temp.json; path = ../temp.json; sourceTree = "<group>"; };
 		CE4DB3F41CEF340D00CBD6DE /* TriDimBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriDimBtn.h; sourceTree = "<group>"; };
 		CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TriDimBtn.m; sourceTree = "<group>"; };
+		CE57A3441D7008C800F14B25 /* UrlImgDict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlImgDict.h; sourceTree = "<group>"; };
+		CE57A3451D7008C800F14B25 /* UrlImgDict.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlImgDict.m; sourceTree = "<group>"; };
+		CE57A3471D70591A00F14B25 /* ParentalControlsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentalControlsViewController.h; sourceTree = "<group>"; };
+		CE57A3481D70591A00F14B25 /* ParentalControlsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentalControlsViewController.m; sourceTree = "<group>"; };
+		CE57A34A1D705B5300F14B25 /* ParentControlCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentControlCell.h; sourceTree = "<group>"; };
+		CE57A34B1D705B5300F14B25 /* ParentControlCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentControlCell.m; sourceTree = "<group>"; };
 		CE57E52E1D1BB82800493460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SiteMapStoryBoard.storyboard; sourceTree = "<group>"; };
 		CE57E5311D1BBCC400493460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = HistoryCell.xib; sourceTree = "<group>"; };
 		CE58276A1D10127400843B4C /* WeatherRuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherRuleButton.h; sourceTree = "<group>"; };
@@ -2146,6 +2155,12 @@
 				CE3EDAEF1D4742EC00C153A6 /* BrowsingHistoryViewController.m */,
 				CE3EDAF01D4742EC00C153A6 /* SearchTableViewController.h */,
 				CE3EDAF11D4742EC00C153A6 /* SearchTableViewController.m */,
+				CE57A3441D7008C800F14B25 /* UrlImgDict.h */,
+				CE57A3451D7008C800F14B25 /* UrlImgDict.m */,
+				CE57A3471D70591A00F14B25 /* ParentalControlsViewController.h */,
+				CE57A3481D70591A00F14B25 /* ParentalControlsViewController.m */,
+				CE57A34A1D705B5300F14B25 /* ParentControlCell.h */,
+				CE57A34B1D705B5300F14B25 /* ParentControlCell.m */,
 			);
 			path = SiteMap;
 			sourceTree = "<group>";
@@ -3045,6 +3060,7 @@
 				CEF6F5021C92CAD600C68975 /* TimeView.m in Sources */,
 				1C7E7DBB1A41A0990026F0BA /* SFICardView.m in Sources */,
 				F4B876741D54653500DCF76F /* GridView.m in Sources */,
+				CE57A34C1D705B5300F14B25 /* ParentControlCell.m in Sources */,
 				1C7E7DD31A41A0990026F0BA /* UIView+Borders.m in Sources */,
 				1C7E7D8D1A41A0990026F0BA /* SFIRouterDevicesTableViewCell.m in Sources */,
 				1C7E7DBD1A41A0990026F0BA /* SFICloudStatusBarButtonItem.m in Sources */,
@@ -3138,9 +3154,11 @@
 				CEF6F4F41C92CAD600C68975 /* DimmerButton.m in Sources */,
 				1DF035317380AA5E0BD86161 /* MessageView.m in Sources */,
 				1DF0358BE9EBF2A3821D948D /* TableHeaderView.m in Sources */,
+				CE57A3491D70591A00F14B25 /* ParentalControlsViewController.m in Sources */,
 				1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */,
 				CEF6F4D81C92CAD600C68975 /* AddRuleSceneClass.m in Sources */,
 				1DF030E39A245683EABC61AE /* SFIRouterVersionTableViewCell.m in Sources */,
+				CE57A3461D7008C800F14B25 /* UrlImgDict.m in Sources */,
 				F4B875471D5382D500DCF76F /* MeshSetupViewController.m in Sources */,
 				F4B8767A1D54653500DCF76F /* ListButtonView.m in Sources */,
 				F4D93AF71D3F882300D55BD6 /* HelpItemsTableViewController.m in Sources */,

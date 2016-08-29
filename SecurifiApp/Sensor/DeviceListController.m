@@ -29,6 +29,7 @@
 #import "SFIAlmondLocalNetworkSettings.h"
 #import "CommonMethods.h"
 #import "HelpCenter.h"
+#import "ParentalControlsViewController.h"
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -762,5 +763,9 @@ int mii;
 }
 
  /**/
-
+-(void)patenalControlClickDelegate{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+    ParentalControlsViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ParentalControlsViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
 @end

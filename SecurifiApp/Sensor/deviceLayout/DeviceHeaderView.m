@@ -13,6 +13,7 @@
 #import "RuleSceneUtil.h"
 #import "Colours.h"
 #import "CommonMethods.h"
+#import "UIFont+Securifi.h"
 
 @interface DeviceHeaderView()
 @property (weak, nonatomic) IBOutlet UILabel *deviceValueImgLable;
@@ -63,6 +64,26 @@
     self.view.backgroundColor = _genericParams.color;
     self.deviceName.text = self.genericParams.deviceName;
     self.settingButton.alpha = 1;
+    UIButton *parentalControl = [[UIButton alloc]init];
+    if(self.cellType == ClientTable_Cell ){
+        parentalControl.frame = CGRectMake(self.deviceValue.frame.origin.x + self.deviceValue.frame.size.width /2 -25, self.deviceValue.frame.origin.y -3, self.deviceValue.frame.size.width /2 + 30, self.deviceValue.frame.size.height);
+        [parentalControl addTarget:self action:@selector(onParentralControlClicked:) forControlEvents:UIControlEventTouchUpInside];
+//        parentalControl.backgroundColor = [UIColor whiteColor];
+      
+        NSDictionary *attrs = @{ NSForegroundColorAttributeName : [UIColor whiteColor],NSFontAttributeName: [UIFont securifiLightFont ],NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]
+                                 };
+         NSMutableAttributedString *commentString = [[NSMutableAttributedString alloc]initWithString:@"View parental conrol" attributes:attrs];
+        [parentalControl setAttributedTitle:commentString forState:UIControlStateNormal];
+        parentalControl.hidden = NO;
+        [self addSubview:parentalControl];
+    }
+    else{
+//        [self addSubview:parentalControl];
+        parentalControl.frame = CGRectZero;
+        parentalControl.hidden = YES;
+        [parentalControl removeFromSuperview];
+    }
+
     [self setTamper];
     
     
@@ -104,8 +125,11 @@
         self.deviceButton.userInteractionEnabled = NO;
     else
         self.deviceButton.userInteractionEnabled = YES;
+    }
+-(void)onParentralControlClicked:(id)sender{
+    NSLog(@"onParentralControlClicked clicked");
+    [self.delegate patenalControlClickDelegate];
 }
-
 -(void)resetHeaderView{
     self.deviceName.text = @"";
     self.deviceValue.text = @"";

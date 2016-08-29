@@ -20,6 +20,6 @@
 @property (nonatomic) NSMutableDictionary *allDateRecord;
 @property (nonatomic) URIData *uriInfo;
 @property (nonatomic,weak) id<BrowsingHistoryDelegate> delegate;
--(void)getBrowserHistoryImages:(NSDictionary *)historyDict dispatchQueue:(dispatch_queue_t)imageDownloadQueue dayArr:(NSMutableArray *)dayArr;
+-(void)getBrowserHistoryImages:(NSDictionary *)historyDict dispatchQueue:(dispatch_queue_t)imageDownloadQueue dayArr:(NSMutableArray *)dayArr imageDict:(NSMutableDictionary*)uriToImgDict;
 
 @end
