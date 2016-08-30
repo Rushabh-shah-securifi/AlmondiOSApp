@@ -216,6 +216,16 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
     }
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    //called after title for header. Added because titleforheader always shows bold font.
+    if ([view isKindOfClass:[UITableViewHeaderFooterView class]] && [self respondsToSelector:@selector(tableView:titleForHeaderInSection:)]) {
+        UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView *)view;
+        headerView.textLabel.font = [UIFont securifiFont:15];
+        headerView.textLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger row = indexPath.row;
 

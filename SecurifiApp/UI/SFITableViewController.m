@@ -621,15 +621,15 @@
 }
 
 - (void)setBarButtons:(BOOL)showAlmondHome {
-    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    spacer.width = 25;
-    self.navigationItem.leftBarButtonItems = @[self.connectionStatusBarButton,self.notificationsStatusButton, spacer];
-//    if (showAlmondHome) {
-//        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.almondModeBarButton, spacer, self.notificationsStatusButton];
-//    }
-//    else {
-//        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.notificationsStatusButton];
-//    }
+    UIBarButtonItem *spacer = [self getBarButton:25];
+    UIBarButtonItem *interSpace = [self getBarButton:10];
+    self.navigationItem.leftBarButtonItems = @[self.connectionStatusBarButton,interSpace, self.notificationsStatusButton, spacer];
+}
+
+-(UIBarButtonItem *)getBarButton:(CGFloat)width{
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    barButton.width = width;
+    return barButton;
 }
 
 - (void)hideAlmondModeButton {

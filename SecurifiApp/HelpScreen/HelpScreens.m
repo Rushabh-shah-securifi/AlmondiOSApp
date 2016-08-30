@@ -10,6 +10,7 @@
 #import "SFIColors.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "Colours.h"
+#import "SFIAlmondLocalNetworkSettings.h"
 
 @interface HelpScreens()<UIGestureRecognizerDelegate>
 @property (strong, nonatomic) IBOutlet UIView *helpPrompt; //[showme, hide]
@@ -224,7 +225,8 @@
 }
 
 -(NSURL *)getLocalURL{
-    return [NSURL URLWithString:@""];
+    SFIAlmondLocalNetworkSettings *settings = [[SecurifiToolkit sharedInstance] localNetworkSettingsForAlmond:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
+    return [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", settings.host]];
 }
 
 - (IBAction)onShowMeTap:(id)sender {

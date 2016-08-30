@@ -369,7 +369,7 @@
                                     <action selector="onSupportMailTap:" destination="8RX-IZ-tpK" eventType="touchUpInside" id="f9U-rd-08B"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap on the below links to email or call us." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wpj-Lp-nJs">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap on the links below to email or call us." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wpj-Lp-nJs">
                                 <rect key="frame" x="33" y="76" width="255" height="67"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="67" id="kdM-72-PY9"/>

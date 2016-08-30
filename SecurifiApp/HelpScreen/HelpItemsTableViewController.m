@@ -68,7 +68,11 @@
         ctrl.startScreen = [self.items objectAtIndex:indexPath.row];
         ctrl.isHelpTopic = NO;
     }
-    [self presentViewController:ctrl animated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:ctrl animated:YES completion:nil];
+    });
+    
+    
 }
 
 -(HelpTopic)getHelpTopic:(NSInteger)row{

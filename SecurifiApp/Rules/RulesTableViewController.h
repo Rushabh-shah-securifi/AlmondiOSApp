@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "SFITableViewController.h"
 
-@interface RulesTableViewController : SFITableViewController
+@interface RulesTableViewController : UITableViewController
 
 @end

@@ -100,7 +100,8 @@
 -(NSArray *)getFeaturesArray{
     NSMutableArray *moreFeatures = [NSMutableArray new];
     [moreFeatures addObject:@{@"rule_forward_icon":@"Rules"}];
-    [moreFeatures addObject:@{@"link_almond_icon":@"Link Almond to Account"}];
+    NSString *addAlmondText = self.isLocal? @"Add Almond": @"Link Almond to Account";
+    [moreFeatures addObject:@{@"link_almond_icon":addAlmondText}];
     if(!self.isLocal)
         [moreFeatures addObject:@{@"help_center_icon":@"Almond Sharing"}];
     [moreFeatures addObject:@{@"almond_sharing_icon":@"Help Center"}];
@@ -236,13 +237,16 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 1;
+    return (section==4)? 40: 1;
 }
 
 -(UIView *)tableView:(UITableView*)tableView viewForFooterInSection:(NSInteger)section{
+    CGFloat height = (section == 4)? 40: 1;
+    UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, height)];
     UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 1)];
     lineView.backgroundColor = [SFIColors lineColor];
-    return lineView;
+    [bgView addSubview:lineView];
+    return bgView;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -260,14 +264,13 @@
             [self callControllersOnRowSelection:row];
         }
     }
-    
 }
 
 -(void)callControllersOnRowSelection:(NSInteger)row{
     if(row == 0){//rules
         RulesTableViewController *controller = (RulesTableViewController *)[self getStoryBoardController:@"Rules" ctrlID:@"RulesTableViewController"];
-        [self setEmptyBackButton];
-        [self.navigationController pushViewController:controller animated:YES];
+        [self setMoreBackButton];
+        [self pushViewController:controller];
     }
     else if(row == 1){//add almond
         if(self.isLocal){
@@ -275,27 +278,39 @@
             editor.delegate = self;
             editor.makeLinkedAlmondCurrentOne = YES;
             UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
-            [self presentViewController:ctrl animated:YES completion:nil];
+            [self presentViewCtrl:ctrl];
         }else{
             UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
-            [self presentViewController:ctrl animated:YES completion:nil];
+            [self presentViewCtrl:ctrl];
         }
     }
     
     else if(row == 2){//help center
         if(self.isLocal){
             HelpCenter *helpCenter = (HelpCenter *)[self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"HelpCenter"];
-            [self.navigationController pushViewController:helpCenter animated:YES];
+            [self pushViewController:helpCenter];
         }else{
             [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:UI_ON_PRESENT_ACCOUNTS object:nil]];
         }
-        
     }
     
     else if(row == 3){
         HelpCenter *helpCenter = (HelpCenter *)[self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"HelpCenter"];
-        [self.navigationController pushViewController:helpCenter animated:YES];
+        [self pushViewController:helpCenter];
     }
+}
+
+
+-(void)pushViewController:(UIViewController *)viewCtrl{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController pushViewController:viewCtrl animated:YES];
+    });
+}
+
+-(void)presentViewCtrl:(UIViewController *)ctrl{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:ctrl animated:YES completion:nil];
+    });
 }
 
 -(id)getStoryBoardController:(NSString *)storyBoardName ctrlID:(NSString*)ctrlID{
@@ -304,8 +319,8 @@
     return controller;
 }
 
--(void)setEmptyBackButton{
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+-(void)setMoreBackButton{
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"More" style:UIBarButtonItemStylePlain target:nil action:nil];
     [self.navigationItem setBackBarButtonItem:backItem];
 }
 #pragma mark tableviewcell delegates
@@ -316,7 +331,7 @@
 }
 
 -(void)onLogoutAllTapDelegate{
-    
+    [self presentLogoutAllView];
 }
 
 -(void)onImageTapDelegate:(UIButton *)button{
@@ -328,7 +343,9 @@
     UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
     imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     imagePickerController.delegate = self;
-    [self presentViewController:imagePickerController animated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:imagePickerController animated:YES completion:nil];
+    });
 }
 
 #pragma mark image delegate
@@ -343,29 +360,45 @@
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     [self saveImage:image withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
     
-    [picker dismissViewControllerAnimated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [picker dismissViewControllerAnimated:YES completion:nil];
+    });
+    
+}
+
+#pragma mark - SFILogoutAllDelegate method
+
+- (void)presentLogoutAllView {
+    // Delegate to the main view, which will manage presenting the logout all controller
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:UI_ON_PRESENT_LOGOUT_ALL object:nil]];
 }
 
 
 #pragma mark - RouterNetworkSettingsEditorDelegate methods
 - (void)networkSettingsEditorDidLinkAlmond:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
-    [editor dismissViewControllerAnimated:YES completion:nil];
+    [self dismissNetWorkSettingView:editor];
 }
 
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
-    [editor dismissViewControllerAnimated:YES completion:nil];
+    [self dismissNetWorkSettingView:editor];
 }
 
 - (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
-    [editor dismissViewControllerAnimated:YES completion:nil];
+    [self dismissNetWorkSettingView:editor];
 }
 
 - (void)networkSettingsEditorDidComplete:(RouterNetworkSettingsEditor *)editor {
-    [editor dismissViewControllerAnimated:YES completion:nil];
+    [self dismissNetWorkSettingView:editor];
 }
 
 - (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {
     //can't unlink here
+}
+
+-(void)dismissNetWorkSettingView:(RouterNetworkSettingsEditor *)editor{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [editor dismissViewControllerAnimated:YES completion:nil];
+    });
 }
 
 @end

@@ -19,56 +19,54 @@
 #import "Colours.h"
 #import "Analytics.h"
 #import "UIViewController+Securifi.h"
+#import "SFIColors.h"
+#import "CommonMethods.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
-@interface RulesTableViewController ()<CustomCellTableViewCellDelegate,MBProgressHUDDelegate>{
+@interface RulesTableViewController ()<CustomCellTableViewCellDelegate,MBProgressHUDDelegate, HelpScreensDelegate>{
     NSInteger randomMobileInternalIndex;
 }
 
-@property SFIAlmondPlus *currentAlmond;
 @property UIButton *buttonAdd;
 @property(nonatomic) SecurifiToolkit *toolkit;
+@property(nonatomic) MBProgressHUD *HUD;
+@property(nonatomic) HelpScreens *helpScreensObj;
+@property(nonatomic) UIView *maskView;
 @end
 
 @implementation RulesTableViewController
 CGPoint tablePoint;
 - (void)viewDidLoad {
-    self.needAddButton = YES;
     [super viewDidLoad];
     self.toolkit = [SecurifiToolkit sharedInstance];
+    if([[SecurifiToolkit sharedInstance] isScreenShown:@"rules"] == NO)
+        [self initializeHelpScreens];
+    
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     tablePoint = self.tableView.contentOffset;
+    [self setUpHUD];
+    [self setUpNavBar];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     //    [self.rules removeAllObjects];
     [super viewWillAppear:animated];
-    self.enableDrawer = YES;
     randomMobileInternalIndex = arc4random() % 10000;
     
     self.tableView.contentOffset = tablePoint;
     
-    [self markAlmondTitleAndMac];
+    [self markAlmondTitle];
     [self initializeNotifications];
     
-    if([[SecurifiToolkit sharedInstance] isScreenShown:@"rules"] == NO)
-        [self initializeHelpScreensfirst:@"rules"];
+
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
     [[Analytics sharedInstance] markRuleScreen];
-}
--(BOOL)isLocal{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.currentAlmond = [toolkit currentAlmond];
-    BOOL local=[toolkit useLocalNetwork:self.currentAlmond.almondplusMAC];
-    if([super currentConnectionMode] == SFIAlmondConnectionMode_cloud)
-        local = NO;
-    return local;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -104,78 +102,23 @@ CGPoint tablePoint;
                  object:nil];
 }
 
--(void)markAlmondTitleAndMac{
+-(void)markAlmondTitle{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.currentAlmond = [toolkit currentAlmond];
+    SFIAlmondPlus *currentAlmond = [toolkit currentAlmond];
     
-    if (self.currentAlmond == nil) {
-        [self markTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
-        [self markAlmondMac:NO_ALMOND];
+    if (currentAlmond == nil) {
+        self.title = NSLocalizedString(@"scene.title.Get Started", @"Get Started");
     }
     else {
-        [self markAlmondMac:self.currentAlmond.almondplusMAC];
-        [self markTitle: self.currentAlmond.almondplusName];
+        self.title = currentAlmond.almondplusName;
     }
-    
-}
-- (void)onCurrentAlmondChanged:(id)sender {
-    [self.toolkit.ruleList removeAllObjects];
-    
-    [self markAlmondTitleAndMac];
-    [self showHudWithTimeoutMsg:NSLocalizedString(@"RulesViewController Loading Rules...",@"Loading Rules...")];
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-    });
 }
 
-- (void)onAlmondListDidChange:(id)notice {
-    [self markAlmondTitleAndMac];
-}
-
-
-- (void)onRuleUpdateCommandResponse:(id)sender{
-    NSLog(@"onRuleUpdateCommandResponse ");
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-        [self.HUD hide:YES];
-        self.tableView.contentOffset = tablePoint;
-    });
-}
-
--(void)onRuleCommandResponse:(id)sender{ //mobile command
-    NSLog(@"onUpdateDeviceIndexResponse");
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *dataInfo = [notifier userInfo];
-    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
-        return;
-    }
-    SFIAlmondPlus *almond = [self.toolkit currentAlmond];
-    BOOL local = [self.toolkit useLocalNetwork:almond.almondplusMAC];
-    NSDictionary *payload;
-    if(local){
-        payload = [dataInfo valueForKey:@"data"];
-    }else{
-        payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
-    }
-    NSLog(@"devicelistcontroller - mobile - payload: %@", payload);
-    BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.HUD hide:YES];
-        if(isSuccessful == NO){
-            [self showToast:NSLocalizedString(@"DeviceList Sorry, Could not update!",@"Sorry, Could not update!")];
-        }else{
-            [self showToast:NSLocalizedString(@"RulesViewController Successfully updated!",@"Successfully updated!")];
-        }
-    });
-}
-
-#pragma mark - HUD and Toast mgt
-- (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
-    NSLog(@"showHudWithTimeoutMsg");
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self showHUD:hudMsg];
-        [self.HUD hide:YES afterDelay:20];
-    });
+-(void)setUpNavBar{
+    self.navigationController.navigationBar.translucent = NO;
+        
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add_almond_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddBtnTap:)];
+    self.navigationItem.rightBarButtonItem = addButton;
 }
 
 #pragma mark - Table view data source
@@ -237,7 +180,6 @@ CGPoint tablePoint;
 
 #pragma mark button taps
 - (void)btnAddNewRuleTap:(id)sender {
-    [self removeAlert];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Rules" bundle:nil];
     AddRulesViewController * addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
     addRuleController.rule = [[Rule alloc]init];
@@ -287,7 +229,7 @@ CGPoint tablePoint;
         GenericCommand *cloudCommand = [[GenericCommand alloc] init];
         cloudCommand.commandType = CommandType_UPDATE_REQUEST;
         cloudCommand.command = [payload JSONString];
-        [self asyncSendCommand:cloudCommand];
+        [self.toolkit asyncSendCommand:cloudCommand];
     }
     [[Analytics sharedInstance] markDeleteRule];
 }
@@ -354,32 +296,131 @@ CGPoint tablePoint;
         GenericCommand *cloudCommand = [[GenericCommand alloc] init];
         cloudCommand.commandType = CommandType_UPDATE_REQUEST;
         cloudCommand.command = [payload JSONString];
-        [self asyncSendCommand:cloudCommand];
+        [self.toolkit asyncSendCommand:cloudCommand];
     }
     [[Analytics sharedInstance] markActivateRule];
 }
 
--(void)setUpHUD{
-    self.HUD.removeFromSuperViewOnHide = NO;
-    self.HUD.dimBackground = YES;
-    self.HUD.delegate = self;
-    [self.navigationController.view addSubview:self.HUD];
+#pragma mark events
+- (void)onCurrentAlmondChanged:(id)sender {
+    [self.toolkit.ruleList removeAllObjects];
+    
+    [self markAlmondTitle];
+    [self showHudWithTimeoutMsg:NSLocalizedString(@"RulesViewController Loading Rules...",@"Loading Rules...")];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+    });
 }
 
-#pragma mark asyncRequest methods
-- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [[SecurifiToolkit sharedInstance] currentAlmond];
-    if([self isLocal]){
-        [toolkit asyncSendToLocal:cloudCommand almondMac:almond.almondplusMAC];
-    }else{
-        [toolkit asyncSendToCloud:cloudCommand];
+- (void)onAlmondListDidChange:(id)notice {
+    [self markAlmondTitle];
+}
+
+#pragma mark command response
+- (void)onRuleUpdateCommandResponse:(id)sender{
+    NSLog(@"onRuleUpdateCommandResponse ");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+        [self.HUD hide:YES];
+        self.tableView.contentOffset = tablePoint;
+    });
+}
+
+-(void)onRuleCommandResponse:(id)sender{ //mobile command
+    NSLog(@"onUpdateDeviceIndexResponse");
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
     }
+    SFIAlmondPlus *almond = [self.toolkit currentAlmond];
+    BOOL local = [self.toolkit useLocalNetwork:almond.almondplusMAC];
+    NSDictionary *payload;
+    if(local){
+        payload = [dataInfo valueForKey:@"data"];
+    }else{
+        payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
+    }
+    NSLog(@"devicelistcontroller - mobile - payload: %@", payload);
+    BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.HUD hide:YES];
+        if(isSuccessful == NO){
+            [self showToast:NSLocalizedString(@"DeviceList Sorry, Could not update!",@"Sorry, Could not update!")];
+        }else{
+            [self showToast:NSLocalizedString(@"RulesViewController Successfully updated!",@"Successfully updated!")];
+        }
+    });
 }
 
-#pragma mark event
+#pragma mark - HUD and Toast mgt
+-(void)setUpHUD{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.dimBackground = YES;
+    _HUD.delegate = self;
+    [self.navigationController.view addSubview:_HUD];
+}
+
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
+    NSLog(@"showHudWithTimeoutMsg");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:hudMsg];
+        [self.HUD hide:YES afterDelay:20];
+    });
+}
+
+- (void)showHUD:(NSString *)text {
+    self.HUD.labelText = text;
+    [self.HUD show:YES];
+}
+
+#pragma mark tap events
 - (void)onAddBtnTap:(id)sender{
     NSLog(@"on add btn tap");
     [self btnAddNewRuleTap:sender];
 }
+
+#pragma mark help screens
+-(void)initializeHelpScreens{
+    NSLog(@"nav view heigt: %f, view ht: %f", self.navigationController.view.frame.size.height, self.view.frame.size.height);
+    [self.toolkit setScreenDefault:@"rules"];
+    
+    NSDictionary *startScreen = [CommonMethods getDict:@"Quick_Tips" itemName:@"rules"];
+    
+    self.helpScreensObj = [HelpScreens initializeHelpScreen:self.navigationController.view isOnMainScreen:YES startScreen:startScreen];
+    self.helpScreensObj.delegate = self;
+    
+    [self.navigationController.view addSubview:self.helpScreensObj];
+    [self.tabBarController.tabBar setHidden:YES];
+}
+
+#pragma mark helpscreen delegate methods
+- (void)resetViewDelegate{
+    NSLog(@"dashboard reset view");
+    [self.helpScreensObj removeFromSuperview];
+    [self.maskView removeFromSuperview];
+    [self.tabBarController.tabBar setHidden:NO];
+    
+}
+
+- (void)onSkipTapDelegate{
+    NSLog(@"dashboard skip delegate");
+    [self.tabBarController.tabBar setHidden:YES];
+    [self showOkGotItView];
+}
+
+
+- (void)showOkGotItView{
+    NSLog(@"showokgotit");
+    self.maskView = [[UIView alloc]init];
+    self.maskView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height);
+    [self.maskView setBackgroundColor:[SFIColors maskColor]];
+    [self.navigationController.view addSubview:self.maskView];
+    
+    [HelpScreens initializeGotItView:self.helpScreensObj navView:self.navigationController.view];
+    
+    [self.maskView addSubview:self.helpScreensObj];
+}
+
 @end

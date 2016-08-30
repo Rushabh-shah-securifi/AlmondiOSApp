@@ -9,9 +9,6 @@
             <string>AvenirLTStd-Heavy</string>
             <string>AvenirLTStd-Heavy</string>
             <string>AvenirLTStd-Heavy</string>
-            <string>AvenirLTStd-Heavy</string>
-            <string>AvenirLTStd-Heavy</string>
-            <string>AvenirLTStd-Heavy</string>
         </mutableArray>
         <mutableArray key="AvenirLTStd-Roman.otf">
             <string>AvenirLTStd-Roman</string>
@@ -463,16 +460,6 @@
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0IB-bs-gFJ">
-                            <rect key="frame" x="251" y="0.0" width="69" height="40"/>
-                            <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="16"/>
-                            <state key="normal" title="Skip">
-                                <color key="titleColor" red="0.12941176469999999" green="0.67843137249999996" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="onSkipButtonTap:" destination="-1" eventType="touchUpInside" id="Pfj-qV-v77"/>
-                            </connections>
-                        </button>
                     </subviews>
                 </view>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WqU-uM-11t" userLabel="line">
@@ -554,16 +541,6 @@
                             </state>
                             <connections>
                                 <action selector="onCrossButtonTap:" destination="-1" eventType="touchUpInside" id="4k4-bw-1xQ"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zRj-hi-OLy">
-                            <rect key="frame" x="251" y="0.0" width="69" height="40"/>
-                            <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="16"/>
-                            <state key="normal" title="Skip">
-                                <color key="titleColor" red="0.12941176469999999" green="0.67843137249999996" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="onSkipButtonTap:" destination="-1" eventType="touchUpInside" id="FcT-Qa-htb"/>
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Managing Your Scene" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="apb-mm-j6x">
@@ -652,16 +629,6 @@
                             </state>
                             <connections>
                                 <action selector="onCrossButtonTap:" destination="-1" eventType="touchUpInside" id="Hws-Dh-Ajh"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DRd-w7-grO">
-                            <rect key="frame" x="251" y="0.0" width="69" height="40"/>
-                            <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="16"/>
-                            <state key="normal" title="Skip">
-                                <color key="titleColor" red="0.12941176469999999" green="0.67843137249999996" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="onSkipButtonTap:" destination="-1" eventType="touchUpInside" id="3Ma-Cs-1EU"/>
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tips on Home Security" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nzR-my-6Dd">
