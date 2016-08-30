@@ -301,7 +301,21 @@
     return  NO;
     
 }
-
++(BOOL)isContainCategory:(NSString*)search{
+    NSArray *categoryArr =@[
+    @"NC-17",
+    @"R",
+    @"PG-13",
+    @"PG",
+    @"G"
+    ];
+    for (NSString *category  in categoryArr) {
+        if([category isEqualToString:search])
+            return YES;
+    }
+    return  NO;
+    
+}
 +(BOOL)isContainWeeKday:(NSString*)search{
     NSArray *weekDay = @[@"sunday", @"monday", @"tuesday", @"wednesday", @"thursday", @"friday", @"saturday"];
     for (NSString *day  in weekDay) {

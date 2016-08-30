@@ -75,6 +75,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    NSLog(@"viewWillAppear searchPage");
     self.isManuelSearch = YES;
 }
 - (void)didReceiveMemoryWarning {
@@ -194,6 +195,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     if(tableView == self.tableView){
         if(indexPath.section == 2){
              [self setSearchpattenMethod:RecentSearch indexPath:indexPath];
@@ -256,10 +258,11 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     URIData *recent = [[URIData alloc]init];
     recent.hostName = searchString;
     
-    if(![searchString isEqualToString:@" "] && ![self.recentSearch containsObject:searchString])
+    if(![searchString isEqualToString:@" "] && ![self.recentSearch containsObject:searchString] && ![CommonMethods isContainCategory:searchString])
     [self.recentSearch addObject:searchString];
     
     NSLog(@"self.recentSearch count = %ld",self.recentSearch.count);
+    
     [[NSUserDefaults standardUserDefaults] setObject:self.recentSearch forKey:@"recentSearch"];
 //    [self addSuggestionSearchObj];
     
@@ -284,22 +287,36 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
     
 }
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+//    [self performFilteringBySearchText: searchText]; // or whatever
+    NSLog(@"textDidChange: searchBar");
+    self.isManuelSearch = YES;
+    // The user clicked the [X] button or otherwise cleared the text.
+    if([searchText length] == 0) {
+        [searchBar performSelector: @selector(resignFirstResponder)
+                        withObject: nil
+                        afterDelay: 0.1];
+    }
+}
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     
     NSString *searchString = self.searchController.searchBar.text;
         NSLog(@"abpve searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
     
-    if([CommonMethods isContainMonth:searchString]){
+    if([CommonMethods isContainMonth:searchString] ){
             self.searchPatten = DateSearch;
         NSLog(@"month search String %@",searchString);
     }
-       else if([CommonMethods isContainWeeKday:searchString] && self.isManuelSearch)
-            self.searchPatten = WeekDaySearch;
-        else if(self.isManuelSearch)
-            self.searchPatten = RecentSearch;
+    else if ([CommonMethods isContainCategory:searchString])
+        self.searchPatten = CategorySearch;
+    else if([CommonMethods isContainWeeKday:searchString])
+        self.searchPatten = WeekDaySearch;
+    else if(self.isManuelSearch)
+        self.searchPatten = RecentSearch;
         
-        NSLog(@"searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
+    NSLog(@"searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
     
     [self getHistoryFromDB:searchString];
     NSLog(@"self.historyDict search %@",self.historyDict);

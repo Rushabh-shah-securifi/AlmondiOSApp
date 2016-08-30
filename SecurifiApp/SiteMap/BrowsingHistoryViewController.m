@@ -188,25 +188,12 @@
     int DBCount = [BrowsingHistoryDataBase GetHistoryDatabaseCount];
     NSString *startTag = [BrowsingHistoryDataBase getStartTag];
     NSLog(@"DBCount %d, start tag %@, end tag %@",DBCount,startTag,endTag);
-    
-//    if(DBCount != 0){
-        if(self.sendReq == YES){
-                [self sendHttpRequest:@"" endTag:endTag];
-            
-//            self.reqStartTag = YES;
-        }
-//        else if(self.reqStartTag == NO){
-//            NSLog(@"sending request with startTag only one time...............................................");
-//                [self sendHttpRequest:startTag endTag:@""];
-//
-//            
-//            self.reqStartTag = YES;
-//        }
-//    }
+
+    if(self.sendReq == YES){
+        [self sendHttpRequest:@"" endTag:endTag];
+    }
     else
     {
-//           [self sendHttpRequest:@"" endTag:@""];
-        
         NSLog(@"sending http req");
     }
 }
