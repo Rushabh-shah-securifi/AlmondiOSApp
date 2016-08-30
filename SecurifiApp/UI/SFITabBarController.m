@@ -66,6 +66,12 @@ typedef NS_ENUM(int, TabBarMode) {
     [center addObserver:self selector:@selector(onTryChangeTabs:) name:kSFIDidUpdateAlmondList object:nil];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    NSLog(@"tabbar view will appear");
+    self.selectedIndex = 0;
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
