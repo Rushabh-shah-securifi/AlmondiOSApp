@@ -113,7 +113,7 @@
     NSString *imgPath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", PROFILE_PIC, @"jpg"]];
     NSLog(@"image path: %@", imgPath);
     //image should be fetched from accounts command
-    if(imgPath){
+    if([[NSFileManager defaultManager] fileExistsAtPath:imgPath]){
         UIImage *image = [UIImage imageWithContentsOfFile:imgPath];
         NSLog(@"image: %@", image);
         [self saveImage:image withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
@@ -237,16 +237,13 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return (section==4)? 40: 1;
+    return 1;
 }
 
 -(UIView *)tableView:(UITableView*)tableView viewForFooterInSection:(NSInteger)section{
-    CGFloat height = (section == 4)? 40: 1;
-    UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, height)];
     UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 1)];
     lineView.backgroundColor = [SFIColors lineColor];
-    [bgView addSubview:lineView];
-    return bgView;
+    return lineView;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -296,7 +293,8 @@
     
     else if(row == 3){
         HelpCenter *helpCenter = (HelpCenter *)[self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"HelpCenter"];
-        [self pushViewController:helpCenter];
+        [self.navigationController pushViewController:helpCenter animated:YES];
+        //[self pushViewController:helpCenter];
     }
 }
 

@@ -721,12 +721,12 @@ int mii;
     NSLog(@"onShowMeTapDelegate");
     self.maskView.frame = CGRectMake(0, 0, self.navigationController.view.frame.size.width, self.navigationController.view.frame.size.height);
     [self.maskView setBackgroundColor:[SFIColors maskColor]];
-    [self.navigationController.view addSubview:self.maskView];
+    [self.tabBarController.view addSubview:self.maskView];
     
     [HelpScreens addTriggerHelpPage:self.helpScreensObj startScreen:[CommonMethods getDict:@"Quick_Tips" itemName:@"Wi_Fi_Triggers"] navView:self.navigationController.view]; //dont localize
     
     [self.maskView addSubview:self.helpScreensObj];
-    [self.tabBarController.tabBar setHidden:YES];
+//    [self.tabBarController.tabBar setHidden:YES];
 }
 
 - (void)onGoToHelpCenterTapDelegate{

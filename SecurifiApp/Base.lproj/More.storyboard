@@ -30,7 +30,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XBu-8V-2m3" customClass="more">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="morecell1" rowHeight="80" id="QVH-ra-QTs" customClass="MoreCellTableViewCell">
@@ -245,7 +245,7 @@
                             <constraint firstItem="XBu-8V-2m3" firstAttribute="leading" secondItem="GRm-fZ-GRf" secondAttribute="leading" id="iCr-tM-dbG"/>
                             <constraint firstAttribute="trailing" secondItem="XBu-8V-2m3" secondAttribute="trailing" id="stP-Gf-e8R"/>
                             <constraint firstItem="XBu-8V-2m3" firstAttribute="top" secondItem="GRm-fZ-GRf" secondAttribute="top" id="ySw-os-PGd"/>
-                            <constraint firstItem="6hg-gw-XYW" firstAttribute="top" secondItem="XBu-8V-2m3" secondAttribute="bottom" id="zyx-Fk-q08"/>
+                            <constraint firstItem="6hg-gw-XYW" firstAttribute="top" secondItem="XBu-8V-2m3" secondAttribute="bottom" constant="20" id="zyx-Fk-q08"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>

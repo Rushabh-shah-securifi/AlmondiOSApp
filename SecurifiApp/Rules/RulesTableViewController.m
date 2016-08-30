@@ -391,8 +391,8 @@ CGPoint tablePoint;
     self.helpScreensObj = [HelpScreens initializeHelpScreen:self.navigationController.view isOnMainScreen:YES startScreen:startScreen];
     self.helpScreensObj.delegate = self;
     
-    [self.navigationController.view addSubview:self.helpScreensObj];
-    [self.tabBarController.tabBar setHidden:YES];
+    [self.tabBarController.view addSubview:self.helpScreensObj];
+//    [self.tabBarController.tabBar setHidden:YES];
 }
 
 #pragma mark helpscreen delegate methods
@@ -400,13 +400,13 @@ CGPoint tablePoint;
     NSLog(@"dashboard reset view");
     [self.helpScreensObj removeFromSuperview];
     [self.maskView removeFromSuperview];
-    [self.tabBarController.tabBar setHidden:NO];
+//    [self.tabBarController.tabBar setHidden:NO];
     
 }
 
 - (void)onSkipTapDelegate{
     NSLog(@"dashboard skip delegate");
-    [self.tabBarController.tabBar setHidden:YES];
+//    [self.tabBarController.tabBar setHidden:YES];
     [self showOkGotItView];
 }
 
@@ -416,7 +416,7 @@ CGPoint tablePoint;
     self.maskView = [[UIView alloc]init];
     self.maskView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height);
     [self.maskView setBackgroundColor:[SFIColors maskColor]];
-    [self.navigationController.view addSubview:self.maskView];
+    [self.tabBarController.view addSubview:self.maskView];
     
     [HelpScreens initializeGotItView:self.helpScreensObj navView:self.navigationController.view];
     

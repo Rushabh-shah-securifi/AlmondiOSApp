@@ -35,8 +35,8 @@
         self.rightOffset = SFICardView_right_offset_normal;
         self.textColor = [UIColor whiteColor];
         self.headlineFont = [UIFont standardHeadingBoldFont];
-        self.summaryFont = [UIFont standardUILabelFont];
-        self.bodyFont = [UIFont standardUITextFieldFont];
+        self.summaryFont = [UIFont securifiBoldFontLarge];
+        self.bodyFont = [UIFont securifiBoldFontLarge];
         _enableActionButtons = YES;
         _enabledDisableControls = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
     }

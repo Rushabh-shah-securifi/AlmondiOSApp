@@ -56,22 +56,22 @@
     tabCtrl.tabBar.tintColor = [UIColor blackColor];
     tabCtrl.delegate = self;
 
-    DrawerViewController *drawer = [DrawerViewController new];
+//    DrawerViewController *drawer = [DrawerViewController new];
 
-    SWRevealViewController *ctrl = [[SWRevealViewController alloc] initWithRearViewController:drawer frontViewController:tabCtrl];
-    ctrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-
-    [ctrl willMoveToParentViewController:self];
-    [self addChildViewController:ctrl];
-    [self.view addSubview:ctrl.view];
-    [self.view bringSubviewToFront:ctrl.view];
-    [ctrl didMoveToParentViewController:self];
+//    SWRevealViewController *ctrl = [[SWRevealViewController alloc] initWithRearViewController:drawer frontViewController:tabCtrl];
+//    ctrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//
+    [tabCtrl willMoveToParentViewController:self];
+    [self addChildViewController:tabCtrl];
+    [self.view addSubview:tabCtrl.view];
+//    [self.view bringSubviewToFront:ctrl.view];
+    [tabCtrl didMoveToParentViewController:self];
 
     // Activate gestures in Reveal; must be done after it has been set up
-    [ctrl panGestureRecognizer];
-    [ctrl tapGestureRecognizer];
-
-    ctrl.panGestureRecognizer.delegate = self;
+//    [ctrl panGestureRecognizer];
+//    [ctrl tapGestureRecognizer];
+//
+//    ctrl.panGestureRecognizer.delegate = self;
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onReachabilityDidChange:) name:kSFIReachabilityChangedNotification object:nil];

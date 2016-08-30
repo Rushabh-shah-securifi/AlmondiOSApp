@@ -92,11 +92,15 @@
             HelpItemsTableViewController *viewController = [self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"HelpItemsTableViewController"];
             viewController.helpItem = [self.helpItems objectAtIndex:indexPath.section]; //based on json
             viewController.isHelpTopic = section == 0? NO: YES;
-            [self.navigationController pushViewController:viewController animated:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.navigationController pushViewController:viewController animated:YES];
+            });
         }
         else if(section == 2){ //support
             SupportViewController *supportContorller = [self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"SupportViewController"];
-            [self.navigationController pushViewController:supportContorller animated:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.navigationController pushViewController:supportContorller animated:YES];
+            });
         }
     });
 }
@@ -108,7 +112,9 @@
 
 #pragma button taps
 - (IBAction)onBackBtnTap:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController popViewControllerAnimated:YES];
+    });
 }
 
 - (IBAction)onSearchBtnTap:(id)sender {
@@ -116,18 +122,21 @@
 }
 
 - (IBAction)onProductsButtonTap:(id)sender {
-    NSURL *url = [NSURL URLWithString:@"https://www.securifi.com/rg/products"];
-    [[UIApplication sharedApplication] openURL:url];
+    [self openUrl:@"https://www.securifi.com/rg/products"];
 }
 
 - (IBAction)onWifiButtonTap:(id)sender {
-    NSURL *url = [NSURL URLWithString:@"https://www.securifi.com/rg/wifi"];
-    [[UIApplication sharedApplication] openURL:url];
+    [self openUrl:@"https://www.securifi.com/rg/wifi"];
 }
 
 - (IBAction)onSmartHomeButtonTap:(id)sender {
-    NSURL *url = [NSURL URLWithString:@"https://www.securifi.com/rg/smart-home"];
-    [[UIApplication sharedApplication] openURL:url];
+    [self openUrl:@"https://www.securifi.com/rg/smart-home"];
 }
 
+-(void)openUrl:(NSString *)urlStr{
+    NSURL *url = [NSURL URLWithString:urlStr];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[UIApplication sharedApplication] openURL:url];
+    });
+}
 @end

@@ -91,7 +91,7 @@
         _almondModeBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onAlmondModeButtonPressed:) enableLocalNetworking:enableLocalNetworking isDashBoard:NO];
         [_almondModeBarButton markState:SFICloudStatusStateAtHome];
         
-        [self setBarButtons:NO];
+        [self setBarButtons];
     }
     else {
         self.navigationItem.rightBarButtonItem = _connectionStatusBarButton;
@@ -620,7 +620,7 @@
     }
 }
 
-- (void)setBarButtons:(BOOL)showAlmondHome {
+- (void)setBarButtons{
     UIBarButtonItem *spacer = [self getBarButton:25];
     UIBarButtonItem *interSpace = [self getBarButton:10];
     self.navigationItem.leftBarButtonItems = @[self.connectionStatusBarButton,interSpace, self.notificationsStatusButton, spacer];
@@ -637,7 +637,7 @@
         return;
     }
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self setBarButtons:NO];
+//        [self setBarButtons:NO];
     });
 }
 
@@ -646,7 +646,7 @@
     //        return;
     //    }
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self setBarButtons:YES];
+//        [self setBarButtons:YES];
     });
     //    [self setBarButtons:NO];
 }
@@ -916,8 +916,6 @@
         [[SecurifiToolkit sharedInstance] setScreenDefault:@"devices"];
     else if([itemName isEqualToString:@"Scenes"])
         [[SecurifiToolkit sharedInstance] setScreenDefault:@"scenes"];
-    else if([itemName isEqualToString:@"rules"])
-        [[SecurifiToolkit sharedInstance] setScreenDefault:@"rules"];
     else if([itemName isEqualToString:@"wifi"])
         [[SecurifiToolkit sharedInstance] setScreenDefault:@"wifi"];
     
@@ -926,15 +924,15 @@
     self.helpScreensObj = [HelpScreens initializeHelpScreen:self.navigationController.view isOnMainScreen:YES startScreen:[CommonMethods getDict:@"Quick_Tips" itemName:itemName]];
     self.helpScreensObj.delegate = self;
     
-    [self.navigationController.view addSubview:self.helpScreensObj];
-    [self.tabBarController.tabBar setHidden:YES];
+    [self.tabBarController.view addSubview:self.helpScreensObj];
+//    [self.tabBarController.tabBar setHidden:YES];
 }
 
 
 - (void)showOkGotItView{
     self.maskView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height);
     [self.maskView setBackgroundColor:[SFIColors maskColor]];
-    [self.navigationController.view addSubview:self.maskView];
+    [self.tabBarController.view addSubview:self.maskView];
 
     [HelpScreens initializeGotItView:self.helpScreensObj navView:self.navigationController.view];
     [self.maskView addSubview:self.helpScreensObj];
@@ -946,11 +944,11 @@
     NSLog(@"table view");
     [self.maskView removeFromSuperview];
     [self.helpScreensObj removeFromSuperview]; //perhaps you should also remove subviews
-    [self.tabBarController.tabBar setHidden:NO];
+//    [self.tabBarController.tabBar setHidden:NO];
 }
 
 - (void)onSkipTapDelegate{
-    [self.tabBarController.tabBar setHidden:YES];
+//    [self.tabBarController.tabBar setHidden:YES];
     [self showOkGotItView];
 }
 

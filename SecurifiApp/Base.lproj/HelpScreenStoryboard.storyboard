@@ -37,8 +37,12 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kOK-LF-JqM">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="help-center-banner" translatesAutoresizingMaskIntoConstraints="NO" id="Htu-4q-uHz">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="help-center-banner" translatesAutoresizingMaskIntoConstraints="NO" id="Htu-4q-uHz">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="180" id="KrC-2e-7VC"/>
+                                            <constraint firstAttribute="width" constant="320" id="PdX-83-ZCr"/>
+                                        </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XcQ-tT-Qdb">
                                         <rect key="frame" x="0.0" y="20" width="52" height="30"/>
@@ -155,7 +159,9 @@
                                     <constraint firstItem="XcQ-tT-Qdb" firstAttribute="leading" secondItem="kOK-LF-JqM" secondAttribute="leading" id="OHc-Uz-Ox6"/>
                                     <constraint firstAttribute="trailing" secondItem="9oZ-Cv-qAI" secondAttribute="trailing" id="R9X-VU-j7Q"/>
                                     <constraint firstItem="38C-gl-cmH" firstAttribute="leading" secondItem="kOK-LF-JqM" secondAttribute="leading" constant="8" id="Txr-qK-RJm"/>
+                                    <constraint firstItem="Htu-4q-uHz" firstAttribute="top" secondItem="kOK-LF-JqM" secondAttribute="top" id="Uze-PD-7SD"/>
                                     <constraint firstItem="4ZX-1n-b4Q" firstAttribute="top" secondItem="kOK-LF-JqM" secondAttribute="top" constant="28" id="WIk-7G-nfj"/>
+                                    <constraint firstAttribute="trailing" secondItem="Htu-4q-uHz" secondAttribute="trailing" id="Xsq-5J-fNs"/>
                                     <constraint firstItem="bWP-Ga-0PT" firstAttribute="leading" secondItem="1bF-AO-mFf" secondAttribute="trailing" constant="89" id="YOj-Dr-INQ"/>
                                     <constraint firstAttribute="trailing" secondItem="5Z1-SK-rmZ" secondAttribute="trailing" constant="12" id="lZC-Nx-U7t"/>
                                     <constraint firstItem="ppz-6n-ZSe" firstAttribute="top" secondItem="DGm-14-t0c" secondAttribute="bottom" constant="2" id="ldv-fn-wmn"/>
@@ -168,7 +174,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Itc-o3-met">
                                 <rect key="frame" x="0.0" y="180" width="320" height="300"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qXX-yA-npv">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qXX-yA-npv">
                                         <rect key="frame" x="8" y="0.0" width="304" height="293"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
@@ -176,7 +182,7 @@
                                                 <rect key="frame" x="0.0" y="28" width="304" height="81"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SEy-tZ-kuk" id="9gi-Qo-mey">
-                                                    <rect key="frame" x="0.0" y="0.0" width="304" height="80"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="304" height="81"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wizard_ic" translatesAutoresizingMaskIntoConstraints="NO" id="7ew-Hh-Xo4">
@@ -197,10 +203,16 @@
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rightarrow-icon" translatesAutoresizingMaskIntoConstraints="NO" id="52c-Wb-lJS">
                                                             <rect key="frame" x="256" y="20" width="40" height="40"/>
+                                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="daB-18-aUp"/>
                                                                 <constraint firstAttribute="width" constant="40" id="uoy-MH-ggR"/>
                                                             </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="imageRenderingMode">
+                                                                    <integer key="value" value="2"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                     </subviews>
                                                     <constraints>

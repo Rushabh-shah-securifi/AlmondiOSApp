@@ -5,7 +5,7 @@
 
 #import "MessageView.h"
 #import "UIFont+Securifi.h"
-
+#import "SFIColors.h"
 
 @interface MessageView ()
 @property(nonatomic) BOOL didLayoutSubviews;
@@ -40,8 +40,8 @@
 
     CGRect rect;
 
-    rect = CGRectMake(0, 0, width, 100);
-    rect = CGRectInset(rect, 25, 0);
+//    rect = CGRectMake(0, 0, width, 100);
+    rect = CGRectMake(25, 100, width - 50, 50);
 
     UILabel *headline_label = [[UILabel alloc] initWithFrame:rect];
     headline_label.numberOfLines = 0;
@@ -49,9 +49,10 @@
     headline_label.text = self.headline;
     headline_label.textColor = gray;
     headline_label.font = [UIFont securifiLightFont:30];
+//    headline_label.backgroundColor = [UIColor redColor];
     [self addSubview:headline_label];
 
-    rect = CGRectOffset(rect, 0, 75);
+    rect = CGRectMake(25, CGRectGetMaxY(rect), CGRectGetWidth(rect), 40);
 
     UILabel *message_label = [[UILabel alloc] initWithFrame:rect];
     message_label.numberOfLines = 0;
@@ -59,22 +60,15 @@
     message_label.text = self.message;
     message_label.textColor = gray;
     message_label.font = [UIFont securifiBoldFontLarge];
+//    message_label.backgroundColor = [UIColor yellowColor];
     [self addSubview:message_label];
 
-    UIImage *routerImage = [UIImage imageNamed:@"router-icon"];
-
-    CGAffineTransform scale = CGAffineTransformMakeScale(0.5, 0.5);
-    const CGSize routerImageSize = CGSizeApplyAffineTransform(routerImage.size, scale);
-    const CGFloat image_width = routerImageSize.width;
-    const CGFloat image_height = routerImageSize.height;
-
-    rect = CGRectMake((width - image_width) / 2, CGRectGetMaxY(rect), image_width, image_height);
-    rect = CGRectOffset(rect, 0, 10);
-
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = rect;
-    [button setImage:routerImage forState:UIControlStateNormal];
+    UIButton *button = [[UIButton alloc]init];
+    button.frame = CGRectMake(10, CGRectGetMaxY(rect), width-20, 45);
     [button addTarget:self action:@selector(onButtonTouch) forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:@"LINK ALMOND" forState:UIControlStateNormal];
+    button.backgroundColor = [SFIColors lightBlueColor];
+    button.titleLabel.font = [UIFont standardHeadingFont];
     [self addSubview:button];
 }
 

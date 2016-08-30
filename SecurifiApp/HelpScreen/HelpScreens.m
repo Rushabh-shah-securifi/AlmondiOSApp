@@ -37,6 +37,7 @@
 @property (strong, nonatomic) IBOutlet UIView *dashboard;
 @property (strong, nonatomic) IBOutlet UIView *scene;
 @property (strong, nonatomic) IBOutlet UIView *securiti;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *securityBottomConstraint;
 
 @end
 
@@ -50,6 +51,7 @@
     if(self){
         NSLog(@"frame initialized");
         [[NSBundle mainBundle] loadNibNamed:@"HelpScreen" owner:self options:nil];
+        self.securityBottomConstraint.constant = 0;
     }
     return self;
 }
