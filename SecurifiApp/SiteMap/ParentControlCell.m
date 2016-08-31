@@ -30,15 +30,20 @@
     // Configure the view for the selected state
 }
 
--(void)setUpCell:(NSString *)label andImage:(UIImage *)image isHideSwich:(BOOL)isHide{
+-(void)setUpCell:(NSString *)label andImage:(UIImage *)image isHideSwich:(BOOL)isHide indexPath:(NSIndexPath *)indexPath{
     self.lable.text = label;
     self.imageView.image = image;
+    self.Switch.tag = indexPath.row;
     if(isHide == YES){
         self.Switch.hidden = YES;
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-        
     
+}
+- (IBAction)switchAction:(id)sender {
+    UISwitch *actionSwitch = (UISwitch *)sender;
+    BOOL state = [sender isOn];
+    [self.delegate switchPressed:state andTag:actionSwitch.tag];
 }
 
 @end

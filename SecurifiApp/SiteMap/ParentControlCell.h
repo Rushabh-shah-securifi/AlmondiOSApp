@@ -7,8 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol ParentControlCellDelegate
+-(void)switchPressed:(BOOL)isOn andTag:(NSInteger)tag;
 
+@end
 @interface ParentControlCell : UITableViewCell
--(void)setUpCell:(NSString *)label andImage:(UIImage *)image isHideSwich:(BOOL)isHide;
+@property (nonatomic)id<ParentControlCellDelegate> delegate;
+-(void)setUpCell:(NSString *)label andImage:(UIImage *)image isHideSwich:(BOOL)isHide indexPath:(NSIndexPath *)indexPath;
 
 @end

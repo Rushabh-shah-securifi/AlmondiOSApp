@@ -350,6 +350,9 @@
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p9f-DM-L46">
                                                     <rect key="frame" x="263" y="0.0" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="switchAction:" destination="tmS-BS-Obg" eventType="valueChanged" id="gif-RE-k5a"/>
+                                                    </connections>
                                                 </switch>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7CI-tL-sFm">
                                                     <rect key="frame" x="8" y="3" width="15" height="15"/>
@@ -457,6 +460,9 @@
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="tableView" destination="gaC-hf-gan" id="Qax-Wv-aVM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sfJ-mS-KKV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

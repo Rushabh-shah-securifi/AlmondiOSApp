@@ -54,8 +54,6 @@
 
 +(BOOL)isContainMonth:(NSString*)search;
 
-+(NSArray*)searchLastWeek:(NSArray *)URIs;
-
 + (BOOL)isNumeric:(NSString *)code;
 
 +(BOOL)checkValidation:(NSString*)search date:(NSString *)date monthname:(NSString *)monthName;
@@ -63,14 +61,6 @@
 + (BOOL) isAllDigits:(NSString *)string;
 
 +(NSArray *)searchDate:(NSString*)search fromArr:(NSArray *)URIs;
-
-+(NSArray *)searchToday:(NSArray *)URIs;
-
-+(NSArray *)searchLastHour:(NSArray *)URIs;
-
-+(NSArray *)searchByWeekDay:(NSString*)search fromArr:(NSArray *)URIs;
-
-+(NSArray *)searchByRecent:(NSString*)search fromArr:(NSArray *)URIs;
 
 #pragma mark rgb methods
 + (int )getRGBForHex:(NSString*)hueValue sliderValue:(NSString*)slider;

@@ -33,14 +33,14 @@
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tfK-rq-GOY">
                     <rect key="frame" x="-8" y="0.0" width="375" height="230"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Suggest category Change" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y7n-5j-beg">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="    Suggest category Change" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y7n-5j-beg">
                             <rect key="frame" x="8" y="0.0" width="359" height="30"/>
                             <fontDescription key="fontDescription" name="AvenirLTStd-Medium" family="Avenir LT Std" pointSize="14"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dyp-sT-kk7">
-                            <rect key="frame" x="8" y="30" width="359" height="2"/>
+                            <rect key="frame" x="8" y="30" width="359" height="1"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eMX-03-ujx">
@@ -59,7 +59,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Adults_Only" translatesAutoresizingMaskIntoConstraints="NO" id="gB6-9I-jId">
-                                    <rect key="frame" x="8" y="3" width="25" height="25"/>
+                                    <rect key="frame" x="8" y="3" width="20" height="20"/>
                                 </imageView>
                                 <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wrD-aC-gsi">
                                     <rect key="frame" x="0.0" y="0.0" width="359" height="30"/>
@@ -88,7 +88,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Restricted" translatesAutoresizingMaskIntoConstraints="NO" id="Jy5-kd-xbu">
-                                    <rect key="frame" x="8" y="3" width="25" height="25"/>
+                                    <rect key="frame" x="8" y="3" width="20" height="20"/>
                                 </imageView>
                                 <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nBj-MK-41J">
                                     <rect key="frame" x="0.0" y="0.0" width="359" height="30"/>
@@ -123,7 +123,7 @@
                                     </connections>
                                 </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Parents_Strongly_Cautioned" translatesAutoresizingMaskIntoConstraints="NO" id="Q9O-M1-dfi">
-                                    <rect key="frame" x="8" y="3" width="25" height="25"/>
+                                    <rect key="frame" x="8" y="3" width="20" height="20"/>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -144,7 +144,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Parental_Guidance" translatesAutoresizingMaskIntoConstraints="NO" id="wJC-Ln-0aI">
-                                    <rect key="frame" x="8" y="3" width="25" height="25"/>
+                                    <rect key="frame" x="8" y="3" width="20" height="20"/>
                                 </imageView>
                                 <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c6z-Az-NO4">
                                     <rect key="frame" x="0.0" y="0.0" width="359" height="30"/>
@@ -179,7 +179,7 @@
                                     </connections>
                                 </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="General_Audiences" translatesAutoresizingMaskIntoConstraints="NO" id="Tnp-bv-Bzk">
-                                    <rect key="frame" x="8" y="3" width="25" height="25"/>
+                                    <rect key="frame" x="8" y="3" width="20" height="20"/>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -200,7 +200,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="cross_icon" translatesAutoresizingMaskIntoConstraints="NO" id="N8F-jv-MIk">
-                                    <rect key="frame" x="12" y="5" width="19" height="20"/>
+                                    <rect key="frame" x="8" y="5" width="17" height="17"/>
                                 </imageView>
                                 <button opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p8e-T3-gx4">
                                     <rect key="frame" x="0.0" y="0.0" width="359" height="30"/>

@@ -7,6 +7,7 @@
 //
 
 #import "HistoryCell.h"
+#import "UrlImgDict.h"
 @interface HistoryCell()
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imgLeftConstrin;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *hostnameLeftConstrain;
@@ -38,11 +39,15 @@
     self.categoryImg.hidden = hideItem;
     self.settingImg.hidden = hideItem;
     self.lastActTime.hidden = hideItem;
-    
+    UrlImgDict *imgs = [UrlImgDict sharedInstance];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
-
-        self.webImg.image = uri[@"image"];
+        if([imgs.imgDict valueForKey:uri[@"hostName"]]!= NULL){
+            self.webImg.image = [imgs.imgDict objectForKey:uri[@"hostName"]];
+            NSLog(@"img from img dict %@",[imgs.imgDict objectForKey:uri[@"hostName"]]);
+        }else{
+            self.webImg.image = uri[@"image"];
+        }
         self.siteName.text = uri[@"hostName"];
         if([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"NC-17"]){
             self.categoryImg.image = [UIImage imageNamed:@"Adults_Only"];

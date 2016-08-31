@@ -27,7 +27,8 @@
             {
 //            dispatch_async(imageDownloadQueue,^(){
                 [uriDict setObject:[self getImage:uriDict[@"hostName"] imageDict:uriToImgDict dispatchQueue:imageDownloadQueue] forKey:@"image"];
-                NSLog(@"downloading img...");
+                NSLog(@"downloading img...uriDict = %@",uriDict);
+                 [self.delegate reloadTable];
 //            });
             [oneDayUri addObject:uriDict];
         }
@@ -38,30 +39,33 @@
 }
 //
 -(UIImage*)getImage:(NSString*)hostName imageDict:(NSMutableDictionary*)uriToImgDic2t dispatchQueue:(dispatch_queue_t)imageDownloadQueue{
-//    UrlImgDict *imgDict = [UrlImgDict sharedInstance];
-    NSLog(@"imgDict:: %@",self.urlToImageDict);
+    UrlImgDict *imgDicts = [UrlImgDict sharedInstance];
+    NSLog(@"imgDict:: %@ , hostName = %@, dict = %@",imgDicts.imgDict[hostName],hostName,imgDicts);
     __block UIImage *img;
-    if(_urlToImageDict[hostName]){
-        return _urlToImageDict[hostName]; //todo: fetch locally upto 100 images.
+    if(imgDicts.imgDict[hostName]){
+        NSLog(@"returning with image ");
+        
+        return imgDicts.imgDict[hostName]; //todo: fetch locally upto 100 images.
     }else{
         
 
         __block NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
         dispatch_async(imageDownloadQueue,^(){
             img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+           
         });
         if(!img){
             iconUrl = [NSString stringWithFormat:@"https://%@/favicon.ico", hostName];
             dispatch_async(imageDownloadQueue,^(){
             img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+               
              });
         }
         if(!img){
             img = [UIImage imageNamed:@"help-icon"];
         }
-        [self.urlToImageDict setObject:img forKey:hostName];
+        [imgDicts.imgDict setObject:img forKey:hostName];
 //        _urlToImageDict[hostName] = img;
-         [self.delegate reloadTable];
         return img;
     }
 }

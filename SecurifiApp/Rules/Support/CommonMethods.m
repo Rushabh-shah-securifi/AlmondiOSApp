@@ -325,112 +325,7 @@
     return  NO;
     
 }
-+(void)date{
-    NSCalendar *cal = [NSCalendar currentCalendar];
-    NSDateComponents *components = [cal components:( NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit ) fromDate:[[NSDate alloc] init]];
-    
-    [components setHour:-[components hour]];
-    [components setMinute:-[components minute]];
-    [components setSecond:-[components second]];
-    NSDate *today = [cal dateByAddingComponents:components toDate:[[NSDate alloc] init] options:0]; //This variable should now be pointing at a date object that is the start of today (midnight);
-    
-    [components setHour:-24];
-    [components setMinute:0];
-    [components setSecond:0];
-    NSDate *yesterday = [cal dateByAddingComponents:components toDate: today options:0];
-    
-    components = [cal components:NSWeekdayCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:[[NSDate alloc] init]];
-    
-    [components setDay:([components day] - ([components weekday] - 1))];
-    NSDate *thisWeek  = [cal dateFromComponents:components];
-    
-    [components setDay:([components day] - 7)];
-    NSDate *lastWeek  = [cal dateFromComponents:components];
-    
-    [components setDay:([components day] - ([components day] -1))];
-    NSDate *thisMonth = [cal dateFromComponents:components];
-    
-    [components setMonth:([components month] - 1)];
-    NSDate *lastMonth = [cal dateFromComponents:components];
-    
-    NSLog(@"today=%@",today);
-    NSLog(@"yesterday=%@",yesterday);
-    NSLog(@"thisWeek=%@",thisWeek);
-    NSLog(@"lastWeek=%@",lastWeek);
-    NSLog(@"thisMonth=%@",thisMonth);
-    NSLog(@"lastMonth=%@",lastMonth);
-}
-+(NSArray *)searchByRecent:(NSString*)search fromArr:(NSArray *)URIs{
-    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"hostName CONTAINS[c] %@",search];
-    NSArray *arr = [URIs filteredArrayUsingPredicate:resultPredicate];
-    return arr;
-}
 
-+(NSArray *)searchByWeekDay:(NSString*)search fromArr:(NSArray *)URIs{
-    NSMutableArray *arrObj = [[NSMutableArray alloc]init];
-    for(URIData *uri in URIs) {
-        NSDate *date = uri.lastActiveTime;
-        NSDateComponents *components1 = [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:date];
-        
-        NSString *weekDay = [self stringFromWeekday:[components1 weekday]];
-        NSLog(@"searchWeek Day = %@ ,%@",search ,weekDay);
-        if([weekDay rangeOfString:search].location != NSNotFound)
-            [arrObj addObject:uri];
-    }
-    return arrObj;
-}
-
-+(NSArray *)searchLastHour:(NSArray *)URIs{
-    NSDate *currentTime = [NSDate date];
-    NSMutableArray *arrObj = [[NSMutableArray alloc]init];
-    NSTimeInterval nowEpochSeconds = [currentTime timeIntervalSince1970];
-    for(URIData *uri in URIs) {
-        NSDate *date = uri.lastActiveTime ;
-        NSTimeInterval uriEpoch = [date timeIntervalSince1970];
-        int timeDiff= nowEpochSeconds - uriEpoch;
-        if(timeDiff <= 3600)
-        {
-            NSLog(@"uri last hour info: %@,%@,%d \n",uri.hostName,uri.lastActiveTime,uri.count);
-            [arrObj addObject:uri];
-        }
-    }
-    return arrObj;
-}
-
-+(NSArray *)searchToday:(NSArray *)URIs{
-    // today search
-    NSMutableArray *arrObj = [[NSMutableArray alloc]init];
-    NSCalendar *cal = [NSCalendar currentCalendar];
-    NSDateComponents *components = [cal components:(NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:[NSDate date]];
-    NSDate *today = [cal dateFromComponents:components];
-    
-    for(URIData *uri in URIs) {
-        NSDate *date = uri.lastActiveTime;
-        components = [cal components:(NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:date];
-        NSDate *otherDate = [cal dateFromComponents:components];
-        if([today isEqualToDate:otherDate]) {
-            NSLog(@"today to arr\n");
-            NSLog(@"uri info: %@,%@,%d \n",uri.hostName,uri.lastActiveTime,uri.count);
-            [arrObj addObject:uri];
-        }//today search end
-    }
-    return arrObj;
-}
-
-+(NSArray *)searchDate:(NSString*)search fromArr:(NSArray *)URIs{// 5 june or june 5
-    
-    NSMutableArray *arrObj = [[NSMutableArray alloc]init];
-    
-    for(URIData *uri in URIs) {
-        NSDate *date = uri.lastActiveTime;
-        NSString *day = [date getDay];
-        NSString *month = [date getMonthString];
-        NSLog(@"month and date %@,%@",month,day);
-        if([self checkValidation:search date:day monthname:month])
-            [arrObj addObject:uri];
-    }
-    return arrObj;
-}
 
 + (BOOL) isAllDigits:(NSString *)string
 {
@@ -471,23 +366,6 @@
     }
 }
 
-+(NSArray*)searchLastWeek:(NSArray *)URIs
-{
-    NSDate *currentTime = [NSDate date];
-    NSMutableArray *arrObj = [[NSMutableArray alloc]init];
-    NSTimeInterval nowEpochSeconds = [currentTime timeIntervalSince1970];
-    for(URIData *uri in URIs) {
-        NSDate *date = uri.lastActiveTime ;
-        NSTimeInterval uriEpoch = [date timeIntervalSince1970];
-        int timeDiff= nowEpochSeconds - uriEpoch;
-        if(timeDiff <= 3600 *24 *7)
-        {
-            NSLog(@"uri week hour info: %@,%@,%d \n",uri.hostName,uri.lastActiveTime,uri.count);
-            [arrObj addObject:uri];
-        }
-    }
-    return arrObj;
-}
 
 + (int )getRGBForHex:(NSString*)hueValue sliderValue:(NSString*)slider{
     NSLog(@"hueValue Slidr value %@,%@",hueValue,slider);

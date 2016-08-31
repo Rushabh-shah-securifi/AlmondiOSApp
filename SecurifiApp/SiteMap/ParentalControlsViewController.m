@@ -10,24 +10,19 @@
 #import "ParentControlCell.h"
 #import "BrowsingHistoryViewController.h"
 
-@interface ParentalControlsViewController ()
-@property (nonatomic) NSDictionary *parentsControlDict;
+@interface ParentalControlsViewController ()<ParentControlCellDelegate>
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic) NSMutableArray *parentsControlArr;
+
 @end
 
 @implementation ParentalControlsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.parentsControlDict = @{@"0":@{@"img":@"parental_controls_icon",
-                                       @"text":@"Moniter this Device",
-                                       @"Button":@"YES"},
-                                @"1":@{@"img":@"log_browsing_history_icon",
-                                       @"text":@"Log Browsing History",
-                                       @"Button":@"YES"},
-                                @"2":@{@"img":@"view_browsing_history_icon",
-                                       @"text":@"View Browsing History",
-                                       @"Button":@"YES"}
-                                };
+    self.parentsControlArr = [[NSMutableArray alloc]init];
+    [self createArr];
+    
     // Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -56,7 +51,7 @@
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return self.parentsControlArr.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ParentControlCell *cell;
@@ -65,8 +60,9 @@
     if (cell == nil){
         cell = [[ParentControlCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ParentControlCell"];
     }
-    NSDictionary *dict = [self.parentsControlDict valueForKey:@(indexPath.row).stringValue];
-    [cell setUpCell:dict[@"text"] andImage:[UIImage imageNamed:dict[@"img"]] isHideSwich:indexPath.row == 2?YES:NO];
+    cell.delegate = self;
+    NSDictionary *dict = [self.parentsControlArr objectAtIndex:indexPath.row];
+    [cell setUpCell:dict[@"text"] andImage:[UIImage imageNamed:dict[@"img"]] isHideSwich:indexPath.row == 2?YES:NO indexPath:indexPath];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -80,6 +76,46 @@
 - (IBAction)backButton:(id)sender {
 
         [self.navigationController popViewControllerAnimated:YES];
+    
+}
+-(void)switchPressed:(BOOL)isOn andTag:(NSInteger)tag{
+    if(tag == 0){
+        if(isOn == NO){
+           [self.parentsControlArr removeObjectAtIndex:1];
+                if([self.parentsControlArr objectAtIndex:2]!= NULL)
+                [self.parentsControlArr removeObjectAtIndex:2];
+            [self.tableView reloadData];
+
+        }
+        else{
+            [self createArr];
+        }
+    }
+    if(tag == 1){
+        if(isOn == NO){
+            [self.parentsControlArr removeObjectAtIndex:2];
+            [self.tableView reloadData];
+        }
+        else{
+            [self createArr];
+        }
+ 
+    }
+}
+-(void)createArr{
+    NSArray *Arr = @[@{@"img":@"parental_controls_icon",
+                       @"text":@"Moniter this Device",
+                       @"Button":@"YES"},
+                     @{@"img":@"log_browsing_history_icon",
+                       @"text":@"Log Browsing History",
+                       @"Button":@"YES"},
+                     @{@"img":@"view_browsing_history_icon",
+                       @"text":@"View Browsing History",
+                       @"Button":@"YES"}
+                     ];
+    [self.parentsControlArr removeAllObjects];
+    self.parentsControlArr = [NSMutableArray arrayWithArray:Arr];
+    [self.tableView reloadData];
     
 }
 @end
