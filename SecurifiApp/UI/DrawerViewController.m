@@ -52,7 +52,7 @@
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidUpdateAlmondList object:nil];
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidChangeAlmondName object:nil];
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidLogoutNotification object:nil];
-    [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidLogoutAllNotification object:nil];
+//    [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidLogoutAllNotification object:nil];
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidChangeAlmondConnectionMode object:nil];
 }
 

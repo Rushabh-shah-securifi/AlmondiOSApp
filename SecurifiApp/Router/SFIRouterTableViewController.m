@@ -648,7 +648,9 @@ int mii;
          SFILogsViewController *ctrl = [SFILogsViewController new];
          ctrl.title = self.navigationItem.title;
          UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-         [self presentViewController:nctrl animated:YES completion:nil];
+         dispatch_async(dispatch_get_main_queue(), ^{
+            [self presentViewController:nctrl animated:YES completion:nil];
+         });
      }
  }
  

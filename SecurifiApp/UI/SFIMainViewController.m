@@ -332,6 +332,7 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
             if (![[SecurifiToolkit sharedInstance] isCloudLoggedIn]) {
+                NSLog(@"logoutAllControllerDidCancel");
                 [self tryPresentLogonScreen];
             }
         }];

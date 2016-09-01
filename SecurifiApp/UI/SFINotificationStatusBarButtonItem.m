@@ -18,7 +18,7 @@
 
 - (instancetype)initWithStandard {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(0, 0, 30, 25);
+    button.frame = CGRectMake(0, 0, 35, 30);
 
     self = [super initWithCustomView:button];
     if (self) {

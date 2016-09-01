@@ -126,17 +126,17 @@
                             "name": "Wi_Fi_Triggers",
                             "screencount": "3",
                             "screens": [{
-                                        "title": "Nothing",
+                                        "title": "wifi_t_detecting",
                                         "description": "wifi_help",
                                         "color" : "fbd490",
                                         "image": "h_wifi_trigger_1"
                                         }, {
-                                        "title": "Nothing",
+                                        "title": "wifi_t_presence",
                                         "description": "wifi_help1",
                                         "color" : "ffd893",
                                         "image": "h_rule_mean"
                                         }, {
-                                        "title": "Nothing",
+                                        "title": "wifi_t_rules",
                                         "description": "wifi_help2",
                                         "color" : "ffd893",
                                         "image": "h_rules_wifi"

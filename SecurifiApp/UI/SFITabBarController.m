@@ -14,6 +14,7 @@
 #import "DashboardViewController.h"
 #import "HelpCenter.h"
 #import "MoreViewController.h"
+#import "AlmondUpdateViewController.h"
 
 #define TAB_BAR_DEVICES @"Devices"
 #define TAB_BAR_ROUTER @"WiFi"
@@ -22,11 +23,13 @@
 #define TAB_BAR_DASHBOARD @"Dashboard"
 #define TAB_BAR_HELPCENTER @"HelpCenter"
 #define TAB_BAR_MORE @"More"
+#define TAB_BAR_UPDATE @"Update"
 
 typedef NS_ENUM(int, TabBarMode) {
     TabBarMode_cloud = 1,
     TabBarMode_local,
-    TabBarMode_noAlmond
+    TabBarMode_noAlmond,
+    TabBarMode_updateAvailable
 };
 
 @interface SFITabBarController () <MessageViewDelegate>
@@ -39,6 +42,7 @@ typedef NS_ENUM(int, TabBarMode) {
 @property(nonatomic) UIViewController *dashboardTab;
 @property(nonatomic) UIViewController *helpTab;
 @property(nonatomic) UIViewController *moreTab;
+@property(nonatomic) UIViewController *updateTab;
 
 @property(nonatomic) UIViewController *scoreboardTab;
 @property(nonatomic) BOOL isDismissed;
@@ -64,12 +68,15 @@ typedef NS_ENUM(int, TabBarMode) {
     [center addObserver:self selector:@selector(onTryChangeTabs:) name:kSFIDidChangeAlmondConnectionMode object:nil];
     [center addObserver:self selector:@selector(onTryChangeTabs:) name:kSFIDidChangeCurrentAlmond object:nil];
     [center addObserver:self selector:@selector(onTryChangeTabs:) name:kSFIDidUpdateAlmondList object:nil];
+    [center addObserver:self selector:@selector(onUpdateAvailableCrossTap:) name:kSFIDidTapUpdateAvailCrossBtn object:nil];
+    
+    [center addObserver:self selector:@selector(onLoginPage:) name:LOGIN_PAGE_NOTIFIER object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     NSLog(@"tabbar view will appear");
-    self.selectedIndex = 0;
+//    self.selectedIndex = 0;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -80,8 +87,23 @@ typedef NS_ENUM(int, TabBarMode) {
     }
 }
 
+- (void)onLoginPage:(id)sender{
+    //to set dashboard as default tab after login.
+    self.selectedIndex = 0;
+}
+
+//have a look at it.
+- (void)onUpdateAvailableCrossTap:(NSNotification *)sender{
+    [self setTabBar:TabBarMode_cloud];//because local will never show update screen.
+}
+
 - (void)onTryChangeTabs:(NSNotification *)sender {
     enum TabBarMode mode = [self pickTabMode];
+    [self setTabBar:mode];
+}
+
+
+- (void)setTabBar:(TabBarMode)mode{
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.isDismissed) {
             return;
@@ -105,6 +127,12 @@ typedef NS_ENUM(int, TabBarMode) {
 - (enum TabBarMode)pickTabMode {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     
+    //for non compatible older firmwares.
+    BOOL isFirmwareCompatible = [self checkIfFirmwareIsCompatible];
+    if(isFirmwareCompatible == NO){
+        return TabBarMode_updateAvailable;
+    }
+    
     NSArray *list = [toolkit almondList];
     if (list.count == 0) {
         list = [toolkit localLinkedAlmondList];
@@ -127,6 +155,18 @@ typedef NS_ENUM(int, TabBarMode) {
     }
 }
 
+
+-(BOOL)checkIfFirmwareIsCompatible{
+    SFIAlmondPlus *currentAlmond = [[SecurifiToolkit sharedInstance] currentAlmond];
+    BOOL local = [[SecurifiToolkit sharedInstance] useLocalNetwork:currentAlmond.almondplusMAC];
+    NSLog(@"current almond dash: %@", currentAlmond);
+    //Ignoring the screen in local connection and when firmware is nil
+    if(currentAlmond.firmware == nil || local){
+        return YES;
+    }
+    return [currentAlmond supportsGenericIndexes:currentAlmond.firmware];
+}
+
 - (NSArray *)pickTabList:(TabBarMode)mode {
     switch (mode) {
         case TabBarMode_cloud:
@@ -135,6 +175,8 @@ typedef NS_ENUM(int, TabBarMode) {
             return [self tryAddScoreboardTab:[self localTabs]];
         case TabBarMode_noAlmond:
             return [self tryAddScoreboardTab:[self noAlmondsTab]];
+        case TabBarMode_updateAvailable:
+            return [self tryAddScoreboardTab:[self updateFirmwareTab]];
         default:
             return @[];
     }
@@ -196,6 +238,11 @@ typedef NS_ENUM(int, TabBarMode) {
     return @[
              self.messageTab
              ];
+}
+
+// tab to show when your almond firmware is old (not json compatible).
+-(NSArray *)updateFirmwareTab{
+    return @[self.updateTab];
 }
 
 - (UIViewController *)scoreboardTab {
@@ -314,6 +361,18 @@ typedef NS_ENUM(int, TabBarMode) {
         self.messageTab = nav;
     }
     return _messageTab;
+}
+
+- (UIViewController *)updateTab {
+    if (!_updateTab) {
+        AlmondUpdateViewController *ctrl = [AlmondUpdateViewController new];
+        
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
+        nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"" image:nil selectedImage:nil];
+        
+        self.updateTab = nav;
+    }
+    return _updateTab;
 }
 
 

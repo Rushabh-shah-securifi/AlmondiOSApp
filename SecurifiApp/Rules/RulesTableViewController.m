@@ -110,7 +110,7 @@ CGPoint tablePoint;
         self.title = NSLocalizedString(@"scene.title.Get Started", @"Get Started");
     }
     else {
-        self.title = currentAlmond.almondplusName;
+        self.title = [CommonMethods getShortAlmondName:currentAlmond.almondplusName];
     }
 }
 

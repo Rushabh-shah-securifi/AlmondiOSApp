@@ -26,6 +26,7 @@ int mii;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor whiteColor];
     [self setUpNavigationBar];
     [self addLogsView];
     [self setUpHUD];

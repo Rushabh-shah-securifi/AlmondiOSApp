@@ -663,11 +663,11 @@
 - (void)markTitle:(NSString *)title {
     UIView *titleView = [[UIView alloc] initWithFrame:CGRectZero];
     
-    if(titleView == nil)
-        return;
-    
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     titleLabel.font = [UIFont boldSystemFontOfSize:20.f];
+    
+    if(titleView == nil || titleLabel == nil) //was causing some crashes.
+        return;
     
     // Set the width of the views according to the text size
     CGSize bar_size = self.navigationController.navigationBar.frame.size;

@@ -389,10 +389,12 @@
                                     _labelAlmondStatus.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:14];
                                     _labelAlmond.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:18];
                                 }];
-        if ([name.almondplusMAC isEqualToString:self.toolkit.currentAlmond.almondplusMAC]) {
-            UIColor *color = [SFIColors ruleBlueColor];
-            [Aname setValue:color forKey:@"titleTextColor"];
-        }
+        //accessing private properties will cause app to be rejected potentially. (need to develop new view)
+//        if ([name.almondplusMAC isEqualToString:self.toolkit.currentAlmond.almondplusMAC]) {
+//            UIColor *color = [SFIColors ruleBlueColor];
+//            [Aname setValue:color forKey:@"titleTextColor"];
+//            
+//        }
         
         [Aname setValue:[UIImage imageNamed:@"icon_dashboard"] forKey:@"image"];
         
@@ -693,8 +695,11 @@
     almondSelect.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0);
     almondSelect.popoverPresentationController.sourceView = self.view;
     almondSelect.popoverPresentationController.permittedArrowDirections = 0;
-    almondSelect.popoverPresentationController.permittedArrowDirections = 0;
-    [self presentViewController:almondSelect animated:YES completion:nil];
+    if(almondSelect == nil)
+        return;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:almondSelect animated:YES completion:nil];
+    });
 }
 
 -(void)onConnection3:(NSString *)Title subTitle:(NSString *)subTitle{

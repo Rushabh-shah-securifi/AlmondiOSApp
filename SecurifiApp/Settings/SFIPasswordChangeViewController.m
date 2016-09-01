@@ -170,7 +170,9 @@
 
     if (obj.isSuccessful) {
         //Dismiss this view
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        });
     }
     else {
         ELog(@"Failed to change password, reason:%d", obj.reasonCode);

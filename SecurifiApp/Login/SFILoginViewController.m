@@ -95,6 +95,7 @@
     [center addObserver:self selector:@selector(onKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [center addObserver:self selector:@selector(onKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 
+    [center postNotificationName:LOGIN_PAGE_NOTIFIER object:nil];
     [[Analytics sharedInstance] markLoginForm];
 }
 

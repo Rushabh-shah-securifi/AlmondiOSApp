@@ -783,8 +783,8 @@ Follow it, then login below.";
 "IFTTT" = "IFTTT Now Works With Almond";
 "IFTTT_Desc"="While Almond’s Rules provide lot of flexibility (with multiple triggers and actions in a single rule), our integration with IFTTT also lets your smart home interact with hundreds of their channels (Google Drive, GPS Location, Email, SMS and more).";
 
-"More_to_Almond"="There's More To Almond Than Meets The Eye";
-"More_to_Almond_Desc"="Learn how Almond makes WiFi easy for you.";
+"More_to_Almond"="There's More To Almond";
+"More_to_Almond_Desc"="There’s more to Almond than meets the eye. Learn how Almond makes WiFi easy for you with easy to manage guest WiFi and advanced router features.";
 
 "Guest_Network" = "Guest Network";
 "Guest_Network_Desc"="You can enable a guest WiFi network for your friends. To configure a guest network, tap on the “Wireless” icon on the Almond LCD and choose \"Guest Network\".";
@@ -794,9 +794,9 @@ Follow it, then login below.";
 
 
 "show_me" = "Show Me";
-"wifi_help"="Almond can use your mobile device’s connection to your home WiFi to detect your presence. This is called a WiFi trigger. Note that Almond only detects devices that are connected to it directly.";
-"wifi_help1"="You can also create a rule to turn on the porch lights for five minutes and set the thermostat to 70˚F when your iPhone joins your home Wi-Fi and the Almond mode is set to away. You’ll never have to arrive to a cold and dark home again!";
-"wifi_help2"="To create a rule using a WiFi trigger, go to the rules tab.";
+"wifi_help"="Almond can use your mobile device’s connection to your home WiFi to detect your presence. When one of your devices connects or disconnects from your Almond, that event is called a WiFi trigger. Almond detects WiFi triggers only from devices that are connected to it directly.";
+"wifi_help1"="With WiFi triggers, you can create a rule like “Turn on the porch lights for five minutes and set the thermostat to 70˚F when my iPhone joins home Wi-Fi and the Almond mode is set to away.” You’ll never have to arrive to a cold and dark home again!";
+"wifi_help2"="To create a rule using a WiFi trigger, go to Rules inside the more menu, tap the + button to create a new rule, and select “Network devices” from the list of triggers under “IF”.";
 
 "Notifications" = "Notifications";
 "Notifications_desc"="Tap the Notifications icon to see the history of your recent notifications. Notifications let you know what’s going on with your devices. Tap on a device to set notifications that you want to receive.";
@@ -865,6 +865,10 @@ Follow it, then login below.";
 "Managing_Your_Scenes"="Managing Your Scenes";
 "Tips_on_Home_Security"="Tips on Home Security";
 "Support"="Support";
+
+"wifi_t_detecting"="Detecting Your Presence";
+"wifi_t_presence"="Using Presence in Rules";
+"wifi_t_rules"="Tap More to use Rules";
 /* ==================================================================== */
 
 /*

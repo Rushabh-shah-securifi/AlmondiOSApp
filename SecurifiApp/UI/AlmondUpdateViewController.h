@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "SFITableViewController.h"
 
+#define kSFIDidTapUpdateAvailCrossBtn  @"kSFIDidTapUpdateAvailCrossBtn"
+
 @interface AlmondUpdateViewController : SFITableViewController
 
 @end
