@@ -67,12 +67,12 @@
     self.settingButton.alpha = 1;
     UIButton *parentalControlBtn = [[UIButton alloc]init];
    
-//    if(self.cellType == ClientTable_Cell ){
-//        self.parentrolBtn.hidden = NO;
-//    }
-//    else{
-//        self.parentrolBtn.hidden = YES;
-//    }
+    if(self.cellType == ClientTable_Cell ){
+        self.parentrolBtn.hidden = NO;
+    }
+    else{
+        self.parentrolBtn.hidden = YES;
+    }
     
     [self addSubview:parentalControlBtn];
     

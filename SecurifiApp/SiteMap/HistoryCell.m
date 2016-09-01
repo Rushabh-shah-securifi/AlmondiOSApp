@@ -69,7 +69,7 @@
             self.categoryImg.image = [UIImage imageNamed:@"General_Audiences"];
         }
         else{
-            self.categoryImg.image = [UIImage imageNamed:@"help-icon"];
+            self.categoryImg.image = [UIImage imageNamed:@"globe"];
         }
 //        self.categoryImg.image = [UIImage imageNamed:@"help-icon"];
         NSDate *dat = [NSDate getDateFromEpoch:uri[@"Epoc"]];

@@ -14,6 +14,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic) NSMutableArray *parentsControlArr;
 
+@property (weak, nonatomic) IBOutlet UIView *dataLogView;
+
 @end
 
 @implementation ParentalControlsViewController
@@ -62,11 +64,12 @@
     }
     cell.delegate = self;
     NSDictionary *dict = [self.parentsControlArr objectAtIndex:indexPath.row];
-    [cell setUpCell:dict[@"text"] andImage:[UIImage imageNamed:dict[@"img"]] isHideSwich:indexPath.row == 2?YES:NO indexPath:indexPath];
+    NSLog(@"dict button = %@",dict[@"Switch"]);
+    [cell setUpCell:dict[@"text"] andImage:[UIImage imageNamed:dict[@"img"]] isHideSwich:[dict[@"Switch"] boolValue] indexPath:[dict[@"Tag"] integerValue]];//"Button"
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.row == 2){
+    if(indexPath.row == 1 && self.parentsControlArr.count == 3){
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
         BrowsingHistoryViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
         [self.navigationController pushViewController:viewController animated:YES];
@@ -82,36 +85,35 @@
     if(tag == 0){
         if(isOn == NO){
            [self.parentsControlArr removeObjectAtIndex:1];
-                if([self.parentsControlArr objectAtIndex:2]!= NULL)
-                [self.parentsControlArr removeObjectAtIndex:2];
             [self.tableView reloadData];
-
         }
         else{
             [self createArr];
         }
     }
-    if(tag == 1){
+    if(tag == 2){
         if(isOn == NO){
-            [self.parentsControlArr removeObjectAtIndex:2];
-            [self.tableView reloadData];
+            self.dataLogView.hidden = YES;
         }
         else{
-            [self createArr];
+            self.dataLogView.hidden = NO;
         }
  
     }
 }
 -(void)createArr{
     NSArray *Arr = @[@{@"img":@"parental_controls_icon",
-                       @"text":@"Moniter this Device",
-                       @"Button":@"YES"},
-                     @{@"img":@"log_browsing_history_icon",
-                       @"text":@"Log Browsing History",
-                       @"Button":@"YES"},
+                       @"text":@"Log Date Usage",
+                       @"Switch":@"YES",
+                       @"Tag":@"0"},
                      @{@"img":@"view_browsing_history_icon",
                        @"text":@"View Browsing History",
-                       @"Button":@"YES"}
+                       @"Switch":@"NO",
+                       @"Tag":@"1"},
+                     @{@"img":@"log_browsing_history_icon",
+                       @"text":@"Log Browsing History",
+                       @"Switch":@"YES",
+                       @"Tag":@"2"}
                      ];
     [self.parentsControlArr removeAllObjects];
     self.parentsControlArr = [NSMutableArray arrayWithArray:Arr];

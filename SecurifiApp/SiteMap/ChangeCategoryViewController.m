@@ -60,7 +60,19 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)categoryMap:(NSDictionary *)uriDict{
-    self.LblUri.text = self.uriDict[@"hostName"];
+    NSString *urlStr = self.uriDict[@"hostName"];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:urlStr attributes:nil];
+    NSRange linkRange = NSMakeRange(0, urlStr.length); // for the word "link" in the string above
+    
+    NSDictionary *linkAttributes = @{ NSForegroundColorAttributeName : [UIColor colorWithRed:0.05 green:0.4 blue:0.65 alpha:1.0],
+                                      NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle) };
+    [attributedString setAttributes:linkAttributes range:linkRange];
+   
+    self.LblUri.userInteractionEnabled = YES;
+    [self.LblUri addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapOnLabel:)]];
+    // Assign attributedText to UILabel
+    self.LblUri.attributedText = attributedString;
+//    self.LblUri.text = self.uriDict[@"hostName"];
     if([[uriDict valueForKey:@"categoty"] isEqualToString:@"NC-17"]){
         
         self.globalColor = [UIColor colorFromHexString:@"000000"];
@@ -125,33 +137,38 @@
 
 -(void )didChangeCategoryWithTag:(NSInteger)tag{
 //    NSDictionary *updatedUriDict;
-    switch (tag) {
-        case 1:
-            [self showToast:@"updating category Adults Only"];
-            
-            break;
-        case 2:
-            [self showToast:@"updating category Rrstricted"];
-            
-            break;
-        case 3:
-            [self showToast:@"Parents Strongly Cautioned"];
-           
-            break;
-        case 4:
-            [self showToast:@"Parential Guidence Suggested"];
-           
-            break;
-        case 5:
-            [self showToast:@"General Audiences"];
-            
-            break;
-        default:
-            
-            break;
-        
-    }
+//    switch (tag) {
+//        case 1:
+//            [self showToast:@"updating category Adults Only"];
+//            
+//            break;
+//        case 2:
+//            [self showToast:@"updating category Rrstricted"];
+//            
+//            break;
+//        case 3:
+//            [self showToast:@"Parents Strongly Cautioned"];
+//           
+//            break;
+//        case 4:
+//            [self showToast:@"Parential Guidence Suggested"];
+//           
+//            break;
+//        case 5:
+//            [self showToast:@"General Audiences"];
+//            
+//            break;
+//        default:
+//            
+//            break;
+//        
+//    }
+    [self showToast:@"Thank you! Your suggestion has been recorded"];
     [self.cat_view removeFromSuperview];
     self.backGroundButton.hidden = YES;
+}
+-(void)handleTapOnLabel:(id)sender{
+    NSLog(@"hyper link pressed");NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/favicon.ico", self.uriDict[@"hostName"]]];
+    [[UIApplication sharedApplication] openURL:url];
 }
 @end

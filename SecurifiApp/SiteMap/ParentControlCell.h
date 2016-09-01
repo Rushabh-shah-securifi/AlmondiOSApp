@@ -13,6 +13,6 @@
 @end
 @interface ParentControlCell : UITableViewCell
 @property (nonatomic)id<ParentControlCellDelegate> delegate;
--(void)setUpCell:(NSString *)label andImage:(UIImage *)image isHideSwich:(BOOL)isHide indexPath:(NSIndexPath *)indexPath;
+-(void)setUpCell:(NSString *)label andImage:(UIImage *)image isHideSwich:(BOOL)isHide indexPath:(NSInteger)tag;
 
 @end

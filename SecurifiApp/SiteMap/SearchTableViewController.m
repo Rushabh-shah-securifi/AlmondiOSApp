@@ -16,6 +16,8 @@
 #import "CommonMethods.h"
 #import "SearchTableViewController.h"
 #import "BrowsingHistoryDataBase.h"
+#import "UIFont+Securifi.h"
+
 
 
 typedef NS_ENUM(NSInteger, SearchPatten) {
@@ -44,6 +46,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 @property (nonatomic) dispatch_queue_t imageDownloadQueue;
 @property BOOL isManuelSearch ;
 @property (nonatomic) NSDictionary *historyDict;
+@property (nonatomic)  UILabel *NoresultFound;
 
 @end
 
@@ -88,11 +91,18 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+     NSLog(@"self.dayArr.count %ld and searchtabel frame %@",self.dayArr.count,NSStringFromCGRect(self.searchTableView.frame));
+    
     if(tableView == self.tableView){
+       
+        self.NoresultFound.hidden = YES;
         return 3;
     }
     else
-       return self.dayArr.count;
+        if(self.dayArr.count == 0)
+            self.NoresultFound.hidden = NO;
+        return self.dayArr.count;
+    
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 30;
@@ -107,9 +117,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
             return  self.recentSearchObj.count;
     }
     else{
-        NSArray *browsHist = self.dayArr[section];
-        return browsHist.count;
-    }
+        
+            NSArray *browsHist = self.dayArr[section];
+            return browsHist.count;
+        }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -129,6 +140,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSString *headerDate;
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
     view.backgroundColor = [UIColor whiteColor];
+    
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
     [label setFont:[UIFont securifiBoldFont:13]];
     
@@ -184,7 +196,13 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     }
     else {
         NSLog(@"self.dayArr count = %ld",self.dayArr.count);
+//        if(self.dayArr.count == 0)
+//        {
+//            [cell.contentView addSubview:[self emptyCellLabel]];
+//            return cell;
+//        }
         if(self.dayArr.count > indexPath.section){
+            self.NoresultFound.hidden = YES;
         NSArray *browsHist = self.dayArr[indexPath.section];
             NSLog(@"browsing hist %@, count %ld,row = %ld",browsHist,browsHist.count,indexPath.row);
             if(browsHist.count>indexPath.row)
@@ -225,6 +243,14 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
             [self categorySearch:@"G"];
         }
     }
+}
+//
+-(UILabel*)emptyCellLabel{
+    UILabel *noResultCell = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.searchTableView.frame.size.width, 40)];
+    noResultCell.text = @"No result found";
+    noResultCell.textAlignment = NSTextAlignmentCenter;
+    return noResultCell;
+
 }
 #pragma mark searchDelegate methods
 -(void)setSearchpattenMethod:(SearchPatten)searchpatten{
@@ -276,13 +302,18 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 }
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
+    self.NoresultFound.hidden = YES;
+    NSLog(@"searchBarCancelButtonClicked");
     [self.tableView reloadData];
 }
 -(void)onCancleButton{
     self.isManuelSearch = YES;
+    self.NoresultFound.hidden = YES;
+     NSLog(@"onCancleButton");
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+    self.NoresultFound.hidden = YES;
     NSLog(@"searchBarTextDidBeginEditing");
     
     
@@ -449,7 +480,16 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
     self.searchController.searchBar.delegate = self;
     self.searchTableView = ((UITableViewController *)self.searchController.searchResultsController).tableView;
+    self.searchController.searchBar.tintColor = [SFIColors ruleBlueColor];
     [self.searchTableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
+    self.NoresultFound = [[UILabel alloc]initWithFrame:self
+                          .searchTableView.frame];
+    self.NoresultFound.text = @"No result found";
+    self.NoresultFound.textAlignment = NSTextAlignmentCenter;
+    self.NoresultFound.font = [UIFont securifiFont:16];
+    self.NoresultFound.textColor = [UIColor grayColor];
+    [self.navigationController.view  addSubview:self.NoresultFound];
+    self.NoresultFound.hidden = YES;
     
     
 }

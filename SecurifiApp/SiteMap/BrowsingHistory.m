@@ -16,8 +16,6 @@
 @implementation BrowsingHistory
 -(void)getBrowserHistoryImages:(NSDictionary *)historyDict dispatchQueue:(dispatch_queue_t)imageDownloadQueue dayArr:(NSMutableArray *)dayArr imageDict:(NSMutableDictionary*)uriToImgDict{
 
-
-
     NSDictionary *dict1 = historyDict[@"Data"];
     for (NSString *dates in [dict1 allKeys]) {
         NSArray *alldayArr = dict1[dates];
@@ -25,11 +23,11 @@
         for (NSMutableDictionary *uriDict in alldayArr)
             
             {
-//            dispatch_async(imageDownloadQueue,^(){
+            dispatch_async(imageDownloadQueue,^(){
                 [uriDict setObject:[self getImage:uriDict[@"hostName"] imageDict:uriToImgDict dispatchQueue:imageDownloadQueue] forKey:@"image"];
                 NSLog(@"downloading img...uriDict = %@",uriDict);
                  [self.delegate reloadTable];
-//            });
+            });
             [oneDayUri addObject:uriDict];
         }
         [dayArr addObject:oneDayUri];
@@ -50,19 +48,19 @@
         
 
         __block NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
-        dispatch_async(imageDownloadQueue,^(){
+//        dispatch_async(imageDownloadQueue,^(){
             img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
            
-        });
+//        });
         if(!img){
             iconUrl = [NSString stringWithFormat:@"https://%@/favicon.ico", hostName];
-            dispatch_async(imageDownloadQueue,^(){
+//            dispatch_async(imageDownloadQueue,^(){
             img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
                
-             });
+//             });
         }
         if(!img){
-            img = [UIImage imageNamed:@"help-icon"];
+            img = [UIImage imageNamed:@"globe"];//globe
         }
         [imgDicts.imgDict setObject:img forKey:hostName];
 //        _urlToImageDict[hostName] = img;

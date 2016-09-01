@@ -54,12 +54,12 @@
     self.browsingHistory.delegate = self;
 //    [BrowsingHistoryDataBase insertRecordFromFile:@"CategoryMap"];
     NSLog(@"dbcount %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount]);
-     NSLog(@"very fiest entry = %@",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10]);
+     NSLog(@"very fiest entry = %@",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20]);
    
     if([BrowsingHistoryDataBase GetHistoryDatabaseCount]>0){
        
         NSLog(@"url to img3 %@",self.urlToImageDict);
-        [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
+        [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
          NSLog(@"url to img3 after %@",self.urlToImageDict);
         [self sendHttpRequest:[BrowsingHistoryDataBase getStartTag] endTag:@""];
     }
@@ -235,7 +235,7 @@
     }
     
 
-
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -253,7 +253,7 @@
             [self.dayArr removeAllObjects];
         [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:self.count] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
             
-            
+            [self.browsingTable reloadData];
         }
         else{
             [self sendHttpRequest:@"" endTag:[BrowsingHistoryDataBase getEndTag]];
@@ -323,13 +323,15 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(self.dayArr.count > indexPath.section){
     NSArray *browsHist = self.dayArr[indexPath.section];
     NSDictionary *uriDict = browsHist[indexPath.row];
     NSLog(@"uriDict = %@",uriDict);
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
     ChangeCategoryViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ChangeCategoryViewController"];
     viewController.uriDict = uriDict;
-    [self.navigationController pushViewController:viewController animated:YES];
+        [self.navigationController pushViewController:viewController animated:YES];}
+    
 //    UIView *view = [[UIView alloc]init];
 //    view.backgroundColor = [UIColor yellowColor];
 //    [UIView animateWithDuration:0.5

@@ -30,13 +30,17 @@
     // Configure the view for the selected state
 }
 
--(void)setUpCell:(NSString *)label andImage:(UIImage *)image isHideSwich:(BOOL)isHide indexPath:(NSIndexPath *)indexPath{
+-(void)setUpCell:(NSString *)label andImage:(UIImage *)image isHideSwich:(BOOL)isHide indexPath:(NSInteger)tag{
     self.lable.text = label;
     self.imageView.image = image;
-    self.Switch.tag = indexPath.row;
-    if(isHide == YES){
+    self.Switch.tag = tag;
+    if(isHide == NO){
         self.Switch.hidden = YES;
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    else{
+        self.Switch.hidden = NO;
+        self.accessoryType = UITableViewCellAccessoryNone;
     }
     
 }
