@@ -119,8 +119,7 @@
         [self saveImage:image withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
     }
     else{
-        NSLog(@"image account: %@", [UIImage imageNamed:@"help_center_icon"]);
-        [self saveImage:[UIImage imageNamed:@"help_center_icon"] withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
+        [self saveImage:[UIImage imageNamed:@"default_user_image"] withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
     }
 }
 

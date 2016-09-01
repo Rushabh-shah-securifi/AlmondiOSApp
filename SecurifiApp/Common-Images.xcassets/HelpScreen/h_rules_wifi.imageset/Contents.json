@@ -2,7 +2,16 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "illustration-help-06c (4).pdf"
+      "filename" : "illustration-help-06c-hex-ffd893.png",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

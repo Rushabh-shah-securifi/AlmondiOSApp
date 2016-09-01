@@ -333,7 +333,7 @@
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
             if (![[SecurifiToolkit sharedInstance] isCloudLoggedIn]) {
                 NSLog(@"logoutAllControllerDidCancel");
-                [self tryPresentLogonScreen];
+//                [self tryPresentLogonScreen]; //need to look at this logic
             }
         }];
     });

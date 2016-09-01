@@ -2,7 +2,16 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "h_home_away.pdf"
+      "filename" : "illustration-help-01c-hex-81d4fa.png",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

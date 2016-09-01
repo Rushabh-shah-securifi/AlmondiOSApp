@@ -2,7 +2,16 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "h_rule_create.pdf"
+      "filename" : "illustration-help-04b-hex-ffd893.png",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {
