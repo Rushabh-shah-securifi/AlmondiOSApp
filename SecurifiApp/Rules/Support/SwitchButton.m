@@ -79,7 +79,7 @@
 - (void)addBottomText:(NSString *)bottomText x:(int)x y:(int)y width:(int)width height:(int)height{
     //label
     self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, y,width,height)];
-    self.bottomLabel.text = bottomText;
+    self.bottomLabel.text = [bottomText uppercaseString];
     self.bottomLabel.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:fontSize];
     self.bottomLabel.numberOfLines=0;
     self.bottomLabel.textAlignment = NSTextAlignmentCenter;

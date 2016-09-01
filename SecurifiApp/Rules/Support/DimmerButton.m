@@ -81,7 +81,6 @@
     self.bottomLabel.numberOfLines=0;
     self.bottomLabel.textAlignment = NSTextAlignmentCenter;
     self.bottomLabel.textColor = [SFIColors ruleGraycolor];
-    self.bottomLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:self.bottomLabel];
     
     self.bgView.userInteractionEnabled = NO;
@@ -95,7 +94,7 @@
     [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:(isTrigger && !isScene)?25.0f:35.0f]} range:NSMakeRange(text.length,suffix.length)];
     [lblMain setAttributedText:strTemp];
     
-    self.bottomLabel.text = title;
+    self.bottomLabel.text = [title uppercaseString];
 }
 
 
@@ -288,13 +287,11 @@
         [self.bgView addSubview:self.textField];
     }
     self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding, self.frame.size.width,textHeight)];
-    self.bottomLabel.text = displayText;
+    self.bottomLabel.text = [displayText uppercaseString];
     [self.bottomLabel setFont: [self.bottomLabel.font fontWithSize: fontSize]];
     self.bottomLabel.numberOfLines=0;
     self.bottomLabel.textAlignment = NSTextAlignmentCenter;
-    self.bottomLabel.textColor = [SFIColors ruleGraycolor];
-    self.bottomLabel.textAlignment = NSTextAlignmentCenter;
-    
+    self.bottomLabel.textColor = [SFIColors ruleGraycolor];    
     [self addSubview:self.bottomLabel];
 }
 -(void)onCondition:(id)sender{

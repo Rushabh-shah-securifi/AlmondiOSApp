@@ -1149,10 +1149,11 @@ Contact us at support@securifi.com";
 /*Delay picker*/
 "Mins" = "Mins";
 "sec" = "Secs";
-"brightness" = "  Brightness";
-"saturation" = "  Saturation";
+
+"rule_brightness" = "  Brightness";/*spaces are needed*/
+"rule_saturation" = "  Saturation";
+"rule_hue" = "  Hue";
 "select" = "Select";
-"hue" = "  Hue";
 /*RulesViewController*/
 
 "RulesViewController Loading Rules..." = "Loading Rules...";

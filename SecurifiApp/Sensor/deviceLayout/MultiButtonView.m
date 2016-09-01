@@ -60,8 +60,8 @@
         CGRect textRect = [UICommonMethods adjustDeviceNameWidth:[array objectAtIndex:i] fontSize:FONT_SIZE maxLength:MAX_LENGTH];
         CGRect frame = CGRectMake(xPos + 10, 0, textRect.size.width + 15, self.frame.size.height);
         UIButton *button = [[UIButton alloc ]initWithFrame:frame];
-        [button setTitle:[array objectAtIndex:i] forState:UIControlStateNormal];
         
+        [button setTitle:[[array objectAtIndex:i] capitalizedString] forState:UIControlStateNormal];
         button.backgroundColor = [SFIColors darkerColorForColor:self.color];
         button.titleLabel.font = [UIFont securifiBoldFontLarge];
         button.tag = i;

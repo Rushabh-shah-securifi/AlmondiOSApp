@@ -41,7 +41,7 @@
     [self.contentView addSubview:self.btnSelect];
 }
 -(void)writelabelName:(NSString*)name value:(NSString *)value{
-    self.labelName.text = name;
+    self.labelName.text = [name capitalizedString];
     self.valueString = value;
     self.btnSelect.backgroundColor = [UIColor clearColor];
 }

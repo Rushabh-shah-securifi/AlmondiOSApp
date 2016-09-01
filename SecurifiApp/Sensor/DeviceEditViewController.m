@@ -187,8 +187,8 @@ static const int xIndent = 10;
         }
         
         else
-            propertyName = genericIndexObj.groupLabel;
-        
+            propertyName = [genericIndexObj.groupLabel uppercaseString];
+    
         NSLog(@"read only %d,layouttype %@ ,type %@ groupLabel %@ GINDEX %@ Dindex %d",genericIndexObj.readOnly,genericIndexObj.layoutType,genericIndexObj.type,genericIndexObj.groupLabel,genericIndexObj.ID,genericIndexValue.index);
         
         if(genericIndexObj.readOnly){

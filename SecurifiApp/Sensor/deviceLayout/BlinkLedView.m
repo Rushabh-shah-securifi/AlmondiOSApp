@@ -61,9 +61,14 @@ static const int xIndent = 0;
     NSArray *layoutArr = @[@"HUE",@"SATURATION"];
     for (int i = 0; i < layoutArr.count; i++) {
         UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, yPos , self.frame.size.width-xIndent, 65)];
-        UILabel *label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
-        [self setUpLable:label withPropertyName:layoutArr[i]];
-        [view addSubview:label];
+        
+        UILabel *label;
+        if(![@"HUE" isEqualToString:layoutArr[i]]){
+            label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
+            [self setUpLable:label withPropertyName:layoutArr[i]];
+            [view addSubview:label];
+        }
+
         if ([layoutArr[i] isEqualToString:@"HUE"]) {
             self.hue = [CommonMethods getHueValue:self.genericIndexValue.genericValue.value];
             self.genericIndexValue.genericValue.value = @(self.hue).stringValue;
@@ -97,15 +102,14 @@ static const int xIndent = 0;
         yPos =  yPos + view.frame.size.height + LABELSPACING;
         [self addSubview:view];
     }
-    
-    
-    
 }
+
 - (void)setUpLable:(UILabel*)label withPropertyName:(NSString*)propertyName{
     label.text = propertyName;
     label.font = [UIFont standardHeadingBoldFont];
     label.textColor = [UIColor whiteColor];
 }
+
 -(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue currentView:(UIView*)currentView{
     
     NSLog(@"new value = %@",newValue);
