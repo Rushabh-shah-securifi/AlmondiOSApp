@@ -64,7 +64,7 @@
     [self addSubview:message_label];
 
     UIButton *button = [[UIButton alloc]init];
-    button.frame = CGRectMake(10, CGRectGetMaxY(rect), width-20, 45);
+    button.frame = CGRectMake(10, CGRectGetMaxY(rect) + 30, width-20, 45);
     [button addTarget:self action:@selector(onButtonTouch) forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"LINK ALMOND" forState:UIControlStateNormal];
     button.backgroundColor = [SFIColors lightBlueColor];

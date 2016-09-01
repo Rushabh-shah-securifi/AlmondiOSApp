@@ -397,7 +397,7 @@ Follow it, then login below.";
 "Presence sensor Yes"="Yes";
 "Presence sensor NO" = "No";
 "response.alert-Oops" = "Oops";
-"response.alert-Sorry, There was some problem with this request, try later!" = "Sorry, There was some problem with this request, try later!";
+"response.alert-Sorry, There was some problem with this request, try later!" = "Sorry! There was some problem with this request, try later!";
 "response.alert-OK" = "OK";
 
 /* Sensor Index Support */
@@ -999,7 +999,7 @@ Contact us at support@securifi.com";
 "sensors.account-confirm.label.Resend activation email" = "Resend activation email";
 "Smart Devices" = "Smart Devices";
 "DeviceList Successfully updated!" = "Successfully updated!";
-"DeviceList Sorry, Could not update!" = "Sorry, Could not update!";
+"DeviceList Sorry, Could not update!" = "Sorry! Could not update!";
 "activation.toast.Reactivation link sent to your registerd email ID." = "Reactivation link sent to your registerd email ID.";
 /* activation */
 "Reactivation link has been sent to your account." = "Reactivation link has been sent to your account.";
@@ -1013,11 +1013,11 @@ Contact us at support@securifi.com";
 /*DeviceEditViewController*/
 "deviceedit Device has been tampered" = "Device has been tampered";
 "saving" = "Saving...";
-"sorry_could_not_update %@" = "Sorry, Could not update %@";
+"sorry_could_not_update %@" = "Sorry! Could not update %@";
 "deviceEdit %@ successfully updated" = "%@ successfully updated";
-"sorry_could_not_update" = "Sorry, Could not update.";
-"deviceEdit Sorry, Could not update %@." = "Sorry, Could not update %@.";
-"deviceEdit %@ successfully updated" = "%@ successfully updated";
+"sorry_could_not_update" = "Sorry! Could not update";
+"deviceEdit Sorry, Could not update %@." = "Sorry! Could not update %@.";
+"deviceEdit %@ successfully updated" = "%@ successfully updated!";
 "deviceEdit BRIGHTNESS" = "BRIGHTNESS";
 "deviceEdit SATURATION" = "SATURATION";
 
@@ -1056,7 +1056,7 @@ Contact us at support@securifi.com";
 "ClientpropertyViewController Resetting %@" = "Resetting %@";
 
 /*dashBoard*/
-"dashBoard AddAlmond" = "AddAlmond";
+"dashBoard AddAlmond" = "Add Almond";
 "select_almond" = "Select Almond";
 "close" = "Close";
 "mode_home_progress" = "Setting Almond to home mode.";
@@ -1106,7 +1106,7 @@ Contact us at support@securifi.com";
 "AddRulesView Select atleast one Trigger" = "Select atleast one Trigger";
 "AddRulesView Select atleast one Action" = "Select atleast one Action";
 "scene.alert-title.Oops" = "Oops";
-"try_later" = "Sorry, There was some problem with this request, try later!";
+"try_later" = "Sorry! There was some problem with this request, try later!";
 "ok" = "OK";
 "selectActionInitial" = "Select action for your trigger";
 "AddRulesView Select Triggers First" = "Select Triggers First";
@@ -1137,7 +1137,7 @@ Contact us at support@securifi.com";
 "after" = "After";
 "sunnycondition" = "Condition";
 "Minutes" = "Minutes";
-"deviceEdit %@ successfully updated" = "%@ successfully updated";
+"deviceEdit %@ successfully updated" = "%@ successfully updated!";
 
 
 /*CustomCell*/
@@ -1156,7 +1156,7 @@ Contact us at support@securifi.com";
 /*RulesViewController*/
 
 "RulesViewController Loading Rules..." = "Loading Rules...";
-"DeviceList Sorry, Could not update!" =  "Sorry, Could not update!";
+"DeviceList Sorry, Could not update!" =  "Sorry! Could not update!";
 "DeviceList Successfully updated!" = "Successfully updated!";
 "newRule" = "New Rule";
 "RulesViewController Tap on add button to create your rule" = "Tap on add button to create your rule";
@@ -1217,7 +1217,7 @@ Contact us at support@securifi.com";
 "NewAddScene Cancel" = "Cancel";
 "delete" = "Delete";
 "Oops" = "Oops" ;
-"try_later" = "Sorry, There was some problem with this request, try later!";
+"try_later" = "Sorry! There was some problem with this request, try later!";
 "NewAddScene Saving Scene..." = "Saving Scene...";
 
 /*sendLogs*/
@@ -1296,7 +1296,7 @@ Contact us at support@securifi.com";
 "Update" = "Update";
 "router Are you sure, you want to Update Firmware?" = "Are you sure, you want to Update Firmware?";
 "Loading router data" = "Loading router data";
-"router Sorry, Your Almond cannot be reached for now.r" = "Sorry, Your Almond cannot be reached for now.";
+"router Sorry, Your Almond cannot be reached for now.r" = "Sorry! Your Almond cannot be reached for now.";
 "router.devices-summary.%d Active, %d Inactive" = "%d ACTIVE, %d INACTIVE";
 "Software Version" = "Software Version";
 "UPDATE FIRMWARE" = "UPDATE FIRMWARE";

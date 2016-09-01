@@ -67,7 +67,7 @@
     [button1 addTarget:self action:@selector(AlmondSelection:) forControlEvents:UIControlEventTouchUpInside];
     [Scroller addSubview:button];
     [Scroller addSubview:button1];
-    [self SelectAlmond:NSLocalizedString(@"dashBoard AddAlmond", @"AddAlmond")];
+    [self SelectAlmond:NSLocalizedString(@"dashBoard AddAlmond", @"Add Almond")];
     [self markNetworkStatusIcon];
     [self initializeHUD];
 }
