@@ -184,7 +184,15 @@
     NSInteger count = [_toolkit countUnviewedNotifications];
     [_notificationButton markNotificationCount:(NSUInteger) count];
     _notificationButton.isDashBoard = YES;
-    self.navigationItem.leftBarButtonItems = @[_leftButton, _notificationButton];
+    UIBarButtonItem *interSpace = [self getBarButton:20];
+
+    self.navigationItem.leftBarButtonItems = @[_leftButton, interSpace,_notificationButton];
+}
+
+-(UIBarButtonItem *)getBarButton:(CGFloat)width{
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    barButton.width = width;
+    return barButton;
 }
 
 #pragma mark notification

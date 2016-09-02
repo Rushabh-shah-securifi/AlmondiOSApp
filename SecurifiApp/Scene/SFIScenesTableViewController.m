@@ -68,12 +68,12 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     if (self.currentAlmond == nil) {
-        [self markTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
+        [self markNewTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
         [self markAlmondMac:NO_ALMOND];
     }
     else {
+        [self markNewTitle: self.currentAlmond.almondplusName];
         [self markAlmondMac:self.currentAlmond.almondplusMAC];
-        [self markTitle: self.currentAlmond.almondplusName];
     }
 }
 

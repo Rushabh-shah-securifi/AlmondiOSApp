@@ -21,6 +21,7 @@
 #import "UIViewController+Securifi.h"
 #import "SFIColors.h"
 #import "CommonMethods.h"
+#import "UIFont+Securifi.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
@@ -105,12 +106,18 @@ CGPoint tablePoint;
 -(void)markAlmondTitle{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *currentAlmond = [toolkit currentAlmond];
+    NSDictionary *attributes = @{
+                                 NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+                                 NSFontAttributeName : [UIFont standardNavigationTitleFont]
+                                 };
+    self.navigationController.navigationBar.titleTextAttributes = attributes;
     
     if (currentAlmond == nil) {
-        self.title = NSLocalizedString(@"scene.title.Get Started", @"Get Started");
+        self.navigationItem.title = NSLocalizedString(@"scene.title.Get Started", @"Get Started");
     }
     else {
-        self.title = [CommonMethods getShortAlmondName:currentAlmond.almondplusName];
+        
+        self.navigationItem.title = [CommonMethods getShortAlmondName:currentAlmond.almondplusName];
     }
 }
 

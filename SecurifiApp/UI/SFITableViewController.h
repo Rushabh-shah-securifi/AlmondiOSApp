@@ -40,7 +40,7 @@
 // declares the almond mac being displayed
 - (void)markAlmondMac:(NSString *)almondMac;
 
-- (void)markTitle:(NSString*)title;
+- (void)markNewTitle:(NSString *)title;
 
 - (void)showHUD:(NSString *)text;
 

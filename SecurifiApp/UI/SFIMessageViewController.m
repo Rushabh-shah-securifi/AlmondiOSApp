@@ -9,6 +9,8 @@
 #import "SFIMessageViewController.h"
 #import "MessageView.h"
 #import "SFICloudLinkViewController.h"
+//#import "RouterNetworkSettingsEditor.h"
+#import "SFIAlmondLocalNetworkSettings.h"
 
 @interface SFIMessageViewController () <MessageViewDelegate, RouterNetworkSettingsEditorDelegate>
 @end
@@ -17,6 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.navigationItem.title = @"Welcome";
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
@@ -72,10 +75,17 @@
             break;
         }
         case SFIAlmondConnectionMode_local: {
-            [self presentLocalNetworkSettingsEditor];
+            RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+            editor.delegate = self;
+            editor.makeLinkedAlmondCurrentOne = YES;
+            
+            UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
+            
+            [self presentViewController:ctrl animated:YES completion:nil];
             break;
         }
     }
 }
+
 
 @end

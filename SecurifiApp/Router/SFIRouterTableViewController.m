@@ -167,12 +167,12 @@ int mii;
     
     self.currentAlmond = plus;
     if (plus == nil) {
+        [self markNewTitle:NSLocalizedString(@"Get Started", @"Get Started")];
         [self markAlmondMac:NO_ALMOND];
-        [self markTitle:NSLocalizedString(@"Get Started", @"Get Started")];
     }
     else {
+        [self markNewTitle:plus.almondplusName];
         [self markAlmondMac:plus.almondplusMAC];
-        [self markTitle:plus.almondplusName];
     }
 }
 

@@ -256,7 +256,7 @@
                 _alert.message = NSLocalizedString(@"alertview-Connected to your Almond via cloud.", @"Connected to your Almond via cloud.");
                 _alert.actions = @[
                                    [AlertViewAction actionWithTitle:NSLocalizedString(@"Add Local Connection Settings", @"Add Local Connection Settings") handler:^(AlertViewAction *action) {
-                                       [self presentLocalNetworkSettingsEditor];
+                                       [self presentLocalNetworkSettings];
                                    }],
                                    ];
             }
@@ -310,7 +310,7 @@
                 _alert.message = NSLocalizedString(@"alert msg offline Local connection not supported.", @"Local connection settings are missing.");
                 _alert.actions = @[
                                    [AlertViewAction actionWithTitle:NSLocalizedString(@"Add Local Connection Settings", @"Add Local Connection Settings") handler:^(AlertViewAction *action) {
-                                       [self presentLocalNetworkSettingsEditor];
+                                       [self presentLocalNetworkSettings];
                                    }]
                                    ];
             }
@@ -621,9 +621,8 @@
 }
 
 - (void)setBarButtons{
-    UIBarButtonItem *spacer = [self getBarButton:25];
-    UIBarButtonItem *interSpace = [self getBarButton:10];
-    self.navigationItem.leftBarButtonItems = @[self.connectionStatusBarButton,interSpace, self.notificationsStatusButton, spacer];
+    UIBarButtonItem *spacer = [self getBarButton:20];
+    self.navigationItem.leftBarButtonItems = @[self.connectionStatusBarButton,spacer, self.notificationsStatusButton, spacer];
 }
 
 -(UIBarButtonItem *)getBarButton:(CGFloat)width{
@@ -660,52 +659,18 @@
     });
 }
 
-- (void)markTitle:(NSString *)title {
-    UIView *titleView = [[UIView alloc] initWithFrame:CGRectZero];
-    
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20.f];
-    
-    if(titleView == nil || titleLabel == nil) //was causing some crashes.
-        return;
-    
-    // Set the width of the views according to the text size
-    CGSize bar_size = self.navigationController.navigationBar.frame.size;
-    CGRect frame;
-    
-    frame = titleLabel.frame;
-    frame.size = bar_size;
-    titleLabel.frame = frame;
-    
-    frame = titleView.frame;
-    frame.size = bar_size;
-    titleView.frame = frame;
-    // Ensure text is on one line, centered and truncates if the bounds are restricted
-    titleLabel.numberOfLines = 1;
-    titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    titleLabel.textAlignment = NSTextAlignmentLeft;
-    
-    // Use autoresizing to restrict the bounds to the area that the titleview allows
-    titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    titleView.autoresizesSubviews = YES;
-    titleLabel.autoresizingMask = titleView.autoresizingMask;
-    
-    // Set the text
-    if (!title) {
-        title = @"";
-    }
+
+
+//previous mark title has issues
+-(void)markNewTitle:(NSString *)title{
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
                                  NSFontAttributeName : [UIFont standardNavigationTitleFont]
                                  };
-    NSAttributedString *str = [[NSAttributedString alloc] initWithString:title attributes:attributes];
-    titleLabel.attributedText = str;
-    
-    [titleView addSubview:titleLabel];
+    self.navigationController.navigationBar.titleTextAttributes = attributes;
     dispatch_async(dispatch_get_main_queue(), ^(){
-        self.navigationItem.titleView = titleView;
+        self.navigationItem.title = title;
     });
-    
 }
 
 - (void)showHUD:(NSString *)text {
@@ -731,7 +696,18 @@
     self.navigationItem.leftBarButtonItem.enabled = enableDrawer;
 }
 
+- (void)presentLocalNetworkSettings{
+    RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+    editor.delegate = self;
+    editor.makeLinkedAlmondCurrentOne = YES;
+    
+    UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
+    
+    [self presentViewController:ctrl animated:YES completion:nil];
+}
+
 - (void)presentLocalNetworkSettingsEditor {
+    NSLog(@"almond mac: %@", self.almondMac);
     NSString *mac = self.almondMac;
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -881,24 +857,28 @@
 #pragma mark - RouterNetworkSettingsEditorDelegate methods
 
 - (void)networkSettingsEditorDidLinkAlmond:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
-    
+    NSLog(@"Link 1");
 }
 
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    NSLog(@"Link 2");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit setLocalNetworkSettings:newSettings];
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
+    NSLog(@"Link 3");
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)networkSettingsEditorDidComplete:(RouterNetworkSettingsEditor *)editor {
+    NSLog(@"Link 4");
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {
+    NSLog(@"Link 5");
     NSString *almondMac = editor.settings.almondplusMAC;
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];

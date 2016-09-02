@@ -65,8 +65,9 @@ int mii;
     NSLog(@"devicelist viewWillAppear");
     [super viewWillAppear:YES];
     mii = arc4random() % 10000;
-    
     [self markAlmondTitleAndMac];
+    
+    
     [self initializeNotifications];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -78,12 +79,12 @@ int mii;
     NSLog(@"%s, self.toolkit.currentAlmond: %@", __PRETTY_FUNCTION__, self.toolkit.currentAlmond);
     if (self.toolkit.currentAlmond == nil) {
         NSLog(@"no almond");
-        [self markTitle:NSLocalizedString(@"router.nav-title.Get Started", @"Get Started")];
+        [self markNewTitle:NSLocalizedString(@"router.nav-title.Get Started", @"Get Started")];
         [self markAlmondMac:NO_ALMOND];
     }
     else {
         NSLog(@"got almond");
-        [self markTitle:self.toolkit.currentAlmond.almondplusName];
+        [self markNewTitle:self.toolkit.currentAlmond.almondplusName];
         [self markAlmondMac:self.toolkit.currentAlmond.almondplusMAC];
     }
 }
@@ -295,8 +296,15 @@ int mii;
     return NO;
 }
 
+//-(BOOL)isFirmwareCompatible{
+//    BOOL isFirmwareCompatible = [self checkIfFirmwareIsCompatible];
+//    if(isFirmwareCompatible == NO){
+//        return TabBarMode_updateAvailable;
+//    }
+//}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //NSLog(@"self.almond mac: %@", self.almondMac);
+    
     if ([self isNoAlmondMAC]) {
         tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
@@ -631,7 +639,7 @@ int mii;
         }
         SFIAlmondPlus *obj = (SFIAlmondPlus *) [data valueForKey:@"data"];
         if ([self isSameAsCurrentMAC:obj.almondplusMAC]) {
-            [self markTitle:obj.almondplusName];
+            [self markNewTitle:obj.almondplusName];
         }
     });
 }
