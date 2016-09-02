@@ -23,7 +23,6 @@
 #import "MessageView.h"
 #import "SFICloudLinkViewController.h"
 #import "MBProgressHUD.h"
-#import "UIImage+Securifi.h"
 #import "UIViewController+Securifi.h"
 #import "SFIPreferences.h"
 #import "SFIAlmondLocalNetworkSettings.h"
@@ -205,7 +204,7 @@ int mii;
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if ([self isNoAlmondMAC])
+    if ([self isNoAlmondMAC] || ![self isFirmwareCompatible])
         return 1;
     
     if([self isDeviceListEmpty] && [self isClientListEmpty])
@@ -215,7 +214,7 @@ int mii;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]))
+    if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible])
         return 1;
     
     NSLog(@"devices count %ld, client count: %ld",(unsigned long)self.toolkit.devices.count, (unsigned long)self.toolkit.clients.count);
@@ -224,7 +223,7 @@ int mii;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty])) {
+    if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible]) {
         return 400;
     }
     return 75;
@@ -242,7 +241,7 @@ int mii;
     if ([self showNeedsActivationHeader] && section == 0) {
         return [self createActivationNotificationHeader];
     }
-    else if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]))
+    else if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible])
         return [UIView new];
     
     return [self deviceHeader:section tableView:tableView];
@@ -296,15 +295,12 @@ int mii;
     return NO;
 }
 
-//-(BOOL)isFirmwareCompatible{
-//    BOOL isFirmwareCompatible = [self checkIfFirmwareIsCompatible];
-//    if(isFirmwareCompatible == NO){
-//        return TabBarMode_updateAvailable;
-//    }
-//}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //NSLog(@"self.almond mac: %@", self.almondMac);
-    
+    if([self isFirmwareCompatible] == NO){
+        tableView.scrollEnabled = NO;
+        return [self createAlmondUpdateAvailableCell:tableView];
+    }
     if ([self isNoAlmondMAC]) {
         tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
@@ -351,52 +347,6 @@ int mii;
                                                                isSensor:NO];
         [cell.commonView initialize:genericParams cellType:ClientTable_Cell];
     }
-    return cell;
-}
-
-
-
-- (UITableViewCell *)createEmptyCell:(UITableView *)tableView {
-    NSLog(@"emptycell");
-    static NSString *empty_cell_id = @"EmptyCell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:empty_cell_id];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:empty_cell_id];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        const CGFloat table_width = CGRectGetWidth(self.tableView.frame);
-        
-        UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, table_width, 30)];
-        lblNoSensor.textAlignment = NSTextAlignmentCenter;
-        [lblNoSensor setFont:[UIFont securifiLightFont:20]];
-        lblNoSensor.text = NSLocalizedString(@"noSensors", @"You don't have any sensors yet.");
-        lblNoSensor.textColor = [UIColor grayColor];
-        [cell addSubview:lblNoSensor];
-        
-        UIImage *routerImage = [UIImage routerImage];
-        
-        CGAffineTransform scale = CGAffineTransformMakeScale(0.5, 0.5);
-        const CGSize routerImageSize = CGSizeApplyAffineTransform(routerImage.size, scale);
-        const CGFloat image_width = routerImageSize.width;
-        const CGFloat image_height = routerImageSize.height;
-        CGRect imageViewFrame = CGRectMake((table_width - image_width) / 2, 95, image_width, image_height);
-        
-        UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:imageViewFrame];
-        imgRouter.userInteractionEnabled = NO;
-        imgRouter.image = routerImage;
-        imgRouter.contentMode = UIViewContentModeScaleAspectFit;
-        [cell addSubview:imgRouter];
-        
-        UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 95 + image_height + 20, table_width, 30)];
-        lblAddSensor.textAlignment = NSTextAlignmentCenter;
-        [lblAddSensor setFont:[UIFont standardUILabelFont]];
-        lblAddSensor.text = NSLocalizedString(@"router.no-sensors.label.Add a sensor from your Almond.", @"Add a sensor from your Almond.");
-        lblAddSensor.textColor = [UIColor grayColor];
-        [cell addSubview:lblAddSensor];
-    }
-    
     return cell;
 }
 

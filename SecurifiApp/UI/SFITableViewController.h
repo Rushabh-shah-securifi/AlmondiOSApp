@@ -72,4 +72,9 @@
 
 - (void)resetViewDelegate;
 
+- (UITableViewCell *)createAlmondUpdateAvailableCell:(UITableView *)tableView;
+
+- (UITableViewCell *)createEmptyCell:(UITableView *)tableView;
+
+- (BOOL)isFirmwareCompatible;
 @end

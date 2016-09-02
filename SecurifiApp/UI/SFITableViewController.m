@@ -22,6 +22,8 @@
 #import "CommonMethods.h"
 #import "SFIColors.h"
 #import "UICommonMethods.h"
+#import "UIImage+Securifi.h"
+
 
 @interface SFITableViewController () <MBProgressHUDDelegate, SWRevealViewControllerDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate, HelpScreensDelegate>
 @property(nonatomic, readonly) SFINotificationStatusBarButtonItem *notificationsStatusButton;
@@ -649,7 +651,85 @@
     });
     //    [self setBarButtons:NO];
 }
+#pragma mark cell methods
 
+-(BOOL)isFirmwareCompatible{
+    return [SFIAlmondPlus checkIfFirmwareIsCompatible:[SecurifiToolkit sharedInstance].currentAlmond];
+}
+
+- (UITableViewCell *)createAlmondUpdateAvailableCell:(UITableView *)tableView{
+    static NSString *update_cell_id = @"AlmondUpdate";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:update_cell_id];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:update_cell_id];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [self createCellWithMsg:@"The Almond firmware needs to be updated to remain compatible with this version of the app." cell:cell];
+    }
+    return cell;
+}
+
+- (UITableViewCell *)createEmptyCell:(UITableView *)tableView {
+    NSLog(@"emptycell");
+    static NSString *empty_cell_id = @"EmptyCell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:empty_cell_id];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:empty_cell_id];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [self createCellWithText:NSLocalizedString(@"noSensors", @"You don't have any sensors yet.") subText:NSLocalizedString(@"router.no-sensors.label.Add a sensor from your Almond.", @"Add a sensor from your Almond.") cell:cell];
+    
+    }
+    
+    return cell;
+}
+
+- (void)createCellWithMsg:(NSString *)msg cell:(UITableViewCell *)cell{
+    const CGFloat table_width = CGRectGetWidth(self.tableView.frame);
+    
+    UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(5, 100, table_width-10, 90)];
+    lblNoSensor.textAlignment = NSTextAlignmentCenter;
+    [lblNoSensor setFont:[UIFont securifiLightFont:20]];
+    lblNoSensor.text = msg;
+    lblNoSensor.numberOfLines = 0;
+    lblNoSensor.textColor = [UIColor blackColor];
+    [cell addSubview:lblNoSensor];
+}
+
+- (void)createCellWithText:(NSString *)text subText:(NSString *)subText cell:(UITableViewCell *)cell{
+    const CGFloat table_width = CGRectGetWidth(self.tableView.frame);
+    
+    UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, table_width, 30)];
+    lblNoSensor.textAlignment = NSTextAlignmentCenter;
+    [lblNoSensor setFont:[UIFont securifiLightFont:20]];
+    lblNoSensor.text = text;
+    lblNoSensor.numberOfLines = 0;
+    lblNoSensor.textColor = [UIColor grayColor];
+    [cell addSubview:lblNoSensor];
+    
+    UIImage *routerImage = [UIImage routerImage];
+    
+    CGAffineTransform scale = CGAffineTransformMakeScale(0.5, 0.5);
+    const CGSize routerImageSize = CGSizeApplyAffineTransform(routerImage.size, scale);
+    const CGFloat image_width = routerImageSize.width;
+    const CGFloat image_height = routerImageSize.height;
+    CGRect imageViewFrame = CGRectMake((table_width - image_width) / 2, 95, image_width, image_height);
+    
+    UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:imageViewFrame];
+    imgRouter.userInteractionEnabled = NO;
+    imgRouter.image = routerImage;
+    imgRouter.contentMode = UIViewContentModeScaleAspectFit;
+    [cell addSubview:imgRouter];
+    
+    UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 95 + image_height + 20, table_width, 30)];
+    lblAddSensor.textAlignment = NSTextAlignmentCenter;
+    [lblAddSensor setFont:[UIFont standardUILabelFont]];
+    lblAddSensor.text = subText;
+    lblAddSensor.textColor = [UIColor grayColor];
+    [cell addSubview:lblAddSensor];
+}
 #pragma mark Drawer management
 
 - (void)markAlmondMac:(NSString *)almondMac {

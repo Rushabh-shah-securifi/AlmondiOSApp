@@ -93,7 +93,7 @@
         [self.password resignFirstResponder];
     }
     
-    [self showHudWithTimeoutMsgDelegate:@"Logging out from all device!" time:10];
+    [self showHudWithTimeoutMsgDelegate:@"Logging out from all devices!" time:10];
     [[SecurifiToolkit sharedInstance] asyncSendLogoutAllWithEmail:self.emailID.text password:self.password.text];
 }
 

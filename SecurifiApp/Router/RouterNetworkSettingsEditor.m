@@ -325,6 +325,16 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
     }
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    //called after title for header. Added because titleforheader always shows bold font.
+    if ([view isKindOfClass:[UITableViewHeaderFooterView class]] && [self respondsToSelector:@selector(tableView:titleForHeaderInSection:)]) {
+        UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView *)view;
+        headerView.textLabel.font = [UIFont securifiFont:15];
+        headerView.textLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    }
+}
+
 #pragma mark - Action handlers
 
 - (void)onLink {

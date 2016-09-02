@@ -155,7 +155,7 @@ int mii;
     self.tableView.tableHeaderView = nil;
     
     //NSLog(@"connecton - is local: %d", self.local);
-    if(!self.local && ![self isNoAlmondLoaded]){
+    if(!self.local && ![self isNoAlmondLoaded] && [self isFirmwareCompatible]){
         [self showHudWithTimeout:NSLocalizedString(@"Loading router data", @"Loading router data")];
         [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
     }
@@ -257,7 +257,7 @@ int mii;
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if ([self isNotConnectedToCloud]) {
+    if ([self isNotConnectedToCloud] || ![self isFirmwareCompatible]) {
         //NSLog(@"numberOfRowsInSection isNotConnectedToCloud");
         return 1;
     }
@@ -276,7 +276,7 @@ int mii;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath; {
-    if ([self isNotConnectedToCloud]) {
+    if ([self isNotConnectedToCloud] || ![self isFirmwareCompatible]) {
         return 400;
     }
     switch (indexPath.section) {
@@ -307,6 +307,11 @@ int mii;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //    NSLog(@"isAlmondUnavailable: %d, isnetworkonline: %d, issimulator: %d", self.isAlmondUnavailable, ![[SecurifiToolkit sharedInstance] isNetworkOnline], self.isSimulator);
+    if([self isFirmwareCompatible] == NO){
+        tableView.scrollEnabled = NO;
+        return [self createAlmondUpdateAvailableCell:tableView];
+    }
+    
     if([self isNoAlmondLoaded]){
         tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];

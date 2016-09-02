@@ -133,14 +133,14 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self isNoAlmondMAC] || [self isSceneListEmpty]) {
+    if ([self isNoAlmondMAC] || [self isSceneListEmpty] || ![self isFirmwareCompatible]) {
         return 400;
     }
     return 90.0f;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([self isNoAlmondMAC]) {
+    if ([self isNoAlmondMAC] || ![self isFirmwareCompatible]) {
         return 1;
     }
     
@@ -151,6 +151,11 @@
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if([self isFirmwareCompatible] == NO){
+        tableView.scrollEnabled = NO;
+        return [self createAlmondUpdateAvailableCell:tableView];
+    }
+    
     if ([self isNoAlmondMAC]) {
         tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
