@@ -1463,7 +1463,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 #pragma  mark - Alertview delgate
 
 - (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView {
-
+    NSLog(@"alertViewShouldEnableFirstOtherButton");
     UITextField *password = [alertView textFieldAtIndex:0];
     BOOL flag = TRUE;
     if (password.text.length == 0) {
@@ -1475,7 +1475,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    DLog(@"Button Index =%ld", (long) buttonIndex);
+    NSLog(@"Button Index =%ld", (long) buttonIndex);
     if (alertView.tag == DELETE_ACCOUNT_CONFIRMATION) {
         if (buttonIndex == 1) {  //Delete Account
             UITextField *password = [alertView textFieldAtIndex:0];
@@ -1495,7 +1495,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     else if (alertView.tag == USER_INVITE_ALERT) {
         if (buttonIndex == 1) {  //Invite user to share Almond
             UITextField *emailID = [alertView textFieldAtIndex:0];
-            DLog(@"emailID: %@", emailID.text);
+            NSLog(@"emailID: %@", emailID.text);
             changedEmailID = emailID.text;
             //Send request to delete
             [self sendUserInviteRequest:emailID.text almondMAC:currentAlmondMAC];

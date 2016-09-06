@@ -14,12 +14,17 @@
 #import "HelpCenter.h"
 #import "AlmondPlusConstants.h"
 #import "RulesTableViewController.h"
+#import "MBProgressHUD.h"
+#import "UIViewController+Securifi.h"
 
-@interface MoreViewController ()<MoreCellTableViewCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RouterNetworkSettingsEditorDelegate>
+#define USER_INVITE_ALERT               0
+
+@interface MoreViewController ()<MoreCellTableViewCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RouterNetworkSettingsEditorDelegate, UIAlertViewDelegate, UITextFieldDelegate>
 @property (nonatomic) NSArray *moreFeatures;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic) NSString *userName;
 @property (nonatomic) BOOL isLocal;
+@property(nonatomic, readonly) MBProgressHUD *HUD;
 @end
 
 @implementation MoreViewController
@@ -44,7 +49,6 @@
     dispatch_async(dispatch_get_main_queue(),^{
         [self.tableView reloadData];
     });
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -64,6 +68,10 @@
                    name:USER_PROFILE_NOTIFIER
                  object:nil];
     
+    [center addObserver:self
+               selector:@selector(userInviteResponseCallback:)
+                   name:USER_INVITE_NOTIFIER
+                 object:nil];
 }
 
 - (void)sendUserProfileRequest {
@@ -95,7 +103,6 @@
         DLog(@"Reason Code %d", obj.reasonCode);
     }
 }
-
     
 -(NSArray *)getFeaturesArray{
     NSMutableArray *moreFeatures = [NSMutableArray new];
@@ -108,50 +115,10 @@
     return moreFeatures;
 }
 
--(void)loadProfileImage{
-    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *imgPath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", PROFILE_PIC, @"jpg"]];
-    NSLog(@"image path: %@", imgPath);
-    //image should be fetched from accounts command
-    if([[NSFileManager defaultManager] fileExistsAtPath:imgPath]){
-        UIImage *image = [UIImage imageWithContentsOfFile:imgPath];
-        NSLog(@"image: %@", image);
-        [self saveImage:image withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
-    }
-    else{
-        [self saveImage:[UIImage imageNamed:@"default_user_image"] withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
-    }
+#pragma mark check methods
+-(BOOL)isFirmwareCompatible{
+    return [SFIAlmondPlus checkIfFirmwareIsCompatible:[SecurifiToolkit sharedInstance].currentAlmond];
 }
-
--(void)saveImage:(UIImage *)image withFileName:(NSString *)imageName ofType:(NSString *)extension inDirectory:(NSString *)directoryPath {
-    if ([[extension lowercaseString] isEqualToString:@"png"]) {
-        [UIImagePNGRepresentation(image) writeToFile:[directoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", imageName, @"png"]] options:NSAtomicWrite error:nil];
-    } else if ([[extension lowercaseString] isEqualToString:@"jpg"] || [[extension lowercaseString] isEqualToString:@"jpeg"]) {
-        [UIImageJPEGRepresentation(image, 1.0) writeToFile:[directoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", imageName, @"jpg"]] options:NSAtomicWrite error:nil];
-    } else {
-        NSLog(@"Image Save Failed\nExtension: (%@) is not recognized, use (PNG/JPG)", extension);
-    }
-}
-
-//currently not being used, should be used when user wants to delete his dp
-- (void)removeImage:(NSString *)filename
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    
-    NSString *filePath = [documentsPath stringByAppendingPathComponent:filename];
-    NSError *error;
-    BOOL success = [fileManager removeItemAtPath:filePath error:&error];
-    if (success) {
-        UIAlertView *removedSuccessFullyAlert = [[UIAlertView alloc] initWithTitle:@"Congratulations:" message:@"Successfully removed" delegate:self cancelButtonTitle:@"Close" otherButtonTitles:nil];
-        [removedSuccessFullyAlert show];
-    }
-    else
-    {
-        NSLog(@"Could not delete file -:%@ ",[error localizedDescription]);
-    }
-}
-
 
 #pragma mark tableView delegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -225,14 +192,27 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 25;
+    if(section == 0 && ![self isFirmwareCompatible])
+        return 80;
+    else
+        return 25;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 25)];
-    headerView.backgroundColor = [UIColor whiteColor];
-    [CommonMethods addLineSeperator:headerView yPos:headerView.frame.size.height-1];
-    return headerView;
+    if(section == 0 && ![self isFirmwareCompatible]){
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
+        headerView.backgroundColor = [UIColor whiteColor];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 79)];
+        [CommonMethods setLableProperties:label text:@"The Almond firmware needs to be updated to remain compatible with this version of the app." textColor:[UIColor blackColor] fontName:@"Avenir-Light" fontSize:16 alignment:NSTextAlignmentCenter];
+        [headerView addSubview:label];
+        [CommonMethods addLineSeperator:headerView yPos:headerView.frame.size.height-1];
+        return headerView;
+    }else{
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 25)];
+        headerView.backgroundColor = [UIColor whiteColor];
+        [CommonMethods addLineSeperator:headerView yPos:headerView.frame.size.height-1];
+        return headerView;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -286,7 +266,8 @@
             HelpCenter *helpCenter = (HelpCenter *)[self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"HelpCenter"];
             [self pushViewController:helpCenter];
         }else{
-            [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:UI_ON_PRESENT_ACCOUNTS object:nil]];
+            [self shareAlmondTapped];
+
         }
     }
     
@@ -323,6 +304,8 @@
 #pragma mark tableviewcell delegates
 -(void)onLogoutTapDelegate{
     NSLog(@"onLogoutTapDelegate");
+    [self addHud:@"Logging out. Please wait!"];
+    [self showHudWithTimeout];
     [[SecurifiToolkit sharedInstance] asyncSendLogout];
     //main view will catch the response.
 }
@@ -398,4 +381,165 @@
     });
 }
 
+#pragma mark almond sharing
+- (void)shareAlmondTapped{
+    //Invitation Email Input Box
+    NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.message", @"By inviting someone they can access %@"), [SecurifiToolkit sharedInstance].currentAlmond.almondplusName];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.title", @"Invite By Email") message:alertMessage delegate:self cancelButtonTitle:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.Invite", @"Invite"), nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    alert.tag = USER_INVITE_ALERT;
+    [[alert textFieldAtIndex:0] setDelegate:self];
+    [alert show];
+}
+
+#pragma  mark - Alertview delgate
+
+- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView {
+    NSLog(@"alertViewShouldEnableFirstOtherButton");
+    UITextField *textField = [alertView textFieldAtIndex:0];
+    BOOL flag = TRUE;
+    if (textField.text.length == 0) {
+        flag = FALSE;
+    }
+    return flag;
+    
+}
+
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    NSLog(@"Button Index =%ld", (long) buttonIndex);
+
+    if (alertView.tag == USER_INVITE_ALERT) {
+        if (buttonIndex == 1) {  //Invite user to share Almond
+            UITextField *emailID = [alertView textFieldAtIndex:0];
+            NSLog(@"emailID: %@", emailID.text);
+            //Send request to delete
+            [self sendUserInviteRequest:emailID.text almondMAC:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
+        }
+    }
+}
+
+- (void)sendUserInviteRequest:(NSString *)emailID almondMAC:(NSString *)almondMAC {
+    [self addHud:NSLocalizedString(@"accounts.hud.inviteUserToShareAlmond", @"Inviting user to share Almond...")];
+    [self showHudWithTimeout];
+    [[SecurifiToolkit sharedInstance] asyncRequestInviteForSharingAlmond:almondMAC inviteEmail:emailID];
+}
+
+- (void)userInviteResponseCallback:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    UserInviteResponse *obj = (UserInviteResponse *) [data valueForKey:@"data"];
+    
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    
+    if (obj.isSuccessful) {
+        [self showToast:@"Successfully Updated!"];
+    }
+    else {
+        NSLog(@"Reason %@", obj.reason);
+        //Display appropriate reason
+        NSString *failureReason;
+        switch (obj.reasonCode) {
+            case 1:
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode1", @"There was some error on cloud. Please try later.");
+                break;
+                
+            case 2:
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode2", @"This user does not have a Securifi account.");
+                break;
+                
+            case 3:
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode3", @"The user has not verified the Securifi account yet.");
+                break;
+                
+            case 4:
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode4", @"You do not own this almond.");
+                break;
+                
+            case 5:
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode5", @"You need to fill all the fields.");
+                break;
+                
+            case 6:
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode6", @"You have already shared this almond with the user.");
+                break;
+                
+            case 7:
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode7", @"You can not add yourself as secondary user.");
+                break;
+                
+                
+            default:
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.default", @"Sorry! Sharing of Almond was unsuccessful.");
+                break;
+                
+        }
+        [self showToast:failureReason];
+    }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
+}
+
+#pragma mark - HUD mgt
+- (void)addHud:(NSString *)text{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = text;
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+}
+
+- (void)showHudWithTimeout {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD show:YES];
+        [self.HUD hide:YES afterDelay:5];
+    });
+}
+
+#pragma mark profile image methods
+-(void)loadProfileImage{
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *imgPath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", PROFILE_PIC, @"jpg"]];
+    NSLog(@"image path: %@", imgPath);
+    //image should be fetched from accounts command
+    if([[NSFileManager defaultManager] fileExistsAtPath:imgPath]){
+        UIImage *image = [UIImage imageWithContentsOfFile:imgPath];
+        NSLog(@"image: %@", image);
+        [self saveImage:image withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
+    }
+    else{
+        [self saveImage:[UIImage imageNamed:@"default_user_image"] withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
+    }
+}
+
+-(void)saveImage:(UIImage *)image withFileName:(NSString *)imageName ofType:(NSString *)extension inDirectory:(NSString *)directoryPath {
+    if ([[extension lowercaseString] isEqualToString:@"png"]) {
+        [UIImagePNGRepresentation(image) writeToFile:[directoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", imageName, @"png"]] options:NSAtomicWrite error:nil];
+    } else if ([[extension lowercaseString] isEqualToString:@"jpg"] || [[extension lowercaseString] isEqualToString:@"jpeg"]) {
+        [UIImageJPEGRepresentation(image, 1.0) writeToFile:[directoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", imageName, @"jpg"]] options:NSAtomicWrite error:nil];
+    } else {
+        NSLog(@"Image Save Failed\nExtension: (%@) is not recognized, use (PNG/JPG)", extension);
+    }
+}
+
+//currently not being used, should be used when user wants to delete his dp
+- (void)removeImage:(NSString *)filename
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSString *filePath = [documentsPath stringByAppendingPathComponent:filename];
+    NSError *error;
+    BOOL success = [fileManager removeItemAtPath:filePath error:&error];
+    if (success) {
+        UIAlertView *removedSuccessFullyAlert = [[UIAlertView alloc] initWithTitle:@"Congratulations:" message:@"Successfully removed" delegate:self cancelButtonTitle:@"Close" otherButtonTitles:nil];
+        [removedSuccessFullyAlert show];
+    }
+    else
+    {
+        NSLog(@"Could not delete file -:%@ ",[error localizedDescription]);
+    }
+}
 @end

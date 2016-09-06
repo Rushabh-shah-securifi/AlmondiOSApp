@@ -691,7 +691,7 @@
     
     UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(5, 100, table_width-10, 90)];
     lblNoSensor.textAlignment = NSTextAlignmentCenter;
-    [lblNoSensor setFont:[UIFont securifiLightFont:20]];
+    [lblNoSensor setFont:[UIFont securifiFont:20]];
     lblNoSensor.text = msg;
     lblNoSensor.numberOfLines = 0;
     lblNoSensor.textColor = [UIColor blackColor];

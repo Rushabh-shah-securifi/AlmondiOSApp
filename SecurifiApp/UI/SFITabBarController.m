@@ -159,7 +159,7 @@ typedef NS_ENUM(int, TabBarMode) {
 -(BOOL)checkIfFirmwareIsCompatible{
     SFIAlmondPlus *currentAlmond = [[SecurifiToolkit sharedInstance] currentAlmond];
     BOOL local = [[SecurifiToolkit sharedInstance] useLocalNetwork:currentAlmond.almondplusMAC];
-    NSLog(@"current almond dash: %@", currentAlmond);
+    NSLog(@"current almond tab bar: %@", currentAlmond);
     //Ignoring the screen in local connection and when firmware is nil
     if(currentAlmond.firmware == nil || local){
         return YES;
