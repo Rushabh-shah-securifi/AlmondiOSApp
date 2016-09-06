@@ -233,6 +233,8 @@ int mii;
     if ([self showNeedsActivationHeader] && section == 0) {
         return 100;
     }
+    if ([self isNoAlmondMAC])
+        return 0;
     
     return 30;
 }

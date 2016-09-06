@@ -22,10 +22,12 @@
 #import "SFIColors.h"
 #import "CommonMethods.h"
 #import "UIFont+Securifi.h"
+#import "MessageView.h"
+#import "SFICloudLinkViewController.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
-@interface RulesTableViewController ()<CustomCellTableViewCellDelegate,MBProgressHUDDelegate, HelpScreensDelegate>{
+@interface RulesTableViewController ()<CustomCellTableViewCellDelegate,MBProgressHUDDelegate, HelpScreensDelegate,MessageViewDelegate>{
     NSInteger randomMobileInternalIndex;
 }
 
@@ -134,7 +136,7 @@ CGPoint tablePoint;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if([self isRuleArrayEmpty]){
+    if([self isNoAlmondMAC] || [self isRuleArrayEmpty]){
         return 1;
     }
     NSLog(@"row count: %lu", (unsigned long)self.toolkit.ruleList.count);
@@ -142,13 +144,18 @@ CGPoint tablePoint;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if([self isRuleArrayEmpty]){
+    if([self isNoAlmondMAC] || [self isRuleArrayEmpty]){
         return 400;
     }
     return 146; //height of the cell from story board
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self isNoAlmondMAC]) {
+        tableView.scrollEnabled = NO;
+        return [self createNoAlmondCell:tableView];
+    }
+    
     if([self isRuleArrayEmpty]){
         return [self createEmptyCell:tableView];
     }
@@ -195,6 +202,10 @@ CGPoint tablePoint;
 
 
 #pragma mark helper methods
+- (BOOL)isNoAlmondMAC {
+    return [SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC == nil;
+}
+
 - (BOOL)isRuleArrayEmpty {
     return self.toolkit.ruleList.count == 0;
 }
@@ -225,6 +236,24 @@ CGPoint tablePoint;
     return cell;
 }
 
+- (UITableViewCell *)createNoAlmondCell:(UITableView *)tableView {
+    static NSString *no_almond_cell_id = @"NoAlmondCell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:no_almond_cell_id];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:no_almond_cell_id];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        MessageView *view = [MessageView linkRouterMessage];
+        view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, 400);
+        view.delegate = self;
+        
+        [cell addSubview:view];
+    }
+    
+    return cell;
+}
 #pragma mark custom cell Delegate methods
 - (void)deleteRule:(CustomCellTableViewCell *)cell{
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
@@ -358,6 +387,12 @@ CGPoint tablePoint;
             [self showToast:NSLocalizedString(@"RulesViewController Successfully updated!",@"Successfully updated!")];
         }
     });
+}
+#pragma mark - MessageViewDelegate methods
+
+- (void)messageViewDidPressButton:(MessageView *)msgView {
+    UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
+    [self presentViewController:ctrl animated:YES completion:nil];
 }
 
 #pragma mark - HUD and Toast mgt

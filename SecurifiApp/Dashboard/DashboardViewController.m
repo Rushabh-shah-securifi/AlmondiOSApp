@@ -24,6 +24,7 @@
 #import "SWRevealViewController.h"
 #import "HelpScreens.h"
 #import "UICommonMethods.h"
+#import "AlmondSelectionTableView.h"
 
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate>{
     UIButton *button, *button1;
@@ -70,6 +71,10 @@
     [self SelectAlmond:NSLocalizedString(@"dashBoard AddAlmond", @"Add Almond")];
     [self markNetworkStatusIcon];
     [self initializeHUD];
+//    AlmondSelectionTableView *view = [AlmondSelectionTableView new];
+//    view.frame = CGRectMake(20, self.view.frame.size.height - 300, self.view.frame.size.width-40, 300);
+//    [view initializeView];
+//    [self.tabBarController.view addSubview:view];
 }
 
 - (void)viewWillAppear:(BOOL)animated{

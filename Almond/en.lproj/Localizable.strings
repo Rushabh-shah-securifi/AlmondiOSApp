@@ -777,7 +777,7 @@ Follow it, then login below.";
 "Rules_Desc"="Rules enable your smart home devices to tell each other what to do. They also let you automate devices on a schedule. For example:\n\n \"On weekdays, if I come home between 6pm and 10pm, turn on living room lights and set the thermostat to 70˚F\".";
 
 "Creating_a_Rule" = "Creating a Rule";
-"Creating_a_Rule_Desc"="Go to the Rules tab, and tap the add button. Every rule needs at least one trigger (shown in blue) and one action (shown in orange). Almond lets you use a variety of triggers and actions including the weather, Home and Away modes, sensors, your mobile phone, time and the day of the week.";
+"Creating_a_Rule_Desc"="Go to the Rules section in the More menu, and tap the add button. Every rule needs at least one trigger (shown in blue) and one action (shown in orange). Almond lets you use a variety of triggers and actions including the weather, Home and Away modes, sensors, your mobile phone, time and the day of the week.";
 
 
 "IFTTT" = "IFTTT Now Works With Almond";
@@ -807,7 +807,7 @@ Follow it, then login below.";
 "Almond_Rules_Desc" = "Almond's native rule engine allows you to automate and secure your home. To begin creating and editing rules, tap \"More\" and select \"Rules\"";
 "Take_a_pick" = "Take a Pick";
 "Adding_a_New_Device" = "Adding a New Device";
-"Adding_a_New_Device_Desc" = "To add a new smart home device, tap the Add Sensor icon on Almond’s LCD and follow the on-screen instructions.\n\nFor adding Nest devices, follow this link.";
+"Adding_a_New_Device_Desc" = "To add a new Zigbee or Z-Wave smart home device, tap the Add Sensor icon on Almond’s LCD and follow the on-screen instructions.";
 "Device_Actions" = "Device Actions";
 "Device_Actions_Desc" = "Each device has it's own set of unique features. Simple devices like smart switches and lights can easily be controlled by tapping the device icon.";
 "Notification_Preferences" = "Notification Preferences";
@@ -835,7 +835,7 @@ Follow it, then login below.";
 "wired_interface_desc" = "WiFi quality is best when your additional Almonds are connected via interace. If you have Internet cabling across rooms in your house, you can choose this mode.";
 
 "welcome_desc"="You've successfully logged into your Almond account. Here are a few quick tips to get the most out of your Almond.";
-"theDashboard_desc"="The dashboard puts the status of your home at your fingertips. Get an overview of your recent Smart Home and Wi-Fi device notifications.";
+"theDashboard_desc"="The dashboard puts the status of your home at your fingertips. Get an overview of your recent smart home and network device notifications.";
 "almond_modes_desc"="Home and Away modes – or arm and disarm - are a key part of any home security or automation system. They are necessary because when you are home, you don’t need your sensors to trigger an alarm. Go to Rules to personalize how your system responds in these modes.";
 "more_desc"="Tap \"More\" to create rules and visit our Help Center. The Help Center lets you revisit this guide and other help topics, and contact technical support.";
 

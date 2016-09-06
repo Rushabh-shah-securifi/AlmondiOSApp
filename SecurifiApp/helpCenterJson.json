@@ -47,8 +47,7 @@
                                         "title": "Adding_a_New_Device",
                                         "description": "Adding_a_New_Device_Desc",
                                         "color" : "b9f6ca",
-                                        "image": "h_addnewdev",
-                                        "url":"local"
+                                        "image": "h_addnewdev"
                                         }, {
                                         "title": "Quick_Actions",
                                         "description": "Quick_Actions_Desc",

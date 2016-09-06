@@ -206,7 +206,7 @@
 }
 
 -(void)setDescText:(NSDictionary *)screen{
-    //we need to have hasLink and urls in json, do it!
+    //json has key url
     NSString *desc = NSLocalizedString(screen[DESCRIPTION], @"");
     if(screen[S_URL] != nil){
         NSDictionary *attribs = @{

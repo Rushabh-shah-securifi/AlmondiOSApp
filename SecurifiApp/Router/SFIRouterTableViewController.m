@@ -392,6 +392,8 @@ int mii;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if([self isNoAlmondLoaded])
+        return 0;
     return 10;
 }
 

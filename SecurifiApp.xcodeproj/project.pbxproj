@@ -492,6 +492,10 @@
 		F400B6C21D65ECCD00DDEE50 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */; };
 		F401B0731D2D241200F64CE2 /* ColorComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F401B0721D2D241200F64CE2 /* ColorComponentView.m */; };
 		F401B0741D2D241200F64CE2 /* ColorComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F401B0721D2D241200F64CE2 /* ColorComponentView.m */; };
+		F41240AA1D7EC1480067A94C /* AlmondSelectionTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F41240A91D7EC1480067A94C /* AlmondSelectionTableView.m */; };
+		F41240AB1D7EC1480067A94C /* AlmondSelectionTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F41240A91D7EC1480067A94C /* AlmondSelectionTableView.m */; };
+		F41240AE1D7EC6030067A94C /* AlmondSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F41240AD1D7EC6030067A94C /* AlmondSelectionCell.m */; };
+		F41240AF1D7EC6030067A94C /* AlmondSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F41240AD1D7EC6030067A94C /* AlmondSelectionCell.m */; };
 		F41586F41D6F06140004C577 /* AlmondUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F41586F31D6F06140004C577 /* AlmondUpdateViewController.m */; };
 		F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F426AE2E1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
@@ -1110,6 +1114,10 @@
 		F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportViewController.m; sourceTree = "<group>"; };
 		F401B0711D2D241200F64CE2 /* ColorComponentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorComponentView.h; sourceTree = "<group>"; };
 		F401B0721D2D241200F64CE2 /* ColorComponentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorComponentView.m; sourceTree = "<group>"; };
+		F41240A81D7EC1480067A94C /* AlmondSelectionTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondSelectionTableView.h; sourceTree = "<group>"; };
+		F41240A91D7EC1480067A94C /* AlmondSelectionTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlmondSelectionTableView.m; sourceTree = "<group>"; };
+		F41240AC1D7EC6030067A94C /* AlmondSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondSelectionCell.h; sourceTree = "<group>"; };
+		F41240AD1D7EC6030067A94C /* AlmondSelectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlmondSelectionCell.m; sourceTree = "<group>"; };
 		F41586F21D6F06140004C577 /* AlmondUpdateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondUpdateViewController.h; sourceTree = "<group>"; };
 		F41586F31D6F06140004C577 /* AlmondUpdateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlmondUpdateViewController.m; sourceTree = "<group>"; };
 		F426AE2B1D19515500AE60C8 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
@@ -1768,6 +1776,10 @@
 				2A4C24351D0FC3EB001191E8 /* DashboardViewController.h */,
 				CE65C48F1D1A67B200C2E1C0 /* UILabel+ActionSheet.h */,
 				CE65C4901D1A67B200C2E1C0 /* UILabel+ActionSheet.m */,
+				F41240A81D7EC1480067A94C /* AlmondSelectionTableView.h */,
+				F41240A91D7EC1480067A94C /* AlmondSelectionTableView.m */,
+				F41240AC1D7EC6030067A94C /* AlmondSelectionCell.h */,
+				F41240AD1D7EC6030067A94C /* AlmondSelectionCell.m */,
 			);
 			name = Dashboard;
 			sourceTree = "<group>";
@@ -2897,6 +2909,7 @@
 				1C9B1D901A3EE9EF00097D8F /* main.m in Sources */,
 				1C7E7DAE1A41A0990026F0BA /* SFISignupViewController.m in Sources */,
 				1C7E7D921A41A0990026F0BA /* SFIRouterRebootTableViewCell.m in Sources */,
+				F41240AB1D7EC1480067A94C /* AlmondSelectionTableView.m in Sources */,
 				1C7E7DA61A41A0990026F0BA /* SFIAccountsTableViewController.m in Sources */,
 				1C7E7DBC1A41A0990026F0BA /* SFICardView.m in Sources */,
 				1C7E7D881A41A0990026F0BA /* SFINotificationsViewController.m in Sources */,
@@ -2908,6 +2921,7 @@
 				1C7E7DD21A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				1C7E7D941A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
 				1C7E7D9C1A41A0990026F0BA /* ScoreboardEventViewController.m in Sources */,
+				F41240AF1D7EC6030067A94C /* AlmondSelectionCell.m in Sources */,
 				1C7E7D8A1A41A0990026F0BA /* SFINotificationTableViewCell.m in Sources */,
 				1C7E7D841A41A0990026F0BA /* SFILoginViewController.m in Sources */,
 				1C7E7DC61A41A0990026F0BA /* SFIHighlightedButton.m in Sources */,
@@ -3024,6 +3038,7 @@
 				F400B6C11D65ECCD00DDEE50 /* SupportViewController.m in Sources */,
 				1C7E7DD11A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				CEF6F4FE1C92CAD600C68975 /* RuleTextField.m in Sources */,
+				F41240AE1D7EC6030067A94C /* AlmondSelectionCell.m in Sources */,
 				A5AC1E841CC7BA01009F362B /* RuleSceneUtil.m in Sources */,
 				CE40BF151D225791007C2148 /* HistoryCell.m in Sources */,
 				1C7E7DC11A41A0990026F0BA /* SFIConstants.m in Sources */,
@@ -3162,6 +3177,7 @@
 				F4B875471D5382D500DCF76F /* MeshSetupViewController.m in Sources */,
 				F4B8767A1D54653500DCF76F /* ListButtonView.m in Sources */,
 				F4D93AF71D3F882300D55BD6 /* HelpItemsTableViewController.m in Sources */,
+				F41240AA1D7EC1480067A94C /* AlmondSelectionTableView.m in Sources */,
 				F4EA08261D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */,
 				1DF031024A2F8810074C455A /* TemperatureView.m in Sources */,
 				1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */,

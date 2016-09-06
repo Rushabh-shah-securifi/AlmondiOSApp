@@ -314,37 +314,6 @@
     [self presentLogoutAllView];
 }
 
--(void)onImageTapDelegate:(UIButton *)button{
-    NSLog(@"onImageTapDelegate");
-    [self presentPhotoLibrary];
-}
-
--(void)presentPhotoLibrary{
-    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-    imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    imagePickerController.delegate = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self presentViewController:imagePickerController animated:YES completion:nil];
-    });
-}
-
-#pragma mark image delegate
-// This method is called when an image has been chosen from the library or taken from the camera.
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    //You can retrieve the actual UIImage
-    UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
-    //Or you can get the image url from AssetsLibrary
-//    NSURL *path = [info valueForKey:UIImagePickerControllerReferenceURL];
-    
-    NSLog(@"image: %@", image);
-    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    [self saveImage:image withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [picker dismissViewControllerAnimated:YES completion:nil];
-    });
-    
-}
 
 #pragma mark - SFILogoutAllDelegate method
 
@@ -384,7 +353,7 @@
 #pragma mark almond sharing
 - (void)shareAlmondTapped{
     //Invitation Email Input Box
-    NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.message", @"By inviting someone they can access %@"), [SecurifiToolkit sharedInstance].currentAlmond.almondplusName];
+    NSString *alertMessage = [NSString stringWithFormat:@"Share control of %@ by sending an invitation over email", [SecurifiToolkit sharedInstance].currentAlmond.almondplusName];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.title", @"Invite By Email") message:alertMessage delegate:self cancelButtonTitle:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.Invite", @"Invite"), nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     alert.tag = USER_INVITE_ALERT;
@@ -499,6 +468,39 @@
 }
 
 #pragma mark profile image methods
+-(void)onImageTapDelegate:(UIButton *)button{
+    NSLog(@"onImageTapDelegate");
+    [self presentPhotoLibrary];
+}
+
+-(void)presentPhotoLibrary{
+    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+    imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    imagePickerController.delegate = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:imagePickerController animated:YES completion:nil];
+    });
+}
+
+#pragma mark image delegate
+// This method is called when an image has been chosen from the library or taken from the camera.
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    //You can retrieve the actual UIImage
+    UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
+    //Or you can get the image url from AssetsLibrary
+    //    NSURL *path = [info valueForKey:UIImagePickerControllerReferenceURL];
+    
+    NSLog(@"image: %@", image);
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    [self saveImage:image withFileName:PROFILE_PIC ofType:@"jpg" inDirectory:documentsDirectory];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [picker dismissViewControllerAnimated:YES completion:nil];
+    });
+    
+}
+
+
 -(void)loadProfileImage{
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *imgPath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", PROFILE_PIC, @"jpg"]];
