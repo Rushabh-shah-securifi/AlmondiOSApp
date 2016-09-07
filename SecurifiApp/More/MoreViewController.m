@@ -239,6 +239,12 @@
         else if(section == 1){
             [self callControllersOnRowSelection:row];
         }
+        else if(section == 3){
+            //main view will catch the response.
+            [self addHud:@"Logging out. Please wait!"];
+            [self showHudWithTimeout];
+            [[SecurifiToolkit sharedInstance] asyncSendLogout];
+        }
     }
 }
 
@@ -304,10 +310,8 @@
 #pragma mark tableviewcell delegates
 -(void)onLogoutTapDelegate{
     NSLog(@"onLogoutTapDelegate");
-    [self addHud:@"Logging out. Please wait!"];
-    [self showHudWithTimeout];
-    [[SecurifiToolkit sharedInstance] asyncSendLogout];
-    //main view will catch the response.
+    //disabled button touch in storyboard
+    //moved code to did select row
 }
 
 -(void)onLogoutAllTapDelegate{
@@ -371,9 +375,7 @@
         flag = FALSE;
     }
     return flag;
-    
 }
-
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     NSLog(@"Button Index =%ld", (long) buttonIndex);

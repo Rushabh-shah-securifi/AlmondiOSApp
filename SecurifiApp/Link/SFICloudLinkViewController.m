@@ -309,7 +309,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
         field.font = font;
         field.text = fieldValue;
         field.textAlignment = NSTextAlignmentCenter;
-
+        field.autocorrectionType = UITextAutocorrectionTypeNo;
         [cell.contentView addSubview:field];
     }
 

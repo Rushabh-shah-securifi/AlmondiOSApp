@@ -70,7 +70,9 @@
 }
 
 - (IBAction)onLogoutTap:(id)sender {
-    [self.delegate onLogoutTapDelegate];
+    //disabled button touch in storyboard
+    //moved code to did select row
+//    [self.delegate onLogoutTapDelegate];
 }
 
 - (IBAction)onImageButtonTap:(UIButton *)button {

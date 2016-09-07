@@ -41,6 +41,9 @@ static const int footerHt = 60;
 }
 
 -(CGFloat)getHeight{
+    if([self hasNoAlmond])
+        return headerHt+footerHt+40+10;
+    
     if(self.almondList.count >= 4)
         return 300;
     
@@ -75,11 +78,14 @@ static const int footerHt = 60;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.almondList.count;
+    return [self hasNoAlmond]? 1: self.almondList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Almond selection cell for row");
+    if([self hasNoAlmond])
+        return [self createNoAlmondCell:(UITableView *)tableView];
+    
     AlmondSelectionCell *cell =  [tableView dequeueReusableCellWithIdentifier:@"almondCell"];
 
     if (cell == nil) {
@@ -91,6 +97,28 @@ static const int footerHt = 60;
     SFIAlmondPlus *almond = self.almondList[indexPath.row];
     [cell setUpCell:almond.almondplusName isCurrent:[self isCurrentAlmond:almond.almondplusMAC]];
     return cell;
+}
+
+-(UITableViewCell *)createNoAlmondCell:(UITableView *)tableView{
+    NSLog(@"no almond cell");
+    UITableViewCell *cell =  [tableView dequeueReusableCellWithIdentifier:@"noAlmond"];
+    
+    if (cell == nil) {
+        cell = [[AlmondSelectionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"noAlmond"];
+        cell.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), rowHeight);
+        UILabel *noAlmondLbl = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), rowHeight)];
+        [CommonMethods setLableProperties:noAlmondLbl text:@"Tap on below button to add an Almond." textColor:[SFIColors helpTextDescription] fontName:@"Avenir-Roman" fontSize:15 alignment:NSTextAlignmentCenter];
+        [cell addSubview:noAlmondLbl];
+    }
+    return cell;
+}
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    //if the selected almond is same don't do anything.
+    SFIAlmondPlus *almond = self.almondList[indexPath.row];
+    if([self isCurrentAlmond:almond.almondplusMAC])
+        return;
+    
+    [self.methodsDelegate onAlmondSelectedDelegate:self.almondList[indexPath.row]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -142,14 +170,7 @@ static const int footerHt = 60;
     return footerView;
 }
 
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //if the selected almond is same don't do anything.
-    SFIAlmondPlus *almond = self.almondList[indexPath.row];
-    if([self isCurrentAlmond:almond.almondplusMAC])
-        return;
-    
-    [self.methodsDelegate onAlmondSelectedDelegate:self.almondList[indexPath.row]];
-}
+
 
 #pragma mark button tap methods
 - (void)onCloseBtnTap:(id)sender{
@@ -163,6 +184,10 @@ static const int footerHt = 60;
 #pragma mark helper methods
 -(BOOL)isCurrentAlmond:(NSString *)mac{
     return [[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC isEqualToString:mac];
+}
+
+-(BOOL)hasNoAlmond{
+    return [SecurifiToolkit sharedInstance].currentAlmond == nil;
 }
 
 @end

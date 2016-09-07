@@ -27,7 +27,7 @@
 #import "AlmondSelectionTableView.h"
 
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate>{
-    UIButton *button, *button1;
+    UIButton *button, *btnArrow;
 }
 
 @property(nonatomic) SFICloudStatusBarButtonItem *leftButton;
@@ -59,17 +59,9 @@
     self.deviceNotificationArr = [[NSMutableArray alloc]init];
     [self navigationBarStyle];
     
+    //add almond button
+    [self initializeAddButtonView];
     
-    button = [[UIButton alloc]init];
-    button1 = [[UIButton alloc]init];
-    button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    [button addTarget:self action:@selector(AlmondSelection:) forControlEvents:UIControlEventTouchUpInside];
-    button1 = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button1 addTarget:self action:@selector(AlmondSelection:) forControlEvents:UIControlEventTouchUpInside];
-    [Scroller addSubview:button];
-    [Scroller addSubview:button1];
-    [self SelectAlmond:NSLocalizedString(@"dashBoard AddAlmond", @"Add Almond")];
     [self markNetworkStatusIcon];
     [self initializeHUD];
 }
@@ -149,18 +141,32 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)SelectAlmond : (NSString *)title{
-    CGFloat strikeWidth;
+- (void)initializeAddButtonView{
+    button = [[UIButton alloc]init];
+    btnArrow = [[UIButton alloc]init];
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    [button addTarget:self action:@selector(AlmondSelection:) forControlEvents:UIControlEventTouchUpInside];
+    btnArrow = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnArrow addTarget:self action:@selector(AlmondSelection:) forControlEvents:UIControlEventTouchUpInside];
+    [Scroller addSubview:button];
+    [Scroller addSubview:btnArrow];
+    
+    [self SelectAlmond:NSLocalizedString(@"dashBoard AddAlmond", @"Add Almond")];
+}
+
+- (void)SelectAlmond:(NSString *)title{
+    CGFloat titleWidth;
     CGSize textSize;
     textSize = [title sizeWithAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Medium" size:18]}];
-    strikeWidth = textSize.width + 10;
-    if(strikeWidth > 150){
-        strikeWidth = 150;
+    titleWidth = textSize.width + 10;
+    if(titleWidth > 150){
+        titleWidth = 150;
     }
-    button.frame = CGRectMake(self.view.frame.size.width/2 - strikeWidth/2, 40.0,strikeWidth, 21.0);
-    button1.frame = CGRectMake(button.frame.origin.x+strikeWidth, button.frame.origin.y, 21.0, 21.0);
+    button.frame = CGRectMake(CGRectGetWidth(self.view.frame)/2 - titleWidth/2, 40.0, titleWidth, 30);
+    btnArrow.frame = CGRectMake(button.frame.origin.x+titleWidth, CGRectGetMinY(button.frame), 21.0, 30);
     [button setTitle:title forState:UIControlStateNormal];
-    [button1 setBackgroundImage:[UIImage imageNamed:@"arrow_drop_down_black.pdf"] forState:UIControlStateNormal];
+    [btnArrow setBackgroundImage:[UIImage imageNamed:@"arrow_drop_down_black.pdf"] forState:UIControlStateNormal];
 }
 
 
@@ -272,8 +278,6 @@
 
 - (void)onCurrentAlmondChanged:(id)sender {
     NSLog(@"on Current almond changed");
-
-    
     [self.toolkit.devices removeAllObjects];
     [self.toolkit.clients removeAllObjects];
     [self initializeUI];
@@ -284,7 +288,7 @@
 }
 
 - (void)onAlmondListDidChange:(id)sender {
-
+    [self onCurrentAlmondChanged:nil];
 }
 
 

@@ -223,6 +223,7 @@
 
 - (void)onKeyboardDidHide:(id)notice {
     if (self.lastEditedFieldWasPasswd && !self.isLoggingIn) {
+        NSLog(@"lastEditedFieldWasPasswd");
         [self trySendLoginRequest:NO];
     }
 
