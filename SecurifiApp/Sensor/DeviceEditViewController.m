@@ -516,7 +516,7 @@ static const int xIndent = 10;
     
     NSLog(@"payload mobile command: %@", payload);
     
-    BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
+    BOOL isSuccessful = [payload[@"Success"] boolValue];
     GenericIndexValue *genIndexVal = self.miiTable[payload[@"MobileInternalIndex"]];
     int dType = [Device getTypeForID:genIndexVal.deviceID];
     
@@ -748,10 +748,10 @@ static const int xIndent = 10;
         return;
     }
     NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    if ([[mainDict valueForKey:@"MobileInternalIndex"] integerValue]!=mii) {
+    if ([mainDict[@"MobileInternalIndex"] integerValue]!=mii) {
         return;
     }
-    if ([[mainDict valueForKey:@"Success"] isEqualToString:@"false"]) {
+    if ([mainDict[@"Success"] boolValue] == NO) {
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self showToast:[NSString stringWithFormat:NSLocalizedString(@"sorry_could_not_update", @"Sorry, Could not update.")]];
             [self.navigationController popViewControllerAnimated:YES];

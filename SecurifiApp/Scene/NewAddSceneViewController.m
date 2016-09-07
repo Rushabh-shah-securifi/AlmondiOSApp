@@ -216,10 +216,10 @@ UIAlertView *alert;
         return;
     }
     
-    NSString * success = [mainDict valueForKey:@"Success"];
+    BOOL success = [mainDict[@"Success"] boolValue];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
-        if (![success isEqualToString:@"true"]) {
+        if (success == NO) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Oops") message:NSLocalizedString(@"try_later", @"Sorry, There was some problem with this request, try later!")
                                                            delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles: nil];
             [alert show];

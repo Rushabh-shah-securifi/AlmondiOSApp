@@ -378,7 +378,7 @@ CGPoint tablePoint;
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
     }
     NSLog(@"devicelistcontroller - mobile - payload: %@", payload);
-    BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
+    BOOL isSuccessful = [payload[@"Success"] boolValue];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.HUD hide:YES];
         if(isSuccessful == NO){

@@ -527,7 +527,7 @@ int mii;
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
     }
     NSLog(@"devicelistcontroller - mobile - payload: %@", payload);
-    BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
+    BOOL isSuccessful = [payload[@"Success"] boolValue];
     if(isSuccessful == NO){
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];

@@ -679,6 +679,9 @@
 }
 
 -(void)onConnection2:(NSString *)Title subTitle1:(NSString *)subTitle1 subTitle2:(NSString *)subTitle2 stmt1:(enum SFIAlmondConnectionMode)mode1 stmt2:(enum SFIAlmondConnectionMode)mode2{
+    if(![UIAlertController class]){ // to not support ios 7 or before
+        return;
+    }
     UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"almond_connection", @"Almond Connection") message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     almondSelect.title = Title;
     UIAlertAction *Check1 = [UIAlertAction
@@ -716,6 +719,9 @@
 }
 
 -(void)onConnection3:(NSString *)Title subTitle:(NSString *)subTitle{
+    if(![UIAlertController class]){ // to not support ios 7 or before
+        return;
+    }
     UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"almond_connection", @"Almond Connection") message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     almondSelect.title = Title;
     UIAlertAction *Check = [UIAlertAction
