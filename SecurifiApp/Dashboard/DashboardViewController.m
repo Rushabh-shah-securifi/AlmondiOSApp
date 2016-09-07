@@ -26,7 +26,7 @@
 #import "UICommonMethods.h"
 #import "AlmondSelectionTableView.h"
 
-@interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate>{
+@interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate>{
     UIButton *button, *button1;
 }
 
@@ -42,6 +42,7 @@
 @property(nonatomic) UIImageView *navigationImg;
 @property(nonatomic) HelpScreens *helpScreensObj;
 @property(nonatomic) UIView *maskView;
+@property(nonatomic) UIButton *buttonMaskView;
 @end
 
 @implementation DashboardViewController
@@ -71,10 +72,6 @@
     [self SelectAlmond:NSLocalizedString(@"dashBoard AddAlmond", @"Add Almond")];
     [self markNetworkStatusIcon];
     [self initializeHUD];
-//    AlmondSelectionTableView *view = [AlmondSelectionTableView new];
-//    view.frame = CGRectMake(20, self.view.frame.size.height - 300, self.view.frame.size.width-40, 300);
-//    [view initializeView];
-//    [self.tabBarController.view addSubview:view];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -374,91 +371,9 @@
 
 #pragma mark selectAlmond
 - (IBAction)AlmondSelection:(UIButton *)sender {
-    if(![UIAlertController class]){ // to not support ios 7 or before
-        return;
-    }
-    
-    enum SFIAlmondConnectionMode modeValue = [self.toolkit currentConnectionMode];
-    NSArray *almondList = [self buildAlmondList:modeValue];
-    UIAlertController *viewC;
-    viewC = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"select_almond", @"Select Almond") message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UILabel * appearanceLabel = [UILabel appearanceWhenContainedIn:UIAlertController.class, nil];
-    [appearanceLabel setAppearanceFont:[UIFont securifiLightFont:14]];
-    
-    for(SFIAlmondPlus *name in almondList){
-        if ([name.almondplusName isEqualToString:_labelAlmond.text]) {
-            viewC.view.tintColor = [UIColor blackColor];
-        }
-        UIAlertAction *Aname = [UIAlertAction
-                                actionWithTitle:name.almondplusName
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action){
-                                    SFIAlmondPlus *currentAlmond = name;
-                                    [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
-                                    [self SelectAlmond:name.almondplusName];
-                                    [self.AddAlmond setTitle:name.almondplusName forState:UIControlStateNormal];
-                                    //_labelAlmond.text = name.almondplusName;
-                                    _labelAlmondStatus.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:14];
-                                    _labelAlmond.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:18];
-                                }];
-        //accessing private properties will cause app to be rejected potentially. (need to develop new view)
-//        if ([name.almondplusMAC isEqualToString:self.toolkit.currentAlmond.almondplusMAC]) {
-//            UIColor *color = [SFIColors ruleBlueColor];
-//            [Aname setValue:color forKey:@"titleTextColor"];
-//            
-//        }
-        
-        [Aname setValue:[UIImage imageNamed:@"icon_dashboard"] forKey:@"image"];
-        
-        [viewC addAction:Aname];
-    }
-    UIAlertAction *AddNew = [UIAlertAction
-                             actionWithTitle:@"+"
-                             style:UIAlertActionStyleDefault
-                             handler:^(UIAlertAction * action){
-                                 switch ([[SecurifiToolkit sharedInstance] currentConnectionMode]) {
-                                     case SFIAlmondConnectionMode_cloud: {
-                                         UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
-                                         [self presentViewController:ctrl animated:YES completion:nil];
-                                         break;
-                                     }
-                                     case SFIAlmondConnectionMode_local: {
-                                         RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
-                                         editor.delegate = self;
-                                         editor.makeLinkedAlmondCurrentOne = YES;
-                                         UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
-                                         [self presentViewController:ctrl animated:YES completion:nil];
-                                         
-                                         break;
-                                         
-                                     }
-                                         
-                                 }
-                                 
-                                 
-                                 
-                                 //                                 UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
-                                 
-                                 //                                 [self presentViewController:ctrl animated:YES completion:nil];
-                                 
-                             }];
-    UIAlertAction *Check = [UIAlertAction
-                            actionWithTitle:NSLocalizedString(@"close", @"Close")
-                            style:UIAlertActionStyleDefault
-                            handler:^(UIAlertAction * action)
-                            {
-                                [viewC dismissViewControllerAnimated:YES completion:nil];
-                            }];
-    [viewC addAction:AddNew];
-    [viewC addAction:Check];
-    viewC.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0);
-    viewC.popoverPresentationController.sourceView = self.view;
-    viewC.popoverPresentationController.permittedArrowDirections = 0;
-    [self presentViewController:viewC animated:YES completion:nil];
-    
-    
+    [self showAlmondSelection];
 }
+
 - (CGRect)sourceRectForCenteredAlertController
 {
     CGRect sourceRect = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
@@ -1020,6 +935,65 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit removeLocalNetworkSettingsForAlmond:almondMac];
     [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark almond selection view
+- (void)showAlmondSelection{
+    self.buttonMaskView = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
+    self.buttonMaskView.backgroundColor = [SFIColors maskColor];
+    [self.buttonMaskView addTarget:self action:@selector(onBtnMskTap:) forControlEvents:UIControlEventTouchUpInside];
+    
+    AlmondSelectionTableView *view = [AlmondSelectionTableView new];
+    view.methodsDelegate = self;
+    [view initializeView:self.buttonMaskView.frame];
+    [self.buttonMaskView addSubview:view];
+    
+    [UIView transitionWithView:self.tabBarController.view duration:0.5
+                       options:UIViewAnimationOptionTransitionCurlDown //change to whatever animation you like
+                    animations:^ { [self.tabBarController.view addSubview:self.buttonMaskView]; }
+                    completion:nil];
+}
+
+- (void)onCloseBtnTapDelegate{
+    [self removeAlmondSelectionView];
+}
+
+-(void)onBtnMskTap:(id)sender{
+    [self removeAlmondSelectionView];
+}
+
+- (void)onAddAlmondTapDelegate{
+    NSLog(@"on add almond tap");
+    [self removeAlmondSelectionView];
+    switch ([[SecurifiToolkit sharedInstance] currentConnectionMode]) {
+        case SFIAlmondConnectionMode_cloud: {
+            UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
+            [self presentViewController:ctrl animated:YES completion:nil];
+            break;
+        }
+        case SFIAlmondConnectionMode_local: {
+            RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+            editor.delegate = self;
+            editor.makeLinkedAlmondCurrentOne = YES;
+            UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
+            [self presentViewController:ctrl animated:YES completion:nil];
+            
+            break;
+        }
+    }
+}
+
+-(void)onAlmondSelectedDelegate:(SFIAlmondPlus *)selectedAlmond{
+    [self removeAlmondSelectionView];
+    [[SecurifiToolkit sharedInstance] setCurrentAlmond:selectedAlmond];
+}
+
+-(void)removeAlmondSelectionView{
+    [UIView transitionWithView:self.tabBarController.view duration:0.5
+                       options:UIViewAnimationOptionTransitionCurlUp //change to whatever animation you like
+                    animations:^ { [self.buttonMaskView removeFromSuperview]; }
+                    completion:nil];
+    self.buttonMaskView = nil;
 }
 
 #pragma mark help screens

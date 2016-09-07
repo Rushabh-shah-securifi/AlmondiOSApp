@@ -698,29 +698,6 @@ int mii;
     [self.navigationController pushViewController:helpCenter animated:YES];
 }
 
-#pragma mark label methods
--(void)setLableProperties:(UILabel*)label text:(NSString*)text textColor:(UIColor*)textColor{
-    label.text = text;
-    label.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:15];
-    label.numberOfLines = 0;
-    label.textAlignment = NSTextAlignmentLeft;
-    label.textColor = textColor;
-}
-
-#pragma mark button methods
--(void)setButtonProperties:(UIButton*)button title:(NSString *)title selector:(SEL)selector titleColor:(UIColor*)titleColor{
-    [button setTitle:title forState:UIControlStateNormal];
-    [button setTitleColor:titleColor forState:UIControlStateNormal];
-    [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
-}
-
-#pragma mark uiview methods
--(void)addLineSeperator:(UIView*)view yPos:(int)ypos{
-    UIView *lineSeperator = [[UIView alloc]initWithFrame:CGRectMake(0, ypos, view.frame.size.width, 1)];
-    lineSeperator.backgroundColor = [UIColor lightGrayColor];
-    [view addSubview:lineSeperator];
-}
-
  /**/
 -(void)patenalControlClickDelegate{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];

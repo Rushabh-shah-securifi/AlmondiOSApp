@@ -242,10 +242,11 @@
 }
 
 #pragma mark button methods
-+(void)setButtonProperties:(UIButton*)tapbutton title:(NSString *)title selector:(SEL)selector titleColor:(UIColor*)titleColor{
-    [tapbutton setTitle:title forState:UIControlStateNormal];
-    [tapbutton setTitleColor:titleColor forState:UIControlStateNormal];
-    [tapbutton addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
++(void)setButtonProperties:(UIButton*)button title:(NSString *)title titleColor:(UIColor*)titleColor bgColor:(UIColor *)bgColor font:(UIFont *)font{
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitleColor:titleColor forState:UIControlStateNormal];
+    button.backgroundColor = bgColor;
+    button.titleLabel.font = font;
 }
 
 #pragma mark ui methods

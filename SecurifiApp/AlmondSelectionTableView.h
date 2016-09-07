@@ -7,8 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol AlmondSelectionTableViewDelegate <NSObject>
+- (void)onCloseBtnTapDelegate;
+- (void)onAddAlmondTapDelegate;
+- (void)onAlmondSelectedDelegate:(SFIAlmondPlus *)almond;
+@end
 
 @interface AlmondSelectionTableView : UITableView
-
--(void)initializeView;
+@property (nonatomic, weak)id<AlmondSelectionTableViewDelegate> methodsDelegate;
+-(void)initializeView:(CGRect)maskFrame;
 @end

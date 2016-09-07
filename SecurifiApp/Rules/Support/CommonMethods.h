@@ -31,7 +31,7 @@
 
 +(void)setLineSpacing:(UILabel*)label text:(NSString *)text spacing:(int)spacing;
 
-+(void)setButtonProperties:(UIButton*)tapbutton title:(NSString *)title selector:(SEL)selector titleColor:(UIColor*)titleColor;
++(void)setButtonProperties:(UIButton*)button title:(NSString *)title titleColor:(UIColor*)titleColor bgColor:(UIColor *)bgColor font:(UIFont *)font;
 
 +(void)addLineSeperator:(UIView*)view yPos:(int)ypos;
 
