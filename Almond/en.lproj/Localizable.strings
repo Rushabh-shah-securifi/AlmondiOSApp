@@ -819,26 +819,6 @@ Follow it, then login below.";
 
 "Nothing"="";
 
-
-
-"wiring_primary" = "Wiring your Primary Almond ";
-"wiring_primary_desc" = "For your network to function properly, it's important to place it in the correct order.";
-"connecting_newAl" = "Connecting your New Almond";
-"connecting_newAl_desc" = "Connecting your New Almond";
-"using_network_switch" = "Using a Network Switch";
-"using_network_switch_desc" = "Using a Network Switch";
-"wired_or_wireless" = "Wired or Wireless?";
-"wired_or_wireless_desc" = "The Almond WiFi system is highly flexible.The primary Almond has to be directly connected to your ISP modem. The additional Almonds can be connected via Wired interface or Wirelessly";
-"wired_interface" = "Wired Interface";
-"wireless_interface" = "Wireless Interface";
-"wireless_interface_desc" = "If your house doesn't have internet cabling across rooms, you can simply choose \"Wireless\" mode for your additional Almonds.";
-"wired_interface_desc" = "WiFi quality is best when your additional Almonds are connected via interace. If you have Internet cabling across rooms in your house, you can choose this mode.";
-
-"welcome_desc"="You've successfully logged into your Almond account. Here are a few quick tips to get the most out of your Almond.";
-"theDashboard_desc"="The dashboard puts the status of your home at your fingertips. Get an overview of your recent smart home and network device notifications.";
-"almond_modes_desc"="Home and Away modes – or arm and disarm - are a key part of any home security or automation system. They are necessary because when you are home, you don’t need your sensors to trigger an alarm. Go to Rules to personalize how your system responds in these modes.";
-"more_desc"="Tap \"More\" to create rules and visit our Help Center. The Help Center lets you revisit this guide and other help topics, and contact technical support.";
-
 "Explaining_Scenes"="Explaining Scenes";
 "Explaining_Scenes_desc"="Scenes make adjusting multiple smart devices much easier and faster. For example, when you go to bed you might have two or three lights to turn off, the temperature on the thermostat to adjust, and set the alarm to activate. A Scene means you can do all of them with just one tap.\n\nYou can create and manage Scenes from the Scenes tab in the Almond app. Tap the add button to create a scene. And then tap on a device and select one or more actions from the available options. Repeat this process for as many devices as you need and then tap on “Save”. Follow the onscreen instructions to complete creating your scene.\n\nTo manage a scene, tap on the quick action icon to activate the scene, and tap the options icon to change the devices in the Scene and rename it.\n\nA scene might appear to be active even if you haven’t turned it on. That is because a scene is set to active whenever all the actions that make up that scene are turned on. For example, using the Scene above, you may have decided to adjust the lights and thermostat over the course of the evening. In doing so you matched the functions in the Scene and it registers as on.\n\nNow, Almond scenes can be activated using Alexa. To begin using Alexa with Almond Scenes, activate the Almond skill on Alexa. If you are prompted to rename a Scene, choose one from the list of suggestions that comes up. These names are easiest for Alexa to understand. Once you have renamed a Scene, you will see a small Alexa icon on the Scene’s tile on the Almond app. When finished, to activate a Scene, you could say “Alexa, tell Almond to activate Outside Lights Off!” Where ‘Outside Lights Off’ is the name of the Scene.";
 
@@ -869,6 +849,26 @@ Follow it, then login below.";
 "wifi_t_detecting"="Detecting Your Presence";
 "wifi_t_presence"="Using Presence in Rules";
 "wifi_t_rules"="Tap More to use Rules";
+
+/***** mesh strings ********/
+"wiring_primary" = "Wiring your Primary Almond ";
+"wiring_primary_desc" = "For your network to function properly, it's important to place it in the correct order.";
+"connecting_newAl" = "Connecting your New Almond";
+"connecting_newAl_desc" = "Connecting your New Almond";
+"using_network_switch" = "Using a Network Switch";
+"using_network_switch_desc" = "Using a Network Switch";
+"wired_or_wireless" = "Wired or Wireless?";
+"wired_or_wireless_desc" = "The Almond Wi-Fi system is highly flexible.The primary Almond has to be directly connected to your ISP modem. The additional Almonds can be connected via Wired interface or Wirelessly.";
+"wired_interface" = "Wired Interface";
+"wireless_interface" = "Wireless Interface";
+"wireless_interface_desc" = "If your house doesn't have internet cabling across rooms, you can simply choose \"Wireless\" mode for your additional Almonds.";
+"wired_interface_desc" = "Wi-Fi quality is best when your additional Almonds are connected via wired interace. If you have Internet cabling across rooms in your house, you can choose this mode.";
+
+"welcome_desc"="You've successfully logged into your Almond account. Here are a few quick tips to get the most out of your Almond.";
+"theDashboard_desc"="The dashboard puts the status of your home at your fingertips. Get an overview of your recent smart home and network device notifications.";
+"almond_modes_desc"="Home and Away modes – or arm and disarm - are a key part of any home security or automation system. They are necessary because when you are home, you don’t need your sensors to trigger an alarm. Go to Rules to personalize how your system responds in these modes.";
+"more_desc"="Tap \"More\" to create rules and visit our Help Center. The Help Center lets you revisit this guide and other help topics, and contact technical support.";
+
 /* ==================================================================== */
 
 /*

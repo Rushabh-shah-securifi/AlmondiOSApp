@@ -45,8 +45,8 @@
 #define FIRMWARE_UPDATE_TAG 2
 
 static const int networkingHeight = 100;
-static const int clientsHeight = 90;
-//static const int clientsHeight = 200;
+//static const int clientsHeight = 90;
+static const int clientsHeight = 200;
 static const int settingsHeight = 70;
 static const int versionHeight = 130;
 static const int rebootHeight = 110;
@@ -70,7 +70,7 @@ static const int logsHeight = 100;
 
 @property(nonatomic) BOOL enableAlmondVersionRemoteUpdate;
 @property(nonatomic) BOOL isSimulator;
-@property(nonatomic) BOOL local;
+@property(nonatomic) BOOL isLocal;
 
 @property(nonatomic) BOOL isBUG;
 
@@ -92,6 +92,8 @@ int mii;
     if([[SecurifiToolkit sharedInstance] isScreenShown:@"wifi"] == NO)
         [self initializeHelpScreensfirst:@"wifi"];
     
+    [self markAlmondTitleAndMac];
+    
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -100,10 +102,11 @@ int mii;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    NSLog(@"router view will appear");
     [super viewWillAppear:animated];
     mii = arc4random() % 10000;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
+    self.isLocal = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
     
     [self initializeNotifications];
     self.routerSummary = nil;
@@ -118,11 +121,10 @@ int mii;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    //NSLog(@"view will disapper");
+    NSLog(@"router view will disappear");
     [super viewWillDisappear:animated];
     
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)initializeNotifications {
@@ -155,7 +157,10 @@ int mii;
     self.tableView.tableHeaderView = nil;
     
     //NSLog(@"connecton - is local: %d", self.local);
-    if(!self.local && ![self isNoAlmondLoaded] && [self isFirmwareCompatible]){
+    if([self isNoAlmondLoaded] && ![self isFirmwareCompatible]){
+        
+    }
+    else{
         [self showHudWithTimeout:NSLocalizedString(@"Loading router data", @"Loading router data")];
         [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
     }
@@ -245,8 +250,7 @@ int mii;
         return;
     }
     // reset table view state when Refresh is called (and when current Almond is changed)
-    if(!self.local)
-        [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
+    [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
     
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
@@ -327,10 +331,10 @@ int mii;
                 return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link") selector:@selector(onEditNetworkSettings:) cardColor:[UIColor securifiRouterTileGreenColor]];
             }
             case DEF_DEVICES_AND_USERS_SECTION:{
-                summaries = [self getDevicesAndUsersSummary];
-                return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users") selector:nil cardColor:[UIColor securifiRouterTileBlueColor]];
+//                summaries = [self getDevicesAndUsersSummary];
+//                return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users") selector:nil cardColor:[UIColor securifiRouterTileBlueColor]];
                 
-//                return [self createAlmondNetworkCell:tableView];
+                return [self createAlmondNetworkCell:tableView];
             }
             case DEF_WIRELESS_SETTINGS_SECTION:{
                 summaries = [self getWirelessSettingsSummary];
@@ -725,7 +729,8 @@ int mii;
                  //NSLog(@"routersummary: %@", self.routerSummary);
                  [toolkit tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:self.routerSummary];
                  NSString *currentVersion = self.routerSummary.firmwareVersion;
-                 [self tryCheckAlmondVersion:currentVersion];
+                 if(!self.isLocal)
+                     [self tryCheckAlmondVersion:currentVersion];
                  break;
              }
              case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
@@ -902,23 +907,39 @@ int mii;
      NSLog(@"slave list mesh response");
      NSNotification *notifier = (NSNotification *) sender;
      NSDictionary *data = [notifier userInfo];
+     dispatch_async(dispatch_get_main_queue(), ^{
+         [self.HUD hide:YES];
+     });
+     
      if (data == nil || [data valueForKey:@"data"]==nil ) {
          return;
      }
      
      NSDictionary *payload = [data valueForKey:@"data"];
-     NSLog(@"slave details: %@", payload);
-     if([payload[MOBILE_INTERNAL_INDEX] intValue]!= mii|| ![payload[COMMAND_MODE] isEqualToString:@"Reply"] || [payload[COMMAND_TYPE] isEqualToString:@"SlaveDetails"])
+     NSLog(@"router mesh payload: %@", payload);
+     if([payload[MOBILE_INTERNAL_INDEX] intValue]!= mii|| ![payload[COMMAND_MODE] isEqualToString:@"Reply"])
          return;
+     
      BOOL isSuccessful = [payload[SUCCESS] boolValue];
+     NSString *commandType = payload[COMMAND_TYPE];
      if(isSuccessful){
-         AlmondStatus *slaveStatus = [AlmondStatus getSlaveStatus:payload routerSummary:self.routerSummary];
-         [self pushMeshController:slaveStatus];
-     }else{
+         if([commandType  isEqualToString:@"SlaveDetailsMobile"]){
+             AlmondStatus *slaveStatus = [AlmondStatus getSlaveStatus:payload routerSummary:self.routerSummary];
+             [self pushMeshController:slaveStatus];
+         }
+         else if([commandType  isEqualToString:@"Rai2UpMobile"]){
+             MeshSetupViewController *mesh = [[MeshSetupViewController alloc]init];
+             mesh.hidesBottomBarWhenPushed = YES;
+             mesh.isStatusView = NO;
+             [self.navigationController pushViewController:mesh animated:YES];
+         }
+         
+     }
+     else{
          [self showToast:@"Sorry! Please try after sometime."];
      }
-     
  }
+
 
 #pragma mark almondnetworkcelldelegate methods
  -(void)onAlmondTapDelegate:(int)almondCount{
@@ -942,17 +963,15 @@ int mii;
     meshController.hidesBottomBarWhenPushed = YES;
     meshController.isStatusView = YES;
     meshController.almondStatObj = almondStat;
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     [self.navigationController pushViewController:meshController animated:YES];
 }
 
  -(void)onAddAlmondTapDelegate{
      NSLog(@"on add almond tap delegate");
      dispatch_async(dispatch_get_main_queue(), ^{
-         MeshSetupViewController *mesh = [[MeshSetupViewController alloc]init];
-         NSLog(@"nav viewheight: %f", CGRectGetHeight(self.navigationController.view.frame));
-         mesh.hidesBottomBarWhenPushed = YES;
-         mesh.isStatusView = NO;
-         [self.navigationController pushViewController:mesh animated:YES];
+         [self showHudWithTimeout:@"Please Wait!"];
+         [MeshPayload requestRai2UpMobile:mii];
      });
  }
 

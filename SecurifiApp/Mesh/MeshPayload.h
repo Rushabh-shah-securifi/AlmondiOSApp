@@ -20,9 +20,14 @@
 
 +(void)requestAddWireLessSlave:(int)mii slaveName:(NSString *)slaveName;
 
-+(void)requestSetSlaveName:(int)mii;
++(void)requestSetSlaveName:(int)mii  uniqueSlaveName:(NSString *)uniqueSlaveName newName:(NSString *)newName;
 
 +(void)requestRemoveSlave:(int)mii uniqueName:(NSString*)uniqueName;
 
 +(void)requestSlaveDetails:(int)mii slaveUniqueName:(NSString*)uniqueName;
+
++(void)requestRai2UpMobile:(int)mii;
+
++(void)requestRai2DownMobile:(int)mii;
+
 @end

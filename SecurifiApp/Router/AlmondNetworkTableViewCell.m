@@ -52,7 +52,8 @@
 - (void)setHeading:(NSString*)heading titles:(NSArray *)titles almCount:(NSInteger)almCount{
     self.heading = heading;
     self.titles = titles;
-    self.msgs = @[[NSString stringWithFormat:@"You currently have %ld Almonds.", (long)almCount],
+    NSString *almText = almCount == 1? @"Almond": @"Almonds";
+    self.msgs = @[[NSString stringWithFormat:@"You currently have %ld %@.", (long)almCount, almText],
                   @"Add more to increase Wifi Coverage."];
 }
 
@@ -60,7 +61,7 @@
     self.yCoordinate = 10;
     [self.almondView addSubview:[self makeTitleLabel:self.heading]];
     
-    //add almond views
+    //add almond views (almond + bottomTitle)
     [self.almondView addSubview:[self makeAddAlmondView:self.titles]];
     
     //add summary
@@ -83,31 +84,43 @@
 }
 
 - (UIView *)makeAddAlmondView:(NSArray*)titles{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(10, self.yCoordinate, CGRectGetWidth(self.almondView.frame) - 30, 100)];
-//    view.backgroundColor = [UIColor lightGrayColor];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, self.yCoordinate, CGRectGetWidth(self.almondView.frame) - 30, 115)];
+//    scrollView.backgroundColor = [UIColor lightGrayColor];
     
     CGFloat xOffset = 0;
     int almondCount = 0;
     for(NSString *title in titles){
         UIButton *almond = [self makeAlmondButton:@"almond_icon" xOffset:xOffset selector:@selector(onAlmondTap:)];
         almond.tag = almondCount;
-        [view addSubview:almond];
+        [scrollView addSubview:almond];
         
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(xOffset, 65, 70, 20)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(xOffset, 75, 70, 40)];
         [CommonMethods setLableProperties:label text:title textColor:[UIColor whiteColor] fontName:@"Avenir-Roman" fontSize:14 alignment:NSTextAlignmentCenter];
-        [view addSubview:label];
-        
+        [scrollView addSubview:label];
+//        label.backgroundColor = [UIColor yellowColor];
         xOffset += 80;
         almondCount++;
     }
-    self.yCoordinate += CGRectGetHeight(view.frame);
+    self.yCoordinate += CGRectGetHeight(scrollView.frame);
     UIButton *addAlmond = [self makeAlmondButton:@"add_almond" xOffset:xOffset selector:@selector(onAddAlmondTap:)];
-    [view addSubview:addAlmond];
-    return view;
+    [scrollView addSubview:addAlmond];
+    [self setHorizantalScrolling:scrollView];
+    return scrollView;
+}
+
+- (void)setHorizantalScrolling:(UIScrollView *)scrollView{
+    CGRect contentRect = CGRectZero;
+    for (UIView *view in scrollView.subviews) {
+        contentRect = CGRectUnion(contentRect, view.frame);
+    }
+    scrollView.contentSize = contentRect.size;
+    scrollView.showsVerticalScrollIndicator = NO;
+    scrollView.contentSize = CGSizeMake(scrollView.contentSize.width,scrollView.frame.size.height);
+
 }
 
 - (UIButton *)makeAlmondButton:(NSString *)imageName xOffset:(CGFloat)xOffset selector:(SEL)selector{
-    UIButton *almond = [[UIButton alloc]initWithFrame:CGRectMake(xOffset, 0, 60, 60)];
+    UIButton *almond = [[UIButton alloc]initWithFrame:CGRectMake(xOffset, 0, 70, 70)];
     [almond setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     [almond addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
     

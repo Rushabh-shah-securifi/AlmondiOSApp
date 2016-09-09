@@ -17,6 +17,7 @@
 @interface MeshView : UIView
 @property (nonatomic) id<MeshViewDelegate> delegate;
 - (void)addInterfaceView:(CGRect)frame;
+- (void)removeNotificationObserver;
 
 /* meshhekp - start */
 - (void)addInfoScreen:(CGRect)frame;

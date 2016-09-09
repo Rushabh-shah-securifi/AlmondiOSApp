@@ -504,10 +504,18 @@ static void RVNColorRGBtoHSL(CGFloat red, CGFloat green, CGFloat blue, CGFloat *
     return s;
 }
 +(NSString *)getShortAlmondName:(NSString*)almondName{
+    return  [self getName:almondName length:20];
     
-    NSString *newName = almondName;
-    if(almondName.length >= 20){
-        newName = [almondName substringToIndex:19];
+}
+
++(NSString *)getTitleShortName:(NSString *)name{
+    return [self getName:name length:14];
+}
+
++(NSString *)getName:(NSString *)name length:(int)lenght{
+    NSString *newName = name;
+    if(name.length >= lenght){
+        newName = [name substringToIndex:lenght];
         newName = [NSString stringWithFormat:@"%@..", newName];
     }
     NSLog(@"new name: %@", newName);

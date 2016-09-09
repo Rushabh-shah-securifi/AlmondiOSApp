@@ -119,7 +119,7 @@ CGPoint tablePoint;
     }
     else {
         
-        self.navigationItem.title = [CommonMethods getShortAlmondName:currentAlmond.almondplusName];
+        self.navigationItem.title = [CommonMethods getTitleShortName:currentAlmond.almondplusName];
     }
 }
 

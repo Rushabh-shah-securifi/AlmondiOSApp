@@ -14,6 +14,7 @@
 @property (nonatomic)BOOL isMaster;
 
 @property (nonatomic)NSString *name;
+@property (nonatomic)NSString *slaveUniqueName; //only for slave
 @property (nonatomic)NSString *location;
 @property (nonatomic)NSString *connecteVia;
 @property (nonatomic)NSString *interface;

@@ -13,7 +13,7 @@
 +(void)requestCheckForAddableWiredSlave:(int)mii{
     NSDictionary *payload = @{
                                   @"CommandMode":@"Request",
-                                  @"CommandType":@"CheckForAddableWiredSlave",
+                                  @"CommandType":@"CheckForAddableWiredSlaveMobile",
                                   @"MobileInternalIndex":@(mii).stringValue
                               };
     [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
@@ -22,7 +22,7 @@
 +(void)requestCheckForAddableWirelessSlave:(int)mii{
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
-                              @"CommandType":@"CheckForAddableWirelessSlave",
+                              @"CommandType":@"CheckForAddableWirelessSlaveMobile",
                               @"MobileInternalIndex":@(mii).stringValue
                               };
     [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
@@ -31,7 +31,7 @@
 +(void)requestAddWiredSlave:(int)mii slaveName:(NSString *)slaveName{
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
-                              @"CommandType":@"AddWiredSlave",
+                              @"CommandType":@"AddWiredSlaveMobile",
                               @"SlaveUniqueName":slaveName,
                               @"MobileInternalIndex":@(mii).stringValue
                               };
@@ -41,7 +41,7 @@
 +(void)requestAddWireLessSlave:(int)mii slaveName:(NSString *)slaveName{
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
-                              @"CommandType":@"AddWirelessSlave",
+                              @"CommandType":@"AddWirelessSlaveMobile",
                               @"SlaveUniqueName":slaveName,
                               @"MobileInternalIndex":@(mii).stringValue
                               };
@@ -51,7 +51,7 @@
 +(void)requestBlinkLed:(int)mii slaveName:(NSString *)slaveName{
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
-                              @"CommandType":@"BlinkLed",
+                              @"CommandType":@"BlinkLedMobile",
                               @"SlaveUniqueName":slaveName,
                               @"MobileInternalIndex":@(mii).stringValue
                               };
@@ -60,12 +60,12 @@
 
 
 
-+(void)requestSetSlaveName:(int)mii{
++(void)requestSetSlaveName:(int)mii uniqueSlaveName:(NSString *)uniqueSlaveName newName:(NSString *)newName{
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
-                              @"CommandType":@"SetSlaveName",
-                              @"SlaveUniqueName":@"Almond2103",
-                              @"SlaveNewName":@"Family Room",
+                              @"CommandType":@"SetSlaveNameMobile",
+                              @"SlaveUniqueName":uniqueSlaveName,
+                              @"SlaveNewName":newName,
                               @"MobileInternalIndex":@(mii).stringValue
 
                               };
@@ -75,7 +75,7 @@
 +(void)requestRemoveSlave:(int)mii uniqueName:(NSString*)uniqueName{
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
-                              @"CommandType":@"RemoveSlave",
+                              @"CommandType":@"RemoveSlaveMobile",
                               @"SlaveUniqueName":uniqueName,
                               @"MobileInternalIndex":@(mii).stringValue
                               
@@ -86,10 +86,28 @@
 +(void)requestSlaveDetails:(int)mii slaveUniqueName:(NSString*)uniqueName{
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
-                              @"CommandType":@"SlaveDetails",
+                              @"CommandType":@"SlaveDetailsMobile",
                               @"SlaveUniqueName":uniqueName,
                               @"MobileInternalIndex":@(mii).stringValue
                               
+                              };
+    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+}
+
++(void)requestRai2UpMobile:(int)mii{
+    NSDictionary *payload = @{
+                              @"CommandMode":@"Request",
+                              @"CommandType":@"Rai2UpMobile",
+                              @"MobileInternalIndex":@(mii).stringValue
+                              };
+    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+}
+
++(void)requestRai2DownMobile:(int)mii{
+    NSDictionary *payload = @{
+                              @"CommandMode":@"Request",
+                              @"CommandType":@"Rai2DownMobile",
+                              @"MobileInternalIndex":@(mii).stringValue
                               };
     [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
 }

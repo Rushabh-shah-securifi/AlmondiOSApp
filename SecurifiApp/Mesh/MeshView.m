@@ -72,6 +72,10 @@
     [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_CommandType_MESH_RESPONSE object:nil];
 }
 
+- (void)removeNotificationObserver{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)addInterfaceView:(CGRect)frame{
     [self addView:self.interfaceView frame:frame];
 }
@@ -126,10 +130,10 @@
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
     UIView *view = [pickerView superview];
-    if(view.tag == 2){
+    if(view.tag == 2){//almond
         NSArray *almTitles = self.almondTitles;
         return [almTitles objectAtIndex:row];
-    }else{
+    }else{//names
         return [self.almondNames objectAtIndex:row];
     }
         
@@ -180,7 +184,7 @@
 
 - (IBAction)onYesLEDBlinking:(UIButton *)yesButton {
     _mii = arc4random() % 10000;
-    [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:5];
+    [self.delegate showHudWithTimeoutMsgDelegate:@"Rebooting...Please wait!" time:120];
     [self requestAddSlave:YES];
 }
 
@@ -190,7 +194,8 @@
 
 - (IBAction)onNextButtonTap:(UIButton*)nextButton {
     _mii = arc4random() % 10000;
-    [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:120];
+    if(self.currentView.tag != 5)
+        [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:60];
     [self sendCommand:self.currentView];
 }
 
@@ -215,6 +220,7 @@
             break;
         }
         case 5:{
+            [self requestRai2DownMobile];
             [self dismissView];
             break;
         }
@@ -263,12 +269,6 @@
     }
 }
 
--(void)manageInfo{
-    //for infoInterface next is interface view
-    
-    //for info wired next is almonds view
-}
-
 - (IBAction)onBackBtnTap:(UIButton *)backBtn {
     NSLog(@"on back button tap");
     [self loadPrevView:[backBtn superview]];
@@ -282,8 +282,11 @@
     [view removeFromSuperview];
     switch (tag) {
         case 0:{
-            if([self.item[S_NAME] isEqualToString:@"Interface"])
+            if([self.item[S_NAME] isEqualToString:@"Interface"]){
+                [self requestRai2DownMobile];
                 [self dismissView];
+            }
+            
             else if([self.item[S_NAME] isEqualToString:@"Wiring"])
                 [self addView:self.interfaceView frame:frame];
             break;
@@ -337,6 +340,7 @@
                                                  userInfo:nil
                                                   repeats:YES];
 }
+
 -(void)sendAddableSlaveCmd{
     if(self.wiredBtn.selected)
         [MeshPayload requestCheckForAddableWiredSlave:self.mii];//mii
@@ -349,7 +353,7 @@
     NSLog(@"on time out");
     CFTimeInterval elapsedTime = CACurrentMediaTime() - self.startTime;
     NSLog(@"elapsed time: %f", elapsedTime);
-    if(elapsedTime >= 120){
+    if(elapsedTime >= 60){
         [self.timer invalidate];
         return;
     }
@@ -373,7 +377,12 @@
 }
 
 -(void)requestSetSlaveName{
-    [MeshPayload requestSetSlaveName:self.mii];
+    [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondTitle newName:self.nameField.text];
+}
+
+-(void)requestRai2DownMobile{
+    //I am not sure what is to be done on response of this command, what does fail mean ?
+    [MeshPayload requestRai2DownMobile:self.mii];
 }
 
 -(void)onMeshCommandResponse:(id)sender{
@@ -392,11 +401,11 @@
     }else{
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
     }
-    NSLog(@"mesh payload: %@", payload);
+    NSLog(@"meshview mesh payload: %@", payload);
     NSString *commandType = payload[COMMAND_TYPE];
     
-    //special case
-    if([commandType isEqualToString:@"MeshDynamicSlaveAdded"]){
+    //special case  - comes only on success
+    if([commandType isEqualToString:@"DynamicAddWiredSlaveMobile"] || [commandType isEqualToString:@"DynamicAddWirelessSlaveMobile"]){
         [self.delegate hideHUDDelegate];
         [self loadNextView];
         return;
@@ -407,29 +416,36 @@
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     
     if(isSuccessful){
+        //ignore it, we are looking for dynamic command.
+        if([commandType isEqualToString:@"AddWiredSlaveMobile"] || [commandType isEqualToString:@"AddWirelessSlaveMobile"]){
+            return;
+        }
+        
         [self.delegate hideHUDDelegate];
         
-        if([commandType isEqualToString:@"CheckForAddableWiredSlave"] || [commandType isEqualToString:@"CheckForAddableWirelessSlave"]){
+        if([commandType isEqualToString:@"CheckForAddableWiredSlaveMobile"] || [commandType isEqualToString:@"CheckForAddableWirelessSlaveMobile"]){
             [self.timer invalidate];
             
             self.almondTitles = payload[SLAVES];
             self.almondTitle = self.almondTitles[0]==nil? @"": self.almondTitles[0];
         }
-        else if([commandType isEqualToString:@"AddWiredSlave"] || [commandType isEqualToString:@"AddWirelessSlave"]){
+        
+        else if([commandType isEqualToString:@"BlinkLedMobile"]){
             
         }
-
-        else if([commandType isEqualToString:@"BlinkLed"]){
-            
-        }
-        else if([commandType isEqualToString:@"SetSlaveName"]){
+  
+        else if([commandType isEqualToString:@"SetSlaveNameMobile"]){
             
         }
         [self loadNextView];
     }
     else{
        //don't miss the not
-        if(![commandType isEqualToString:@"CheckForAddableWiredSlave"] || ![commandType isEqualToString:@"CheckForAddableWirelessSlave"]){
+        if([commandType isEqualToString:@"CheckForAddableWiredSlaveMobile"] || [commandType isEqualToString:@"CheckForAddableWirelessSlaveMobile"]){
+            // do not do any thing.
+        }
+        else{
+            NSLog(@"for any other command on false hide hud");
             [self.delegate hideHUDDelegate];
         }
     }

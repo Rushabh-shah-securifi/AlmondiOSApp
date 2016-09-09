@@ -73,5 +73,7 @@
 
 +(NSString *)getShortAlmondName:(NSString*)almondName;
 
++(NSString *)getTitleShortName:(NSString *)name;
+
 +(BOOL)isContainCategory:(NSString*)search;
 @end

@@ -18,11 +18,37 @@
     return [self getStatus:name location:name connetedVia:@"Directly" interface:@"Wired" signalStrength:@"" ssid1:ssid[@"2G"] ssid2:ssid[@"5G"] internetStat:YES isMaster:YES active:YES];
 }
 
+/*
+ {
+ "CommandMode":"Reply",
+ "CommandType":"SlaveDetailsMobile",
+ "SlaveUniqueName":"Almond 2333",
+ "ID":"1",
+ "Name":"Downstairs",
+ "Active":"true",
+ "Interface":"Wired",
+ "InternetStatus":"true",
+ "SignalStrength":"0"
+ "MobileInternalIndex":"ttWsbWY91duqYuxOz2v5C2IrGFCm65Yz",
+ "Success":"true",
+ "Reason":"0"
+ }
+ */
 +(AlmondStatus *)getSlaveStatus:(NSDictionary *)payload routerSummary:(SFIRouterSummary*)routerSummary{
     NSString *masterName = [SecurifiToolkit sharedInstance].currentAlmond.almondplusName;
     NSDictionary *ssid = [self getSSIDs:routerSummary];
     
-    return [self getStatus:payload[NAME] location:payload[NAME] connetedVia:masterName interface:payload[INTERFACE] signalStrength:payload[SIGNAL_STRENGTH] ssid1:ssid[@"2G"] ssid2:ssid[@"5G"] internetStat:[payload[@"InternetStatus"] boolValue] isMaster:NO active:[payload[ACTIVE] boolValue]];
+    AlmondStatus *stat = [self getStatus:payload[NAME]
+                  location:payload[NAME]
+               connetedVia:masterName
+                 interface:payload[INTERFACE]
+            signalStrength:payload[SIGNAL_STRENGTH]
+                     ssid1:ssid[@"2G"] ssid2:ssid[@"5G"]
+              internetStat:[payload[@"InternetStatus"] boolValue]
+                  isMaster:NO
+                    active:[payload[ACTIVE] boolValue]];
+    stat.slaveUniqueName = payload[SLAVE_UNIQUE_NAME];
+    return stat;
 }
 
 + (AlmondStatus *)getStatus:(NSString*)name location:(NSString*)location connetedVia:(NSString*)connetedVia interface:(NSString*)interface signalStrength:(NSString*)signalStrength ssid1:(NSString*)ssid1 ssid2:(NSString*)ssid2 internetStat:(BOOL)internetStat isMaster:(BOOL)isMaster active:(BOOL)isactive{
@@ -44,7 +70,8 @@
     [keyVals addObject:@{@"Interface":interface}];
     if(!isMaster)
         [keyVals addObject:@{@"Signal Strenght":signalStrength}];
-    [keyVals addObject:@{@"5 GHz SSID":ssid2}];
+    if(ssid2)
+        [keyVals addObject:@{@"5 GHz SSID":ssid2}];
     [keyVals addObject:@{@"2.4 GHz SSID":ssid1}];
     stat.keyVals = keyVals;
     return stat;
