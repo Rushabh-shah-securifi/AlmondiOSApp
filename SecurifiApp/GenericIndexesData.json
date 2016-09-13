@@ -561,6 +561,19 @@
             }
         }
     },
+    "-36": {
+        "Name": "Web history",
+        "Type": "Actuator",
+        "AppLabel": "Web history",
+        "Values": {
+            "true": {
+                "AppLabel": "yes"
+            },
+            "false": {
+                "AppLabel": "no"
+            }
+        }
+    },
     "1": {
         "Name": "SWITCH BINARY",
         "Type": "Actuator",

@@ -86,6 +86,7 @@
         if(isOn == NO){
            [self.parentsControlArr removeObjectAtIndex:1];
             [self.tableView reloadData];
+            [self setClientHistory];
         }
         else{
             [self createArr];
@@ -100,6 +101,12 @@
         }
  
     }
+}
+-(void)setClientHistory{
+    int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
+    Client *client = [Client findClientByID:@(deviceID).stringValue];
+    client.webHistoryEnable = NO;
+        
 }
 -(void)createArr{
     NSArray *Arr = @[@{@"img":@"parental_controls_icon",

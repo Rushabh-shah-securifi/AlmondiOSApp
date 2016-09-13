@@ -17,6 +17,10 @@
 
 @interface DeviceHeaderView()
 @property (weak, nonatomic) IBOutlet UIButton *parentrolBtn;
+@property (weak, nonatomic) IBOutlet UILabel *label2;
+
+
+@property (weak, nonatomic) IBOutlet UIImageView *wifiSignalImageView;
 @property (weak, nonatomic) IBOutlet UILabel *deviceValueImgLable;
 @end
 
@@ -65,19 +69,17 @@
     self.view.backgroundColor = _genericParams.color;
     self.deviceName.text = self.genericParams.deviceName;
     self.settingButton.alpha = 1;
-    UIButton *parentalControlBtn = [[UIButton alloc]init];
    
-//    if(self.cellType == ClientTable_Cell ){
-//        self.parentrolBtn.hidden = NO;
-//    }
-//    else{
-//        self.parentrolBtn.hidden = YES;
-//    }
+    if(self.cellType == ClientTable_Cell ){
+        self.parentrolBtn.hidden = NO;
+    }
+    else{
+        self.parentrolBtn.hidden = YES;
+    }
     
-    [self addSubview:parentalControlBtn];
     
     [self setTamper];
-    
+    [self setWiFiSignalIcon];
     
     //NSLog(@"device id %d, Icon text %@, icon: %@, index id %@, placement %@",_genericParams.headerGenericIndexValue.deviceID,_genericParams.headerGenericIndexValue.genericValue.iconText,_genericParams.headerGenericIndexValue.genericValue.icon,_genericParams.headerGenericIndexValue.genericIndex.ID,_genericParams.headerGenericIndexValue.genericIndex.placement);
     int deviceType = [Device getTypeForID:_genericParams.headerGenericIndexValue.deviceID];
@@ -117,9 +119,28 @@
         self.deviceButton.userInteractionEnabled = NO;
     else
         self.deviceButton.userInteractionEnabled = YES;
+    
+    
+    if(self.cellType == ClientTable_Cell)
+    {
+        Client *client = [Client findClientByID:@(deviceID).stringValue];
+        if(client.webHistoryEnable == YES){
+            self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_off"];
+            NSLog(@"icon_history_off");
+            self.deviceValue.text = @"Web History Off";
+        }
+        else{
+            self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_on"];
+            NSLog(@"icon_history_on");
+            self.deviceValue.text = @"Web History On";
+        }
     }
+    
+    
+}
+
 - (IBAction)onParentalControllClicked:(id)sender {
-    [self.delegate patenalControlClickDelegate];
+    [self.delegate patenalControlClickDelegate:self.genericParams];
 }
 
 -(void)resetHeaderView{
@@ -178,6 +199,42 @@
         else if(isSmokeOnline){
             genericValue.icon = @"nest_protect_icon";
             genericValue.displayText = [self getSmokeStatus:deviceID];
+        }
+    }
+}
+-(void)setWiFiSignalIcon{
+    self.wifiSignalImageView.hidden = YES;
+    NSArray* genericIndexValues;
+    int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
+    if(self.cellType == ClientTable_Cell)
+    {
+        Client *client = [Client findClientByID:@(deviceID).stringValue];
+        if(client.webHistoryEnable == YES){
+            self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_off"];
+            NSLog(@"icon_history_off");
+        }
+        else{
+            self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_on"];
+            NSLog(@"icon_history_on");
+        }
+    }
+    genericIndexValues = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:@(deviceID).stringValue];
+    self.genericParams.indexValueList = genericIndexValues;
+    NSLog(@"self.genericParams.indexValueList count = %ld",self.genericParams.indexValueList.count);
+    for (GenericIndexValue *genericIndexValue in self.genericParams.indexValueList) {
+        NSLog(@"outer genericValue.displayText %@ and value = %@ type = %@ , %@",genericIndexValue.genericValue.displayText,genericIndexValue.genericValue.value,genericIndexValue.genericIndex.ID,genericIndexValue.genericIndex.groupLabel);
+
+        if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"] && [genericIndexValue.genericValue.value isEqualToString:@"wireless"]){
+           
+
+            self.wifiSignalImageView.hidden = NO;
+        }
+        if([genericIndexValue.genericIndex.ID isEqualToString:@"-2"] && (self.cellType == SensorTable_Cell || self.cellType == SensorEdit_Cell)){
+             NSLog(@"genericValue.displayText %@ and value = %@ type = %@ , %@",genericIndexValue.genericValue.displayText,genericIndexValue.genericValue.value,genericIndexValue.genericIndex.ID,genericIndexValue.genericIndex.groupLabel);
+            self.label2.text = genericIndexValue.genericValue.value;
+        }
+        if([genericIndexValue.genericIndex.ID isEqualToString:@"-13"] && (self.cellType == ClientTable_Cell || self.cellType == ClientProperty_Cell)){
+            self.label2.text = genericIndexValue.genericValue.value;
         }
     }
 }
@@ -256,8 +313,8 @@
     else if (self.cellType == ClientProperty_Cell){
         [self.delegate delegateClientPropertyEditSettingClick];
     }
-    
 }
+
 - (IBAction)onSensorButtonClicked:(id)sender {
     //NSLog(@"onSensorButtonClicked");
     if(self.cellType == SensorTable_Cell || self.cellType == SensorEdit_Cell){

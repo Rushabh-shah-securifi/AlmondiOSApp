@@ -488,6 +488,8 @@
 		CEF6F5071C92CD2400C68975 /* GenericIndexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */; };
 		CEF6F50A1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
 		CEF6F50B1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
+		CEFFBD221D87D1EF00B0A7A9 /* DeviceListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = CEFFBD201D87D1EF00B0A7A9 /* DeviceListResponse.json */; };
+		CEFFBD231D87D1EF00B0A7A9 /* GenericIndexesData.json in Resources */ = {isa = PBXBuildFile; fileRef = CEFFBD211D87D1EF00B0A7A9 /* GenericIndexesData.json */; };
 		F400B6C11D65ECCD00DDEE50 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */; };
 		F400B6C21D65ECCD00DDEE50 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */; };
 		F401B0731D2D241200F64CE2 /* ColorComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F401B0721D2D241200F64CE2 /* ColorComponentView.m */; };
@@ -1110,6 +1112,8 @@
 		CEF6F5041C92CD2400C68975 /* GenericIndexUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericIndexUtil.h; sourceTree = "<group>"; };
 		CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericIndexUtil.m; sourceTree = "<group>"; };
 		CEF6F5081C92CD3D00C68975 /* deviceListJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = deviceListJson.json; path = ../deviceListJson.json; sourceTree = "<group>"; };
+		CEFFBD201D87D1EF00B0A7A9 /* DeviceListResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DeviceListResponse.json; path = SecurifiApp/DeviceListResponse.json; sourceTree = SOURCE_ROOT; };
+		CEFFBD211D87D1EF00B0A7A9 /* GenericIndexesData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GenericIndexesData.json; path = SecurifiApp/GenericIndexesData.json; sourceTree = SOURCE_ROOT; };
 		F400B6BF1D65ECCD00DDEE50 /* SupportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportViewController.h; sourceTree = "<group>"; };
 		F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportViewController.m; sourceTree = "<group>"; };
 		F401B0711D2D241200F64CE2 /* ColorComponentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorComponentView.h; sourceTree = "<group>"; };
@@ -2293,6 +2297,8 @@
 			isa = PBXGroup;
 			children = (
 				CEABC6571D6F147B00C2DCD4 /* CategoryMap.json */,
+				CEFFBD201D87D1EF00B0A7A9 /* DeviceListResponse.json */,
+				CEFFBD211D87D1EF00B0A7A9 /* GenericIndexesData.json */,
 				A5C68C981C92D93000110B74 /* GenericIndexesData.json */,
 				CEF6F5081C92CD3D00C68975 /* deviceListJson.json */,
 				A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */,
@@ -2693,6 +2699,7 @@
 				A58DB2E41BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3011BB16B9F00717C02 /* Localizable.strings in Resources */,
 				A58DB2E31BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
+				CEFFBD221D87D1EF00B0A7A9 /* DeviceListResponse.json in Resources */,
 				A58DB4571BB3CD3F00717C02 /* termsofuse.html in Resources */,
 				A58DB2621BB168C400717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB2F11BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
@@ -2713,6 +2720,7 @@
 				A58DB2F71BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB30C1BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2ED1BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
+				CEFFBD231D87D1EF00B0A7A9 /* GenericIndexesData.json in Resources */,
 				A58DB2E81BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2FC1BB16B9F00717C02 /* termsofuse.html in Resources */,
 				A58DB46C1BB3CD5200717C02 /* Almond-Localizable.strings in Resources */,

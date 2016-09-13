@@ -341,6 +341,7 @@ int mii;
             return cell;
         }
         Client *client = [self.toolkit.clients objectAtIndex:indexPath.row];
+        
         UIColor *clientCellColor = [SFIColors getClientCellColor:client];
         genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getClientHeaderGenericIndexValueForClient:client]
                                                          indexValueList:nil
@@ -699,9 +700,10 @@ int mii;
 }
 
  /**/
--(void)patenalControlClickDelegate{
+-(void)patenalControlClickDelegate:(GenericParams *)genericParams{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
     ParentalControlsViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ParentalControlsViewController"];
+    viewController.genericParams = genericParams;
     [self.navigationController pushViewController:viewController animated:YES];
 }
 @end

@@ -156,7 +156,7 @@ int randomMobileInternalIndex;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.userInteractionEnabled = NO;
     }
-    NSLog(@"genericValue.displayText %@",genericIndexValue.genericValue.displayText);;
+    NSLog(@"genericValue.displayText %@ and value = %@ type = %@ , %@",genericIndexValue.genericValue.displayText,genericIndexValue.genericValue.value,genericIndexValue.genericIndex.ID,genericIndexValue.genericIndex.groupLabel);
     cell.vsluesLabel.text = genericIndexValue.genericValue.displayText;
     cell.backgroundColor = self.genericParams.color;
     return cell;
