@@ -61,11 +61,12 @@
         NSLog(@"url to img3 %@",self.urlToImageDict);
         [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
          NSLog(@"url to img3 after %@",self.urlToImageDict);
-        [self sendHttpRequest:[BrowsingHistoryDataBase getStartTag] endTag:@""];
+//        [self sendHttpRequest:[BrowsingHistoryDataBase getStartTag] endTag:@""];
     }
     else{
         self.isEmptyDb = YES;
-        [self sendHttpRequest:@"" endTag:@""];
+        [self sendHttpRequest:@""];
+        
         
     }
     [super viewDidLoad];
@@ -124,10 +125,14 @@
     
 }
 #pragma mark HttpReqDelegateMethods
--(void)sendHttpRequest:(NSString *)startTag endTag:(NSString *)endTag{// make it paramater CMAC AMAC StartTag EndTag
+-(void)sendHttpRequest:(NSString *)pageState{// make it paramater CMAC AMAC StartTag EndTag
     //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
-        
-   NSString *post = [NSString stringWithFormat: @"AMAC=%@&CMAC=%@&EndTag=%@&StartTag=%@",@"e4:71:85:20:0b:c4",@"10:60:4b:d9:60:84",endTag,startTag];
+    NSString *post;
+    if([pageState isEqualToString:@""])
+        post = [NSString stringWithFormat: @"AMAC=%@&CMAC=%@",@"6",@"18005775442052"];
+    else
+        post = [NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",@"6",@"18005775442052",pageState];
+    
     NSLog(@"post req = %@",post);
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
@@ -158,9 +163,10 @@
     
     /*note get endidentifier from db */
     NSLog(@"response dict =%@",dict);
-    NSString *endTag = [BrowsingHistoryDataBase insertHistoryRecord:dict];
     
-    if(endTag == NULL)
+    NSString *pageState = [BrowsingHistoryDataBase insertHistoryRecord:dict];
+    
+    if(pageState == NULL)
         self.sendReq = NO;
     else
         self.sendReq = YES;
@@ -175,22 +181,22 @@
         self.isEmptyDb = NO;
         NSLog(@"url to img1 after %@",self.urlToImageDict);
     }
-    NSLog(@"end tag = %@",endTag);
+    NSLog(@"end tag = %@",pageState);
     
-    [self sendRequest:endTag];
+    [self sendRequest:pageState];
     
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error { //Do something if there is an error in the connection } - See more at: https://www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
     NSLog(@"didFailWithError %@",error);
 }
 
--(void)sendRequest:(NSString *)endTag{
+-(void)sendRequest:(NSString *)pageState{
     int DBCount = [BrowsingHistoryDataBase GetHistoryDatabaseCount];
     NSString *startTag = [BrowsingHistoryDataBase getStartTag];
-    NSLog(@"DBCount %d, start tag %@, end tag %@",DBCount,startTag,endTag);
+    NSLog(@"DBCount %d, start tag %@, end tag %@",DBCount,startTag,pageState);
 
     if(self.sendReq == YES){
-        [self sendHttpRequest:@"" endTag:endTag];
+        [self sendHttpRequest:pageState];
     }
     else
     {
@@ -256,7 +262,7 @@
             [self.browsingTable reloadData];
         }
         else{
-            [self sendHttpRequest:@"" endTag:[BrowsingHistoryDataBase getEndTag]];
+            [self sendHttpRequest:[BrowsingHistoryDataBase getPageState]];
             NSLog( @"Ask for new Req");
         }
 //        [self loadMore];

@@ -18,8 +18,10 @@
 
     NSDictionary *dict1 = historyDict[@"Data"];
     for (NSString *dates in [dict1 allKeys]) {
+        NSLog(@"dates %@",dates);
         NSArray *alldayArr = dict1[dates];
         NSMutableArray *oneDayUri = [[NSMutableArray alloc]init];
+        NSLog(@"dict1[dates] = %@",dict1);
         for (NSMutableDictionary *uriDict in alldayArr)
             
             {
