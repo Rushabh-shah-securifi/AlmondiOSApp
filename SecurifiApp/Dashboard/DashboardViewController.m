@@ -385,27 +385,6 @@
     sourceRect.origin.y = CGRectGetMidY(self.view.bounds)-self.view.frame.origin.y;
     return sourceRect;
 }
-- (NSArray *)buildAlmondList:(enum SFIAlmondConnectionMode)mode5 {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    switch (mode5) {
-        case SFIAlmondConnectionMode_cloud: {
-            NSArray *cloud = [toolkit almondList];
-            if (!cloud)
-                cloud = @[];
-            return cloud;
-        }
-        case SFIAlmondConnectionMode_local: {
-            NSArray *local = [toolkit localLinkedAlmondList];
-            if (!local)
-                local = @[];
-            return local;
-        }
-        default:
-            return @[];
-    }
-}
-
-
 
 - (IBAction)homeMode:(id)sender {
     if(self.toolkit.currentAlmond != nil){

@@ -113,6 +113,9 @@ static const int footerHt = 60;
     return cell;
 }
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(self.almondList.count == 0)
+        return;
+    
     //if the selected almond is same don't do anything.
     SFIAlmondPlus *almond = self.almondList[indexPath.row];
     if([self isCurrentAlmond:almond.almondplusMAC])

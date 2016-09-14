@@ -72,6 +72,11 @@
                selector:@selector(userInviteResponseCallback:)
                    name:USER_INVITE_NOTIFIER
                  object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onCurrentAlmondChanged:)
+                   name:kSFIDidChangeCurrentAlmond
+                 object:nil];
 }
 
 - (void)sendUserProfileRequest {
@@ -546,4 +551,12 @@
         NSLog(@"Could not delete file -:%@ ",[error localizedDescription]);
     }
 }
+
+#pragma mark Notifications
+- (void)onCurrentAlmondChanged:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+    });
+}
+
 @end
