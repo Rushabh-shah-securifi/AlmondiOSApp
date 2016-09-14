@@ -50,7 +50,6 @@
 - (void)viewWillAppear:(BOOL)animated{
     NSLog(@"scenes table viewwillappear");
     [super viewWillAppear:animated];
-    self.enableDrawer = YES;
     randomMobileInternalIndex = arc4random() % 10000;
     
     [self markAlmondTitleAndMac];

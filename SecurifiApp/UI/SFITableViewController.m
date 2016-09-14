@@ -7,7 +7,6 @@
 //
 
 #import <MBProgressHUD/MBProgressHUD.h>
-#import <SWRevealViewController/SWRevealViewController.h>
 #import <SecurifiToolkit/SFIAlmondLocalNetworkSettings.h>
 #import "SFITableViewController.h"
 #import "SFICloudStatusBarButtonItem.h"
@@ -25,7 +24,7 @@
 #import "UIImage+Securifi.h"
 
 
-@interface SFITableViewController () <MBProgressHUDDelegate, SWRevealViewControllerDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate, HelpScreensDelegate>
+@interface SFITableViewController () <MBProgressHUDDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate, HelpScreensDelegate>
 @property(nonatomic, readonly) SFINotificationStatusBarButtonItem *notificationsStatusButton;
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *connectionStatusBarButton;
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *almondModeBarButton;
@@ -42,7 +41,6 @@
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
     if (self) {
-        _enableDrawer = YES;
         self.originalContentInsets = UIEdgeInsetsZero;
         self.originalScrollIndicatorInsets = UIEdgeInsetsZero;
     }
@@ -70,8 +68,6 @@
     else{
         
     }
-    
-    self.enableDrawer = _enableDrawer; // in case it was set before view loaded
     
     if (enableLocalNetworking) {
         _connectionStatusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES isDashBoard:NO];
@@ -185,11 +181,6 @@
     // make sure status icon is up-to-date
     [self markNetworkStatusIcon];
     [self markNotificationStatusIcon];
-    
-    // install self as delegate so this controller can enable/disable drawer
-    SWRevealViewController *ctrl = [self revealViewController];
-    ctrl.delegate = self;
-    ctrl.panGestureRecognizer.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -771,11 +762,6 @@
     [self showHUD:NSLocalizedString(@"mainviewcontroller hud hud.Updating settings...", @"Updating settings...")];
 }
 
-- (void)setEnableDrawer:(BOOL)enableDrawer {
-    _enableDrawer = enableDrawer;
-    self.navigationItem.leftBarButtonItem.enabled = enableDrawer;
-}
-
 - (void)presentLocalNetworkSettings{
     RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
     editor.delegate = self;
@@ -813,22 +799,12 @@
     _isHudHidden = YES;
 }
 
-#pragma mark - SWRevealViewControllerDelegate methods
-
-- (BOOL)revealControllerPanGestureShouldBegin:(SWRevealViewController *)revealController {
-    return self.enableDrawer;
-}
-
-- (BOOL)revealControllerTapGestureShouldBegin:(SWRevealViewController *)revealController {
-    return self.enableDrawer;
-}
-
 #pragma mark - UIGestureRecognizerDelegate methods
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     UIView *view = touch.view;
     // prevent recognizing touches on the slider
-    return self.enableDrawer && ![view isKindOfClass:[UISlider class]] && ![view isKindOfClass:[SFIHuePickerView class]];
+    return ![view isKindOfClass:[UISlider class]] && ![view isKindOfClass:[SFIHuePickerView class]];
 }
 
 #pragma mark - Keyboard events
@@ -893,7 +869,6 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.tabBarController.delegate = self; // stop user from switching tabs while table is locked
         self.tableView.scrollEnabled = NO;
-        self.enableDrawer = NO;
         self.notificationsStatusButton.enabled = NO;
         self.almondModeBarButton.enabled = NO;
         self.connectionStatusBarButton.enabled = NO;
@@ -905,7 +880,6 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.tabBarController.delegate = nil; // uninstall delegate so tabs can be selected
         self.tableView.scrollEnabled = YES;
-        self.enableDrawer = YES;
         self.notificationsStatusButton.enabled = YES;
         self.almondModeBarButton.enabled = YES;
         self.connectionStatusBarButton.enabled = YES;

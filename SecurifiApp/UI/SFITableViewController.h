@@ -59,9 +59,6 @@
 @property(nonatomic, readonly) BOOL enableNotificationsHomeAwayMode;
 @property(nonatomic)BOOL needAddButton;
 
-// Enabled by default; when NO, the Reveal button is disabled. Useful when the UI needs to be locked during updates.
-@property(nonatomic) BOOL enableDrawer;
-
 - (void)presentLocalNetworkSettingsEditor;
 
 - (enum SFIAlmondConnectionMode)currentConnectionMode;
@@ -77,4 +74,6 @@
 - (UITableViewCell *)createEmptyCell:(UITableView *)tableView;
 
 - (BOOL)isFirmwareCompatible;
+
+- (void)onUnlockTable;
 @end

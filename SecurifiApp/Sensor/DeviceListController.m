@@ -92,7 +92,6 @@ int mii;
     NSLog(@"initialize almond data");
     [self markAlmondTitleAndMac];
     [self initializeColors:[self.toolkit currentAlmond]];
-    self.enableDrawer = YES; //to enable navigation top left button
     dispatch_async(dispatch_get_main_queue(), ^{
         [self tryInstallRefreshControl];
         if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC]){

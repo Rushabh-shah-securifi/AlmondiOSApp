@@ -143,9 +143,7 @@ int mii;
 }
 
 - (void)initializeRouterSummaryAndSettings {
-    self.isRebooting = NO;
-    self.enableDrawer = YES; //to enable navigation top left button
-    
+    self.isRebooting = NO;    
 }
 
 - (void)initializeAlmondData {

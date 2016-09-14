@@ -32,6 +32,8 @@
 
 -(void)onCrossBtnTap:(id)sender{
     NSLog(@"onCrossBtnTap");
+    [self removeAlert];
+    [self onUnlockTable]; //prior this, I was not able to tap on tab when cloud button was clicked and you tap on cross button.
     [[NSNotificationCenter defaultCenter] postNotificationName:kSFIDidTapUpdateAvailCrossBtn object:nil];
 }
 

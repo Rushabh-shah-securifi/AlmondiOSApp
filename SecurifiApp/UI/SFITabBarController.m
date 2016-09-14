@@ -139,7 +139,7 @@ typedef NS_ENUM(int, TabBarMode) {
     }
     
     if (list.count == 0) {
-        return TabBarMode_noAlmond;
+//        return TabBarMode_noAlmond;
     }
     
     SFIAlmondPlus *plus = toolkit.currentAlmond;
