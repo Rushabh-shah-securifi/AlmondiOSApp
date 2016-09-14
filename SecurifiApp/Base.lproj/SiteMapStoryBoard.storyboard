@@ -117,7 +117,7 @@
                                 <rect key="frame" x="0.0" y="539" width="375" height="128"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z7u-q4-dbd">
-                                        <rect key="frame" x="0.0" y="3" width="375" height="125"/>
+                                        <rect key="frame" x="0.0" y="89" width="375" height="39"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="changedCatogeryButtonPrssed:" destination="Qwr-yP-egu" eventType="touchUpInside" id="9dh-pn-16n"/>
@@ -160,14 +160,35 @@
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                     </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_outline" translatesAutoresizingMaskIntoConstraints="NO" id="p0P-Rl-xCG">
+                                        <rect key="frame" x="347" y="8" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="20" id="2Ze-zX-q8E"/>
+                                            <constraint firstAttribute="height" constant="20" id="5mv-KM-28l"/>
+                                        </constraints>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aub-Mo-lW9">
+                                        <rect key="frame" x="340" y="0.0" width="35" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="6aP-x0-FNu"/>
+                                            <constraint firstAttribute="width" constant="35" id="EcC-g0-9Xz"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="moreOnCategoryClicked:" destination="Qwr-yP-egu" eventType="touchUpInside" id="Jen-rw-BoG"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.59607843137254901" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="b6j-8k-gjU" firstAttribute="top" secondItem="Zg5-dQ-m7r" secondAttribute="bottom" constant="-2" id="1Tm-b7-cI8"/>
+                                    <constraint firstAttribute="trailing" secondItem="aub-Mo-lW9" secondAttribute="trailing" id="33Z-bw-sR9"/>
                                     <constraint firstItem="b6j-8k-gjU" firstAttribute="centerX" secondItem="xde-jU-faj" secondAttribute="centerX" id="ICF-LA-Heb"/>
+                                    <constraint firstAttribute="trailing" secondItem="p0P-Rl-xCG" secondAttribute="trailing" constant="8" id="Jce-ky-ufr"/>
                                     <constraint firstItem="xde-jU-faj" firstAttribute="top" secondItem="b6j-8k-gjU" secondAttribute="bottom" constant="5" id="MDK-D5-xsd"/>
+                                    <constraint firstItem="p0P-Rl-xCG" firstAttribute="top" secondItem="y5X-Qz-lEx" secondAttribute="top" constant="8" id="MIm-bS-2sf"/>
                                     <constraint firstItem="b6j-8k-gjU" firstAttribute="centerX" secondItem="Zg5-dQ-m7r" secondAttribute="centerX" id="S3r-oR-OfQ"/>
                                     <constraint firstAttribute="height" constant="128" id="goH-ti-W55"/>
+                                    <constraint firstItem="aub-Mo-lW9" firstAttribute="top" secondItem="y5X-Qz-lEx" secondAttribute="top" id="jyb-px-ctk"/>
                                     <constraint firstItem="b6j-8k-gjU" firstAttribute="centerX" secondItem="y5X-Qz-lEx" secondAttribute="centerX" id="oir-YS-zWM"/>
                                     <constraint firstItem="Zg5-dQ-m7r" firstAttribute="top" secondItem="y5X-Qz-lEx" secondAttribute="top" constant="19" id="vDY-DC-2gp"/>
                                 </constraints>
@@ -631,6 +652,7 @@
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="exb-43-SbL">
                                 <rect key="frame" x="0.0" y="514" width="320" height="54"/>
+                                <color key="backgroundColor" red="0.58431372550000005" green="0.45882352939999999" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -671,6 +693,7 @@
         <image name="datausage" width="48" height="48"/>
         <image name="file_download" width="48" height="48"/>
         <image name="file_upload" width="48" height="48"/>
+        <image name="icon_outline" width="64" height="64"/>
         <image name="smartphone_icon" width="50" height="50"/>
     </resources>
 </document>

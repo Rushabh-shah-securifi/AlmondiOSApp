@@ -5,7 +5,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
+        <mutableArray key="AvenirLTStd-Black.otf">
+            <string>AvenirLTStd-Black</string>
+        </mutableArray>
         <mutableArray key="AvenirLTStd-Light.otf">
+            <string>AvenirLTStd-Light</string>
             <string>AvenirLTStd-Light</string>
             <string>AvenirLTStd-Light</string>
         </mutableArray>
@@ -23,6 +27,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CategoryView">
             <connections>
                 <outlet property="cat_view" destination="iN0-l3-epB" id="2pP-Mr-8HQ"/>
+                <outlet property="moreClickView" destination="238-Ai-OW8" id="ZMe-91-E3v"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -123,7 +128,7 @@
                                     </connections>
                                 </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Parents_Strongly_Cautioned" translatesAutoresizingMaskIntoConstraints="NO" id="Q9O-M1-dfi">
-                                    <rect key="frame" x="8" y="3" width="20" height="20"/>
+                                    <rect key="frame" x="8" y="2" width="20" height="20"/>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -219,6 +224,42 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="317" y="67.5"/>
+        </view>
+        <view contentMode="scaleToFill" id="238-Ai-OW8">
+            <rect key="frame" x="0.0" y="0.0" width="358" height="155"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MVW-AZ-VNG">
+                    <rect key="frame" x="-2" y="31" width="359" height="1"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WfX-4G-tX9">
+                    <rect key="frame" x="8" y="39" width="324" height="76"/>
+                    <string key="text">Our category database is crowedsourced and your suggetions are valueable to us.We constantly review and update the top level category based on user inputs.</string>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="13"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cross_icon" translatesAutoresizingMaskIntoConstraints="NO" id="lds-Bd-aGo">
+                    <rect key="frame" x="333" y="4" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="20" id="LWx-vg-BuR"/>
+                        <constraint firstAttribute="height" constant="20" id="QGe-TP-uKX"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="  How we determine these categories?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KsZ-Ds-aeW">
+                    <rect key="frame" x="-2" y="1" width="359" height="30"/>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Black" family="Avenir LT Std" pointSize="14"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="lds-Bd-aGo" firstAttribute="top" secondItem="238-Ai-OW8" secondAttribute="top" constant="4" id="CoZ-xe-R57"/>
+                <constraint firstAttribute="trailing" secondItem="lds-Bd-aGo" secondAttribute="trailing" constant="5" id="IaN-zj-gDK"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="317" y="286.5"/>
         </view>
     </objects>
     <resources>

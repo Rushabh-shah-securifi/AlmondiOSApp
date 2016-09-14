@@ -8,6 +8,7 @@
 
 #import "CategoryView.h"
 @interface CategoryView()
+@property (strong, nonatomic) IBOutlet UIView *moreClickView;
 @property (strong, nonatomic) IBOutlet UIView *cat_view;
 @end
 @implementation CategoryView
@@ -17,6 +18,15 @@
         NSLog(@"frame initialized");
         [[NSBundle mainBundle] loadNibNamed:@"categoryTab" owner:self options:nil];
         [self addSubview:self.cat_view];
+    }
+    return self;
+}
+- (id)initMoreClickView{
+    self = [super init];
+    if(self){
+        NSLog(@"frame initialized");
+        [[NSBundle mainBundle] loadNibNamed:@"categoryTab" owner:self options:nil];
+        [self addSubview:self.moreClickView];
     }
     return self;
 }

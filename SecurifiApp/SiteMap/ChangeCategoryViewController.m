@@ -26,6 +26,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *LblClientLastVicited;
 @property (nonatomic) UIColor *globalColor;
 @property (nonatomic) CategoryView *cat_view;
+@property (nonatomic) CategoryView *cat_view_more;
+
 @property (nonatomic) NSString *catTag;
 
 
@@ -50,6 +52,7 @@
     [super viewWillAppear:YES];
     [self.navigationController setNavigationBarHidden:YES];
     self.cat_view = [[CategoryView alloc]init];
+    self.cat_view_more = [[CategoryView alloc]initMoreClickView];
     self.cat_view.delegate = self;
     NSLog(@"uri dict = %@ ",self.uriDict);
     [self categoryMap:self.uriDict[@"categoryObj"]];
@@ -132,6 +135,7 @@
 
 - (IBAction)dismissCategoryTag:(id)sender {
     [self.cat_view removeFromSuperview];
+    [self.cat_view_more removeFromSuperview];
     self.backGroundButton.hidden = YES;
 }
 
@@ -170,5 +174,11 @@
 -(void)handleTapOnLabel:(id)sender{
     NSLog(@"hyper link pressed");NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/favicon.ico", self.uriDict[@"hostName"]]];
     [[UIApplication sharedApplication] openURL:url];
+}
+- (IBAction)moreOnCategoryClicked:(id)sender {
+    NSLog(@"moreOnCategoryClicked");
+    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 110, self.view.frame.size.width, 300);
+    [self.view addSubview:self.cat_view_more];
+    self.backGroundButton.hidden = NO;
 }
 @end

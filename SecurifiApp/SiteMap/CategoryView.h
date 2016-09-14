@@ -12,4 +12,5 @@
 @end
 @interface CategoryView : UIView
 @property (nonatomic)id<CategoryViewDelegate> delegate;
+- (id)initMoreClickView;
 @end

@@ -71,15 +71,17 @@
     self.settingButton.alpha = 1;
    
     if(self.cellType == ClientTable_Cell ){
+         [self setWiFiSignalIcon];
         self.parentrolBtn.hidden = NO;
     }
     else{
         self.parentrolBtn.hidden = YES;
+        self.wifiSignalImageView.hidden = YES;
     }
     
     
     [self setTamper];
-    [self setWiFiSignalIcon];
+   
     
     //NSLog(@"device id %d, Icon text %@, icon: %@, index id %@, placement %@",_genericParams.headerGenericIndexValue.deviceID,_genericParams.headerGenericIndexValue.genericValue.iconText,_genericParams.headerGenericIndexValue.genericValue.icon,_genericParams.headerGenericIndexValue.genericIndex.ID,_genericParams.headerGenericIndexValue.genericIndex.placement);
     int deviceType = [Device getTypeForID:_genericParams.headerGenericIndexValue.deviceID];
