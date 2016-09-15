@@ -557,14 +557,6 @@ int mii;
     if (!self) {
         return;
     }
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    
-    SFIAlmondPlus *plus = [data valueForKey:@"data"];
-    if (plus != nil && [self isSameAsCurrentMAC:plus.almondplusMAC]) {
-        return;
-    }
-    
     NSLog(@"%s 2", __PRETTY_FUNCTION__);
     [self initializeAlmondData];
     dispatch_async(dispatch_get_main_queue(), ^() {

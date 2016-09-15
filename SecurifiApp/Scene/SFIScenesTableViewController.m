@@ -372,6 +372,9 @@
 
 - (void)onAlmondListDidChange:(id)notice {
     [self markAlmondTitleAndMac];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+    });
 }
 
 - (void)gotResponseFor1064:(id)sender {

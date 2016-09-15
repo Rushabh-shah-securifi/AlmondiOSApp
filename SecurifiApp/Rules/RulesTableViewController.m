@@ -350,6 +350,9 @@ CGPoint tablePoint;
 
 - (void)onAlmondListDidChange:(id)notice {
     [self markAlmondTitle];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+    });
 }
 
 #pragma mark command response

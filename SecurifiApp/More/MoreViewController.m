@@ -77,6 +77,11 @@
                selector:@selector(onCurrentAlmondChanged:)
                    name:kSFIDidChangeCurrentAlmond
                  object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onAlmondListDidChange:)
+                   name:kSFIDidUpdateAlmondList
+                 object:nil];
 }
 
 - (void)sendUserProfileRequest {
@@ -85,7 +90,7 @@
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_USER_PROFILE_REQUEST;
     cloudCommand.command = userProfileRequest;
-
+    
     
     [[SecurifiToolkit sharedInstance] asyncSendCommand:cloudCommand];
 }
@@ -99,7 +104,7 @@
     if (obj.isSuccessful) {
         //Store user profile information
         self.userName = [NSString stringWithFormat:@"%@ %@", obj.firstName, obj.lastName];
-
+        
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.tableView reloadData];
         });
@@ -108,7 +113,7 @@
         DLog(@"Reason Code %d", obj.reasonCode);
     }
 }
-    
+
 -(NSArray *)getFeaturesArray{
     NSMutableArray *moreFeatures = [NSMutableArray new];
     [moreFeatures addObject:@{@"rule_forward_icon":@"Rules"}];
@@ -184,7 +189,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     else
         cell.accessoryType = UITableViewCellAccessoryNone;
-
+    
     return cell;
 }
 
@@ -388,7 +393,7 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     NSLog(@"Button Index =%ld", (long) buttonIndex);
-
+    
     if (alertView.tag == USER_INVITE_ALERT) {
         if (buttonIndex == 1) {  //Invite user to share Almond
             UITextField *emailID = [alertView textFieldAtIndex:0];
@@ -558,6 +563,12 @@
 
 #pragma mark Notifications
 - (void)onCurrentAlmondChanged:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+    });
+}
+
+- (void)onAlmondListDidChange:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
