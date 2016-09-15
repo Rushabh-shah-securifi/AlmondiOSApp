@@ -278,7 +278,6 @@
             [self pushViewController:helpCenter];
         }else{
             [self shareAlmondTapped];
-
         }
     }
     
@@ -361,6 +360,11 @@
 
 #pragma mark almond sharing
 - (void)shareAlmondTapped{
+    if([[SecurifiToolkit sharedInstance] currentAlmond] == nil){
+        [self showToast:@"Please add an Almond to share its control."];
+        return;
+    }
+    
     //Invitation Email Input Box
     NSString *alertMessage = [NSString stringWithFormat:@"Share control of %@ by sending an invitation over email", [SecurifiToolkit sharedInstance].currentAlmond.almondplusName];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.title", @"Invite By Email") message:alertMessage delegate:self cancelButtonTitle:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.Invite", @"Invite"), nil];
