@@ -11,6 +11,7 @@
 - (void)dismissControllerDelegate;
 - (void)showHudWithTimeoutMsgDelegate:(NSString*)hudMsg time:(NSTimeInterval)sec;
 - (void)hideHUDDelegate;
+- (void)showToastDelegate:(NSString *)msg;
 @end
 
 

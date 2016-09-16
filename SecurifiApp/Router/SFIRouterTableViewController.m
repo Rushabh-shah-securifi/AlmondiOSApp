@@ -922,16 +922,15 @@ int mii;
      NSString *commandType = payload[COMMAND_TYPE];
      if(isSuccessful){
          if([commandType  isEqualToString:@"SlaveDetailsMobile"]){
+             MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupViewController" isStatView:YES];
              AlmondStatus *slaveStatus = [AlmondStatus getSlaveStatus:payload routerSummary:self.routerSummary];
-             [self pushMeshController:slaveStatus];
+             [self presentController:slaveStatus ctrl:ctrl];
          }
          else if([commandType  isEqualToString:@"Rai2UpMobile"]){
-             MeshSetupViewController *mesh = [[MeshSetupViewController alloc]init];
-             mesh.hidesBottomBarWhenPushed = YES;
-             mesh.isStatusView = NO;
-             [self.navigationController pushViewController:mesh animated:YES];
+             MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupAdding" isStatView:NO];
+//             [self.navigationController pushViewController:ctrl animated:YES];
+             [self presentViewController:ctrl animated:YES completion:nil];
          }
-         
      }
      else{
          [self showToast:@"Sorry! Please try after sometime."];
@@ -944,7 +943,8 @@ int mii;
      NSLog(@"onAlmondTapDelegate");
      //master - straight forward assemble data and send
      if(almondCount == 0){
-         [self pushMeshController:[AlmondStatus getMasterAlmondStatus:self.routerSummary]];
+         MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupViewController" isStatView:YES];
+         [self presentController:[AlmondStatus getMasterAlmondStatus:self.routerSummary] ctrl:ctrl];
      }else{
          //send a command, to fetch slavestatus
          NSDictionary *slaveDict = self.routerSummary.almondsList[almondCount];
@@ -955,14 +955,18 @@ int mii;
      }
  }
 
--(void)pushMeshController:(AlmondStatus*)almondStat{
+-(MeshSetupViewController *)getMeshController:(NSString *)identifier isStatView:(BOOL)isStatView{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Mesh" bundle:nil];
-    MeshSetupViewController *meshController = [storyboard instantiateViewControllerWithIdentifier:@"MeshSetupViewController"];
-    meshController.hidesBottomBarWhenPushed = YES;
-    meshController.isStatusView = YES;
-    meshController.almondStatObj = almondStat;
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    [self.navigationController pushViewController:meshController animated:YES];
+    MeshSetupViewController *meshController = [storyboard instantiateViewControllerWithIdentifier:identifier];
+    meshController.isStatusView = isStatView;
+    return meshController;
+}
+
+-(void)presentController:(AlmondStatus *)statObj ctrl:(MeshSetupViewController *)ctrl{
+    ctrl.almondStatObj = statObj;
+//    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+//    [self.navigationController pushViewController:ctrl animated:YES];
+    [self presentViewController:ctrl animated:YES completion:nil];
 }
 
  -(void)onAddAlmondTapDelegate{

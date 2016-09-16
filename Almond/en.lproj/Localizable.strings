@@ -853,12 +853,27 @@ Follow it, then login below.";
 /***** mesh strings ********/
 "wiring_primary" = "Wiring your Primary Almond ";
 "wiring_primary_desc" = "For your network to function properly, it's important to place it in the correct order.";
+"wiring_primary_desc2" = "Make sure that your primary Almond is directly connected to your ISP mdem via the internet port.";
+
 "connecting_newAl" = "Connecting your New Almond";
-"connecting_newAl_desc" = "Connecting your New Almond";
+"connecting_newAl_desc" = "You can connect your new Almond to the primary one directly using an Internet cable.";
+"connecting_newAl_desc2" = "Plug the additional Internet Cable into the Internet port of the new Almond, and the other end into any of the available LAN ports on the primary Almond.";
+
 "using_network_switch" = "Using a Network Switch";
-"using_network_switch_desc" = "Using a Network Switch";
+"using_network_switch_desc" = "If your home network as a switch, you can use it as well to connect your new Almond.";
+"using_network_switch_desc2" = "If you are using a network switch, connect its Internet port to the primary Almnd, and the new Almond to the switch";
+
+"place_almond" = "Place your Almond";
+"place_almond_desc" = "Walls, furniture and electrical appliances such as microwaves are archenemies of Wifi.";
+"place_almond_desc1" = "Try to minimize such obstructions between your Almonds.";
+
+"optimal_distance" = "Optimal Distance";
+"optimal_distance_desc" = "Below are some recommendations based on the layout of houses.";
+"optimal_distance_desc1" = "Follow these guide approximate guidelines in order to place your new Almond at an optimal distance from other Almonds.";
+
 "wired_or_wireless" = "Wired or Wireless?";
 "wired_or_wireless_desc" = "The Almond Wi-Fi system is highly flexible.The primary Almond has to be directly connected to your ISP modem. The additional Almonds can be connected via Wired interface or Wirelessly.";
+
 "wired_interface" = "Wired Interface";
 "wireless_interface" = "Wireless Interface";
 "wireless_interface_desc" = "If your house doesn't have internet cabling across rooms, you can simply choose \"Wireless\" mode for your additional Almonds.";

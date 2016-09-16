@@ -65,7 +65,6 @@ int mii;
 
 -(void)setUpAlmondStatus{
     [self initializeNotification];
-    [self setupNavBar];
     self.almondName.text = self.almondStatObj.name;
     if(self.almondStatObj.isMaster){//check if master or slave
         //more to be done depending upon connection status images need to be updated
@@ -79,35 +78,29 @@ int mii;
 }
 
 - (void)setupMeshView{
-    self.meshView = [[MeshView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.navigationController.view.frame.size.height-20)];
-    NSLog(@"nav viewheight: %f", CGRectGetHeight(self.navigationController.view.frame));
+    self.meshView = [[MeshView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20)];
+    NSLog(@"nav viewheight: %f", CGRectGetHeight(self.view.frame));
     self.meshView.delegate = self;
     
     [self.meshView initializeFirstScreen:[CommonMethods getMeshDict:@"Interface"]];
-    [self.meshView addInfoScreen:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height-20)];
+    [self.meshView addInfoScreen:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-20)];
     
-    [self.navigationController.view addSubview:self.meshView];
+    [self.view addSubview:self.meshView];
     self.meshView.backgroundColor = [UIColor grayColor];
-    //    [self.tabBarController.tabBar setHidden:YES];
 }
+
 -(void)toggleImages:(BOOL)onlineHidden weakImg:(BOOL)weakHidden text:(NSString*)text{
     self.meshOnlineImg.hidden = onlineHidden;
     self.meshWeakImg.hidden = weakHidden;
     self.statusTxt.text = text;
 }
 
--(void)setupNavBar{
-    self.title = @"Almond Status";
-//    self.navigationController.title = @"Almond Status";
-    self.navigationController.navigationBar.backIndicatorImage = nil;
-}
-
 -(void)setUpHUD{
-    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.dimBackground = YES;
     _HUD.delegate = self;
-    [self.navigationController.view addSubview:_HUD];
+    [self.view addSubview:_HUD];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -165,7 +158,10 @@ int mii;
 
 #pragma mark meshview delegates
 -(void)dismissControllerDelegate{
-    [self.navigationController popViewControllerAnimated:YES];
+    self.meshView = nil;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    });
 }
 
 - (void)showHudWithTimeoutMsgDelegate:(NSString*)hudMsg time:(NSTimeInterval)sec{
@@ -187,6 +183,10 @@ int mii;
     });
 }
 
+- (void)showToastDelegate:(NSString *)msg{
+    NSLog(@"toast: %@", msg);
+    [self showToast:msg];
+}
 #pragma mark button tap
 - (IBAction)onRemoveThisAlmondTap:(id)sender { //this button is only enabled for slave
     [self showHudWithTimeoutMsgDelegate:@"Removing...Please wait!" time:5];
@@ -219,11 +219,18 @@ int mii;
     if(isSuccessful){
         [self showToast:@"Successfully Removed!"];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.navigationController popViewControllerAnimated:YES];
+            [self dismissViewControllerAnimated:YES completion:nil];
         });
     }else{
         [self showToast:@"Sorry! Could not Remove."];
     }
+}
+
+#pragma mark event methods
+- (IBAction)onCrossButtonTap:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    });
 }
 
 @end
