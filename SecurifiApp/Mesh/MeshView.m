@@ -114,7 +114,6 @@
 //add almond view
 - (IBAction)onCannotFindAlmondTap:(id)sender {
     [self requestAddableSlave];
-    self.troublePairingBtn.hidden = YES;
     [self addView:self.pairingAlmondRestView frame:self.currentView.frame];
 }
 
@@ -263,8 +262,10 @@
                 
                 if(self.almondTitles)
                     [self addView:self.almondsView frame:frame];
-                else
-                    [self addView:self.pairingAlmondView frame:frame];
+                else{
+                    [self addPairingAlmondView:frame];
+                }
+                
             }
             
             break;
@@ -335,8 +336,7 @@
         }
         case 2:{
             [self requestAddableSlave];
-            self.troublePairingBtn.hidden = YES;
-            [self addView:self.pairingAlmondView frame:frame];
+            [self addPairingAlmondView:frame];
             break;
         }
         case 3:{
@@ -356,12 +356,18 @@
             break;
         }
         case 7:{
-            [self addView:self.pairingAlmondView frame:frame];
+            [self addPairingAlmondView:frame];
             break;
         }
         default:
             break;
     }
+}
+
+-(void)addPairingAlmondView:(CGRect)frame{
+    self.troublePairingBtn.hidden = YES;
+    self.lineBtm.hidden = YES;
+    [self addView:self.pairingAlmondView frame:frame];
 }
 
 -(void)dismissView{
@@ -421,7 +427,6 @@
             [MeshPayload requestAddWireLessSlave:self.mii slaveName:self.almondTitle];
     }else{
         [self requestAddableSlave];
-        self.troublePairingBtn.hidden = YES;
         [self addView:self.pairingAlmondRestView frame:self.currentView.frame];
     }
 }
