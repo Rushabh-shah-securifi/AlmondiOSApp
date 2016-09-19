@@ -27,7 +27,7 @@
         <!--Browsing History View Controller-->
         <scene sceneID="f3O-7b-ubb">
             <objects>
-                <viewController storyboardIdentifier="BrowsingHistoryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1nw-me-1sv" customClass="BrowsingHistoryViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BrowsingHistoryViewController" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1nw-me-1sv" customClass="BrowsingHistoryViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HGt-l4-24c"/>
                         <viewControllerLayoutGuide type="bottom" id="dw2-jV-lbW"/>
@@ -75,7 +75,7 @@
         <!--Search Table View Controller-->
         <scene sceneID="25I-8c-UfE">
             <objects>
-                <tableViewController storyboardIdentifier="SearchTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Pha-de-25d" customClass="SearchTableViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SearchTableViewController" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Pha-de-25d" customClass="SearchTableViewController" sceneMemberID="viewController">
                     <tableView key="view" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" rowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="1" id="7De-7J-KPS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -105,7 +105,7 @@
         <!--Change Category View Controller-->
         <scene sceneID="Tef-Bl-Zmg">
             <objects>
-                <viewController storyboardIdentifier="ChangeCategoryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Qwr-yP-egu" customClass="ChangeCategoryViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChangeCategoryViewController" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Qwr-yP-egu" customClass="ChangeCategoryViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="t5c-hZ-al6"/>
                         <viewControllerLayoutGuide type="bottom" id="2ii-KC-Y0x"/>
@@ -291,25 +291,25 @@
                                 <rect key="frame" x="20" y="122" width="335" height="161"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Facebook.com" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Jj-ag-dok">
-                                        <rect key="frame" x="27" y="52" width="281" height="29"/>
+                                        <rect key="frame" x="27" y="39" width="281" height="35"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="29" id="wT8-bY-m9g"/>
+                                            <constraint firstAttribute="height" constant="35" id="wT8-bY-m9g"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="15"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SOCIAL NETWORKING" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pbK-UM-Fpy">
-                                        <rect key="frame" x="27" y="82" width="281" height="17"/>
+                                        <rect key="frame" x="27" y="75" width="281" height="23"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="17" id="fPi-o3-M6j"/>
+                                            <constraint firstAttribute="height" constant="23" id="fPi-o3-M6j"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PG-13" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7x0-lK-KJy">
-                                        <rect key="frame" x="125" y="17" width="83" height="29"/>
+                                        <rect key="frame" x="125" y="6" width="83" height="29"/>
                                         <color key="backgroundColor" red="1" green="0.59607843137254901" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="29" id="Uat-Wt-fh7"/>
@@ -326,9 +326,9 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accessed on matt's iPhone on Wed 29 June 11:00." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JcB-yk-hk4">
-                                        <rect key="frame" x="76" y="107" width="180" height="35"/>
+                                        <rect key="frame" x="76" y="103" width="180" height="45"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="35" id="YXi-Uw-7As"/>
+                                            <constraint firstAttribute="height" constant="45" id="YXi-Uw-7As"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="12"/>
                                         <color key="textColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -347,14 +347,14 @@
                                     <constraint firstItem="JcB-yk-hk4" firstAttribute="leading" secondItem="4Pp-Gi-w4b" secondAttribute="leading" constant="76" id="4fM-Za-jlz"/>
                                     <constraint firstAttribute="trailing" secondItem="JcB-yk-hk4" secondAttribute="trailing" constant="79" id="65n-pJ-zn8"/>
                                     <constraint firstItem="0Jj-ag-dok" firstAttribute="centerX" secondItem="7x0-lK-KJy" secondAttribute="centerX" constant="1" id="7LD-Tv-IOR"/>
-                                    <constraint firstItem="JcB-yk-hk4" firstAttribute="top" secondItem="pbK-UM-Fpy" secondAttribute="bottom" constant="8" id="8ZK-qU-iJL"/>
+                                    <constraint firstItem="JcB-yk-hk4" firstAttribute="top" secondItem="pbK-UM-Fpy" secondAttribute="bottom" constant="5" id="8ZK-qU-iJL"/>
                                     <constraint firstItem="pbK-UM-Fpy" firstAttribute="leading" secondItem="4Pp-Gi-w4b" secondAttribute="leading" constant="27" id="D2X-aS-BnA"/>
                                     <constraint firstItem="0Jj-ag-dok" firstAttribute="leading" secondItem="4Pp-Gi-w4b" secondAttribute="leading" constant="27" id="JOV-bx-CV1"/>
                                     <constraint firstAttribute="trailing" secondItem="0Jj-ag-dok" secondAttribute="trailing" constant="27" id="JTO-TD-nmO"/>
                                     <constraint firstAttribute="height" constant="161" id="Pe0-Fm-XaA"/>
                                     <constraint firstItem="pbK-UM-Fpy" firstAttribute="top" secondItem="0Jj-ag-dok" secondAttribute="bottom" constant="1" id="QTe-LU-X7F"/>
-                                    <constraint firstItem="0Jj-ag-dok" firstAttribute="top" secondItem="7x0-lK-KJy" secondAttribute="bottom" constant="6" id="X8e-D1-EAo"/>
-                                    <constraint firstItem="7x0-lK-KJy" firstAttribute="top" secondItem="4Pp-Gi-w4b" secondAttribute="top" constant="17" id="kc4-Gz-ShW"/>
+                                    <constraint firstItem="0Jj-ag-dok" firstAttribute="top" secondItem="7x0-lK-KJy" secondAttribute="bottom" constant="4" id="X8e-D1-EAo"/>
+                                    <constraint firstItem="7x0-lK-KJy" firstAttribute="top" secondItem="4Pp-Gi-w4b" secondAttribute="top" constant="6" id="kc4-Gz-ShW"/>
                                     <constraint firstAttribute="trailing" secondItem="pbK-UM-Fpy" secondAttribute="trailing" constant="27" id="t6u-fg-hJh"/>
                                 </constraints>
                             </view>
@@ -450,7 +450,7 @@
         <!--Parental Controls View Controller-->
         <scene sceneID="CFh-EV-8GB">
             <objects>
-                <viewController storyboardIdentifier="ParentalControlsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="UZa-lx-WzC" customClass="ParentalControlsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ParentalControlsViewController" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="UZa-lx-WzC" customClass="ParentalControlsViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="k4b-bI-DJC"/>
                         <viewControllerLayoutGuide type="bottom" id="v2p-ao-Iay"/>

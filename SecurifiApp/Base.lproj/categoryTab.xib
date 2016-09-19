@@ -229,34 +229,46 @@
             <rect key="frame" x="0.0" y="0.0" width="358" height="155"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  How we determine these categories?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KsZ-Ds-aeW">
+                    <rect key="frame" x="0.0" y="1" width="357" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="HD2-WP-1LD"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Black" family="Avenir LT Std" pointSize="14"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MVW-AZ-VNG">
                     <rect key="frame" x="-2" y="31" width="359" height="1"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WfX-4G-tX9">
-                    <rect key="frame" x="8" y="39" width="324" height="76"/>
-                    <string key="text">Our category database is crowedsourced and your suggetions are valueable to us.We constantly review and update the top level category based on user inputs.</string>
-                    <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="13"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cross_icon" translatesAutoresizingMaskIntoConstraints="NO" id="lds-Bd-aGo">
-                    <rect key="frame" x="333" y="4" width="20" height="20"/>
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cross_icon" translatesAutoresizingMaskIntoConstraints="NO" id="lds-Bd-aGo">
+                    <rect key="frame" x="300" y="4" width="20" height="20"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="20" id="LWx-vg-BuR"/>
                         <constraint firstAttribute="height" constant="20" id="QGe-TP-uKX"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="  How we determine these categories?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KsZ-Ds-aeW">
-                    <rect key="frame" x="-2" y="1" width="359" height="30"/>
-                    <fontDescription key="fontDescription" name="AvenirLTStd-Black" family="Avenir LT Std" pointSize="14"/>
-                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WfX-4G-tX9">
+                    <rect key="frame" x="0.0" y="31" width="329" height="82"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="82" id="ddT-Lc-VqZ"/>
+                    </constraints>
+                    <string key="text">Our category database is crowedsourced and your suggetions are valueable to us.We constantly review and update the top level category based on user inputs.</string>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="13"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="lds-Bd-aGo" firstAttribute="top" secondItem="238-Ai-OW8" secondAttribute="top" constant="4" id="CoZ-xe-R57"/>
-                <constraint firstAttribute="trailing" secondItem="lds-Bd-aGo" secondAttribute="trailing" constant="5" id="IaN-zj-gDK"/>
+                <constraint firstAttribute="trailing" secondItem="KsZ-Ds-aeW" secondAttribute="trailing" constant="1" id="ECR-cm-4NU"/>
+                <constraint firstItem="WfX-4G-tX9" firstAttribute="leading" secondItem="238-Ai-OW8" secondAttribute="leading" id="GWn-rQ-Cnp"/>
+                <constraint firstAttribute="trailing" secondItem="lds-Bd-aGo" secondAttribute="trailing" constant="38" id="IaN-zj-gDK"/>
+                <constraint firstItem="KsZ-Ds-aeW" firstAttribute="leading" secondItem="238-Ai-OW8" secondAttribute="leading" id="Vyr-kC-IPm"/>
+                <constraint firstItem="KsZ-Ds-aeW" firstAttribute="top" secondItem="238-Ai-OW8" secondAttribute="top" constant="1" id="aVJ-ot-qz7"/>
+                <constraint firstAttribute="trailing" secondItem="WfX-4G-tX9" secondAttribute="trailing" constant="29" id="egY-dq-96b"/>
+                <constraint firstItem="WfX-4G-tX9" firstAttribute="top" secondItem="KsZ-Ds-aeW" secondAttribute="bottom" id="iPF-LP-fzj"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="317" y="286.5"/>
