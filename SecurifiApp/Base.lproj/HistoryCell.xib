@@ -17,8 +17,8 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Xz-JC-pZS">
-                    <rect key="frame" x="63" y="3" width="197" height="25"/>
-                    <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="12"/>
+                    <rect key="frame" x="63" y="0.0" width="197" height="28"/>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -39,10 +39,10 @@
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lRV-aA-EvW">
-                    <rect key="frame" x="27" y="8" width="16" height="16"/>
+                    <rect key="frame" x="27" y="8" width="18" height="18"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="16" id="FrX-9i-flg"/>
-                        <constraint firstAttribute="height" constant="16" id="dXI-X5-nQ9"/>
+                        <constraint firstAttribute="width" constant="18" id="FrX-9i-flg"/>
+                        <constraint firstAttribute="height" constant="18" id="dXI-X5-nQ9"/>
                     </constraints>
                 </imageView>
             </subviews>
@@ -51,9 +51,9 @@
                 <constraint firstItem="G1p-89-vOU" firstAttribute="leading" secondItem="5Xz-JC-pZS" secondAttribute="trailing" constant="5" id="3IB-be-Fwx"/>
                 <constraint firstItem="lRV-aA-EvW" firstAttribute="leading" secondItem="nkO-tR-bJ4" secondAttribute="trailing" constant="6" id="HSr-iY-IXb"/>
                 <constraint firstItem="nkO-tR-bJ4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="KYK-7d-erz"/>
-                <constraint firstItem="5Xz-JC-pZS" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="3" id="LcE-V6-kje"/>
+                <constraint firstItem="5Xz-JC-pZS" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="LcE-V6-kje"/>
                 <constraint firstAttribute="trailing" secondItem="G1p-89-vOU" secondAttribute="trailing" constant="24" id="VcX-h2-0Nt"/>
-                <constraint firstItem="5Xz-JC-pZS" firstAttribute="leading" secondItem="lRV-aA-EvW" secondAttribute="trailing" constant="20" id="dVw-fo-n79"/>
+                <constraint firstItem="5Xz-JC-pZS" firstAttribute="leading" secondItem="lRV-aA-EvW" secondAttribute="trailing" constant="18" id="dVw-fo-n79"/>
                 <constraint firstAttribute="bottom" secondItem="5Xz-JC-pZS" secondAttribute="bottom" constant="8" id="hQn-IU-jid"/>
                 <constraint firstAttribute="bottom" secondItem="G1p-89-vOU" secondAttribute="bottom" constant="5" id="inc-MB-EHA"/>
                 <constraint firstItem="G1p-89-vOU" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="6" id="jIV-lI-fU6"/>

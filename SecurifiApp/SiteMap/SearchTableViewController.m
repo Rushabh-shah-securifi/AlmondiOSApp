@@ -57,7 +57,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     [super viewDidLoad];
     
     self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
-    self.amac = @"251176220100366";
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    self.amac = toolkit.currentAlmond.almondplusMAC;
     self.dayArr = [[NSMutableArray alloc]init];
         self.browsingHistory =[[BrowsingHistory alloc]init];
         self.browsingHistory.delegate = self;

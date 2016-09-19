@@ -48,7 +48,8 @@
     
     
     self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
-    self.amac = @"251176220100366";
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    self.amac = toolkit.currentAlmond.almondplusMAC;
 //    [BrowsingHistoryDataBase initializeDataBase];
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
     self.sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
@@ -208,7 +209,7 @@
 }
 #pragma mark table and search delegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 40;
+    return 45;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
