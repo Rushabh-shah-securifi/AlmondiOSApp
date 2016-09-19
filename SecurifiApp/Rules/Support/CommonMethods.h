@@ -61,7 +61,7 @@
 + (BOOL) isAllDigits:(NSString *)string;
 
 +(NSArray *)searchDate:(NSString*)search fromArr:(NSArray *)URIs;
-
++(NSString *)hexToString:(NSString*)mac;
 #pragma mark rgb methods
 + (int )getRGBForHex:(NSString*)hueValue sliderValue:(NSString*)slider;
 

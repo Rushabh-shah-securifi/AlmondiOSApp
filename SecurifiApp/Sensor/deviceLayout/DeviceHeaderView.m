@@ -73,6 +73,7 @@
     if(self.cellType == ClientTable_Cell ){
          [self setWiFiSignalIcon];
         self.parentrolBtn.hidden = NO;
+        
     }
     else{
         self.parentrolBtn.hidden = YES;
@@ -126,7 +127,7 @@
     if(self.cellType == ClientTable_Cell)
     {
         Client *client = [Client findClientByID:@(deviceID).stringValue];
-        if(client.webHistoryEnable == YES){
+        if(client.webHistoryEnable == NO){
             self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_off"];
             NSLog(@"icon_history_off");
             self.deviceValue.text = @"Web History Off";
@@ -211,13 +212,16 @@
     if(self.cellType == ClientTable_Cell)
     {
         Client *client = [Client findClientByID:@(deviceID).stringValue];
-        if(client.webHistoryEnable == YES){
+        if(client.webHistoryEnable == NO){
             self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_off"];
+            
             NSLog(@"icon_history_off");
+            
         }
         else{
             self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_on"];
             NSLog(@"icon_history_on");
+            
         }
     }
     genericIndexValues = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:@(deviceID).stringValue];

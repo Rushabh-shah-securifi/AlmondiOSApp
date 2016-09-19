@@ -30,7 +30,7 @@
     // Configure the view for the selected state
 }
 
--(void)setUpCell:(NSString *)label andImage:(UIImage *)image isHideSwich:(BOOL)isHide indexPath:(NSInteger)tag{
+-(void)setUpCell:(NSString *)label andImage:(UIImage *)image isHideSwich:(BOOL)isHide indexPath:(NSInteger)tag isOnSwitch:(BOOL)isEnable{
     self.lable.text = label;
     self.imageView.image = image;
     self.Switch.tag = tag;
@@ -40,6 +40,7 @@
     }
     else{
         self.Switch.hidden = NO;
+        [self.Switch setOn:isEnable];
         self.accessoryType = UITableViewCellAccessoryNone;
     }
     
@@ -47,7 +48,7 @@
 - (IBAction)switchAction:(id)sender {
     UISwitch *actionSwitch = (UISwitch *)sender;
     BOOL state = [sender isOn];
-    [self.delegate switchPressed:state andTag:actionSwitch.tag];
+    [self.delegate switchPressed:state andTag:actionSwitch.tag saveNewValue:YES];
 }
 
 @end

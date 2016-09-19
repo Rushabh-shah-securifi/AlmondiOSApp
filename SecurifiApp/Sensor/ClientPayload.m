@@ -44,11 +44,14 @@
                                WAIT:@(client.timeout).stringValue,
                                BLOCK:@(client.deviceAllowedType).stringValue,
                                SCHEDULE:client.deviceSchedule,
+                               SM_ENABLE:client.webHistoryEnable?@"true":@"false",
+                               BW_ENABLE:client.bW_Enable?@"true":@"false",
                                CATEGORY:client.category
                                //deliberaly left out few keys, I think all readonly keys should be ommitted
                                };
     [payload setValue:clients forKey:CLIENTS];
-//    NSLog(@"client payload: %@", payload);
+    
+    NSLog(@"client payload: %@", payload);
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
 }

@@ -182,14 +182,14 @@
     "-18": {
         "Name": "InactiveGrace",
         "Type": "Actuator",
-        "Placement":"Detail",
+        "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "inactiveGracePeriod"
     },
     "-19": {
         "Name": "AllowOnNetwork",
         "Type": "Actuator",
-        "Placement":"Detail",
+        "Placement": "Detail",
         "Layout": "GRID_VIEW",
         "AppLabel": "allowOnNetwork",
         "Values": {
@@ -250,11 +250,60 @@
         }
     },
     "-23": {
-        "Name": "Browsing History",
+        "Name": "Web History",
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "HISTORY_LAYOUT",
-        "AppLabel": "browsingHistory"
+        "AppLabel": "web_history",
+        "Values": {
+            "true": {
+                "AppLabel": "on_camelcase",
+                "Label": "On"
+            },
+            "false": {
+                "AppLabel": "off_camelcase",
+                "Label": "Off"
+            }
+        }
+    },
+    "-24": {
+        "Name": "ClientStatus",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "Values": {
+            "Blocked": {
+                "Icon": "client_left",
+                "AppLabel": "blocked_",
+                "Label": "leaves"
+            },
+            "Active": {
+                "Icon": "client_joined",
+                "AppLabel": "active",
+                "Label": "joins"
+            },
+            "Inactive": {
+                "Icon": "client_joined",
+                "AppLabel": "inactive",
+                "Label": "joins"
+            }
+        }
+    },
+    "-25": {
+        "Name": "BandWidth",
+        "Type": "Actuator",
+        "Placement": "Functional",
+        "Layout": "HISTORY_LAYOUT",
+        "AppLabel": "monitor_device",
+        "Values": {
+            "true": {
+                "AppLabel": "on_camelcase",
+                "Label": "On"
+            },
+            "false": {
+                "AppLabel": "off_camelcase",
+                "Label": "Off"
+            }
+        }
     },
     "-30": {
         "Name": "ClientEvent",
@@ -357,7 +406,7 @@
             },
             "rain": {
                 "Icon": "raining",
-                "AppLabel":"rain",
+                "AppLabel": "rain",
                 "Label": "Weather"
             },
             "clear": {
@@ -380,8 +429,8 @@
                 "AppLabel": "chancesnow",
                 "Label": "Weather"
             },
-            "chanceflurries":{
-                "AppLabel":"chanceflurries",
+            "chanceflurries": {
+                "AppLabel": "chanceflurries",
                 "Label": "Chance of Flurries",
                 "Icon": "chance_of_flurries"
             },
@@ -547,7 +596,7 @@
             }
         }
     },
-    "-35":{
+    "-35": {
         "Name": "WeatherCondition",
         "Type": "Sensor",
         "Layout": "LIST",
@@ -558,19 +607,6 @@
                 "Icon": "condition_icon",
                 "AppLabel": "sunnycondition",
                 "Label": "Condition"
-            }
-        }
-    },
-    "-36": {
-        "Name": "Web history",
-        "Type": "Actuator",
-        "AppLabel": "Web history",
-        "Values": {
-            "true": {
-                "AppLabel": "yes"
-            },
-            "false": {
-                "AppLabel": "no"
             }
         }
     },
@@ -961,7 +997,7 @@
         "Type": "Actuator",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
-        "AppLabel":"shutter",
+        "AppLabel": "shutter",
         "DefaultIcon": "garage_close",
         "Values": {
             "0": {
@@ -1011,7 +1047,7 @@
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
         "ShowToggleInRules": "true",
-        "AppLabel":"lock_state",
+        "AppLabel": "lock_state",
         "DefaultIcon": "lock_close",
         "ValuesArray": {
             "indexValues": [17, 23, 26, 254],
@@ -1040,7 +1076,7 @@
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
         "ShowToggleInRules": "true",
-        "AppLabel":"lock_state",
+        "AppLabel": "lock_state",
         "DefaultIcon": "lock_open",
         "Values": {
             "1": {
@@ -1194,7 +1230,7 @@
         "Formatter": {
             "Min": "0",
             "Max": "100",
-            "Factor": "0.392",
+            "Factor": "0.394",
             "Unit": "%"
         }
     },
@@ -1359,7 +1395,7 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "AppLabel": "actions",
-        "Layout":"MULTI_BUTTON",
+        "Layout": "MULTI_BUTTON",
         "ExcludeFrom": "Scene_Trigger",
         "Values": {
             "true": {
@@ -1373,7 +1409,7 @@
         "Name": "BARRIER OPERATOR",
         "Type": "Actuator",
         "Placement": "Header_Detail_Primary",
-        "AppLabel":"actions",
+        "AppLabel": "actions",
         "Layout": "LIST",
         "Values": {
             "0": {
@@ -1558,7 +1594,7 @@
         "Placement": "Detail",
         "Layout": "TEXT_VIEW_ONLY",
         "AppLabel": "irCode",
-        "ExcludeFrom":"Trigger",
+        "ExcludeFrom": "Trigger",
         "Formatter": {
             "Min": "0",
             "Max": "999"
@@ -1691,7 +1727,7 @@
             "auto-away": {
                 "Icon": "away_white",
                 "AppLabel": "AUTOAWAY",
-                "ReadOnly":"true",
+                "ReadOnly": "true",
                 "Label": "Auto-away"
             }
         }
@@ -1753,7 +1789,7 @@
         "ExcludeFrom": "Scene_Rule",
         "Values": {
             "true": {
-                "AppLabel":"emergency_heat",
+                "AppLabel": "emergency_heat",
                 "Label": "Using Emergency Heat"
             }
         }
@@ -1948,11 +1984,11 @@
         "Values": {
             "ok": {
                 "Label": "OK",
-                "AppLabel":"ok"
+                "AppLabel": "ok"
             },
             "replace": {
                 "Label": "REPLACE",
-                "AppLabel":"replace"
+                "AppLabel": "replace"
             }
         }
     },
@@ -1960,7 +1996,7 @@
         "Name": "MAXIMUM_USERS",
         "Type": "Functional",
         "Placement": "Hidden",
-        "ExcludeFrom":"Scene_Rule"
+        "ExcludeFrom": "Scene_Rule"
     },
     "80": {
         "Name": "ENERGY",
@@ -1969,7 +2005,7 @@
         "Layout": "SLIDER_ICON",
         "AppLabel": "energyLabel",
         "Conditional": "true",
-        "DefaultIcon":"energyreader_icon",
+        "DefaultIcon": "energyreader_icon",
         "Formatter": {
             "Min": "0",
             "Max": "9999",
@@ -1982,7 +2018,7 @@
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "pin",
-        "ExcludeFrom":"Scene_Rule"
+        "ExcludeFrom": "Scene_Rule"
     },
     "82": {
         "Name": "CLAMP1_POWER",
@@ -2156,7 +2192,7 @@
                 "AppLabel": "siren",
                 "Label": "Siren"
             },
-            "3":{
+            "3": {
                 "Icon": "alarm_on",
                 "AppLabel": "doorBell",
                 "Label": "Door Bell"
@@ -2169,7 +2205,7 @@
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
         "ShowToggleInRules": "true",
-        "AppLabel":"multilevel_switch",
+        "AppLabel": "multilevel_switch",
         "DefaultIcon": "dimmer",
         "Values": {
             "true": {
@@ -2303,7 +2339,7 @@
                 "AppLabel": "medium_volume",
                 "Label": "Medium"
             },
-            "3":{
+            "3": {
                 "Icon": "high_volume_icon",
                 "AppLabel": "high_volume",
                 "Label": "High"
@@ -2336,7 +2372,7 @@
         "Name": "RGB ",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "HUE_BLINK",
+        "Layout": "HUE_ONLY",
         "AppLabel": "hue",
         "ExcludeFrom": "Trigger",
         "DefaultIcon": "light_on",
@@ -2394,6 +2430,4 @@
         }
     }
 }
-
-
 

@@ -10,4 +10,6 @@
 
 @interface ChangeCategoryViewController : UIViewController
 @property (nonatomic )NSDictionary *uriDict;
+@property (nonatomic) Client *client;
+
 @end

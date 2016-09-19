@@ -411,6 +411,7 @@ static const int xIndent = 10;
             NSLog(@"client - notifyme");
             [ClientPayload clientDidChangeNotificationSettings:client mii:mii newValue:newValue];
         }else{
+            NSLog(@"client update %@,%d,%@,%@",genericIndexValue.genericIndex.ID,genericIndexValue.index,genericIndexValue.currentValue,genericIndexValue.genericIndex.groupLabel);
             int index = genericIndexValue.index;
             client = [client copy];
             [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];

@@ -10,5 +10,6 @@
 #import "GenericParams.h"
 
 @interface DeviceEditViewController : UIViewController
-@property (nonatomic) GenericParams* genericParams;
+@property (nonatomic) Client* client;
+@property (nonatomic)GenericParams *genericParams;
 @end

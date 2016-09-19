@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 @protocol ParentControlCellDelegate
--(void)switchPressed:(BOOL)isOn andTag:(NSInteger)tag;
+-(void)switchPressed:(BOOL)isOn andTag:(NSInteger)tag saveNewValue:(BOOL)isSave;
 
 @end
 @interface ParentControlCell : UITableViewCell
 @property (nonatomic)id<ParentControlCellDelegate> delegate;
--(void)setUpCell:(NSString *)label andImage:(UIImage *)image isHideSwich:(BOOL)isHide indexPath:(NSInteger)tag;
+-(void)setUpCell:(NSString *)label andImage:(UIImage *)image isHideSwich:(BOOL)isHide indexPath:(NSInteger)tag isOnSwitch:(BOOL)isEnable;
 
 @end

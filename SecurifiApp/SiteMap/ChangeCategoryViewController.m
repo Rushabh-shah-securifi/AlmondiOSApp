@@ -11,6 +11,7 @@
 #import "SFIColors.h"
 #import "UIFont+Securifi.h"
 #import "Colours.h"
+#import "NSDate+Convenience.h"
 #import "CategoryView.h"
 
 @interface ChangeCategoryViewController ()<CategoryViewDelegate>
@@ -51,6 +52,11 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     [self.navigationController setNavigationBarHidden:YES];
+    NSDate* date = [NSDate dateWithTimeIntervalSince1970:[self.uriDict[@"Epoc"] integerValue]];
+    NSDateFormatter *dateformate=[[NSDateFormatter alloc]init];//Accessed on matt's iPhone on Wed 29 June 11:00.
+    [dateformate setDateFormat:@"EEEE dd MMMM HH:mm"]; // Date formater
+    NSString *str = [dateformate stringFromDate:date];
+    self.LblClientLastVicited.text = [NSString stringWithFormat:@"Accessed on %@ on %@",self.client.name,str];
     self.cat_view = [[CategoryView alloc]init];
     self.cat_view_more = [[CategoryView alloc]initMoreClickView];
     self.cat_view.delegate = self;
@@ -79,34 +85,39 @@
     if([[uriDict valueForKey:@"categoty"] isEqualToString:@"NC-17"]){
         
         self.globalColor = [UIColor colorFromHexString:@"000000"];
-        self.catogeryFuncLbl.text = @"Adults Only";
+        self.catogeryTag.text =@"Adults Only";
+        self.catogeryFuncLbl.text = @"No One 17 and Under Admitted. Clearly adult. Children are not admitted.";
        
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"R"]){
         self.globalColor = [UIColor colorFromHexString:@"f44336"];
-        self.catogeryFuncLbl.text = @"Restricted";
+        self.catogeryTag.text =@"Restricted";
+        self.catogeryFuncLbl.text = @"Under 17 requires accompanying parent or adult guardian. Contains some adult material. Parents are urged to learn more about the film before taking their young children with them.";
      
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"PG-13"]){
         self.globalColor = [UIColor colorFromHexString:@"ff9800"];
-        self.catogeryFuncLbl.text = @"Parents Strongly Cautioned";
+        self.catogeryTag.text =@"Parents Strongly Cautioned";
+        self.catogeryFuncLbl.text = @"Some material may be inappropriate for children under 13. Parents are urged to be cautious. Some material may be inappropriate for pre teenagers.";
       
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"PG"]){
         self.globalColor = [UIColor colorFromHexString:@"ffc107"];
-        self.catogeryFuncLbl.text = @"Parential Guidence Suggested";
+        self.catogeryTag.text =@"Parential Guidence Suggested";
+        self.catogeryFuncLbl.text = @"Some material may not be suitable for children. Parents urged to give  parental guidance. May contain some material parents might not like for their young children.";
         
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"G"]){
         self.globalColor = [UIColor colorFromHexString:@"4caf50"];
-        self.catogeryFuncLbl.text = @"General Audiences";
+        self.catogeryTag.text =@"General Audiences";
+        self.catogeryFuncLbl.text = @"All ages admitted. Nothing that would offend parents for viewing by children.";
         
     }
     
-    [self.catogeryTag setTextColor:self.globalColor];
+//    [self.catogeryTag setTextColor:self.globalColor];
     self.bottomView.backgroundColor = self.globalColor;
     _LblCatogeryTag.backgroundColor = self.globalColor;
-    self.catogeryTag.text =[uriDict valueForKey:@"categoty"];
+//    self.catogeryTag.text =[uriDict valueForKey:@"categoty"];
     
     self.LblCatogeryTag.text =[uriDict valueForKey:@"categoty"];
    
@@ -172,7 +183,7 @@
     self.backGroundButton.hidden = YES;
 }
 -(void)handleTapOnLabel:(id)sender{
-    NSLog(@"hyper link pressed");NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/favicon.ico", self.uriDict[@"hostName"]]];
+    NSLog(@"hyper link pressed");NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@", self.uriDict[@"hostName"]]];
     [[UIApplication sharedApplication] openURL:url];
 }
 - (IBAction)moreOnCategoryClicked:(id)sender {

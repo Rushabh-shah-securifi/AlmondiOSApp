@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "GenericParams.h"
 @interface SearchTableViewController : UITableViewController
 @property (nonatomic) NSMutableDictionary *urlToImageDict;
+@property (nonatomic) Client *client;
 @end

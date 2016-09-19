@@ -47,13 +47,17 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 @property BOOL isManuelSearch ;
 @property (nonatomic) NSDictionary *historyDict;
 @property (nonatomic)  UILabel *NoresultFound;
-
+@property (nonatomic) NSString *cmac;
+@property (nonatomic) NSString *amac;
 @end
 
 @implementation SearchTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
+    self.amac = @"251176220100366";
     self.dayArr = [[NSMutableArray alloc]init];
         self.browsingHistory =[[BrowsingHistory alloc]init];
         self.browsingHistory.delegate = self;
@@ -427,26 +431,26 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 -(void)getHistoryFromDB:(NSString *)searchString{
     NSLog(@"self.searchPatten %ld..%@",(long)self.searchPatten,searchString);
     if(self.searchPatten == CategorySearch){
-        self.historyDict = [BrowsingHistoryDataBase searchBYCategoty:searchString];
+        self.historyDict = [BrowsingHistoryDataBase searchBYCategoty:searchString almonsMac:self.amac clientMac:self.cmac];
         NSLog(@"CategorySearch reached");
     }
     if(self.searchPatten == RecentSearch){
-        self.historyDict = [BrowsingHistoryDataBase getSearchString:searchString];
+        self.historyDict = [BrowsingHistoryDataBase getSearchString:searchString almonsMac:self.amac clientMac:self.cmac];
     }
     else if (self.searchPatten == WeekDaySearch){
-        self.historyDict = [BrowsingHistoryDataBase weekDaySearch:searchString];
+        self.historyDict = [BrowsingHistoryDataBase weekDaySearch:searchString almonsMac:self.amac clientMac:self.cmac];
     }
     else if(self.searchPatten == TodaySearch){
-        self.historyDict = [BrowsingHistoryDataBase todaySearch];
+        self.historyDict = [BrowsingHistoryDataBase todaySearch:self.amac clientMac:self.cmac];
     }
     else if(self.searchPatten == DateSearch){
-        self.historyDict = [BrowsingHistoryDataBase DaySearch:searchString];
+        self.historyDict = [BrowsingHistoryDataBase DaySearch:searchString almonsMac:self.amac clientMac:self.cmac];
     }
     else if(self.searchPatten == LastHourSearch){
-        self.historyDict = [BrowsingHistoryDataBase LastHourSearch];
+        self.historyDict = [BrowsingHistoryDataBase LastHourSearch:self.amac clientMac:self.cmac];
     }
     else if(self.searchPatten == WeekSearch){
-        self.historyDict = [BrowsingHistoryDataBase ThisWeekSearch];
+        self.historyDict = [BrowsingHistoryDataBase ThisWeekSearch:self.amac clientMac:self.cmac];
     }
 }
 #pragma mark parser methods

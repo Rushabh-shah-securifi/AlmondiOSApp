@@ -6,8 +6,8 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="AvenirLTStd-Roman.otf">
-            <string>AvenirLTStd-Roman</string>
+        <mutableArray key="AvenirLTStd-Light.otf">
+            <string>AvenirLTStd-Light</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -70,7 +70,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="23" id="FNg-30-zwq"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="18"/>
+                    <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="16"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -88,7 +88,7 @@
                         <constraint firstAttribute="height" constant="21" id="1AY-d7-as2"/>
                         <constraint firstAttribute="width" constant="170" id="KgG-2L-ZhG"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                     <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -145,7 +145,7 @@
                         <constraint firstAttribute="height" constant="18" id="Gpa-0y-j5b"/>
                         <constraint firstAttribute="width" constant="170" id="cND-n1-3mV"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="15"/>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>

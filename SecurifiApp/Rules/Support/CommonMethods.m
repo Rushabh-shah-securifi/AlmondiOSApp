@@ -521,4 +521,16 @@ static void RVNColorRGBtoHSL(CGFloat red, CGFloat green, CGFloat blue, CGFloat *
     NSLog(@"new name: %@", newName);
     return newName;
 }
++(NSString *)hexToString:(NSString*)mac{
+    
+    NSString *stringWithoutColon = [mac
+                                    stringByReplacingOccurrencesOfString:@":" withString:@""];
+    unsigned long long int outVal;
+    NSScanner* scanner = [NSScanner scannerWithString:stringWithoutColon];
+    [scanner scanHexLongLong:&outVal];
+    NSLog(@"mac in decimal %@,%lld",mac,outVal);
+    
+    
+    return @(outVal).stringValue;
+}
 @end

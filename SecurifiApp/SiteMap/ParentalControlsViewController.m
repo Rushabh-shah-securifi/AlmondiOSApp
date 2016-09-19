@@ -9,12 +9,27 @@
 #import "ParentalControlsViewController.h"
 #import "ParentControlCell.h"
 #import "BrowsingHistoryViewController.h"
+#import "ClientPayload.h"
 
 @interface ParentalControlsViewController ()<ParentControlCellDelegate>
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic) NSMutableArray *parentsControlArr;
 
 @property (weak, nonatomic) IBOutlet UIView *dataLogView;
+@property (nonatomic) Client *client;
+@property (weak, nonatomic) IBOutlet UIImageView *icon;
+@property (weak, nonatomic) IBOutlet UILabel *clientName;
+@property (weak, nonatomic) IBOutlet UILabel *lastSeen;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *viewOneTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *viewTwoTop;
+@property (weak, nonatomic) IBOutlet UIView *view1;
+@property (weak, nonatomic) IBOutlet UIView *view2;
+
+@property (weak, nonatomic) IBOutlet UIView *view3;
+@property (weak, nonatomic) IBOutlet UISwitch *switchView1;
+@property (weak, nonatomic) IBOutlet UISwitch *switchView3;
+
+
+
 
 @end
 
@@ -23,12 +38,36 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.parentsControlArr = [[NSMutableArray alloc]init];
-    [self createArr];
+//    [self createArr];
     
     // Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+     [self initializeNotifications];
+     self.switchView1.transform = CGAffineTransformMakeScale(0.70, 0.70);
+     self.switchView3.transform = CGAffineTransformMakeScale(0.70, 0.70);
+    int deviceID = _genericParams.headerGenericIndexValue.deviceID;
+    self.client = [Client findClientByID:@(deviceID).stringValue];
+    self.icon.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
+    self.clientName.text = self.client.name;
+    NSDate* date = [NSDate dateWithTimeIntervalSince1970:[self.client.deviceLastActiveTime integerValue]];
+    NSDateFormatter *dateformate=[[NSDateFormatter alloc]init];//Accessed on matt's iPhone on Wed 29 June 11:00.
+    [dateformate setDateFormat:@"EEEE dd MMMM HH:mm"]; // Date formater
+    NSString *str = [dateformate stringFromDate:date];
+    self.lastSeen.text = [NSString stringWithFormat:@"last activated time %@",str];
+    
+    if(self.client.webHistoryEnable == NO){
+        self.switchView1.on = NO;
+        self.view2.hidden = YES;
+        self.viewTwoTop.constant = -40;
+    }
+    else{
+        self.switchView1.on = YES;
+        self.view2.hidden = NO;
+        self.viewTwoTop.constant = 1;
+    }
+    
     [self.navigationController setNavigationBarHidden:YES];
 }
 -(void)viewWillDisappear:(BOOL)animated{
@@ -39,7 +78,39 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+-(void)initializeNotifications{
+    NSLog(@"initialize notifications sensor table");
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self //indexupdate or name/location change both
+               selector:@selector(onCommandResponse:)
+                   name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
+                 object:nil];
+}
+-(void)onCommandResponse:(id)sender{ //mobile command sensor and client 1064
+    NSLog(@"device edit - onUpdateDeviceIndexResponse");
+//    NSDictionary *payload;
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *payload = [notifier userInfo];
+    NSLog(@"payload mobile command: %@", payload);
+//    if (dataInfo==nil || [dataInfo valueForKey:@"data"]==nil ) {
+//        return;
+//    }
 
+    if (payload[@"MobileInternalIndex"] == nil) {
+        return;
+    }
+    
+    NSLog(@"payload mobile command: %@", payload);
+    
+    BOOL isSuccessful = [payload[@"Success"] boolValue];
+    if (isSuccessful) {
+         [self.navigationController popViewControllerAnimated:YES];
+    }
+    else{
+        NSLog(@"not able to update....");
+    }
+}
 /*
 #pragma mark - Navigation
 
@@ -49,58 +120,46 @@
     // Pass the selected object to the new view controller.
 }
 */
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.parentsControlArr.count;
-}
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ParentControlCell *cell;
-    cell = [tableView dequeueReusableCellWithIdentifier:@"ParentControlCell" forIndexPath:indexPath];
-    
-    if (cell == nil){
-        cell = [[ParentControlCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ParentControlCell"];
-    }
-    cell.delegate = self;
-    NSDictionary *dict = [self.parentsControlArr objectAtIndex:indexPath.row];
-    NSLog(@"dict button = %@",dict[@"Switch"]);
-    [cell setUpCell:dict[@"text"] andImage:[UIImage imageNamed:dict[@"img"]] isHideSwich:[dict[@"Switch"] boolValue] indexPath:[dict[@"Tag"] integerValue]];//"Button"
-    return cell;
-}
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.row == 1 && self.parentsControlArr.count == 3){
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
-        BrowsingHistoryViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
 
-}
 - (IBAction)backButton:(id)sender {
 
         [self.navigationController popViewControllerAnimated:YES];
     
 }
--(void)switchPressed:(BOOL)isOn andTag:(NSInteger)tag{
-    if(tag == 0){
-        if(isOn == NO){
-           [self.parentsControlArr removeObjectAtIndex:1];
-            [self.tableView reloadData];
-            [self setClientHistory];
-        }
-        else{
-            [self createArr];
-        }
-    }
-    if(tag == 2){
-        if(isOn == NO){
-            self.dataLogView.hidden = YES;
-        }
-        else{
-            self.dataLogView.hidden = NO;
-        }
- 
-    }
+-(void)switchPressed:(BOOL)isOn andTag:(NSInteger)tag saveNewValue:(BOOL)isSave{
+//    if(tag == 0){
+//        if(isOn == NO){
+//           [self.parentsControlArr removeObjectAtIndex:1];
+//            NSLog(@"removed obj");
+////            [self setClientHistory];//send NO req
+//            if(isSave)
+//            [self saveNewValue:@"NO" forIndex:-23];
+//        }
+//        else{
+//            if(isSave)
+//                [self saveNewValue:@"YES" forIndex:-23];
+//            [self createArr];//send YES req
+//        }
+//    }
+//    if(tag == 2){
+//        if(isOn == NO){
+//            [self saveNewValue:@"NO" forIndex:-25];
+//            self.dataLogView.hidden = YES;//send NO req
+//        }
+//        else{
+//            [self saveNewValue:@"YES" forIndex:-25];
+//            self.dataLogView.hidden = NO;//send YES req
+//        }
+// 
+//    }
+}
+-(void)saveNewValue:(NSString *)newValue forIndex:(int)index{
+    Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
+    // considering only web history
+    int mii = arc4random() % 1000;
+    client = [client copy];
+    [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
+    [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
 }
 -(void)setClientHistory{
     int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
@@ -124,7 +183,39 @@
                      ];
     [self.parentsControlArr removeAllObjects];
     self.parentsControlArr = [NSMutableArray arrayWithArray:Arr];
-    [self.tableView reloadData];
     
 }
+- (IBAction)switch1Action:(id)sender {
+    UISwitch *actionSwitch = (UISwitch *)sender;
+    BOOL state = [actionSwitch isOn];
+    if(state == NO){
+        self.view2.hidden = YES;
+        self.viewTwoTop.constant = -40;
+         [self saveNewValue:@"YES" forIndex:-23];
+    }
+    else{
+        self.view2.hidden = NO;
+        self.viewTwoTop.constant = 1;
+        [self saveNewValue:@"NO" forIndex:-23];
+    }
+}
+- (IBAction)switch3Action:(id)sender {
+    UISwitch *actionSwitch = (UISwitch *)sender;
+    BOOL state = [actionSwitch isOn];
+    if(state == NO){
+        self.dataLogView.hidden = NO;
+         [self saveNewValue:@"YES" forIndex:-25];
+    }
+    else{
+         self.dataLogView.hidden = YES;
+         [self saveNewValue:@"NO" forIndex:-25];
+    }
+}
+- (IBAction)browsingHistoryBtn:(id)sender {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+    BrowsingHistoryViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
+    viewController.client = self.client;
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 @end

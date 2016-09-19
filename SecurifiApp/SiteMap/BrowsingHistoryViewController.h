@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "BrowsingHistory.h"
+#import "GenericParams.h"
 @interface BrowsingHistoryViewController : UIViewController
 @property (nonatomic) NSArray *browsingHistoryDayWise;
 @property (nonatomic) BrowsingHistory *browsingHistoryObj;
+@property (nonatomic) Client *client;
 @end
