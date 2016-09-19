@@ -17,12 +17,21 @@
 #import "MeshPayload.h"
 #import "UIViewController+Securifi.h"
 
-@interface MeshSetupViewController ()<MeshViewDelegate, MBProgressHUDDelegate>
+#define REMOVE 1
+#define FORCE_REMOVE 2
+
+@interface MeshSetupViewController ()<MeshViewDelegate, MBProgressHUDDelegate, UIAlertViewDelegate>
 @property (nonatomic) MeshView *meshView;
 @property (nonatomic) MBProgressHUD *HUD;
 
-@property (weak, nonatomic) IBOutlet UIImageView *meshWeakImg;
-@property (weak, nonatomic) IBOutlet UIImageView *meshOnlineImg;
+@property (weak, nonatomic) IBOutlet UIView *masterConnectionView;
+@property (weak, nonatomic) IBOutlet UIImageView *cloudToMasterAlm;
+
+@property (weak, nonatomic) IBOutlet UIView *slaveConnectionView;
+@property (weak, nonatomic) IBOutlet UIImageView *cloudToMstrAlmSlv;
+@property (weak, nonatomic) IBOutlet UIImageView *MstrAlmToSlv;
+@property (weak, nonatomic) IBOutlet UIImageView *slvSignalStrength;
+
 
 @property (weak, nonatomic) IBOutlet UILabel *almondName;
 @property (weak, nonatomic) IBOutlet UILabel *statusTxt;
@@ -71,11 +80,48 @@ int mii;
         //will put set of images in a view and hide/unhide the view.
         self.removeBtn.hidden = YES;
         self.tableBottomContraint.constant = 0; //to hide remove button.
+        self.cloudToMasterAlm.image = [self getConnectionImage];
         [self toggleImages:NO weakImg:YES text:self.almondStatObj.internetStat? @"Online":@"Offline"];
     }else{
-        [self toggleImages:YES weakImg:NO text:@"Text should be shown based on signal strength"];
+        self.cloudToMstrAlmSlv.image = [self getConnectionImage];
+        self.MstrAlmToSlv.image = [self getMsterToSlaveImg];
+        self.slvSignalStrength.image = [self getSignalStrengthIcon];
+        [self toggleImages:YES weakImg:NO text:[self getSignalStrengthText]];
     }
 }
+
+-(UIImage *)getConnectionImage{
+    return self.almondStatObj.internetStat ? [UIImage imageNamed:@"green-connectivity-icon"]: [UIImage imageNamed:@"red-connectivity-icon"];
+}
+
+-(UIImage *)getMsterToSlaveImg{
+    return self.almondStatObj.signalStrength.integerValue < -73? [UIImage imageNamed:@"green-connectivity-icon"]: [UIImage imageNamed:@"yellow-connectivity-icon"];
+}
+
+-(NSString *)getSignalStrengthText{
+    NSInteger sig = self.almondStatObj.signalStrength.integerValue;
+    if(sig < -87){
+        return @"Wireless signal seems to be weak.";
+    }
+    return self.almondStatObj.internetStat? @"Online":@"Offline";
+}
+
+-(UIImage *)getSignalStrengthIcon{
+    // RSSI levels range from -50dBm (100%) to -100dBm (0%)
+    // Signal Quality Levels : Highest 5. Lowest 0
+    UIImage *image = nil;
+    NSInteger sig = self.almondStatObj.signalStrength.integerValue;
+    if(sig >= -50)
+        return [UIImage imageNamed:@"wifi-signal-strength4-icon"];
+    else if(sig < -50 && sig >=-73)
+        return [UIImage imageNamed:@"wifi-signal-strength3-icon"];
+    else if(sig < -73 && sig >= -87)
+        return [UIImage imageNamed:@"wifi-signal-strength2-icon"];
+    else
+        return [UIImage imageNamed:@"wifi-signal-strength1-icon"];
+    return image;
+}
+
 
 - (void)setupMeshView{
     self.meshView = [[MeshView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20)];
@@ -90,8 +136,8 @@ int mii;
 }
 
 -(void)toggleImages:(BOOL)onlineHidden weakImg:(BOOL)weakHidden text:(NSString*)text{
-    self.meshOnlineImg.hidden = onlineHidden;
-    self.meshWeakImg.hidden = weakHidden;
+    self.masterConnectionView.hidden = onlineHidden;
+    self.slaveConnectionView.hidden = weakHidden;
     self.statusTxt.text = text;
 }
 
@@ -189,9 +235,14 @@ int mii;
 }
 #pragma mark button tap
 - (IBAction)onRemoveThisAlmondTap:(id)sender { //this button is only enabled for slave
-    [self showHudWithTimeoutMsgDelegate:@"Removing...Please wait!" time:5];
-    [MeshPayload requestRemoveSlave:mii uniqueName:self.almondStatObj.slaveUniqueName];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Remove Almond" message:@"Are you sure, you want to remove this Almond?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    alert.tag = REMOVE;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [alert show];
+    });    
 }
+
+
 
 -(void)onMeshCommandResponse:(id)sender{
     NSLog(@"onmeshcommandresponse");
@@ -223,6 +274,11 @@ int mii;
         });
     }else{
         [self showToast:@"Sorry! Could not Remove."];
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Force Remove Almond" message:@"Do you want to force remove this Almond?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+        alert.tag = FORCE_REMOVE;
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [alert show];
+        });
     }
 }
 
@@ -231,6 +287,22 @@ int mii;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self dismissViewControllerAnimated:YES completion:nil];
     });
+}
+
+#pragma mark alert delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == [alertView cancelButtonIndex]){
+        //cancel clicked ...do your action
+    }else{
+        if(alertView.tag == REMOVE){
+            [self showHudWithTimeoutMsgDelegate:@"Removing...Please wait!" time:5];
+            [MeshPayload requestRemoveSlave:mii uniqueName:self.almondStatObj.slaveUniqueName];
+        }
+        else if(alertView.tag == FORCE_REMOVE){
+            [self showHudWithTimeoutMsgDelegate:@"Removing...Please wait!" time:5];
+            [MeshPayload requestForceRemoveSlave:mii uniqueName:self.almondStatObj.slaveUniqueName];
+        }
+    }
 }
 
 @end

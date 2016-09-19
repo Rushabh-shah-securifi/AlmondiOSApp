@@ -94,7 +94,7 @@
         almond.tag = almondCount;
         [scrollView addSubview:almond];
         
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(xOffset, 75, 70, 40)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(xOffset, 70, 60, 40)];
         [CommonMethods setLableProperties:label text:title textColor:[UIColor whiteColor] fontName:@"Avenir-Roman" fontSize:14 alignment:NSTextAlignmentCenter];
         [scrollView addSubview:label];
 //        label.backgroundColor = [UIColor yellowColor];
@@ -120,7 +120,7 @@
 }
 
 - (UIButton *)makeAlmondButton:(NSString *)imageName xOffset:(CGFloat)xOffset selector:(SEL)selector{
-    UIButton *almond = [[UIButton alloc]initWithFrame:CGRectMake(xOffset, 0, 70, 70)];
+    UIButton *almond = [[UIButton alloc]initWithFrame:CGRectMake(xOffset, 0, 60, 60)];
     [almond setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     [almond addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
     

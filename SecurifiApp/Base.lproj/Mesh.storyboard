@@ -60,52 +60,102 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Living Room" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lph-DG-mnK">
                                         <rect key="frame" x="62" y="107" width="196" height="21"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="196" id="Pkw-T8-O3Y"/>
-                                            <constraint firstAttribute="height" constant="21" id="rt9-JO-y6o"/>
+                                            <constraint firstAttribute="height" constant="21" id="EeL-3j-w1r"/>
+                                            <constraint firstAttribute="width" constant="196" id="ZzG-6t-aHL"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="18"/>
                                         <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mesh-weak" translatesAutoresizingMaskIntoConstraints="NO" id="DMx-6N-YOT">
-                                        <rect key="frame" x="0.0" y="15" width="320" height="82"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="82" id="7bp-97-RFX"/>
-                                            <constraint firstAttribute="width" constant="320" id="av0-BR-1KJ"/>
-                                        </constraints>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mesh-online" translatesAutoresizingMaskIntoConstraints="NO" id="lhk-a6-0oy">
-                                        <rect key="frame" x="67" y="43" width="186" height="54"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="54" id="5hk-iv-BQF"/>
-                                            <constraint firstAttribute="width" constant="186" id="i9l-Cg-B65"/>
-                                        </constraints>
-                                    </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Online" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fls-m6-ejz">
                                         <rect key="frame" x="19" y="136" width="283" height="21"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="21" id="Ren-e7-hXc"/>
-                                            <constraint firstAttribute="width" constant="283" id="tTC-a2-6Wf"/>
+                                            <constraint firstAttribute="width" constant="283" id="5KE-Db-zNs"/>
+                                            <constraint firstAttribute="height" constant="21" id="jAG-1m-KAK"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="18"/>
                                         <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4NC-oX-cKW" userLabel="master">
+                                        <rect key="frame" x="67" y="43" width="186" height="50"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="cloud_green" translatesAutoresizingMaskIntoConstraints="NO" id="zKW-4v-waJ">
+                                                <rect key="frame" x="12" y="0.0" width="50" height="50"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="almond_black" translatesAutoresizingMaskIntoConstraints="NO" id="wb9-QH-Kn6">
+                                                <rect key="frame" x="132" y="0.0" width="50" height="50"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="green-connectivity-icon" translatesAutoresizingMaskIntoConstraints="NO" id="sx8-K6-hwD">
+                                                <rect key="frame" x="70" y="5" width="54" height="40"/>
+                                            </imageView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="1XE-Dj-0MV"/>
+                                            <constraint firstAttribute="width" constant="186" id="nSe-1C-b6C"/>
+                                        </constraints>
+                                    </view>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dRc-wT-n6J" userLabel="slave">
+                                        <rect key="frame" x="40" y="3" width="240" height="90"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="cloud_green" translatesAutoresizingMaskIntoConstraints="NO" id="b0p-a7-Rb5">
+                                                <rect key="frame" x="0.0" y="32" width="50" height="50"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="almond_black" translatesAutoresizingMaskIntoConstraints="NO" id="dq6-WY-9OB">
+                                                <rect key="frame" x="95" y="32" width="50" height="50"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="almond_black" translatesAutoresizingMaskIntoConstraints="NO" id="1IK-3C-FFZ">
+                                                <rect key="frame" x="190" y="32" width="50" height="50"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="green-connectivity-icon" translatesAutoresizingMaskIntoConstraints="NO" id="ZGQ-A9-B2A">
+                                                <rect key="frame" x="52" y="37" width="42" height="40"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="green-connectivity-icon" translatesAutoresizingMaskIntoConstraints="NO" id="Yll-HT-00R">
+                                                <rect key="frame" x="148" y="37" width="42" height="40"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="wifi-signal-strength1-icon" translatesAutoresizingMaskIntoConstraints="NO" id="SCm-DM-BOK">
+                                                <rect key="frame" x="200" y="0.0" width="30" height="30"/>
+                                            </imageView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="90" id="7Cv-Gb-Lwl"/>
+                                            <constraint firstAttribute="width" constant="240" id="Uvs-Uh-Bj0"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="fls-m6-ejz" firstAttribute="top" secondItem="Lph-DG-mnK" secondAttribute="bottom" constant="8" id="6CK-4V-YR0"/>
-                                    <constraint firstItem="DMx-6N-YOT" firstAttribute="centerX" secondItem="uMV-LB-Y7c" secondAttribute="centerX" id="MSc-PB-Yk9"/>
-                                    <constraint firstItem="Lph-DG-mnK" firstAttribute="centerX" secondItem="uMV-LB-Y7c" secondAttribute="centerX" id="OUZ-g6-5F0"/>
-                                    <constraint firstItem="DMx-6N-YOT" firstAttribute="top" secondItem="uMV-LB-Y7c" secondAttribute="top" constant="15" id="TaU-X9-Dcz"/>
+                                    <constraint firstItem="4NC-oX-cKW" firstAttribute="centerX" secondItem="uMV-LB-Y7c" secondAttribute="centerX" id="35j-VS-zmu"/>
+                                    <constraint firstItem="fls-m6-ejz" firstAttribute="centerX" secondItem="uMV-LB-Y7c" secondAttribute="centerX" id="Bkj-y0-a5h"/>
+                                    <constraint firstItem="dRc-wT-n6J" firstAttribute="centerX" secondItem="uMV-LB-Y7c" secondAttribute="centerX" id="KuV-lL-TZR"/>
+                                    <constraint firstItem="4NC-oX-cKW" firstAttribute="top" secondItem="uMV-LB-Y7c" secondAttribute="top" constant="43" id="WiR-aR-A0d"/>
                                     <constraint firstAttribute="height" constant="160" id="Zjm-72-Bkm"/>
-                                    <constraint firstItem="lhk-a6-0oy" firstAttribute="centerX" secondItem="uMV-LB-Y7c" secondAttribute="centerX" id="dGr-rK-RcE"/>
-                                    <constraint firstItem="fls-m6-ejz" firstAttribute="centerX" secondItem="uMV-LB-Y7c" secondAttribute="centerX" id="jRZ-m5-GaG"/>
-                                    <constraint firstItem="lhk-a6-0oy" firstAttribute="top" secondItem="uMV-LB-Y7c" secondAttribute="top" constant="43" id="pLw-Md-m7S"/>
-                                    <constraint firstItem="Lph-DG-mnK" firstAttribute="top" secondItem="DMx-6N-YOT" secondAttribute="bottom" constant="10" id="psZ-cg-1Ul"/>
+                                    <constraint firstItem="dRc-wT-n6J" firstAttribute="top" secondItem="uMV-LB-Y7c" secondAttribute="top" constant="3" id="cCC-yX-Gih"/>
+                                    <constraint firstItem="Lph-DG-mnK" firstAttribute="centerX" secondItem="uMV-LB-Y7c" secondAttribute="centerX" id="gdz-kA-tXi"/>
+                                    <constraint firstItem="fls-m6-ejz" firstAttribute="top" secondItem="Lph-DG-mnK" secondAttribute="bottom" constant="8" id="vyE-ns-xD3"/>
+                                    <constraint firstItem="Lph-DG-mnK" firstAttribute="top" secondItem="4NC-oX-cKW" secondAttribute="bottom" constant="14" id="ykm-aO-iH7"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAi-c5-pBe">
+                                <rect key="frame" x="11" y="518" width="299" height="44"/>
+                                <color key="backgroundColor" red="0.95686274509803915" green="0.2627450980392157" blue="0.21176470588235294" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="EOq-VQ-FZO"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="18"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Remove this Almond">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onRemoveThisAlmondTap:" destination="iuN-I2-XLY" eventType="touchUpInside" id="uho-Hr-b4k"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aT1-WS-kUs" userLabel="lineView">
+                                <rect key="frame" x="0.0" y="59" width="320" height="1"/>
+                                <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qCy-Jl-fe7">
-                                <rect key="frame" x="0.0" y="220" width="320" height="314"/>
+                                <rect key="frame" x="0.0" y="220" width="320" height="290"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="statuscell" rowHeight="41" id="Uqd-Qr-Im7" customClass="MeshStatusCell">
@@ -154,25 +204,6 @@
                                     <outlet property="delegate" destination="iuN-I2-XLY" id="YOm-Kr-GQd"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAi-c5-pBe">
-                                <rect key="frame" x="11" y="518" width="299" height="44"/>
-                                <color key="backgroundColor" red="0.95686274509803915" green="0.2627450980392157" blue="0.21176470588235294" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="EOq-VQ-FZO"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="18"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Remove this Almond">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="onRemoveThisAlmondTap:" destination="iuN-I2-XLY" eventType="touchUpInside" id="uho-Hr-b4k"/>
-                                </connections>
-                            </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aT1-WS-kUs" userLabel="lineView">
-                                <rect key="frame" x="0.0" y="59" width="320" height="1"/>
-                                <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -186,7 +217,7 @@
                             <constraint firstItem="JAh-dk-enZ" firstAttribute="top" secondItem="o8h-Da-nWd" secondAttribute="top" constant="20" id="U0g-X3-vXL"/>
                             <constraint firstItem="lo8-cN-dQq" firstAttribute="top" secondItem="o8h-Da-nWd" secondAttribute="topMargin" constant="28" id="Utj-Dw-0PK"/>
                             <constraint firstAttribute="trailing" secondItem="uMV-LB-Y7c" secondAttribute="trailing" id="YH9-TV-YcB"/>
-                            <constraint firstItem="s1T-Ig-IGX" firstAttribute="top" secondItem="qCy-Jl-fe7" secondAttribute="bottom" constant="34" id="ZDS-A2-XGj"/>
+                            <constraint firstItem="s1T-Ig-IGX" firstAttribute="top" secondItem="qCy-Jl-fe7" secondAttribute="bottom" constant="58" id="ZDS-A2-XGj"/>
                             <constraint firstItem="JAh-dk-enZ" firstAttribute="leading" secondItem="o8h-Da-nWd" secondAttribute="leading" id="ZhC-jc-MfI"/>
                             <constraint firstItem="uMV-LB-Y7c" firstAttribute="leading" secondItem="o8h-Da-nWd" secondAttribute="leading" id="goW-as-gua"/>
                             <constraint firstItem="qCy-Jl-fe7" firstAttribute="top" secondItem="uMV-LB-Y7c" secondAttribute="bottom" id="p2V-tN-6og"/>
@@ -196,10 +227,14 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="MstrAlmToSlv" destination="Yll-HT-00R" id="bkU-DG-hCd"/>
                         <outlet property="almondName" destination="Lph-DG-mnK" id="hyw-Ef-N4G"/>
-                        <outlet property="meshOnlineImg" destination="lhk-a6-0oy" id="daD-7w-LgF"/>
-                        <outlet property="meshWeakImg" destination="DMx-6N-YOT" id="UoK-4C-QIC"/>
+                        <outlet property="cloudToMasterAlm" destination="sx8-K6-hwD" id="QRI-Ut-Z30"/>
+                        <outlet property="cloudToMstrAlmSlv" destination="ZGQ-A9-B2A" id="wK9-ZN-Hsn"/>
+                        <outlet property="masterConnectionView" destination="4NC-oX-cKW" id="p9b-Lp-fdQ"/>
                         <outlet property="removeBtn" destination="zAi-c5-pBe" id="drB-Lj-ZHm"/>
+                        <outlet property="slaveConnectionView" destination="dRc-wT-n6J" id="8yU-MX-rQR"/>
+                        <outlet property="slvSignalStrength" destination="SCm-DM-BOK" id="L2b-e1-u08"/>
                         <outlet property="statusTxt" destination="fls-m6-ejz" id="ns0-om-0DK"/>
                         <outlet property="tableBottomContraint" destination="ZDS-A2-XGj" id="1Yl-Ht-hnU"/>
                     </connections>
@@ -229,8 +264,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="almond_black" width="50" height="50"/>
+        <image name="cloud_green" width="50" height="50"/>
+        <image name="green-connectivity-icon" width="114" height="42"/>
         <image name="icon_cross_gray" width="30" height="30"/>
-        <image name="mesh-online" width="310" height="90"/>
-        <image name="mesh-weak" width="530" height="130"/>
+        <image name="wifi-signal-strength1-icon" width="39" height="30"/>
     </resources>
 </document>

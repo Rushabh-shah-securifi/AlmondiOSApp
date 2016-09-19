@@ -83,6 +83,16 @@
     [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
 }
 
++(void)requestForceRemoveSlave:(int)mii uniqueName:(NSString*)uniqueName{
+    NSDictionary *payload = @{
+                              @"CommandMode":@"Request",
+                              @"CommandType":@"ForceRemoveSlaveMobile",
+                              @"SlaveUniqueName":uniqueName,
+                              @"MobileInternalIndex":@(mii).stringValue
+                              
+                              };
+    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+}
 +(void)requestSlaveDetails:(int)mii slaveUniqueName:(NSString*)uniqueName{
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",

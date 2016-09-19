@@ -24,6 +24,8 @@
 
 +(void)requestRemoveSlave:(int)mii uniqueName:(NSString*)uniqueName;
 
++(void)requestForceRemoveSlave:(int)mii uniqueName:(NSString*)uniqueName;
+
 +(void)requestSlaveDetails:(int)mii slaveUniqueName:(NSString*)uniqueName;
 
 +(void)requestRai2UpMobile:(int)mii;

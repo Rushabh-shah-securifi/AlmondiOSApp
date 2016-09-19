@@ -12,7 +12,18 @@
 #import <QuartzCore/QuartzCore.h>
 #import "CommonMethods.h"
 
-@interface MeshView()
+#define HELP_INFO 0
+
+#define INTERFACE_SCR 1
+#define ALMONDS_LIST 2
+#define BLINK_CHECK 3
+#define NAMING 4
+#define FINISH 5
+
+#define PAIRING_ALMOND_1 6
+#define PAIRING_ALMOND_2 7
+
+@interface MeshView()<UIAlertViewDelegate>
 @property(nonatomic) NSTimer *timer;
 @property(nonatomic) CFTimeInterval startTime;
 
@@ -29,6 +40,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
 @property (weak, nonatomic) IBOutlet UIButton *troublePairingBtn;
 @property (weak, nonatomic) IBOutlet UIView *lineBtm;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndic1;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndic2;
 
 /* Mesh-help Start*/
 @property NSDictionary *item;
@@ -111,11 +124,6 @@
     self.wirelessBtn.selected = !self.wirelessBtn.selected;
 }
 
-//add almond view
-- (IBAction)onCannotFindAlmondTap:(id)sender {
-    [self requestAddableSlave];
-    [self addView:self.pairingAlmondRestView frame:self.currentView.frame];
-}
 
 #pragma mark UIPickerViewDelegate Methods
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
@@ -191,13 +199,12 @@
 //adding almond view / blinkled view
 - (IBAction)onNoLEDBlinking:(UIButton *)noButton {
     _mii = arc4random() % 10000;
-    [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:5];
-    [self requestAddSlave:NO];
+    [self addView:self.almondsView frame:self.currentView.frame];
 }
 
 - (IBAction)onYesLEDBlinking:(UIButton *)yesButton {
     _mii = arc4random() % 10000;
-    [self.delegate showHudWithTimeoutMsgDelegate:@"Rebooting...Please wait!" time:120];
+    [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait!" time:90];
     [self requestAddSlave:YES];
 }
 
@@ -210,9 +217,15 @@
     [self sendCommand:self.currentView];
 }
 
+- (IBAction)onCannotFindAlmondTap:(id)sender {
+    [self requestAddableSlave:ALMONDS_LIST];
+    [self.activityIndic2 startAnimating];
+    [self addView:self.pairingAlmondRestView frame:self.currentView.frame];
+}
+
 - (IBAction)onTroublePairingTap:(id)sender {
     //time is already invalidated at this point (think of any other cases where time is no invalidated).
-    [self requestAddableSlave];
+    [self requestAddableSlave:PAIRING_ALMOND_1];
     [self loadNextView];
 }
 
@@ -221,7 +234,7 @@
     int tag = (int)view.tag;
     switch (tag) {
         case 1:{
-            [self requestAddableSlave];
+            [self requestAddableSlave:INTERFACE_SCR];
             [self loadNextView];
             break;
         }
@@ -284,6 +297,7 @@
         }
         case 3:{
             [self addView:self.namingView frame:frame];
+            [self showAlert:@"Almond Added" msg:@"You have successfuly added an Almond. You may now continue naming the Almond." cancel:@"Ok" other:nil tag:NAMING];
             break;
         }
         case 4:{
@@ -295,6 +309,7 @@
             break;
         }
         case 6:{
+            [self.activityIndic2 startAnimating];
             [self addView:self.pairingAlmondRestView frame:frame];
             break;
         }
@@ -335,7 +350,7 @@
             break;
         }
         case 2:{
-            [self requestAddableSlave];
+            [self requestAddableSlave:ALMONDS_LIST];
             [self addPairingAlmondView:frame];
             break;
         }
@@ -367,6 +382,7 @@
 -(void)addPairingAlmondView:(CGRect)frame{
     self.troublePairingBtn.hidden = YES;
     self.lineBtm.hidden = YES;
+    [self.activityIndic1 startAnimating];
     [self addView:self.pairingAlmondView frame:frame];
 }
 
@@ -378,6 +394,7 @@
 -(void)addView:(UIView*)view frame:(CGRect)frame{
     if(view.tag == 1){//view here will now be added
         [self.timer invalidate];
+        self.almondTitles = nil;
     }
     [self.currentView removeFromSuperview];
     
@@ -387,14 +404,15 @@
 }
 
 #pragma mark command requests
--(void)requestAddableSlave{
+-(void)requestAddableSlave:(int)tag{
+    [self.timer invalidate];
     [self sendAddableSlaveCmd];
     self.startTime = CACurrentMediaTime();
     //timer repeats itself for every 2 seconds until it is invalidated
     self.timer = [NSTimer scheduledTimerWithTimeInterval:2.0
                                                    target:self
                                                  selector:@selector(onTimeout:)
-                                                 userInfo:nil
+                                                userInfo:@(tag).stringValue
                                                   repeats:YES];
 }
 
@@ -407,28 +425,43 @@
 
 -(void)onTimeout:(id)sender{
     //on cmd success timer will be invalidated
-    NSLog(@"on time out");
     CFTimeInterval elapsedTime = CACurrentMediaTime() - self.startTime;
     NSLog(@"elapsed time: %f", elapsedTime);
-    if(elapsedTime >= 60){
+    int tag = [(NSString *)self.timer.userInfo intValue];
+    int timeout = [self getTimeOut:tag];
+    if(elapsedTime >= timeout){
         [self.timer invalidate];
         [self showPairingTroubleButton];
+        
+        if(tag == PAIRING_ALMOND_1){
+            [self showAlert:@"No Almonds found" msg:@"Please bring the Almond closer or reboot and try again." cancel:@"Ok" other:nil tag:PAIRING_ALMOND_1];
+        }
+        else if(tag == ALMONDS_LIST){
+            [self addView:self.almondsView frame:self.currentView.frame];
+            [self showAlert:@"Unable to find an Almond." msg:@"Make sure your Almond is plugged in. Reset it and try again." cancel:@"Ok" other:nil tag:ALMONDS_LIST];
+        }
+        [self.activityIndic1 stopAnimating];
+        [self.activityIndic2 stopAnimating];
         return;
     }
         
     [self sendAddableSlaveCmd];
 }
 
+-(int)getTimeOut:(int)tag{
+    if(tag == ALMONDS_LIST)
+        return 20;
+    else if(tag == PAIRING_ALMOND_1)
+        return 120;
+    else
+        return 60;
+}
+
 -(void)requestAddSlave:(BOOL)isBlinking{
-    if(isBlinking){
-        if(self.wiredBtn.selected)
-            [MeshPayload requestAddWiredSlave:self.mii slaveName:self.almondTitle];//mii
-        else
-            [MeshPayload requestAddWireLessSlave:self.mii slaveName:self.almondTitle];
-    }else{
-        [self requestAddableSlave];
-        [self addView:self.pairingAlmondRestView frame:self.currentView.frame];
-    }
+    if(self.wiredBtn.selected)
+        [MeshPayload requestAddWiredSlave:self.mii slaveName:self.almondTitle];//mii
+    else
+        [MeshPayload requestAddWireLessSlave:self.mii slaveName:self.almondTitle];
 }
 
 -(void)requestblinkLED{
@@ -475,10 +508,16 @@
     NSLog(@"meshview mesh payload: %@", payload);
     NSString *commandType = payload[COMMAND_TYPE];
     
-    //special case  - comes only on success
+    //special case
     if([commandType isEqualToString:@"DynamicAddWiredSlaveMobile"] || [commandType isEqualToString:@"DynamicAddWirelessSlaveMobile"]){
         [self.delegate hideHUDDelegate];
-        [self loadNextView];
+        if([payload[SUCCESS] boolValue]){
+            [self loadNextView];
+        }
+        else{//failed
+            [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
+        }
+        
         return;
     }
     
@@ -493,14 +532,22 @@
         }
 
         if([commandType isEqualToString:@"CheckForAddableWiredSlaveMobile"] || [commandType isEqualToString:@"CheckForAddableWirelessSlaveMobile"]){
-            [self.timer invalidate];
-            
-            self.almondTitles = payload[SLAVES];
-            self.almondTitle = self.almondTitles[0]==nil? @"": self.almondTitles[0];
-            
+
             if(self.currentView.tag == 6 || self.currentView.tag == 7){
                 //need to directly load almonds view
-                [self addView:self.almondsView frame:self.currentView.frame];
+                if(self.currentView.tag == 6){
+                    [self parseSlaves:payload[SLAVES]];
+                    [self addView:self.almondsView frame:self.currentView.frame];
+                }else{
+                    //this condition was written when you come back from almonds list screen, but still will work when you come form screen 6
+                    if([payload[SLAVES] count] > self.almondTitles.count){
+                        [self parseSlaves:payload[SLAVES]];
+                        [self addView:self.almondsView frame:self.currentView.frame];
+                        [self.delegate showToastDelegate:@"New Almond found!"];
+                    }
+                }
+            }else{
+                [self parseSlaves:payload[SLAVES]];
             }
             //not loading next view, as the user might still be on helpscreen.
         }
@@ -524,6 +571,12 @@
             [self.delegate hideHUDDelegate];
         }
     }
+}
+
+-(void)parseSlaves:(NSArray *)Slaves{
+    self.almondTitles = Slaves;
+    self.almondTitle = self.almondTitles[0]==nil? @"": self.almondTitles[0];
+    [self.timer invalidate];
 }
 
 -(void)showPairingTroubleButton{
@@ -597,6 +650,31 @@
 //next of page control
 - (IBAction)onNextBtnTap:(id)sender {
     [self loadNextView];
+}
+
+#pragma mark alert methods
+
+- (void)showAlert:(NSString *)title msg:(NSString *)msg cancel:(NSString*)cncl other:(NSString *)other tag:(int)tag{
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:nil];
+    alert.tag = tag;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [alert show];
+    });
+}
+
+//delegate method
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == [alertView cancelButtonIndex]){
+        //cancel clicked ...do your action
+        if(alertView.tag == PAIRING_ALMOND_1){
+            [self addView:self.interfaceView frame:self.currentView.frame];
+        }
+        else if(alertView.tag == ALMONDS_LIST){
+            [self addView:self.almondsView frame:self.currentView.frame];
+        }
+    }else{
+        
+    }
 }
 
 /* Meshhelp -End */

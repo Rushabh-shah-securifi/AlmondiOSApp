@@ -68,7 +68,7 @@
     [keyVals addObject:@{@"Location":location}];
     [keyVals addObject:@{@"Connected via":connetedVia}];
     [keyVals addObject:@{@"Interface":interface}];
-    if(!isMaster)
+    if(!isMaster && [interface isEqualToString:@"Wireless"])
         [keyVals addObject:@{@"Signal Strenght":signalStrength}];
     if(ssid2)
         [keyVals addObject:@{@"5 GHz SSID":ssid2}];
