@@ -325,8 +325,8 @@
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accessed on matt's iPhone on Wed 29 June 11:00." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JcB-yk-hk4">
-                                        <rect key="frame" x="76" y="103" width="180" height="45"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accessed on matt's iPhone on Wed 29 June 11:00." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JcB-yk-hk4">
+                                        <rect key="frame" x="27" y="103" width="281" height="45"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="YXi-Uw-7As"/>
                                         </constraints>
@@ -344,8 +344,8 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="JcB-yk-hk4" firstAttribute="leading" secondItem="4Pp-Gi-w4b" secondAttribute="leading" constant="76" id="4fM-Za-jlz"/>
-                                    <constraint firstAttribute="trailing" secondItem="JcB-yk-hk4" secondAttribute="trailing" constant="79" id="65n-pJ-zn8"/>
+                                    <constraint firstItem="JcB-yk-hk4" firstAttribute="leading" secondItem="4Pp-Gi-w4b" secondAttribute="leading" constant="27" id="4fM-Za-jlz"/>
+                                    <constraint firstAttribute="trailing" secondItem="JcB-yk-hk4" secondAttribute="trailing" constant="27" id="65n-pJ-zn8"/>
                                     <constraint firstItem="0Jj-ag-dok" firstAttribute="centerX" secondItem="7x0-lK-KJy" secondAttribute="centerX" constant="1" id="7LD-Tv-IOR"/>
                                     <constraint firstItem="JcB-yk-hk4" firstAttribute="top" secondItem="pbK-UM-Fpy" secondAttribute="bottom" constant="5" id="8ZK-qU-iJL"/>
                                     <constraint firstItem="pbK-UM-Fpy" firstAttribute="leading" secondItem="4Pp-Gi-w4b" secondAttribute="leading" constant="27" id="D2X-aS-BnA"/>
@@ -466,7 +466,7 @@
                                         <rect key="frame" x="11" y="25" width="20" height="20"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Browsing History" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7W7-sd-vNf">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Browsing History" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7W7-sd-vNf">
                                         <rect key="frame" x="111" y="22" width="99" height="15"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>

@@ -118,10 +118,10 @@
                     </constraints>
                 </imageView>
                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wifi_icon_signal" translatesAutoresizingMaskIntoConstraints="NO" id="7Gw-e2-FJW">
-                    <rect key="frame" x="0.0" y="0.0" width="19" height="17"/>
+                    <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="17" id="AAb-uV-22Q"/>
-                        <constraint firstAttribute="width" constant="19" id="Wy3-3R-0zJ"/>
+                        <constraint firstAttribute="height" constant="15" id="AAb-uV-22Q"/>
+                        <constraint firstAttribute="width" constant="15" id="Wy3-3R-0zJ"/>
                     </constraints>
                 </imageView>
                 <button hidden="YES" opaque="NO" alpha="0.59999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x5J-IW-RdQ">
@@ -139,7 +139,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7P7-Wy-suW">
-                    <rect key="frame" x="70" y="24" width="170" height="18"/>
+                    <rect key="frame" x="70" y="27" width="170" height="18"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="18" id="Gpa-0y-j5b"/>
@@ -161,7 +161,7 @@
                 <constraint firstItem="cfV-XV-1jL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="-9" id="LhU-cR-WfW"/>
                 <constraint firstAttribute="trailing" secondItem="lQZ-cc-ceE" secondAttribute="trailing" constant="-8" id="LyX-eg-Kmy"/>
                 <constraint firstAttribute="bottom" secondItem="x5J-IW-RdQ" secondAttribute="bottom" constant="18" id="PlM-xB-S04"/>
-                <constraint firstItem="7P7-Wy-suW" firstAttribute="top" secondItem="LIr-It-ARc" secondAttribute="bottom" id="Q65-IG-IZf"/>
+                <constraint firstItem="7P7-Wy-suW" firstAttribute="top" secondItem="LIr-It-ARc" secondAttribute="bottom" constant="3" id="Q65-IG-IZf"/>
                 <constraint firstItem="4cw-Ky-R3V" firstAttribute="leading" secondItem="A4N-3J-OpT" secondAttribute="trailing" constant="-1" id="Se7-6F-e1N"/>
                 <constraint firstItem="LIr-It-ARc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="1" id="UP8-TY-pn4"/>
                 <constraint firstItem="MTY-vq-YbM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="Wh3-2G-g8Q"/>

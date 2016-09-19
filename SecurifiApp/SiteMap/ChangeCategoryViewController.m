@@ -57,6 +57,7 @@
     [dateformate setDateFormat:@"EEEE dd MMMM HH:mm"]; // Date formater
     NSString *str = [dateformate stringFromDate:date];
     self.LblClientLastVicited.text = [NSString stringWithFormat:@"Accessed on %@ on %@",self.client.name,str];
+    NSLog(@"LblClientLastVicited %@",[NSString stringWithFormat:@"Accessed on %@ on %@",self.client.name,str]);
     self.cat_view = [[CategoryView alloc]init];
     self.cat_view_more = [[CategoryView alloc]initMoreClickView];
     self.cat_view.delegate = self;
@@ -191,5 +192,9 @@
     self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 110, self.view.frame.size.width, 300);
     [self.view addSubview:self.cat_view_more];
     self.backGroundButton.hidden = NO;
+}
+-(void)showmsg{
+    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 110, self.view.frame.size.width, 300);
+    [self.view addSubview:self.cat_view_more];
 }
 @end
