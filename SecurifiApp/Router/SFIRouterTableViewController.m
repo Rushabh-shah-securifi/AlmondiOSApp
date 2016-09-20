@@ -725,10 +725,13 @@ int mii;
                  //NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
                  self.routerSummary = (SFIRouterSummary *)genericRouterCommand.command;
                  //NSLog(@"routersummary: %@", self.routerSummary);
-                 [toolkit tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:self.routerSummary];
-                 NSString *currentVersion = self.routerSummary.firmwareVersion;
-                 if(!self.isLocal)
+                 
+                 if(!self.isLocal){ //Do only in Cloud
+                     [toolkit tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:self.routerSummary];
+                     NSString *currentVersion = self.routerSummary.firmwareVersion;
                      [self tryCheckAlmondVersion:currentVersion];
+                 }
+                 
                  break;
              }
              case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {

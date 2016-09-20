@@ -95,7 +95,7 @@ int mii;
 }
 
 -(UIImage *)getMsterToSlaveImg{
-    return self.almondStatObj.signalStrength.integerValue < -73? [UIImage imageNamed:@"green-connectivity-icon"]: [UIImage imageNamed:@"yellow-connectivity-icon"];
+    return self.almondStatObj.signalStrength.integerValue < -87? [UIImage imageNamed:@"yellow-connectivity-icon"]: [UIImage imageNamed:@"green-connectivity-icon"];
 }
 
 -(NSString *)getSignalStrengthText{
@@ -109,7 +109,6 @@ int mii;
 -(UIImage *)getSignalStrengthIcon{
     // RSSI levels range from -50dBm (100%) to -100dBm (0%)
     // Signal Quality Levels : Highest 5. Lowest 0
-    UIImage *image = nil;
     NSInteger sig = self.almondStatObj.signalStrength.integerValue;
     if(sig >= -50)
         return [UIImage imageNamed:@"wifi-signal-strength4-icon"];
@@ -119,7 +118,6 @@ int mii;
         return [UIImage imageNamed:@"wifi-signal-strength2-icon"];
     else
         return [UIImage imageNamed:@"wifi-signal-strength1-icon"];
-    return image;
 }
 
 

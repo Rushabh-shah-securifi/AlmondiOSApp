@@ -34,9 +34,12 @@
 @property (strong, nonatomic) IBOutlet UIView *setupCompleteView;
 @property (strong, nonatomic) IBOutlet UIView *pairingAlmondView;
 @property (strong, nonatomic) IBOutlet UIView *pairingAlmondRestView;
+@property (strong, nonatomic) IBOutlet UIView *addAnotherAlmondView;
+@property (strong, nonatomic) IBOutlet UIView *enjoyLastView;
 
 @property (weak, nonatomic) IBOutlet UIButton *wiredBtn;
 @property (weak, nonatomic) IBOutlet UIButton *wirelessBtn;
+
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
 @property (weak, nonatomic) IBOutlet UIButton *troublePairingBtn;
 @property (weak, nonatomic) IBOutlet UIView *lineBtm;
@@ -116,7 +119,7 @@
     
 }
 
--(void)toggleImage:selectedImg image:unSelectedImg{
+-(void)toggleImage:(NSString *)selectedImg image:(NSString *)unSelectedImg{
     [self.wiredBtn setImage:[UIImage imageNamed:selectedImg] forState:UIControlStateNormal];
     self.wiredBtn.selected = !self.wiredBtn.selected;
     
@@ -228,6 +231,17 @@
     [self requestAddableSlave:PAIRING_ALMOND_1];
     [self loadNextView];
 }
+- (IBAction)onNotRightNowTap:(id)sender {
+    [self addView:self.enjoyLastView frame:self.currentView.frame];
+}
+
+- (IBAction)onAddAnotherAlmondTap:(id)sender {
+    [self addView:self.interfaceView frame:self.currentView.frame];
+}
+
+- (IBAction)onSweetTap:(id)sender {
+    [self dismissView];
+}
 
 - (void)sendCommand:(UIView*)view{
     //tags to views are assigned in xib files
@@ -252,8 +266,7 @@
             break;
         }
         case 5:{
-            [self requestRai2DownMobile];
-            [self dismissView];
+            [self loadNextView];
             break;
         }
         default:
@@ -305,7 +318,7 @@
             break;
         }
         case 5:{
-            [self dismissView];
+            [self addView:self.addAnotherAlmondView frame:frame];
             break;
         }
         case 6:{
@@ -317,6 +330,7 @@
             [self addView:self.almondsView frame:frame];
             break;
         }
+
         default:
             break;
     }
@@ -336,7 +350,6 @@
     switch (tag) {
         case 0:{
             if([self.item[S_NAME] isEqualToString:@"Interface"]){
-                [self requestRai2DownMobile];
                 [self dismissView];
             }
             
@@ -388,6 +401,7 @@
 
 -(void)dismissView{
     [self removeFromSuperview];
+    [self requestRai2DownMobile];
     [self.delegate dismissControllerDelegate];
 }
 
@@ -540,7 +554,7 @@
                     [self addView:self.almondsView frame:self.currentView.frame];
                 }else{
                     //this condition was written when you come back from almonds list screen, but still will work when you come form screen 6
-                    if([payload[SLAVES] count] > self.almondTitles.count){
+                    if([(NSArray*)payload[SLAVES] count] > self.almondTitles.count){
                         [self parseSlaves:payload[SLAVES]];
                         [self addView:self.almondsView frame:self.currentView.frame];
                         [self.delegate showToastDelegate:@"New Almond found!"];
