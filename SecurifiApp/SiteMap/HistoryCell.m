@@ -83,8 +83,9 @@
 //            self.categoryImg.image = [UIImage imageNamed:@"globe"];
 //        }
 //        self.categoryImg.image = [UIImage imageNamed:@"help-icon"];
-        NSDate *dat = [NSDate getDateFromEpoch:uri[@"Epoc"]];
+        NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[uri[@"Epoc"] intValue]];
         self.lastActTime.text = [dat stringFromDate];
+        NSLog(@"last active time %@ , %@",uri[@"Epoc"],dat);
         
     });
 }

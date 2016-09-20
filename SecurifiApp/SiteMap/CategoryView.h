@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 @protocol CategoryViewDelegate
 -(void )didChangeCategoryWithTag:(NSInteger)tag;
+-(void)closeMoreView;
 @end
 @interface CategoryView : UIView
 @property (nonatomic)id<CategoryViewDelegate> delegate;

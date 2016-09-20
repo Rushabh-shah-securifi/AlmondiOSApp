@@ -30,6 +30,7 @@
 @property (nonatomic) CategoryView *cat_view_more;
 
 @property (nonatomic) NSString *catTag;
+@property (weak, nonatomic) IBOutlet UILabel *clientName;
 
 
 
@@ -39,6 +40,7 @@
 @implementation ChangeCategoryViewController
 
 - (void)viewDidLoad {
+     self.clientName.text = self.client.name;
     [super viewDidLoad];
 
 }
@@ -60,6 +62,7 @@
     NSLog(@"LblClientLastVicited %@",[NSString stringWithFormat:@"Accessed on %@ on %@",self.client.name,str]);
     self.cat_view = [[CategoryView alloc]init];
     self.cat_view_more = [[CategoryView alloc]initMoreClickView];
+    self.cat_view_more.delegate = self;
     self.cat_view.delegate = self;
     NSLog(@"uri dict = %@ ",self.uriDict);
     [self categoryMap:self.uriDict[@"categoryObj"]];
@@ -189,12 +192,17 @@
 }
 - (IBAction)moreOnCategoryClicked:(id)sender {
     NSLog(@"moreOnCategoryClicked");
-    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 110, self.view.frame.size.width, 300);
+    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 150, self.view.frame.size.width, 320);
     [self.view addSubview:self.cat_view_more];
     self.backGroundButton.hidden = NO;
 }
 -(void)showmsg{
     self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 110, self.view.frame.size.width, 300);
     [self.view addSubview:self.cat_view_more];
+}
+-(void)closeMoreView{
+    [self.cat_view removeFromSuperview];
+    [self.cat_view_more removeFromSuperview];
+    self.backGroundButton.hidden = YES;
 }
 @end

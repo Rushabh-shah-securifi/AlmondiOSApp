@@ -37,6 +37,7 @@
 @property (nonatomic) NSString *cmac;
 @property (nonatomic) NSString *amac;
 @property (nonatomic) NSString *ps;
+@property (weak, nonatomic) IBOutlet UILabel *clientName;
 
 
 @end
@@ -48,6 +49,7 @@
     
     
     self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
+    self.clientName.text = self.client.name;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.amac = toolkit.currentAlmond.almondplusMAC;
 //    [BrowsingHistoryDataBase initializeDataBase];

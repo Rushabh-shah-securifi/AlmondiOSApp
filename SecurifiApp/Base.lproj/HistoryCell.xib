@@ -17,13 +17,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Xz-JC-pZS">
-                    <rect key="frame" x="66" y="9" width="197" height="28"/>
+                    <rect key="frame" x="66" y="9" width="161" height="28"/>
                     <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G1p-89-vOU">
-                    <rect key="frame" x="265" y="10" width="40" height="25"/>
+                    <rect key="frame" x="229" y="10" width="40" height="28"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="40" id="nGp-mA-sEH"/>
                     </constraints>
@@ -56,10 +56,10 @@
             <constraints>
                 <constraint firstItem="G1p-89-vOU" firstAttribute="leading" secondItem="5Xz-JC-pZS" secondAttribute="trailing" constant="2" id="3IB-be-Fwx"/>
                 <constraint firstItem="5Xz-JC-pZS" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="9" id="LcE-V6-kje"/>
-                <constraint firstAttribute="trailing" secondItem="G1p-89-vOU" secondAttribute="trailing" constant="24" id="VcX-h2-0Nt"/>
+                <constraint firstAttribute="trailing" secondItem="G1p-89-vOU" secondAttribute="trailing" constant="60" id="VcX-h2-0Nt"/>
                 <constraint firstItem="nkO-tR-bJ4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="Z9H-PB-z2w"/>
                 <constraint firstAttribute="bottom" secondItem="5Xz-JC-pZS" secondAttribute="bottom" constant="8" id="hQn-IU-jid"/>
-                <constraint firstAttribute="bottom" secondItem="G1p-89-vOU" secondAttribute="bottom" constant="10" id="inc-MB-EHA"/>
+                <constraint firstAttribute="bottom" secondItem="G1p-89-vOU" secondAttribute="bottom" constant="7" id="inc-MB-EHA"/>
                 <constraint firstItem="G1p-89-vOU" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="jIV-lI-fU6"/>
                 <constraint firstItem="5Xz-JC-pZS" firstAttribute="leading" secondItem="lRV-aA-EvW" secondAttribute="trailing" constant="13" id="lOS-wQ-t8i"/>
                 <constraint firstItem="lRV-aA-EvW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="ptr-xv-Ntz"/>
@@ -78,7 +78,7 @@
                 <outlet property="webImg" destination="nkO-tR-bJ4" id="4FO-DK-q1h"/>
                 <outlet property="webImgXConstrain" destination="Z9H-PB-z2w" id="CHv-Ku-pek"/>
             </connections>
-            <point key="canvasLocation" x="10.5" y="-299"/>
+            <point key="canvasLocation" x="10.5" y="-299.5"/>
         </view>
     </objects>
 </document>

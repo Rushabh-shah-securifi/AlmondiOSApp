@@ -5,22 +5,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="AvenirLTStd-Black.otf">
-            <string>AvenirLTStd-Black</string>
-        </mutableArray>
         <mutableArray key="AvenirLTStd-Light.otf">
-            <string>AvenirLTStd-Light</string>
-            <string>AvenirLTStd-Light</string>
             <string>AvenirLTStd-Light</string>
         </mutableArray>
         <mutableArray key="AvenirLTStd-Medium.otf">
             <string>AvenirLTStd-Medium</string>
-        </mutableArray>
-        <mutableArray key="AvenirLTStd-Roman.otf">
-            <string>AvenirLTStd-Roman</string>
-            <string>AvenirLTStd-Roman</string>
-            <string>AvenirLTStd-Roman</string>
-            <string>AvenirLTStd-Roman</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -53,7 +42,7 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Adults Only" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Fn-bV-2VR">
                                     <rect key="frame" x="41" y="3" width="298" height="25"/>
-                                    <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="13"/>
+                                    <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="15"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                     <userDefinedRuntimeAttributes>
@@ -64,12 +53,12 @@
                                     </userDefinedRuntimeAttributes>
                                 </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Adults_Only" translatesAutoresizingMaskIntoConstraints="NO" id="gB6-9I-jId">
-                                    <rect key="frame" x="8" y="3" width="20" height="20"/>
+                                    <rect key="frame" x="8" y="3" width="23" height="23"/>
                                 </imageView>
                                 <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wrD-aC-gsi">
                                     <rect key="frame" x="0.0" y="0.0" width="359" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                    <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="12"/>
                                     <connections>
                                         <action selector="categoryChanged:" destination="-1" eventType="touchUpInside" id="CQ4-Nk-4Qc"/>
                                     </connections>
@@ -82,7 +71,7 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Resticted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A7g-u9-0hi">
                                     <rect key="frame" x="41" y="3" width="298" height="25"/>
-                                    <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="13"/>
+                                    <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="15"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                     <userDefinedRuntimeAttributes>
@@ -93,11 +82,12 @@
                                     </userDefinedRuntimeAttributes>
                                 </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Restricted" translatesAutoresizingMaskIntoConstraints="NO" id="Jy5-kd-xbu">
-                                    <rect key="frame" x="8" y="3" width="20" height="20"/>
+                                    <rect key="frame" x="8" y="3" width="23" height="23"/>
                                 </imageView>
                                 <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nBj-MK-41J">
                                     <rect key="frame" x="0.0" y="0.0" width="359" height="30"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="15"/>
                                     <connections>
                                         <action selector="categoryChanged:" destination="-1" eventType="touchUpInside" id="g50-5q-dyj"/>
                                     </connections>
@@ -110,7 +100,7 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Parents Strongly Cautioned" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tVu-dY-DL3">
                                     <rect key="frame" x="41" y="3" width="298" height="25"/>
-                                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="13"/>
+                                    <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="15"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                     <userDefinedRuntimeAttributes>
@@ -128,7 +118,7 @@
                                     </connections>
                                 </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Parents_Strongly_Cautioned" translatesAutoresizingMaskIntoConstraints="NO" id="Q9O-M1-dfi">
-                                    <rect key="frame" x="8" y="2" width="20" height="20"/>
+                                    <rect key="frame" x="8" y="2" width="23" height="23"/>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -138,7 +128,7 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Parents Guidence Suggested" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nzj-zO-53w">
                                     <rect key="frame" x="41" y="3" width="298" height="25"/>
-                                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="13"/>
+                                    <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="15"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                     <userDefinedRuntimeAttributes>
@@ -149,7 +139,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Parental_Guidance" translatesAutoresizingMaskIntoConstraints="NO" id="wJC-Ln-0aI">
-                                    <rect key="frame" x="8" y="3" width="20" height="20"/>
+                                    <rect key="frame" x="8" y="3" width="23" height="23"/>
                                 </imageView>
                                 <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c6z-Az-NO4">
                                     <rect key="frame" x="0.0" y="0.0" width="359" height="30"/>
@@ -166,7 +156,7 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="General Audiences" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o9a-fF-dkZ">
                                     <rect key="frame" x="41" y="3" width="298" height="25"/>
-                                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="13"/>
+                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                     <userDefinedRuntimeAttributes>
@@ -184,7 +174,7 @@
                                     </connections>
                                 </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="General_Audiences" translatesAutoresizingMaskIntoConstraints="NO" id="Tnp-bv-Bzk">
-                                    <rect key="frame" x="8" y="3" width="20" height="20"/>
+                                    <rect key="frame" x="8" y="3" width="23" height="23"/>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -194,7 +184,7 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cancel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gwO-ni-grz">
                                     <rect key="frame" x="41" y="3" width="298" height="25"/>
-                                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="13"/>
+                                    <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="15"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                     <userDefinedRuntimeAttributes>
@@ -226,52 +216,65 @@
             <point key="canvasLocation" x="317" y="67.5"/>
         </view>
         <view contentMode="scaleToFill" id="238-Ai-OW8">
-            <rect key="frame" x="0.0" y="0.0" width="358" height="155"/>
+            <rect key="frame" x="0.0" y="0.0" width="340" height="175"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  How we determine these categories?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KsZ-Ds-aeW">
-                    <rect key="frame" x="0.0" y="1" width="357" height="30"/>
+                    <rect key="frame" x="0.0" y="6" width="357" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="HD2-WP-1LD"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="AvenirLTStd-Black" family="Avenir LT Std" pointSize="14"/>
-                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="16"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MVW-AZ-VNG">
-                    <rect key="frame" x="-2" y="31" width="359" height="1"/>
+                    <rect key="frame" x="-2" y="42" width="359" height="1"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
-                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cross_icon" translatesAutoresizingMaskIntoConstraints="NO" id="lds-Bd-aGo">
-                    <rect key="frame" x="300" y="4" width="20" height="20"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cross_icon" translatesAutoresizingMaskIntoConstraints="NO" id="lds-Bd-aGo">
+                    <rect key="frame" x="297" y="12" width="20" height="20"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="20" id="LWx-vg-BuR"/>
                         <constraint firstAttribute="height" constant="20" id="QGe-TP-uKX"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WfX-4G-tX9">
-                    <rect key="frame" x="0.0" y="31" width="329" height="82"/>
+                    <rect key="frame" x="0.0" y="42" width="329" height="82"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="82" id="ddT-Lc-VqZ"/>
                     </constraints>
                     <string key="text">Our category database is crowedsourced and your suggetions are valueable to us.We constantly review and update the top level category based on user inputs.</string>
-                    <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="13"/>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="15"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1G9-au-XlE">
+                    <rect key="frame" x="279" y="0.0" width="61" height="40"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="KDK-LU-Qbv"/>
+                        <constraint firstAttribute="width" constant="61" id="Nxz-WT-zQl"/>
+                    </constraints>
+                    <connections>
+                        <action selector="closeMoreView:" destination="-1" eventType="touchUpInside" id="0Rn-2g-Mmj"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="lds-Bd-aGo" firstAttribute="top" secondItem="238-Ai-OW8" secondAttribute="top" constant="4" id="CoZ-xe-R57"/>
-                <constraint firstAttribute="trailing" secondItem="KsZ-Ds-aeW" secondAttribute="trailing" constant="1" id="ECR-cm-4NU"/>
+                <constraint firstItem="lds-Bd-aGo" firstAttribute="top" secondItem="238-Ai-OW8" secondAttribute="top" constant="12" id="CoZ-xe-R57"/>
+                <constraint firstAttribute="trailing" secondItem="KsZ-Ds-aeW" secondAttribute="trailing" constant="-17" id="ECR-cm-4NU"/>
+                <constraint firstItem="1G9-au-XlE" firstAttribute="top" secondItem="238-Ai-OW8" secondAttribute="top" id="F4S-FI-Whw"/>
                 <constraint firstItem="WfX-4G-tX9" firstAttribute="leading" secondItem="238-Ai-OW8" secondAttribute="leading" id="GWn-rQ-Cnp"/>
-                <constraint firstAttribute="trailing" secondItem="lds-Bd-aGo" secondAttribute="trailing" constant="38" id="IaN-zj-gDK"/>
+                <constraint firstAttribute="trailing" secondItem="lds-Bd-aGo" secondAttribute="trailing" constant="23" id="IaN-zj-gDK"/>
                 <constraint firstItem="KsZ-Ds-aeW" firstAttribute="leading" secondItem="238-Ai-OW8" secondAttribute="leading" id="Vyr-kC-IPm"/>
-                <constraint firstItem="KsZ-Ds-aeW" firstAttribute="top" secondItem="238-Ai-OW8" secondAttribute="top" constant="1" id="aVJ-ot-qz7"/>
-                <constraint firstAttribute="trailing" secondItem="WfX-4G-tX9" secondAttribute="trailing" constant="29" id="egY-dq-96b"/>
-                <constraint firstItem="WfX-4G-tX9" firstAttribute="top" secondItem="KsZ-Ds-aeW" secondAttribute="bottom" id="iPF-LP-fzj"/>
+                <constraint firstItem="KsZ-Ds-aeW" firstAttribute="top" secondItem="238-Ai-OW8" secondAttribute="top" constant="6" id="aVJ-ot-qz7"/>
+                <constraint firstAttribute="trailing" secondItem="WfX-4G-tX9" secondAttribute="trailing" constant="11" id="egY-dq-96b"/>
+                <constraint firstAttribute="trailing" secondItem="1G9-au-XlE" secondAttribute="trailing" id="fZR-FX-Vaz"/>
+                <constraint firstItem="WfX-4G-tX9" firstAttribute="top" secondItem="KsZ-Ds-aeW" secondAttribute="bottom" constant="6" id="iPF-LP-fzj"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="317" y="286.5"/>
+            <point key="canvasLocation" x="317" y="311.5"/>
         </view>
     </objects>
     <resources>

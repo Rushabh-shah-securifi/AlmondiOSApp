@@ -42,5 +42,8 @@
     [self.delegate didChangeCategoryWithTag:button.tag];
    
 }
+- (IBAction)closeMoreView:(id)sender {
+    [self.delegate closeMoreView];
+}
 
 @end

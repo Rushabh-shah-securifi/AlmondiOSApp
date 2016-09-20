@@ -230,7 +230,7 @@
     NSArray *arr = genericIndexValues;
 //    self.genericParams.indexValueList = genericIndexValues;
     
-    NSLog(@"self.genericParams.indexValueList count = %ld",self.genericParams.indexValueList.count);
+    NSLog(@"self.genericParams.indexValueList count = %ld",(unsigned long)self.genericParams.indexValueList.count);
     for (GenericIndexValue *genericIndexValue in arr) {
         NSLog(@"genericIndexValue.genericIndex.ID %@",genericIndexValue.genericIndex.ID);
 
