@@ -24,8 +24,9 @@
 #define PAIRING_ALMOND_2 7
 
 @interface MeshView()<UIAlertViewDelegate>
-@property(nonatomic) NSTimer *timer;
-@property(nonatomic) CFTimeInterval startTime;
+@property (nonatomic) NSTimer *timer;
+@property (nonatomic) NSTimer *blinkTimer;
+@property (nonatomic) CFTimeInterval startTime;
 
 @property (strong, nonatomic) IBOutlet UIView *interfaceView;
 @property (strong, nonatomic) IBOutlet UIView *almondsView;
@@ -207,8 +208,16 @@
 
 - (IBAction)onYesLEDBlinking:(UIButton *)yesButton {
     _mii = arc4random() % 10000;
-    [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait!" time:90];
+    self.blinkTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(onBlinkTimeout:) userInfo:nil repeats:NO];
+    [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait!" time:120];
     [self requestAddSlave:YES];
+}
+
+-(void)onBlinkTimeout:(id)sender{
+    [self.blinkTimer invalidate];
+    self.blinkTimer = nil;
+    if(self.currentView.tag == BLINK_CHECK)
+        [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
 }
 
 //naming almond view
@@ -275,8 +284,8 @@
 }
 
 -(void)loadNextView{
-    NSLog(@"Load next view");
     int tag = (int)self.currentView.tag;
+    NSLog(@"Load next view \n\n Current View Tag: %ld", (long)self.currentView.tag);
     CGRect frame = self.currentView.frame;
 //    [self.currentView removeFromSuperview];
     
@@ -301,7 +310,7 @@
                 [self initializeFirstScreen:[CommonMethods getMeshDict:@"Wiring"]];
             else
                 [self initializeFirstScreen:[CommonMethods getMeshDict:@"Wireless"]];
-            [self addView:self.infoScreen frame:frame];
+            [self addInfoScreen:frame];
             break;
         }
         case 2:{
@@ -359,7 +368,7 @@
         }
         case 1:{
             [self initializeFirstScreen:[CommonMethods getMeshDict:@"Interface"]];
-            [self addView:self.infoScreen frame:frame];
+            [self addInfoScreen:frame];
             break;
         }
         case 2:{
@@ -410,6 +419,7 @@
         [self.timer invalidate];
         self.almondTitles = nil;
     }
+    NSLog(@"almond titles: %@, tag: %d", self.almondTitles, view.tag);
     [self.currentView removeFromSuperview];
     
     self.currentView = view;
@@ -420,7 +430,9 @@
 #pragma mark command requests
 -(void)requestAddableSlave:(int)tag{
     [self.timer invalidate];
+    self.almondTitles = nil;
     [self sendAddableSlaveCmd];
+    
     self.startTime = CACurrentMediaTime();
     //timer repeats itself for every 2 seconds until it is invalidated
     self.timer = [NSTimer scheduledTimerWithTimeInterval:2.0
@@ -440,8 +452,8 @@
 -(void)onTimeout:(id)sender{
     //on cmd success timer will be invalidated
     CFTimeInterval elapsedTime = CACurrentMediaTime() - self.startTime;
-    NSLog(@"elapsed time: %f", elapsedTime);
     int tag = [(NSString *)self.timer.userInfo intValue];
+    NSLog(@"elapsed time: %f, tag: %d", elapsedTime, tag);
     int timeout = [self getTimeOut:tag];
     if(elapsedTime >= timeout){
         [self.timer invalidate];
@@ -525,6 +537,8 @@
     //special case
     if([commandType isEqualToString:@"DynamicAddWiredSlaveMobile"] || [commandType isEqualToString:@"DynamicAddWirelessSlaveMobile"]){
         [self.delegate hideHUDDelegate];
+        [self.blinkTimer invalidate];
+        self.blinkTimer = nil;
         if([payload[SUCCESS] boolValue]){
             [self loadNextView];
         }
@@ -613,11 +627,13 @@
 /* Meshhelp -Start */
 #pragma mark meshhelp screen
 -(void)addInfoScreen:(CGRect)frame{
+    NSLog(@"add info screeen");
     self.infoScreen.tag = 0;
     [self addView:self.infoScreen frame:frame];
 }
 
 -(void)initializeFirstScreen:(NSDictionary *)item{
+    NSLog(@"Initialize first screen");
     self.item = item;
     NSArray *screens = item[SCREENS];
     NSDictionary *screen = screens.firstObject;
@@ -639,6 +655,7 @@
 
 - (IBAction)onPageControlValueChange:(UIPageControl* )pageControl {
     int currntPg = (int)pageControl.currentPage;
+    NSLog(@"on page control value change: %d", currntPg);
     NSArray *screens = self.item[SCREENS];
     NSDictionary *screen = [screens objectAtIndex:currntPg];
     self.helpTitle.text = NSLocalizedString(screen[TITLE], @"");
@@ -647,6 +664,7 @@
         self.helpDescBtm.text = NSLocalizedString(screen[DESCRIPTION_BELOW], @"");
     else
         self.helpDescBtm.text = @"";
+    
     self.helpImg.image = [UIImage imageNamed:screen[IMAGE]];
     
     if(pageControl.currentPage == 0)
@@ -663,6 +681,7 @@
 
 //next of page control
 - (IBAction)onNextBtnTap:(id)sender {
+    NSLog(@"page control next tap");
     [self loadNextView];
 }
 
@@ -684,6 +703,9 @@
             [self addView:self.interfaceView frame:self.currentView.frame];
         }
         else if(alertView.tag == ALMONDS_LIST){
+            [self addView:self.almondsView frame:self.currentView.frame];
+        }
+        else if(alertView.tag == BLINK_CHECK){
             [self addView:self.almondsView frame:self.currentView.frame];
         }
     }else{

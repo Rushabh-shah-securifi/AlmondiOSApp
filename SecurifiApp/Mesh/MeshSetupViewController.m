@@ -85,7 +85,13 @@ int mii;
     }else{
         self.cloudToMstrAlmSlv.image = [self getConnectionImage];
         self.MstrAlmToSlv.image = [self getMsterToSlaveImg];
-        self.slvSignalStrength.image = [self getSignalStrengthIcon];
+        if([self.almondStatObj.interface isEqualToString:@"Wireless"]){
+            self.slvSignalStrength.hidden = NO;
+            self.slvSignalStrength.image = [self getSignalStrengthIcon];
+        }
+        else
+            self.slvSignalStrength.hidden = YES;
+        
         [self toggleImages:YES weakImg:NO text:[self getSignalStrengthText]];
     }
 }
@@ -222,6 +228,7 @@ int mii;
 }
 
 - (void)hideHUDDelegate{
+    NSLog(@"hide HUD delegate called");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
     });
@@ -271,8 +278,8 @@ int mii;
             [self dismissViewControllerAnimated:YES completion:nil];
         });
     }else{
-        [self showToast:@"Sorry! Could not Remove."];
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Force Remove Almond" message:@"Do you want to force remove this Almond?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+        NSString *msg = [NSString stringWithFormat:@"Failed to remove %@, Do you want to force remove?", self.almondStatObj.name];
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Force Remove Almond" message:msg delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
         alert.tag = FORCE_REMOVE;
         dispatch_async(dispatch_get_main_queue(), ^() {
             [alert show];
