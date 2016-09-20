@@ -89,6 +89,8 @@
     int deviceID = _genericParams.headerGenericIndexValue.deviceID;
 
     if(self.genericParams.isSensor){
+        Device *div = [Device getDeviceForID:deviceID];
+        self.label2.text = div.location;
         if(deviceType == SFIDeviceType_NestThermostat_57 || deviceType == SFIDeviceType_NestSmokeDetector_58 ){
             [self handleNestThermostatAndSmokeDectect:deviceType deviceID:deviceID genericValue:_genericParams.headerGenericIndexValue.genericValue];
         }else if(deviceType == SFIDeviceType_MultiLevelSwitch_2){
@@ -227,19 +229,15 @@
     genericIndexValues = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:@(deviceID).stringValue];
     NSArray *arr = genericIndexValues;
 //    self.genericParams.indexValueList = genericIndexValues;
+    
     NSLog(@"self.genericParams.indexValueList count = %ld",self.genericParams.indexValueList.count);
     for (GenericIndexValue *genericIndexValue in arr) {
         NSLog(@"genericIndexValue.genericIndex.ID %@",genericIndexValue.genericIndex.ID);
 
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"] && [genericIndexValue.genericValue.value isEqualToString:@"wireless"]){
-           
-
             self.wifiSignalImageView.hidden = NO;
         }
-        if([genericIndexValue.genericIndex.ID isEqualToString:@"-2"] && (self.cellType == SensorTable_Cell || self.cellType == SensorEdit_Cell)){
-             NSLog(@"location field genericValue.displayText %@ and value = %@ type = %@ , %@",genericIndexValue.genericValue.displayText,genericIndexValue.genericValue.value,genericIndexValue.genericIndex.ID,genericIndexValue.genericIndex.groupLabel);
-            self.label2.text = genericIndexValue.genericValue.value;
-        }
+        
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-13"] && (self.cellType == ClientTable_Cell || self.cellType == ClientProperty_Cell)){
             self.label2.text = genericIndexValue.genericValue.value;
         }
