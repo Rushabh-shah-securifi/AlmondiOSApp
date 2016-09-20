@@ -191,24 +191,24 @@
     if(state == NO){
         self.view2.hidden = YES;
         self.viewTwoTop.constant = -40;
-         [self saveNewValue:@"YES" forIndex:-23];
+         [self saveNewValue:@"NO" forIndex:-23];
     }
     else{
         self.view2.hidden = NO;
         self.viewTwoTop.constant = 1;
-        [self saveNewValue:@"NO" forIndex:-23];
+        [self saveNewValue:@"YES" forIndex:-23];
     }
 }
 - (IBAction)switch3Action:(id)sender {
     UISwitch *actionSwitch = (UISwitch *)sender;
     BOOL state = [actionSwitch isOn];
     if(state == NO){
-        self.dataLogView.hidden = NO;
-         [self saveNewValue:@"YES" forIndex:-25];
+        self.dataLogView.hidden = YES;
+         [self saveNewValue:@"NO" forIndex:-25];
     }
     else{
-         self.dataLogView.hidden = YES;
-         [self saveNewValue:@"NO" forIndex:-25];
+         self.dataLogView.hidden = NO;
+         [self saveNewValue:@"YES" forIndex:-25];
     }
 }
 - (IBAction)browsingHistoryBtn:(id)sender {

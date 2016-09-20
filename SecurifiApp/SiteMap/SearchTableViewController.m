@@ -110,7 +110,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 30;
+    return 45;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView == self.tableView){
@@ -193,11 +193,11 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     if(tableView == self.tableView){
 
         if(indexPath.section == 0)
-            [cell setCell:[self.suggSearchArr objectAtIndex:indexPath.row]hideItem:YES];
+            [cell setCell:[self.suggSearchArr objectAtIndex:indexPath.row]hideItem:YES isCategory:NO];
         else if(indexPath.section == 1)
-            [cell setCell:[self.categorySearch objectAtIndex:indexPath.row]hideItem:YES];
+            [cell setCell:[self.categorySearch objectAtIndex:indexPath.row]hideItem:YES isCategory:YES];
         else
-            [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row]hideItem:YES];
+            [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row]hideItem:YES isCategory:NO];
     }
     else {
         NSLog(@"self.dayArr count = %ld",self.dayArr.count);
@@ -211,7 +211,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         NSArray *browsHist = self.dayArr[indexPath.section];
             NSLog(@"browsing hist %@, count %ld,row = %ld",browsHist,browsHist.count,indexPath.row);
             if(browsHist.count>indexPath.row)
-        [cell setCell:browsHist[indexPath.row] hideItem:NO];
+        [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO];
         }
     }
     

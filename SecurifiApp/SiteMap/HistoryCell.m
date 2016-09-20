@@ -9,8 +9,10 @@
 #import "HistoryCell.h"
 #import "UrlImgDict.h"
 @interface HistoryCell()
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imgLeftConstrin;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *hostnameLeftConstrain;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *webImgXConstrain;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *siteNameXconstrain;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *catImgXConstrain;
 
 @end
 
@@ -27,20 +29,29 @@
 
     // Configure the view for the selected state
 }
--(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem{
-    if(hideItem){
-        self.imgLeftConstrin.constant = 17;
-        self.hostnameLeftConstrain.constant = -25;
+
+-(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem isCategory:(BOOL)isCategory{
+    if(isCategory){
+        self.catImgXConstrain.constant = -6;
+        self.webImg.hidden = YES;
+        self.siteNameXconstrain.constant = 3;
+        self.categoryImg.image = uri[@"image"];
     }
-    else {
-        self.imgLeftConstrin.constant = 7;
-        self.hostnameLeftConstrain.constant = 5;
+    else{
+        if(hideItem){
+            self.webImgXConstrain.constant = 17;
+            self.siteNameXconstrain.constant = -25;
+        }
+        else {
+            self.webImgXConstrain.constant = 7;
+            self.siteNameXconstrain.constant = 5;
+        }
+        self.categoryImg.hidden = hideItem;
+        self.settingImg.hidden = hideItem;
+        self.lastActTime.hidden = hideItem;
     }
-    self.categoryImg.hidden = hideItem;
-    self.settingImg.hidden = hideItem;
-    self.lastActTime.hidden = hideItem;
     UrlImgDict *imgs = [UrlImgDict sharedInstance];
-    
+    NSLog(@"uri Dict:: %@",uri);
     dispatch_async(dispatch_get_main_queue(), ^() {
         if([imgs.imgDict valueForKey:uri[@"hostName"]]!= NULL){
             self.webImg.image = [imgs.imgDict objectForKey:uri[@"hostName"]];
@@ -68,9 +79,9 @@
         else if ([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"G"]){
             self.categoryImg.image = [UIImage imageNamed:@"General_Audiences"];
         }
-        else{
-            self.categoryImg.image = [UIImage imageNamed:@"globe"];
-        }
+//        else{
+//            self.categoryImg.image = [UIImage imageNamed:@"globe"];
+//        }
 //        self.categoryImg.image = [UIImage imageNamed:@"help-icon"];
         NSDate *dat = [NSDate getDateFromEpoch:uri[@"Epoc"]];
         self.lastActTime.text = [dat stringFromDate];

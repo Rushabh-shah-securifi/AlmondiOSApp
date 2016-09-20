@@ -85,6 +85,7 @@
     [super viewWillAppear:animated];
     [self loadNavigationBar];
     [self initializeNotification];
+    [self.navigationController setNavigationBarHidden:YES];
 
 
 }
@@ -108,6 +109,7 @@
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
+    [self.navigationController setNavigationBarHidden:NO];
     [super viewWillDisappear:YES];
     [self updateNavi:[UIColor whiteColor] title:@"" tintColor:[UIColor blueColor] tintBarColor:[UIColor whiteColor]];
 //    [BrowsingHistoryDataBase deleteDB];
@@ -241,7 +243,7 @@
     if(self.dayArr.count > indexPath.section){
         NSArray *browsHist = self.dayArr[indexPath.section];
         if(browsHist.count>indexPath.row)
-            [cell setCell:browsHist[indexPath.row] hideItem:NO];
+            [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO];
     }
     
 
@@ -259,7 +261,7 @@
         
         if([BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] > self.count)
         {
-        self.count+=10;
+        self.count+=30;
             [self.dayArr removeAllObjects];
         [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:self.count almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
             
@@ -267,10 +269,10 @@
         }
         else{
 //            if([BrowsingHistoryDataBase getPageState:self.amac clientMac:self.cmac] != NULL)
-            NSString *str = [NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,[BrowsingHistoryDataBase getPageState:self.amac clientMac:self.cmac]];
-            [self sendHttpRequest:str];
+//            NSString *str = [NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,[BrowsingHistoryDataBase getPageState:self.amac clientMac:self.cmac]];
+//            [self sendHttpRequest:str];
             
-            NSLog( @"Ask for new Req with ps %@,%@",[BrowsingHistoryDataBase getPageState:self.amac clientMac:self.cmac],_ps);
+//            NSLog( @"Ask for new Req with ps %@,%@",[BrowsingHistoryDataBase getPageState:self.amac clientMac:self.cmac],_ps);
         }
 //        [self loadMore];
     }
@@ -387,5 +389,15 @@
     });
 }
 
+- (IBAction)backButtonClicked:(id)sender {
+      [self.navigationController popViewControllerAnimated:YES];
+}
 
+- (IBAction)searchBurronClicked:(id)sender {
+    SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    ctrl.urlToImageDict = self.urlToImageDict;
+    ctrl.client = self.client;
+    [self presentViewController:nav_ctrl animated:YES completion:nil];
+}
 @end

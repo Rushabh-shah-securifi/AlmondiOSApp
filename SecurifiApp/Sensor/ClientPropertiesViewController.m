@@ -28,7 +28,7 @@
 #import "BrowsingHistoryDataBase.h"
 
 
-#define CELLFRAME CGRectMake(8, 8, self.view.frame.size.width -16, 70)
+#define CELLFRAME CGRectMake(8, 8, self.view.frame.size.width -16, 85)
 
 @interface ClientPropertiesViewController ()<UITableViewDelegate,MBProgressHUDDelegate,UITableViewDataSource,DeviceHeaderViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *clientPropertiesTable;
