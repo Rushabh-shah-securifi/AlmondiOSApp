@@ -41,6 +41,7 @@
                 <outlet property="activityIndic2" destination="qC3-6f-QGy" id="KfT-7b-20g"/>
                 <outlet property="addAnotherAlmondView" destination="678-BL-bA6" id="OJl-ft-GAg"/>
                 <outlet property="addingAlmondView" destination="35J-KO-Gru" id="ReH-L1-ddl"/>
+                <outlet property="almondPicker" destination="INB-ce-riR" id="TKM-wP-15w"/>
                 <outlet property="almondsView" destination="Nsc-ph-bro" id="HPb-pk-vDK"/>
                 <outlet property="backBtn" destination="3dd-dx-lE1" id="FRN-bH-oSx"/>
                 <outlet property="enjoyLastView" destination="OAb-AL-Qc2" id="imX-zK-eF5"/>

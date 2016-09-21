@@ -40,6 +40,8 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *wiredBtn;
 @property (weak, nonatomic) IBOutlet UIButton *wirelessBtn;
+@property (weak, nonatomic) IBOutlet UIPickerView *almondPicker;
+
 
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
 @property (weak, nonatomic) IBOutlet UIButton *troublePairingBtn;
@@ -65,6 +67,8 @@
 
 @property (nonatomic) UIView *currentView;
 @property (nonatomic) NSArray *almondTitles;
+@property (nonatomic) NSArray *currentAlmonds;
+
 @property (nonatomic) NSString *almondTitle;
 @property (nonatomic) NSArray *almondNames;
 @property (nonatomic) NSString *selectedName;
@@ -139,6 +143,7 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+    NSLog(@"number of rows");
     UIView *view = [pickerView superview];
     if(view.tag == 2) //variable, almond count
         return self.almondTitles.count;
@@ -153,6 +158,7 @@
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
+    NSLog(@"picker title for row - almonds %@", self.almondTitles);
     UIView *view = [pickerView superview];
     if(view.tag == 2){//almond
         NSArray *almTitles = self.almondTitles;
@@ -230,6 +236,7 @@
 }
 
 - (IBAction)onCannotFindAlmondTap:(id)sender {
+    self.currentAlmonds = self.almondTitles;
     [self requestAddableSlave:ALMONDS_LIST];
     [self.activityIndic2 startAnimating];
     [self addView:self.pairingAlmondRestView frame:self.currentView.frame];
@@ -418,8 +425,12 @@
     if(view.tag == 1){//view here will now be added
         [self.timer invalidate];
         self.almondTitles = nil;
+        self.currentAlmonds = nil;
     }
-    NSLog(@"almond titles: %@, tag: %d", self.almondTitles, view.tag);
+    else if(view.tag == 2){
+        [self.almondPicker reloadAllComponents];
+    }
+    NSLog(@"almond titles: %@, tag: %ld", self.almondTitles, (long)view.tag);
     [self.currentView removeFromSuperview];
     
     self.currentView = view;
@@ -463,6 +474,7 @@
             [self showAlert:@"No Almonds found" msg:@"Please bring the Almond closer or reboot and try again." cancel:@"Ok" other:nil tag:PAIRING_ALMOND_1];
         }
         else if(tag == ALMONDS_LIST){
+            self.almondTitles = self.currentAlmonds;
             [self addView:self.almondsView frame:self.currentView.frame];
             [self showAlert:@"Unable to find an Almond." msg:@"Make sure your Almond is plugged in. Reset it and try again." cancel:@"Ok" other:nil tag:ALMONDS_LIST];
         }
@@ -566,18 +578,21 @@
                 if(self.currentView.tag == 6){
                     [self parseSlaves:payload[SLAVES]];
                     [self addView:self.almondsView frame:self.currentView.frame];
-                }else{
+                }
+                else{
                     //this condition was written when you come back from almonds list screen, but still will work when you come form screen 6
-                    if([(NSArray*)payload[SLAVES] count] > self.almondTitles.count){
+                    if([(NSArray*)payload[SLAVES] count] > self.currentAlmonds.count){
                         [self parseSlaves:payload[SLAVES]];
                         [self addView:self.almondsView frame:self.currentView.frame];
                         [self.delegate showToastDelegate:@"New Almond found!"];
                     }
                 }
-            }else{
-                [self parseSlaves:payload[SLAVES]];
             }
-            //not loading next view, as the user might still be on helpscreen.
+            else{
+                [self parseSlaves:payload[SLAVES]];
+                //not loading next view, as the user might still be on helpscreen.
+            }
+            
         }
         
         else if([commandType isEqualToString:@"BlinkLedMobile"]){
@@ -706,7 +721,7 @@
             [self addView:self.almondsView frame:self.currentView.frame];
         }
         else if(alertView.tag == BLINK_CHECK){
-            [self addView:self.almondsView frame:self.currentView.frame];
+            [self addView:self.interfaceView frame:self.currentView.frame];
         }
     }else{
         
