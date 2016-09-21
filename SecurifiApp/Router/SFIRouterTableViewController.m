@@ -155,7 +155,8 @@ int mii;
     self.tableView.tableHeaderView = nil;
     
     //NSLog(@"connecton - is local: %d", self.local);
-    if([self isNoAlmondLoaded] && ![self isFirmwareCompatible]){
+    NSLog(@"almond mac: %@", self.almondMac);
+    if([self isNoAlmondLoaded] || ![self isFirmwareCompatible]){
         
     }
     else{
