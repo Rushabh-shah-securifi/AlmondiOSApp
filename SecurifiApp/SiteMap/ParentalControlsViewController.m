@@ -157,7 +157,8 @@
     Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
     // considering only web history
     int mii = arc4random() % 1000;
-    client = [client copy];
+    client = self.client;
+    NSLog(@"client BW_enable %d and webEnable %d",client.bW_Enable,client.webHistoryEnable);
     [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
     [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
 }
@@ -191,12 +192,16 @@
     if(state == NO){
         self.view2.hidden = YES;
         self.viewTwoTop.constant = -40;
+        self.client.webHistoryEnable = NO;
          [self saveNewValue:@"NO" forIndex:-23];
+        
     }
     else{
         self.view2.hidden = NO;
         self.viewTwoTop.constant = 1;
+        self.client.webHistoryEnable = YES;
         [self saveNewValue:@"YES" forIndex:-23];
+        
     }
 }
 - (IBAction)switch3Action:(id)sender {
@@ -204,12 +209,15 @@
     BOOL state = [actionSwitch isOn];
     if(state == NO){
         self.dataLogView.hidden = YES;
+        self.client.bW_Enable = NO;
          [self saveNewValue:@"NO" forIndex:-25];
+        
     }
     else{
          self.dataLogView.hidden = NO;
+        self.client.bW_Enable = YES;
          [self saveNewValue:@"YES" forIndex:-25];
-    }
+            }
 }
 - (IBAction)browsingHistoryBtn:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];

@@ -26,6 +26,7 @@
 #import "NSDate+Convenience.h"
 #import "DataBaseManager.h"
 #import "BrowsingHistoryDataBase.h"
+#import "ParentalControlsViewController.h"
 
 
 #define CELLFRAME CGRectMake(8, 8, self.view.frame.size.width -16, 85)
@@ -172,12 +173,13 @@ int randomMobileInternalIndex;
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{//
     NSLog(@"didSelectRowAtIndexPath");
     GenericIndexValue *gIval = [self.genericParams.indexValueList objectAtIndex:indexPath.row];
-    if([gIval.genericIndex.groupLabel isEqualToString:@"Browsing History"]){
+    if([gIval.genericIndex.ID isEqualToString:@"-23"]){
         UIStoryboard *storyboard=[UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:[NSBundle mainBundle]];
-        BrowsingHistoryViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
+        ParentalControlsViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"ParentalControlsViewController"];
+        ctrl.genericParams = self.genericParams;
         dispatch_async(dispatch_get_main_queue(), ^() {
             
             [self.navigationController pushViewController:ctrl animated:YES];

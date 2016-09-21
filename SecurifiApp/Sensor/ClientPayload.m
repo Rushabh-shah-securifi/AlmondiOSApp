@@ -51,7 +51,7 @@
                                };
     [payload setValue:clients forKey:CLIENTS];
     
-    NSLog(@"client payload: %@", payload);
+    NSLog(@"sending client payload: %@", payload);
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
 }

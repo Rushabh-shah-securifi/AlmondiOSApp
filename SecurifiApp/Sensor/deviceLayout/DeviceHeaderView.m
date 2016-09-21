@@ -241,7 +241,7 @@
             self.wifiSignalImageView.hidden = NO;
         }
         
-        if([genericIndexValue.genericIndex.ID isEqualToString:@"-13"] && (self.cellType == ClientTable_Cell || self.cellType == ClientProperty_Cell)){
+        if([genericIndexValue.genericIndex.ID isEqualToString:@"-13"] && (self.cellType == ClientTable_Cell || self.cellType == ClientProperty_Cell || self.cellType == ClientEditProperties_cell)){
             self.label2.text = genericIndexValue.genericValue.value;
         }
     }

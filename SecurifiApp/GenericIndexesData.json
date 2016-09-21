@@ -254,7 +254,7 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "HISTORY_LAYOUT",
-        "AppLabel": "web_history",
+        "AppLabel": "Web History",
         "Values": {
             "true": {
                 "AppLabel": "on_camelcase",

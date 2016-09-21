@@ -31,6 +31,8 @@
 
 @property (nonatomic) NSString *catTag;
 @property (weak, nonatomic) IBOutlet UILabel *clientName;
+@property (weak, nonatomic) IBOutlet UILabel *ThanksLabel;
+
 
 @end
 
@@ -149,37 +151,27 @@
     [self.cat_view removeFromSuperview];
     [self.cat_view_more removeFromSuperview];
     self.backGroundButton.hidden = YES;
+    self.ThanksLabel.hidden = YES;
+    self.bottomView.hidden = NO;
 }
 
 -(void )didChangeCategoryWithTag:(NSInteger)tag{
 //    NSDictionary *updatedUriDict;
-//    switch (tag) {
-//        case 1:
-//            [self showToast:@"updating category Adults Only"];
-//            
-//            break;
-//        case 2:
-//            [self showToast:@"updating category Rrstricted"];
-//            
-//            break;
-//        case 3:
-//            [self showToast:@"Parents Strongly Cautioned"];
-//           
-//            break;
-//        case 4:
-//            [self showToast:@"Parential Guidence Suggested"];
-//           
-//            break;
-//        case 5:
-//            [self showToast:@"General Audiences"];
-//            
-//            break;
-//        default:
-//            
-//            break;
-//        
-//    }
-    [self showToast:@"Thank you! Your suggestion has been recorded"];
+    switch (tag) {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+            self.backGroundButton.hidden = NO;
+            self.ThanksLabel.hidden = NO;
+            self.bottomView.hidden = YES;
+            break;
+        default:
+            
+            break;
+        
+    }
     [self.cat_view removeFromSuperview];
     self.backGroundButton.hidden = YES;
 }

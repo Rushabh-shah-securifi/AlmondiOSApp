@@ -399,8 +399,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.categorySearch = [NSArray arrayWithObjects:adults,restricted,PG_13,PG,General, nil];
     
     NSSet *set = [NSSet setWithArray:[NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"recentSearch"]]];
-    
-    self.recentSearch =  [NSMutableArray arrayWithArray:[[set allObjects] subarrayWithRange:NSMakeRange(0, 2)]];
+    self.recentSearch =  [NSMutableArray arrayWithArray:[set allObjects]];
     
     self.recentSearchObj = [[NSMutableArray alloc]init];
     for (NSString *str in set) {
