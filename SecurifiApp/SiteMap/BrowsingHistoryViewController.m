@@ -295,7 +295,7 @@
         [foot addSubview:seperatorView];
     }
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
-    [label setFont:[UIFont securifiBoldFont:13]];
+    [label setFont:[UIFont securifiBoldFont:17]];
     
 //    NSMutableArray *myMutableArray = [NSMutableArray arrayWithArray:[dict[@"Data"] allKeys]];
 //    

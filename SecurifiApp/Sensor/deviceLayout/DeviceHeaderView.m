@@ -70,9 +70,12 @@
     self.deviceName.text = self.genericParams.deviceName;
     self.settingButton.alpha = 1;
    
-    if(self.cellType == ClientTable_Cell ){
+    if(self.cellType == ClientTable_Cell ||  self.cellType == ClientProperty_Cell || self.cellType == ClientEditProperties_cell){
          [self setWiFiSignalIcon];
-        self.parentrolBtn.hidden = NO;
+        if(self.cellType == ClientTable_Cell)
+            self.parentrolBtn.hidden = NO;
+        else
+            self.parentrolBtn.hidden = YES;
         
     }
     else{

@@ -147,7 +147,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     view.backgroundColor = [UIColor whiteColor];
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
-    [label setFont:[UIFont securifiBoldFont:13]];
+    [label setFont:[UIFont securifiBoldFont:17]];
     
     if(tableView == self.tableView){
         if(section == 0)

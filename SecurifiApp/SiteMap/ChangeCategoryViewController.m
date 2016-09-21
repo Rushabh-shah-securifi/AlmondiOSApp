@@ -32,9 +32,6 @@
 @property (nonatomic) NSString *catTag;
 @property (weak, nonatomic) IBOutlet UILabel *clientName;
 
-
-
-
 @end
 
 @implementation ChangeCategoryViewController

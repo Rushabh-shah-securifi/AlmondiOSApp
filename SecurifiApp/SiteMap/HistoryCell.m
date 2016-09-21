@@ -34,13 +34,14 @@
     if(isCategory){
         self.catImgXConstrain.constant = -6;
         self.webImg.hidden = YES;
-        self.siteNameXconstrain.constant = 3;
+        self.siteNameXconstrain.constant = 5;
         self.categoryImg.image = uri[@"image"];
+        self.lastActTime.hidden = YES;
     }
     else{
         if(hideItem){
             self.webImgXConstrain.constant = 17;
-            self.siteNameXconstrain.constant = -25;
+            self.siteNameXconstrain.constant = -27;
         }
         else {
             self.webImgXConstrain.constant = 7;
