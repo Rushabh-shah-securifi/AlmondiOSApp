@@ -297,7 +297,6 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     [[NSUserDefaults standardUserDefaults] setObject:self.recentSearch forKey:@"recentSearch"];
 //    [self addSuggestionSearchObj];
     
-
 }
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController{
 }
@@ -401,7 +400,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
     NSSet *set = [NSSet setWithArray:[NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"recentSearch"]]];
     
-    self.recentSearch =  [NSMutableArray arrayWithArray:[set allObjects]];
+    self.recentSearch =  [NSMutableArray arrayWithArray:[[set allObjects] subarrayWithRange:NSMakeRange(0, 2)]];
     
     self.recentSearchObj = [[NSMutableArray alloc]init];
     for (NSString *str in set) {
