@@ -82,7 +82,7 @@
         self.parentrolBtn.hidden = YES;
         self.wifiSignalImageView.hidden = YES;
     }
-    
+
     
     [self setTamper];
    
@@ -214,9 +214,10 @@
     self.wifiSignalImageView.hidden = YES;
     NSArray* genericIndexValues;
     int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
+    Client *client = [Client findClientByID:@(deviceID).stringValue];
     if(self.cellType == ClientTable_Cell)
     {
-        Client *client = [Client findClientByID:@(deviceID).stringValue];
+        
         if(client.webHistoryEnable == NO){
             self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_off"];
             
@@ -229,6 +230,7 @@
             
         }
     }
+//    self.label2.text = client.isActive?@"Active":
     genericIndexValues = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:@(deviceID).stringValue];
     NSArray *arr = genericIndexValues;
 //    self.genericParams.indexValueList = genericIndexValues;
