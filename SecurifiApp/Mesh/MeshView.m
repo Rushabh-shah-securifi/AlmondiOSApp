@@ -11,6 +11,7 @@
 #import "AlmondJsonCommandKeyConstants.h"
 #import <QuartzCore/QuartzCore.h>
 #import "CommonMethods.h"
+#import "SFIColors.h"
 
 #define HELP_INFO 0
 
@@ -41,6 +42,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *wiredBtn;
 @property (weak, nonatomic) IBOutlet UIButton *wirelessBtn;
 @property (weak, nonatomic) IBOutlet UIPickerView *almondPicker;
+@property (weak, nonatomic) IBOutlet UIButton *noLedBtn;
+@property (weak, nonatomic) IBOutlet UIButton *notRtNowBtn;
 
 
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
@@ -90,9 +93,17 @@
         
         self.troublePairingBtn.hidden = YES;
         self.lineBtm.hidden = YES;
+        
+        [self setCornerRadiusToBtn:self.noLedBtn color:[SFIColors clientGreenColor]];
+        [self setCornerRadiusToBtn:self.notRtNowBtn color:[SFIColors clientGreenColor]];
         [self initializeNotification];
     }
     return self;
+}
+
+- (void)setCornerRadiusToBtn:(UIButton *)btn color:(UIColor *)color{
+    btn.layer.borderWidth = 1.0f;
+    btn.layer.borderColor = color.CGColor;
 }
 
 - (void)initializeNotification{

@@ -56,6 +56,8 @@
                 <outlet property="nameField" destination="EGC-Tm-eSc" id="oje-gz-r1r"/>
                 <outlet property="namingView" destination="k8i-dQ-bjY" id="2bK-aO-EGg"/>
                 <outlet property="nextBtn" destination="Eco-3z-gxc" id="hyV-Ex-Qdw"/>
+                <outlet property="noLedBtn" destination="zNk-1Z-EhH" id="jTe-A5-o3X"/>
+                <outlet property="notRtNowBtn" destination="wBP-8J-bJc" id="O5r-8g-1sJ"/>
                 <outlet property="pageControl" destination="PXT-d8-4ft" id="85X-eN-X72"/>
                 <outlet property="pairingAlmondRestView" destination="PZX-is-Rha" id="sYW-9a-5uc"/>
                 <outlet property="pairingAlmondView" destination="qjI-mV-7u6" id="E1b-TA-hKn"/>
@@ -393,13 +395,12 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zNk-1Z-EhH">
                     <rect key="frame" x="11" y="464" width="299" height="44"/>
-                    <color key="backgroundColor" red="0.29803921568627451" green="0.68627450980392157" blue="0.31372549019607843" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="poM-kW-5zP"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="18"/>
                     <state key="normal" title="No, the LED is not blinking">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.29803921568627451" green="0.68627450980392157" blue="0.31372549019607843" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="onNoLEDBlinking:" destination="-1" eventType="touchUpInside" id="lku-2V-v6o"/>
@@ -1089,13 +1090,12 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wBP-8J-bJc">
                     <rect key="frame" x="11" y="464" width="299" height="44"/>
-                    <color key="backgroundColor" red="0.29803921570000003" green="0.68627450980000004" blue="0.31372549020000001" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="ky3-VA-jGq"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="18"/>
                     <state key="normal" title="Not right now">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.29803921568627451" green="0.68627450980392157" blue="0.31372549019607843" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="onNotRightNowTap:" destination="-1" eventType="touchUpInside" id="b3P-J2-Loa"/>
