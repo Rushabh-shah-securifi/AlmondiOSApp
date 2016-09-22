@@ -492,13 +492,13 @@
 }
 
 -(int)getTimeOut:(int)tag{
-    //read it as, timeout when you are coming from screen "tag".
+    //read it as, timeout when you are coming/visitig from screen ->"tag".
     if(tag == ALMONDS_LIST) //for cant find my almond
         return 120;
     else if(tag == PAIRING_ALMOND_1) //for trouble pairing almond
-        return 120;
+        return 150;
     else if(tag == INTERFACE_SCR) //for paring almond 1st screen
-        return 90;
+        return 150;
     else
         return 60;
 }

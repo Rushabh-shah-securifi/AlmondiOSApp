@@ -286,7 +286,7 @@ int mii;
             [self showForceRemoveAlert];
         }
         else if([cmdType isEqualToString:@"ForceRemoveSlaveMobile"]){
-            [self showToast:@"Sorry! Could not remove. Try remove from Almond"];
+            [self showToast:@"Sorry! Could not remove. Try removing from Almond"];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self dismissViewControllerAnimated:YES completion:nil];
             });
