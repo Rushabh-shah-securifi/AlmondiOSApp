@@ -38,6 +38,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *removeBtn;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableBottomContraint;
 
+@property (nonatomic) NSTimer *removeAlmondTO;
 @end
 
 @implementation MeshSetupViewController
@@ -271,20 +272,35 @@ int mii;
     if([payload[MOBILE_INTERNAL_INDEX] intValue]!=  mii|| ![payload[COMMAND_MODE] isEqualToString:@"Reply"])
         return;
     BOOL isSuccessful = [payload[@"Success"] boolValue];
-    //special case  - comes only on success
+    NSString *cmdType = payload[COMMAND_TYPE];
+    [self.removeAlmondTO invalidate];
+    self.removeAlmondTO = nil;
+    
     if(isSuccessful){
         [self showToast:@"Successfully Removed!"];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self dismissViewControllerAnimated:YES completion:nil];
         });
     }else{
-        NSString *msg = [NSString stringWithFormat:@"Failed to remove %@, Do you want to force remove?", self.almondStatObj.name];
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Force Remove Almond" message:msg delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-        alert.tag = FORCE_REMOVE;
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [alert show];
-        });
+        if([cmdType isEqualToString:@"RemoveSlaveMobile"]){
+            [self showForceRemoveAlert];
+        }
+        else if([cmdType isEqualToString:@"ForceRemoveSlaveMobile"]){
+            [self showToast:@"Sorry! Could not remove. Try remove from Almond"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self dismissViewControllerAnimated:YES completion:nil];
+            });
+        }
     }
+}
+
+-(void)showForceRemoveAlert{
+    NSString *msg = [NSString stringWithFormat:@"Failed to remove %@, Do you want to force remove?", self.almondStatObj.name];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Force Remove Almond" message:msg delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    alert.tag = FORCE_REMOVE;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [alert show];
+    });
 }
 
 #pragma mark event methods
@@ -300,7 +316,8 @@ int mii;
         //cancel clicked ...do your action
     }else{
         if(alertView.tag == REMOVE){
-            [self showHudWithTimeoutMsgDelegate:@"Removing...Please wait!" time:5];
+            [self showHudWithTimeoutMsgDelegate:@"Removing...Please wait!" time:30];
+            self.removeAlmondTO = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(onRemoveAlmTO:) userInfo:nil repeats:NO];
             [MeshPayload requestRemoveSlave:mii uniqueName:self.almondStatObj.slaveUniqueName];
         }
         else if(alertView.tag == FORCE_REMOVE){
@@ -310,4 +327,9 @@ int mii;
     }
 }
 
+#pragma mark timer
+-(void)onRemoveAlmTO:(id)sender{
+    self.removeAlmondTO = nil;
+    [self showForceRemoveAlert];
+}
 @end

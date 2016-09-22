@@ -84,6 +84,7 @@
         NSLog(@"frame initialized");
         [[NSBundle mainBundle] loadNibNamed:@"mesh" owner:self options:nil];
         self.almondTitles = nil;
+        self.nameField.text = @"";
         self.almondNames = @[@"Bed Room",@"Den",@"Dining Room",@"Down Stairs",@"Entryway",@"Family Room",@"Hallway",@"Kids Room",@"Kitchen",@"Living Room",@"Master Bedroom",@"Office",@"Upstairs"];
         self.selectedName = self.almondNames[0];
         
@@ -214,8 +215,8 @@
 
 - (IBAction)onYesLEDBlinking:(UIButton *)yesButton {
     _mii = arc4random() % 10000;
-    self.blinkTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(onBlinkTimeout:) userInfo:nil repeats:NO];
-    [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait!" time:120];
+    self.blinkTimer = [NSTimer scheduledTimerWithTimeInterval:180 target:self selector:@selector(onBlinkTimeout:) userInfo:nil repeats:NO];
+    [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait!" time:180];
     [self requestAddSlave:YES];
 }
 
@@ -427,8 +428,12 @@
         self.almondTitles = nil;
         self.currentAlmonds = nil;
     }
-    else if(view.tag == 2){
+    else if(view.tag == 2){//almond list
         [self.almondPicker reloadAllComponents];
+    }
+    
+    else if(view.tag == 4){ //almond name
+        self.nameField.text = @"";
     }
     NSLog(@"almond titles: %@, tag: %ld", self.almondTitles, (long)view.tag);
     [self.currentView removeFromSuperview];
@@ -487,10 +492,13 @@
 }
 
 -(int)getTimeOut:(int)tag{
-    if(tag == ALMONDS_LIST)
-        return 20;
-    else if(tag == PAIRING_ALMOND_1)
+    //read it as, timeout when you are coming from screen "tag".
+    if(tag == ALMONDS_LIST) //for cant find my almond
         return 120;
+    else if(tag == PAIRING_ALMOND_1) //for trouble pairing almond
+        return 120;
+    else if(tag == INTERFACE_SCR) //for paring almond 1st screen
+        return 90;
     else
         return 60;
 }

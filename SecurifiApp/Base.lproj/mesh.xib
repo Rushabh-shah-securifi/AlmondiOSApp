@@ -968,7 +968,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pairing Almond..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="brL-Bl-PwE">
-                    <rect key="frame" x="0.0" y="81" width="320" height="33"/>
+                    <rect key="frame" x="0.0" y="71" width="320" height="33"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="33" id="Dxm-Pg-NFZ"/>
                         <constraint firstAttribute="width" constant="320" id="K5E-He-PbB"/>
@@ -977,12 +977,13 @@
                     <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Having trouble pairing your Almond?  Press and hold the RESET button for 5 sec. You can use the stylus." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="95h-aD-Cf2">
-                    <rect key="frame" x="18" y="114" width="284" height="56"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="95h-aD-Cf2">
+                    <rect key="frame" x="18" y="107" width="285" height="85"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="56" id="o4l-Zd-3p8"/>
-                        <constraint firstAttribute="width" constant="284" id="yt4-uX-uiu"/>
+                        <constraint firstAttribute="height" constant="85" id="o4l-Zd-3p8"/>
+                        <constraint firstAttribute="width" constant="285" id="yt4-uX-uiu"/>
                     </constraints>
+                    <string key="text">Having trouble pairing your Almond 3 ?      a. Bring it closer to this Almond.    b. Press and hold the factory reset button on it for 5 secs.</string>
                     <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
                     <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -1002,13 +1003,6 @@
                         <action selector="onBackBtnTap:" destination="-1" eventType="touchUpInside" id="CyJ-cd-1Vo"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="almond_reset" translatesAutoresizingMaskIntoConstraints="NO" id="A7Q-kF-Wyj">
-                    <rect key="frame" x="40" y="184" width="240" height="240"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="240" id="Hfv-Vv-8o4"/>
-                        <constraint firstAttribute="height" constant="240" id="zhC-Y3-pbq"/>
-                    </constraints>
-                </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="waiting for Almond to join..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UXI-1j-BcH">
                     <rect key="frame" x="60" y="455" width="211" height="21"/>
                     <constraints>
@@ -1026,18 +1020,25 @@
                         <constraint firstAttribute="width" constant="20" id="c6K-II-jVm"/>
                     </constraints>
                 </activityIndicatorView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="almond_reset" translatesAutoresizingMaskIntoConstraints="NO" id="A7Q-kF-Wyj">
+                    <rect key="frame" x="35" y="200" width="250" height="250"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="250" id="Hfv-Vv-8o4"/>
+                        <constraint firstAttribute="height" constant="250" id="zhC-Y3-pbq"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="UXI-1j-BcH" firstAttribute="centerX" secondItem="PZX-is-Rha" secondAttribute="centerX" constant="5.5" id="4xa-CA-b7R"/>
-                <constraint firstItem="A7Q-kF-Wyj" firstAttribute="top" secondItem="95h-aD-Cf2" secondAttribute="bottom" constant="14" id="AU7-0G-Ltx"/>
-                <constraint firstItem="95h-aD-Cf2" firstAttribute="top" secondItem="brL-Bl-PwE" secondAttribute="bottom" id="Aet-pC-2lf"/>
+                <constraint firstItem="A7Q-kF-Wyj" firstAttribute="top" secondItem="95h-aD-Cf2" secondAttribute="bottom" constant="8" id="AU7-0G-Ltx"/>
+                <constraint firstItem="95h-aD-Cf2" firstAttribute="top" secondItem="brL-Bl-PwE" secondAttribute="bottom" constant="3" id="Aet-pC-2lf"/>
                 <constraint firstAttribute="bottom" secondItem="qC3-6f-QGy" secondAttribute="bottom" constant="92" id="DIr-cM-OYr"/>
                 <constraint firstItem="cGO-kK-sxe" firstAttribute="leading" secondItem="PZX-is-Rha" secondAttribute="leading" id="DSQ-eh-xb0"/>
                 <constraint firstItem="68H-8e-9RT" firstAttribute="top" secondItem="PZX-is-Rha" secondAttribute="top" constant="14" id="Fcu-8G-lOH"/>
                 <constraint firstItem="brL-Bl-PwE" firstAttribute="centerX" secondItem="PZX-is-Rha" secondAttribute="centerX" id="KNj-i0-O7w"/>
                 <constraint firstItem="A7Q-kF-Wyj" firstAttribute="centerX" secondItem="PZX-is-Rha" secondAttribute="centerX" id="Kag-D5-7HM"/>
-                <constraint firstItem="brL-Bl-PwE" firstAttribute="top" secondItem="cGO-kK-sxe" secondAttribute="bottom" constant="34" id="bgY-qK-5Dy"/>
+                <constraint firstItem="brL-Bl-PwE" firstAttribute="top" secondItem="cGO-kK-sxe" secondAttribute="bottom" constant="24" id="bgY-qK-5Dy"/>
                 <constraint firstItem="cGO-kK-sxe" firstAttribute="top" secondItem="68H-8e-9RT" secondAttribute="bottom" constant="7" id="j9B-Ee-LG0"/>
                 <constraint firstAttribute="trailing" secondItem="cGO-kK-sxe" secondAttribute="trailing" id="jvL-ln-LWm"/>
                 <constraint firstAttribute="bottom" secondItem="UXI-1j-BcH" secondAttribute="bottom" constant="92" id="l72-iU-4U1"/>
