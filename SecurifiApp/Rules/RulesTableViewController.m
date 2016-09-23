@@ -103,6 +103,12 @@ CGPoint tablePoint;
                selector:@selector(onAlmondListDidChange:)
                    name:kSFIDidUpdateAlmondList
                  object:nil];
+    
+    [center addObserver:self
+                selector:@selector(onNetworkUpNotifier:)
+                    name:NETWORK_UP_NOTIFIER
+                object:nil];
+    
 }
 
 -(void)markAlmondTitle{
@@ -159,8 +165,6 @@ CGPoint tablePoint;
     if([self isRuleArrayEmpty]){
         return [self createEmptyCell:tableView];
     }
-    static NSString *CellIdentifier;
-    CellIdentifier = [NSString stringWithFormat:@"Cell%ld",(long)indexPath.row];
     
     CustomCellTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CustomCellTableViewCell"];
     if(cell==nil){//check out if this will ever get executed
@@ -439,6 +443,15 @@ CGPoint tablePoint;
     [self.tabBarController.view addSubview:self.helpScreensObj];
 //    [self.tabBarController.tabBar setHidden:YES];
 }
+
+- (void)onNetworkUpNotifier:(id)sender {
+    NSLog(@"onNetworkUpNotifier");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+        [self showHudWithTimeoutMsg:@"Loading..."];
+    });
+}
+
 
 #pragma mark helpscreen delegate methods
 - (void)resetViewDelegate{

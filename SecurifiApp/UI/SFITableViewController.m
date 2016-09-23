@@ -388,7 +388,6 @@
         [toolkit.devices removeAllObjects];
         [toolkit.clients removeAllObjects];
         [toolkit.scenesArray removeAllObjects];
-        [toolkit.ruleList removeAllObjects];
         
         [self.tableView reloadData];
     });
@@ -506,6 +505,8 @@
     NSLog(@"onNetworkUpNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
+        [self showHUD:@"Loading..."];
+        [self.HUD hide:YES afterDelay:5];
         //        [self.tableView reloadData];
         //        [self.HUD hide:YES]; // make sure it is hidden
     });

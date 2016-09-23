@@ -96,7 +96,7 @@ int mii;
         [self tryInstallRefreshControl];
         if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC]){
             NSLog(@"device and client current list is empty");
-            [self showHudWithTimeoutMsg:NSLocalizedString(@"DeviceList Loading Device data", @"Loading Device data")];
+            [self showHudWithTimeoutMsg:@"Loading Device data..."];
         }
     });
     
