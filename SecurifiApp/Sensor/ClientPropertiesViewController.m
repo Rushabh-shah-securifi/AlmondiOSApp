@@ -134,10 +134,8 @@ int randomMobileInternalIndex;
     if(self.isLocal){
         return self.genericParams.indexValueList.count -2;
     }
-    else
-        return self.genericParams.indexValueList.count -1;
     self.historyButton.hidden = NO;
-    return self.genericParams.indexValueList.count;
+    return self.genericParams.indexValueList.count-1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

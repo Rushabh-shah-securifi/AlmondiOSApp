@@ -20,6 +20,7 @@
 #import "BrowsingHistory.h"
 #import "ChangeCategoryViewController.h"
 #import "ParentalControlsViewController.h"
+#import "CompleteDB.h"
 
 @interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource,BrowsingHistoryDelegate,NSURLConnectionDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *browsingTable;
@@ -172,7 +173,37 @@
     
     /*note get endidentifier from db */
     NSLog(@"response dict =%@",dict);
-    self.ps = [BrowsingHistoryDataBase insertHistoryRecord:dict];
+    NSString *lastDate;
+    self.ps = [BrowsingHistoryDataBase insertHistoryRecord:dict];// return last date
+    //check last date <= max date of completeDB stop req
+    NSString *maxDateFromDB = [CompleteDB getMaxDate:self.amac clientMac:self.cmac];
+    
+    NSComparisonResult result;
+    
+    
+    result = [lastDate compare:maxDateFromDB];
+    if(result == -1){
+        // stop req
+    }
+    
+    if([BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] < 500){
+        //store InCompleteDB in this controller
+        // send req with PS of incompleteDB
+
+    }
+    else{
+        // get min date fro original date
+        // remove that entries which are having that date
+        // and IF min date present in complete db thn remove iit from also
+    }
+    // result = -1 (NSOrderedAscending)
+    
+    //count DB if count<500 ..send req with PS of incompleteDB
+    //else
+    // get min date from HistoryDB
+    //remove that Min date from completeDB
+    
+    //ifEnd of db last date from db and send req
     
     NSLog(@"self.ps:: %@",self.ps);
     if(self.ps == NULL)
