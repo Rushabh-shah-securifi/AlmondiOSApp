@@ -45,8 +45,8 @@
 #define FIRMWARE_UPDATE_TAG 2
 
 static const int networkingHeight = 100;
-//static const int clientsHeight = 90;
-static const int clientsHeight = 200;
+static const int clientsHeight = 90;
+static const int almondNtwkHeight = 200;
 static const int settingsHeight = 70;
 static const int versionHeight = 130;
 static const int rebootHeight = 110;
@@ -70,7 +70,6 @@ static const int logsHeight = 100;
 
 @property(nonatomic) BOOL enableAlmondVersionRemoteUpdate;
 @property(nonatomic) BOOL isSimulator;
-@property(nonatomic) BOOL isLocal;
 
 @property(nonatomic) BOOL isBUG;
 
@@ -105,8 +104,6 @@ int mii;
     NSLog(@"router view will appear");
     [super viewWillAppear:animated];
     mii = arc4random() % 10000;
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.isLocal = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
     
     [self initializeNotifications];
     self.routerSummary = nil;
@@ -117,7 +114,6 @@ int mii;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -154,7 +150,6 @@ int mii;
     self.isAlmondUnavailable = NO;
     self.tableView.tableHeaderView = nil;
     
-    //NSLog(@"connecton - is local: %d", self.local);
     NSLog(@"almond mac: %@", self.almondMac);
     if([self isNoAlmondLoaded] || ![self isFirmwareCompatible]){
         
@@ -265,8 +260,7 @@ int mii;
         return 1;
     }
     
-    SFIAlmondConnectionMode mode = self.currentConnectionMode;
-    if (mode == SFIAlmondConnectionMode_local) {
+    if (self.currentConnectionMode == SFIAlmondConnectionMode_local) {
         return 2;
     }else{
         return 6;
@@ -282,11 +276,12 @@ int mii;
     if ([self isNotConnectedToCloud] || ![self isFirmwareCompatible]) {
         return 400;
     }
+    
     switch (indexPath.section) {
         case DEF_NETWORKING_SECTION:
             return networkingHeight;
         case DEF_DEVICES_AND_USERS_SECTION:
-            return clientsHeight;
+            return self.currentConnectionMode == SFIAlmondConnectionMode_local? almondNtwkHeight: clientsHeight;
         case DEF_WIRELESS_SETTINGS_SECTION:
             return [self getSettingsRowHeight];
         case DEF_ROUTER_VERSION_SECTION:
@@ -330,10 +325,12 @@ int mii;
                 return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link") selector:@selector(onEditNetworkSettings:) cardColor:[UIColor securifiRouterTileGreenColor]];
             }
             case DEF_DEVICES_AND_USERS_SECTION:{
-//                summaries = [self getDevicesAndUsersSummary];
-//                return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users") selector:nil cardColor:[UIColor securifiRouterTileBlueColor]];
-                
-                return [self createAlmondNetworkCell:tableView];
+                if(self.currentConnectionMode == SFIAlmondConnectionMode_local)
+                    return [self createAlmondNetworkCell:tableView];
+                else{
+                    summaries = [self getDevicesAndUsersSummary];
+                    return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users") selector:nil cardColor:[UIColor securifiRouterTileBlueColor]];
+                }
             }
             case DEF_WIRELESS_SETTINGS_SECTION:{
                 summaries = [self getWirelessSettingsSummary];
@@ -727,7 +724,7 @@ int mii;
                  self.routerSummary = (SFIRouterSummary *)genericRouterCommand.command;
                  //NSLog(@"routersummary: %@", self.routerSummary);
                  
-                 if(!self.isLocal){ //Do only in Cloud
+                 if(self.currentConnectionMode == SFIAlmondConnectionMode_cloud){ //Do only in Cloud
                      [toolkit tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:self.routerSummary];
                      NSString *currentVersion = self.routerSummary.firmwareVersion;
                      [self tryCheckAlmondVersion:currentVersion];

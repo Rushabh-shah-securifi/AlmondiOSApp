@@ -69,7 +69,7 @@
     [keyVals addObject:@{@"Connected via":connetedVia}];
     [keyVals addObject:@{@"Interface":interface}];
     if(!isMaster && [interface isEqualToString:@"Wireless"])
-        [keyVals addObject:@{@"Signal Strenght":signalStrength}];
+        [keyVals addObject:@{@"Signal Strength":signalStrength}];
     if(ssid2)
         [keyVals addObject:@{@"5 GHz SSID":ssid2}];
     [keyVals addObject:@{@"2.4 GHz SSID":ssid1}];
