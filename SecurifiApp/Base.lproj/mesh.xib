@@ -1022,10 +1022,10 @@
                     </constraints>
                 </activityIndicatorView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="almond_reset" translatesAutoresizingMaskIntoConstraints="NO" id="A7Q-kF-Wyj">
-                    <rect key="frame" x="35" y="200" width="250" height="250"/>
+                    <rect key="frame" x="40" y="200" width="240" height="240"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="250" id="Hfv-Vv-8o4"/>
-                        <constraint firstAttribute="height" constant="250" id="zhC-Y3-pbq"/>
+                        <constraint firstAttribute="width" constant="240" id="Hfv-Vv-8o4"/>
+                        <constraint firstAttribute="height" constant="240" id="zhC-Y3-pbq"/>
                     </constraints>
                 </imageView>
             </subviews>
