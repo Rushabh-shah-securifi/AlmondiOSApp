@@ -498,8 +498,14 @@
     return cell;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 25;
+}
+
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    NSLog(@"view for header: %ld", (long)section);
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 25)];
+    
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, tableView.frame.size.width, 18)];
     [label setFont:[UIFont boldSystemFontOfSize:14]];
     if (section >0) {
@@ -644,22 +650,11 @@
     [self presentViewController:almondSelect animated:YES completion:nil];
     
 }
+
 - (void)presentLocalNetworkSettingsEditor {
-    NSString *mac = self.toolkit.currentAlmond.almondplusMAC;
-    
-    _toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondLocalNetworkSettings *settings = [_toolkit localNetworkSettingsForAlmond:mac];
-    NSLog(@"sfitableview - presentlocalnetwork - mac: %@, settings: %@", mac, settings);
-    if (!settings) {
-        settings = [SFIAlmondLocalNetworkSettings new];
-        settings.almondplusMAC = mac;
-    }
-    
     RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
     editor.delegate = self;
-    editor.settings = settings;
-    editor.enableUnlinkActionButton = ![_toolkit almondExists:mac]; // only allowed to unlink local almonds that are not affiliated with the cloud
-    
+    editor.makeLinkedAlmondCurrentOne = YES;
     UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
     [self presentViewController:ctrl animated:YES completion:nil];
 }

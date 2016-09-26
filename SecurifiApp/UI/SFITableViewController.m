@@ -22,9 +22,10 @@
 #import "SFIColors.h"
 #import "UICommonMethods.h"
 #import "UIImage+Securifi.h"
+#import "SFICloudLinkViewController.h"
 
 
-@interface SFITableViewController () <MBProgressHUDDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate, HelpScreensDelegate>
+@interface SFITableViewController () <MBProgressHUDDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate, HelpScreensDelegate, MessageViewDelegate>
 @property(nonatomic, readonly) SFINotificationStatusBarButtonItem *notificationsStatusButton;
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *connectionStatusBarButton;
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *almondModeBarButton;
@@ -50,8 +51,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];    
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     
     SecurifiConfigurator *configurator = toolkit.configuration;
     _enableNotificationsView = configurator.enableNotifications;
@@ -472,12 +473,12 @@
         NSString *name = [m isEqualToString:@"2"]?@"almond_mode_home":@"almond_mode_away";
         
         UIImage *image = [UIImage imageNamed:name];
-//        UIColor *color = [UIColor blackColor];
-//        [self.almondModeBarButton modeUpdate:image color:color mode:m];
-//        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-//        spacer.width = 25;
+        //        UIColor *color = [UIColor blackColor];
+        //        [self.almondModeBarButton modeUpdate:image color:color mode:m];
+        //        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        //        spacer.width = 25;
         
-//        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.almondModeBarButton, spacer, self.notificationsStatusButton];
+        //        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.almondModeBarButton, spacer, self.notificationsStatusButton];
         
         
         
@@ -505,8 +506,6 @@
     NSLog(@"onNetworkUpNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
-        [self showHUD:@"Loading..."];
-        [self.HUD hide:YES afterDelay:5];
         //        [self.tableView reloadData];
         //        [self.HUD hide:YES]; // make sure it is hidden
     });
@@ -630,7 +629,7 @@
         return;
     }
     dispatch_async(dispatch_get_main_queue(), ^() {
-//        [self setBarButtons:NO];
+        //        [self setBarButtons:NO];
     });
 }
 
@@ -639,7 +638,7 @@
     //        return;
     //    }
     dispatch_async(dispatch_get_main_queue(), ^() {
-//        [self setBarButtons:YES];
+        //        [self setBarButtons:YES];
     });
     //    [self setBarButtons:NO];
 }
@@ -672,7 +671,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:empty_cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [self createCellWithText:NSLocalizedString(@"noSensors", @"You don't have any sensors yet.") subText:NSLocalizedString(@"router.no-sensors.label.Add a sensor from your Almond.", @"Add a sensor from your Almond.") cell:cell];
-    
+        
     }
     
     return cell;
@@ -693,33 +692,20 @@
 - (void)createCellWithText:(NSString *)text subText:(NSString *)subText cell:(UITableViewCell *)cell{
     const CGFloat table_width = CGRectGetWidth(self.tableView.frame);
     
-    UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, table_width, 30)];
+    UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, table_width, 30)];
     lblNoSensor.textAlignment = NSTextAlignmentCenter;
-    [lblNoSensor setFont:[UIFont securifiLightFont:20]];
+    [lblNoSensor setFont:[UIFont securifiFont:20]];
     lblNoSensor.text = text;
     lblNoSensor.numberOfLines = 0;
     lblNoSensor.textColor = [UIColor grayColor];
     [cell addSubview:lblNoSensor];
     
-    UIImage *routerImage = [UIImage routerImage];
-    
-    CGAffineTransform scale = CGAffineTransformMakeScale(0.5, 0.5);
-    const CGSize routerImageSize = CGSizeApplyAffineTransform(routerImage.size, scale);
-    const CGFloat image_width = routerImageSize.width;
-    const CGFloat image_height = routerImageSize.height;
-    CGRect imageViewFrame = CGRectMake((table_width - image_width) / 2, 95, image_width, image_height);
-    
-    UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:imageViewFrame];
-    imgRouter.userInteractionEnabled = NO;
-    imgRouter.image = routerImage;
-    imgRouter.contentMode = UIViewContentModeScaleAspectFit;
-    [cell addSubview:imgRouter];
-    
-    UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 95 + image_height + 20, table_width, 30)];
+    UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(lblNoSensor.frame) + 15 , table_width - 20, 60)];
     lblAddSensor.textAlignment = NSTextAlignmentCenter;
-    [lblAddSensor setFont:[UIFont standardUILabelFont]];
+    [lblAddSensor setFont:[UIFont standardHeadingFont]];
     lblAddSensor.text = subText;
     lblAddSensor.textColor = [UIColor grayColor];
+    lblAddSensor.numberOfLines = 0;
     [cell addSubview:lblAddSensor];
 }
 #pragma mark Drawer management
@@ -960,7 +946,7 @@
     self.helpScreensObj.delegate = self;
     
     [self.tabBarController.view addSubview:self.helpScreensObj];
-//    [self.tabBarController.tabBar setHidden:YES];
+    //    [self.tabBarController.tabBar setHidden:YES];
 }
 
 
@@ -968,7 +954,7 @@
     self.maskView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height);
     [self.maskView setBackgroundColor:[SFIColors maskColor]];
     [self.tabBarController.view addSubview:self.maskView];
-
+    
     [HelpScreens initializeGotItView:self.helpScreensObj navView:self.navigationController.view];
     [self.maskView addSubview:self.helpScreensObj];
 }
@@ -979,12 +965,45 @@
     NSLog(@"table view");
     [self.maskView removeFromSuperview];
     [self.helpScreensObj removeFromSuperview]; //perhaps you should also remove subviews
-//    [self.tabBarController.tabBar setHidden:NO];
+    //    [self.tabBarController.tabBar setHidden:NO];
 }
 
 - (void)onSkipTapDelegate{
-//    [self.tabBarController.tabBar setHidden:YES];
+    //    [self.tabBarController.tabBar setHidden:YES];
     [self showOkGotItView];
+}
+
+
+
+#pragma mark - messageview methods
+- (MessageView *)addMessagegView{
+    MessageView *view = [MessageView linkRouterMessage];
+    view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, 400);
+    view.delegate = self;
+    return view;
+}
+
+#pragma mark - MessageViewDelegate methods
+- (void)messageViewDidPressButton:(MessageView *)msgView {
+    enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
+    
+    switch (mode) {
+        case SFIAlmondConnectionMode_cloud: {
+            UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
+            [self presentViewController:ctrl animated:YES completion:nil];
+            break;
+        }
+        case SFIAlmondConnectionMode_local: {
+            RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+            editor.delegate = self;
+            editor.makeLinkedAlmondCurrentOne = YES;
+            
+            UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
+            
+            [self presentViewController:ctrl animated:YES completion:nil];
+            break;
+        }
+    }
 }
 
 

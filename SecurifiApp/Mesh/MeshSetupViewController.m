@@ -209,7 +209,9 @@ int mii;
 
 #pragma mark meshview delegates
 -(void)dismissControllerDelegate{
+    
     self.meshView = nil;
+    [[SecurifiToolkit sharedInstance] shutDownMesh];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self dismissViewControllerAnimated:YES completion:nil];
     });

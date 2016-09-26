@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>7358</string>
+	<string>7507</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -55,6 +55,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access needed to photo gallery.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AvenirLTStd-Heavy.otf</string>

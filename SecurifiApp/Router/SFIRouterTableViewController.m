@@ -52,7 +52,7 @@ static const int versionHeight = 130;
 static const int rebootHeight = 110;
 static const int logsHeight = 100;
 
-@interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate,UIAlertViewDelegate, AlmondNetworkTableViewCellDelegate>{
+@interface SFIRouterTableViewController () <SFIRouterTableViewActions, AlmondVersionCheckerDelegate, TableHeaderViewDelegate,UIAlertViewDelegate, AlmondNetworkTableViewCellDelegate>{
     
 }
 
@@ -564,9 +564,7 @@ int mii;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        MessageView *view = [MessageView linkRouterMessage];
-        view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, 400);
-        view.delegate = self;
+        MessageView *view = [self addMessagegView];
         
         [cell addSubview:view];
     }
@@ -692,7 +690,7 @@ int mii;
      
 #pragma mark - Cloud command response handlers
  - (void)onAlmondRouterCommandResponse:(id)sender {
-     //NSLog(@"Router - onAlmondRouterCommandResponse");
+     NSLog(@"Router - onAlmondRouterCommandResponse");
      NSNotification *notifier = (NSNotification *) sender;
      NSDictionary *data = [notifier userInfo];
      if (data == nil) {
@@ -725,6 +723,7 @@ int mii;
                  //NSLog(@"routersummary: %@", self.routerSummary);
                  
                  if(self.currentConnectionMode == SFIAlmondConnectionMode_cloud){ //Do only in Cloud
+                     NSLog(@"updating local network settings");
                      [toolkit tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:self.routerSummary];
                      NSString *currentVersion = self.routerSummary.firmwareVersion;
                      [self tryCheckAlmondVersion:currentVersion];
@@ -798,19 +797,7 @@ int mii;
          [self.tableView reloadData];
      });
  }
-     
-#pragma mark - MessageViewDelegate methods
-     //on no almond view
- - (void)messageViewDidPressButton:(MessageView *)msgView {
-     if ([self isNoAlmondLoaded]) {
-         UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
-         [self presentViewController:ctrl animated:YES completion:nil];
-     }
-     else {
-         //Get wireless settings
-         [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
-     }
- }
+
      
 #pragma mark - AlmondVersionChecker methods
      
@@ -916,7 +903,7 @@ int mii;
      
      NSDictionary *payload = [data valueForKey:@"data"];
      NSLog(@"router mesh payload: %@", payload);
-     if([payload[MOBILE_INTERNAL_INDEX] intValue]!= mii|| ![payload[COMMAND_MODE] isEqualToString:@"Reply"])
+     if(![payload[COMMAND_MODE] isEqualToString:@"Reply"])
          return;
      
      BOOL isSuccessful = [payload[SUCCESS] boolValue];
@@ -974,7 +961,7 @@ int mii;
      NSLog(@"on add almond tap delegate");
      dispatch_async(dispatch_get_main_queue(), ^{
          [self showHudWithTimeout:@"Please Wait!"];
-         [MeshPayload requestRai2UpMobile:mii];
+         [[SecurifiToolkit sharedInstance] connectMesh];
      });
  }
 

@@ -759,6 +759,9 @@ static const int xIndent = 10;
         });
         return;
     }
+    else{
+        [self showToast:@"Notify Me successfully updated!"];
+    }
 }
 
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{

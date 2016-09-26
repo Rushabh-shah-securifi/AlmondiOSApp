@@ -27,7 +27,7 @@
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
-@interface SFIScenesTableViewController ()<UITableViewDataSource,UITableViewDelegate,SFIScenesTableViewCellDelegate,MBProgressHUDDelegate,MessageViewDelegate> {
+@interface SFIScenesTableViewController ()<UITableViewDataSource,UITableViewDelegate,SFIScenesTableViewCellDelegate,MBProgressHUDDelegate> {
     
     UIButton *btnAdd;
     NSInteger randomMobileInternalIndex;
@@ -290,9 +290,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:no_almond_cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        MessageView *view = [MessageView linkRouterMessage];
-        view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, 400);
-        view.delegate = self;
+        MessageView *view = [self addMessagegView];
         
         [cell addSubview:view];
     }
@@ -405,13 +403,6 @@
 
 - (BOOL)isNoAlmondMAC {
     return [self.almondMac isEqualToString:NO_ALMOND];
-}
-
-#pragma mark - MessageViewDelegate methods
-
-- (void)messageViewDidPressButton:(MessageView *)msgView {
-    UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
-    [self presentViewController:ctrl animated:YES completion:nil];
 }
 
 - (void)hideHude{

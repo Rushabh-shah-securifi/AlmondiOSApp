@@ -27,7 +27,7 @@
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
-@interface RulesTableViewController ()<CustomCellTableViewCellDelegate,MBProgressHUDDelegate, HelpScreensDelegate,MessageViewDelegate>{
+@interface RulesTableViewController ()<CustomCellTableViewCellDelegate,MBProgressHUDDelegate, HelpScreensDelegate,MessageViewDelegate, RouterNetworkSettingsEditorDelegate>{
     NSInteger randomMobileInternalIndex;
 }
 
@@ -64,7 +64,7 @@ CGPoint tablePoint;
     [self markAlmondTitle];
     [self initializeNotifications];
     
-
+    
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
@@ -105,9 +105,9 @@ CGPoint tablePoint;
                  object:nil];
     
     [center addObserver:self
-                selector:@selector(onNetworkUpNotifier:)
-                    name:NETWORK_UP_NOTIFIER
-                object:nil];
+               selector:@selector(onNetworkUpNotifier:)
+                   name:NETWORK_UP_NOTIFIER
+                 object:nil];
     
 }
 
@@ -131,7 +131,7 @@ CGPoint tablePoint;
 
 -(void)setUpNavBar{
     self.navigationController.navigationBar.translucent = NO;
-        
+    
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add_almond_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddBtnTap:)];
     self.navigationItem.rightBarButtonItem = addButton;
 }
@@ -158,7 +158,6 @@ CGPoint tablePoint;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([self isNoAlmondMAC]) {
-        tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
     }
     
@@ -343,6 +342,7 @@ CGPoint tablePoint;
 
 #pragma mark events
 - (void)onCurrentAlmondChanged:(id)sender {
+    NSLog(@"on current almond change: %@", [SecurifiToolkit sharedInstance].currentAlmond);
     [self.toolkit.ruleList removeAllObjects];
     
     [self markAlmondTitle];
@@ -356,6 +356,14 @@ CGPoint tablePoint;
     [self markAlmondTitle];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
+    });
+}
+
+- (void)onNetworkUpNotifier:(id)sender {
+    NSLog(@"onNetworkUpNotifier");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+        [self showHudWithTimeoutMsg:@"Loading..."];
     });
 }
 
@@ -398,8 +406,25 @@ CGPoint tablePoint;
 #pragma mark - MessageViewDelegate methods
 
 - (void)messageViewDidPressButton:(MessageView *)msgView {
-    UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
-    [self presentViewController:ctrl animated:YES completion:nil];
+    enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
+    
+    switch (mode) {
+        case SFIAlmondConnectionMode_cloud: {
+            UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
+            [self presentViewController:ctrl animated:YES completion:nil];
+            break;
+        }
+        case SFIAlmondConnectionMode_local: {
+            RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+            editor.delegate = self;
+            editor.makeLinkedAlmondCurrentOne = YES;
+            
+            UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
+            
+            [self presentViewController:ctrl animated:YES completion:nil];
+            break;
+        }
+    }
 }
 
 #pragma mark - HUD and Toast mgt
@@ -441,30 +466,21 @@ CGPoint tablePoint;
     self.helpScreensObj.delegate = self;
     
     [self.tabBarController.view addSubview:self.helpScreensObj];
-//    [self.tabBarController.tabBar setHidden:YES];
+    //    [self.tabBarController.tabBar setHidden:YES];
 }
-
-- (void)onNetworkUpNotifier:(id)sender {
-    NSLog(@"onNetworkUpNotifier");
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-        [self showHudWithTimeoutMsg:@"Loading..."];
-    });
-}
-
 
 #pragma mark helpscreen delegate methods
 - (void)resetViewDelegate{
     NSLog(@"dashboard reset view");
     [self.helpScreensObj removeFromSuperview];
     [self.maskView removeFromSuperview];
-//    [self.tabBarController.tabBar setHidden:NO];
+    //    [self.tabBarController.tabBar setHidden:NO];
     
 }
 
 - (void)onSkipTapDelegate{
     NSLog(@"dashboard skip delegate");
-//    [self.tabBarController.tabBar setHidden:YES];
+    //    [self.tabBarController.tabBar setHidden:YES];
     [self showOkGotItView];
 }
 
@@ -479,6 +495,30 @@ CGPoint tablePoint;
     [HelpScreens initializeGotItView:self.helpScreensObj navView:self.navigationController.view];
     
     [self.maskView addSubview:self.helpScreensObj];
+}
+
+#pragma mark - RouterNetworkSettingsEditorDelegate methods
+
+- (void)networkSettingsEditorDidLinkAlmond:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    
+}
+
+- (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit setLocalNetworkSettings:newSettings];
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidComplete:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {
+    
 }
 
 @end

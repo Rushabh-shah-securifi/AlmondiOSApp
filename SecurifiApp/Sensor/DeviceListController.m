@@ -36,7 +36,7 @@
 #define HEADER_FONT_SIZE 16
 #define COUNT_FONT_SIZE 12
 
-@interface DeviceListController ()<UITableViewDataSource,UITableViewDelegate,DeviceHeaderViewDelegate,MessageViewDelegate>
+@interface DeviceListController ()<UITableViewDataSource,UITableViewDelegate,DeviceHeaderViewDelegate>
 
 @property(nonatomic, readonly) SFIColors *almondColor;
 @property(nonatomic) NSTimer *mobileCommandTimer;
@@ -69,9 +69,16 @@ int mii;
     
     [self initializeNotifications];
     
+    [self tryShowLoadingDevice];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
+}
+
+-(void)tryShowLoadingDevice{
+    if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC]){
+        [self showHudWithTimeoutMsg:@"Loading Device data..."];
+    }
 }
 
 -(void)markAlmondTitleAndMac{
@@ -363,9 +370,7 @@ int mii;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:no_almond_cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        MessageView *view = [MessageView linkRouterMessage];
-        view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, 400);
-        view.delegate = self;
+        MessageView *view = [self addMessagegView];
         
         [cell addSubview:view];
     }
@@ -445,13 +450,6 @@ int mii;
 - (void)initializeColors:(SFIAlmondPlus *)almond {
     NSUInteger colorCode = (NSUInteger) almond.colorCodeIndex;
     _almondColor = [SFIColors colorForIndex:colorCode];
-}
-
-#pragma mark messageViewDelegate
-
-- (void)messageViewDidPressButton:(MessageView *)msgView {
-    UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
-    [self presentViewController:ctrl animated:YES completion:nil];
 }
 
 #pragma mark sensor cell(DeviceHeaderView) delegate

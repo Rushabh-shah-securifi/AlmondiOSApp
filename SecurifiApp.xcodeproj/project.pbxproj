@@ -1126,6 +1126,7 @@
 		F41586F31D6F06140004C577 /* AlmondUpdateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlmondUpdateViewController.m; sourceTree = "<group>"; };
 		F426AE2B1D19515500AE60C8 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
+		F43814941D993B2800D5C762 /* Almond.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Almond.entitlements; sourceTree = "<group>"; };
 		F4B875391D5382D500DCF76F /* AlmondStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondStatus.h; sourceTree = "<group>"; };
 		F4B8753A1D5382D500DCF76F /* AlmondStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlmondStatus.m; sourceTree = "<group>"; };
 		F4B8753B1D5382D500DCF76F /* MeshPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshPayload.h; sourceTree = "<group>"; };
@@ -1588,6 +1589,7 @@
 		1C7E7DE31A41A0B30026F0BA /* Almond */ = {
 			isa = PBXGroup;
 			children = (
+				F43814941D993B2800D5C762 /* Almond.entitlements */,
 				A58DB4581BB3CD5200717C02 /* zh-Hans.lproj */,
 				A58DB43C1BB3CD3F00717C02 /* ja.lproj */,
 				A58DB4041BB2CD7D00717C02 /* de.lproj */,
@@ -2440,6 +2442,9 @@
 							};
 							com.apple.InAppPurchase = {
 								enabled = 0;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
 							};
 						};
 					};
@@ -5132,6 +5137,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Almond-AppIcon";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-launch_image";
+				CODE_SIGN_ENTITLEMENTS = Almond/Almond.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5161,6 +5167,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Almond-AppIcon";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-launch_image";
+				CODE_SIGN_ENTITLEMENTS = Almond/Almond.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

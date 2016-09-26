@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RouterNetworkSettingsEditor.h"
 #import "HelpScreens.h"
+#import "MessageView.h"
 
 @class MBProgressHUD;
 
@@ -76,4 +77,6 @@
 - (BOOL)isFirmwareCompatible;
 
 - (void)onUnlockTable;
+
+- (MessageView *)addMessagegView;
 @end

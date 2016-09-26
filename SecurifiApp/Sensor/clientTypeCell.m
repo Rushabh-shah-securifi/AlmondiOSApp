@@ -41,9 +41,17 @@
     [self.contentView addSubview:self.btnSelect];
 }
 -(void)writelabelName:(NSString*)name value:(NSString *)value{
-    self.labelName.text = [name capitalizedString];
+    self.labelName.text = [self ignoreCapitalizingSpecialWords:name];
     self.valueString = value;
     self.btnSelect.backgroundColor = [UIColor clearColor];
+}
+
+- (NSString *)ignoreCapitalizingSpecialWords:(NSString *)name{
+    NSArray *spclWords = @[@"ipad", @"ipod", @"mac", @"iphone"];
+    if([spclWords containsObject:name.lowercaseString])
+        return name;
+    else
+        return [name capitalizedString];
 }
 
 -(void)typeButtonClicked:(id)sender{

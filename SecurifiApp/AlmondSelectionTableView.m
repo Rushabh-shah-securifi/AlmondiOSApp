@@ -118,8 +118,8 @@ static const int footerHt = 60;
     
     //if the selected almond is same don't do anything.
     SFIAlmondPlus *almond = self.almondList[indexPath.row];
-    if([self isCurrentAlmond:almond.almondplusMAC])
-        return;
+    //if([self isCurrentAlmond:almond.almondplusMAC])
+      //  return;
     
     [self.methodsDelegate onAlmondSelectedDelegate:self.almondList[indexPath.row]];
 }

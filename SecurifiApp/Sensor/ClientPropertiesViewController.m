@@ -111,13 +111,6 @@ int randomMobileInternalIndex;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
-- (void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:YES];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }

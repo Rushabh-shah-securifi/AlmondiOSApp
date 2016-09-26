@@ -124,7 +124,7 @@
 
 +(void)sendRequest:(NSDictionary *)payload commandType:(enum CommandType)commandType{
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:commandType];
-    genericCmd.isMesh = YES;
+    genericCmd.isMeshCmd = YES;
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
 }
 @end
