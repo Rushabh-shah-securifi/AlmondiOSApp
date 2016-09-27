@@ -250,7 +250,8 @@ int mii;
 }
 #pragma mark button tap
 - (IBAction)onRemoveThisAlmondTap:(id)sender { //this button is only enabled for slave
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Remove Almond" message:@"Are you sure, you want to remove this Almond?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    NSString *msg = [NSString stringWithFormat:@"Are you sure, you want to remove %@?", self.almondStatObj.name];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Remove Almond" message:msg delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
     alert.tag = REMOVE;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [alert show];

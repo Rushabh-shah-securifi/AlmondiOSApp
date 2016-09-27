@@ -309,15 +309,15 @@
 
 //mesh
 - (void)markMasterScreen{
-    [self trackScreen:@"Master"];
+    [self trackScreen:@"Master Details"];
 }
 
 - (void)markSlaveScreen{
-    [self trackScreen:@"Slave"];
+    [self trackScreen:@"Slave Details"];
 }
 
 - (void)markAddAlmondScreen{
-    [self trackScreen:@"AddAlmond"];
+    [self trackScreen:@"Add Mesh Almond"];
 }
 
 - (void)trackScreen:(NSString *)name {

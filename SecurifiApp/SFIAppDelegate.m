@@ -11,7 +11,6 @@
 #import <Fabric/Fabric.h>
 #import "Crashlytics.h"
 #import "UIApplication+SecurifiNotifications.h"
-#import <UserNotifications/UserNotifications.h>
 
 #define DEFAULT_GA_ID @"UA-52832244-2"
 #define DEFAULT_ASSETS_PREFIX_ID @"Almond"
