@@ -216,8 +216,8 @@ int mii;
 
 #pragma mark meshview delegates
 -(void)dismissControllerDelegate{
-    
     self.meshView = nil;
+    [MeshPayload requestRai2DownMobile:mii];
     [[SecurifiToolkit sharedInstance] shutDownMesh];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -288,18 +288,14 @@ int mii;
     
     if(isSuccessful){
         [self showToast:@"Successfully Removed!"];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self dismissViewControllerAnimated:YES completion:nil];
-        });
+        [self dismissControllerDelegate];
     }else{
         if([cmdType isEqualToString:@"RemoveSlaveMobile"]){
             [self showForceRemoveAlert];
         }
         else if([cmdType isEqualToString:@"ForceRemoveSlaveMobile"]){
             [self showToast:@"Sorry! Could not remove. Try removing from Almond"];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self dismissViewControllerAnimated:YES completion:nil];
-            });
+            [self dismissControllerDelegate];
         }
     }
 }
@@ -315,9 +311,7 @@ int mii;
 
 #pragma mark event methods
 - (IBAction)onCrossButtonTap:(id)sender {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self dismissViewControllerAnimated:YES completion:nil];
-    });
+    [self dismissControllerDelegate];
 }
 
 #pragma mark alert delegate
@@ -342,4 +336,5 @@ int mii;
     self.removeAlmondTO = nil;
     [self showForceRemoveAlert];
 }
+
 @end

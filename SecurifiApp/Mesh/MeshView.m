@@ -436,7 +436,6 @@
 
 -(void)dismissView{
     [self removeFromSuperview];
-    [self requestRai2DownMobile];
     [self.delegate dismissControllerDelegate];
 }
 
@@ -548,10 +547,6 @@
     [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:10];
 }
 
--(void)requestRai2DownMobile{
-    //I am not sure what is to be done on response of this command, what does fail mean ?
-    [MeshPayload requestRai2DownMobile:self.mii];
-}
 
 -(void)onMeshCommandResponse:(id)sender{
     NSLog(@"onmeshcommandresponse");

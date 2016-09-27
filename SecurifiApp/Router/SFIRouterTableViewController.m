@@ -72,6 +72,8 @@ static const int logsHeight = 100;
 @property(nonatomic) BOOL isSimulator;
 
 @property(nonatomic) BOOL isBUG;
+@property(nonatomic) BOOL isAlmDetailView;
+@property(nonatomic) BOOL almCount;
 
 @end
 
@@ -915,9 +917,14 @@ int mii;
              [self presentController:slaveStatus ctrl:ctrl];
          }
          else if([commandType  isEqualToString:@"Rai2UpMobile"]){
-             MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupAdding" isStatView:NO];
-//             [self.navigationController pushViewController:ctrl animated:YES];
-             [self presentViewController:ctrl animated:YES completion:nil];
+             if(self.isAlmDetailView){
+                 NSDictionary *slaveDict = self.routerSummary.almondsList[_almCount];
+                  [MeshPayload requestSlaveDetails:mii slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]];
+
+             }else{
+                 MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupAdding" isStatView:NO];
+                 [self presentViewController:ctrl animated:YES completion:nil];
+             }
          }
      }
      else{
@@ -934,11 +941,11 @@ int mii;
          MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupViewController" isStatView:YES];
          [self presentController:[AlmondStatus getMasterAlmondStatus:self.routerSummary] ctrl:ctrl];
      }else{
-         //send a command, to fetch slavestatus
-         NSDictionary *slaveDict = self.routerSummary.almondsList[almondCount];
-         [MeshPayload requestSlaveDetails:mii slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]];
+         self.isAlmDetailView = YES;
+         self.almCount = almondCount;
+         [[SecurifiToolkit sharedInstance] connectMesh];
          dispatch_async(dispatch_get_main_queue(), ^{
-             [self showHudWithTimeout:@"Requesting, Please Wait!"];
+             [self showHudWithTimeout:@"Requesting...Please Wait!"];
          });
      }
  }
@@ -952,8 +959,6 @@ int mii;
 
 -(void)presentController:(AlmondStatus *)statObj ctrl:(MeshSetupViewController *)ctrl{
     ctrl.almondStatObj = statObj;
-//    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-//    [self.navigationController pushViewController:ctrl animated:YES];
     [self presentViewController:ctrl animated:YES completion:nil];
 }
 
@@ -961,9 +966,9 @@ int mii;
      NSLog(@"on add almond tap delegate");
      dispatch_async(dispatch_get_main_queue(), ^{
          [self showHudWithTimeout:@"Please Wait!"];
+         self.isAlmDetailView = NO;
          [[SecurifiToolkit sharedInstance] connectMesh];
      });
  }
-
 
  @end

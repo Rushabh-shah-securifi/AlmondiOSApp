@@ -210,7 +210,10 @@
     [[Analytics sharedInstance] markEvent:@"Add Another Almond" category:MESH_ACTION];
 }
 
-//- (void)markAddAlmondLater;
+- (void)markAddAlmondLater{
+    [[Analytics sharedInstance] markEvent:@"Add Almond Later" category:MESH_ACTION];
+}
+
 - (void)markEvent:(NSString *)eventName category:(NSString *)eventCategory {
     enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
     if(mode == SFIAlmondConnectionMode_local){
