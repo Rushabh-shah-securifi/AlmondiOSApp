@@ -17,6 +17,8 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 + (instancetype)sharedInstance;
 
+#pragma mark Events
+
 - (void)initialize:(NSString *)trackingId;
 
 - (void)markMemoryWarning;
@@ -52,17 +54,51 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 - (void)markUpdateRule;
 
 - (void)markDeleteRule;
+//helpscreens
+- (void)markTapproducts;
 
-//screen tracking
+- (void)markTapWiFi;
+
+- (void)markTapSmartHome;
+
+- (void)markEmail;
+
+- (void)markCall;
+
+//mesh
+- (void)markWired;
+
+- (void)markWireless;
+
+- (void)markTroublePairingAlmond;
+
+- (void)markCanNotFindAlmond;
+
+- (void)markLedBlinking;
+
+- (void)markLedNotBlinking;
+
+- (void)markAddAnotherAlmond;
+
+- (void)markAddAlmondLater;
+
+#pragma mark screen Tracking
+
 - (void)markSensorClick:(SFIDeviceType)deviceType timeToComplete:(NSTimeInterval)resResTime;
 
-- (void)markSensorScreen;
-
-- (void)markRouterScreen;
+- (void)markDevicesScreen;
 
 - (void)markSceneScreen;
 
+- (void)markRouterScreen;
+
+- (void)markMoreScreen;
+
+- (void)markRuleScreen;
+
 - (void)markNewSceneScreen;
+
+- (void)markAddOrEditRuleScreen;
 
 - (void)markAccountsScreen;
 
@@ -76,14 +112,26 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 - (void)markLocalScreen;
 
-- (void)markWifiClientScreen;
-
 - (void)markLogoutAllScreen;
 
 - (void)markRouterSettingsScreen;
 
--(void)markRuleScreen;
+//helpscreens
+- (void)markHelpCenterScreen;
 
--(void)markAddOrEditRuleScreen;
+- (void)markQuickTipsScreen;
+
+- (void)markHelpTopicsScreen;
+
+- (void)markSupportScreen;
+
+- (void)markHelpDescriptionScreen;
+
+//mesh
+- (void)markMasterScreen;
+
+- (void)markSlaveScreen;
+
+- (void)markAddAlmondScreen;
 
 @end

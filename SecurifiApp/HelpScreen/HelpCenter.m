@@ -12,6 +12,7 @@
 #import "AlmondJsonCommandKeyConstants.h"
 #import "HelpItemsTableViewController.h"
 #import "SupportViewController.h"
+#import "Analytics.h"
 
 @interface HelpCenter ()
 @property NSArray *helpItems;
@@ -29,6 +30,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [[Analytics sharedInstance] markHelpCenterScreen];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -59,7 +61,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    NSLog(@"section count: %d", self.helpItems.count);
+    NSLog(@"section count: %lu", (unsigned long)self.helpItems.count);
     return self.helpItems.count;
 }
 
@@ -85,7 +87,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"section: %d", indexPath.section);
+    NSLog(@"section: %ld", (long)indexPath.section);
     NSInteger section = indexPath.section;
     dispatch_async(dispatch_get_main_queue(), ^{
         if(section == 0 || section ==1){//guide, helptopics
@@ -123,14 +125,17 @@
 
 - (IBAction)onProductsButtonTap:(id)sender {
     [self openUrl:@"https://www.securifi.com/rg/products"];
+    [[Analytics sharedInstance] markTapproducts];
 }
 
 - (IBAction)onWifiButtonTap:(id)sender {
     [self openUrl:@"https://www.securifi.com/rg/wifi"];
+    [[Analytics sharedInstance] markTapWiFi];
 }
 
 - (IBAction)onSmartHomeButtonTap:(id)sender {
     [self openUrl:@"https://www.securifi.com/rg/smart-home"];
+    [[Analytics sharedInstance] markTapSmartHome];
 }
 
 -(void)openUrl:(NSString *)urlStr{

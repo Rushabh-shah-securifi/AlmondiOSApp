@@ -8,6 +8,7 @@
 
 #import "SupportViewController.h"
 #import "HelpCenterTableViewCell.h"
+#import "Analytics.h"
 
 @interface SupportViewController ()
 @property (nonatomic) NSArray *countryNumbers;
@@ -26,7 +27,7 @@
                                @[@"taiwan",@"TW",@"+886-800-000-152"],
                                 @[@"uae",@"AE",@"+800-0357-04234"],
                                @[@"singapore",@"SG",@"+800-101-3371"]];
-    
+    [[Analytics sharedInstance] markSupportScreen];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -63,7 +64,7 @@
 
     NSString *phoneNumber = [@"telprompt://" stringByAppendingString:number];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneNumber]];
-    
+    [[Analytics sharedInstance] markCall];
 }
 
 - (IBAction)onSupportMailTap:(UIButton*)supportBtn {
@@ -79,6 +80,7 @@
     NSString *email = [NSString stringWithFormat:@"mailto:%@?subject=%@&body=%@", toEmail,subject,body];
     email = [email stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:email]];
+    [[Analytics sharedInstance] markEmail];
 }
 
 

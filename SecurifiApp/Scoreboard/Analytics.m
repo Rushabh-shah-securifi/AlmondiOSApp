@@ -15,6 +15,8 @@
 #define SCENE_ACTION @"Scene Action"
 #define ROUTER_ACTION @"Router Action"
 #define RULE_ACTION @"Rule Action"
+#define HELP_ACTION @"Help Action"
+#define MESH_ACTION @"Mesh Action"
 #define MEMORY_WARNING @"Warning"
 #define ACTION @"Action"
 
@@ -160,6 +162,55 @@
     [self markEvent:@"Remove Rule" category:SCENE_ACTION];
 }
 
+//helpscreens
+- (void)markTapproducts{
+    [self markEvent:@"Tap Products" category:HELP_ACTION];
+}
+
+- (void)markTapWiFi{
+    [self markEvent:@"Tap Wi-Fi" category:HELP_ACTION];
+}
+
+- (void)markTapSmartHome{
+    [self markEvent:@"Tap SmartHome" category:HELP_ACTION];
+}
+
+- (void)markEmail{
+    [self markEvent:@"Email" category:HELP_ACTION];
+}
+
+- (void)markCall{
+    [self markEvent:@"Call" category:HELP_ACTION];
+}
+//mesh
+- (void)markWired{
+    [[Analytics sharedInstance] markEvent:@"Wired" category:MESH_ACTION];
+}
+
+- (void)markWireless{
+    [[Analytics sharedInstance] markEvent:@"Wireless" category:MESH_ACTION];
+}
+
+- (void)markTroublePairingAlmond{
+    [[Analytics sharedInstance] markEvent:@"Trouble Pairing Almond" category:MESH_ACTION];
+}
+
+- (void)markCanNotFindAlmond{
+    [[Analytics sharedInstance] markEvent:@"Cannot Find Almond" category:MESH_ACTION];
+}
+
+- (void)markLedBlinking{
+    [[Analytics sharedInstance] markEvent:@"Led Blinking" category:MESH_ACTION];
+}
+
+- (void)markLedNotBlinking{
+    [[Analytics sharedInstance] markEvent:@"Led Not Blinking" category:MESH_ACTION];
+}
+- (void)markAddAnotherAlmond{
+    [[Analytics sharedInstance] markEvent:@"Add Another Almond" category:MESH_ACTION];
+}
+
+//- (void)markAddAlmondLater;
 - (void)markEvent:(NSString *)eventName category:(NSString *)eventCategory {
     enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
     if(mode == SFIAlmondConnectionMode_local){
@@ -175,12 +226,28 @@
     [tracker send:params];
 }
 
-- (void)markSensorScreen {
-    [self trackScreen:@"Sensor"];
+- (void)markDevicesScreen {
+    [self trackScreen:@"Devices"];
+}
+
+- (void)markSceneScreen {
+    [self trackScreen:@"Scenes"];
 }
 
 - (void)markRouterScreen {
     [self trackScreen:@"Router"];
+}
+
+- (void)markMoreScreen {
+    [self trackScreen:@"More"];
+}
+
+- (void)markNewSceneScreen {
+    [self trackScreen:@"Add/Edit Scene"];
+}
+
+-(void)markAddOrEditRuleScreen{
+    [self trackScreen:@"Add/Edit Rule"];
 }
 
 - (void)markNotificationsScreen {
@@ -199,24 +266,12 @@
     [self trackScreen:@"SignUp"];
 }
 
-- (void)markSceneScreen {
-    [self trackScreen:@"Scenes"];
-}
-
-- (void)markNewSceneScreen {
-    [self trackScreen:@"Add/Edit Scene"];
-}
-
 - (void)markAccountsScreen {
     [self trackScreen:@"Accounts"];
 }
 
 - (void)markLocalScreen {
     [self trackScreen:@"Local Link"];
-}
-
-- (void)markWifiClientScreen{
-    [self trackScreen:@"Network Client"];
 }
 
 - (void)markLogoutAllScreen {
@@ -231,10 +286,39 @@
     [self trackScreen:@"Rules"];
 }
 
--(void)markAddOrEditRuleScreen{
-    [self trackScreen:@"Add/Edit Rule"];
+//helpscreens
+- (void)markHelpCenterScreen{
+    [self trackScreen:@"Help Center"];
 }
 
+- (void)markQuickTipsScreen{
+    [self trackScreen:@"Quick Tips"];
+}
+
+- (void)markHelpTopicsScreen{
+    [self trackScreen:@"Help Topics"];
+}
+
+- (void)markSupportScreen{
+    [self trackScreen:@"Support"];
+}
+
+- (void)markHelpDescriptionScreen{
+    [self trackScreen:@"Help Description"];
+}
+
+//mesh
+- (void)markMasterScreen{
+    [self trackScreen:@"Master"];
+}
+
+- (void)markSlaveScreen{
+    [self trackScreen:@"Slave"];
+}
+
+- (void)markAddAlmondScreen{
+    [self trackScreen:@"AddAlmond"];
+}
 
 - (void)trackScreen:(NSString *)name {
     enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];

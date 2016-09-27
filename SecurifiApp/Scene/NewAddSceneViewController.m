@@ -28,6 +28,7 @@
 #import "ScenePayload.h"
 #import "AddRuleSceneClass.h"
 #import "SceneNameViewController.h"
+#import "Analytics.h"
 
 #define kAlertViewSave 1
 #define kAlertViewDelete 2
@@ -78,6 +79,7 @@ UIAlertView *alert;
     if(self.isInitialized){
         [self addDeleteSceneButton];
     }
+    [[Analytics sharedInstance] markNewSceneScreen];
 }
 
 - (void)initializeNotifications {

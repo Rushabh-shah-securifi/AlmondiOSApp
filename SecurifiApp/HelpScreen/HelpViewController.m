@@ -9,6 +9,7 @@
 #import "HelpViewController.h"
 #import "SWRevealViewController.h"
 #import "HelpScreens.h"
+#import "Analytics.h"
 
 @interface HelpViewController ()<HelpScreensDelegate>
 @property(nonatomic) HelpScreens *helpScreens;
@@ -20,6 +21,7 @@
     NSLog(@"viewdidload");
     [super viewDidLoad];
     [self initializeHelpScreens];
+    [[Analytics sharedInstance] markHelpDescriptionScreen];
 }
 
 - (void)didReceiveMemoryWarning {

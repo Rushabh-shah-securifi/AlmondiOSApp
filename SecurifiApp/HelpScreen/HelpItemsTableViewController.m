@@ -10,6 +10,7 @@
 #import "HelpCenterTableViewCell.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "HelpViewController.h"
+#import "Analytics.h"
 
 @interface HelpItemsTableViewController ()
 @property(nonatomic) NSArray *items;
@@ -22,6 +23,14 @@
     NSLog(@"title name: %@", self.helpItem[@"name"]);
     self.navigationItem.title = NSLocalizedString(self.helpItem[@"name"], @"");
     self.items = self.helpItem[ITEMS];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    if(self.isHelpTopic){
+        [[Analytics sharedInstance] markHelpTopicsScreen];
+    }else{
+        [[Analytics sharedInstance] markQuickTipsScreen];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

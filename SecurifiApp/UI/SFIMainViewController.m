@@ -383,10 +383,11 @@
     
     if (tabBarController.moreNavigationController == ctrl) {
         title = ctrl.title;
+        [[Analytics sharedInstance] markMoreScreen];
     }
     
     if ([title isEqualToString:TAB_BAR_SENSORS]) {
-        [[Analytics sharedInstance] markSensorScreen];
+        [[Analytics sharedInstance] markDevicesScreen];
     }
     else if ([title isEqualToString:TAB_BAR_ROUTER]) {
         [[Analytics sharedInstance] markRouterScreen];

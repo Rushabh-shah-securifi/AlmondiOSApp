@@ -16,6 +16,7 @@
 #import "AlmondJsonCommandKeyConstants.h"
 #import "MeshPayload.h"
 #import "UIViewController+Securifi.h"
+#import "Analytics.h"
 
 #define REMOVE 1
 #define FORCE_REMOVE 2
@@ -48,8 +49,14 @@ int mii;
     NSLog(@"Meshset up controller");
     if(self.isStatusView){
         [self setUpAlmondStatus];
+        
+        if(self.almondStatObj.isMaster)
+           [[Analytics sharedInstance] markMasterScreen];
+        else
+            [[Analytics sharedInstance] markSlaveScreen];
     }else{
         [self setupMeshView];
+        [[Analytics sharedInstance] markAddAlmondScreen];
     }
 
     [self setUpHUD];

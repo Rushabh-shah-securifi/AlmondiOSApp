@@ -12,6 +12,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "CommonMethods.h"
 #import "SFIColors.h"
+#import "Analytics.h"
 
 #define HELP_INFO 0
 
@@ -128,12 +129,12 @@
 - (IBAction)onWiredBtnTap:(UIButton*)btn {
     if(!btn.selected)
         [self toggleImage:@"wired_active" image:@"wireless_icon"];
-    
+    [[Analytics sharedInstance] markWired];
 }
 - (IBAction)onWirelessBtnTap:(UIButton*)btn {
     if(!btn.selected)
         [self toggleImage:@"wired_icon" image:@"wireless_active"];
-    
+    [[Analytics sharedInstance] markWireless];
 }
 
 -(void)toggleImage:(NSString *)selectedImg image:(NSString *)unSelectedImg{
@@ -222,6 +223,7 @@
 - (IBAction)onNoLEDBlinking:(UIButton *)noButton {
     _mii = arc4random() % 10000;
     [self addView:self.almondsView frame:self.currentView.frame];
+    [[Analytics sharedInstance] markLedNotBlinking];
 }
 
 - (IBAction)onYesLEDBlinking:(UIButton *)yesButton {
@@ -229,6 +231,7 @@
     self.blinkTimer = [NSTimer scheduledTimerWithTimeInterval:180 target:self selector:@selector(onBlinkTimeout:) userInfo:nil repeats:NO];
     [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait!" time:180];
     [self requestAddSlave:YES];
+    [[Analytics sharedInstance] markLedBlinking];
 }
 
 -(void)onBlinkTimeout:(id)sender{
@@ -252,19 +255,23 @@
     [self requestAddableSlave:ALMONDS_LIST];
     [self.activityIndic2 startAnimating];
     [self addView:self.pairingAlmondRestView frame:self.currentView.frame];
+    [[Analytics sharedInstance] markCanNotFindAlmond];
 }
 
 - (IBAction)onTroublePairingTap:(id)sender {
     //time is already invalidated at this point (think of any other cases where time is no invalidated).
     [self requestAddableSlave:PAIRING_ALMOND_1];
     [self loadNextView];
+    [[Analytics sharedInstance] markTroublePairingAlmond];
 }
 - (IBAction)onNotRightNowTap:(id)sender {
     [self addView:self.enjoyLastView frame:self.currentView.frame];
+    [[Analytics sharedInstance] markAddAlmondLater];
 }
 
 - (IBAction)onAddAnotherAlmondTap:(id)sender {
     [self addView:self.interfaceView frame:self.currentView.frame];
+    [[Analytics sharedInstance] markAddAnotherAlmond];
 }
 
 - (IBAction)onSweetTap:(id)sender {
