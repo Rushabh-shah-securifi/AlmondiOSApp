@@ -30,7 +30,7 @@
     // Configure the view for the selected state
 }
 
--(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem isCategory:(BOOL)isCategory{
+-(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem isCategory:(BOOL)isCategory count:(NSInteger)count{
     if(isCategory){
         self.catImgXConstrain.constant = -6;
         self.webImg.hidden = YES;
@@ -60,7 +60,7 @@
         }else{
             self.webImg.image = uri[@"image"];
         }
-        self.siteName.text = uri[@"hostName"];
+        self.siteName.text = [NSString stringWithFormat:@"%ld,%@",count,uri[@"hostName"]];
         if([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"NC-17"]){
             self.categoryImg.image = [UIImage imageNamed:@"Adults_Only"];
             

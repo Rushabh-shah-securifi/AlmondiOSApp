@@ -17,5 +17,5 @@
 @property (weak, nonatomic) IBOutlet UIImageView *settingImg;//temp
 @property (nonatomic) NSString *httpString;
 //-(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem;
--(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem isCategory:(BOOL)isCategory;
+-(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem isCategory:(BOOL)isCategory count:(NSInteger)count;
 @end

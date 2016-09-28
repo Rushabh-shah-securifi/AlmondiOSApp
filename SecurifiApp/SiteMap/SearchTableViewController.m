@@ -96,7 +96,6 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-     NSLog(@"self.dayArr.count %ld and searchtabel frame %@",self.dayArr.count,NSStringFromCGRect(self.searchTableView.frame));
     
     if(tableView == self.tableView){
        
@@ -104,8 +103,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         return 3;
     }
     else
-        if(self.dayArr.count == 0)
+        if(self.dayArr.count == 0){
+            NSLog(@"self.dayArr.count %ld",(unsigned long)self.dayArr.count);
             self.NoresultFound.hidden = NO;
+        }
         return self.dayArr.count;
     
 }
@@ -193,14 +194,15 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     if(tableView == self.tableView){
 
         if(indexPath.section == 0)
-            [cell setCell:[self.suggSearchArr objectAtIndex:indexPath.row]hideItem:YES isCategory:NO];
+            [cell setCell:[self.suggSearchArr objectAtIndex:indexPath.row]hideItem:YES isCategory:NO count:indexPath.row+1];
         else if(indexPath.section == 1)
-            [cell setCell:[self.categorySearch objectAtIndex:indexPath.row]hideItem:YES isCategory:YES];
+            [cell setCell:[self.categorySearch objectAtIndex:indexPath.row]hideItem:YES isCategory:YES count:indexPath.row+1];
         else
-            [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row]hideItem:YES isCategory:NO];
+            
+            [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row] hideItem:NO isCategory:NO count:indexPath.row+1];
     }
     else {
-        NSLog(@"self.dayArr count = %ld",self.dayArr.count);
+//        NSLog(@"self.dayArr count = %ld",self.dayArr.count);
 //        if(self.dayArr.count == 0)
 //        {
 //            [cell.contentView addSubview:[self emptyCellLabel]];
@@ -209,9 +211,9 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         if(self.dayArr.count > indexPath.section){
             self.NoresultFound.hidden = YES;
         NSArray *browsHist = self.dayArr[indexPath.section];
-            NSLog(@"browsing hist %@, count %ld,row = %ld",browsHist,browsHist.count,indexPath.row);
+//            NSLog(@"browsing hist %@, count %ld,row = %ld",browsHist,browsHist.count,indexPath.row);
             if(browsHist.count>indexPath.row)
-        [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO];
+        [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO count:indexPath.row+1];
         }
     }
     
@@ -248,6 +250,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
             [self categorySearch:@"G"];
         }
     }
+    
 }
 //
 -(UILabel*)emptyCellLabel{
@@ -271,6 +274,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.searchController.searchBar.text = searchstr;
     self.isManuelSearch = NO;
     [self.searchController.searchBar becomeFirstResponder];
+//    [self textFieldDidEndEditing:self.searchController.searchBar];
+    self.searchController.active = YES;
+    self.searchDisplayController.active = YES;
+    
 
 }
 -(void)setSearchpattenMethod:(SearchPatten)searchpatten indexPath:(NSIndexPath *)indexPath{
@@ -292,7 +299,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     if(![searchString isEqualToString:@" "] && ![self.recentSearch containsObject:searchString] && ![CommonMethods isContainCategory:searchString])
     [self.recentSearch addObject:searchString];
     
-    NSLog(@"self.recentSearch count = %ld",self.recentSearch.count);
+    NSLog(@"self.recentSearch count = %ld",(unsigned long)self.recentSearch.count);
     
     [[NSUserDefaults standardUserDefaults] setObject:self.recentSearch forKey:@"recentSearch"];
 //    [self addSuggestionSearchObj];
@@ -303,11 +310,12 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope{
     [self updateSearchResultsForSearchController:self.searchController];
+    NSLog(@"selectedScopeButtonIndexDidChange");
 }
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
-    self.NoresultFound.hidden = YES;
     NSLog(@"searchBarCancelButtonClicked");
+    self.NoresultFound.hidden = YES;
     [self.tableView reloadData];
 }
 -(void)onCancleButton{
@@ -332,7 +340,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         [searchBar performSelector: @selector(resignFirstResponder)
                         withObject: nil
                         afterDelay: 0.1];
+        
     }
+    if(self.dayArr.count == 0)
+        self.NoresultFound.hidden = YES;
 }
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
