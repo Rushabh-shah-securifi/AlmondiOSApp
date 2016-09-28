@@ -139,7 +139,7 @@
 
 -(void)tryShowLoadingData{
     if([self isDeviceListEmpty] && [self isClientListEmpty] && self.toolkit.currentAlmond != nil && [[SecurifiToolkit sharedInstance] isNetworkOnline]){
-        [self showHudWithTimeoutMsg:@"Loading Data..." delay:5];
+        [self showHudWithTimeoutMsg:@"Loading Data..." delay:8];
     }
 }
 
@@ -393,6 +393,8 @@
 }
 
 - (IBAction)homeMode:(id)sender {
+    if(self.toolkit.mode_src == SFIAlmondMode_home)
+        return;
     if(self.toolkit.currentAlmond != nil){
         [self showHudWithTimeoutMsg:NSLocalizedString(@"mode_home_progress", @"Setting Almond to home mode.") delay:5];
         [_toolkit asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:SFIAlmondMode_home];
@@ -400,6 +402,8 @@
 }
 
 - (IBAction)homeawayMode:(id)sender {
+    if(self.toolkit.mode_src == SFIAlmondMode_away)
+        return;
     if(self.toolkit.currentAlmond != nil){
         [self showHudWithTimeoutMsg:NSLocalizedString(@"mode_away_progress", @"Setting Almond to away mode.") delay:5];
         [_toolkit asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:SFIAlmondMode_away];
