@@ -119,7 +119,7 @@
     }
     scrollView.contentSize = contentRect.size;
     scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.contentSize = CGSizeMake(scrollView.contentSize.width,scrollView.frame.size.height);
+    scrollView.contentSize = CGSizeMake(scrollView.contentSize.width + 10,scrollView.frame.size.height);
 
 }
 

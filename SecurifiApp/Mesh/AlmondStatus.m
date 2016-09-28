@@ -69,12 +69,25 @@
     [keyVals addObject:@{@"Connected via":connetedVia}];
     [keyVals addObject:@{@"Interface":interface}];
     if(!isMaster && [interface isEqualToString:@"Wireless"])
-        [keyVals addObject:@{@"Signal Strength":signalStrength}];
+        [keyVals addObject:@{@"Signal Strength":[self getSignalStrength:signalStrength.integerValue]}];
     if(ssid2)
         [keyVals addObject:@{@"5 GHz SSID":ssid2}];
     [keyVals addObject:@{@"2.4 GHz SSID":ssid1}];
     stat.keyVals = keyVals;
     return stat;
+}
+
++ (NSString *)getSignalStrength:(NSInteger)sig{
+    // RSSI levels range from -50dBm (100%) to -100dBm (0%)
+    // Signal Quality Levels : Highest 5. Lowest 0
+    if(sig >= -50)
+        return @"Excellent";
+    else if(sig < -50 && sig >=-73)
+        return @"Good";
+    else if(sig < -73 && sig >= -87)
+        return @"Poor";
+    else
+        return @"Extremely Poor";
 }
 
 

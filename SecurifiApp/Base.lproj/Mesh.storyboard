@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -111,7 +111,7 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="wifi-signal-strength1-icon" translatesAutoresizingMaskIntoConstraints="NO" id="SCm-DM-BOK">
-                                                <frame key="frameInset" minX="200" width="30" height="30"/>
+                                                <frame key="frameInset" minX="203" minY="4" width="25" height="25"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
                                         </subviews>
@@ -182,11 +182,11 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="bvE-fW-KqQ" firstAttribute="trailing" secondItem="xH1-4U-7TK" secondAttribute="trailingMargin" id="JgK-ZC-zsC"/>
+                                                <constraint firstItem="bvE-fW-KqQ" firstAttribute="trailing" secondItem="xH1-4U-7TK" secondAttribute="trailingMargin" constant="-4" id="JgK-ZC-zsC"/>
                                                 <constraint firstItem="zjz-aX-8dn" firstAttribute="top" secondItem="xH1-4U-7TK" secondAttribute="topMargin" id="U7s-KI-3lo"/>
-                                                <constraint firstItem="bvE-fW-KqQ" firstAttribute="leading" secondItem="zjz-aX-8dn" secondAttribute="trailing" constant="8" id="cPo-d7-lNs"/>
+                                                <constraint firstItem="bvE-fW-KqQ" firstAttribute="leading" secondItem="zjz-aX-8dn" secondAttribute="trailing" constant="2" id="cPo-d7-lNs"/>
                                                 <constraint firstItem="bvE-fW-KqQ" firstAttribute="top" secondItem="xH1-4U-7TK" secondAttribute="topMargin" id="mLu-KV-UVH"/>
-                                                <constraint firstItem="zjz-aX-8dn" firstAttribute="leading" secondItem="xH1-4U-7TK" secondAttribute="leadingMargin" id="re7-fP-dWv"/>
+                                                <constraint firstItem="zjz-aX-8dn" firstAttribute="leading" secondItem="xH1-4U-7TK" secondAttribute="leadingMargin" constant="2" id="re7-fP-dWv"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>

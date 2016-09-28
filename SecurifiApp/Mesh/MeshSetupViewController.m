@@ -134,7 +134,6 @@ int mii;
         return [UIImage imageNamed:@"wifi-signal-strength1-icon"];
 }
 
-
 - (void)setupMeshView{
     self.meshView = [[MeshView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20)];
     NSLog(@"nav viewheight: %f", CGRectGetHeight(self.view.frame));
@@ -217,7 +216,6 @@ int mii;
 #pragma mark meshview delegates
 -(void)dismissControllerDelegate{
     self.meshView = nil;
-    [MeshPayload requestRai2DownMobile:mii];
     [[SecurifiToolkit sharedInstance] shutDownMesh];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self dismissViewControllerAnimated:YES completion:nil];
