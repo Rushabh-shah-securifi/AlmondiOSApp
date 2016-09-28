@@ -122,7 +122,6 @@
     [self getRecentNotification];
     [self.toolkit tryRefreshNotifications];
     [self initializeUI];
-
     [self markNetworkStatusIcon];
 }
 
@@ -135,6 +134,13 @@
 -(void)initializeUI{
     [self updateMode:self.toolkit.mode_src];
     [self updateDeviceClientListCount];
+    [self tryShowLoadingData];
+}
+
+-(void)tryShowLoadingData{
+    if([self isDeviceListEmpty] && [self isClientListEmpty] && self.toolkit.currentAlmond != nil && [[SecurifiToolkit sharedInstance] isNetworkOnline]){
+        [self showHudWithTimeoutMsg:@"Loading Data..." delay:5];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

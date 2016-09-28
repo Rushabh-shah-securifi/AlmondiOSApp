@@ -51,7 +51,7 @@
 #define SECURITY @"Security"
 #define WIRELESS_MODE @"WirelessMode"
 #define COUNTRY_REGION @"CountryRegion"
-#define INDEX @"index"
+//#define INDEX @"index"
 #define ACTION @"action"
 
 //PY 271113 - Router Summary

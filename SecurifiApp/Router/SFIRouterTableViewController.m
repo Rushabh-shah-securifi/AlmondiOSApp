@@ -153,7 +153,7 @@ int mii;
     self.tableView.tableHeaderView = nil;
     
     NSLog(@"almond mac: %@", self.almondMac);
-    if([self isNoAlmondLoaded] || ![self isFirmwareCompatible]){
+    if([self isNoAlmondLoaded] || ![self isFirmwareCompatible] || ![[SecurifiToolkit sharedInstance] isNetworkOnline]){
         
     }
     else{
@@ -569,39 +569,6 @@ int mii;
         MessageView *view = [self addMessagegView];
         
         [cell addSubview:view];
-    }
-    
-    return cell;
-}
-
-- (UITableViewCell *)createAlmondOfflineCell:(UITableView *)tableView {
-    static NSString *cell_id = @"NoAlmondConnect";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        CGFloat width = self.tableView.frame.size.width;
-        
-        UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:CGRectMake(width / 2 - 50, 150, 100, 100)];
-        imgRouter.userInteractionEnabled = NO;
-        imgRouter.image = [UIImage imageNamed:@"offline_150x150"];
-        imgRouter.contentMode = UIViewContentModeScaleAspectFit;
-        [cell addSubview:imgRouter];
-        
-        CGRect frame = CGRectMake(0, 280, width, 100);
-        frame = CGRectInset(frame, 20, 0);
-        
-        UILabel *label = [[UILabel alloc] initWithFrame:frame];
-        label.numberOfLines = 0;
-        label.textAlignment = NSTextAlignmentCenter;
-        label.font = [UIFont securifiBoldFont:20];
-        //Sorry! Unable to connect to cloud server.
-        label.text = NSLocalizedString(@"router Sorry, Your Almond cannot be reached for now.r", @"Sorry, Your Almond cannot be reached for now.");
-        label.textColor = [UIColor grayColor];
-        [cell addSubview:label];
     }
     
     return cell;

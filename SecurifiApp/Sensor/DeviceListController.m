@@ -76,7 +76,7 @@ int mii;
 }
 
 -(void)tryShowLoadingDevice{
-    if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC]){
+    if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC] && [[SecurifiToolkit sharedInstance] isNetworkOnline]){
         [self showHudWithTimeoutMsg:@"Loading Device data..."];
     }
 }
@@ -101,7 +101,7 @@ int mii;
     [self initializeColors:[self.toolkit currentAlmond]];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self tryInstallRefreshControl];
-        if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC]){
+        if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC] && [self.toolkit isNetworkOnline]){
             NSLog(@"device and client current list is empty");
             [self showHudWithTimeoutMsg:@"Loading Device data..."];
         }
@@ -210,7 +210,7 @@ int mii;
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if ([self isNoAlmondMAC] || ![self isFirmwareCompatible])
+    if ([self isNoAlmondMAC] || ![self isFirmwareCompatible] || ![[SecurifiToolkit sharedInstance] isNetworkOnline])
         return 1;
     
     if([self isDeviceListEmpty] && [self isClientListEmpty])
@@ -220,7 +220,7 @@ int mii;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible])
+    if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible] || ![[SecurifiToolkit sharedInstance] isNetworkOnline])
         return 1;
     
     NSLog(@"devices count %ld, client count: %ld",(unsigned long)self.toolkit.devices.count, (unsigned long)self.toolkit.clients.count);
@@ -229,7 +229,7 @@ int mii;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible]) {
+    if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible] || ![[SecurifiToolkit sharedInstance] isNetworkOnline]) {
         return 400;
     }
     return 85;
@@ -239,7 +239,7 @@ int mii;
     if ([self showNeedsActivationHeader] && section == 0) {
         return 100;
     }
-    if ([self isNoAlmondMAC])
+    if ([self isNoAlmondMAC] || ![[SecurifiToolkit sharedInstance] isNetworkOnline])
         return 0;
     
     return 30;
@@ -249,7 +249,7 @@ int mii;
     if ([self showNeedsActivationHeader] && section == 0) {
         return [self createActivationNotificationHeader];
     }
-    else if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible])
+    else if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible] || ![[SecurifiToolkit sharedInstance] isNetworkOnline])
         return [UIView new];
     
     return [self deviceHeader:section tableView:tableView];
@@ -312,6 +312,10 @@ int mii;
     if ([self isNoAlmondMAC]) {
         tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
+    }
+    if(![[SecurifiToolkit sharedInstance] isNetworkOnline]){
+        tableView.scrollEnabled = NO;
+        return [self createAlmondOfflineCell:tableView];
     }
     
     if ([self isDeviceListEmpty] && [self isClientListEmpty]) {

@@ -74,6 +74,8 @@
 
 - (UITableViewCell *)createEmptyCell:(UITableView *)tableView;
 
+- (UITableViewCell *)createAlmondOfflineCell:(UITableView *)tableView;
+
 - (BOOL)isFirmwareCompatible;
 
 - (void)onUnlockTable;

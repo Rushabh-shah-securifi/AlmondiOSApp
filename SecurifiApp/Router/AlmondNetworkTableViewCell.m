@@ -54,7 +54,7 @@
     self.titles = titles;
     NSString *almText = almCount == 1? @"Almond": @"Almonds";
     self.msgs = @[[NSString stringWithFormat:@"You currently have %ld %@.", (long)almCount, almText],
-                  @"Add more to increase Wifi Coverage."];
+                  @"Add more to increase Wi-Fi Coverage."];
 }
 
 -(void)createAlmondNetworkView{
@@ -78,7 +78,7 @@
     else {
         msg = @"";
     }
-    UILabel *label = [self makeMultiLineLabel:msg font:[UIFont securifiFont:14] alignment:NSTextAlignmentLeft numberOfLines:2];
+    UILabel *label = [self makeMultiLineLabel:msg font:[UIFont securifiBoldFont:14] alignment:NSTextAlignmentLeft numberOfLines:2];
 //    label.backgroundColor = [UIColor orangeColor];
     return label;
 }
@@ -94,9 +94,7 @@
         almond.tag = almondCount;
         [scrollView addSubview:almond];
         
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(xOffset, 70, 60, 40)];
-        [CommonMethods setLableProperties:label text:title textColor:[UIColor whiteColor] fontName:@"Avenir-Roman" fontSize:14 alignment:NSTextAlignmentCenter];
-        [scrollView addSubview:label];
+        [self addLable:title view:scrollView offset:xOffset];
 //        label.backgroundColor = [UIColor yellowColor];
         xOffset += 80;
         almondCount++;
@@ -104,10 +102,16 @@
     self.yCoordinate += CGRectGetHeight(scrollView.frame);
     UIButton *addAlmond = [self makeAlmondButton:@"add_almond" xOffset:xOffset selector:@selector(onAddAlmondTap:)];
     [scrollView addSubview:addAlmond];
+    [self addLable:@"Add Almond" view:scrollView offset:xOffset];
     [self setHorizantalScrolling:scrollView];
     return scrollView;
 }
 
+-(void)addLable:(NSString *)title view:(UIScrollView *)scrlView offset:(CGFloat)xOffset{
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(xOffset, 70, 60, 40)];
+    [CommonMethods setLableProperties:label text:title textColor:[UIColor whiteColor] fontName:@"Avenir-Heavy" fontSize:14 alignment:NSTextAlignmentCenter];
+    [scrlView addSubview:label];
+}
 - (void)setHorizantalScrolling:(UIScrollView *)scrollView{
     CGRect contentRect = CGRectZero;
     for (UIView *view in scrollView.subviews) {
