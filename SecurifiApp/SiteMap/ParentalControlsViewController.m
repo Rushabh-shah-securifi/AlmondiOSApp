@@ -10,6 +10,7 @@
 #import "ParentControlCell.h"
 #import "BrowsingHistoryViewController.h"
 #import "ClientPayload.h"
+#import "GenericIndexUtil.h"
 
 @interface ParentalControlsViewController ()<ParentControlCellDelegate>
 @property (nonatomic) NSMutableArray *parentsControlArr;
@@ -47,8 +48,19 @@
      [self initializeNotifications];
      self.switchView1.transform = CGAffineTransformMakeScale(0.70, 0.70);
      self.switchView3.transform = CGAffineTransformMakeScale(0.70, 0.70);
+    
     int deviceID = _genericParams.headerGenericIndexValue.deviceID;
     self.client = [Client findClientByID:@(deviceID).stringValue];
+    NSArray  *arr = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:@(deviceID).stringValue];
+    for (GenericIndexValue *genericIndexValue in arr) {
+        NSLog(@"genericIndexValue.genericIndex.ID %@",genericIndexValue.genericIndex.ID);
+        
+        if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"] && ![genericIndexValue.genericValue.value isEqualToString:@"wireless"]){
+            self.dataLogView.hidden = YES;
+            self.switchView3.on = NO;
+            break;
+        }
+    }
     self.icon.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
     self.clientName.text = self.client.name;
     NSDate* date = [NSDate dateWithTimeIntervalSince1970:[self.client.deviceLastActiveTime integerValue]];
@@ -67,6 +79,14 @@
         self.view2.hidden = NO;
         self.viewTwoTop.constant = 1;
     }
+    if(self.client.bW_Enable == NO){
+        self.switchView3.on = NO;
+        self.dataLogView.hidden = YES;
+    }
+    else{
+        self.switchView3.on = YES;
+        self.dataLogView.hidden = NO;
+    }
     
     [self.navigationController setNavigationBarHidden:YES];
 }
@@ -84,6 +104,10 @@
     [center addObserver:self //indexupdate or name/location change both
                selector:@selector(onCommandResponse:)
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onWiFiClientsListResAndDynamicCallbacks:)
+                   name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
                  object:nil];
 }
 -(void)onCommandResponse:(id)sender{ //mobile command sensor and client 1064
@@ -158,7 +182,7 @@
     // considering only web history
     int mii = arc4random() % 1000;
     client = self.client;
-    NSLog(@"client BW_enable %d and webEnable %d",client.bW_Enable,client.webHistoryEnable);
+   
     [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
     [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
 }
@@ -225,5 +249,51 @@
     viewController.client = self.client;
     [self.navigationController pushViewController:viewController animated:YES];
 }
+-(void)onWiFiClientsListResAndDynamicCallbacks:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    NSLog(@"dataInfo parental controll %@",dataInfo);
+    NSDictionary *mainDict = [dataInfo valueForKey:@"data"];
+    NSDictionary * dict = mainDict[@"Clients"];
+    NSString *ID = [[dict allKeys] objectAtIndex:0]; // Assumes payload always has one device.
+    if([self.client.deviceID isEqualToString:ID]){
+        NSLog(@"switching the connection");
+        self.switchView1.on = [[dict[ID] valueForKey:@"SMEnable"]boolValue];
+        self.switchView3.on = [[dict[ID] valueForKey:@"BWEnable"]boolValue];
+    }
+    
+}
+/*
+ {
+ data =     {
+ Action = update;
+ AlmondMAC = 251176220099380;
+ Clients =         {
+ 11 =             {
+ Active = true;
+ BWEnable = false;
+ Block = 0;
+ CanBlock = true;
+ Category = Others;
+ Connection = wireless;
+ ForceInActive = 0;
+ LastActiveEpoch = 1475064910;
+ LastKnownIP = "10.1.88.110";
+ MAC = "a4:f1:e8:4e:ba:1f";
+ Manufacturer = Apple;
+ Name = "Securifi-Venkat";
+ RSSI = "-53";
+ SMEnable = false;
+ Schedule = "0,0,0,0,0,0,0";
+ Type = other;
+ UseAsPresence = true;
+ Wait = 6;
+ };
+ };
+ CommandType = DynamicClientUpdated;
+ HashNow = 2838901bd788579509379bd0e458f2a0;
+ };
+ }
 
+ */
 @end

@@ -17,6 +17,7 @@
 #import "SearchTableViewController.h"
 #import "BrowsingHistoryDataBase.h"
 #import "UIFont+Securifi.h"
+#import "RecentSearchDB.h"
 
 
 
@@ -49,6 +50,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 @property (nonatomic)  UILabel *NoresultFound;
 @property (nonatomic) NSString *cmac;
 @property (nonatomic) NSString *amac;
+@property (nonatomic) NSString *searchString;
 @end
 
 @implementation SearchTableViewController
@@ -102,13 +104,14 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         self.NoresultFound.hidden = YES;
         return 3;
     }
-    else
+    else{
         if(self.dayArr.count == 0){
             NSLog(@"self.dayArr.count %ld",(unsigned long)self.dayArr.count);
             self.NoresultFound.hidden = NO;
         }
+
         return self.dayArr.count;
-    
+    }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 45;
@@ -116,11 +119,11 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView == self.tableView){
         if(section == 0)
-            return self.suggSearchArr.count;
+            return self.recentSearchObj.count;
         else if(section == 1)
-            return self.categorySearch.count;
+            return self.suggSearchArr.count;
         else
-            return  self.recentSearchObj.count;
+            return  self.categorySearch.count;
     }
     else{
         
@@ -148,16 +151,16 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     view.backgroundColor = [UIColor whiteColor];
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
-    [label setFont:[UIFont securifiBoldFont:17]];
+    [label setFont:[UIFont securifiBoldFont:15]];
     
     if(tableView == self.tableView){
         if(section == 0)
-            headerDate =  @"Suggested Searches";
-        else if(section == 1)
-            headerDate =  @"Categories";
-        else
             headerDate =  @"Recent Searches";
-       
+        else if(section == 1)
+            headerDate =  @"Suggested Searches";
+        else
+            headerDate =  @"Categories";
+        
         
         label.text = headerDate;
     }
@@ -193,25 +196,17 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
     if(tableView == self.tableView){
 
-        if(indexPath.section == 0)
+        if(indexPath.section == 1)
             [cell setCell:[self.suggSearchArr objectAtIndex:indexPath.row]hideItem:YES isCategory:NO count:indexPath.row+1];
-        else if(indexPath.section == 1)
+        else if(indexPath.section == 2)
             [cell setCell:[self.categorySearch objectAtIndex:indexPath.row]hideItem:YES isCategory:YES count:indexPath.row+1];
-        else
-            
+        else if(indexPath.section == 0)
             [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row] hideItem:NO isCategory:NO count:indexPath.row+1];
     }
     else {
-//        NSLog(@"self.dayArr count = %ld",self.dayArr.count);
-//        if(self.dayArr.count == 0)
-//        {
-//            [cell.contentView addSubview:[self emptyCellLabel]];
-//            return cell;
-//        }
         if(self.dayArr.count > indexPath.section){
             self.NoresultFound.hidden = YES;
         NSArray *browsHist = self.dayArr[indexPath.section];
-//            NSLog(@"browsing hist %@, count %ld,row = %ld",browsHist,browsHist.count,indexPath.row);
             if(browsHist.count>indexPath.row)
         [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO count:indexPath.row+1];
         }
@@ -222,59 +217,59 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if(tableView == self.tableView){
-        if(indexPath.section == 2){
+        if(indexPath.section == 0){
              [self setSearchpattenMethod:RecentSearch indexPath:indexPath];
         }
-        else if(indexPath.section == 0 && indexPath.row == 0){
-             [self setSearchpattenMethod:LastHourSearch];
+        else if(indexPath.section == 1 && indexPath.row == 0){
+             [self setSearchpattenMethod:LastHourSearch withString:@"Last hour"];
         }
-        else if(indexPath.section == 0 && indexPath.row == 1){
-             [self setSearchpattenMethod:TodaySearch];
+        else if(indexPath.section == 1 && indexPath.row == 1){
+             [self setSearchpattenMethod:TodaySearch withString:@"TodaySearch"];
         }
-        else if(indexPath.section == 0 && indexPath.row == 2){
-            [self setSearchpattenMethod:WeekSearch];
+        else if(indexPath.section == 1 && indexPath.row == 2){
+            [self setSearchpattenMethod:WeekSearch withString:@"Past Week"];
         }
-        else if (indexPath.section == 1 && indexPath.row == 0){
-            [self categorySearch:@"NC-17"];
+        else if (indexPath.section == 2 && indexPath.row == 0){
+            [self categorySearch:@"NC-17" andDisplayText:@"Adults Only"];
         }
-        else if (indexPath.section == 1 && indexPath.row == 1){
-            [self categorySearch:@"R"];
+        else if (indexPath.section == 2 && indexPath.row == 1){
+            [self categorySearch:@"R" andDisplayText:@"Restricted"];
         }
-        else if (indexPath.section == 1 && indexPath.row == 2){
-            [self categorySearch:@"PG-13"];
+        else if (indexPath.section == 2 && indexPath.row == 2){
+            [self categorySearch:@"PG-13" andDisplayText:@"Parents Strongly Cautioned"
+             ];
         }
-        else if (indexPath.section == 1 && indexPath.row == 3){
-            [self categorySearch:@"PG"];
+        else if (indexPath.section == 2 && indexPath.row == 3){
+            [self categorySearch:@"PG" andDisplayText:
+             @"Parental Guidance Suggested"];
         }
-        else if (indexPath.section == 1 && indexPath.row == 4){
-            [self categorySearch:@"G"];
+        else if (indexPath.section == 2 && indexPath.row == 4){
+            [self categorySearch:@"G" andDisplayText:@"General Audiences"];
         }
     }
     
 }
-//
--(UILabel*)emptyCellLabel{
-    UILabel *noResultCell = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.searchTableView.frame.size.width, 40)];
-    noResultCell.text = @"No result found";
-    noResultCell.textAlignment = NSTextAlignmentCenter;
-    return noResultCell;
 
-}
 #pragma mark searchDelegate methods
--(void)setSearchpattenMethod:(SearchPatten)searchpatten{
+-(void)setSearchpattenMethod:(SearchPatten)searchpatten withString:(NSString *)string{
     self.searchPatten = searchpatten;
-    self.searchController.searchBar.text = @" ";
+    self.searchController.searchBar.text = string;
+    self.searchString = @" ";
     self.isManuelSearch = NO;
-    [self.searchController.searchBar becomeFirstResponder];
+    [self.searchController.searchBar resignFirstResponder];
+    [self searchBarTextDidEndEditing:self.searchController.searchBar];
+    self.searchController.active = YES;
+    self.searchDisplayController.active = YES;
 
 }
 
--(void)categorySearch:(NSString *)searchstr{
+-(void)categorySearch:(NSString *)searchstr andDisplayText:(NSString*)text{
     self.searchPatten = CategorySearch;
-    self.searchController.searchBar.text = searchstr;
+    self.searchController.searchBar.text = text;
     self.isManuelSearch = NO;
-    [self.searchController.searchBar becomeFirstResponder];
-//    [self textFieldDidEndEditing:self.searchController.searchBar];
+    self.searchString = searchstr;
+    [self.searchController.searchBar resignFirstResponder];
+    [self searchBarTextDidEndEditing:self.searchController.searchBar];
     self.searchController.active = YES;
     self.searchDisplayController.active = YES;
     
@@ -283,21 +278,26 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 -(void)setSearchpattenMethod:(SearchPatten)searchpatten indexPath:(NSIndexPath *)indexPath{
     self.searchPatten = searchpatten;
     self.searchController.searchBar.text = [self.recentSearch objectAtIndex:indexPath.row];
+    self.searchString = [self.recentSearch objectAtIndex:indexPath.row];
     self.isManuelSearch = YES;
-    [self.searchController.searchBar becomeFirstResponder];
+    [self.searchController.searchBar resignFirstResponder];
+    [self searchBarTextDidEndEditing:self.searchController.searchBar];
+    self.searchController.active = YES;
+    self.searchDisplayController.active = YES;
  
     
 }
 
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    NSString *searchString = self.searchController.searchBar.text;
+    NSString *searchString = self.searchString;
     NSLog(@"searching string on search = %@",searchString);
     URIData *recent = [[URIData alloc]init];
     recent.hostName = searchString;
     
     if(![searchString isEqualToString:@" "] && ![self.recentSearch containsObject:searchString] && ![CommonMethods isContainCategory:searchString])
-    [self.recentSearch addObject:searchString];
+//    [self.recentSearch addObject:searchString];
+    [RecentSearchDB insertInRecentDB:searchString cmac:self.cmac amac:self.amac];
     
     NSLog(@"self.recentSearch count = %ld",(unsigned long)self.recentSearch.count);
     
@@ -315,8 +315,13 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
     NSLog(@"searchBarCancelButtonClicked");
-    self.NoresultFound.hidden = YES;
-    [self.tableView reloadData];
+    [self reloadTable];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.NoresultFound.hidden = YES;
+    });
+    
+    
 }
 -(void)onCancleButton{
     self.isManuelSearch = YES;
@@ -326,7 +331,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 }
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
     self.NoresultFound.hidden = YES;
-    NSLog(@"searchBarTextDidBeginEditing");
+    NSLog(@"searchBarTextDidBeginEditing %@",searchBar.text);
+    
     
     
 }
@@ -334,7 +340,9 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 {
 //    [self performFilteringBySearchText: searchText]; // or whatever
     NSLog(@"textDidChange: searchBar");
+    self.NoresultFound.hidden = YES;
     self.isManuelSearch = YES;
+    self.searchString = searchBar.text;
     // The user clicked the [X] button or otherwise cleared the text.
     if([searchText length] == 0) {
         [searchBar performSelector: @selector(resignFirstResponder)
@@ -342,13 +350,13 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
                         afterDelay: 0.1];
         
     }
-    if(self.dayArr.count == 0)
-        self.NoresultFound.hidden = YES;
+//    if(self.dayArr.count == 0)
+//        self.NoresultFound.hidden = YES;
 }
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     
-    NSString *searchString = self.searchController.searchBar.text;
+    NSString *searchString = self.searchString;
         NSLog(@"abpve searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
     
     if([CommonMethods isContainMonth:searchString] ){
@@ -365,12 +373,13 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSLog(@"searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
     
     [self getHistoryFromDB:searchString];
-    NSLog(@"self.historyDict search %@",self.historyDict);
 
     [self.dayArr removeAllObjects];
     [self.browsingHistory getBrowserHistoryImages:self.historyDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
     
     [self reloadTable];
+    if(self.dayArr.count == 0)
+        self.NoresultFound.hidden = YES;
     [searchBar setShowsCancelButton:NO animated:YES];
 }
 
@@ -383,7 +392,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSDictionary *today = @{@"hostName":@"Today",
                                @"image" : [UIImage imageNamed:@"schedule_icon"]
                                };
-    NSDictionary *thisWeek = @{@"hostName":@"this Week",
+    NSDictionary *thisWeek = @{@"hostName":@"Past Week",
                             @"image" : [UIImage imageNamed:@"schedule_icon"]
                             };
     
@@ -412,14 +421,17 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSSet *set = [NSSet setWithArray:[NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"recentSearch"]]];
     self.recentSearch =  [NSMutableArray arrayWithArray:[set allObjects]];
     
-    self.recentSearchObj = [[NSMutableArray alloc]init];
-    for (NSString *str in set) {
-        NSDictionary *recent = @{@"hostName":str,
-                                   @"image" : [UIImage imageNamed:@"search_icon"]
-                                   };
-       
-        [self.recentSearchObj addObject:recent];
-    }
+//    self.recentSearchObj = [[NSMutableArray alloc]init];
+    NSLog(@"recent seaech count = %d",[RecentSearchDB GetHistoryDatabaseCount:self.amac clientMac:_cmac]);
+    
+    self.recentSearchObj = [RecentSearchDB getAllRecentwithLimit:1 almonsMac:self.amac clientMac:self.cmac];
+//    for (NSString *str in set) {
+//        NSDictionary *recent = @{@"hostName":str,
+//                                   @"image" : [UIImage imageNamed:@"search_icon"]
+//                                   };
+//       
+//        [self.recentSearchObj addObject:recent];
+//    }
     NSLog(@"self.recentSearch count  %@ = %ld",self.recentSearch,self.recentSearch.count);
     
 }
@@ -469,6 +481,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.searchTableView reloadData];
     });
+    self.NoresultFound.hidden = YES;
 }
 
 - (void)initializeSearchController {
@@ -499,6 +512,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.NoresultFound = [[UILabel alloc]initWithFrame:self
                           .searchTableView.frame];
     self.NoresultFound.text = @"No result found";
+    self.NoresultFound.backgroundColor = [UIColor clearColor];
     self.NoresultFound.textAlignment = NSTextAlignmentCenter;
     self.NoresultFound.font = [UIFont securifiFont:16];
     self.NoresultFound.textColor = [UIColor grayColor];

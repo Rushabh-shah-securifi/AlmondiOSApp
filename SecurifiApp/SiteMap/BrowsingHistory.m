@@ -17,17 +17,29 @@
 -(void)getBrowserHistoryImages:(NSDictionary *)historyDict dispatchQueue:(dispatch_queue_t)imageDownloadQueue dayArr:(NSMutableArray *)dayArr imageDict:(NSMutableDictionary*)uriToImgDict{
 
     NSDictionary *dict1 = historyDict[@"Data"];
-    for (NSString *dates in [dict1 allKeys]) {
-        NSLog(@"dates %@",dates);
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"yyyy-MM-dd"];
+    NSMutableArray *dateArr = [NSMutableArray new];
+    for (NSString *dates in [dict1 allKeys]){
+    NSDate *date = [dateFormat dateFromString:dates];
+        [dateArr addObject:date];
+    }
+    NSArray *sortedArray = [dateArr sortedArrayUsingComparator: ^(NSDate *d1, NSDate *d2) {
+        return [d2 compare:d1];
+    }];
+    [dateArr removeAllObjects];
+    for(NSDate *date in sortedArray){
+    NSString *string = [dateFormat stringFromDate:date];
+        [dateArr addObject:string];
+    }
+    for (NSString *dates in dateArr) {
         NSArray *alldayArr = dict1[dates];
         NSMutableArray *oneDayUri = [[NSMutableArray alloc]init];
-        NSLog(@"dict1[dates] = %@",dict1);
         for (NSMutableDictionary *uriDict in alldayArr)
             
             {
             dispatch_async(imageDownloadQueue,^(){
                 [uriDict setObject:[self getImage:uriDict[@"hostName"] imageDict:uriToImgDict dispatchQueue:imageDownloadQueue] forKey:@"image"];
-                NSLog(@"downloading img...uriDict = %@",uriDict);
                  [self.delegate reloadTable];
             });
             [oneDayUri addObject:uriDict];
@@ -40,10 +52,8 @@
 //
 -(UIImage*)getImage:(NSString*)hostName imageDict:(NSMutableDictionary*)uriToImgDic2t dispatchQueue:(dispatch_queue_t)imageDownloadQueue{
     UrlImgDict *imgDicts = [UrlImgDict sharedInstance];
-    NSLog(@"imgDict:: %@ , hostName = %@, dict = %@",imgDicts.imgDict[hostName],hostName,imgDicts);
     __block UIImage *img;
     if(imgDicts.imgDict[hostName]){
-        NSLog(@"returning with image ");
         
         return imgDicts.imgDict[hostName]; //todo: fetch locally upto 100 images.
     }else{

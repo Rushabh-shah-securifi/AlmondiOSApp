@@ -163,17 +163,17 @@
         case 3:
         case 4:
         case 5:
-            self.backGroundButton.hidden = NO;
+            self.backGroundButton.hidden = YES;
             self.ThanksLabel.hidden = NO;
             self.bottomView.hidden = YES;
             break;
         default:
             
+            self.backGroundButton.hidden = YES;
             break;
         
     }
-    [self.cat_view removeFromSuperview];
-    self.backGroundButton.hidden = YES;
+   [self.cat_view removeFromSuperview];
 }
 -(void)handleTapOnLabel:(id)sender{
     NSLog(@"hyper link pressed");NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@", self.uriDict[@"hostName"]]];

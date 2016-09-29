@@ -31,7 +31,7 @@
     
     if(![self hasCompleteData:client])
         return;
-    
+    NSLog(@"client BW_enable %d and webEnable %d",client.bW_Enable,client.webHistoryEnable);
     NSDictionary * clients = @{
                                C_ID:client.deviceID,
                                CLIENT_NAME:client.name,

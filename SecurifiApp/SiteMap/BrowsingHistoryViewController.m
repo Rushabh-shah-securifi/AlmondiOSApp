@@ -40,6 +40,7 @@
 @property (nonatomic) NSString *cmac;
 @property (nonatomic) NSString *amac;
 @property (nonatomic) NSString *ps;
+@property (nonatomic)  UILabel *NoresultFound;
 @property (weak, nonatomic) IBOutlet UILabel *clientName;
 @property (nonatomic) NSDictionary *incompleteDB;
 @property BOOL isScrollEndReq;
@@ -52,7 +53,15 @@
 - (void)viewDidLoad {
     _isScrollEndReq = NO;
     self.count = 10;
-    
+    self.NoresultFound = [[UILabel alloc]initWithFrame:self
+                          .browsingTable.frame];
+    self.NoresultFound.text = @"No result found";
+    self.NoresultFound.backgroundColor = [UIColor clearColor];
+    self.NoresultFound.textAlignment = NSTextAlignmentCenter;
+    self.NoresultFound.font = [UIFont securifiFont:16];
+    self.NoresultFound.textColor = [UIColor grayColor];
+    [self.navigationController.view  addSubview:self.NoresultFound];
+    self.NoresultFound.hidden = YES;
     
     self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
     self.incompleteDB = [[NSDictionary alloc]init];
@@ -70,13 +79,13 @@
     self.browsingHistory = [[BrowsingHistory alloc]init];
     self.browsingHistory.delegate = self;
 //    [BrowsingHistoryDataBase insertRecordFromFile:@"CategoryMap"];
-    NSLog(@"dbcount %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
-//     NSLog(@"very fiest entry = %@",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20 almonsMac:self.amac clientMac:self.cmac]);
+    //NSLog(@"dbcount %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+//     //NSLog(@"very fiest entry = %@",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20 almonsMac:self.amac clientMac:self.cmac]);
     [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac]];
 
         [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
             self.isEmptyDb = YES;
-//         NSLog(@"url to img3 after %@",self.urlToImageDict);
+//         //NSLog(@"url to img3 after %@",self.urlToImageDict);
 //        
 //    }
 //    else{
@@ -118,6 +127,7 @@
 
 -(void)viewWillDisappear:(BOOL)animated{
     [self.navigationController setNavigationBarHidden:NO];
+    self.NoresultFound.hidden = YES;
     [super viewWillDisappear:YES];
     [self updateNavi:[UIColor whiteColor] title:@"" tintColor:[UIColor blueColor] tintBarColor:[UIColor whiteColor]];
 //    [BrowsingHistoryDataBase deleteDB];
@@ -131,9 +141,9 @@
 
 }
 -(void)viewDidDisappear:(BOOL)animated{
-    NSLog(@"dbCount1 = %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+    //NSLog(@"dbCount1 = %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
 //    [BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
-    NSLog(@"dbCount2 = %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+    //NSLog(@"dbCount2 = %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
     [super viewDidDisappear:YES];
 }
 - (void)didReceiveMemoryWarning {
@@ -148,7 +158,7 @@
     //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
    
     
-    NSLog(@"post req = %@",post);
+    //NSLog(@"post req = %@",post);
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
@@ -162,14 +172,14 @@
     //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
 }
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response { _responseData = [[NSMutableData alloc] init];
-    NSLog(@"didReceiveResponse");
+    //NSLog(@"didReceiveResponse");
 }
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     [_responseData appendData:data];
-    NSLog(@"didReceiveData");
+    //NSLog(@"didReceiveData");
 }
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse*)cachedResponse {
-    NSLog(@"willCacheResponse");
+    //NSLog(@"willCacheResponse");
     return nil;
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
@@ -177,7 +187,7 @@
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
     
     /*note get endidentifier from db */
-//    NSLog(@"response dict =%@",dict);
+//    //NSLog(@"response dict =%@",dict);
     self.incompleteDB = [BrowsingHistoryDataBase insertHistoryRecord:dict];// return last date
     //check last date <= max date of completeDB stop req
     if(self.incompleteDB[@"PS"] == NULL){
@@ -189,10 +199,10 @@
         if(self.isScrollEndReq == NO && [maxCompleteDBDate isEqualToString:@"1970-01-01"]){
             if([BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] < 500)
             {
-                NSLog(@"database < 500");
+                //NSLog(@"database < 500");
                 //store InCompleteDB in this controller
                 // send req with PS of incompleteDB
-                NSLog(@"self.incompleteDB ps %@",self.incompleteDB[@"PS"]);
+                //NSLog(@"self.incompleteDB ps %@",self.incompleteDB[@"PS"]);
                 self.isScrollEndReq = NO;
                 [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
             }
@@ -207,13 +217,13 @@
                 if([BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] > 500){
                     
                     NSString *lastDateODb = [BrowsingHistoryDataBase getLastDate:self.amac clientMac:self.cmac];
-                    NSLog(@"lastDateODb = %@",lastDateODb);
-                    NSLog(@"before delete count %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+                    //NSLog(@"lastDateODb = %@",lastDateODb);
+                    //NSLog(@"before delete count %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
                     
                     [BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac date:lastDateODb];
                     [CompleteDB deleteDateEntries:self.amac clientMac:self.cmac date:lastDateODb];
                 }
-                    NSLog(@"requested after delete ");
+                    //NSLog(@"requested after delete ");
                 self.isScrollEndReq = NO;
                     [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
             }
@@ -240,26 +250,26 @@
 
     if(self.isEmptyDb == YES){
     [self.dayArr removeAllObjects];
-        NSLog(@"browsing db return %@",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac]);
+        //NSLog(@"browsing db return %@",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac]);
         
     [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
         self.isEmptyDb = NO;
     }
     
 //    if(self.sendReq == YES){
-//        NSLog(@"incomplete sending req db %@",self.incompleteDB);
+//        //NSLog(@"incomplete sending req db %@",self.incompleteDB);
 //     [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
 //    }
     
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error { //Do something if there is an error in the connection } - See more at: https://www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
-    NSLog(@"didFailWithError %@",error);
+    //NSLog(@"didFailWithError %@",error);
 }
 
 -(void)sendRequest:(NSString *)pageState{
     int DBCount = [BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac];
     NSString *startTag = [BrowsingHistoryDataBase getStartTag:self.amac clientMac:self.cmac];
-//    NSLog(@"DBCount %d, start tag %@, end tag %@",DBCount,startTag,pageState);
+//    //NSLog(@"DBCount %d, start tag %@, end tag %@",DBCount,startTag,pageState);
 
     if(self.sendReq == YES){
          self.isScrollEndReq = NO;
@@ -267,7 +277,7 @@
     }
     else
     {
-        NSLog(@"sending http req");
+        //NSLog(@"sending http req");
     }
 }
 #pragma mark table and search delegate methods
@@ -284,6 +294,12 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    if(self.dayArr.count == 0){
+        self.NoresultFound.hidden = NO;
+    }
+    else{
+      self.NoresultFound.hidden = YES;
+    }
     return self.dayArr.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -318,16 +334,16 @@
     
     if ((indexPath.section == lastSectionIndex) && (indexPath.row == lastRowIndex)) {
         // This is the last cell
-        NSLog(@"reached to last db count = %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+        //NSLog(@"reached to last db count = %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
         
         if([BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] > self.count)
         {
         self.count+=30;
-            NSLog(@"asking the req from DB %d",self.count);
+            //NSLog(@"asking the req from DB  %d self.dayArr.count %ld",self.count,self.dayArr.count);
             [self.dayArr removeAllObjects];
         [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:self.count almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
-            
-            [self.browsingTable reloadData];
+            //NSLog(@"self.dayArr.count %ld",self.dayArr.count);
+            [self reloadTable];
         }
         else{
             NSString *MinDateOrgDB = [BrowsingHistoryDataBase getLastDate:self.amac clientMac:self.cmac];
@@ -343,7 +359,7 @@
             else if(![MinDateOrgDB isEqualToString: todayDate] && [minDateCompDB isEqualToString:@"1970-01-01"]){
                 _targetCount = 0;
                 NSString *date =self.incompleteDB[@"lastDate"];
-                NSLog(@"sending incomplete db %@",self.incompleteDB);
+                //NSLog(@"sending incomplete db %@",self.incompleteDB);
                  self.isScrollEndReq = YES;
                 [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
             }
@@ -373,7 +389,7 @@
         [foot addSubview:seperatorView];
     }
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
-    [label setFont:[UIFont securifiBoldFont:17]];
+    [label setFont:[UIFont securifiBoldFont:15]];
     
 //    NSMutableArray *myMutableArray = [NSMutableArray arrayWithArray:[dict[@"Data"] allKeys]];
 //    
@@ -389,16 +405,16 @@
 //    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Date" ascending:FALSE];
 //    [myMutableArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     NSString *str;
-//    NSLog(@"self.dayArr Count = %ld",self.dayArr.count);
+//    //NSLog(@"self.dayArr Count = %ld",self.dayArr.count);
     NSArray *browsHist = self.dayArr[section];
     NSDictionary *dict2 = browsHist[0];
-//    NSLog(@"dict2 date %@",dict2);
+//    //NSLog(@"dict2 date %@",dict2);
     str = dict2[@"date"];
     NSDate *date = [NSDate convertStirngToDate:str];
-//     NSLog(@"date = %@",date);
+//     //NSLog(@"date = %@",date);
 
     NSString *headerDate = [date getDayMonthFormat];
-//    NSLog(@"today date %@ == %@",[BrowsingHistoryDataBase getTodayDate],@"10-8-2016");
+//    //NSLog(@"today date %@ == %@",[BrowsingHistoryDataBase getTodayDate],@"10-8-2016");
     if([str isEqualToString:[BrowsingHistoryDataBase getTodayDate]])
         label.text = [NSString stringWithFormat:@"Today, %@",headerDate];
     else
@@ -422,7 +438,7 @@
     if(self.dayArr.count > indexPath.section){
     NSArray *browsHist = self.dayArr[indexPath.section];
     NSDictionary *uriDict = browsHist[indexPath.row];
-//    NSLog(@"uriDict = %@",uriDict);
+//    //NSLog(@"uriDict = %@",uriDict);
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
     ChangeCategoryViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ChangeCategoryViewController"];
     viewController.uriDict = uriDict;
@@ -463,7 +479,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)reloadTable{
-    NSLog(@"reload called");
+    //NSLog(@"reload called");
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.browsingTable reloadData];
     });
