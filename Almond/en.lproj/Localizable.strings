@@ -1007,7 +1007,7 @@ Contact us at support@securifi.com";
 "DeviceList Loading Device data" = "Loading Device data";
 "deviceList Force device data refresh" = "Force device data refresh";
 "noSensors" = "You don't have any sensors yet.";
-"router.no-sensors.label.Add a sensor from your Almond." = "To add one,follow the on-screen instructions on your Almond";
+"router.no-sensors.label.Add a sensor from your Almond." = "To add one, follow the on-screen instructions on your Almond.";
 "sensors.account-confirm.label.Please confirm your account (less than a day left)." = "Please confirm your account (less than a day left).";
 "sensors.account-confirm.label.Please confirm your account (%d days left)." = "Please confirm your account (%d days left).";
 "sensors.account-confirm.label.Check activation email for instructions." = "Check activation email for instructions.";

@@ -18,6 +18,7 @@
 @property (strong, nonatomic) IBOutlet UIView *okGotItView;
 
 
+@property (weak, nonatomic) IBOutlet UIView *centerView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
 @property (weak, nonatomic) IBOutlet UIButton *gotIt;
 @property (weak, nonatomic) IBOutlet UIImageView *leftArrow;
@@ -39,10 +40,12 @@
 @property (strong, nonatomic) IBOutlet UIView *securiti;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *securityBottomConstraint;
 
+@property (nonatomic) NSInteger prevCount;
 @end
 
 @implementation HelpScreens
 - (void)awakeFromNib{
+    [super awakeFromNib];
     NSLog(@"awake from nib");
 }
 
@@ -52,6 +55,7 @@
         NSLog(@"frame initialized");
         [[NSBundle mainBundle] loadNibNamed:@"HelpScreen" owner:self options:nil];
         self.securityBottomConstraint.constant = 0;
+        self.prevCount = 0;
     }
     return self;
 }
@@ -146,9 +150,11 @@
 
 
 -(void)handleSwipeFrom:(UISwipeGestureRecognizer *)gestureRecognizer{
-    NSLog(@"handle swipe from directrion: %d", gestureRecognizer.direction);
-    NSLog(@"self pagecontrol: %d", self.pageControl.currentPage);
-    
+    NSLog(@"handle swipe from directrion: %zd", gestureRecognizer.direction);
+    NSLog(@"self pagecontrol: %td", self.pageControl.currentPage);
+    if((self.pageControl.currentPage == 0 && gestureRecognizer.direction == UISwipeGestureRecognizerDirectionRight) || (self.pageControl.currentPage == self.pageControl.numberOfPages-1 && gestureRecognizer.direction == UISwipeGestureRecognizerDirectionLeft)){
+        return;
+    }
     if(gestureRecognizer.direction == UISwipeGestureRecognizerDirectionLeft){
         [self.pageControl setCurrentPage:self.pageControl.currentPage+1];
     }else{
@@ -157,6 +163,7 @@
     
     [self onPageControlValueChange:self.pageControl];
 }
+
 
 - (void)addGotItView:(CGRect)frame{
     self.okGotItView.frame = frame;
@@ -241,17 +248,25 @@
 }
 
 - (IBAction)onPageControlValueChange:(UIPageControl *)pageControl {
+    NSLog(@"onPageControlValueChange");
     int currntPg = (int)pageControl.currentPage;
+    if(_prevCount < currntPg)
+        [self slideAnimation:YES];
+    else
+        [self slideAnimation:NO];
+    
     NSArray *screens = self.startScreen[SCREENS];
     NSDictionary *screen = [screens objectAtIndex:currntPg];
     
     self.subTitle.text = NSLocalizedString(screen[TITLE], @"");
     [self setDescText:screen];
     [self.desc setContentOffset:CGPointZero animated:YES];
+
+    
     self.imgView.image = [UIImage imageNamed:screen[IMAGE]];
     self.imgView.backgroundColor = [UIColor colorFromHexString:screen[COLOR]];
     
-    NSLog(@"current count: %d, screens count: %d", pageControl.currentPage, screens.count);
+    NSLog(@"current count: %zd, screens count: %zd", pageControl.currentPage, screens.count);
     //current page starts from 0
     if(pageControl.currentPage == 0){
         self.leftArrow.hidden = YES;
@@ -267,7 +282,21 @@
         self.rightArrow3.hidden = NO;
         self.gotIt.hidden = YES;
     }
+    self.prevCount = currntPg;
 }
+
+
+-(void)slideAnimation:(BOOL)isLeft{
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.3;
+    transition.type = kCATransitionPush;
+    //dont miss the keyword "From" in KCATRANSITIONFROMRIGHT
+    transition.subtype = isLeft? kCATransitionFromRight: kCATransitionFromLeft;
+    [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    [self.centerView.layer addAnimation:transition forKey:nil];
+    //    [parentView addSubview:myVC.view];
+}
+
 
 - (IBAction)onCrossButtonTap:(id)sender {
     [self resetViews];

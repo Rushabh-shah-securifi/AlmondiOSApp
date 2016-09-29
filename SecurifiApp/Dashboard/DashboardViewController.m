@@ -935,11 +935,18 @@
     view.methodsDelegate = self;
     [view initializeView:self.buttonMaskView.frame];
     [self.buttonMaskView addSubview:view];
+
     
-    [UIView transitionWithView:self.tabBarController.view duration:0.5
-                       options:UIViewAnimationOptionTransitionCurlDown //change to whatever animation you like
-                    animations:^ { [self.tabBarController.view addSubview:self.buttonMaskView]; }
-                    completion:nil];
+    [self slideAnimation];
+}
+
+-(void)slideAnimation{
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.3;
+    transition.type = kCATransitionReveal;
+    [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    [self.buttonMaskView.layer addAnimation:transition forKey:nil];
+    [self.tabBarController.view addSubview:self.buttonMaskView];
 }
 
 - (void)onCloseBtnTapDelegate{
@@ -977,10 +984,14 @@
 }
 
 -(void)removeAlmondSelectionView{
-    [UIView transitionWithView:self.tabBarController.view duration:0.5
-                       options:UIViewAnimationOptionTransitionCurlUp //change to whatever animation you like
-                    animations:^ { [self.buttonMaskView removeFromSuperview]; }
-                    completion:nil];
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.buttonMaskView.alpha = 0;
+                     }completion:^(BOOL finished){
+                         [self.buttonMaskView removeFromSuperview];
+                     }];
     self.buttonMaskView = nil;
 }
 
