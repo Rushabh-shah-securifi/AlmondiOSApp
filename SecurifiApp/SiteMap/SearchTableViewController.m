@@ -38,7 +38,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 @property (nonatomic) NSArray *suggSearchArr;
 @property (nonatomic) BrowsingHistory *browsingHistory;
 
-@property (nonatomic) NSMutableArray *recentSearch;
+@property (nonatomic) NSMutableDictionary *recentSearchDict;
+@property (nonatomic) NSMutableDictionary *recentSearchDictObj;
 @property (nonatomic) NSMutableArray *recentSearchObj;
 @property (nonatomic) NSArray *categorySearch;
 
@@ -57,6 +58,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.recentSearchDict = [NSMutableDictionary new];
+    self.recentSearchDictObj = [NSMutableDictionary new];
     
     self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -77,7 +80,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [self.tableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
-    self.recentSearch = [[NSMutableArray alloc]init];
+    
     [self addSuggestionSearchObj];
     [self initializeSearchController ];
     
@@ -201,7 +204,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         else if(indexPath.section == 2)
             [cell setCell:[self.categorySearch objectAtIndex:indexPath.row]hideItem:YES isCategory:YES count:indexPath.row+1];
         else if(indexPath.section == 0)
-            [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row] hideItem:NO isCategory:NO count:indexPath.row+1];
+            [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row] hideItem:YES isCategory:NO count:indexPath.row+1];
     }
     else {
         if(self.dayArr.count > indexPath.section){
@@ -277,8 +280,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 }
 -(void)setSearchpattenMethod:(SearchPatten)searchpatten indexPath:(NSIndexPath *)indexPath{
     self.searchPatten = searchpatten;
-    self.searchController.searchBar.text = [self.recentSearch objectAtIndex:indexPath.row];
-    self.searchString = [self.recentSearch objectAtIndex:indexPath.row];
+    self.searchController.searchBar.text = [[self.recentSearchDict allKeys] objectAtIndex:indexPath.row];
+    self.searchString = [[self.recentSearchDict allKeys] objectAtIndex:indexPath.row];
     self.isManuelSearch = YES;
     [self.searchController.searchBar resignFirstResponder];
     [self searchBarTextDidEndEditing:self.searchController.searchBar];
@@ -292,16 +295,15 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     NSString *searchString = self.searchString;
     NSLog(@"searching string on search = %@",searchString);
-    URIData *recent = [[URIData alloc]init];
-    recent.hostName = searchString;
+     if(![searchString isEqualToString:@" "] && ![CommonMethods isContainCategory:searchString])
+    [self.recentSearchDict setValue:searchString forKey:searchString];
     
-    if(![searchString isEqualToString:@" "] && ![self.recentSearch containsObject:searchString] && ![CommonMethods isContainCategory:searchString])
-//    [self.recentSearch addObject:searchString];
-    [RecentSearchDB insertInRecentDB:searchString cmac:self.cmac amac:self.amac];
     
-    NSLog(@"self.recentSearch count = %ld",(unsigned long)self.recentSearch.count);
-    
-    [[NSUserDefaults standardUserDefaults] setObject:self.recentSearch forKey:@"recentSearch"];
+//    [RecentSearchDB insertInRecentDB:searchString cmac:self.cmac amac:self.amac];
+    if([self.recentSearchDict allKeys].count > 0)
+    [self.recentSearchDictObj setObject:self.recentSearchDict forKey:[NSString stringWithFormat:@"%@%@",self.amac,self.cmac]];
+    NSLog(@"self.recentSearchDictObj insert %@",self.recentSearchDictObj);
+    [[NSUserDefaults standardUserDefaults] setObject:self.recentSearchDictObj forKey:@"recentSearch"];
 //    [self addSuggestionSearchObj];
     
 }
@@ -417,22 +419,26 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
                             };
    
     self.categorySearch = [NSArray arrayWithObjects:adults,restricted,PG_13,PG,General, nil];
+//    
+//    NSSet *set = [NSSet setWithArray:[NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"recentSearch"]]];
+    self.recentSearchDictObj = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"recentSearch"]];
+    self.recentSearchDict = [NSMutableDictionary dictionaryWithDictionary:[self.recentSearchDictObj valueForKey:[NSString stringWithFormat:@"%@%@",self.amac,self.cmac]]];
+    NSLog(@"recent search after %@ = ",self.recentSearchDict);
     
-    NSSet *set = [NSSet setWithArray:[NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"recentSearch"]]];
-    self.recentSearch =  [NSMutableArray arrayWithArray:[set allObjects]];
     
-//    self.recentSearchObj = [[NSMutableArray alloc]init];
+    self.recentSearchObj = [[NSMutableArray alloc]init];
     NSLog(@"recent seaech count = %d",[RecentSearchDB GetHistoryDatabaseCount:self.amac clientMac:_cmac]);
-    
-    self.recentSearchObj = [RecentSearchDB getAllRecentwithLimit:1 almonsMac:self.amac clientMac:self.cmac];
-//    for (NSString *str in set) {
-//        NSDictionary *recent = @{@"hostName":str,
-//                                   @"image" : [UIImage imageNamed:@"search_icon"]
-//                                   };
-//       
-//        [self.recentSearchObj addObject:recent];
-//    }
-    NSLog(@"self.recentSearch count  %@ = %ld",self.recentSearch,self.recentSearch.count);
+    NSLog(@"self.recentSearchDictObj %@",self.recentSearchDictObj);
+//    self.recentSearchObj = [RecentSearchDB getAllRecentwithLimit:1 almonsMac:self.amac clientMac:self.cmac];
+    for (int i = 0;i<[self.recentSearchDict allKeys].count;i++) {
+        NSDictionary *recent = @{@"hostName":[[self.recentSearchDict allKeys] objectAtIndex:i],
+                                   @"image" : [UIImage imageNamed:@"search_icon"]
+                                   };
+        [self.recentSearchObj addObject:recent];
+        if(i>3)
+            break;
+    }
+    NSLog(@"recent obj222 %@",[self.recentSearchDict allKeys]);
     
 }
 - (NSDictionary*)parseJson:(NSString*)fileName{
