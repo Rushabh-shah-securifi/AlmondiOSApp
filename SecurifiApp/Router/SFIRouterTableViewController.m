@@ -69,7 +69,6 @@ static const int logsHeight = 100;
 @property BOOL shownHudOnce;
 
 @property(nonatomic) BOOL enableAlmondVersionRemoteUpdate;
-@property(nonatomic) BOOL isSimulator;
 
 @property(nonatomic) BOOL isBUG;
 @property(nonatomic) BOOL isAlmDetailView;
@@ -87,7 +86,6 @@ int mii;
 }
 
 - (void)viewDidLoad {
-    self.isSimulator = NO;
     [super viewDidLoad];
     
     if([[SecurifiToolkit sharedInstance] isScreenShown:@"wifi"] == NO)
@@ -158,7 +156,7 @@ int mii;
     }
     else{
         [self showHudWithTimeout:NSLocalizedString(@"Loading router data", @"Loading router data")];
-        [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
+        [RouterPayload routerSummary:mii mac:self.almondMac];
     }
 }
 
@@ -246,7 +244,7 @@ int mii;
         return;
     }
     // reset table view state when Refresh is called (and when current Almond is changed)
-    [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
+    [RouterPayload routerSummary:mii mac:self.almondMac];
     
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
@@ -306,7 +304,7 @@ int mii;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    //    NSLog(@"isAlmondUnavailable: %d, isnetworkonline: %d, issimulator: %d", self.isAlmondUnavailable, ![[SecurifiToolkit sharedInstance] isNetworkOnline], self.isSimulator);
+    //    NSLog(@"isAlmondUnavailable: %d, isnetworkonline: %d", self.isAlmondUnavailable, ![[SecurifiToolkit sharedInstance] isNetworkOnline]);
     if([self isFirmwareCompatible] == NO){
         tableView.scrollEnabled = NO;
         return [self createAlmondUpdateAvailableCell:tableView];
@@ -315,7 +313,7 @@ int mii;
     if([self isNoAlmondLoaded]){
         tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
-    }else if(self.isAlmondUnavailable || (![[SecurifiToolkit sharedInstance] isNetworkOnline] && !_isSimulator)){
+    }else if(self.isAlmondUnavailable || (![[SecurifiToolkit sharedInstance] isNetworkOnline])){
         tableView.scrollEnabled = NO;
         return [self createAlmondOfflineCell:tableView];
     }else{
@@ -530,7 +528,7 @@ int mii;
 }
 
 -(BOOL)isNotConnectedToCloud{
-    if ([self isNoAlmondLoaded] || self.isAlmondUnavailable || (![[SecurifiToolkit sharedInstance] isNetworkOnline] && !_isSimulator)) {
+    if ([self isNoAlmondLoaded] || self.isAlmondUnavailable || (![[SecurifiToolkit sharedInstance] isNetworkOnline])) {
         return YES;
     }
     return NO;
@@ -606,7 +604,7 @@ int mii;
 - (void)onEditWirelessSettingsCard:(id)sender {
     self.isBUG = YES;
     [self showHudWithTimeout:NSLocalizedString(@"Loading router data", @"Loading router data")];
-     [RouterPayload getWirelessSettings:mii isSimulator:_isSimulator mac:self.almondMac];
+     [RouterPayload getWirelessSettings:mii mac:self.almondMac];
 }
      
  -(void)onFirmwareUpdate:(id)sender{
@@ -648,11 +646,11 @@ int mii;
      }else{
          if(alertView.tag == FIRMWARE_UPDATE_TAG){
              [self showHudWithTimeoutFirmwareMsg: NSLocalizedString(@"Firmware update is in progress, it may take a while. Meanwhile, please don't turn off your Almond",@"")];
-             [RouterPayload updateFirmware:mii version:self.latestAlmondVersionAvailable isSimulator:_isSimulator mac:self.almondMac];
+             [RouterPayload updateFirmware:mii version:self.latestAlmondVersionAvailable mac:self.almondMac];
          }else if(alertView.tag == REBOOT_TAG){
              [self showHUD:NSLocalizedString(@"router.hud.Router is rebooting.", @"Router is rebooting.")];
              self.isRebooting = TRUE;
-             [RouterPayload routerReboot:mii isSimulator:_isSimulator mac:self.almondMac];
+             [RouterPayload routerReboot:mii mac:self.almondMac];
          }
      }
  }
@@ -719,7 +717,6 @@ int mii;
                      ctrl.wirelessSettings = settings;
                      ctrl.almondMac = self.almondMac;
                      ctrl.enableRouterWirelessControl = YES;
-                     ctrl.isSimulator = self.isSimulator;
                      ctrl.hidesBottomBarWhenPushed = YES;
                      UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
                                                     initWithTitle:NSLocalizedString(@"Router Back", @"Back")
@@ -751,7 +748,7 @@ int mii;
                  self.isRebooting = NO;
                  // protect against the cloud sending the same response more than once
                  if (wasRebooting) {
-                     [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
+                     [RouterPayload routerSummary:mii mac:self.almondMac];
                      //todo handle failure case
                      [self showHudWithTimeout:NSLocalizedString(@"router.hud.Router is now online.", @"Router is now online.")];
                  }

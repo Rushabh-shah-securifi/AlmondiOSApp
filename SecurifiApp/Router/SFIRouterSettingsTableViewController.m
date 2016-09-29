@@ -259,7 +259,7 @@ int mii;
         [self showUpdatingSettingsHUD];
 //        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.almondMac wirelessSettings:copy];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        [RouterPayload setWirelessSettings:mii wirelessSettings:copy isSimulator:_isSimulator mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:isTypeEnable];
+        [RouterPayload setWirelessSettings:mii wirelessSettings:copy mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:isTypeEnable];
         [self.HUD hide:YES afterDelay:5];
     });
 }

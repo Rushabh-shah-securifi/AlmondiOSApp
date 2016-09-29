@@ -135,7 +135,7 @@ int mii;
         [self showHudWithTimeout:NSLocalizedString(@"sendingLogs",@"Sending logs")];
         [self.textField resignFirstResponder];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        [RouterPayload sendLogs:self.textField.text mii:mii isSimulator:toolkit.configuration.isSimulator mac:toolkit.currentAlmond.almondplusMAC];
+        [RouterPayload sendLogs:self.textField.text mii:mii mac:toolkit.currentAlmond.almondplusMAC];
     }
 }
 

@@ -11,16 +11,16 @@
 
 @interface RouterPayload : NSObject
 
-+ (void)routerSummary:(int)mii isSimulator:(BOOL)isSimulator mac:(NSString*)almondMac;
++ (void)routerSummary:(int)mii mac:(NSString*)almondMac;
 
-+ (void)getWirelessSettings:(int)mii isSimulator:(BOOL)isSimulator mac:(NSString*)almondMac;
++ (void)getWirelessSettings:(int)mii mac:(NSString*)almondMac;
 
-+ (void)setWirelessSettings:(int)mii wirelessSettings:(SFIWirelessSetting*)wirelessSettingObj isSimulator:(BOOL)isSimulator mac:(NSString*)almondMac isTypeEnable:(BOOL)isTypeEnable;
++ (void)setWirelessSettings:(int)mii wirelessSettings:(SFIWirelessSetting*)wirelessSettingObj mac:(NSString*)almondMac isTypeEnable:(BOOL)isTypeEnable;
 
-+ (void)updateFirmware:(int)mii version:(NSString*)version isSimulator:(BOOL)isSimulator mac:(NSString*)almondMac;
++ (void)updateFirmware:(int)mii version:(NSString*)version mac:(NSString*)almondMac;
 
-+ (void)routerReboot:(int)mii isSimulator:(BOOL)isSimulator mac:(NSString*)almondMac;
++ (void)routerReboot:(int)mii mac:(NSString*)almondMac;
 
-+ (void)sendLogs:(NSString*)message mii:(int)mii isSimulator:(BOOL)isSimulator mac:(NSString*)almondMac;
++ (void)sendLogs:(NSString*)message mii:(int)mii mac:(NSString*)almondMac;
 
 @end
