@@ -44,6 +44,7 @@
     // Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated{
+     [self.navigationController setNavigationBarHidden:YES];
     [super viewWillAppear:YES];
      [self initializeNotifications];
      self.switchView1.transform = CGAffineTransformMakeScale(0.70, 0.70);
@@ -68,6 +69,7 @@
     [dateformate setDateFormat:@"EEEE dd MMMM HH:mm"]; // Date formater
     NSString *str = [dateformate stringFromDate:date];
     self.lastSeen.text = [NSString stringWithFormat:@"last activated time %@",str];
+    dispatch_async(dispatch_get_main_queue(), ^{
     
     if(self.client.webHistoryEnable == NO){
         self.switchView1.on = NO;
@@ -87,8 +89,8 @@
         self.switchView3.on = YES;
         self.dataLogView.hidden = NO;
     }
-    
-    [self.navigationController setNavigationBarHidden:YES];
+    });
+   
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
@@ -212,6 +214,7 @@
 }
 - (IBAction)switch1Action:(id)sender {
     UISwitch *actionSwitch = (UISwitch *)sender;
+    dispatch_async(dispatch_get_main_queue(), ^{
     BOOL state = [actionSwitch isOn];
     if(state == NO){
         self.view2.hidden = YES;
@@ -227,9 +230,11 @@
         [self saveNewValue:@"YES" forIndex:-23];
         
     }
+});
 }
 - (IBAction)switch3Action:(id)sender {
     UISwitch *actionSwitch = (UISwitch *)sender;
+    dispatch_async(dispatch_get_main_queue(), ^{
     BOOL state = [actionSwitch isOn];
     if(state == NO){
         self.dataLogView.hidden = YES;
@@ -238,10 +243,12 @@
         
     }
     else{
-         self.dataLogView.hidden = NO;
-        self.client.bW_Enable = YES;
-         [self saveNewValue:@"YES" forIndex:-25];
+            self.dataLogView.hidden = NO;
+            self.client.bW_Enable = YES;
+            [self saveNewValue:@"YES" forIndex:-25];
             }
+        
+        });
 }
 - (IBAction)browsingHistoryBtn:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
@@ -256,44 +263,46 @@
     NSDictionary *mainDict = [dataInfo valueForKey:@"data"];
     NSDictionary * dict = mainDict[@"Clients"];
     NSString *ID = [[dict allKeys] objectAtIndex:0]; // Assumes payload always has one device.
+    dispatch_async(dispatch_get_main_queue(), ^{
     if([self.client.deviceID isEqualToString:ID]){
         NSLog(@"switching the connection");
         self.switchView1.on = [[dict[ID] valueForKey:@"SMEnable"]boolValue];
+        [self switch1ActionDynamic:[[dict[ID] valueForKey:@"SMEnable"]boolValue]];
         self.switchView3.on = [[dict[ID] valueForKey:@"BWEnable"]boolValue];
+        [self switch3ActionDynamic:[[dict[ID] valueForKey:@"BWEnable"]boolValue]];
+        
     }
+    });
     
 }
-/*
- {
- data =     {
- Action = update;
- AlmondMAC = 251176220099380;
- Clients =         {
- 11 =             {
- Active = true;
- BWEnable = false;
- Block = 0;
- CanBlock = true;
- Category = Others;
- Connection = wireless;
- ForceInActive = 0;
- LastActiveEpoch = 1475064910;
- LastKnownIP = "10.1.88.110";
- MAC = "a4:f1:e8:4e:ba:1f";
- Manufacturer = Apple;
- Name = "Securifi-Venkat";
- RSSI = "-53";
- SMEnable = false;
- Schedule = "0,0,0,0,0,0,0";
- Type = other;
- UseAsPresence = true;
- Wait = 6;
- };
- };
- CommandType = DynamicClientUpdated;
- HashNow = 2838901bd788579509379bd0e458f2a0;
- };
- }
-
- */
+-(void)switch1ActionDynamic:(BOOL)isOn{
+     dispatch_async(dispatch_get_main_queue(), ^{
+    if(isOn == NO){
+        self.view2.hidden = YES;
+        self.viewTwoTop.constant = -40;
+        self.client.webHistoryEnable = NO;
+        
+    }
+    else{
+        self.view2.hidden = NO;
+        self.viewTwoTop.constant = 1;
+        self.client.webHistoryEnable = YES;
+        
+    }
+    });
+}
+-(void)switch3ActionDynamic:(BOOL)isOn{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(isOn == NO){
+            self.dataLogView.hidden = YES;
+            self.client.bW_Enable = NO;
+            
+        }
+        else{
+            self.dataLogView.hidden = NO;
+            self.client.bW_Enable = YES;
+        }
+        
+    });
+}
 @end

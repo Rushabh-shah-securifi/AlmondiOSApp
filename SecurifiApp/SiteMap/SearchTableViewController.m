@@ -21,6 +21,7 @@
 
 
 
+
 typedef NS_ENUM(NSInteger, SearchPatten) {
     DefaultSearch,
     RecentSearch,
@@ -52,6 +53,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 @property (nonatomic) NSString *cmac;
 @property (nonatomic) NSString *amac;
 @property (nonatomic) NSString *searchString;
+@property (nonatomic) NSMutableArray *searchStrArr;
 @end
 
 @implementation SearchTableViewController
@@ -60,6 +62,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     [super viewDidLoad];
     self.recentSearchDict = [NSMutableDictionary new];
     self.recentSearchDictObj = [NSMutableDictionary new];
+    self.searchStrArr = [NSMutableArray new];
     
     self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -280,8 +283,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 }
 -(void)setSearchpattenMethod:(SearchPatten)searchpatten indexPath:(NSIndexPath *)indexPath{
     self.searchPatten = searchpatten;
-    self.searchController.searchBar.text = [[self.recentSearchDict allKeys] objectAtIndex:indexPath.row];
-    self.searchString = [[self.recentSearchDict allKeys] objectAtIndex:indexPath.row];
+    self.searchController.searchBar.text = [self.searchStrArr objectAtIndex:indexPath.row];
+    self.searchString = [self.searchStrArr objectAtIndex:indexPath.row];
     self.isManuelSearch = YES;
     [self.searchController.searchBar resignFirstResponder];
     [self searchBarTextDidEndEditing:self.searchController.searchBar];
@@ -430,13 +433,18 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSLog(@"recent seaech count = %d",[RecentSearchDB GetHistoryDatabaseCount:self.amac clientMac:_cmac]);
     NSLog(@"self.recentSearchDictObj %@",self.recentSearchDictObj);
 //    self.recentSearchObj = [RecentSearchDB getAllRecentwithLimit:1 almonsMac:self.amac clientMac:self.cmac];
+    [self.recentSearchObj removeAllObjects];
+    [self.searchStrArr removeAllObjects];
     for (int i = 0;i<[self.recentSearchDict allKeys].count;i++) {
         NSDictionary *recent = @{@"hostName":[[self.recentSearchDict allKeys] objectAtIndex:i],
                                    @"image" : [UIImage imageNamed:@"search_icon"]
                                    };
-        [self.recentSearchObj addObject:recent];
         if(i>3)
             break;
+        [self.recentSearchObj addObject:recent];
+        [self.searchStrArr addObject:[[self.recentSearchDict allKeys] objectAtIndex:i]];
+        
+        
     }
     NSLog(@"recent obj222 %@",[self.recentSearchDict allKeys]);
     
@@ -500,7 +508,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     searchResultsController.tableView.delegate = self;
     
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:searchResultsController];
-    
+    self.searchController.navigationController.view.backgroundColor = [UIColor whiteColor];
     self.definesPresentationContext = YES;
     
     self.searchController.searchBar.frame = CGRectMake(self.searchController.searchBar.frame.origin.x, self.searchController.searchBar.frame.origin.y, self.searchController.searchBar.frame.size.width, 44.0);
