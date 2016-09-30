@@ -10,11 +10,12 @@
 #import "ParentControlCell.h"
 #import "BrowsingHistoryViewController.h"
 #import "ClientPayload.h"
+#import "CategoryView.h"
 #import "GenericIndexUtil.h"
 
-@interface ParentalControlsViewController ()<ParentControlCellDelegate>
+@interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate>
 @property (nonatomic) NSMutableArray *parentsControlArr;
-
+@property (nonatomic) CategoryView *cat_view_more;
 @property (weak, nonatomic) IBOutlet UIView *dataLogView;
 @property (nonatomic) Client *client;
 @property (weak, nonatomic) IBOutlet UIImageView *icon;
@@ -39,6 +40,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.parentsControlArr = [[NSMutableArray alloc]init];
+    self.cat_view_more = [[CategoryView alloc]initParentalControlMoreClickView];
+    self.cat_view_more.delegate = self;
 //    [self createArr];
     
     // Do any additional setup after loading the view.
@@ -304,5 +307,14 @@
         }
         
     });
+}
+- (IBAction)iconOutletClicked:(id)sender {
+    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 200, self.view.frame.size.width, 320);
+    [self.view addSubview:self.cat_view_more];
+    
+    
+}
+-(void)closeMoreView{
+    [self.cat_view_more removeFromSuperview];
 }
 @end

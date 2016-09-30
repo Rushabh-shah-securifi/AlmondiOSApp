@@ -33,6 +33,7 @@
 #import "Analytics.h"
 #import "NotificationPreferenceResponse.h"
 #import "BlinkLedView.h"
+#import "GenericIndexClass.h"
 
 #define ITEM_SPACING  2.0
 #define LABELSPACING 20.0
@@ -413,6 +414,7 @@ static const int xIndent = 10;
         }else{
             NSLog(@"client update %@,%d,%@,%@",genericIndexValue.genericIndex.ID,genericIndexValue.index,genericIndexValue.currentValue,genericIndexValue.genericIndex.groupLabel);
             int index = genericIndexValue.index;
+            NSLog(@"enable / disable %d - %d",client.webHistoryEnable,client.bW_Enable);
             client = [client copy];
             [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
             [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];

@@ -135,7 +135,7 @@
     NSLog(@"changedCatogeryButtonPrssed");
     
 
-        self.cat_view.frame = CGRectMake(0, self.view.frame.size.height - 230, self.view.frame.size.width, 230);
+        self.cat_view.frame = CGRectMake(0, self.view.frame.size.height - 250, self.view.frame.size.width, 250);
         [self.view addSubview:self.cat_view];
     
     
@@ -186,7 +186,7 @@
     self.backGroundButton.hidden = NO;
 }
 -(void)showmsg{
-    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 110, self.view.frame.size.width, 300);
+    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 120, self.view.frame.size.width, 320);
     [self.view addSubview:self.cat_view_more];
 }
 -(void)closeMoreView{
