@@ -734,9 +734,9 @@ Follow it, then login below.";
 "disabled" = "Disabled";
 
 "volume" = "VOLUME";
-"low_volume" = "Vol: Low";
-"medium_volume" = "Vol: Medium";
-"high_volume" = "Vol: High";
+"low_volume" = "Low";
+"medium_volume" = "Medium";
+"high_volume" = "High";
 "high" = "High";
 
 "blink" = "Blink";

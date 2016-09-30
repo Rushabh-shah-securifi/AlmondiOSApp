@@ -252,7 +252,7 @@
     }
 
     CGFloat width = CGRectGetWidth(self.frame);
-    CGRect frame = CGRectMake(width - 40, 37, 23, 23);
+    CGRect frame = CGRectMake(width - 40, 30, 23, 23);
 
    // UIImage *image = [UIImage imageNamed:@"icon_config"];
 

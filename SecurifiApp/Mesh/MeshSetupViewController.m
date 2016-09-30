@@ -299,8 +299,10 @@ int mii;
 }
 
 -(void)showForceRemoveAlert{
-    NSString *msg = [NSString stringWithFormat:@"Failed to remove %@, Do you want to force remove?", self.almondStatObj.name];
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Force Remove Almond" message:msg delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    NSString *title = [NSString stringWithFormat:@"Failed to remove \"%@\" Almond. Do you want to forcefully remove it?", self.almondStatObj.name];
+    NSString *desc = @"If you choose to force remove an Almond, you will have to manually reset that Almond to complete the process.";
+    
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:title message:desc delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
     alert.tag = FORCE_REMOVE;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [alert show];

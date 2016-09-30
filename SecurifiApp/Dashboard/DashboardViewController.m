@@ -984,7 +984,7 @@
 }
 
 -(void)removeAlmondSelectionView{
-    [UIView animateWithDuration:0.5
+    [UIView animateWithDuration:0.3
                           delay:0.0
                         options: UIViewAnimationOptionCurveEaseOut
                      animations:^{

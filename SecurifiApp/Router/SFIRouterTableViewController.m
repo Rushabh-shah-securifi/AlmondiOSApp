@@ -45,7 +45,7 @@
 #define FIRMWARE_UPDATE_TAG 2
 
 static const int networkingHeight = 100;
-static const int clientsHeight = 90;
+static const int clientsHeight = 70;
 static const int almondNtwkHeight = 200;
 static const int settingsHeight = 70;
 static const int versionHeight = 130;
@@ -328,8 +328,7 @@ int mii;
                 if(self.currentConnectionMode == SFIAlmondConnectionMode_local)
                     return [self createAlmondNetworkCell:tableView];
                 else{
-                    summaries = [self getDevicesAndUsersSummary];
-                    return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users") selector:nil cardColor:[UIColor securifiRouterTileBlueColor]];
+                    return [self createSummaryCell:tableView summaries:nil title:@"Advanced Router Features" selector:@selector(onAdvncdFeatures:) cardColor:[UIColor securifiRouterTileBlueColor]];
                 }
             }
             case DEF_WIRELESS_SETTINGS_SECTION:{
@@ -363,6 +362,10 @@ int mii;
                 return [self createSummaryCell:tableView summaries:nil title:nil selector:nil cardColor:[UIColor whiteColor]];
         }
     }
+}
+
+- (void)onAdvncdFeatures:(id)sender{
+    
 }
 
 -(UITableViewCell *)createAlmondNetworkCell:(UITableView *)tableView{
@@ -463,24 +466,6 @@ int mii;
     }
     NSLog(@"wireless summary: %@", summary);
     return summary;
-}
-
--(NSArray*)getDevicesAndUsersSummary{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    int activeClientsCount = 0;
-    int inActiveClientsCount = 0;
-    for(Client *client in toolkit.clients){
-        if (client.isActive) {
-            activeClientsCount++;
-        }else{
-            inActiveClientsCount++;
-        }
-    }
-    return @[
-             [NSString stringWithFormat:NSLocalizedString(@"router.devices-summary.%d Active, %d Inactive", @"%d ACTIVE, %d INACTIVE"),
-              activeClientsCount,
-              inActiveClientsCount],
-             ];
 }
 
 -(NSArray*)getRouterVersionSummary{
