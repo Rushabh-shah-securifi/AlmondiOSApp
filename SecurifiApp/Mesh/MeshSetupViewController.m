@@ -39,7 +39,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *removeBtn;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableBottomContraint;
 
+@property (weak, nonatomic) IBOutlet UITableView *meshTableView;
+
 @property (nonatomic) NSTimer *removeAlmondTO;
+
 @end
 
 @implementation MeshSetupViewController
@@ -309,7 +312,7 @@ int mii;
     });
 }
 
-#pragma mark event methods
+#pragma mark button tap methods
 - (IBAction)onCrossButtonTap:(id)sender {
     [self dismissControllerDelegate];
 }

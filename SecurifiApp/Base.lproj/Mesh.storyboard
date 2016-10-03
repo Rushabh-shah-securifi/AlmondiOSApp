@@ -166,7 +166,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label Key" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zjz-aX-8dn">
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="1TF-Yn-dyx"/>
-                                                        <constraint firstAttribute="width" constant="131" id="vk7-Fr-8Z0"/>
+                                                        <constraint firstAttribute="width" constant="152" id="vk7-Fr-8Z0"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -230,6 +230,7 @@
                         <outlet property="cloudToMasterAlm" destination="sx8-K6-hwD" id="QRI-Ut-Z30"/>
                         <outlet property="cloudToMstrAlmSlv" destination="ZGQ-A9-B2A" id="wK9-ZN-Hsn"/>
                         <outlet property="masterConnectionView" destination="4NC-oX-cKW" id="p9b-Lp-fdQ"/>
+                        <outlet property="meshTableView" destination="qCy-Jl-fe7" id="7mZ-ZH-7rL"/>
                         <outlet property="removeBtn" destination="zAi-c5-pBe" id="drB-Lj-ZHm"/>
                         <outlet property="slaveConnectionView" destination="dRc-wT-n6J" id="8yU-MX-rQR"/>
                         <outlet property="slvSignalStrength" destination="SCm-DM-BOK" id="L2b-e1-u08"/>
@@ -239,7 +240,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lFu-Ou-ins" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="116" y="183"/>
+            <point key="canvasLocation" x="116" y="182.15892053973016"/>
         </scene>
         <!--Mesh Setup View Controller-->
         <scene sceneID="6Hb-xX-Cao">
