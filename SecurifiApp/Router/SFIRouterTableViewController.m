@@ -33,6 +33,7 @@
 #import "CommonMethods.h"
 #import "MeshPayload.h"
 #import "AlmondStatus.h"
+#import "AdvanceRouterSettingsController.h"
 
 #define DEF_NETWORKING_SECTION          0
 #define DEF_DEVICES_AND_USERS_SECTION   1
@@ -328,7 +329,7 @@ int mii;
                 if(self.currentConnectionMode == SFIAlmondConnectionMode_local)
                     return [self createAlmondNetworkCell:tableView];
                 else{
-                    return [self createSummaryCell:tableView summaries:nil title:@"Advanced Router Features" selector:@selector(onAdvncdFeatures:) cardColor:[UIColor securifiRouterTileBlueColor]];
+                    return [self createSummaryCell:tableView summaries:nil title:@"Advanced Router Features" selector:@selector(onAdvancdFeatures:) cardColor:[UIColor securifiRouterTileBlueColor]];
                 }
             }
             case DEF_WIRELESS_SETTINGS_SECTION:{
@@ -364,8 +365,11 @@ int mii;
     }
 }
 
-- (void)onAdvncdFeatures:(id)sender{
-    
+- (void)onAdvancdFeatures:(id)sender{
+    NSLog(@"onAdvncdFeatures");
+    AdvanceRouterSettingsController *ctrl = [[UIStoryboard storyboardWithName:@"Router" bundle:nil] instantiateViewControllerWithIdentifier:@"AdvanceRouterSettingsController"];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
+    [self.navigationController pushViewController:ctrl animated:YES];
 }
 
 -(UITableViewCell *)createAlmondNetworkCell:(UITableView *)tableView{

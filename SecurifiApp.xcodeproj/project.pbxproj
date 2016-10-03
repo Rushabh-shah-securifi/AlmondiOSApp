@@ -499,6 +499,14 @@
 		F41240AE1D7EC6030067A94C /* AlmondSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F41240AD1D7EC6030067A94C /* AlmondSelectionCell.m */; };
 		F41240AF1D7EC6030067A94C /* AlmondSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F41240AD1D7EC6030067A94C /* AlmondSelectionCell.m */; };
 		F41586F41D6F06140004C577 /* AlmondUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F41586F31D6F06140004C577 /* AlmondUpdateViewController.m */; };
+		F417B2A11DA25B7B0073C440 /* Router.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F417B29F1DA25B7B0073C440 /* Router.storyboard */; };
+		F417B2A21DA25B7C0073C440 /* Router.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F417B29F1DA25B7B0073C440 /* Router.storyboard */; };
+		F417B2A51DA25CBD0073C440 /* AdvanceRouterSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = F417B2A41DA25CBD0073C440 /* AdvanceRouterSettingsController.m */; };
+		F417B2A61DA25CBD0073C440 /* AdvanceRouterSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = F417B2A41DA25CBD0073C440 /* AdvanceRouterSettingsController.m */; };
+		F417B2A91DA25D540073C440 /* AdvRouterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F417B2A81DA25D540073C440 /* AdvRouterTableViewCell.m */; };
+		F417B2AA1DA25D540073C440 /* AdvRouterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F417B2A81DA25D540073C440 /* AdvRouterTableViewCell.m */; };
+		F417B2AD1DA290030073C440 /* AdvRouterHelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */; };
+		F417B2AE1DA290030073C440 /* AdvRouterHelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */; };
 		F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F426AE2E1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F4B875431D5382D500DCF76F /* AlmondStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753A1D5382D500DCF76F /* AlmondStatus.m */; };
@@ -1124,6 +1132,13 @@
 		F41240AD1D7EC6030067A94C /* AlmondSelectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlmondSelectionCell.m; sourceTree = "<group>"; };
 		F41586F21D6F06140004C577 /* AlmondUpdateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondUpdateViewController.h; sourceTree = "<group>"; };
 		F41586F31D6F06140004C577 /* AlmondUpdateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlmondUpdateViewController.m; sourceTree = "<group>"; };
+		F417B2A01DA25B7B0073C440 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Router.storyboard; sourceTree = "<group>"; };
+		F417B2A31DA25CBD0073C440 /* AdvanceRouterSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceRouterSettingsController.h; sourceTree = "<group>"; };
+		F417B2A41DA25CBD0073C440 /* AdvanceRouterSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvanceRouterSettingsController.m; sourceTree = "<group>"; };
+		F417B2A71DA25D540073C440 /* AdvRouterTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvRouterTableViewCell.h; sourceTree = "<group>"; };
+		F417B2A81DA25D540073C440 /* AdvRouterTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvRouterTableViewCell.m; sourceTree = "<group>"; };
+		F417B2AB1DA290030073C440 /* AdvRouterHelpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvRouterHelpController.h; sourceTree = "<group>"; };
+		F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvRouterHelpController.m; sourceTree = "<group>"; };
 		F426AE2B1D19515500AE60C8 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		F43814941D993B2800D5C762 /* Almond.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Almond.entitlements; sourceTree = "<group>"; };
@@ -1451,6 +1466,12 @@
 				A54D74881CB51FD000EB46B6 /* RouterPayload.m */,
 				A5217EF41CBE29810089A8C3 /* SFILogsViewController.h */,
 				A5217EF51CBE29810089A8C3 /* SFILogsViewController.m */,
+				F417B2A31DA25CBD0073C440 /* AdvanceRouterSettingsController.h */,
+				F417B2A41DA25CBD0073C440 /* AdvanceRouterSettingsController.m */,
+				F417B2A71DA25D540073C440 /* AdvRouterTableViewCell.h */,
+				F417B2A81DA25D540073C440 /* AdvRouterTableViewCell.m */,
+				F417B2AB1DA290030073C440 /* AdvRouterHelpController.h */,
+				F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -1637,25 +1658,26 @@
 		1C7E7E2D1A41A26A0026F0BA /* Base.lproj */ = {
 			isa = PBXGroup;
 			children = (
-				846414CE1B736B7F008AB07F /* Fonts */,
+				1C7E7E2E1A41A26A0026F0BA /* AccountsStoryboard_iPhone.storyboard */,
+				CEABC65F1D6F14CD00C2DCD4 /* categoryTab.xib */,
 				1C7E7E301A41A26A0026F0BA /* Common-Localizable.strings */,
 				1C7E7E321A41A26A0026F0BA /* Common-MainStoryboard_iPhone.strings */,
+				F4B876491D54653500DCF76F /* DeviceHeaderView.xib */,
+				846414CE1B736B7F008AB07F /* Fonts */,
+				F4D93ACF1D38DDFE00D55BD6 /* HelpScreen.xib */,
+				F4D93ADB1D390B4B00D55BD6 /* HelpScreenStoryboard.storyboard */,
+				CE57E5301D1BBCC400493460 /* HistoryCell.xib */,
 				F4B875611D53886700DCF76F /* Login_iPhone.storyboard */,
 				F4B875631D53886700DCF76F /* MainDashboard.storyboard */,
+				1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */,
+				F4B875591D5383B500DCF76F /* Mesh.storyboard */,
+				F4B8754D1D5382FF00DCF76F /* mesh.xib */,
+				F4EA081B1D6AD9F900D6CC28 /* More.storyboard */,
+				F417B29F1DA25B7B0073C440 /* Router.storyboard */,
 				F4B875651D53886700DCF76F /* Rules.storyboard */,
 				F4B875671D53886700DCF76F /* Scenes_Iphone.storyboard */,
 				F4B875691D53886700DCF76F /* SensorStoryBoard.storyboard */,
-				1C7E7E2E1A41A26A0026F0BA /* AccountsStoryboard_iPhone.storyboard */,
-				1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */,
 				CE57E52D1D1BB82800493460 /* SiteMapStoryBoard.storyboard */,
-				F4D93ADB1D390B4B00D55BD6 /* HelpScreenStoryboard.storyboard */,
-				F4B875591D5383B500DCF76F /* Mesh.storyboard */,
-				F4EA081B1D6AD9F900D6CC28 /* More.storyboard */,
-				F4B876491D54653500DCF76F /* DeviceHeaderView.xib */,
-				CE57E5301D1BBCC400493460 /* HistoryCell.xib */,
-				F4D93ACF1D38DDFE00D55BD6 /* HelpScreen.xib */,
-				F4B8754D1D5382FF00DCF76F /* mesh.xib */,
-				CEABC65F1D6F14CD00C2DCD4 /* categoryTab.xib */,
 			);
 			path = Base.lproj;
 			sourceTree = "<group>";
@@ -2563,6 +2585,7 @@
 				F4D93AF41D3F629B00D55BD6 /* helpCenterJson.json in Resources */,
 				A58DB3C91BB1960900717C02 /* Login_iPhone.strings in Resources */,
 				A58DB3D81BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
+				F417B2A21DA25B7C0073C440 /* Router.storyboard in Resources */,
 				A58DB3F51BB1960900717C02 /* Localizable.strings in Resources */,
 				A58DB4A61BB3CD7500717C02 /* InfoPlist.strings in Resources */,
 				A58DB3D71BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
@@ -2660,6 +2683,7 @@
 				A58DB2681BB168C400717C02 /* Scenes_Iphone.strings in Resources */,
 				F4D93AF31D3F629B00D55BD6 /* helpCenterJson.json in Resources */,
 				A58DB30F1BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
+				F417B2A11DA25B7B0073C440 /* Router.storyboard in Resources */,
 				A58DB2F31BB16B9F00717C02 /* termsofuse.html in Resources */,
 				846414E21B736B80008AB07F /* AvenirLTStd-LightOblique.otf in Resources */,
 				A58DB3031BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
@@ -2990,6 +3014,7 @@
 				1DF0347975CABF8F74C4905D /* IndexValueSupport.m in Sources */,
 				F4B875481D5382D500DCF76F /* MeshSetupViewController.m in Sources */,
 				CEF6F4DF1C92CAD600C68975 /* CustomCellTableViewCell.m in Sources */,
+				F417B2AA1DA25D540073C440 /* AdvRouterTableViewCell.m in Sources */,
 				1DF03A2A9BFA55B20A1D2609 /* SensorIndexSupport.m in Sources */,
 				F4D93AF81D3F882300D55BD6 /* HelpItemsTableViewController.m in Sources */,
 				1DF03733354F6CEF7D979D57 /* NotificationsTestStore.m in Sources */,
@@ -3009,8 +3034,10 @@
 				F4B876691D54653500DCF76F /* ClientPropertiesViewController.m in Sources */,
 				CEF6F4EF1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */,
 				CEF6F4F11C92CAD600C68975 /* CommonMethods.m in Sources */,
+				F417B2A61DA25CBD0073C440 /* AdvanceRouterSettingsController.m in Sources */,
 				1DF038A445EB0F3A6476DC32 /* SFIHuePickerView.m in Sources */,
 				F4EA08271D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */,
+				F417B2AE1DA290030073C440 /* AdvRouterHelpController.m in Sources */,
 				1C709A0A1B5A3157007D397C /* SFICloudLinkViewController.m in Sources */,
 				1DF0385A73D7AE7E9208F510 /* UIColor+Securifi.m in Sources */,
 				CEF6F4F31C92CAD600C68975 /* CrossButton.m in Sources */,
@@ -3109,6 +3136,7 @@
 				CEF6F4EC1C92CAD600C68975 /* RulesTableViewController.m in Sources */,
 				1C7E7D951A41A0990026F0BA /* SFIRouterTableViewController.m in Sources */,
 				1C7E7E061A41A0B30026F0BA /* main.m in Sources */,
+				F417B2A51DA25CBD0073C440 /* AdvanceRouterSettingsController.m in Sources */,
 				F4B8766E1D54653500DCF76F /* BlinkLedView.m in Sources */,
 				CEF6F4FC1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */,
 				846414C91B736B36008AB07F /* ILHuePickerView.m in Sources */,
@@ -3139,6 +3167,7 @@
 				2A4C24371D0FC3FA001191E8 /* DashboardViewController.m in Sources */,
 				A54537291C8ED1ED00DC3EC8 /* SceneNameViewController.m in Sources */,
 				CEF6F4E61C92CAD600C68975 /* RulePayload.m in Sources */,
+				F417B2AD1DA290030073C440 /* AdvRouterHelpController.m in Sources */,
 				1DF0318D09F8B1DBAF74C090 /* SFINotificationTableViewHeaderFooter.m in Sources */,
 				F4B8766C1D54653500DCF76F /* DeviceEditViewController.m in Sources */,
 				F41586F41D6F06140004C577 /* AlmondUpdateViewController.m in Sources */,
@@ -3189,6 +3218,7 @@
 				1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */,
 				CEF6F4D81C92CAD600C68975 /* AddRuleSceneClass.m in Sources */,
 				1DF030E39A245683EABC61AE /* SFIRouterVersionTableViewCell.m in Sources */,
+				F417B2A91DA25D540073C440 /* AdvRouterTableViewCell.m in Sources */,
 				CE57A3461D7008C800F14B25 /* UrlImgDict.m in Sources */,
 				F4B875471D5382D500DCF76F /* MeshSetupViewController.m in Sources */,
 				F4B8767A1D54653500DCF76F /* ListButtonView.m in Sources */,
@@ -4852,6 +4882,14 @@
 				CEABC6601D6F14CD00C2DCD4 /* Base */,
 			);
 			name = categoryTab.xib;
+			sourceTree = "<group>";
+		};
+		F417B29F1DA25B7B0073C440 /* Router.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F417B2A01DA25B7B0073C440 /* Base */,
+			);
+			name = Router.storyboard;
 			sourceTree = "<group>";
 		};
 		F4B8754D1D5382FF00DCF76F /* mesh.xib */ = {
