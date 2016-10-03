@@ -188,10 +188,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     return view;
 }
 
-//- (NSString*)getHeaderDate:(NSInteger)section{
-//    BrowsingHistory *browsHistory = self.browsingHistoryDayWise[section];
-//    return [browsHistory.date getDayMonthFormat];
-//}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     HistoryCell *cell;
     cell = [tableView dequeueReusableCellWithIdentifier:@"abc" forIndexPath:indexPath];
@@ -449,20 +446,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSLog(@"recent obj222 %@",[self.recentSearchDict allKeys]);
     
 }
-- (NSDictionary*)parseJson:(NSString*)fileName{
-    NSError *error = nil;
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName
-                                                         ofType:@"json"];
-    NSData *dataFromFile = [NSData dataWithContentsOfFile:filePath];
-    NSDictionary *data = [NSJSONSerialization JSONObjectWithData:dataFromFile
-                                                         options:kNilOptions
-                                                           error:&error];
-    
-    if (error != nil) {
-        NSLog(@"Error: was not able to load json file: %@.",fileName);
-    }
-    return data;
-}
+
 
 -(void)getHistoryFromDB:(NSString *)searchString{
     NSLog(@"self.searchPatten %ld..%@",(long)self.searchPatten,searchString);
@@ -532,7 +516,6 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.NoresultFound.textColor = [UIColor grayColor];
     [self.navigationController.view  addSubview:self.NoresultFound];
     self.NoresultFound.hidden = YES;
-    
     
 }
 

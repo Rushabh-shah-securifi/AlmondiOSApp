@@ -92,7 +92,7 @@
     [self initializeNotification];
     [self.navigationController setNavigationBarHidden:YES];
     [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac]];
-    [self.dayArr removeAllObjects];
+   // [self.dayArr removeAllObjects];
     //[self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
     NSLog(@"dbCount == %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
     self.isEmptyDb = YES;
@@ -180,7 +180,7 @@
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
     
     /*note get endidentifier from db */
-    NSLog(@"response dict =%@",dict[@"pageState"]);
+    NSLog(@"response dict =%@",dict);
     NSArray *allObj = dict[@"Data"];
     NSDictionary *last_uriDict = [allObj lastObject];
     NSString *last_date = last_uriDict[@"Date"];
@@ -204,10 +204,6 @@
         if(self.isScrollEndReq == NO && [maxCompleteDBDate isEqualToString:@"1970-01-01"]){
             if([BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] < 500)
             {
-                //NSLog(@"database < 500");
-                //store InCompleteDB in this controller
-                // send req with PS of incompleteDB
-                //NSLog(@"self.incompleteDB ps %@",self.incompleteDB[@"PS"]);
                 self.isScrollEndReq = NO;
                 NSLog(@"sendHttpRequest HTTP 0");
                 NSLog(@"databse count %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
@@ -224,9 +220,7 @@
                 if([BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] > 500){
                     
                     NSString *lastDateODb = [BrowsingHistoryDataBase getLastDate:self.amac clientMac:self.cmac];
-                    //NSLog(@"lastDateODb = %@",lastDateODb);
-                    //NSLog(@"before delete count %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
-                    
+                   
                     [BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac date:lastDateODb];
                     [CompleteDB deleteDateEntries:self.amac clientMac:self.cmac date:lastDateODb];
                 }
@@ -262,6 +256,7 @@
         //NSLog(@"browsing db return %@",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac]);
         
     [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
+        [self reloadTable];
         self.isEmptyDb = NO;
     }
     
@@ -365,14 +360,16 @@
                 _targetCount = 0;
                  self.isScrollEndReq = YES;
                 NSLog(@"sending HTTP 1");
+                if(self.sendReq)
                 [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
             }
             else if(![MinDateOrgDB isEqualToString: todayDate] && [minDateCompDB isEqualToString:@"1970-01-01"]){
                 _targetCount = 0;
-                NSString *date =self.incompleteDB[@"lastDate"];
+                
                 //NSLog(@"sending incomplete db %@",self.incompleteDB);
                  self.isScrollEndReq = YES;
                 NSLog(@"sending HTTP 2");
+                if(self.sendReq)
                 [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
             }
             else{
@@ -381,6 +378,7 @@
                 _targetCount = [BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] + 100;
                  self.isScrollEndReq = YES;
                 NSLog(@"sending HTTP 3");
+                if(self.sendReq)
                 [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&lastDate=%@",_amac,_cmac,MinDateOrgDB]];
             }
         }
@@ -404,30 +402,30 @@
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
     [label setFont:[UIFont securifiBoldFont:15]];
     
-//    NSMutableArray *myMutableArray = [NSMutableArray arrayWithArray:[dict[@"Data"] allKeys]];
-//    
-//    NSArray *aUnsorted = [dict[@"Data"] allKeys];
-//    NSArray *arrKeys = [aUnsorted sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-//        NSDateFormatter *df = [[NSDateFormatter alloc] init];
-//        [df setDateFormat:@"dd-MM-yyyy"];
-//        NSDate *d1 = [df dateFromString:(NSString*) obj1];
-//        NSDate *d2 = [df dateFromString:(NSString*) obj2];
-//        return [d1 compare: d2];
-//    }];
+    //    NSMutableArray *myMutableArray = [NSMutableArray arrayWithArray:[dict[@"Data"] allKeys]];
+    //
+    //    NSArray *aUnsorted = [dict[@"Data"] allKeys];
+    //    NSArray *arrKeys = [aUnsorted sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+    //        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    //        [df setDateFormat:@"dd-MM-yyyy"];
+    //        NSDate *d1 = [df dateFromString:(NSString*) obj1];
+    //        NSDate *d2 = [df dateFromString:(NSString*) obj2];
+    //        return [d1 compare: d2];
+    //    }];
     
-//    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Date" ascending:FALSE];
-//    [myMutableArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    //    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Date" ascending:FALSE];
+    //    [myMutableArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     NSString *str;
-//    //NSLog(@"self.dayArr Count = %ld",self.dayArr.count);
+    //    //NSLog(@"self.dayArr Count = %ld",self.dayArr.count);
     NSArray *browsHist = self.dayArr[section];
     NSDictionary *dict2 = browsHist[0];
-//    //NSLog(@"dict2 date %@",dict2);
+    //    //NSLog(@"dict2 date %@",dict2);
     str = dict2[@"date"];
     NSDate *date = [NSDate convertStirngToDate:str];
-//     //NSLog(@"date = %@",date);
-
+    //     //NSLog(@"date = %@",date);
+    
     NSString *headerDate = [date getDayMonthFormat];
-//    //NSLog(@"today date %@ == %@",[BrowsingHistoryDataBase getTodayDate],@"10-8-2016");
+    //    //NSLog(@"today date %@ == %@",[BrowsingHistoryDataBase getTodayDate],@"10-8-2016");
     if([str isEqualToString:[BrowsingHistoryDataBase getTodayDate]])
         label.text = [NSString stringWithFormat:@"Today, %@",headerDate];
     else
@@ -457,31 +455,12 @@
     viewController.uriDict = uriDict;
         viewController.client = self.client;
         [self.navigationController pushViewController:viewController animated:YES];}
-    
-//    UIView *view = [[UIView alloc]init];
-//    view.backgroundColor = [UIColor yellowColor];
-//    [UIView animateWithDuration:0.5
-//                          delay:0.1
-//                        options: UIViewAnimationOptionTransitionCurlUp
-//                     animations:^{
-//                         view.frame = CGRectMake(0, 0, 100, 100);
-//                     }
-//                     completion:^(BOOL finished){
-//                     }];
-//    [self.view addSubview:view];
+
 
 }
 #pragma mark click handler
 - (void)onSearchButton{
-//    [BrowsingHistoryDataBase todaySearch];
-//    [BrowsingHistoryDataBase LastHourSearch];
-//    
 
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
-//    ParentalControlsViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ParentalControlsViewController"];
-//    [self.navigationController pushViewController:viewController animated:YES];
-//
-    
     SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
     ctrl.urlToImageDict = self.urlToImageDict;

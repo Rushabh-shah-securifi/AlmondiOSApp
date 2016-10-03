@@ -29,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UIView *view3;
 @property (weak, nonatomic) IBOutlet UISwitch *switchView1;
 @property (weak, nonatomic) IBOutlet UISwitch *switchView3;
+@property (weak, nonatomic) IBOutlet UIButton *backGrayButton;
 
 
 
@@ -309,12 +310,18 @@
     });
 }
 - (IBAction)iconOutletClicked:(id)sender {
-    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 200, self.view.frame.size.width, 320);
+    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 180, self.view.frame.size.width, 320);
     [self.view addSubview:self.cat_view_more];
+    self.backGrayButton.hidden = NO;
     
     
 }
 -(void)closeMoreView{
     [self.cat_view_more removeFromSuperview];
+    self.backGrayButton.hidden = YES;
 }
+- (IBAction)grayBackButtonClicked:(id)sender {
+    [self closeMoreView];
+}
+
 @end

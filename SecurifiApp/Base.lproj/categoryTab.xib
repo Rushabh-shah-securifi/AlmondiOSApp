@@ -6,11 +6,14 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="AvenirLTStd-Light.otf">
-            <string>AvenirLTStd-Light</string>
+        <array key="AvenirLTStd-Black.otf">
+            <string>AvenirLTStd-Black</string>
         </array>
-        <array key="AvenirLTStd-Medium.otf">
-            <string>AvenirLTStd-Medium</string>
+        <array key="AvenirLTStd-Heavy.otf">
+            <string>AvenirLTStd-Heavy</string>
+        </array>
+        <array key="AvenirLTStd-Roman.otf">
+            <string>AvenirLTStd-Roman</string>
         </array>
     </customFonts>
     <objects>
@@ -33,14 +36,14 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="    Suggest category Change" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y7n-5j-beg">
-                            <frame key="frameInset" minX="8" width="359" height="51"/>
+                            <frame key="frameInset" minX="8" width="359" height="45"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="AvenirLTStd-Medium" family="Avenir LT Std" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="AvenirLTStd-Black" family="Avenir LT Std" pointSize="17"/>
                             <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dyp-sT-kk7">
-                            <frame key="frameInset" minX="8" minY="51" width="359" height="1"/>
+                            <frame key="frameInset" minX="1" minY="45" width="359" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
@@ -254,11 +257,12 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="HD2-WP-1LD"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="16"/>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="16"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MVW-AZ-VNG">
-                    <frame key="frameInset" minY="62" width="359" height="1"/>
+                    <frame key="frameInset" minY="43" width="359" height="1"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
@@ -268,15 +272,6 @@
                         <constraint firstAttribute="height" constant="20" id="QGe-TP-uKX"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WfX-4G-tX9">
-                    <constraints>
-                        <constraint firstAttribute="height" constant="100" id="ddT-Lc-VqZ"/>
-                    </constraints>
-                    <string key="text">Our category database is crowedsourced and your suggetions are valueable to us.We constantly review and update the top level category based on user inputs.</string>
-                    <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="15"/>
-                    <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1G9-au-XlE">
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -287,6 +282,15 @@
                         <action selector="closeMoreView:" destination="-1" eventType="touchUpInside" id="0Rn-2g-Mmj"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WfX-4G-tX9">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="100" id="ddT-Lc-VqZ"/>
+                    </constraints>
+                    <string key="text">Our category database is crowedsourced and your suggetions are valueable to us.We constantly review and update the top level category based on user inputs.</string>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="15"/>
+                    <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -294,18 +298,18 @@
                 <constraint firstAttribute="trailing" secondItem="KsZ-Ds-aeW" secondAttribute="trailing" constant="-17" id="ECR-cm-4NU"/>
                 <constraint firstItem="1G9-au-XlE" firstAttribute="top" secondItem="238-Ai-OW8" secondAttribute="top" id="F4S-FI-Whw"/>
                 <constraint firstItem="WfX-4G-tX9" firstAttribute="leading" secondItem="238-Ai-OW8" secondAttribute="leading" constant="7" id="GWn-rQ-Cnp"/>
-                <constraint firstAttribute="trailing" secondItem="lds-Bd-aGo" secondAttribute="trailing" constant="30" id="IaN-zj-gDK"/>
+                <constraint firstAttribute="trailing" secondItem="lds-Bd-aGo" secondAttribute="trailing" constant="27" id="IaN-zj-gDK"/>
                 <constraint firstItem="KsZ-Ds-aeW" firstAttribute="leading" secondItem="238-Ai-OW8" secondAttribute="leading" id="Vyr-kC-IPm"/>
-                <constraint firstItem="KsZ-Ds-aeW" firstAttribute="top" secondItem="238-Ai-OW8" secondAttribute="top" constant="6" id="aVJ-ot-qz7"/>
+                <constraint firstItem="KsZ-Ds-aeW" firstAttribute="top" secondItem="238-Ai-OW8" secondAttribute="top" constant="7" id="aVJ-ot-qz7"/>
                 <constraint firstAttribute="trailing" secondItem="WfX-4G-tX9" secondAttribute="trailing" constant="16" id="egY-dq-96b"/>
                 <constraint firstAttribute="trailing" secondItem="1G9-au-XlE" secondAttribute="trailing" constant="7" id="fZR-FX-Vaz"/>
-                <constraint firstItem="WfX-4G-tX9" firstAttribute="top" secondItem="KsZ-Ds-aeW" secondAttribute="bottom" constant="25" id="iPF-LP-fzj"/>
+                <constraint firstItem="WfX-4G-tX9" firstAttribute="top" secondItem="KsZ-Ds-aeW" secondAttribute="bottom" constant="6" id="iPF-LP-fzj"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="317" y="311.5"/>
         </view>
         <view contentMode="scaleToFill" id="Cbd-eE-QpO">
-            <rect key="frame" x="0.0" y="0.0" width="340" height="231"/>
+            <rect key="frame" x="0.0" y="0.0" width="340" height="182"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Advanced parental control" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Viq-lZ-qxF">
@@ -316,7 +320,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v60-8D-72g">
-                    <frame key="frameInset" minY="54" width="359" height="1"/>
+                    <frame key="frameInset" minY="43" width="359" height="1"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
@@ -326,15 +330,6 @@
                         <constraint firstAttribute="height" constant="20" id="qwK-gA-aze"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Abn-WF-bOK">
-                    <constraints>
-                        <constraint firstAttribute="height" constant="150" id="Iyk-oK-HAe"/>
-                    </constraints>
-                    <string key="text">Web History and Bandwidth monitoring are advanced parental control offerings on Almond. As an introductory offer, enjoy a limited period free access for this service. Stay tuned for more!</string>
-                    <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="15"/>
-                    <color key="textColor" red="0.33333333329999998" green="0.33333333329999998" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gyy-xD-0kw">
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -346,22 +341,31 @@
                         <action selector="closeParentalMoreview:" destination="-1" eventType="touchUpInside" id="QEA-QU-ORl"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Abn-WF-bOK">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="114" id="Iyk-oK-HAe"/>
+                    </constraints>
+                    <string key="text">Web History and Bandwidth monitoring are advanced parental control offerings on Almond. As an introductory offer, enjoy a limited period free access for this service. Stay tuned for more!</string>
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
+                    <color key="textColor" red="0.33333333329999998" green="0.33333333329999998" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="Abn-WF-bOK" secondAttribute="trailing" constant="37" id="3yf-Um-UcA"/>
+                <constraint firstAttribute="trailing" secondItem="Abn-WF-bOK" secondAttribute="trailing" constant="30" id="3yf-Um-UcA"/>
                 <constraint firstItem="McK-oA-6Dz" firstAttribute="top" secondItem="Cbd-eE-QpO" secondAttribute="top" constant="12" id="49H-wL-how"/>
-                <constraint firstItem="Abn-WF-bOK" firstAttribute="leading" secondItem="Cbd-eE-QpO" secondAttribute="leading" constant="8" id="Aav-Y3-1U1"/>
+                <constraint firstItem="Abn-WF-bOK" firstAttribute="leading" secondItem="Cbd-eE-QpO" secondAttribute="leading" constant="15" id="Aav-Y3-1U1"/>
                 <constraint firstItem="gyy-xD-0kw" firstAttribute="top" secondItem="Cbd-eE-QpO" secondAttribute="top" id="FCR-pH-UuQ"/>
                 <constraint firstAttribute="trailing" secondItem="McK-oA-6Dz" secondAttribute="trailing" constant="30" id="Z4n-v1-6nz"/>
-                <constraint firstAttribute="trailing" secondItem="Viq-lZ-qxF" secondAttribute="trailing" constant="-17" id="fzo-Ax-xEX"/>
-                <constraint firstItem="Abn-WF-bOK" firstAttribute="top" secondItem="Viq-lZ-qxF" secondAttribute="bottom" constant="25" id="hHy-wb-BLD"/>
+                <constraint firstAttribute="trailing" secondItem="Viq-lZ-qxF" secondAttribute="trailing" constant="58" id="fzo-Ax-xEX"/>
+                <constraint firstItem="Abn-WF-bOK" firstAttribute="top" secondItem="Viq-lZ-qxF" secondAttribute="bottom" constant="11" id="hHy-wb-BLD"/>
                 <constraint firstItem="Viq-lZ-qxF" firstAttribute="leading" secondItem="Cbd-eE-QpO" secondAttribute="leading" id="mxN-CZ-KgV"/>
-                <constraint firstItem="Viq-lZ-qxF" firstAttribute="top" secondItem="Cbd-eE-QpO" secondAttribute="top" constant="6" id="sN2-aK-Tzj"/>
+                <constraint firstItem="Viq-lZ-qxF" firstAttribute="top" secondItem="Cbd-eE-QpO" secondAttribute="top" constant="7" id="sN2-aK-Tzj"/>
                 <constraint firstAttribute="trailing" secondItem="gyy-xD-0kw" secondAttribute="trailing" constant="7" id="yzP-sf-nNl"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="317" y="339.5"/>
+            <point key="canvasLocation" x="317" y="315"/>
         </view>
     </objects>
     <resources>
