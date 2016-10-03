@@ -184,7 +184,7 @@
     NSArray *allObj = dict[@"Data"];
     NSDictionary *last_uriDict = [allObj lastObject];
     NSString *last_date = last_uriDict[@"Date"];
-    
+    if(last_date != NULL)
     self.incompleteDB = @{
                           @"lastDate" : last_date,
                           @"PS" : dict[@"pageState"]? : [NSNull null]
@@ -254,7 +254,9 @@
     if(self.isEmptyDb == YES){
     [self.dayArr removeAllObjects];
         //NSLog(@"browsing db return %@",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac]);
+        NSLog(@"get first 10 record %@ db Count %d",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac],[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
         
+    [self.dayArr removeAllObjects];
     [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
         [self reloadTable];
         self.isEmptyDb = NO;
