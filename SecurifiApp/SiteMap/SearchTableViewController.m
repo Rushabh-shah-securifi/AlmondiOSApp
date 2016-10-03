@@ -295,11 +295,12 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     NSString *searchString = self.searchString;
     NSLog(@"searching string on search = %@",searchString);
-     if(![searchString isEqualToString:@" "] && ![CommonMethods isContainCategory:searchString])
-    [self.recentSearchDict setValue:searchString forKey:searchString];
+    if(![searchString isEqualToString:@" "] && ![CommonMethods isContainCategory:searchString]){
+         long int currentTime = [NSDate date].timeIntervalSince1970;
+    [self.recentSearchDict setValue:searchString forKey:@(currentTime).stringValue];
+    }
     
-    
-//    [RecentSearchDB insertInRecentDB:searchString cmac:self.cmac amac:self.amac];
+    [RecentSearchDB insertInRecentDB:searchString cmac:self.cmac amac:self.amac];
     if([self.recentSearchDict allKeys].count > 0)
     [self.recentSearchDictObj setObject:self.recentSearchDict forKey:[NSString stringWithFormat:@"%@%@",self.amac,self.cmac]];
     NSLog(@"self.recentSearchDictObj insert %@",self.recentSearchDictObj);
@@ -427,19 +428,21 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
     
     self.recentSearchObj = [[NSMutableArray alloc]init];
-    NSLog(@"recent seaech count = %d",[RecentSearchDB GetHistoryDatabaseCount:self.amac clientMac:_cmac]);
+    //NSLog(@"recent seaech count = %d",[RecentSearchDB GetHistoryDatabaseCount:self.amac clientMac:_cmac]);
     NSLog(@"self.recentSearchDictObj %@",self.recentSearchDictObj);
-//    self.recentSearchObj = [RecentSearchDB getAllRecentwithLimit:1 almonsMac:self.amac clientMac:self.cmac];
+    //self.recentSearchObj = [RecentSearchDB getAllRecentwithLimit:1 almonsMac:self.amac clientMac:self.cmac];
+    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:nil ascending:NO selector:@selector(localizedCompare:)];
+    NSArray* sortedArray = [[self.recentSearchDict allKeys] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [self.recentSearchObj removeAllObjects];
     [self.searchStrArr removeAllObjects];
-    for (int i = 0;i<[self.recentSearchDict allKeys].count;i++) {
-        NSDictionary *recent = @{@"hostName":[[self.recentSearchDict allKeys] objectAtIndex:i],
+    for (int i = 0;i<sortedArray.count;i++) {
+        NSDictionary *recent = @{@"hostName":[self.recentSearchDict valueForKey:[sortedArray objectAtIndex:i]],
                                    @"image" : [UIImage imageNamed:@"search_icon"]
                                    };
-        if(i>3)
+        if(i>2)
             break;
         [self.recentSearchObj addObject:recent];
-        [self.searchStrArr addObject:[[self.recentSearchDict allKeys] objectAtIndex:i]];
+        [self.searchStrArr addObject:[self.recentSearchDict valueForKey:[sortedArray objectAtIndex:i]]];
         
         
     }
