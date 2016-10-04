@@ -18,7 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor yellowColor];
+    
     [self showHelp];
     // Do any additional setup after loading the view.
 }
@@ -34,12 +34,16 @@
             [self showVpnHelp];
             break;
         case Feature_Port_Forwarding:
+            [self showPortForwardingHelp];
             break;
         case Feature_DNS:
+            [self showDnsHelp];
             break;
         case Feature_Static_IP_Settings:
+            [self showStaticIPHelp];
             break;
         case Feature_UPnP:
+            [self showUpnpHelp];
             break;
         default:
             break;
@@ -47,13 +51,167 @@
 }
 
 - (void)showVpnHelp{
+    NSString *strForWebView = [NSString stringWithFormat:@"<html><head><style type=\"text/css\">"
+                               "body {font-family: \"%@\"; font-size: %@; height: auto; }</style></head>"
+                               "<body>"
+                               "<h3>%@</h3>"
+                               "<p>%@</p>"
+                               "<h4>%@</h4>"
+                               "<p>%@</p>"
+                               "<h4>%@</h4>"
+                               "<ol type=\"1\"><li>%@</li><li>%@</li><li>%@</li></ol>"
+                               "</body>"
+                               "</html>", @"Avenir-Roman", [NSNumber numberWithInt:16], NSLocalizedString(@"vpn_title",@""),
+                               NSLocalizedString(@"vpn_description",@""),
+                               NSLocalizedString(@"vpn_title_2",@""),
+                               NSLocalizedString(@"vpn_description_2",@""),
+                               NSLocalizedString(@"vpn_title_3",@""),
+                               NSLocalizedString(@"vpn_sub_description_1",@""),
+                               NSLocalizedString(@"vpn_sub_description_2",@""),
+                               NSLocalizedString(@"vpn_sub_description_3",@"")];
     
-    UILabel *detail = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0)];
-    NSString *text = @"Scenes make adjusting multiple smart devices much easier and faster. For example, when you go to bed you might have two or three lights to turn off, the temperature on the thermostat to adjust, and set the alarm to activate. A Scene means you can do all of them with just one tap.\n\nYou can create and manage Scenes from the Scenes tab in the Almond app. Tap the add button to create a scene. And then tap on a device and select one or more actions from the available options. ";
-    [CommonMethods setLableProperties:detail text:text textColor:[SFIColors ruleGraycolor] fontName:@"AvenirLTStd-Roman" fontSize:16 alignment:NSTextAlignmentLeft];
-    [CommonMethods setLineSpacing:detail text:text spacing:3];
-    [detail sizeToFit];
-    detail.backgroundColor = [UIColor orangeColor];
-    [self.view addSubview:detail];
+    [self displayWebView:strForWebView];
+}
+
+- (void)showPortForwardingHelp{
+    NSString *strForWebView = [NSString stringWithFormat:@"<html><head><style type=\"text/css\">"
+                               "body {font-family: \"%@\"; font-size: %@; height: auto; }</style></head>"
+                               "<body>"
+                               "<h3>%@</h3>"
+                               "<p>%@</p>"
+                               "<h4>%@</h4>"
+                               "<ol type=\"1\">"
+                                   "<li>%@</li>"
+                                   "<li>%@ <ol type=\"a\"><li>%@</li><li>%@</li><li>%@</li><li>%@</li><li>%@</li></ol></li>"
+                                   "<li>%@</li>"
+                               "</ol>"
+                               "<h4>%@</h4>"
+                               "<ol type=\"1\">"
+                               "<li>%@</li>"
+                               "<li>%@ <ol type=\"a\"><li>%@</li><li>%@</li><li>%@</li><li>%@</li><li>%@</li></ol></li>"
+                               "</ol>"
+                               "</body>"
+                               "</html>", @"Avenir-Roman", [NSNumber numberWithInt:16], NSLocalizedString(@"port_title",@""),
+                               NSLocalizedString(@"port_description",@""),
+                               NSLocalizedString(@"port_title_2",@""),
+                               NSLocalizedString(@"port_sub_description_1",@""),
+                               NSLocalizedString(@"port_sub_description_2",@""),
+                               NSLocalizedString(@"port_sub_step_1",@""),
+                               NSLocalizedString(@"port_sub_step_2",@""),
+                               NSLocalizedString(@"port_sub_step_3",@""),
+                               NSLocalizedString(@"port_sub_step_4",@""),
+                               NSLocalizedString(@"port_sub_step_5",@""),
+                               NSLocalizedString(@"port_sub_description_3",@""),
+                               NSLocalizedString(@"port_plus_title",@""),
+                               NSLocalizedString(@"port_plus_sub_description_1",@""),
+                               NSLocalizedString(@"port_plus_sub_description_2",@""),
+                               NSLocalizedString(@"port_plus_sub_step_1",@""),
+                               NSLocalizedString(@"port_plus_sub_step_2",@""),
+                               NSLocalizedString(@"port_plus_sub_step_3",@""),
+                               NSLocalizedString(@"port_plus_sub_step_4",@""),
+                               NSLocalizedString(@"port_plus_sub_step_5",@"")];
+    
+    [self displayWebView:strForWebView];
+}
+
+- (void)showDnsHelp{
+    NSString *strForWebView = [NSString stringWithFormat:@"<html><head><style type=\"text/css\">"
+                               "body {font-family: \"%@\"; font-size: %@; height: auto; }</style></head>"
+                               "<body>"
+                               "<h3>%@</h3>"
+                               "<p>%@</p>"
+                               "<h4>%@</h4>"
+                               "<ol type=\"1\"><li>%@</li><li>%@</li><li>%@</li></ol>"
+                               "<h4>%@</h4>"
+                               "<ol type=\"1\"><li>%@</li><li>%@</li><li>%@</li></ol>"
+                               "</body>"
+                               "</html>", @"Avenir-Roman", [NSNumber numberWithInt:16], NSLocalizedString(@"dns_title",@""),
+                               NSLocalizedString(@"dns_description",@""),
+                               NSLocalizedString(@"dns_title_2",@""),
+                               NSLocalizedString(@"vpn_sub_description_1",@""),
+                               NSLocalizedString(@"vpn_sub_description_2",@""),
+                               NSLocalizedString(@"vpn_sub_description_3",@""),
+                               NSLocalizedString(@"dns_title_3",@""),
+                               NSLocalizedString(@"dns_plus_sub_descr_1",@""),
+                               NSLocalizedString(@"dns_plus_sub_descr_2",@""),
+                               NSLocalizedString(@"dns_plus_sub_descr_3",@""),
+                               NSLocalizedString(@"dns_plus_sub_descr_4",@"")];
+    
+    [self displayWebView:strForWebView];
+}
+
+- (void)showStaticIPHelp{
+    NSString *strForWebView = [NSString stringWithFormat:@"<html><head><style type=\"text/css\">"
+                               "body {font-family: \"%@\"; font-size: %@; height: auto; }</style></head>"
+                               "<body>"
+                               "<h3>%@</h3>"
+                               "<h4>%@</h4>"
+                               "<ol type=\"1\"><li>%@</li><li>%@</li><li>%@</li></ol>"
+                               "<h4>%@</h4>"
+                               "<ol type=\"1\"><li>%@</li><li>%@</li><li>%@</li><li>%@</li></ol>"
+                               "</body>"
+                               "</html>", @"Avenir-Roman", [NSNumber numberWithInt:16], NSLocalizedString(@"static_title",@""),
+                               NSLocalizedString(@"static_title_2",@""),
+                               NSLocalizedString(@"static_sub_descr_1",@""),
+                               NSLocalizedString(@"static_sub_descr_2",@""),
+                               NSLocalizedString(@"static_sub_descr_3",@""),
+                               NSLocalizedString(@"static_title_plus",@""),
+                               NSLocalizedString(@"static_sub_descr_plus_1",@""),
+                               NSLocalizedString(@"static_sub_descr_plus_2",@""),
+                               NSLocalizedString(@"static_sub_descr_plus_3",@""),
+                               NSLocalizedString(@"static_sub_descr_plus_4",@"")];
+    
+    [self displayWebView:strForWebView];
+}
+
+- (void)showUpnpHelp{
+    NSString *strForWebView = [NSString stringWithFormat:@"<html><head><style type=\"text/css\">"
+                               "body {font-family: \"%@\"; font-size: %@; height: auto; }</style></head>"
+                               "<body>"
+                               "<h3>%@</h3>"
+                               "<p>%@</p>"
+                               "<h4>%@</h4>"
+                               "<p>%@</p>"
+                               "<h4>%@</h4>"
+                               "<ol type=\"1\"><li>%@</li><li>%@</li><li>%@</li></ol>"
+                               "</body>"
+                               "</html>", @"Avenir-Roman", [NSNumber numberWithInt:16], NSLocalizedString(@"upnp_title",@""),
+                               NSLocalizedString(@"upnp_descr",@""),
+                               NSLocalizedString(@"upnp_title_2",@""),
+                               NSLocalizedString(@"upnp_descr_2",@""),
+                               NSLocalizedString(@"upnp_title_3",@""),
+                               NSLocalizedString(@"upnp_sub_descr_1",@""),
+                               NSLocalizedString(@"upnp_sub_descr_2",@""),
+                               NSLocalizedString(@"upnp_sub_descr_3",@"")];
+    
+    [self displayWebView:strForWebView];
+}
+
+- (void)displayWebView:(NSString *)strForWebView{
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-60)];
+    webView.backgroundColor = [UIColor clearColor];
+    [webView loadHTMLString:strForWebView baseURL:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.view addSubview:webView];
+    });
+}
+
+- (void)helpCode{
+    /*
+     NSString *strForWebView = [NSString stringWithFormat:@"<html><head><style type=\"text/css\">"
+     "body {font-family: \"%@\"; font-size: %@; height: auto; }</style></head>"
+     "<body>  <h3>My First Heading</h3>  %@ </body> \n"
+     "<a href=\"http://www.w3schools.com\">This is a link</a> \n"
+     "</html>", @"Avenir-Roman", [NSNumber numberWithInt:16], @"Hello here is my new html content."];
+     
+     
+     <ol type="1">
+     <li>Coffee</li>
+     <li>Tea</li>
+     <li>Milk</li>
+     </ol>
+     
+     
+     */
 }
 @end
