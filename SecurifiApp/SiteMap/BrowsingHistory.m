@@ -14,7 +14,7 @@
 
 @end
 @implementation BrowsingHistory
--(void)getBrowserHistoryImages:(NSDictionary *)historyDict dispatchQueue:(dispatch_queue_t)imageDownloadQueue dayArr:(NSMutableArray *)dayArr imageDict:(NSMutableDictionary*)uriToImgDict{
+-(void)getBrowserHistoryImages:(NSDictionary *)historyDict dispatchQueue:(dispatch_queue_t)imageDownloadQueue dayArr:(NSMutableArray *)dayArr{
 
     NSDictionary *dict1 = historyDict[@"Data"];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -39,7 +39,7 @@
             
             {
             dispatch_async(imageDownloadQueue,^(){
-                [uriDict setObject:[self getImage:uriDict[@"hostName"] imageDict:uriToImgDict dispatchQueue:imageDownloadQueue] forKey:@"image"];
+                [uriDict setObject:[self getImage:uriDict[@"hostName"] dispatchQueue:imageDownloadQueue] forKey:@"image"];
                  [self.delegate reloadTable];
             });
             [oneDayUri addObject:uriDict];
@@ -50,7 +50,7 @@
     
 }
 //
--(UIImage*)getImage:(NSString*)hostName imageDict:(NSMutableDictionary*)uriToImgDic2t dispatchQueue:(dispatch_queue_t)imageDownloadQueue{
+-(UIImage*)getImage:(NSString*)hostName dispatchQueue:(dispatch_queue_t)imageDownloadQueue{
     UrlImgDict *imgDicts = [UrlImgDict sharedInstance];
     __block UIImage *img;
     if(imgDicts.imgDict[hostName]){

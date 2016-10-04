@@ -179,7 +179,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         NSDate *date = [NSDate convertStirngToDate:str];
         NSString *headerDate = [date getDayMonthFormat];
 //        headerDate = @"today";
-        label.text = section == 0? [NSString stringWithFormat:@"Today, %@",headerDate]: headerDate;
+        if([str isEqualToString:[BrowsingHistoryDataBase getTodayDate]])
+            label.text = [NSString stringWithFormat:@"Today, %@",headerDate];
+        else
+            label.text = headerDate;
     }
     
     label.textColor = [UIColor grayColor];
@@ -333,8 +336,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+    
     self.NoresultFound.hidden = YES;
     NSLog(@"searchBarTextDidBeginEditing %@",searchBar.text);
+    [self.searchTableView reloadData];
     
     
     
@@ -378,7 +383,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     [self getHistoryFromDB:searchString];
 
     [self.dayArr removeAllObjects];
-    [self.browsingHistory getBrowserHistoryImages:self.historyDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
+    [self.browsingHistory getBrowserHistoryImages:self.historyDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
     
     [self reloadTable];
     if(self.dayArr.count == 0)
