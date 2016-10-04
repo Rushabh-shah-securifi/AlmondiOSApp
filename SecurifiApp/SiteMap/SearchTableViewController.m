@@ -94,9 +94,15 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSLog(@"viewWillAppear searchPage");
     self.isManuelSearch = YES;
 }
+-(void)viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:YES];
+    
+    [self.searchTableView removeFromSuperview];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    // Dispose of any resources that can be recreated.  [searchController.view removeFromSuperview];
 }
 -(BOOL)search{
     return YES;

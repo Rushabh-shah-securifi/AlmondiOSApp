@@ -21,17 +21,16 @@
 #import "ChangeCategoryViewController.h"
 #import "ParentalControlsViewController.h"
 #import "CompleteDB.h"
+#import "MBProgressHUD.h"
 
 @interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource,BrowsingHistoryDelegate,NSURLConnectionDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *browsingTable;
-@property (weak, nonatomic) IBOutlet UIView *headerView;
-@property (nonatomic) NSArray *UriDataOneDay ;
 @property (nonatomic) NSMutableArray *dayArr;
 @property (nonatomic) dispatch_queue_t imageDownloadQueue;
 @property (nonatomic) dispatch_queue_t sendReqQueue;
-@property (nonatomic) NSMutableDictionary *urlToImageDict;
 @property (nonatomic) NSMutableData *responseData;
 @property (nonatomic) BrowsingHistory *browsingHistory;
+@property(nonatomic, readonly) MBProgressHUD *HUD;
 @property BOOL sendReq;
 @property int count;
 @property int targetCount;
@@ -44,6 +43,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *clientName;
 @property (nonatomic) NSDictionary *incompleteDB;
 @property BOOL isScrollEndReq;
+@property BOOL isTapped;
 
 
 @end
@@ -73,14 +73,10 @@
     self.sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
 
     self.dayArr = [[NSMutableArray alloc]init];
-//    [self sendRequest:@""];
     [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
-    self.urlToImageDict = [NSMutableDictionary new];
     self.browsingHistory = [[BrowsingHistory alloc]init];
     self.browsingHistory.delegate = self;
-//    [BrowsingHistoryDataBase insertRecordFromFile:@"CategoryMap"];
-    //NSLog(@"dbcount %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
-//     //NSLog(@"very fiest entry = %@",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20 almonsMac:self.amac clientMac:self.cmac]);
+
     
 
     [super viewDidLoad];
@@ -88,19 +84,18 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self loadNavigationBar];
-    [self initializeNotification];
+    
+    [self showHudWithTimeoutMsg:@"Loading data..."];
+    //[self loadNavigationBar];
     [self.navigationController setNavigationBarHidden:YES];
     [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac]];
-   // [self.dayArr removeAllObjects];
-    //[self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
-    NSLog(@"dbCount == %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+    [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
     self.isEmptyDb = YES;
 
 
 }
 -(void)loadNavigationBar{
-    self.headerView.backgroundColor = [SFIColors clientGreenColor];
+    /*self.headerView.backgroundColor = [SFIColors clientGreenColor];
     self.navigationController.navigationBar.clipsToBounds = YES;
     [self updateNavi:[SFIColors clientGreenColor] title:nil tintColor:[UIColor whiteColor] tintBarColor:[SFIColors clientGreenColor]];
    
@@ -115,15 +110,18 @@
      @{NSForegroundColorAttributeName:[UIColor whiteColor],
        NSFontAttributeName:[UIFont securifiBoldFont:14]}];
     self.title = @"Browsing history";
-    self.navigationController.navigationBar.topItem.title = @"Browsing history";
+    self.navigationController.navigationBar.topItem.title = @"Browsing history";*/
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [self.navigationController setNavigationBarHidden:NO];
     self.NoresultFound.hidden = YES;
+    self.isTapped = NO;
     [super viewWillDisappear:YES];
-    [self updateNavi:[UIColor whiteColor] title:@"" tintColor:[UIColor blueColor] tintBarColor:[UIColor whiteColor]];
-//    [BrowsingHistoryDataBase deleteDB];
+   // [self updateNavi:[UIColor whiteColor] title:@"" tintColor:[UIColor blueColor] tintBarColor:[UIColor whiteColor]];
+    int record = [BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] - 500;
+    if(record>0)
+    [BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac nosRecord:record];
 
 }
 -(void)updateNavi:(UIColor *)backGroundColor title:(NSString *)title tintColor:(UIColor *)tintColor tintBarColor:(UIColor *)tintBarColor{
@@ -143,24 +141,25 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (void)initializeNotification{
-    
-}
+
 #pragma mark HttpReqDelegateMethods
 -(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
     //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
    
+    dispatch_async(self.sendReqQueue,^(){
+        NSLog(@"post req = %@",post);
+        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+        [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
+        [request setHTTPBody:postData];
+        [NSURLConnection connectionWithRequest:request delegate:self];
+    });
+
     
-    NSLog(@"post req = %@",post);
-    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-    [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
-    [request setHTTPBody:postData];
-    [NSURLConnection connectionWithRequest:request delegate:self];
 
     //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
 }
@@ -178,7 +177,7 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     //Now you can do what you want with the response string from the data
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
-    
+    _responseData = nil;
     /*note get endidentifier from db */
     NSLog(@"response dict =%@",dict);
     NSArray *allObj = dict[@"Data"];
@@ -257,7 +256,7 @@
         NSLog(@"get first 10 record %@ db Count %d",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac],[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
         
     [self.dayArr removeAllObjects];
-    [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
+    [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
         [self reloadTable];
         self.isEmptyDb = NO;
     }
@@ -348,13 +347,14 @@
         self.count+=30;
             //NSLog(@"asking the req from DB  %d self.dayArr.count %ld",self.count,self.dayArr.count);
             [self.dayArr removeAllObjects];
-        [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:self.count almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr imageDict:self.urlToImageDict];
+        [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:self.count almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
             //NSLog(@"self.dayArr.count %ld",self.dayArr.count);
             [self reloadTable];
         }
         else{
             NSString *MinDateOrgDB = [BrowsingHistoryDataBase getLastDate:self.amac clientMac:self.cmac];
             NSString *minDateCompDB = [CompleteDB getLastDate:self.amac clientMac:self.cmac];
+            NSLog(@"MinDateOrgDB %@,minDateCompDB %@",MinDateOrgDB,minDateCompDB);
             NSDateFormatter *f = [[NSDateFormatter alloc] init];
             [f setDateFormat:@"yyyy-MM-dd"];
             NSString *todayDate = [f stringFromDate:[NSDate date]];
@@ -362,7 +362,6 @@
                 _targetCount = 0;
                  self.isScrollEndReq = YES;
                 NSLog(@"sending HTTP 1");
-                if(self.sendReq)
                 [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
             }
             else if(![MinDateOrgDB isEqualToString: todayDate] && [minDateCompDB isEqualToString:@"1970-01-01"]){
@@ -371,7 +370,6 @@
                 //NSLog(@"sending incomplete db %@",self.incompleteDB);
                  self.isScrollEndReq = YES;
                 NSLog(@"sending HTTP 2");
-                if(self.sendReq)
                 [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
             }
             else{
@@ -380,7 +378,6 @@
                 _targetCount = [BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] + 100;
                  self.isScrollEndReq = YES;
                 NSLog(@"sending HTTP 3");
-                if(self.sendReq)
                 [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&lastDate=%@",_amac,_cmac,MinDateOrgDB]];
             }
         }
@@ -448,6 +445,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(self.isTapped == NO)
     if(self.dayArr.count > indexPath.section){
     NSArray *browsHist = self.dayArr[indexPath.section];
     NSDictionary *uriDict = browsHist[indexPath.row];
@@ -456,7 +454,14 @@
     ChangeCategoryViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ChangeCategoryViewController"];
     viewController.uriDict = uriDict;
         viewController.client = self.client;
-        [self.navigationController pushViewController:viewController animated:YES];}
+        self.isTapped = YES;
+        [self.navigationController pushViewController:viewController animated:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // [self.HUD hide:YES];
+            
+        });
+
+      }
 
 
 }
@@ -465,28 +470,37 @@
 
     SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-    ctrl.urlToImageDict = self.urlToImageDict;
     ctrl.client = self.client;
     [self presentViewController:nav_ctrl animated:YES completion:nil];
 }
-- (void)onBackButton{
-    [self.navigationController popViewControllerAnimated:YES];
-}
+
 -(void)reloadTable{
     //NSLog(@"reload called");
+    
     dispatch_async(dispatch_get_main_queue(), ^{
+       // [self.HUD hide:YES];
         [self.browsingTable reloadData];
     });
 }
-
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
+    NSLog(@"showHudWithTimeoutMsg");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:hudMsg];
+        [self.HUD hide:YES afterDelay:5];
+    });
+}
+- (void)showHUD:(NSString *)text {
+    self.HUD.labelText = text;
+    [self.HUD show:YES];
+}
 - (IBAction)backButtonClicked:(id)sender {
-      [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
+    
 }
 
 - (IBAction)searchBurronClicked:(id)sender {
     SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-    ctrl.urlToImageDict = self.urlToImageDict;
     ctrl.client = self.client;
     [self presentViewController:nav_ctrl animated:YES completion:nil];
 }

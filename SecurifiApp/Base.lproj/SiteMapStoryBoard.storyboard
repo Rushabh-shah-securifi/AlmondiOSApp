@@ -283,17 +283,17 @@
                                 <constraints>
                                     <constraint firstItem="b6j-8k-gjU" firstAttribute="top" secondItem="Zg5-dQ-m7r" secondAttribute="bottom" constant="5" id="1Tm-b7-cI8"/>
                                     <constraint firstAttribute="trailing" secondItem="aub-Mo-lW9" secondAttribute="trailing" id="33Z-bw-sR9"/>
-                                    <constraint firstAttribute="bottom" secondItem="Z7u-q4-dbd" secondAttribute="bottom" id="8Sk-GG-hco"/>
+                                    <constraint firstAttribute="bottom" secondItem="Z7u-q4-dbd" secondAttribute="bottom" constant="-3" id="8Sk-GG-hco"/>
                                     <constraint firstItem="b6j-8k-gjU" firstAttribute="centerX" secondItem="xde-jU-faj" secondAttribute="centerX" id="ICF-LA-Heb"/>
                                     <constraint firstAttribute="trailing" secondItem="p0P-Rl-xCG" secondAttribute="trailing" constant="8" id="Jce-ky-ufr"/>
-                                    <constraint firstItem="xde-jU-faj" firstAttribute="top" secondItem="b6j-8k-gjU" secondAttribute="bottom" constant="14" id="MDK-D5-xsd"/>
-                                    <constraint firstItem="p0P-Rl-xCG" firstAttribute="top" secondItem="y5X-Qz-lEx" secondAttribute="top" constant="16" id="MIm-bS-2sf"/>
+                                    <constraint firstItem="xde-jU-faj" firstAttribute="top" secondItem="b6j-8k-gjU" secondAttribute="bottom" constant="11" id="MDK-D5-xsd"/>
+                                    <constraint firstItem="p0P-Rl-xCG" firstAttribute="top" secondItem="y5X-Qz-lEx" secondAttribute="top" constant="18" id="MIm-bS-2sf"/>
                                     <constraint firstItem="b6j-8k-gjU" firstAttribute="centerX" secondItem="Zg5-dQ-m7r" secondAttribute="centerX" id="S3r-oR-OfQ"/>
-                                    <constraint firstAttribute="height" constant="200" id="goH-ti-W55"/>
+                                    <constraint firstAttribute="height" constant="197" id="goH-ti-W55"/>
                                     <constraint firstItem="aub-Mo-lW9" firstAttribute="top" secondItem="y5X-Qz-lEx" secondAttribute="top" id="jyb-px-ctk"/>
                                     <constraint firstItem="b6j-8k-gjU" firstAttribute="centerX" secondItem="y5X-Qz-lEx" secondAttribute="centerX" id="oir-YS-zWM"/>
                                     <constraint firstAttribute="trailing" secondItem="Z7u-q4-dbd" secondAttribute="trailing" id="v76-A9-BHk"/>
-                                    <constraint firstItem="Zg5-dQ-m7r" firstAttribute="top" secondItem="y5X-Qz-lEx" secondAttribute="top" constant="15" id="vDY-DC-2gp"/>
+                                    <constraint firstItem="Zg5-dQ-m7r" firstAttribute="top" secondItem="y5X-Qz-lEx" secondAttribute="top" constant="18" id="vDY-DC-2gp"/>
                                     <constraint firstItem="Z7u-q4-dbd" firstAttribute="leading" secondItem="y5X-Qz-lEx" secondAttribute="leading" id="x3s-LI-E6I"/>
                                 </constraints>
                             </view>
@@ -808,7 +808,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.50898450613021851" green="0.3620573878288269" blue="0.75937771797180176" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.50980392156862742" green="0.36078431372549019" blue="0.76078431372549016" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="7W7-sd-vNf" firstAttribute="top" secondItem="aOu-c1-KKi" secondAttribute="top" constant="27" id="2lJ-2G-fAg"/>
                                     <constraint firstItem="cAh-YH-QaY" firstAttribute="leading" secondItem="aOu-c1-KKi" secondAttribute="leading" constant="11" id="G84-Bc-dws"/>
@@ -849,7 +849,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.58431372550000005" green="0.45882352939999999" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.50980392156862742" green="0.36078431372549019" blue="0.76078431372549016" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="CUT-m6-9Kk" firstAttribute="top" secondItem="8Jr-at-hHc" secondAttribute="top" constant="26" id="HPK-g5-ml4"/>
                                     <constraint firstItem="CUT-m6-9Kk" firstAttribute="leading" secondItem="exb-43-SbL" secondAttribute="trailing" constant="9" id="Pkg-Cs-njj"/>
