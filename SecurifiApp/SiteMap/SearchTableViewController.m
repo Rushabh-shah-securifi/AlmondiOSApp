@@ -54,6 +54,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 @property (nonatomic) NSString *amac;
 @property (nonatomic) NSString *searchString;
 @property (nonatomic) NSMutableArray *searchStrArr;
+@property BOOL isSearchBegin;
 @end
 
 @implementation SearchTableViewController
@@ -117,7 +118,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         return 3;
     }
     else{
-        if(self.dayArr.count == 0){
+        if(self.dayArr.count == 0 && self.isSearchBegin == NO){
             NSLog(@"self.dayArr.count %ld",(unsigned long)self.dayArr.count);
             self.NoresultFound.hidden = NO;
         }
@@ -125,6 +126,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         return self.dayArr.count;
     }
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 45;
 }
@@ -335,6 +337,11 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
     
 }
+- (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView;
+{
+    NSLog(@"didLoadSearchResultsTableView");
+    self.searchTableView.hidden = YES;
+}
 -(void)onCancleButton{
     self.isManuelSearch = YES;
     self.NoresultFound.hidden = YES;
@@ -345,15 +352,28 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
     self.NoresultFound.hidden = YES;
     NSLog(@"searchBarTextDidBeginEditing %@",searchBar.text);
-    [self.searchTableView reloadData];
+    self.isSearchBegin = YES;
+    self.searchTableView.hidden = YES;
+   // [self.searchTableView reloadData];
     
     
     
+}
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+    NSLog(@"shouldReloadTableForSearchString");
+    return NO;
+}
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption {
+    NSLog(@"shouldReloadTableForSearchScope");
+    return NO;
 }
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
 //    [self performFilteringBySearchText: searchText]; // or whatever
     NSLog(@"textDidChange: searchBar");
+    self.isSearchBegin = YES;
+    self.searchTableView.hidden = YES;
     self.NoresultFound.hidden = YES;
     self.isManuelSearch = YES;
     self.searchString = searchBar.text;
@@ -369,7 +389,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 }
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-    
+    self.isSearchBegin = NO;
+    self.searchTableView.hidden = NO;
     NSString *searchString = self.searchString;
         NSLog(@"abpve searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
     

@@ -23,7 +23,7 @@
 #import "CompleteDB.h"
 #import "MBProgressHUD.h"
 
-@interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource,BrowsingHistoryDelegate,NSURLConnectionDelegate>
+@interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource,BrowsingHistoryDelegate,NSURLConnectionDelegate,MBProgressHUDDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *browsingTable;
 @property (nonatomic) NSMutableArray *dayArr;
 @property (nonatomic) dispatch_queue_t imageDownloadQueue;
@@ -76,6 +76,7 @@
     [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
     self.browsingHistory = [[BrowsingHistory alloc]init];
     self.browsingHistory.delegate = self;
+    [self setUpHUD];
 
     
 
@@ -85,11 +86,15 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [self showHudWithTimeoutMsg:@"Loading data..."];
+    [self showHudWithTimeoutMsg:@"Loading data..." withDelay:3];
     //[self loadNavigationBar];
     [self.navigationController setNavigationBarHidden:YES];
     [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac]];
+    dispatch_async(self.sendReqQueue,^(){
     [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+         [self reloadTable];
+    });
+   
     self.isEmptyDb = YES;
 
 
@@ -141,12 +146,18 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(void)setUpHUD{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.dimBackground = YES;
+    _HUD.delegate = self;
+    [self.navigationController.view addSubview:_HUD];
+}
 #pragma mark HttpReqDelegateMethods
 -(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
     //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
    
-    dispatch_async(self.sendReqQueue,^(){
+   // dispatch_async(self.sendReqQueue,^(){
         NSLog(@"post req = %@",post);
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
@@ -157,7 +168,7 @@
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
         [request setHTTPBody:postData];
         [NSURLConnection connectionWithRequest:request delegate:self];
-    });
+    //});
 
     
 
@@ -179,6 +190,7 @@
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
     _responseData = nil;
     /*note get endidentifier from db */
+     //dispatch_async(self.sendReqQueue,^(){
     NSLog(@"response dict =%@",dict);
     NSArray *allObj = dict[@"Data"];
     NSDictionary *last_uriDict = [allObj lastObject];
@@ -256,8 +268,10 @@
         NSLog(@"get first 10 record %@ db Count %d",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac],[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
         
     [self.dayArr removeAllObjects];
+        dispatch_async(self.sendReqQueue,^(){
     [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
         [self reloadTable];
+        });
         self.isEmptyDb = NO;
     }
     
@@ -265,7 +279,8 @@
 //        //NSLog(@"incomplete sending req db %@",self.incompleteDB);
 //     [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
 //    }
-    
+    //});
+    [self reloadTable];
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error { //Do something if there is an error in the connection } - See more at: https://www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
     //NSLog(@"didFailWithError %@",error);
@@ -347,9 +362,12 @@
         self.count+=30;
             //NSLog(@"asking the req from DB  %d self.dayArr.count %ld",self.count,self.dayArr.count);
             [self.dayArr removeAllObjects];
+            
+            dispatch_async(self.sendReqQueue,^(){
         [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:self.count almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
             //NSLog(@"self.dayArr.count %ld",self.dayArr.count);
             [self reloadTable];
+            });
         }
         else{
             NSString *MinDateOrgDB = [BrowsingHistoryDataBase getLastDate:self.amac clientMac:self.cmac];
@@ -371,6 +389,7 @@
                  self.isScrollEndReq = YES;
                 NSLog(@"sending HTTP 2");
                 [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
+                //[self showHudWithTimeoutMsg:@"Loading..." withDelay:2];
             }
             else{
                 //set target count
@@ -416,7 +435,9 @@
     //    [myMutableArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     NSString *str;
     //    //NSLog(@"self.dayArr Count = %ld",self.dayArr.count);
-    NSArray *browsHist = self.dayArr[section];
+    NSArray *browsHist;
+    if(self.dayArr.count > section)
+    browsHist = self.dayArr[section];
     NSDictionary *dict2 = browsHist[0];
     //    //NSLog(@"dict2 date %@",dict2);
     str = dict2[@"date"];
@@ -482,11 +503,12 @@
         [self.browsingTable reloadData];
     });
 }
-- (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg withDelay:(int)second {
     NSLog(@"showHudWithTimeoutMsg");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:hudMsg];
-        [self.HUD hide:YES afterDelay:5];
+        [self.HUD hide:YES afterDelay:second];
+        [self reloadTable];
     });
 }
 - (void)showHUD:(NSString *)text {

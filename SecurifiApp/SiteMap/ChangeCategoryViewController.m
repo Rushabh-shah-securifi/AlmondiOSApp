@@ -13,6 +13,7 @@
 #import "Colours.h"
 #import "NSDate+Convenience.h"
 #import "CategoryView.h"
+#import "UIFont+Securifi.h"
 
 @interface ChangeCategoryViewController ()<CategoryViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
@@ -113,6 +114,7 @@
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"G"]){
         self.globalColor = [UIColor colorFromHexString:@"4caf50"];
         self.catogeryTag.text =@"General Audiences";
+        self.catogeryFuncLbl.font = [UIFont securifiFont:16];
         self.catogeryFuncLbl.text = @"All ages admitted. Nothing that would offend parents for viewing by children.";
         
     }
