@@ -29,6 +29,7 @@
 #import "CommonMethods.h"
 #import "HelpCenter.h"
 #import "ParentalControlsViewController.h"
+#import "RecentSearchDB.h"
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -41,6 +42,7 @@
 @property(nonatomic, readonly) SFIColors *almondColor;
 @property(nonatomic) NSTimer *mobileCommandTimer;
 @property(nonatomic) SecurifiToolkit *toolkit;
+@property(nonatomic) BOOL isSiteMapSupport;
 @end
 
 @implementation DeviceListController
@@ -55,6 +57,12 @@ int mii;
     
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+   /* [RecentSearchDB insertInRecentDB:@"aaa" cmac:@"111" amac:@"222"];
+    [RecentSearchDB insertInRecentDB:@"bbb" cmac:@"111" amac:@"222"];
+    [RecentSearchDB insertInRecentDB:@"ccc" cmac:@"111" amac:@"222"];
+    NSLog(@"recent seaech count = %d",[RecentSearchDB GetHistoryDatabaseCount:@"222" clientMac:@"111"]);
+    
+    NSLog(@"recent = %@",[RecentSearchDB getAllRecentwithLimit:1 almonsMac:@"222" clientMac:@"111"]);*/
     
     //ensure list is empty initially
     [self initializeAlmondData];
@@ -83,6 +91,7 @@ int mii;
 
 -(void)markAlmondTitleAndMac{
     NSLog(@"%s, self.toolkit.currentAlmond: %@", __PRETTY_FUNCTION__, self.toolkit.currentAlmond);
+    _isSiteMapSupport = [ self.toolkit.currentAlmond siteMapSupportFirmware:self.toolkit.currentAlmond.firmware];
     if (self.toolkit.currentAlmond == nil) {
         NSLog(@"no almond");
         [self markNewTitle:NSLocalizedString(@"router.nav-title.Get Started", @"Get Started")];
@@ -342,7 +351,7 @@ int mii;
                                                                   color:[self.almondColor makeGradatedColorForPositionIndex:indexPath.row]
                                                                isSensor:YES];
         
-        [cell.commonView initialize:genericParams cellType:SensorTable_Cell];
+        [cell.commonView initialize:genericParams cellType:SensorTable_Cell isSiteMap:self.isSiteMapSupport];
     }
     else
     {
@@ -358,7 +367,7 @@ int mii;
                                                              deviceName:client.name
                                                                   color:clientCellColor
                                                                isSensor:NO];
-        [cell.commonView initialize:genericParams cellType:ClientTable_Cell];
+        [cell.commonView initialize:genericParams cellType:ClientTable_Cell isSiteMap:self.isSiteMapSupport];
     }
     return cell;
 }

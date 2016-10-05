@@ -42,7 +42,7 @@ typedef NS_ENUM(NSUInteger, CellType) {
 @property (weak, nonatomic) IBOutlet UIImageView *lowBatteryImgView;
 @property (weak, nonatomic) IBOutlet UIImageView *tamperedImgView;
 
--(void)initialize:(GenericParams*)genericParams cellType:(CellType)cellType;
+-(void)initialize:(GenericParams*)genericParams cellType:(CellType)cellType isSiteMap:(BOOL)enableSiteMap;
 
 -(void)reloadIconImage;
 

@@ -89,10 +89,10 @@ static const int xIndent = 10;
 
 -(void)setUpDeviceEditCell{
     if(self.genericParams.isSensor){
-        [self.deviceEditHeaderCell initialize:self.genericParams cellType:SensorEdit_Cell];
+        [self.deviceEditHeaderCell initialize:self.genericParams cellType:SensorEdit_Cell isSiteMap:NO];
     }
     else{
-        [self.deviceEditHeaderCell initialize:self.genericParams cellType:ClientEditProperties_cell];
+        [self.deviceEditHeaderCell initialize:self.genericParams cellType:ClientEditProperties_cell isSiteMap:NO];
     }
     self.deviceEditHeaderCell.delegate = self;
 }
@@ -619,7 +619,7 @@ static const int xIndent = 10;
     self.genericParams.deviceName = device.name;
     
     [self.deviceEditHeaderCell resetHeaderView];
-    [self.deviceEditHeaderCell initialize:self.genericParams cellType:SensorEdit_Cell];
+    [self.deviceEditHeaderCell initialize:self.genericParams cellType:SensorEdit_Cell isSiteMap:NO];
 }
 
 -(void)revertToOldValue:(GenericIndexValue*)genIndexVal{

@@ -201,7 +201,7 @@ int randomMobileInternalIndex;
 #pragma mark setups
 -(void)setHeaderCell{
     self.commonView= [[DeviceHeaderView alloc]initWithFrame:CELLFRAME];
-    [self.commonView initialize:self.genericParams cellType:ClientProperty_Cell];
+    [self.commonView initialize:self.genericParams cellType:ClientProperty_Cell isSiteMap:NO];
     self.commonView.delegate = self;
     // set up images label and name
     [self.view addSubview:self.commonView];
@@ -214,7 +214,7 @@ int randomMobileInternalIndex;
     self.genericParams.headerGenericIndexValue = headerGenIndexVal;
     self.genericParams.deviceName = client.name;
     self.genericParams.color = [SFIColors getClientCellColor:client];
-    [self.commonView initialize:self.genericParams cellType:ClientProperty_Cell];
+    [self.commonView initialize:self.genericParams cellType:ClientProperty_Cell isSiteMap:NO];
 }
 
 

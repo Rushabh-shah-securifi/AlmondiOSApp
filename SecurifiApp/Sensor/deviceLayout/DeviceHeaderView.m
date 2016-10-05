@@ -57,14 +57,14 @@
     
 }
 
--(void)initialize:(GenericParams*)genericParams cellType:(CellType)cellType{
+-(void)initialize:(GenericParams*)genericParams cellType:(CellType)cellType isSiteMap:(BOOL)enableSiteMap{
     //NSLog(@"headerview - initialize");
     self.genericParams = genericParams;
     self.cellType = cellType;
-    [self setUpDeviceCell];
+    [self setUpDeviceCell:enableSiteMap];
 }
 
--(void)setUpDeviceCell{
+-(void)setUpDeviceCell:(BOOL)enableSiteMap{
     //NSLog(@"setUPSensorCell");
     self.view.backgroundColor = _genericParams.color;
     self.deviceName.text = self.genericParams.deviceName;
@@ -72,7 +72,7 @@
    
     if(self.cellType == ClientTable_Cell ||  self.cellType == ClientProperty_Cell || self.cellType == ClientEditProperties_cell){
          [self setWiFiSignalIcon];
-        if(self.cellType == ClientTable_Cell)
+        if(self.cellType == ClientTable_Cell && enableSiteMap)
             self.parentrolBtn.hidden = NO;
         else
             self.parentrolBtn.hidden = YES;
