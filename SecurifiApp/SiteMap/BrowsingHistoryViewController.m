@@ -77,6 +77,8 @@
     self.browsingHistory = [[BrowsingHistory alloc]init];
     self.browsingHistory.delegate = self;
     [self setUpHUD];
+    [self showHudWithTimeoutMsg:@"Loading..." withDelay:5];
+    [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac]];
 
     
 
@@ -86,14 +88,14 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [self showHudWithTimeoutMsg:@"Loading data..." withDelay:3];
+    
     //[self loadNavigationBar];
     [self.navigationController setNavigationBarHidden:YES];
-    [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac]];
-    dispatch_async(self.sendReqQueue,^(){
-    [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
-         [self reloadTable];
-    });
+    
+    //dispatch_async(self.sendReqQueue,^(){
+    //[self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+         //[self reloadTable];
+   // });
    
     self.isEmptyDb = YES;
 
@@ -268,10 +270,11 @@
         NSLog(@"get first 10 record %@ db Count %d",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac],[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
         
     [self.dayArr removeAllObjects];
-        dispatch_async(self.sendReqQueue,^(){
+        //dispatch_async(self.sendReqQueue,^(){
     [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+        [self.HUD hide:YES];
         [self reloadTable];
-        });
+       // });
         self.isEmptyDb = NO;
     }
     
@@ -363,11 +366,11 @@
             //NSLog(@"asking the req from DB  %d self.dayArr.count %ld",self.count,self.dayArr.count);
             [self.dayArr removeAllObjects];
             
-            dispatch_async(self.sendReqQueue,^(){
+            //dispatch_async(self.sendReqQueue,^(){
         [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:self.count almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
             //NSLog(@"self.dayArr.count %ld",self.dayArr.count);
             [self reloadTable];
-            });
+            //});
         }
         else{
             NSString *MinDateOrgDB = [BrowsingHistoryDataBase getLastDate:self.amac clientMac:self.cmac];
@@ -499,7 +502,6 @@
     //NSLog(@"reload called");
     
     dispatch_async(dispatch_get_main_queue(), ^{
-       // [self.HUD hide:YES];
         [self.browsingTable reloadData];
     });
 }
