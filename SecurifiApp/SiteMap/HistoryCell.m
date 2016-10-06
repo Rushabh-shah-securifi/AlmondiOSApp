@@ -31,28 +31,31 @@
 }
 
 -(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem isCategory:(BOOL)isCategory count:(NSInteger)count{
-    if(isCategory){
-        self.catImgXConstrain.constant = -6;
-        self.webImg.hidden = YES;
-        self.siteNameXconstrain.constant = 5;
-        self.categoryImg.image = uri[@"image"];
-        self.lastActTime.hidden = YES;
-    }
-    else{
-        if(hideItem){
-            self.webImgXConstrain.constant = 17;
-            self.siteNameXconstrain.constant = -27;
-        }
-        else {
-            self.webImgXConstrain.constant = 7;
-            self.siteNameXconstrain.constant = 5;
-        }
-        self.categoryImg.hidden = hideItem;
-        self.settingImg.hidden = hideItem;
-        self.lastActTime.hidden = hideItem;
-    }
-    UrlImgDict *imgs = [UrlImgDict sharedInstance];
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if(isCategory){
+            self.catImgXConstrain.constant = -6;
+            self.webImg.hidden = YES;
+            self.siteNameXconstrain.constant = 5;
+            self.categoryImg.image = uri[@"image"];
+            self.lastActTime.hidden = YES;
+        }
+        else{
+            if(hideItem){
+                self.webImgXConstrain.constant = 17;
+                self.siteNameXconstrain.constant = -27;
+            }
+            else {
+                self.webImgXConstrain.constant = 7;
+                self.siteNameXconstrain.constant = 5;
+                self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
+            self.categoryImg.hidden = hideItem;
+            self.settingImg.hidden = hideItem;
+            self.lastActTime.hidden = hideItem;
+            
+        }
+        UrlImgDict *imgs = [UrlImgDict sharedInstance];
         if([imgs.imgDict valueForKey:uri[@"hostName"]]!= NULL){
             self.webImg.image = [imgs.imgDict objectForKey:uri[@"hostName"]];
         }else{

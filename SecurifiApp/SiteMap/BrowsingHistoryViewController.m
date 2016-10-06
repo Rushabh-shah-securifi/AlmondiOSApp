@@ -68,6 +68,7 @@
     self.clientName.text = self.client.name;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.amac = toolkit.currentAlmond.almondplusMAC;
+    [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac]];
 //    [BrowsingHistoryDataBase initializeDataBase];
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
     self.sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
@@ -78,10 +79,7 @@
     self.browsingHistory.delegate = self;
     [self setUpHUD];
     [self showHudWithTimeoutMsg:@"Loading..." withDelay:5];
-    [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac]];
-
     
-
     [super viewDidLoad];
    
 }
@@ -93,7 +91,10 @@
     [self.navigationController setNavigationBarHidden:YES];
     
     //dispatch_async(self.sendReqQueue,^(){
-    //[self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+    if([BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] > 0)
+        [self.HUD hide:YES];
+    [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:300 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+    
          //[self reloadTable];
    // });
    
@@ -193,8 +194,13 @@
     _responseData = nil;
     /*note get endidentifier from db */
      //dispatch_async(self.sendReqQueue,^(){
+    
     NSLog(@"response dict =%@",dict);
+    if(dict == NULL)
+        return;
     NSArray *allObj = dict[@"Data"];
+    if(allObj == NULL)
+        return;
     NSDictionary *last_uriDict = [allObj lastObject];
     NSString *last_date = last_uriDict[@"Date"];
     if(last_date != NULL)
@@ -206,6 +212,7 @@
     // put last_date and & ps in incomplete DB
     
      [BrowsingHistoryDataBase insertHistoryRecord:dict];// return last date
+   
     //check last date <= max date of completeDB stop req
     if(self.incompleteDB[@"PS"] == NULL){
         self.sendReq = NO;
@@ -265,13 +272,11 @@
 //    /*after insert again send request untill response is not null*/
 
     if(self.isEmptyDb == YES){
-    [self.dayArr removeAllObjects];
-        //NSLog(@"browsing db return %@",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac]);
-        NSLog(@"get first 10 record %@ db Count %d",[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac],[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+    
         
     [self.dayArr removeAllObjects];
         //dispatch_async(self.sendReqQueue,^(){
-    [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:10 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+    [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:300 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
         [self.HUD hide:YES];
         [self reloadTable];
        // });
@@ -348,7 +353,7 @@
     }
     
 
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
     return cell;
 }
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -362,7 +367,7 @@
         
         if([BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] > self.count)
         {
-        self.count+=30;
+        self.count+=300;
             //NSLog(@"asking the req from DB  %d self.dayArr.count %ld",self.count,self.dayArr.count);
             [self.dayArr removeAllObjects];
             
@@ -523,9 +528,12 @@
 }
 
 - (IBAction)searchBurronClicked:(id)sender {
-    SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-    ctrl.client = self.client;
-    [self presentViewController:nav_ctrl animated:YES completion:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+    SearchTableViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SearchTableViewController"];
+   
+    
+    viewController.client = self.client;
+     [self.navigationController pushViewController:viewController animated:YES];
+    
 }
 @end

@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     CategorySearch
 };
 
-@interface SearchTableViewController ()<UISearchResultsUpdating, UISearchBarDelegate,UITextFieldDelegate,BrowsingHistoryDelegate>
+@interface SearchTableViewController ()<UISearchResultsUpdating, UISearchBarDelegate,UITextFieldDelegate,BrowsingHistoryDelegate,NSURLConnectionDelegate>
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic) UITableView *searchTableView;
 @property (nonatomic) NSArray *suggSearchArr;
@@ -55,6 +55,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 @property (nonatomic) NSString *searchString;
 @property (nonatomic) NSMutableArray *searchStrArr;
 @property BOOL isSearchBegin;
+@property (nonatomic) NSMutableData *responseData;
+;
 @end
 
 @implementation SearchTableViewController
@@ -76,11 +78,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.navigationController.view.backgroundColor = [UIColor whiteColor];
     self.navigationController.navigationBar.tintColor = [SFIColors ruleBlueColor];
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-    
-    UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancleButton)];
-    
-    NSArray *actionButtonItems = @[search];
-    self.navigationItem.rightBarButtonItems = actionButtonItems;
+//    UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancleButton)];
+//    
+//    NSArray *actionButtonItems = @[search];
+//    self.navigationItem.rightBarButtonItems = actionButtonItems;
 
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [self.tableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
@@ -222,7 +223,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
             self.NoresultFound.hidden = YES;
         NSArray *browsHist = self.dayArr[indexPath.section];
             if(browsHist.count>indexPath.row)
-        [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO count:indexPath.row+1];
+        [cell setCell:browsHist[indexPath.row] hideItem:YES isCategory:YES count:indexPath.row+1];
         }
     }
     
@@ -263,7 +264,54 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     }
     
 }
-
+#pragma mark sendReq methods
+-(void)sendReq:(SearchPatten)searchpatten withString:(NSString *)string{
+    if(searchpatten == WeekSearch){
+        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&week",_amac,_cmac]];
+    }
+    else if(searchpatten == WeekSearch){
+        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&week",_amac,_cmac]];
+    }
+}
+-(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
+    //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
+    
+    // dispatch_async(self.sendReqQueue,^(){
+    NSLog(@"post req = %@",post);
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+    [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
+    [request setHTTPBody:postData];
+    [NSURLConnection connectionWithRequest:request delegate:self];
+    //});
+    
+    
+    
+    //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
+}
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response { _responseData = [[NSMutableData alloc] init];
+    //NSLog(@"didReceiveResponse");
+}
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    [_responseData appendData:data];
+    //NSLog(@"didReceiveData");
+}
+- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse*)cachedResponse {
+    //NSLog(@"willCacheResponse");
+    return nil;
+}
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    //Now you can do what you want with the response string from the data
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
+    _responseData = nil;
+    /*note get endidentifier from db */
+    //dispatch_async(self.sendReqQueue,^(){
+    NSLog(@"response dict =%@",dict);
+}
 #pragma mark searchDelegate methods
 -(void)setSearchpattenMethod:(SearchPatten)searchpatten withString:(NSString *)string{
     self.searchPatten = searchpatten;
@@ -346,11 +394,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.isManuelSearch = YES;
     self.NoresultFound.hidden = YES;
      NSLog(@"onCancleButton");
-    [self dismissViewControllerAnimated:YES completion:nil];
+   // [self dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
     
-    self.NoresultFound.hidden = YES;
     NSLog(@"searchBarTextDidBeginEditing %@",searchBar.text);
     self.isSearchBegin = YES;
     self.searchTableView.hidden = YES;
@@ -368,30 +415,44 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSLog(@"shouldReloadTableForSearchScope");
     return NO;
 }
+-(BOOL)textFieldShouldClear:(UITextField *)textField {
+   
+    NSLog(@"textFieldShouldClear");
+    return NO;
+}
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
 //    [self performFilteringBySearchText: searchText]; // or whatever
     NSLog(@"textDidChange: searchBar");
     self.isSearchBegin = YES;
     self.searchTableView.hidden = YES;
+    [self reloadTable];
+     self.searchTableView.hidden = YES;
     self.NoresultFound.hidden = YES;
     self.isManuelSearch = YES;
     self.searchString = searchBar.text;
     // The user clicked the [X] button or otherwise cleared the text.
     if([searchText length] == 0) {
+        self.searchString = @"";
         [searchBar performSelector: @selector(resignFirstResponder)
                         withObject: nil
                         afterDelay: 0.1];
         
     }
-//    if(self.dayArr.count == 0)
-//        self.NoresultFound.hidden = YES;
+    if(self.dayArr.count == 0)
+        self.NoresultFound.hidden = YES;
 }
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     self.isSearchBegin = NO;
     self.searchTableView.hidden = NO;
     NSString *searchString = self.searchString;
+    if([searchString isEqualToString:@""] || [searchBar.text isEqualToString:@""]){
+        [self.dayArr removeAllObjects];
+        [self searchBarCancelButtonClicked:self.searchController.searchBar];
+        return;
+    }
+    
         NSLog(@"abpve searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
     
     if([CommonMethods isContainMonth:searchString] ){
@@ -412,10 +473,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     [self.dayArr removeAllObjects];
     [self.browsingHistory getBrowserHistoryImages:self.historyDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
     
-    [self reloadTable];
+    [self reloadSearchTable];
     if(self.dayArr.count == 0)
         self.NoresultFound.hidden = YES;
-    [searchBar setShowsCancelButton:NO animated:YES];
+    [searchBar setShowsCancelButton:YES animated:YES];
 }
 
 #pragma  mark customCell for suggestion search
@@ -512,34 +573,46 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 -(void)reloadTable{
     NSLog(@"reload called");
     dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self.tableView reloadData];
+    });
+    self.NoresultFound.hidden = YES;
+}
+-(void)reloadSearchTable{
+    NSLog(@"reload called");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
         [self.searchTableView reloadData];
     });
     self.NoresultFound.hidden = YES;
 }
-
 - (void)initializeSearchController {
     
 
-    UITableViewController *searchResultsController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
+    UITableViewController *searchResultsController = [[UITableViewController alloc] initWithStyle:UITableViewStyleGrouped];
     
     searchResultsController.tableView.dataSource = self;
     
     searchResultsController.tableView.delegate = self;
     
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:searchResultsController];
-    self.searchController.navigationController.view.backgroundColor = [UIColor whiteColor];
+    self.searchController.navigationController.view.backgroundColor = [UIColor clearColor];
     self.definesPresentationContext = YES;
     
-    self.searchController.searchBar.frame = CGRectMake(self.searchController.searchBar.frame.origin.x, self.searchController.searchBar.frame.origin.y, self.searchController.searchBar.frame.size.width, 44.0);
+    self.searchController.searchBar.frame = CGRectMake(self.searchController.searchBar.frame.origin.x, self.searchController.searchBar.frame.origin.y , self.searchController.searchBar.frame.size.width, 44.0);
     
     self.searchController.searchBar.tintColor = [UIColor whiteColor];
     
     self.tableView.tableHeaderView = self.searchController.searchBar;
     
     self.searchController.searchResultsUpdater = self;
-    
+    self.searchController.dimsBackgroundDuringPresentation = false;
     self.searchController.searchBar.delegate = self;
+
+    self.searchController.hidesNavigationBarDuringPresentation = false;
+    
     self.searchTableView = ((UITableViewController *)self.searchController.searchResultsController).tableView;
+    
     self.searchController.searchBar.tintColor = [SFIColors ruleBlueColor];
     [self.searchTableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
     self.NoresultFound = [[UILabel alloc]initWithFrame:self
