@@ -264,9 +264,18 @@
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
     NSLog(@"dataInfo parental controll %@",dataInfo);
+    if(dataInfo == NULL)
+        return;
     NSDictionary *mainDict = [dataInfo valueForKey:@"data"];
+    if(mainDict == NULL)
+        return;
     NSDictionary * dict = mainDict[@"Clients"];
+    if(dict == NULL)
+        return;
     NSString *ID = [[dict allKeys] objectAtIndex:0]; // Assumes payload always has one device.
+    if(ID == NULL)
+        return;
+    
     dispatch_async(dispatch_get_main_queue(), ^{
     if([self.client.deviceID isEqualToString:ID]){
         NSLog(@"switching the connection");
