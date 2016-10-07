@@ -72,15 +72,18 @@ int mii;
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
-    if(self.meshView)
+    if(self.meshView){
         [self.meshView removeNotificationObserver];
+        self.meshView = nil;
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)initializeNotification{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
  
-    [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_CommandType_MESH_RESPONSE object:nil];
+    [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
 }
 
 -(void)setUpAlmondStatus{
@@ -218,7 +221,6 @@ int mii;
 
 #pragma mark meshview delegates
 -(void)dismissControllerDelegate{
-    self.meshView = nil;
     [[SecurifiToolkit sharedInstance] shutDownMesh];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self dismissViewControllerAnimated:YES completion:nil];

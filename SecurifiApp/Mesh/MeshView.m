@@ -14,6 +14,7 @@
 #import "SFIColors.h"
 #import "Analytics.h"
 
+#define NETWORK_OFFLINE -1
 #define HELP_INFO 0
 
 #define INTERFACE_SCR 1
@@ -114,10 +115,15 @@
     
     [center addObserver:self selector:@selector(onKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
-    [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_CommandType_MESH_RESPONSE object:nil];
+    [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
+    
+    [center addObserver:self selector:@selector(onNetworkDownNotifier:) name:NETWORK_DOWN_NOTIFIER object:nil];
+    
+    [center addObserver:self selector:@selector(onNetworkUpNotifier:) name:NETWORK_UP_NOTIFIER object:nil];
 }
 
 - (void)removeNotificationObserver{
+    NSLog(@"mesh view remove observer");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -744,10 +750,28 @@
         else if(alertView.tag == BLINK_CHECK){
             [self addView:self.interfaceView frame:self.currentView.frame];
         }
+        else if(alertView.tag == NETWORK_OFFLINE){
+            if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_cloud){
+                [self dismissView];
+            }else{
+                [self dismissView];
+            }
+        }
     }else{
         
     }
 }
 
+#define network events
+- (void)onNetworkDownNotifier:(id)sender{
+    [self.timer invalidate];
+    [self.blinkTimer invalidate];
+    
+    [self showAlert:@"" msg:@"You are currently disconnected from your Almond 3 Wi-Fi network. Please reconnect and try again" cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
+}
+
+- (void)onNetworkUpNotifier:(id)sender{
+    
+}
 /* Meshhelp -End */
 @end

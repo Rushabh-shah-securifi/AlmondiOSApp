@@ -16,7 +16,7 @@
                                   @"CommandType":@"CheckForAddableWiredSlaveMobile",
                                   @"MobileInternalIndex":@(mii).stringValue
                               };
-    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+    [self sendRequest:payload commandType:CommandType_UPDATE_REQUEST];
 }
 
 +(void)requestCheckForAddableWirelessSlave:(int)mii{
@@ -25,7 +25,7 @@
                               @"CommandType":@"CheckForAddableWirelessSlaveMobile",
                               @"MobileInternalIndex":@(mii).stringValue
                               };
-    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+    [self sendRequest:payload commandType:CommandType_UPDATE_REQUEST];
 }
 
 +(void)requestAddWiredSlave:(int)mii slaveName:(NSString *)slaveName{
@@ -35,7 +35,7 @@
                               @"SlaveUniqueName":slaveName,
                               @"MobileInternalIndex":@(mii).stringValue
                               };
-    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+    [self sendRequest:payload commandType:CommandType_UPDATE_REQUEST];
 }
 
 +(void)requestAddWireLessSlave:(int)mii slaveName:(NSString *)slaveName{
@@ -45,7 +45,7 @@
                               @"SlaveUniqueName":slaveName,
                               @"MobileInternalIndex":@(mii).stringValue
                               };
-    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+    [self sendRequest:payload commandType:CommandType_UPDATE_REQUEST];
 }
 
 +(void)requestBlinkLed:(int)mii slaveName:(NSString *)slaveName{
@@ -55,7 +55,7 @@
                               @"SlaveUniqueName":slaveName,
                               @"MobileInternalIndex":@(mii).stringValue
                               };
-    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+    [self sendRequest:payload commandType:CommandType_UPDATE_REQUEST];
 }
 
 
@@ -69,7 +69,7 @@
                               @"MobileInternalIndex":@(mii).stringValue
 
                               };
-    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+    [self sendRequest:payload commandType:CommandType_UPDATE_REQUEST];
 }
 
 +(void)requestRemoveSlave:(int)mii uniqueName:(NSString*)uniqueName{
@@ -80,7 +80,7 @@
                               @"MobileInternalIndex":@(mii).stringValue
                               
                               };
-    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+    [self sendRequest:payload commandType:CommandType_UPDATE_REQUEST];
 }
 
 +(void)requestForceRemoveSlave:(int)mii uniqueName:(NSString*)uniqueName{
@@ -91,7 +91,7 @@
                               @"MobileInternalIndex":@(mii).stringValue
                               
                               };
-    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+    [self sendRequest:payload commandType:CommandType_UPDATE_REQUEST];
 }
 +(void)requestSlaveDetails:(int)mii slaveUniqueName:(NSString*)uniqueName{
     NSDictionary *payload = @{
@@ -101,7 +101,7 @@
                               @"MobileInternalIndex":@(mii).stringValue
                               
                               };
-    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+    [self sendRequest:payload commandType:CommandType_UPDATE_REQUEST];
 }
 
 +(void)requestRai2UpMobile:(int)mii{
@@ -110,7 +110,7 @@
                               @"CommandType":@"Rai2UpMobile",
                               @"MobileInternalIndex":@(mii).stringValue
                               };
-    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+    [self sendRequest:payload commandType:CommandType_UPDATE_REQUEST];
 }
 
 +(void)requestRai2DownMobile:(int)mii{
@@ -119,7 +119,7 @@
                               @"CommandType":@"Rai2DownMobile",
                               @"MobileInternalIndex":@(mii).stringValue
                               };
-    [self sendRequest:payload commandType:CommandType_MESH_COMMAND];
+    [self sendRequest:payload commandType:CommandType_UPDATE_REQUEST];
 }
 
 +(void)sendRequest:(NSDictionary *)payload commandType:(enum CommandType)commandType{

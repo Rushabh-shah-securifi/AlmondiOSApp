@@ -135,7 +135,7 @@ int mii;
     
     [center addObserver:self selector:@selector(onClientResponse:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
     
-    [center addObserver:self selector:@selector(onMeshResponse:) name:NOTIFICATION_CommandType_MESH_RESPONSE object:nil];
+    [center addObserver:self selector:@selector(onMeshResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
     
 }
 
@@ -282,7 +282,7 @@ int mii;
         case DEF_NETWORKING_SECTION:
             return networkingHeight;
         case DEF_DEVICES_AND_USERS_SECTION:
-            return self.currentConnectionMode == SFIAlmondConnectionMode_local? almondNtwkHeight: clientsHeight;
+            return almondNtwkHeight;
         case DEF_WIRELESS_SETTINGS_SECTION:
             return [self getSettingsRowHeight];
         case DEF_ROUTER_VERSION_SECTION:
@@ -326,11 +326,11 @@ int mii;
                 return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link") selector:@selector(onEditNetworkSettings:) cardColor:[UIColor securifiRouterTileGreenColor]];
             }
             case DEF_DEVICES_AND_USERS_SECTION:{
-                if(self.currentConnectionMode == SFIAlmondConnectionMode_local)
+//                if(self.currentConnectionMode == SFIAlmondConnectionMode_local)
                     return [self createAlmondNetworkCell:tableView];
-                else{
-                    return [self createSummaryCell:tableView summaries:nil title:@"Advanced Router Features" selector:@selector(onAdvancdFeatures:) cardColor:[UIColor securifiRouterTileBlueColor]];
-                }
+//                else{
+//                    return [self createSummaryCell:tableView summaries:nil title:@"Advanced Router Features" selector:@selector(onAdvancdFeatures:) cardColor:[UIColor securifiRouterTileBlueColor]];
+//                }
             }
             case DEF_WIRELESS_SETTINGS_SECTION:{
                 summaries = [self getWirelessSettingsSummary];
