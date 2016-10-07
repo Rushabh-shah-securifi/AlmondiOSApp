@@ -401,8 +401,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSLog(@"searchBarTextDidBeginEditing %@",searchBar.text);
     self.isSearchBegin = YES;
     self.searchTableView.hidden = YES;
-   // [self.searchTableView reloadData];
-    
+    [self.searchTableView reloadData];
+    self.searchTableView.hidden = YES;
     
     
 }
