@@ -49,7 +49,7 @@
 @end
 
 @implementation BrowsingHistoryViewController
-
+typedef void(^InsertMethod)(BOOL);
 - (void)viewDidLoad {
     _isScrollEndReq = NO;
     self.count = 10;
@@ -69,7 +69,6 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.amac = toolkit.currentAlmond.almondplusMAC;
     [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac]];
-//    [BrowsingHistoryDataBase initializeDataBase];
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
     self.sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
 
@@ -78,7 +77,7 @@
     self.browsingHistory = [[BrowsingHistory alloc]init];
     self.browsingHistory.delegate = self;
     [self setUpHUD];
-    [self showHudWithTimeoutMsg:@"Loading..." withDelay:5];
+    
     
     [super viewDidLoad];
    
@@ -91,9 +90,10 @@
     [self.navigationController setNavigationBarHidden:YES];
     
     //dispatch_async(self.sendReqQueue,^(){
-    if([BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] > 0)
-        [self.HUD hide:YES];
-    [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:300 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+    if([BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] == 0)
+        [self showHudWithTimeoutMsg:@"Loading..." withDelay:5];
+    
+    [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:20 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
     
          //[self reloadTable];
    // });
@@ -122,14 +122,19 @@
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
+     [super viewWillDisappear:YES];
     [self.navigationController setNavigationBarHidden:NO];
     self.NoresultFound.hidden = YES;
     self.isTapped = NO;
-    [super viewWillDisappear:YES];
+    
    // [self updateNavi:[UIColor whiteColor] title:@"" tintColor:[UIColor blueColor] tintBarColor:[UIColor whiteColor]];
+    NSLog(@"before delete %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+    
     int record = [BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] - 500;
     if(record>0)
     [BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac nosRecord:record];
+    NSLog(@"after delete %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+    
 
 }
 -(void)updateNavi:(UIColor *)backGroundColor title:(NSString *)title tintColor:(UIColor *)tintColor tintBarColor:(UIColor *)tintBarColor{
@@ -140,10 +145,16 @@
 
 }
 -(void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:YES];
     //NSLog(@"dbCount1 = %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
 //    [BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
     //NSLog(@"dbCount2 = %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
-    [super viewDidDisappear:YES];
+    if(self.dayArr != nil)
+        [self.dayArr removeAllObjects];
+    //self.dayArr = nil;
+    //if(self.imageDownloadQueue)
+      // dispatch_suspend(self.imageDownloadQueue);
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -188,8 +199,13 @@
     //NSLog(@"willCacheResponse");
     return nil;
 }
+
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+     [self.HUD hide:YES];
     //Now you can do what you want with the response string from the data
+    if(_responseData == NULL)
+        return;
+    
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
     _responseData = nil;
     /*note get endidentifier from db */
@@ -210,8 +226,9 @@
                           };
     NSLog(@"incomplete db %@",self.incompleteDB);
     // put last_date and & ps in incomplete DB
-    
+        
      [BrowsingHistoryDataBase insertHistoryRecord:dict];// return last date
+    dict = nil;
    
     //check last date <= max date of completeDB stop req
     if(self.incompleteDB[@"PS"] == NULL){
@@ -277,7 +294,7 @@
     [self.dayArr removeAllObjects];
         //dispatch_async(self.sendReqQueue,^(){
     [self.browsingHistory getBrowserHistoryImages:[BrowsingHistoryDataBase getAllBrowsingHistorywithLimit:300 almonsMac:self.amac clientMac:self.cmac] dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
-        [self.HUD hide:YES];
+       
         [self reloadTable];
        // });
         self.isEmptyDb = NO;
@@ -358,10 +375,13 @@
 }
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    NSLog(@"willDisplayCell section %ld row %ld",indexPath.section,indexPath.row);
+    
     NSInteger lastSectionIndex = [tableView numberOfSections] - 1;
     NSInteger lastRowIndex = [tableView numberOfRowsInSection:lastSectionIndex] - 1;
     
     if ((indexPath.section == lastSectionIndex) && (indexPath.row == lastRowIndex)) {
+        NSLog(@"willDisplayCell Inside if");
         // This is the last cell
         //NSLog(@"reached to last db count = %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
         
@@ -477,6 +497,8 @@
     if(self.isTapped == NO)
     if(self.dayArr.count > indexPath.section){
     NSArray *browsHist = self.dayArr[indexPath.section];
+        if(browsHist.count < indexPath.row)
+            return;
     NSDictionary *uriDict = browsHist[indexPath.row];
 //    //NSLog(@"uriDict = %@",uriDict);
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];

@@ -30,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UISwitch *switchView1;
 @property (weak, nonatomic) IBOutlet UISwitch *switchView3;
 @property (weak, nonatomic) IBOutlet UIButton *backGrayButton;
+@property BOOL isPressed;
 
 
 
@@ -50,6 +51,7 @@
 -(void)viewWillAppear:(BOOL)animated{
      [self.navigationController setNavigationBarHidden:YES];
     [super viewWillAppear:YES];
+    self.isPressed = YES;
      [self initializeNotifications];
      self.switchView1.transform = CGAffineTransformMakeScale(0.70, 0.70);
      self.switchView3.transform = CGAffineTransformMakeScale(0.70, 0.70);
@@ -63,6 +65,9 @@
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"] && ![genericIndexValue.genericValue.value isEqualToString:@"wireless"]){
             self.dataLogView.hidden = YES;
             self.switchView3.on = NO;
+            if(![genericIndexValue.genericValue.value isEqualToString:@"wireless"])
+            self.switchView3.userInteractionEnabled = NO;
+            
             break;
         }
     }
@@ -255,10 +260,18 @@
         });
 }
 - (IBAction)browsingHistoryBtn:(id)sender {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
-    BrowsingHistoryViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
+   // UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+   // ViewControllerInfo* infoController = [self.storyboard instantiateViewControllerWithIdentifier:@"ViewControllerInfo"];
+   // [self.navigationController pushViewController:infoController animated:YES];
+    if(self.isPressed == YES){
+    BrowsingHistoryViewController *viewController =[self.storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
+    
+    
+    //[storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
     viewController.client = self.client;
+    self.isPressed = NO;
     [self.navigationController pushViewController:viewController animated:YES];
+    }
 }
 -(void)onWiFiClientsListResAndDynamicCallbacks:(id)sender{
     NSNotification *notifier = (NSNotification *) sender;

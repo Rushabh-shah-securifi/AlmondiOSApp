@@ -267,10 +267,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 #pragma mark sendReq methods
 -(void)sendReq:(SearchPatten)searchpatten withString:(NSString *)string{
     if(searchpatten == WeekSearch){
-        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&week",_amac,_cmac]];
+        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&week%@",_amac,_cmac,[BrowsingHistoryDataBase getTodayDate]]];
     }
-    else if(searchpatten == WeekSearch){
-        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&week",_amac,_cmac]];
+    else if(searchpatten == TodaySearch){
+        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&today%@",_amac,_cmac,[BrowsingHistoryDataBase getTodayDate]]];
     }
 }
 -(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
@@ -310,8 +310,61 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     _responseData = nil;
     /*note get endidentifier from db */
     //dispatch_async(self.sendReqQueue,^(){
+    if(dict == NULL)
+        return;
     NSLog(@"response dict =%@",dict);
+    if(dict[@"Data"] == NULL)
+        return;
+    if(dict[@"AMAC"] == NULL || dict[@"CMAC"] == NULL)
+        return;
+    if(![dict[@"AMAC"] isEqualToString:self.amac] || ![dict[@"CMAC"] isEqualToString:self.cmac])
+        return;
+    /*
+   // NSDictionary *catogeryDict = [self parseJson:@"CategoryMap"];
+    NSMutableDictionary *clientBrowsingHistory = [[NSMutableDictionary alloc]init];
+     NSMutableDictionary *dayDict = [NSMutableDictionary new];
+    NSArray *allObj = dict[@"Data"];
+    for(NSDictionary *uriDict in allObj)
+    {
+        ;
+        ;
+        NSString *ID = uriDict[@"subCategory"];
+        NSDictionary *categoryName = catogeryDict[ID];
+        ;
+        
+        NSDictionary *categoryObj = @{@"ID":ID,
+                                      @"categoty":categoryName[@"category"],
+                                      @"subCategory":categoryName[@"categoryName"]};
+         NSMutableDictionary *uriInfo = [NSMutableDictionary new];
+        [uriInfo setObject:uriDict[@"Domain"] forKey:@"hostName"];
+        [uriInfo setObject:uriDict[@"LastVisitedEpoch"] forKey:@"Epoc"];
+        [uriInfo setObject:uriDict[@"Date"] forKey:@"date"];
+        [uriInfo setObject:categoryObj forKey:@"categoryObj"];
+        
+        [uriInfo setObject:[UIImage imageNamed:@"globe" ] forKey:@"image"];
+        
+        [clientBrowsingHistory setObject:dict[@"pageState"] forKey:@"pageState"];
+        // [self addToDictionary:dayDict uriInfo:uriInfo rowID:uriDict[@"Date"]];
+     
+    }
+     
+    [clientBrowsingHistory setObject:dayDict forKey:@"Data"];
+    NSLog(@"clientBrowsingHistory %@",clientBrowsingHistory);*/
+    
 }
++ (void)addToDictionary:(NSMutableDictionary *)rowIndexValDict uriInfo:(NSMutableDictionary *)uriInfo rowID:(NSString *)day{
+    
+    NSMutableArray *augArray = [rowIndexValDict valueForKey:[NSString stringWithFormat:@"%@",day]];
+    if(augArray != nil){
+        [augArray addObject:uriInfo];
+        [rowIndexValDict setValue:augArray forKey:[NSString stringWithFormat:@"%@",day]];
+    }else{
+        NSMutableArray *tempArray = [NSMutableArray new];
+        [tempArray addObject:uriInfo];
+        [rowIndexValDict setValue:tempArray forKey:[NSString stringWithFormat:@"%@",day]];
+    }
+}
+
 #pragma mark searchDelegate methods
 -(void)setSearchpattenMethod:(SearchPatten)searchpatten withString:(NSString *)string{
     self.searchPatten = searchpatten;
@@ -626,5 +679,18 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.NoresultFound.hidden = YES;
     
 }
-
++(NSDictionary*)parseJson:(NSString*)fileName{
+    NSError *error = nil;
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName
+                                                         ofType:@"json"];
+    NSData *dataFromFile = [NSData dataWithContentsOfFile:filePath];
+    NSDictionary *data = [NSJSONSerialization JSONObjectWithData:dataFromFile
+                                                         options:kNilOptions
+                                                           error:&error];
+    
+    if (error != nil) {
+        //NSLog(@"Error: was not able to load json file: %@.",fileName);
+    }
+    return data;
+}
 @end

@@ -11,11 +11,13 @@
 @interface BrowsingHistory ()
 @property (nonatomic) NSMutableData *responseData;
 @property (nonatomic) NSMutableDictionary *urlToImageDict;
+@property (nonatomic) dispatch_queue_t imageDownloadQueue;
 
 @end
 @implementation BrowsingHistory
--(void)getBrowserHistoryImages:(NSDictionary *)historyDict dispatchQueue:(dispatch_queue_t)imageDownloadQueue dayArr:(NSMutableArray *)dayArr{
 
+-(void)getBrowserHistoryImages:(NSDictionary *)historyDict dispatchQueue:(dispatch_queue_t)imageDownloadQueue dayArr:(NSMutableArray *)dayArr{
+    self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
     NSDictionary *dict1 = historyDict[@"Data"];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd"];
@@ -38,7 +40,7 @@
         for (NSMutableDictionary *uriDict in alldayArr)
             
             {
-            dispatch_async(imageDownloadQueue,^(){
+            dispatch_async(self.imageDownloadQueue,^(){
                 [uriDict setObject:[self getImage:uriDict[@"hostName"] dispatchQueue:imageDownloadQueue] forKey:@"image"];
                  [self.delegate reloadTable];
             });
