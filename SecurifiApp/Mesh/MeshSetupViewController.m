@@ -61,8 +61,6 @@ int mii;
         [self setupMeshView];
         [[Analytics sharedInstance] markAddAlmondScreen];
     }
-
-    [self setUpHUD];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -141,15 +139,17 @@ int mii;
 }
 
 - (void)setupMeshView{
-    self.meshView = [[MeshView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20)];
-    NSLog(@"nav viewheight: %f", CGRectGetHeight(self.view.frame));
-    self.meshView.delegate = self;
-    
-    [self.meshView initializeFirstScreen:[CommonMethods getMeshDict:@"Interface"]];
-    [self.meshView addInfoScreen:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-20)];
-    
-    [self.view addSubview:self.meshView];
-    self.meshView.backgroundColor = [UIColor grayColor];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.meshView = [[MeshView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20)];
+        NSLog(@"nav viewheight: %f", CGRectGetHeight(self.view.frame));
+        self.meshView.delegate = self;
+        
+        [self.meshView initializeFirstScreen:[CommonMethods getMeshDict:@"Interface"]];
+        [self.meshView addInfoScreen:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-20)];
+        
+        [self.view addSubview:self.meshView];
+//        self.meshView.backgroundColor = [UIColor grayColor];
+    });
 }
 
 -(void)toggleImages:(BOOL)onlineHidden weakImg:(BOOL)weakHidden text:(NSString*)text{
@@ -221,7 +221,10 @@ int mii;
 
 #pragma mark meshview delegates
 -(void)dismissControllerDelegate{
-    [[SecurifiToolkit sharedInstance] shutDownMesh];
+    if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_cloud)
+        [[SecurifiToolkit sharedInstance] asyncSendCommand:[GenericCommand requestRai2DownMobile:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC]];
+    else
+        [[SecurifiToolkit sharedInstance] shutDownMesh];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self dismissViewControllerAnimated:YES completion:nil];
     });
@@ -229,6 +232,7 @@ int mii;
 
 - (void)showHudWithTimeoutMsgDelegate:(NSString*)hudMsg time:(NSTimeInterval)sec{
     NSLog(@"showHudWithTimeoutMsg");
+    [self setUpHUD];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:hudMsg];
         [self.HUD hide:YES afterDelay:sec];
@@ -294,6 +298,7 @@ int mii;
         [self dismissControllerDelegate];
     }else{
         if([cmdType isEqualToString:@"RemoveSlaveMobile"]){
+            self.removeAlmondTO = nil;
             [self showForceRemoveAlert];
         }
         else if([cmdType isEqualToString:@"ForceRemoveSlaveMobile"]){

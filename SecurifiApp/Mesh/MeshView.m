@@ -71,8 +71,8 @@
 /* Mesh-help End*/
 
 @property (nonatomic) UIView *currentView;
-@property (nonatomic) NSArray *almondTitles;
-@property (nonatomic) NSArray *currentAlmonds;
+@property (nonatomic) NSArray *slavesDictArray;
+@property (nonatomic) NSArray *currentSlaves;
 
 @property (nonatomic) NSString *almondTitle;
 @property (nonatomic) NSArray *almondNames;
@@ -88,7 +88,7 @@
     if(self){
         NSLog(@"frame initialized");
         [[NSBundle mainBundle] loadNibNamed:@"mesh" owner:self options:nil];
-        self.almondTitles = nil;
+        self.slavesDictArray = nil;
         self.nameField.text = @"";
         self.almondNames = @[@"Bed Room",@"Den",@"Dining Room",@"Down Stairs",@"Entryway",@"Family Room",@"Hallway",@"Kids Room",@"Kitchen",@"Living Room",@"Master Bedroom",@"Office",@"Upstairs"];
         self.selectedName = self.almondNames[0];
@@ -165,7 +165,7 @@
     NSLog(@"number of rows");
     UIView *view = [pickerView superview];
     if(view.tag == 2) //variable, almond count
-        return self.almondTitles.count;
+        return self.slavesDictArray.count;
     else
         return self.almondNames.count; //fixed first few names
     return 4;
@@ -177,11 +177,10 @@
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
-    NSLog(@"picker title for row - almonds %@", self.almondTitles);
     UIView *view = [pickerView superview];
     if(view.tag == 2){//almond
-        NSArray *almTitles = self.almondTitles;
-        return [almTitles objectAtIndex:row];
+        NSDictionary *slave = self.slavesDictArray[row];
+        return slave[SLAVE_NAME]; //need to display actual name
     }else{//names
         return [self.almondNames objectAtIndex:row];
     }
@@ -193,7 +192,8 @@
     NSLog(@"did select picker row");
     UIView *view = [thePickerView superview];
     if(view.tag == 2){ //unique slave name
-        self.almondTitle = self.almondTitles[row];
+        NSDictionary *slave = self.slavesDictArray[row];
+        self.almondTitle = slave[SLAVE_UNIQUE_NAME]; //this will have unique name
     }else{
         self.selectedName = self.almondNames[row];
         self.nameField.text = @"";
@@ -229,6 +229,7 @@
 - (IBAction)onNoLEDBlinking:(UIButton *)noButton {
     _mii = arc4random() % 10000;
     [self addView:self.almondsView frame:self.currentView.frame];
+    [self requestStopLED];
     [[Analytics sharedInstance] markLedNotBlinking];
 }
 
@@ -257,7 +258,7 @@
 }
 
 - (IBAction)onCannotFindAlmondTap:(id)sender {
-    self.currentAlmonds = self.almondTitles;
+    self.currentSlaves = self.slavesDictArray;
     [self requestAddableSlave:ALMONDS_LIST];
     [self.activityIndic2 startAnimating];
     [self addView:self.pairingAlmondRestView frame:self.currentView.frame];
@@ -327,7 +328,7 @@
                 [self addView:self.interfaceView frame:frame];
             else if([self.item[S_NAME] isEqualToString:@"Wiring"] || [self.item[S_NAME] isEqualToString:@"Wireless"]){
                 
-                if(self.almondTitles)
+                if(self.slavesDictArray)
                     [self addView:self.almondsView frame:frame];
                 else{
                     [self addPairingAlmondView:frame];
@@ -409,6 +410,7 @@
             break;
         }
         case 3:{
+            [self requestStopLED];
             [self addView:self.almondsView frame:frame];
             break;
         }
@@ -448,8 +450,8 @@
 -(void)addView:(UIView*)view frame:(CGRect)frame{
     if(view.tag == 1){//view here will now be added
         [self.timer invalidate];
-        self.almondTitles = nil;
-        self.currentAlmonds = nil;
+        self.slavesDictArray = nil;
+        self.currentSlaves = nil;
     }
     else if(view.tag == 2){//almond list
         [self.almondPicker reloadAllComponents];
@@ -458,18 +460,19 @@
     else if(view.tag == 4){ //almond name
         self.nameField.text = @"";
     }
-    NSLog(@"almond titles: %@, tag: %ld", self.almondTitles, (long)view.tag);
-    [self.currentView removeFromSuperview];
-    
-    self.currentView = view;
-    view.frame = frame;
-    [self addSubview:view];
+    NSLog(@"current view: %@", self.currentView);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.currentView removeFromSuperview];
+        self.currentView = view;
+        view.frame = frame;
+        [self addSubview:view];
+    });
 }
 
 #pragma mark command requests
 -(void)requestAddableSlave:(int)tag{
     [self.timer invalidate];
-    self.almondTitles = nil;
+    self.slavesDictArray = nil;
     [self sendAddableSlaveCmd];
     
     self.startTime = CACurrentMediaTime();
@@ -494,15 +497,16 @@
     int tag = [(NSString *)self.timer.userInfo intValue];
     NSLog(@"elapsed time: %f, tag: %d", elapsedTime, tag);
     int timeout = [self getTimeOut:tag];
+    if(elapsedTime > 150 && elapsedTime < 151)
+        [self showPairingTroubleButton];
     if(elapsedTime >= timeout){
         [self.timer invalidate];
-        [self showPairingTroubleButton];
         
         if(tag == PAIRING_ALMOND_1){
             [self showAlert:@"No Almonds found" msg:@"Please bring the Almond closer or reboot and try again." cancel:@"Ok" other:nil tag:PAIRING_ALMOND_1];
         }
         else if(tag == ALMONDS_LIST){
-            self.almondTitles = self.currentAlmonds;
+            self.slavesDictArray = self.currentSlaves;
             [self addView:self.almondsView frame:self.currentView.frame];
             [self showAlert:@"Unable to find an Almond." msg:@"Make sure your Almond is plugged in. Reset it and try again." cancel:@"Ok" other:nil tag:ALMONDS_LIST];
         }
@@ -519,9 +523,9 @@
     if(tag == ALMONDS_LIST) //for cant find my almond
         return 120;
     else if(tag == PAIRING_ALMOND_1) //for trouble pairing almond
-        return 150;
+        return 300;
     else if(tag == INTERFACE_SCR) //for paring almond 1st screen
-        return 150;
+        return 300;
     else
         return 60;
 }
@@ -535,6 +539,10 @@
 
 -(void)requestblinkLED{
     [MeshPayload requestBlinkLed:self.mii slaveName:self.almondTitle];
+}
+
+-(void)requestStopLED{
+    [MeshPayload stopBlinkLed:self.mii];
 }
 
 -(void)requestSetSlaveName{
@@ -608,7 +616,7 @@
                 }
                 else{
                     //this condition was written when you come back from almonds list screen, but still will work when you come form screen 6
-                    if([(NSArray*)payload[SLAVES] count] > self.currentAlmonds.count){
+                    if([(NSArray*)payload[SLAVES] count] > self.currentSlaves.count){
                         [self parseSlaves:payload[SLAVES]];
                         [self addView:self.almondsView frame:self.currentView.frame];
                         [self.delegate showToastDelegate:@"New Almond found!"];
@@ -644,8 +652,9 @@
 }
 
 -(void)parseSlaves:(NSArray *)Slaves{
-    self.almondTitles = Slaves;
-    self.almondTitle = self.almondTitles[0]==nil? @"": self.almondTitles[0];
+    NSDictionary *slave = Slaves[0];
+    self.slavesDictArray = Slaves;
+    self.almondTitle = slave[SLAVE_UNIQUE_NAME]==nil? @"": slave[SLAVE_UNIQUE_NAME];
     [self.timer invalidate];
 }
 
@@ -750,11 +759,11 @@
         else if(alertView.tag == BLINK_CHECK){
             [self addView:self.interfaceView frame:self.currentView.frame];
         }
-        else if(alertView.tag == NETWORK_OFFLINE){
+        else if(alertView.tag == NETWORK_OFFLINE){//app auto connects if it finds Wi-Fi, so you don't have to reconnect
             if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_cloud){
-                [self dismissView];
+//                [self dismissView];
             }else{
-                [self dismissView];
+//                [self dismissView];
             }
         }
     }else{
@@ -762,6 +771,9 @@
     }
 }
 
+- (void)reconnect{
+    
+}
 #define network events
 - (void)onNetworkDownNotifier:(id)sender{
     [self.timer invalidate];

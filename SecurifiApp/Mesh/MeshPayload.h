@@ -26,10 +26,7 @@
 
 +(void)requestForceRemoveSlave:(int)mii uniqueName:(NSString*)uniqueName;
 
-+(void)requestSlaveDetails:(int)mii slaveUniqueName:(NSString*)uniqueName;
++(void)requestSlaveDetails:(int)mii slaveUniqueName:(NSString*)uniqueName almondMac:(NSString *)almondMac;
 
-+(void)requestRai2UpMobile:(int)mii;
-
-+(void)requestRai2DownMobile:(int)mii;
-
++(void)stopBlinkLed:(int)mii;
 @end

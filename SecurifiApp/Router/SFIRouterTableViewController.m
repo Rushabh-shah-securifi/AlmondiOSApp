@@ -36,17 +36,15 @@
 #import "AdvanceRouterSettingsController.h"
 
 #define DEF_NETWORKING_SECTION          0
-#define DEF_DEVICES_AND_USERS_SECTION   1
-#define DEF_WIRELESS_SETTINGS_SECTION   2
-#define DEF_ROUTER_VERSION_SECTION      3
-#define DEF_ROUTER_REBOOT_SECTION       4
-#define DEF_ROUTER_SEND_LOGS_SECTION    5
+#define DEF_MESH_OR_WIRELESS_SECTION    1
+#define DEF_ROUTER_VERSION_SECTION      2
+#define DEF_ROUTER_REBOOT_SECTION       3
+#define DEF_ROUTER_SEND_LOGS_SECTION    4
 
 #define REBOOT_TAG 1
 #define FIRMWARE_UPDATE_TAG 2
 
 static const int networkingHeight = 100;
-static const int clientsHeight = 70;
 static const int almondNtwkHeight = 200;
 static const int settingsHeight = 70;
 static const int versionHeight = 130;
@@ -262,9 +260,9 @@ int mii;
     }
     
     if (self.currentConnectionMode == SFIAlmondConnectionMode_local) {
-        return 2;
+        return [self isAL3]? 2: 1;
     }else{
-        return 6;
+        return 5;
     }
 }
 
@@ -281,10 +279,8 @@ int mii;
     switch (indexPath.section) {
         case DEF_NETWORKING_SECTION:
             return networkingHeight;
-        case DEF_DEVICES_AND_USERS_SECTION:
-            return almondNtwkHeight;
-        case DEF_WIRELESS_SETTINGS_SECTION:
-            return [self getSettingsRowHeight];
+        case DEF_MESH_OR_WIRELESS_SECTION:
+            return [self isAL3]? almondNtwkHeight: [self getSettingsRowHeight];
         case DEF_ROUTER_VERSION_SECTION:
             return self.newAlmondFirmwareVersionAvailable? versionHeight: versionHeight - 20;
         case DEF_ROUTER_REBOOT_SECTION:
@@ -295,6 +291,10 @@ int mii;
             return 100;
         }
     }
+}
+
+-(BOOL)isAL3{
+    return [[SecurifiToolkit sharedInstance].currentAlmond.firmware hasPrefix:@"AL3-"];
 }
 
 -(int)getSettingsRowHeight{
@@ -325,17 +325,15 @@ int mii;
                 summaries = [self getNetworkSummary];
                 return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link") selector:@selector(onEditNetworkSettings:) cardColor:[UIColor securifiRouterTileGreenColor]];
             }
-            case DEF_DEVICES_AND_USERS_SECTION:{
-//                if(self.currentConnectionMode == SFIAlmondConnectionMode_local)
+            case DEF_MESH_OR_WIRELESS_SECTION:{
+                if([self isAL3])
                     return [self createAlmondNetworkCell:tableView];
-//                else{
-//                    return [self createSummaryCell:tableView summaries:nil title:@"Advanced Router Features" selector:@selector(onAdvancdFeatures:) cardColor:[UIColor securifiRouterTileBlueColor]];
-//                }
+                else{
+                    summaries = [self getWirelessSettingsSummary];
+                    return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings") selector:@selector(onEditWirelessSettingsCard:) cardColor:[UIColor securifiRouterTileSlateColor]];
+                }
             }
-            case DEF_WIRELESS_SETTINGS_SECTION:{
-                summaries = [self getWirelessSettingsSummary];
-                return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings") selector:@selector(onEditWirelessSettingsCard:) cardColor:[UIColor securifiRouterTileSlateColor]];
-            }
+
             case DEF_ROUTER_VERSION_SECTION:{
                 NSString *title = NSLocalizedString(@"router.software-version-new.title.Software Version", @"Software Version");
                 
@@ -855,8 +853,12 @@ int mii;
      if (data == nil || [data valueForKey:@"data"]==nil ) {
          return;
      }
-     
-     NSDictionary *payload = [data valueForKey:@"data"];
+     NSDictionary *payload;
+     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
+         payload = data[@"data"];
+     }else{
+         payload = [data[@"data"] objectFromJSONData];
+     }
      NSLog(@"router mesh payload: %@", payload);
      if(![payload[COMMAND_MODE] isEqualToString:@"Reply"])
          return;
@@ -872,7 +874,7 @@ int mii;
          else if([commandType  isEqualToString:@"Rai2UpMobile"]){
              if(self.isAlmDetailView){
                  NSDictionary *slaveDict = self.routerSummary.almondsList[_almCount];
-                  [MeshPayload requestSlaveDetails:mii slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]];
+                 [MeshPayload requestSlaveDetails:mii slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME] almondMac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
 
              }else{
                  MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupAdding" isStatView:NO];
@@ -896,7 +898,12 @@ int mii;
      }else{
          self.isAlmDetailView = YES;
          self.almCount = almondCount;
-         [[SecurifiToolkit sharedInstance] connectMesh];
+         
+         if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local)
+             [[SecurifiToolkit sharedInstance] connectMesh];
+         else
+             [[SecurifiToolkit sharedInstance] asyncSendCommand:[GenericCommand requestRai2UpMobile:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC]];
+         
          dispatch_async(dispatch_get_main_queue(), ^{
              [self showHudWithTimeout:@"Requesting...Please Wait!"];
          });
@@ -920,8 +927,12 @@ int mii;
      dispatch_async(dispatch_get_main_queue(), ^{
          [self showHudWithTimeout:@"Please Wait!"];
          self.isAlmDetailView = NO;
-         [[SecurifiToolkit sharedInstance] connectMesh];
      });
+     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local)
+         [[SecurifiToolkit sharedInstance] connectMesh];
+     else
+         [[SecurifiToolkit sharedInstance] asyncSendCommand:[GenericCommand requestRai2UpMobile:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC]];
+         
  }
 
  @end
