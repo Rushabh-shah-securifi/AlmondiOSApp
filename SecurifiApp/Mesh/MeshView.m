@@ -776,8 +776,8 @@
 }
 #define network events
 - (void)onNetworkDownNotifier:(id)sender{
-    [self.timer invalidate];
-    [self.blinkTimer invalidate];
+//    [self.timer invalidate];
+//    [self.blinkTimer invalidate];
     
     [self showAlert:@"" msg:@"You are currently disconnected from your Almond 3 Wi-Fi network. Please reconnect and try again" cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
 }
