@@ -72,11 +72,16 @@
    
     if(self.cellType == ClientTable_Cell ||  self.cellType == ClientProperty_Cell || self.cellType == ClientEditProperties_cell){
          [self setWiFiSignalIcon];
-        if(self.cellType == ClientTable_Cell && enableSiteMap)
+        if(self.cellType == ClientTable_Cell && enableSiteMap){
             self.parentrolBtn.hidden = NO;
-        else
-            self.parentrolBtn.hidden = YES;
+           // self.deviceValue.hidden = NO;
+            
+        }
         
+        else{
+            self.parentrolBtn.hidden = YES;
+            //self.deviceValue.hidden = YES;
+        }
     }
     else{
         self.parentrolBtn.hidden = YES;

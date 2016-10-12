@@ -18,6 +18,7 @@
 #import "BrowsingHistoryDataBase.h"
 #import "UIFont+Securifi.h"
 #import "RecentSearchDB.h"
+#import "ChangeCategoryViewController.h"
 
 
 
@@ -56,6 +57,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 @property (nonatomic) NSMutableArray *searchStrArr;
 @property BOOL isSearchBegin;
 @property (nonatomic) NSMutableData *responseData;
+
 ;
 @end
 
@@ -86,21 +88,27 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [self.tableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
     
-    [self addSuggestionSearchObj];
-    [self initializeSearchController ];
+//    [self addSuggestionSearchObj];
+//    [self initializeSearchController ];
     
     self.isManuelSearch = YES;
     }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     NSLog(@"viewWillAppear searchPage");
+    [self addSuggestionSearchObj];
+    [self initializeSearchController ];
     self.isManuelSearch = YES;
 }
 -(void)viewWillDisappear:(BOOL)animated{
-    
     [super viewWillDisappear:YES];
     
-    [self.searchTableView removeFromSuperview];
+    
+}
+-(void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:YES];
+   // [self.searchTableView removeFromSuperview];
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -189,7 +197,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         NSString *headerDate = [date getDayMonthFormat];
 //        headerDate = @"today";
         if([str isEqualToString:[BrowsingHistoryDataBase getTodayDate]])
-            label.text = [NSString stringWithFormat:@"Today, %@",headerDate];
+            label.text = @"Today";
         else
             label.text = headerDate;
     }
@@ -212,18 +220,18 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     if(tableView == self.tableView){
 
         if(indexPath.section == 1)
-            [cell setCell:[self.suggSearchArr objectAtIndex:indexPath.row]hideItem:YES isCategory:NO count:indexPath.row+1];
+            [cell setCell:[self.suggSearchArr objectAtIndex:indexPath.row]hideItem:YES isCategory:NO showTime:NO count:indexPath.row+1 ];
         else if(indexPath.section == 2)
-            [cell setCell:[self.categorySearch objectAtIndex:indexPath.row]hideItem:YES isCategory:YES count:indexPath.row+1];
+            [cell setCell:[self.categorySearch objectAtIndex:indexPath.row]hideItem:YES isCategory:YES showTime:NO count:indexPath.row+1];
         else if(indexPath.section == 0)
-            [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row] hideItem:YES isCategory:NO count:indexPath.row+1];
+            [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row] hideItem:YES isCategory:NO showTime:NO count:indexPath.row+1];
     }
     else {
         if(self.dayArr.count > indexPath.section){
             self.NoresultFound.hidden = YES;
         NSArray *browsHist = self.dayArr[indexPath.section];
             if(browsHist.count>indexPath.row)
-        [cell setCell:browsHist[indexPath.row] hideItem:YES isCategory:YES count:indexPath.row+1];
+        [cell setCell:browsHist[indexPath.row] hideItem:YES isCategory:YES showTime:YES count:indexPath.row+1];
         }
     }
     
@@ -260,6 +268,25 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         }
         else if (indexPath.section == 2 && indexPath.row == 4){
             [self categorySearch:@"G" andDisplayText:@"General Audiences"];
+        }
+    }
+    else{
+        if(self.dayArr.count > indexPath.section){
+            NSArray *browsHist = self.dayArr[indexPath.section];
+            if(browsHist.count < indexPath.row)
+                return;
+            NSDictionary *uriDict = browsHist[indexPath.row];
+            //    //NSLog(@"uriDict = %@",uriDict);
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+            ChangeCategoryViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ChangeCategoryViewController"];
+            viewController.uriDict = uriDict;
+            viewController.client = self.client;
+            [self.navigationController pushViewController:viewController animated:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // [self.HUD hide:YES];
+                
+            });
+            
         }
     }
     

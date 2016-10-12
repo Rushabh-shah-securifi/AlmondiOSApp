@@ -102,13 +102,13 @@
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"PG-13"]){
         self.globalColor = [UIColor colorFromHexString:@"ff9800"];
         self.catogeryTag.text =@"Parents Strongly Cautioned";
-        self.catogeryFuncLbl.text = @"Some material may be inappropriate for children under 13. Parents are urged to be cautious. Some material may be inappropriate for pre teenagers.";
+        self.catogeryFuncLbl.text = @"Some material may be inappropriate for children under 13. Parents are urged to be cautious. Some material may be inappropriate for Pre-teenagers.";
       
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"PG"]){
         self.globalColor = [UIColor colorFromHexString:@"ffc107"];
         self.catogeryTag.text =@"Parential Guidence Suggested";
-        self.catogeryFuncLbl.text = @"Some material may not be suitable for children. Parents urged to give  parental guidance. May contain some material parents might not like for their young children.";
+        self.catogeryFuncLbl.text = @"Some material may not be suitable for children. Parents urged to give  \"parental guidance\". May contain some material parents might not like for their young children.";
         
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"G"]){

@@ -44,31 +44,42 @@
     self.parentsControlArr = [[NSMutableArray alloc]init];
     self.cat_view_more = [[CategoryView alloc]initParentalControlMoreClickView];
     self.cat_view_more.delegate = self;
+    int deviceID = _genericParams.headerGenericIndexValue.deviceID;
+    self.client = [Client findClientByID:@(deviceID).stringValue];//dont put in viewDid load
+    
+    NSLog(@"viewDidLoad ParentalControlsViewController");
 //    [self createArr];
     
     // Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated{
+     NSLog(@"viewWillAppear ParentalControlsViewController");
      [self.navigationController setNavigationBarHidden:YES];
+    
     [super viewWillAppear:YES];
     self.isPressed = YES;
      [self initializeNotifications];
      self.switchView1.transform = CGAffineTransformMakeScale(0.70, 0.70);
      self.switchView3.transform = CGAffineTransformMakeScale(0.70, 0.70);
     
-    int deviceID = _genericParams.headerGenericIndexValue.deviceID;
-    self.client = [Client findClientByID:@(deviceID).stringValue];
-    NSArray  *arr = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:@(deviceID).stringValue];
+   
+    NSArray  *arr = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:self.client.deviceID];
     for (GenericIndexValue *genericIndexValue in arr) {
-        NSLog(@"genericIndexValue.genericIndex.ID %@",genericIndexValue.genericIndex.ID);
+        NSLog(@"genericIndexValue.genericIndex.ID %@ value %@",genericIndexValue.genericIndex.ID ,genericIndexValue.genericValue.value);
         
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"] && ![genericIndexValue.genericValue.value isEqualToString:@"wireless"]){
             self.dataLogView.hidden = YES;
             self.switchView3.on = NO;
             if(![genericIndexValue.genericValue.value isEqualToString:@"wireless"])
             self.switchView3.userInteractionEnabled = NO;
-            
-            break;
+        }
+        if([genericIndexValue.genericIndex.ID isEqualToString:@"-19"] && [genericIndexValue.genericValue.value isEqualToString:@"1"]){
+            NSLog(@"blocked ");
+            self.dataLogView.hidden = YES;
+            self.switchView3.on = NO;
+            self.switchView1.on = NO;
+            self.switchView3.userInteractionEnabled = NO;
+            self.switchView1.userInteractionEnabled = NO;
         }
     }
     self.icon.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
@@ -101,6 +112,17 @@
     });
    
 }
+//-(void) viewWillDisappear:(BOOL) animated
+//{
+//    [super viewWillDisappear:animated];
+//    if ([self isMovingFromParentViewController])
+//    {
+//        if (self.navigationController.delegate)
+//        {
+//            self.navigationController.delegate = nil;
+//        }
+//    }
+//}
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
     [self.navigationController setNavigationBarHidden:NO];
@@ -259,18 +281,40 @@
         
         });
 }
+
+- (BOOL)classExistsInNavigationController:(Class)class
+{
+    for (UIViewController *controller in self.navigationController.viewControllers)
+    {
+        if ([controller isKindOfClass:class])
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
 - (IBAction)browsingHistoryBtn:(id)sender {
    // UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
    // ViewControllerInfo* infoController = [self.storyboard instantiateViewControllerWithIdentifier:@"ViewControllerInfo"];
    // [self.navigationController pushViewController:infoController animated:YES];
     if(self.isPressed == YES){
-    BrowsingHistoryViewController *viewController =[self.storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
+//        if (![self classExistsInNavigationController:[BrowsingHistoryViewController class]])
+//        {
+            BrowsingHistoryViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
+            viewController.client = self.client;
+            
+            [self.navigationController pushViewController:viewController animated:YES];
+       // }
+        
+        
+        
+    
     
     
     //[storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
-    viewController.client = self.client;
+    
     self.isPressed = NO;
-    [self.navigationController pushViewController:viewController animated:YES];
+    
     }
 }
 -(void)onWiFiClientsListResAndDynamicCallbacks:(id)sender{

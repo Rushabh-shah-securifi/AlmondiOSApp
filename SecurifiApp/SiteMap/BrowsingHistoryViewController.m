@@ -51,10 +51,11 @@
 @implementation BrowsingHistoryViewController
 typedef void(^InsertMethod)(BOOL);
 - (void)viewDidLoad {
+    NSLog(@" client name %@",self.client.name);
     self.count = 0;
-    self.NoresultFound = [[UILabel alloc]initWithFrame:self
-                          .browsingTable.frame];
-    self.NoresultFound.text = @"No result found";
+    self.NoresultFound = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 140, 15)];
+    [self.NoresultFound setCenter:self.navigationController.view.center];
+    self.NoresultFound.text = @"No results found";
     self.NoresultFound.backgroundColor = [UIColor clearColor];
     self.NoresultFound.textAlignment = NSTextAlignmentCenter;
     self.NoresultFound.font = [UIFont securifiFont:16];
@@ -86,9 +87,7 @@ typedef void(^InsertMethod)(BOOL);
     [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
     self.browsingHistory = [[BrowsingHistory alloc]init];
     self.browsingHistory.delegate = self;
-    
-    
-    
+
     [super viewDidLoad];
     
 }
@@ -96,8 +95,10 @@ typedef void(^InsertMethod)(BOOL);
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
     
-    NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:self.count amac:self.amac cmac:self.cmac];
+    NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:30 amac:self.amac cmac:self.cmac];
+    NSLog(@"recordDict %@",recordDict);
     [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+
     
     
 }
@@ -267,9 +268,11 @@ typedef void(^InsertMethod)(BOOL);
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     if(self.dayArr.count == 0){
+        NSLog(@"no results found");
         self.NoresultFound.hidden = NO;
     }
     else{
+        NSLog(@"results found");
         self.NoresultFound.hidden = YES;
     }
     return self.dayArr.count;
@@ -292,7 +295,7 @@ typedef void(^InsertMethod)(BOOL);
     if(self.dayArr.count > indexPath.section){
         NSArray *browsHist = self.dayArr[indexPath.section];
         if(browsHist.count>indexPath.row)
-            [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO count:indexPath.row+1];
+            [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO showTime:YES count:indexPath.row+1];
     }
     
     
@@ -336,6 +339,7 @@ typedef void(^InsertMethod)(BOOL);
                 [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&lastDate=%@&pageState=%@",_amac,_cmac,str,ps]];
             else
                 [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&lastDate=%@",_amac,_cmac,str]];
+
             self.oldDate = str;
         }
         else {
@@ -393,7 +397,7 @@ typedef void(^InsertMethod)(BOOL);
     NSString *headerDate = [date getDayMonthFormat];
     //    //NSLog(@"today date %@ == %@",[BrowsingHistoryDataBase getTodayDate],@"10-8-2016");
     if([str isEqualToString:[BrowsingHistoryDataBase getTodayDate]])
-        label.text = [NSString stringWithFormat:@"Today, %@",headerDate];
+        label.text = @"Today";
     else
         label.text = headerDate;
     label.textColor = [UIColor grayColor];

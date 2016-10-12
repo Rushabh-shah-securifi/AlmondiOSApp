@@ -30,20 +30,21 @@
     // Configure the view for the selected state
 }
 
--(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem isCategory:(BOOL)isCategory count:(NSInteger)count{
+-(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem isCategory:(BOOL)isCategory showTime :(BOOL)showTime count:(NSInteger)count{
     
     dispatch_async(dispatch_get_main_queue(), ^() {
+    
         if(isCategory){
             self.catImgXConstrain.constant = -6;
             self.webImg.hidden = YES;
             self.siteNameXconstrain.constant = 5;
             self.categoryImg.image = uri[@"image"];
-            self.lastActTime.hidden = YES;
         }
         else{
             if(hideItem){
                 self.webImgXConstrain.constant = 17;
                 self.siteNameXconstrain.constant = -27;
+                
             }
             else {
                 self.webImgXConstrain.constant = 7;
@@ -52,8 +53,13 @@
             }
             self.categoryImg.hidden = hideItem;
             self.settingImg.hidden = hideItem;
-            self.lastActTime.hidden = hideItem;
+           
             
+            
+        }
+        self.lastActTime.hidden = !showTime;
+        if(showTime){
+            self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
         UrlImgDict *imgs = [UrlImgDict sharedInstance];
         if([imgs.imgDict valueForKey:uri[@"hostName"]]!= NULL){

@@ -43,6 +43,7 @@
 @property(nonatomic) NSTimer *mobileCommandTimer;
 @property(nonatomic) SecurifiToolkit *toolkit;
 @property(nonatomic) BOOL isSiteMapSupport;
+@property(nonatomic) BOOL isLocal;
 @end
 
 @implementation DeviceListController
@@ -73,7 +74,8 @@ int mii;
     [super viewWillAppear:YES];
     mii = arc4random() % 10000;
     [self markAlmondTitleAndMac];
-    
+    SFIAlmondPlus *almond = [self.toolkit currentAlmond];
+      self.isLocal = [self.toolkit useLocalNetwork:almond.almondplusMAC];
     
     [self initializeNotifications];
     
@@ -367,7 +369,8 @@ int mii;
                                                              deviceName:client.name
                                                                   color:clientCellColor
                                                                isSensor:NO];
-        [cell.commonView initialize:genericParams cellType:ClientTable_Cell isSiteMap:self.isSiteMapSupport];
+       
+        [cell.commonView initialize:genericParams cellType:ClientTable_Cell isSiteMap:(self.isSiteMapSupport && !self.isLocal)];
     }
     return cell;
 }
