@@ -509,6 +509,8 @@
 		F417B2AE1DA290030073C440 /* AdvRouterHelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */; };
 		F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F426AE2E1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
+		F4981E961DABCDB4003A53E6 /* MeshEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */; };
+		F4981E971DABCDB4003A53E6 /* MeshEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */; };
 		F4B875431D5382D500DCF76F /* AlmondStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753A1D5382D500DCF76F /* AlmondStatus.m */; };
 		F4B875441D5382D500DCF76F /* AlmondStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753A1D5382D500DCF76F /* AlmondStatus.m */; };
 		F4B875451D5382D500DCF76F /* MeshPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753C1D5382D500DCF76F /* MeshPayload.m */; };
@@ -1142,6 +1144,8 @@
 		F426AE2B1D19515500AE60C8 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		F43814941D993B2800D5C762 /* Almond.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Almond.entitlements; sourceTree = "<group>"; };
+		F4981E941DABCDB4003A53E6 /* MeshEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshEditViewController.h; sourceTree = "<group>"; };
+		F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeshEditViewController.m; sourceTree = "<group>"; };
 		F4B875391D5382D500DCF76F /* AlmondStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondStatus.h; sourceTree = "<group>"; };
 		F4B8753A1D5382D500DCF76F /* AlmondStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlmondStatus.m; sourceTree = "<group>"; };
 		F4B8753B1D5382D500DCF76F /* MeshPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshPayload.h; sourceTree = "<group>"; };
@@ -2283,6 +2287,8 @@
 				F4B875401D5382D500DCF76F /* MeshStatusCell.m */,
 				F4B875411D5382D500DCF76F /* MeshView.h */,
 				F4B875421D5382D500DCF76F /* MeshView.m */,
+				F4981E941DABCDB4003A53E6 /* MeshEditViewController.h */,
+				F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */,
 			);
 			path = Mesh;
 			sourceTree = "<group>";
@@ -3055,6 +3061,7 @@
 				CEF6F4E51C92CAD600C68975 /* RuleButton.m in Sources */,
 				CEF6F4DD1C92CAD600C68975 /* AddTriggerAndAddAction.m in Sources */,
 				F4B8766F1D54653500DCF76F /* BlinkLedView.m in Sources */,
+				F4981E971DABCDB4003A53E6 /* MeshEditViewController.m in Sources */,
 				1DF034F099411CA60571A787 /* AlertView.m in Sources */,
 				1DF0322DC3176FDED2CFA324 /* AlertViewAction.m in Sources */,
 				1DF03A511BCC303474712681 /* RouterNetworkSettingsEditor.m in Sources */,
@@ -3185,6 +3192,7 @@
 				F401B0731D2D241200F64CE2 /* ColorComponentView.m in Sources */,
 				CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */,
 				CEF6F5061C92CD2400C68975 /* GenericIndexUtil.m in Sources */,
+				F4981E961DABCDB4003A53E6 /* MeshEditViewController.m in Sources */,
 				1DF0383EBD135988AEA6DF73 /* ValueFormatter.m in Sources */,
 				1DF03A1D3210B9478AF1DAC3 /* IndexValueSupport.m in Sources */,
 				F4B876801D54653500DCF76F /* TextInput.m in Sources */,

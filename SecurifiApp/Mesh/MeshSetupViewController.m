@@ -20,6 +20,7 @@
 
 #define REMOVE 1
 #define FORCE_REMOVE 2
+#define NETWORK_OFFLINE 3
 
 @interface MeshSetupViewController ()<MeshViewDelegate, MBProgressHUDDelegate, UIAlertViewDelegate>
 @property (nonatomic) MeshView *meshView;
@@ -51,7 +52,9 @@ int mii;
     [super viewDidLoad];
     NSLog(@"Meshset up controller");
     if(self.isStatusView){
-        [self setUpAlmondStatus];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setUpAlmondStatus];
+        });
         
         if(self.almondStatObj.isMaster)
            [[Analytics sharedInstance] markMasterScreen];
@@ -82,6 +85,10 @@ int mii;
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
  
     [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
+    
+    [center addObserver:self selector:@selector(onNetworkDownNotifier:) name:NETWORK_DOWN_NOTIFIER object:nil];
+    
+    [center addObserver:self selector:@selector(onNetworkUpNotifier:) name:NETWORK_UP_NOTIFIER object:nil];
 }
 
 -(void)setUpAlmondStatus{
@@ -232,8 +239,8 @@ int mii;
 
 - (void)showHudWithTimeoutMsgDelegate:(NSString*)hudMsg time:(NSTimeInterval)sec{
     NSLog(@"showHudWithTimeoutMsg");
-    [self setUpHUD];
     dispatch_async(dispatch_get_main_queue(), ^() {
+        [self setUpHUD];
         [self showHUD:hudMsg];
         [self.HUD hide:YES afterDelay:sec];
     });
@@ -265,8 +272,6 @@ int mii;
     });    
 }
 
-
-
 -(void)onMeshCommandResponse:(id)sender{
     NSLog(@"onmeshcommandresponse");
     //load next view
@@ -286,7 +291,7 @@ int mii;
     }
     NSLog(@"meshcontroller mesh payload: %@", payload);
 //    NSString *commandType = payload[COMMAND_TYPE];
-    if([payload[MOBILE_INTERNAL_INDEX] intValue]!=  mii|| ![payload[COMMAND_MODE] isEqualToString:@"Reply"])
+    if(![payload[COMMAND_MODE] isEqualToString:@"Reply"]) //[payload[MOBILE_INTERNAL_INDEX] intValue]!=  mii||
         return;
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     NSString *cmdType = payload[COMMAND_TYPE];
@@ -328,6 +333,13 @@ int mii;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == [alertView cancelButtonIndex]){
         //cancel clicked ...do your action
+        if(alertView.tag == NETWORK_OFFLINE){
+            SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+            enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:toolkit.currentAlmond.almondplusMAC];
+            if(status == SFIAlmondConnectionStatus_disconnected){
+                [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
+            }
+        }
     }else{
         if(alertView.tag == REMOVE){
             [self showHudWithTimeoutMsgDelegate:@"Removing...Please wait!" time:30];
@@ -341,10 +353,36 @@ int mii;
     }
 }
 
+- (void)showAlert:(NSString *)title msg:(NSString *)msg cancel:(NSString*)cncl other:(NSString *)other tag:(int)tag{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:nil];
+    alert.tag = tag;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [alert show];
+    });
+}
+
 #pragma mark timer
 -(void)onRemoveAlmTO:(id)sender{
     self.removeAlmondTO = nil;
     [self showForceRemoveAlert];
+}
+
+#define network events
+- (void)onNetworkDownNotifier:(id)sender{
+    [self.removeAlmondTO invalidate];
+    [self hideHUDDelegate];
+    
+     [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
+}
+
+- (void)onNetworkUpNotifier:(id)sender{
+    NSLog(@"mesh controller network up");
+    [self hideHUDDelegate];
+    if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
+        [[SecurifiToolkit sharedInstance] connectMesh];
+    }else{
+        //we wait for login response in case of cloud
+    }
 }
 
 @end

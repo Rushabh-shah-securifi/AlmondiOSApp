@@ -13,6 +13,7 @@
 #import "CommonMethods.h"
 #import "SFIColors.h"
 #import "Analytics.h"
+#import "RouterPayload.h"
 
 #define NETWORK_OFFLINE -1
 #define HELP_INFO 0
@@ -120,6 +121,10 @@
     [center addObserver:self selector:@selector(onNetworkDownNotifier:) name:NETWORK_DOWN_NOTIFIER object:nil];
     
     [center addObserver:self selector:@selector(onNetworkUpNotifier:) name:NETWORK_UP_NOTIFIER object:nil];
+    
+    [center addObserver:self selector:@selector(onLoginResponse:) name:kSFIDidCompleteLoginNotification object:nil];
+    
+    [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
 }
 
 - (void)removeNotificationObserver{
@@ -456,7 +461,7 @@
     else if(view.tag == 2){//almond list
         [self.almondPicker reloadAllComponents];
     }
-    
+
     else if(view.tag == 4){ //almond name
         self.nameField.text = @"";
     }
@@ -587,7 +592,8 @@
         [self.blinkTimer invalidate];
         self.blinkTimer = nil;
         if([payload[SUCCESS] boolValue]){
-            [self loadNextView];
+            if(self.currentView.tag == BLINK_CHECK)
+                [self loadNextView];
         }
         else{//failed
             [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
@@ -596,7 +602,7 @@
         return;
     }
     
-    if([payload[MOBILE_INTERNAL_INDEX] intValue]!=  self.mii|| ![payload[COMMAND_MODE] isEqualToString:@"Reply"])
+    if(![payload[COMMAND_MODE] isEqualToString:@"Reply"]) //need to check for mii as well
         return;
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     
@@ -632,7 +638,8 @@
         
         else if([commandType isEqualToString:@"BlinkLedMobile"]){
             [self.delegate hideHUDDelegate];
-            [self loadNextView];
+            if(self.currentView.tag == ALMONDS_LIST)
+                [self loadNextView];
         }
   
         else if([commandType isEqualToString:@"SetSlaveNameMobile"]){
@@ -656,6 +663,34 @@
     self.slavesDictArray = Slaves;
     self.almondTitle = slave[SLAVE_UNIQUE_NAME]==nil? @"": slave[SLAVE_UNIQUE_NAME];
     [self.timer invalidate];
+}
+
+
+
+- (void)onAlmondRouterCommandResponse:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    SFIGenericRouterCommand *genericRouterCommand = (SFIGenericRouterCommand *) [data valueForKey:@"data"];
+    if(genericRouterCommand.commandType == SFIGenericRouterCommandType_WIRELESS_SUMMARY) {
+        SFIRouterSummary *routerSummary = genericRouterCommand.command;
+        NSLog(@"mesh view: %@", routerSummary);
+        for(NSDictionary *almond in routerSummary.almondsList){
+            if([almond[SLAVE_UNIQUE_NAME] isEqualToString:self.almondTitle]){
+                [self.delegate hideHUDDelegate];
+                [self.blinkTimer invalidate];
+                self.blinkTimer = nil;
+                if(self.currentView.tag == BLINK_CHECK)
+                    [self loadNextView];
+                return;
+            }
+        }
+        
+        //almond not yet added, its in adding state show hud (alerady there)
+        
+    }
 }
 
 -(void)showPairingTroubleButton{
@@ -739,7 +774,7 @@
 #pragma mark alert methods
 
 - (void)showAlert:(NSString *)title msg:(NSString *)msg cancel:(NSString*)cncl other:(NSString *)other tag:(int)tag{
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:nil];
     alert.tag = tag;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [alert show];
@@ -759,11 +794,16 @@
         else if(alertView.tag == BLINK_CHECK){
             [self addView:self.interfaceView frame:self.currentView.frame];
         }
-        else if(alertView.tag == NETWORK_OFFLINE){//app auto connects if it finds Wi-Fi, so you don't have to reconnect
-            if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_cloud){
-//                [self dismissView];
+        else if(alertView.tag == NETWORK_OFFLINE){
+            SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+            enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:toolkit.currentAlmond.almondplusMAC];
+            if(status == SFIAlmondConnectionStatus_disconnected){
+                [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
             }else{
-//                [self dismissView];
+                if(self.currentView.tag == 6 || self.currentView.tag == 7){
+                    [self requestAddableSlave:INTERFACE_SCR];
+                }
+                
             }
         }
     }else{
@@ -771,19 +811,35 @@
     }
 }
 
-- (void)reconnect{
-    
-}
 #define network events
 - (void)onNetworkDownNotifier:(id)sender{
-//    [self.timer invalidate];
-//    [self.blinkTimer invalidate];
+    [self.timer invalidate];
+    [self.blinkTimer invalidate];
+
+    [self.delegate hideHUDDelegate];
     
-    [self showAlert:@"" msg:@"You are currently disconnected from your Almond 3 Wi-Fi network. Please reconnect and try again" cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
+    [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
+    
 }
 
 - (void)onNetworkUpNotifier:(id)sender{
+    NSLog(@"mesh view network up");
     
+    if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
+        [[SecurifiToolkit sharedInstance] connectMesh];
+    }else{
+        //we wait for login response in case of cloud
+    }
+}
+
+- (void)onLoginResponse:(id)sender{
+    NSLog(@"mesh view on login resposne");
+    if(self.currentView.tag == BLINK_CHECK){
+        [RouterPayload routerSummary:_mii mac:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
+//        [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:60];
+    }else{
+        
+    }
 }
 /* Meshhelp -End */
 @end
