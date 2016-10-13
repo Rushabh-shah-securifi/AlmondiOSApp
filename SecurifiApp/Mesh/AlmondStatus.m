@@ -35,12 +35,11 @@
  }
  */
 +(AlmondStatus *)getSlaveStatus:(NSDictionary *)payload routerSummary:(SFIRouterSummary*)routerSummary{
-    NSString *masterName = [SecurifiToolkit sharedInstance].currentAlmond.almondplusName;
     NSDictionary *ssid = [self getSSIDs:routerSummary];
     
     AlmondStatus *stat = [self getStatus:payload[NAME]
                   location:payload[NAME]
-               connetedVia:masterName
+                connetedVia:payload[CONNECTED_VIA]?:@"***"
                  interface:payload[INTERFACE]
             signalStrength:payload[SIGNAL_STRENGTH]
                      ssid1:ssid[@"2G"] ssid2:ssid[@"5G"]

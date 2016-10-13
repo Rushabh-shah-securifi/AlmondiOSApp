@@ -78,6 +78,7 @@
 @property (nonatomic) NSString *almondTitle;
 @property (nonatomic) NSArray *almondNames;
 @property (nonatomic) NSString *selectedName;
+@property (nonatomic) BOOL isYesBlinkTapped;
 
 @property (nonatomic)int mii;
 @end
@@ -239,9 +240,10 @@
 }
 
 - (IBAction)onYesLEDBlinking:(UIButton *)yesButton {
+    self.isYesBlinkTapped = YES;
     _mii = arc4random() % 10000;
     self.blinkTimer = [NSTimer scheduledTimerWithTimeInterval:180 target:self selector:@selector(onBlinkTimeout:) userInfo:nil repeats:NO];
-    [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait!" time:180];
+    [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:180];
     [self requestAddSlave:YES];
     [[Analytics sharedInstance] markLedBlinking];
 }
@@ -461,7 +463,9 @@
     else if(view.tag == 2){//almond list
         [self.almondPicker reloadAllComponents];
     }
-
+    else if(view.tag == 3){
+        self.isYesBlinkTapped = NO;
+    }
     else if(view.tag == 4){ //almond name
         self.nameField.text = @"";
     }
@@ -665,8 +669,6 @@
     [self.timer invalidate];
 }
 
-
-
 - (void)onAlmondRouterCommandResponse:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
@@ -689,7 +691,8 @@
         }
         
         //almond not yet added, its in adding state show hud (alerady there)
-        
+        if(self.isYesBlinkTapped)
+            [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:60];
     }
 }
 
@@ -774,6 +777,7 @@
 #pragma mark alert methods
 
 - (void)showAlert:(NSString *)title msg:(NSString *)msg cancel:(NSString*)cncl other:(NSString *)other tag:(int)tag{
+    NSLog(@"mesh view show alert tag: %d", tag);
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:nil];
     alert.tag = tag;
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -795,15 +799,19 @@
             [self addView:self.interfaceView frame:self.currentView.frame];
         }
         else if(alertView.tag == NETWORK_OFFLINE){
+            NSLog(@"on alert ok");
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
             enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:toolkit.currentAlmond.almondplusMAC];
             if(status == SFIAlmondConnectionStatus_disconnected){
+                NSLog(@"ok 1");
                 [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
             }else{
+                NSLog(@"ok 2");
                 if(self.currentView.tag == 6 || self.currentView.tag == 7){
                     [self requestAddableSlave:INTERFACE_SCR];
+                }else if(self.currentView.tag == BLINK_CHECK){
+                    [RouterPayload routerSummary:_mii mac:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
                 }
-                
             }
         }
     }else{
@@ -813,6 +821,7 @@
 
 #define network events
 - (void)onNetworkDownNotifier:(id)sender{
+    NSLog(@"on network down");
     [self.timer invalidate];
     [self.blinkTimer invalidate];
 
@@ -835,7 +844,7 @@
 - (void)onLoginResponse:(id)sender{
     NSLog(@"mesh view on login resposne");
     if(self.currentView.tag == BLINK_CHECK){
-        [RouterPayload routerSummary:_mii mac:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
+//        [RouterPayload routerSummary:_mii mac:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
 //        [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:60];
     }else{
         

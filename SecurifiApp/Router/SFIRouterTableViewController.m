@@ -36,10 +36,11 @@
 #import "AdvanceRouterSettingsController.h"
 
 #define DEF_NETWORKING_SECTION          0
-#define DEF_MESH_OR_WIRELESS_SECTION    1
-#define DEF_ROUTER_VERSION_SECTION      2
-#define DEF_ROUTER_REBOOT_SECTION       3
-#define DEF_ROUTER_SEND_LOGS_SECTION    4
+#define DEF_MESH_SECTION                1
+#define DEF_WIRELESS_SECTION            2
+#define DEF_ROUTER_VERSION_SECTION      3
+#define DEF_ROUTER_REBOOT_SECTION       4
+#define DEF_ROUTER_SEND_LOGS_SECTION    5
 
 #define REBOOT_TAG 1
 #define FIRMWARE_UPDATE_TAG 2
@@ -262,7 +263,7 @@ int mii;
     if (self.currentConnectionMode == SFIAlmondConnectionMode_local) {
         return [self isAL3]? 2: 1;
     }else{
-        return 5;
+        return [self isAL3]? 6: 5;
     }
 }
 
@@ -279,8 +280,10 @@ int mii;
     switch (indexPath.section) {
         case DEF_NETWORKING_SECTION:
             return networkingHeight;
-        case DEF_MESH_OR_WIRELESS_SECTION:
-            return [self isAL3]? almondNtwkHeight: [self getSettingsRowHeight];
+        case DEF_MESH_SECTION:
+            return [self isAL3]?almondNtwkHeight: 0;
+        case DEF_WIRELESS_SECTION:
+            return  [self getSettingsRowHeight];
         case DEF_ROUTER_VERSION_SECTION:
             return self.newAlmondFirmwareVersionAvailable? versionHeight: versionHeight - 20;
         case DEF_ROUTER_REBOOT_SECTION:
@@ -325,15 +328,27 @@ int mii;
                 summaries = [self getNetworkSummary];
                 return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link") selector:@selector(onEditNetworkSettings:) cardColor:[UIColor securifiRouterTileGreenColor]];
             }
-            case DEF_MESH_OR_WIRELESS_SECTION:{
+            case DEF_MESH_SECTION:{
                 if([self isAL3])
                     return [self createAlmondNetworkCell:tableView];
                 else{
-                    summaries = [self getWirelessSettingsSummary];
-                    return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings") selector:@selector(onEditWirelessSettingsCard:) cardColor:[UIColor securifiRouterTileSlateColor]];
+                    static NSString *CellIdentifier = @"CellIdentifier";
+                    
+                    // Dequeue or create a cell of the appropriate type.
+                    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                    if (cell == nil) {
+                        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+                        cell.accessoryType = UITableViewCellAccessoryNone;
+                    }
+                    return cell;
                 }
+                    
             }
+            case DEF_WIRELESS_SECTION:{
 
+            summaries = [self getWirelessSettingsSummary];
+            return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings") selector:@selector(onEditWirelessSettingsCard:) cardColor:[UIColor securifiRouterTileSlateColor]];
+            }
             case DEF_ROUTER_VERSION_SECTION:{
                 NSString *title = NSLocalizedString(@"router.software-version-new.title.Software Version", @"Software Version");
                 
@@ -398,6 +413,8 @@ int mii;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if([self isNoAlmondLoaded])
+        return 0;
+    if(section == 1 && ![self isAL3])
         return 0;
     return 10;
 }
@@ -591,7 +608,7 @@ int mii;
 - (void)onEditWirelessSettingsCard:(id)sender {
     self.isBUG = YES;
     [self showHudWithTimeout:NSLocalizedString(@"Loading router data", @"Loading router data")];
-     [RouterPayload getWirelessSettings:mii mac:self.almondMac];
+    [RouterPayload getWirelessSettings:mii mac:self.almondMac];
 }
      
  -(void)onFirmwareUpdate:(id)sender{
@@ -692,10 +709,7 @@ int mii;
                      // do not show settings UI when the connection mode is local;
                      break;
                  }
-                 //                if (self.routerSummary) {
-                 //                    // keep the summary information up to date as settings are changed in the settings controller
-                 //                    [self.routerSummary updateWirelessSummaryWithSettings:settings];
-                 //                }
+
                  
                  if (self.navigationController.topViewController == self  && self.isBUG) {
                      NSLog(@"cloud settings: %@", settings);
@@ -703,7 +717,12 @@ int mii;
                      //                    ctrl.title = self.navigationItem.title;
                      ctrl.wirelessSettings = settings;
                      ctrl.almondMac = self.almondMac;
-                     ctrl.enableRouterWirelessControl = YES;
+                     BOOL enableSwitch = YES;
+                     if([self isAL3]){
+                         if(self.routerSummary.almondsList.count > 0)//has slaves
+                             enableSwitch = NO;
+                     }
+                     ctrl.enableRouterWirelessControl = enableSwitch;
                      ctrl.hidesBottomBarWhenPushed = YES;
                      UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
                                                     initWithTitle:NSLocalizedString(@"Router Back", @"Back")
@@ -874,7 +893,9 @@ int mii;
          else if([commandType  isEqualToString:@"Rai2UpMobile"]){
              if(self.isAlmDetailView){
                  NSDictionary *slaveDict = self.routerSummary.almondsList[_almCount];
-                 [MeshPayload requestSlaveDetails:mii slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME] almondMac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
+                 [MeshPayload requestSlaveDetails:mii
+                                  slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]
+                                        almondMac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
 
              }else{
                  MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupAdding" isStatView:NO];

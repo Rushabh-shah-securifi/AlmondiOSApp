@@ -331,6 +331,9 @@ int mii;
 
 #pragma mark alert delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSLog(@"meshsetupcontroller clicked index");
+    if(self.isStatusView == NO)
+        return;
     if (buttonIndex == [alertView cancelButtonIndex]){
         //cancel clicked ...do your action
         if(alertView.tag == NETWORK_OFFLINE){
@@ -354,6 +357,7 @@ int mii;
 }
 
 - (void)showAlert:(NSString *)title msg:(NSString *)msg cancel:(NSString*)cncl other:(NSString *)other tag:(int)tag{
+    NSLog(@"controller show alert tag: %d", tag);
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:nil];
     alert.tag = tag;
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -369,6 +373,7 @@ int mii;
 
 #define network events
 - (void)onNetworkDownNotifier:(id)sender{
+    NSLog(@"meshsetupcontrolle n/w down");
     [self.removeAlmondTO invalidate];
     [self hideHUDDelegate];
     
