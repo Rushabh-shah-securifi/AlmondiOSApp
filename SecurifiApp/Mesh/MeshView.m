@@ -242,17 +242,18 @@
 - (IBAction)onYesLEDBlinking:(UIButton *)yesButton {
     self.isYesBlinkTapped = YES;
     _mii = arc4random() % 10000;
-    self.blinkTimer = [NSTimer scheduledTimerWithTimeInterval:180 target:self selector:@selector(onBlinkTimeout:) userInfo:nil repeats:NO];
-    [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:180];
+    int blinkTimeout = 90;
+    self.blinkTimer = [NSTimer scheduledTimerWithTimeInterval:blinkTimeout target:self selector:@selector(onBlinkTimeout:) userInfo:nil repeats:NO];
+    [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:blinkTimeout];
     [self requestAddSlave:YES];
     [[Analytics sharedInstance] markLedBlinking];
 }
 
 -(void)onBlinkTimeout:(id)sender{
+    NSLog(@"blink time out");
+    [RouterPayload routerSummary:self.mii mac:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
     [self.blinkTimer invalidate];
     self.blinkTimer = nil;
-    if(self.currentView.tag == BLINK_CHECK)
-        [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
 }
 
 //naming almond view
@@ -690,9 +691,13 @@
             }
         }
         
+        if([self.blinkTimer isValid] == NO && self.currentView.tag == BLINK_CHECK && self.isYesBlinkTapped)
+            [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
+        
         //almond not yet added, its in adding state show hud (alerady there)
-        if(self.isYesBlinkTapped)
-            [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:60];
+//        else if(self.isYesBlinkTapped)
+//            [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:60];
+        
     }
 }
 
@@ -823,7 +828,6 @@
 - (void)onNetworkDownNotifier:(id)sender{
     NSLog(@"on network down");
     [self.timer invalidate];
-    [self.blinkTimer invalidate];
 
     [self.delegate hideHUDDelegate];
     

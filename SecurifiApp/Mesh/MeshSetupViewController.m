@@ -155,6 +155,7 @@ int mii;
         [self.meshView addInfoScreen:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-20)];
         
         [self.view addSubview:self.meshView];
+        [self setUpHUD];
 //        self.meshView.backgroundColor = [UIColor grayColor];
     });
 }
@@ -240,7 +241,6 @@ int mii;
 - (void)showHudWithTimeoutMsgDelegate:(NSString*)hudMsg time:(NSTimeInterval)sec{
     NSLog(@"showHudWithTimeoutMsg");
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self setUpHUD];
         [self showHUD:hudMsg];
         [self.HUD hide:YES afterDelay:sec];
     });

@@ -922,8 +922,12 @@ int mii;
          
          if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local)
              [[SecurifiToolkit sharedInstance] connectMesh];
-         else
-             [[SecurifiToolkit sharedInstance] asyncSendCommand:[GenericCommand requestRai2UpMobile:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC]];
+         else{
+             NSDictionary *slaveDict = self.routerSummary.almondsList[almondCount];
+             [MeshPayload requestSlaveDetails:mii
+                              slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]
+                                    almondMac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
+         }
          
          dispatch_async(dispatch_get_main_queue(), ^{
              [self showHudWithTimeout:@"Requesting...Please Wait!"];
