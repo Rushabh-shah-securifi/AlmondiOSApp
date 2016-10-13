@@ -53,11 +53,11 @@
             [oneDayUri addObject:uriDict];
         }
         [dayArr addObject:oneDayUri];
-        
     }
     
 }
-//
+
+
 -(UIImage*)getImage:(NSString*)hostName dispatchQueue:(dispatch_queue_t)imageDownloadQueue{
     UrlImgDict *imgDicts = [UrlImgDict sharedInstance];
     //NSLog(@" How many images are downloaded called ");

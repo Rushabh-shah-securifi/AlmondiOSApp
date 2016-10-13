@@ -8,6 +8,7 @@
 
 #import "HistoryCell.h"
 #import "UrlImgDict.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 @interface HistoryCell()
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *webImgXConstrain;
@@ -44,7 +45,6 @@
             if(hideItem){
                 self.webImgXConstrain.constant = 17;
                 self.siteNameXconstrain.constant = -27;
-                
             }
             else {
                 self.webImgXConstrain.constant = 7;
@@ -53,21 +53,23 @@
             }
             self.categoryImg.hidden = hideItem;
             self.settingImg.hidden = hideItem;
-           
-            
-            
         }
         self.lastActTime.hidden = !showTime;
         if(showTime){
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-        UrlImgDict *imgs = [UrlImgDict sharedInstance];
-        if([imgs.imgDict valueForKey:uri[@"hostName"]]!= NULL){
-            self.webImg.image = [imgs.imgDict objectForKey:uri[@"hostName"]];
-        }else{
-            self.webImg.image = uri[@"image"];
-        }
-        self.siteName.text = [NSString stringWithFormat:@"%ld,%@",count,uri[@"hostName"]];
+    
+        [self.webImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/favicon.ico", uri[@"hostName"]]]
+                       placeholderImage:[UIImage imageNamed:@"globe"]
+                              completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                  if(error!=nil){
+                                      NSLog(@"encountered error %@ for %@",[error localizedDescription],uri[@"hostName"]);
+                                      [self.webImg setImage:[UIImage imageNamed:@"globe"]];
+                                  }else
+                                      NSLog(@"completed loading %@",uri[@"hostName"]);
+                              }];
+        
+        self.siteName.text = [NSString stringWithFormat:@"%ld,%@",(long)count,uri[@"hostName"]];
         if([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"NC-17"]){
             self.categoryImg.image = [UIImage imageNamed:@"Adults_Only"];
             

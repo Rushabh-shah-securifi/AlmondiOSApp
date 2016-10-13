@@ -5,6 +5,7 @@ platform :ios, '7.0'
 #link_with 'Almond', 'HomeScreen'
 
 def shared_pods
+        pod 'SDWebImage'
 	pod 'ASValueTrackingSlider'
 	pod 'CocoaLumberjack'
 	#pod 'CrashlyticsLumberjack', '~> 2.0.0-rc2'
