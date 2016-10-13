@@ -19,13 +19,16 @@
     UrlImgDict *imgDicts = [UrlImgDict sharedInstance];
     UIImage *img;
     NSDictionary *dict1 = historyDict[@"Data"];
+    NSLog(@"dict1 browsingHistory all keys %@",[dict1 allKeys]);
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd"];
     NSMutableArray *dateArr = [NSMutableArray new];
     
-    if([dict1 allKeys].count > 0)
+    
     for (NSString *dates in [dict1 allKeys]){
         NSDate *date = [dateFormat dateFromString:dates];
+
+        if(date != nil)
         [dateArr addObject:date];
     }
     
