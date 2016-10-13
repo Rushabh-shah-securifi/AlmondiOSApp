@@ -199,7 +199,7 @@ typedef void(^InsertMethod)(BOOL);
 -(void)InsertInDB:(NSDictionary *)dict{
     NSLog(@"In InsertDB %d %d",self.reload,self.sendReq);
     
-    //NSLog(@"response dict =%@",dict);
+    NSLog(@"response dict =%@",dict);
     if(dict == NULL)
         return;
     NSArray *allObj = dict[@"Data"];
@@ -294,11 +294,9 @@ typedef void(^InsertMethod)(BOOL);
     //    self.UriDataOneDay = [self.browsingHistoryObj.allDateRecord valueForKey: self.browsingHistoryDayWise[indexPath.section]];
     if(self.dayArr.count > indexPath.section){
         NSArray *browsHist = self.dayArr[indexPath.section];
-        if(browsHist.count>indexPath.row)
+        if(browsHist.count > indexPath.row)
             [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO showTime:YES count:indexPath.row+1];
     }
-    
-    
     
     return cell;
 }
@@ -469,7 +467,7 @@ typedef void(^InsertMethod)(BOOL);
 }
 - (IBAction)backButtonClicked:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
-    
+    // [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)searchBurronClicked:(id)sender {

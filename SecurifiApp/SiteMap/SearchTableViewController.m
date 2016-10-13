@@ -331,6 +331,20 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     //NSLog(@"willCacheResponse");
     return nil;
 }
+- (NSDictionary*)parseJson:(NSString*)fileName{
+    NSError *error = nil;
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName
+                                                         ofType:@"json"];
+    NSData *dataFromFile = [NSData dataWithContentsOfFile:filePath];
+    NSDictionary *data = [NSJSONSerialization JSONObjectWithData:dataFromFile
+                                                         options:kNilOptions
+                                                           error:&error];
+    
+    if (error != nil) {
+        //NSLog(@"Error: was not able to load json file: %@.",fileName);
+    }
+    return data;
+}
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     //Now you can do what you want with the response string from the data
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
@@ -346,8 +360,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         return;
     if(![dict[@"AMAC"] isEqualToString:self.amac] || ![dict[@"CMAC"] isEqualToString:self.cmac])
         return;
-    /*
-   // NSDictionary *catogeryDict = [self parseJson:@"CategoryMap"];
+    
+    NSDictionary *catogeryDict = [self parseJson:@"CategoryMap"];
     NSMutableDictionary *clientBrowsingHistory = [[NSMutableDictionary alloc]init];
      NSMutableDictionary *dayDict = [NSMutableDictionary new];
     NSArray *allObj = dict[@"Data"];
@@ -362,24 +376,30 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         NSDictionary *categoryObj = @{@"ID":ID,
                                       @"categoty":categoryName[@"category"],
                                       @"subCategory":categoryName[@"categoryName"]};
-         NSMutableDictionary *uriInfo = [NSMutableDictionary new];
-        [uriInfo setObject:uriDict[@"Domain"] forKey:@"hostName"];
-        [uriInfo setObject:uriDict[@"LastVisitedEpoch"] forKey:@"Epoc"];
-        [uriInfo setObject:uriDict[@"Date"] forKey:@"date"];
-        [uriInfo setObject:categoryObj forKey:@"categoryObj"];
-        
-        [uriInfo setObject:[UIImage imageNamed:@"globe" ] forKey:@"image"];
-        
-        [clientBrowsingHistory setObject:dict[@"pageState"] forKey:@"pageState"];
-        // [self addToDictionary:dayDict uriInfo:uriInfo rowID:uriDict[@"Date"]];
+//         NSMutableDictionary *uriInfo = [NSMutableDictionary new];
+//        [uriInfo setObject:uriDict[@"Domain"] forKey:@"hostName"];
+//        [uriInfo setObject:uriDict[@"LastVisitedEpoch"] forKey:@"Epoc"];
+//        [uriInfo setObject:uriDict[@"Date"] forKey:@"date"];
+//        [uriInfo setObject:categoryObj forKey:@"categoryObj"];
+//        
+//        [uriInfo setObject:[UIImage imageNamed:@"globe" ] forKey:@"image"];
+        NSDictionary *uriInfo1 = @{
+                                   @"hostName" : uriDict[@"Domain"],
+                                   @"Epoc" : uriDict[@"LastVisitedEpoch"],
+                                   @"date" : uriDict[@"Date"],
+                                   @"categoryObj" : categoryObj,
+                                   @"image" : [UIImage imageNamed:@"globe" ]
+                                   
+                                   };
+         [self addToDictionary:dayDict uriInfo:uriInfo1 rowID:uriDict[@"Date"]];
      
     }
      
     [clientBrowsingHistory setObject:dayDict forKey:@"Data"];
-    NSLog(@"clientBrowsingHistory %@",clientBrowsingHistory);*/
+    NSLog(@"clientBrowsingHistory %@",clientBrowsingHistory);
     
 }
-+ (void)addToDictionary:(NSMutableDictionary *)rowIndexValDict uriInfo:(NSMutableDictionary *)uriInfo rowID:(NSString *)day{
+- (void)addToDictionary:(NSMutableDictionary *)rowIndexValDict uriInfo:(NSMutableDictionary *)uriInfo rowID:(NSString *)day{
     
     NSMutableArray *augArray = [rowIndexValDict valueForKey:[NSString stringWithFormat:@"%@",day]];
     if(augArray != nil){

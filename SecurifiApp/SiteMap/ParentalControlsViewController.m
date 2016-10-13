@@ -112,21 +112,22 @@
     });
    
 }
-//-(void) viewWillDisappear:(BOOL) animated
-//{
-//    [super viewWillDisappear:animated];
-//    if ([self isMovingFromParentViewController])
-//    {
-//        if (self.navigationController.delegate)
-//        {
-//            self.navigationController.delegate = nil;
-//        }
-//    }
-//}
--(void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:YES];
-    [self.navigationController setNavigationBarHidden:NO];
+-(void) viewWillDisappear:(BOOL) animated
+{
+    [super viewWillDisappear:animated];
+    if ([self isMovingFromParentViewController])
+    {
+        if (self.navigationController.delegate== self)
+        {
+            self.navigationController.delegate = nil;
+            NSLog(@"removing dlegate");
+        }
+    }
 }
+//-(void)viewWillDisappear:(BOOL)animated{
+//    [super viewWillDisappear:YES];
+//    [self.navigationController setNavigationBarHidden:NO];
+//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -282,37 +283,35 @@
         });
 }
 
-- (BOOL)classExistsInNavigationController:(Class)class
+- (BrowsingHistoryViewController *)classExistsInNavigationController:(Class)class
 {
     for (UIViewController *controller in self.navigationController.viewControllers)
     {
         if ([controller isKindOfClass:class])
         {
-            return YES;
+            NSLog(@"BrowsingHistoryViewController class");
+            return (BrowsingHistoryViewController*)controller;
         }
     }
-    return NO;
+    return nil;
 }
 - (IBAction)browsingHistoryBtn:(id)sender {
-   // UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
-   // ViewControllerInfo* infoController = [self.storyboard instantiateViewControllerWithIdentifier:@"ViewControllerInfo"];
-   // [self.navigationController pushViewController:infoController animated:YES];
+   
     if(self.isPressed == YES){
-//        if (![self classExistsInNavigationController:[BrowsingHistoryViewController class]])
-//        {
-            BrowsingHistoryViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
-            viewController.client = self.client;
-            
-            [self.navigationController pushViewController:viewController animated:YES];
-       // }
-        
-        
-        
-    
-    
-    
-    //[storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
-    
+        BrowsingHistoryViewController *controller = [self classExistsInNavigationController:[BrowsingHistoryViewController class]];
+
+        if (!controller)
+        {
+            BrowsingHistoryViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
+            NSLog(@"instantiateViewControllerWithIdentifier IF");
+            newWindow.client = self.client;
+            [self.navigationController pushViewController:newWindow animated:YES];
+        }
+        else
+        {   controller.client = self.client;
+             NSLog(@"instantiateViewControllerWithIdentifier else");
+            [self.navigationController pushViewController:controller animated:YES];
+        }
     self.isPressed = NO;
     
     }
@@ -327,8 +326,10 @@
     if(mainDict == NULL)
         return;
     NSDictionary * dict = mainDict[@"Clients"];
-    if(dict == NULL)
+   
+    if(dict == NULL || [dict allKeys].count == 0)
         return;
+    
     NSString *ID = [[dict allKeys] objectAtIndex:0]; // Assumes payload always has one device.
     if(ID == NULL)
         return;
@@ -389,5 +390,17 @@
 - (IBAction)grayBackButtonClicked:(id)sender {
     [self closeMoreView];
 }
-
+//-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+//    NSLog(@"prepare method");
+//    if ([segue.identifier isEqualToString:@"web"]) {
+//    BrowsingHistoryViewController *controller;
+//    controller = [segue destinationViewController];
+//    controller.client = self.client;
+//    }
+//}
+//        __block BrowsingHistoryViewController *viewKart = [[BrowsingHistoryViewController alloc]initWithNibName:@"BrowsingHistoryViewController" bundle:nil];
+//        viewKart.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//        [self presentViewController:viewKart animated:YES completion:^(void){
+//            viewKart = nil;
+//        }];
 @end
