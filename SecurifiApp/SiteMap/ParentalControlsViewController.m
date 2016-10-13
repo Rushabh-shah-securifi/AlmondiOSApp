@@ -112,22 +112,22 @@
     });
    
 }
--(void) viewWillDisappear:(BOOL) animated
-{
-    [super viewWillDisappear:animated];
-    if ([self isMovingFromParentViewController])
-    {
-        if (self.navigationController.delegate== self)
-        {
-            self.navigationController.delegate = nil;
-            NSLog(@"removing dlegate");
-        }
-    }
-}
-//-(void)viewWillDisappear:(BOOL)animated{
-//    [super viewWillDisappear:YES];
-//    [self.navigationController setNavigationBarHidden:NO];
+//-(void) viewWillDisappear:(BOOL) animated
+//{
+//    [super viewWillDisappear:animated];
+//    if ([self isMovingFromParentViewController])
+//    {
+//        if (self.navigationController.delegate== self)
+//        {
+//            self.navigationController.delegate = nil;
+//            NSLog(@"removing dlegate");
+//        }
+//    }
 //}
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
+    [self.navigationController setNavigationBarHidden:NO];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -298,20 +298,20 @@
 - (IBAction)browsingHistoryBtn:(id)sender {
    
     if(self.isPressed == YES){
-        BrowsingHistoryViewController *controller = [self classExistsInNavigationController:[BrowsingHistoryViewController class]];
-
-        if (!controller)
-        {
+//        BrowsingHistoryViewController *controller = [self classExistsInNavigationController:[BrowsingHistoryViewController class]];
+//
+//        if (!controller)
+//        {
             BrowsingHistoryViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
             NSLog(@"instantiateViewControllerWithIdentifier IF");
             newWindow.client = self.client;
             [self.navigationController pushViewController:newWindow animated:YES];
-        }
-        else
-        {   controller.client = self.client;
-             NSLog(@"instantiateViewControllerWithIdentifier else");
-            [self.navigationController pushViewController:controller animated:YES];
-        }
+//        }
+//        else
+//        {   controller.client = self.client;
+//             NSLog(@"instantiateViewControllerWithIdentifier else");
+//            [self.navigationController pushViewController:controller animated:YES];
+//        }
     self.isPressed = NO;
     
     }
@@ -329,7 +329,7 @@
    
     if(dict == NULL || [dict allKeys].count == 0)
         return;
-    
+   
     NSString *ID = [[dict allKeys] objectAtIndex:0]; // Assumes payload always has one device.
     if(ID == NULL)
         return;

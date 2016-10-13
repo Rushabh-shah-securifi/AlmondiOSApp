@@ -294,8 +294,10 @@ typedef void(^InsertMethod)(BOOL);
     //    self.UriDataOneDay = [self.browsingHistoryObj.allDateRecord valueForKey: self.browsingHistoryDayWise[indexPath.section]];
     if(self.dayArr.count > indexPath.section){
         NSArray *browsHist = self.dayArr[indexPath.section];
-        if(browsHist.count > indexPath.row)
+        if(browsHist.count > indexPath.row){
+            if(browsHist[indexPath.row] != NULL)
             [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO showTime:YES count:indexPath.row+1];
+        }
     }
     
     return cell;

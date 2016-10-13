@@ -22,10 +22,13 @@
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd"];
     NSMutableArray *dateArr = [NSMutableArray new];
+    
+    if([dict1 allKeys].count > 0)
     for (NSString *dates in [dict1 allKeys]){
         NSDate *date = [dateFormat dateFromString:dates];
         [dateArr addObject:date];
     }
+    
     NSArray *sortedArray = [dateArr sortedArrayUsingComparator: ^(NSDate *d1, NSDate *d2) {
         return [d2 compare:d1];
     }];
@@ -44,10 +47,10 @@
                 [uriDict setObject:img forKey:@"image"];
             else{
                 //NSLog(@" How many images are downloaded beginning ");
-                dispatch_async(imageDownloadQueue,^(){
-                    [uriDict setObject:[self getImage:uriDict[@"hostName"] dispatchQueue:imageDownloadQueue] forKey:@"image"];
-                    //[self.delegate reloadTable];
-                });
+//                dispatch_async(imageDownloadQueue,^(){
+//                    [uriDict setObject:[self getImage:uriDict[@"hostName"] dispatchQueue:imageDownloadQueue] forKey:@"image"];
+//                    //[self.delegate reloadTable];
+//                });
             }
             
             [oneDayUri addObject:uriDict];
