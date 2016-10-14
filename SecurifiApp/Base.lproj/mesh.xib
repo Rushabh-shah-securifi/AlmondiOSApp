@@ -30,6 +30,7 @@
                 <outlet property="interfaceView" destination="iN0-l3-epB" id="WoQ-Uj-ba3"/>
                 <outlet property="lineBtm" destination="13b-GD-NRy" id="ZL8-Xv-ybN"/>
                 <outlet property="nameField" destination="EGC-Tm-eSc" id="oje-gz-r1r"/>
+                <outlet property="namingBtn" destination="LXA-KB-VVm" id="SPt-ce-gIf"/>
                 <outlet property="namingView" destination="k8i-dQ-bjY" id="2bK-aO-EGg"/>
                 <outlet property="nextBtn" destination="Eco-3z-gxc" id="hyV-Ex-Qdw"/>
                 <outlet property="noLedBtn" destination="zNk-1Z-EhH" id="jTe-A5-o3X"/>

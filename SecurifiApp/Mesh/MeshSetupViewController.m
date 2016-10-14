@@ -17,12 +17,13 @@
 #import "MeshPayload.h"
 #import "UIViewController+Securifi.h"
 #import "Analytics.h"
+#import "MeshEditViewController.h"
 
 #define REMOVE 1
 #define FORCE_REMOVE 2
 #define NETWORK_OFFLINE 3
 
-@interface MeshSetupViewController ()<MeshViewDelegate, MBProgressHUDDelegate, UIAlertViewDelegate>
+@interface MeshSetupViewController ()<MeshViewDelegate, MBProgressHUDDelegate, UIAlertViewDelegate, MeshEditViewControllerDelegate>
 @property (nonatomic) MeshView *meshView;
 @property (nonatomic) MBProgressHUD *HUD;
 
@@ -125,10 +126,13 @@ int mii;
 
 -(NSString *)getSignalStrengthText{
     NSInteger sig = self.almondStatObj.signalStrength.integerValue;
-    if(sig < -87){
+    if(self.almondStatObj.internetStat == NO)
+        return @"Offline";
+    else if(sig < -87){
         return @"Wireless signal seems to be weak.";
+    }else{
+        return @"Online";
     }
-    return self.almondStatObj.internetStat? @"Online":@"Offline";
 }
 
 -(UIImage *)getSignalStrengthIcon{
@@ -218,7 +222,11 @@ int mii;
     
     MeshStatusCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER forIndexPath:indexPath];
     //    cell.delegate = self;
-    UITableViewCellAccessoryType accType = UITableViewCellAccessoryNone;
+    UITableViewCellAccessoryType accType;
+    if(indexPath.row == 0 && !self.almondStatObj.isMaster)
+        accType = UITableViewCellAccessoryDisclosureIndicator;
+    else
+        accType = UITableViewCellAccessoryNone;
     
     NSDictionary *keyVal = self.almondStatObj.keyVals[indexPath.row];
     [cell setupCell:[keyVal allKeys].firstObject value:[keyVal allValues].firstObject accType:accType];
@@ -226,6 +234,23 @@ int mii;
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.row == 0 && !self.almondStatObj.isMaster){
+        MeshEditViewController *ctrl = [MeshEditViewController new];
+        ctrl.delegate = self;
+        ctrl.uniqueName = self.almondStatObj.slaveUniqueName;
+        [self presentViewController:ctrl animated:YES completion:nil];
+    }
+}
+
+#pragma mark mesh edit delegate
+-(void)slaveNameDidChangeDelegate:(NSString *)name{
+    [self.almondStatObj.keyVals replaceObjectAtIndex:0 withObject:@{@"Location":name}];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.almondName.text = name;
+        [self.meshTableView reloadData];
+    });
+}
 
 #pragma mark meshview delegates
 -(void)dismissControllerDelegate{

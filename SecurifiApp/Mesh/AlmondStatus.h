@@ -21,7 +21,7 @@
 @property (nonatomic)NSString *signalStrength;
 @property (nonatomic)NSString *ssid1;
 @property (nonatomic)NSString *ssid2;
-@property (nonatomic)NSArray *keyVals;
+@property (nonatomic)NSMutableArray *keyVals;
 
 +(AlmondStatus *)getMasterAlmondStatus:(SFIRouterSummary*)routerSummary;
 +(AlmondStatus *)getSlaveStatus:(NSDictionary *)payload routerSummary:(SFIRouterSummary*)routerSummary;

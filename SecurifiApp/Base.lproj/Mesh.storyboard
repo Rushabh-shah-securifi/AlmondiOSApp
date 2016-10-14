@@ -156,16 +156,16 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qCy-Jl-fe7">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="statuscell" rowHeight="41" id="Uqd-Qr-Im7" customClass="MeshStatusCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="statuscell" rowHeight="41" id="Uqd-Qr-Im7" customClass="MeshStatusCell">
                                         <rect key="frame" x="0.0" y="28" width="375" height="41"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Uqd-Qr-Im7" id="xH1-4U-7TK">
-                                            <frame key="frameInset" width="375" height="41"/>
+                                            <frame key="frameInset" width="342" height="41"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label Key" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zjz-aX-8dn">
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="1TF-Yn-dyx"/>
+                                                        <constraint firstAttribute="height" constant="30" id="1TF-Yn-dyx"/>
                                                         <constraint firstAttribute="width" constant="152" id="vk7-Fr-8Z0"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
@@ -174,7 +174,7 @@
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label Value" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bvE-fW-KqQ">
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="8iZ-U6-QzX"/>
+                                                        <constraint firstAttribute="height" constant="30" id="8iZ-U6-QzX"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
                                                     <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -182,9 +182,9 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="bvE-fW-KqQ" firstAttribute="trailing" secondItem="xH1-4U-7TK" secondAttribute="trailingMargin" constant="-4" id="JgK-ZC-zsC"/>
+                                                <constraint firstItem="bvE-fW-KqQ" firstAttribute="trailing" secondItem="xH1-4U-7TK" secondAttribute="trailingMargin" id="JgK-ZC-zsC"/>
                                                 <constraint firstItem="zjz-aX-8dn" firstAttribute="top" secondItem="xH1-4U-7TK" secondAttribute="topMargin" id="U7s-KI-3lo"/>
-                                                <constraint firstItem="bvE-fW-KqQ" firstAttribute="leading" secondItem="zjz-aX-8dn" secondAttribute="trailing" constant="2" id="cPo-d7-lNs"/>
+                                                <constraint firstItem="bvE-fW-KqQ" firstAttribute="leading" secondItem="zjz-aX-8dn" secondAttribute="trailing" constant="6" id="cPo-d7-lNs"/>
                                                 <constraint firstItem="bvE-fW-KqQ" firstAttribute="top" secondItem="xH1-4U-7TK" secondAttribute="topMargin" id="mLu-KV-UVH"/>
                                                 <constraint firstItem="zjz-aX-8dn" firstAttribute="leading" secondItem="xH1-4U-7TK" secondAttribute="leadingMargin" constant="2" id="re7-fP-dWv"/>
                                             </constraints>

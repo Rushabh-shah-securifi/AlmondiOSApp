@@ -11,14 +11,19 @@
 - (void)dismissControllerDelegate;
 - (void)showHudWithTimeoutMsgDelegate:(NSString*)hudMsg time:(NSTimeInterval)sec;
 - (void)hideHUDDelegate;
+
+@optional
 - (void)showToastDelegate:(NSString *)msg;
+- (void)requestSetSlaveNameDelegate:(NSString *)newName;
 @end
 
 
 @interface MeshView : UIView
+@property (nonatomic) BOOL isMeshEditView;
 @property (nonatomic) id<MeshViewDelegate> delegate;
 - (void)addInterfaceView:(CGRect)frame;
 - (void)removeNotificationObserver;
+- (void)addNamingScreen:(CGRect)frame;
 
 /* meshhekp - start */
 - (void)addInfoScreen:(CGRect)frame;

@@ -47,6 +47,7 @@
 @property (weak, nonatomic) IBOutlet UIPickerView *almondPicker;
 @property (weak, nonatomic) IBOutlet UIButton *noLedBtn;
 @property (weak, nonatomic) IBOutlet UIButton *notRtNowBtn;
+@property (weak, nonatomic) IBOutlet UIButton *namingBtn;
 
 
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
@@ -242,7 +243,7 @@
 - (IBAction)onYesLEDBlinking:(UIButton *)yesButton {
     self.isYesBlinkTapped = YES;
     _mii = arc4random() % 10000;
-    int blinkTimeout = 90;
+    int blinkTimeout = 120;
     self.blinkTimer = [NSTimer scheduledTimerWithTimeInterval:blinkTimeout target:self selector:@selector(onBlinkTimeout:) userInfo:nil repeats:NO];
     [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:blinkTimeout];
     [self requestAddSlave:YES];
@@ -262,6 +263,11 @@
 
 - (IBAction)onNextButtonTap:(UIButton*)nextButton {
     _mii = arc4random() % 10000;
+    if(self.isMeshEditView){
+        NSString *name = self.nameField.text.length == 0? self.selectedName: self.nameField.text;
+        [self.delegate requestSetSlaveNameDelegate:name];
+        return;
+    }
     [self sendCommand:self.currentView];
 }
 
@@ -388,6 +394,11 @@
 
 - (IBAction)onBackBtnTap:(UIButton *)backBtn {
     NSLog(@"on back button tap");
+    if(self.isMeshEditView){
+        [self.delegate dismissControllerDelegate];
+        return;
+    }
+    
     [self loadPrevView:[backBtn superview]];
 }
 
@@ -573,7 +584,7 @@
 
 
 -(void)onMeshCommandResponse:(id)sender{
-    NSLog(@"onmeshcommandresponse");
+    NSLog(@"mesh view onmeshcommandresponse");
     //load next view
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSNotification *notifier = (NSNotification *) sender;
@@ -652,7 +663,7 @@
             [self loadNextView];
         }
     }
-    else{
+    else{//failed
         if([commandType isEqualToString:@"CheckForAddableWiredSlaveMobile"] || [commandType isEqualToString:@"CheckForAddableWirelessSlaveMobile"]){
             // do not do any thing.
         }
@@ -724,6 +735,11 @@
     NSLog(@"add info screeen");
     self.infoScreen.tag = 0;
     [self addView:self.infoScreen frame:frame];
+}
+
+-(void)addNamingScreen:(CGRect)frame{
+    [self.namingBtn setTitle:@"Done" forState:UIControlStateNormal];
+    [self addView:self.namingView frame:frame];
 }
 
 -(void)initializeFirstScreen:(NSDictionary *)item{
