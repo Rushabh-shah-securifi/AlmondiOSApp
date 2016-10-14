@@ -32,13 +32,13 @@
 }
 
 -(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem isCategory:(BOOL)isCategory showTime :(BOOL)showTime count:(NSInteger)count{
-    
-    dispatch_async(dispatch_get_main_queue(), ^() {
+    NSLog(@"");
     
         if(isCategory){
             self.catImgXConstrain.constant = -6;
             self.webImg.hidden = YES;
             self.siteNameXconstrain.constant = 5;
+            NSLog(@"image uri %@",uri[@"image"]);
             self.categoryImg.image = uri[@"image"];
         }
         else{
@@ -58,23 +58,27 @@
         self.lastActTime.hidden = !showTime;
         if(showTime){
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            NSArray* domainValues = [uri[@"hostName"] componentsSeparatedByString:@"."];
+            if([domainValues[0] isEqualToString:@"google"]){
+                [self.webImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://google.com/favicon.ico"]]placeholderImage:[UIImage imageNamed:@"globe"]];
+            }else{
+                [self.webImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.google.com/s2/favicons?domain=%@", uri[@"hostName"]]]
+                               placeholderImage:[UIImage imageNamed:@"globe"]
+                                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                          if(error!=nil){
+                                              NSLog(@"encountered error %@ for %@",uri[@"hostName"],[error localizedDescription]);
+                                              [self.webImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/favicon.ico", uri[@"hostName"]]]placeholderImage:[UIImage imageNamed:@"globe"]];
+                                          }else
+                                              NSLog(@"completed loading %@",uri[@"hostName"]);
+                                      }];
+            }
         }
-        
-        NSArray* domainValues = [uri[@"hostName"] componentsSeparatedByString:@"."];
-        if([domainValues[0] isEqualToString:@"google"]){
-            [self.webImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://google.com/favicon.ico"]]placeholderImage:[UIImage imageNamed:@"globe"]];
-        }else{
-            [self.webImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.google.com/s2/favicons?domain=%@", uri[@"hostName"]]]
-                           placeholderImage:[UIImage imageNamed:@"globe"]
-                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                      if(error!=nil){
-                                          NSLog(@"encountered error %@ for %@",uri[@"hostName"],[error localizedDescription]);
-                                          [self.webImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/favicon.ico", uri[@"hostName"]]]placeholderImage:[UIImage imageNamed:@"globe"]];
-                                      }else
-                                          NSLog(@"completed loading %@",uri[@"hostName"]);
-                                  }];
+        else{
+            self.webImg.image = uri[@"image"];
         }
-        self.siteName.text = [NSString stringWithFormat:@"%ld,%@",(long)count,uri[@"hostName"]];
+    
+    
+        self.siteName.text = [NSString stringWithFormat:@"%@",uri[@"hostName"]];
         if([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"NC-17"]){
             self.categoryImg.image = [UIImage imageNamed:@"Adults_Only"];
             
@@ -101,7 +105,7 @@
         NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[uri[@"Epoc"] intValue]];
         self.lastActTime.text = [dat stringFromDate];
         
-    });
+    
 }
 -(void)setName:(URIData *)uri{
     dispatch_async(dispatch_get_main_queue(), ^() {

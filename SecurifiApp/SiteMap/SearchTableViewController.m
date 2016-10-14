@@ -101,11 +101,13 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.isManuelSearch = YES;
 }
 -(void)viewWillDisappear:(BOOL)animated{
+    self.NoresultFound.hidden = YES;
     [super viewWillDisappear:YES];
     
     
 }
 -(void)viewDidDisappear:(BOOL)animated{
+    self.NoresultFound.hidden = YES;
     [super viewDidDisappear:YES];
    // [self.searchTableView removeFromSuperview];
     
@@ -216,15 +218,16 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     if (cell == nil){
         cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"abc"];
     }
-    
+    NSLog(@"table view inside  0");
     if(tableView == self.tableView){
-
-        if(indexPath.section == 1)
+        NSLog(@"table view inside  1");
+        if(indexPath.section == 0)
+            [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row] hideItem:YES isCategory:NO showTime:NO count:indexPath.row+1];
+        else if(indexPath.section == 1)
             [cell setCell:[self.suggSearchArr objectAtIndex:indexPath.row]hideItem:YES isCategory:NO showTime:NO count:indexPath.row+1 ];
         else if(indexPath.section == 2)
             [cell setCell:[self.categorySearch objectAtIndex:indexPath.row]hideItem:YES isCategory:YES showTime:NO count:indexPath.row+1];
-        else if(indexPath.section == 0)
-            [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row] hideItem:YES isCategory:NO showTime:NO count:indexPath.row+1];
+        
     }
     else {
         if(self.dayArr.count > indexPath.section){
@@ -292,127 +295,149 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
 }
 #pragma mark sendReq methods
--(void)sendReq:(SearchPatten)searchpatten withString:(NSString *)string{
-    if(searchpatten == WeekSearch){
-        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&week%@",_amac,_cmac,[BrowsingHistoryDataBase getTodayDate]]];
-    }
-    else if(searchpatten == TodaySearch){
-        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&today%@",_amac,_cmac,[BrowsingHistoryDataBase getTodayDate]]];
-    }
-}
--(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
-    //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
-    
-    // dispatch_async(self.sendReqQueue,^(){
-    NSLog(@"post req = %@",post);
-    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-    [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
-    [request setHTTPBody:postData];
-    [NSURLConnection connectionWithRequest:request delegate:self];
-    //});
-    
-    
-    
-    //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
-}
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response { _responseData = [[NSMutableData alloc] init];
-    //NSLog(@"didReceiveResponse");
-}
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    [_responseData appendData:data];
-    //NSLog(@"didReceiveData");
-}
-- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse*)cachedResponse {
-    //NSLog(@"willCacheResponse");
-    return nil;
-}
-- (NSDictionary*)parseJson:(NSString*)fileName{
-    NSError *error = nil;
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName
-                                                         ofType:@"json"];
-    NSData *dataFromFile = [NSData dataWithContentsOfFile:filePath];
-    NSDictionary *data = [NSJSONSerialization JSONObjectWithData:dataFromFile
-                                                         options:kNilOptions
-                                                           error:&error];
-    
-    if (error != nil) {
-        //NSLog(@"Error: was not able to load json file: %@.",fileName);
-    }
-    return data;
-}
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    //Now you can do what you want with the response string from the data
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
-    _responseData = nil;
-    /*note get endidentifier from db */
-    //dispatch_async(self.sendReqQueue,^(){
-    if(dict == NULL)
-        return;
-    NSLog(@"response dict =%@",dict);
-    if(dict[@"Data"] == NULL)
-        return;
-    if(dict[@"AMAC"] == NULL || dict[@"CMAC"] == NULL)
-        return;
-    if(![dict[@"AMAC"] isEqualToString:self.amac] || ![dict[@"CMAC"] isEqualToString:self.cmac])
-        return;
-    
-    NSDictionary *catogeryDict = [self parseJson:@"CategoryMap"];
-    NSMutableDictionary *clientBrowsingHistory = [[NSMutableDictionary alloc]init];
-     NSMutableDictionary *dayDict = [NSMutableDictionary new];
-    NSArray *allObj = dict[@"Data"];
-    for(NSDictionary *uriDict in allObj)
-    {
-        ;
-        ;
-        NSString *ID = uriDict[@"subCategory"];
-        NSDictionary *categoryName = catogeryDict[ID];
-        ;
-        
-        NSDictionary *categoryObj = @{@"ID":ID,
-                                      @"categoty":categoryName[@"category"],
-                                      @"subCategory":categoryName[@"categoryName"]};
-//         NSMutableDictionary *uriInfo = [NSMutableDictionary new];
-//        [uriInfo setObject:uriDict[@"Domain"] forKey:@"hostName"];
-//        [uriInfo setObject:uriDict[@"LastVisitedEpoch"] forKey:@"Epoc"];
-//        [uriInfo setObject:uriDict[@"Date"] forKey:@"date"];
-//        [uriInfo setObject:categoryObj forKey:@"categoryObj"];
-//        
-//        [uriInfo setObject:[UIImage imageNamed:@"globe" ] forKey:@"image"];
-        NSDictionary *uriInfo1 = @{
-                                   @"hostName" : uriDict[@"Domain"],
-                                   @"Epoc" : uriDict[@"LastVisitedEpoch"],
-                                   @"date" : uriDict[@"Date"],
-                                   @"categoryObj" : categoryObj,
-                                   @"image" : [UIImage imageNamed:@"globe" ]
-                                   
-                                   };
-         [self addToDictionary:dayDict uriInfo:uriInfo1 rowID:uriDict[@"Date"]];
-     
-    }
-     
-    [clientBrowsingHistory setObject:dayDict forKey:@"Data"];
-    NSLog(@"clientBrowsingHistory %@",clientBrowsingHistory);
-    
-}
-- (void)addToDictionary:(NSMutableDictionary *)rowIndexValDict uriInfo:(NSMutableDictionary *)uriInfo rowID:(NSString *)day{
-    
-    NSMutableArray *augArray = [rowIndexValDict valueForKey:[NSString stringWithFormat:@"%@",day]];
-    if(augArray != nil){
-        [augArray addObject:uriInfo];
-        [rowIndexValDict setValue:augArray forKey:[NSString stringWithFormat:@"%@",day]];
-    }else{
-        NSMutableArray *tempArray = [NSMutableArray new];
-        [tempArray addObject:uriInfo];
-        [rowIndexValDict setValue:tempArray forKey:[NSString stringWithFormat:@"%@",day]];
-    }
-}
-
-#pragma mark searchDelegate methods
+//
+//-(void)sendReq:(SearchPatten)searchpatten withString:(NSString *)string{
+//    if(searchpatten == WeekSearch){
+//        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&week%@",_amac,_cmac,[BrowsingHistoryDataBase getTodayDate]]];
+//    }
+//    else if(searchpatten == TodaySearch){
+//        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&today%@",_amac,_cmac,[BrowsingHistoryDataBase getTodayDate]]];
+//    }
+//}
+//-(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
+//    //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
+//    
+//    // dispatch_async(self.sendReqQueue,^(){
+//    NSLog(@"post req = %@",post);
+//    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+//    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+//    [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
+//    [request setHTTPMethod:@"POST"];
+//    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+//    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
+//    [request setHTTPBody:postData];
+//    [NSURLConnection connectionWithRequest:request delegate:self];
+//    //});
+//    
+//    
+//    
+//    //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
+//}
+//- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response { _responseData = [[NSMutableData alloc] init];
+//    //NSLog(@"didReceiveResponse");
+//}
+//- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+//    [_responseData appendData:data];
+//    //NSLog(@"didReceiveData");
+//}
+//- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse*)cachedResponse {
+//    //NSLog(@"willCacheResponse");
+//    return nil;
+//}
+//- (NSDictionary*)parseJson:(NSString*)fileName{
+//    NSError *error = nil;
+//    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName
+//                                                         ofType:@"json"];
+//    NSData *dataFromFile = [NSData dataWithContentsOfFile:filePath];
+//    NSDictionary *data = [NSJSONSerialization JSONObjectWithData:dataFromFile
+//                                                         options:kNilOptions
+//                                                           error:&error];
+//    
+//    if (error != nil) {
+//        //NSLog(@"Error: was not able to load json file: %@.",fileName);
+//    }
+//    return data;
+//}
+//- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+//    //Now you can do what you want with the response string from the data
+//    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
+//    _responseData = nil;
+//    /*note get endidentifier from db */
+//    //dispatch_async(self.sendReqQueue,^(){
+//    if(dict == NULL)
+//        return;
+//    NSLog(@"response dict =%@",dict);
+//    if(dict[@"Data"] == NULL)
+//        return;
+//    if(dict[@"AMAC"] == NULL || dict[@"CMAC"] == NULL)
+//        return;
+//    if(![dict[@"AMAC"] isEqualToString:self.amac] || ![dict[@"CMAC"] isEqualToString:self.cmac])
+//        return;
+//    
+//    NSDictionary *catogeryDict = [self parseJson:@"CategoryMap"];
+//    NSMutableDictionary *clientBrowsingHistory = [[NSMutableDictionary alloc]init];
+//     NSMutableDictionary *dayDict = [NSMutableDictionary new];
+//    NSArray *allObj = dict[@"Data"];
+//    for(NSDictionary *uriDict in allObj)
+//    {
+//        NSString *ID = uriDict[@"subCategory"];
+//        NSDictionary *categoryName = catogeryDict[ID];
+//        NSDictionary *categoryObj = @{@"ID":ID,
+//                                      @"categoty":categoryName[@"category"],
+//                                      @"subCategory":categoryName[@"categoryName"]};
+////         NSMutableDictionary *uriInfo = [NSMutableDictionary new];
+////        [uriInfo setObject:uriDict[@"Domain"] forKey:@"hostName"];
+////        [uriInfo setObject:uriDict[@"LastVisitedEpoch"] forKey:@"Epoc"];
+////        [uriInfo setObject:uriDict[@"Date"] forKey:@"date"];
+////        [uriInfo setObject:categoryObj forKey:@"categoryObj"];
+////        
+////        [uriInfo setObject:[UIImage imageNamed:@"globe" ] forKey:@"image"];
+//        NSDictionary *uriInfo1 = @{
+//                                   @"hostName" : uriDict[@"Domain"],
+//                                   @"Epoc" : uriDict[@"LastVisitedEpoch"],
+//                                   @"date" : uriDict[@"Date"],
+//                                   @"categoryObj" : categoryObj,
+//                                   @"image" : [UIImage imageNamed:@"globe" ]
+//                                   
+//                                   };
+//         [self addToDictionary:dayDict uriInfo:uriInfo1 rowID:uriDict[@"Date"]];
+//     
+//    }
+//     
+//    [clientBrowsingHistory setObject:dayDict forKey:@"Data"];
+//    NSLog(@"clientBrowsingHistory %@",clientBrowsingHistory);
+//    NSArray *sortedDate = [self sortedDateArr:[dayDict allKeys]];
+//    [self.dayArr removeAllObjects];
+//    for (NSString *dates in sortedDate){
+//        NSArray *oneDayUris = dayDict[dates];
+//        [self.dayArr addObject:oneDayUris];
+//    }
+//    
+//    
+//}
+//-(NSArray *)sortedDateArr:(NSArray *)dayDicArr{
+//    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+//    [dateFormat setDateFormat:@"yyyy-MM-dd"];
+//    NSMutableArray *dateArr = [NSMutableArray new];
+//    for (NSString *dates in dayDicArr){
+//        NSDate *date = [dateFormat dateFromString:dates];
+//        [dateArr addObject:date];
+//    }
+//    NSArray *sortedArray = [dateArr sortedArrayUsingComparator: ^(NSDate *d1, NSDate *d2) {
+//        return [d2 compare:d1];
+//    }];
+//    [dateArr removeAllObjects];
+//    for(NSDate *date in sortedArray){
+//        NSString *string = [dateFormat stringFromDate:date];
+//        [dateArr addObject:string];
+//    }
+//    return dateArr;
+//}
+//- (void)addToDictionary:(NSMutableDictionary *)rowIndexValDict uriInfo:(NSDictionary *)uriInfo rowID:(NSString *)day{
+//    
+//    NSMutableArray *augArray = [rowIndexValDict valueForKey:[NSString stringWithFormat:@"%@",day]];
+//    if(augArray != nil){
+//        [augArray addObject:uriInfo];
+//        [rowIndexValDict setValue:augArray forKey:[NSString stringWithFormat:@"%@",day]];
+//    }else{
+//        NSMutableArray *tempArray = [NSMutableArray new];
+//        [tempArray addObject:uriInfo];
+//        [rowIndexValDict setValue:tempArray forKey:[NSString stringWithFormat:@"%@",day]];
+//    }
+//}
+//
+//#pragma mark searchDelegate methods
 -(void)setSearchpattenMethod:(SearchPatten)searchpatten withString:(NSString *)string{
     self.searchPatten = searchpatten;
     self.searchController.searchBar.text = string;
@@ -632,7 +657,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         NSDictionary *recent = @{@"hostName":[self.recentSearchDict valueForKey:[sortedArray objectAtIndex:i]],
                                    @"image" : [UIImage imageNamed:@"search_icon"]
                                    };
-        if(i>2)
+        if(i>1)
             break;
         [self.recentSearchObj addObject:recent];
         [self.searchStrArr addObject:[self.recentSearchDict valueForKey:[sortedArray objectAtIndex:i]]];
@@ -717,7 +742,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     [self.searchTableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
     self.NoresultFound = [[UILabel alloc]initWithFrame:self
                           .searchTableView.frame];
-    self.NoresultFound.text = @"No result found";
+    self.NoresultFound.text = @"No results found";
     self.NoresultFound.backgroundColor = [UIColor clearColor];
     self.NoresultFound.textAlignment = NSTextAlignmentCenter;
     self.NoresultFound.font = [UIFont securifiFont:16];

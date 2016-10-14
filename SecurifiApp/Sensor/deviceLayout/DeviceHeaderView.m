@@ -69,13 +69,13 @@
     self.view.backgroundColor = _genericParams.color;
     self.deviceName.text = self.genericParams.deviceName;
     self.settingButton.alpha = 1;
-   
+    self.deviceValue.hidden = NO;
     if(self.cellType == ClientTable_Cell ||  self.cellType == ClientProperty_Cell || self.cellType == ClientEditProperties_cell){
          [self setWiFiSignalIcon];
+        self.deviceValue.hidden = NO;
         if(self.cellType == ClientTable_Cell && enableSiteMap){
             self.parentrolBtn.hidden = NO;
             self.deviceValue.hidden = NO;
-            
         }
         
         else{
@@ -86,13 +86,14 @@
     else{
         self.parentrolBtn.hidden = YES;
         self.wifiSignalImageView.hidden = YES;
+        self.deviceValue.hidden = NO;
     }
 
     
     [self setTamper];
    
     
-    //NSLog(@"device id %d, Icon text %@, icon: %@, index id %@, placement %@",_genericParams.headerGenericIndexValue.deviceID,_genericParams.headerGenericIndexValue.genericValue.iconText,_genericParams.headerGenericIndexValue.genericValue.icon,_genericParams.headerGenericIndexValue.genericIndex.ID,_genericParams.headerGenericIndexValue.genericIndex.placement);
+    
     int deviceType = [Device getTypeForID:_genericParams.headerGenericIndexValue.deviceID];
     int deviceID = _genericParams.headerGenericIndexValue.deviceID;
 

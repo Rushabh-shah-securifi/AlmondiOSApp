@@ -382,7 +382,8 @@
     });
 }
 - (IBAction)iconOutletClicked:(id)sender {
-    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 180, self.view.frame.size.width, 320);
+    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 180, self.navigationController.view.frame.size.width, 320);
+    self.cat_view_more.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.cat_view_more];
     self.backGrayButton.hidden = NO;
     

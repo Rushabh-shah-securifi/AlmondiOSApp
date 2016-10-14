@@ -183,12 +183,14 @@
 }
 - (IBAction)moreOnCategoryClicked:(id)sender {
     NSLog(@"moreOnCategoryClicked");
-    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 200, self.view.frame.size.width, 420);
+    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 200, self.navigationController.view.frame.size.width, 420);
+    self.cat_view_more.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.cat_view_more];
     self.backGroundButton.hidden = NO;
 }
 -(void)showmsg{
     self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 120, self.view.frame.size.width, 320);
+    
     [self.view addSubview:self.cat_view_more];
 }
 -(void)closeMoreView{

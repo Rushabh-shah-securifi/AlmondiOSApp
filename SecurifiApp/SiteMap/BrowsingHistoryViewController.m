@@ -92,14 +92,16 @@ typedef void(^InsertMethod)(BOOL);
     
 }
 -(void)viewWillAppear:(BOOL)animated{
-    NSLog(@" max date %@ and min date %@",[CompleteDB getMaxDate:self.amac clientMac:self.cmac],[CompleteDB getLastDate:self.amac clientMac:self.cmac]);
+    
+    
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
-    
+    self.NoresultFound.hidden = YES;
     NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:30 amac:self.amac cmac:self.cmac];
     NSLog(@"recordDict %@",recordDict);
     [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
-
+    
+    
     
     
 }
@@ -315,7 +317,8 @@ typedef void(^InsertMethod)(BOOL);
         NSString *str;
         //    //NSLog(@"self.dayArr Count = %ld",self.dayArr.count);
         NSArray *browsHist;
-        //[CompleteDB searchDatePresentOrNot:self.amac clientMac:self.cmac andDate:@""];
+        
+        [CompleteDB searchDatePresentOrNot:self.amac clientMac:self.cmac andDate:@""];
         
         if(self.dayArr.count > indexPath.section)
             browsHist = self.dayArr[lastSectionIndex];
@@ -339,9 +342,9 @@ typedef void(^InsertMethod)(BOOL);
             NSString *ps= self.incompleteDB[@"PS"] ;
             
             if((self.oldDate != nil && [self.oldDate isEqualToString:str]) && ps != NULL)
-                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&lastDate=%@&pageState=%@",_amac,_cmac,str,ps]];
+                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&dateyear=%@&pageState=%@",_amac,_cmac,str,ps]];
             else
-                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&lastDate=%@",_amac,_cmac,str]];
+                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&dateyear=%@",_amac,_cmac,str]];
 
             self.oldDate = str;
         }
