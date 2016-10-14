@@ -54,21 +54,26 @@
             self.categoryImg.hidden = hideItem;
             self.settingImg.hidden = hideItem;
         }
+        
         self.lastActTime.hidden = !showTime;
         if(showTime){
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-    
-        [self.webImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/favicon.ico", uri[@"hostName"]]]
-                       placeholderImage:[UIImage imageNamed:@"globe"]
-                              completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                  if(error!=nil){
-                                      NSLog(@"encountered error %@ for %@",[error localizedDescription],uri[@"hostName"]);
-                                      [self.webImg setImage:[UIImage imageNamed:@"globe"]];
-                                  }else
-                                      NSLog(@"completed loading %@",uri[@"hostName"]);
-                              }];
         
+        NSArray* domainValues = [uri[@"hostName"] componentsSeparatedByString:@"."];
+        if([domainValues[0] isEqualToString:@"google"]){
+            [self.webImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://google.com/favicon.ico"]]placeholderImage:[UIImage imageNamed:@"globe"]];
+        }else{
+            [self.webImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.google.com/s2/favicons?domain=%@", uri[@"hostName"]]]
+                           placeholderImage:[UIImage imageNamed:@"globe"]
+                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                      if(error!=nil){
+                                          NSLog(@"encountered error %@ for %@",uri[@"hostName"],[error localizedDescription]);
+                                          [self.webImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/favicon.ico", uri[@"hostName"]]]placeholderImage:[UIImage imageNamed:@"globe"]];
+                                      }else
+                                          NSLog(@"completed loading %@",uri[@"hostName"]);
+                                  }];
+        }
         self.siteName.text = [NSString stringWithFormat:@"%ld,%@",(long)count,uri[@"hostName"]];
         if([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"NC-17"]){
             self.categoryImg.image = [UIImage imageNamed:@"Adults_Only"];
