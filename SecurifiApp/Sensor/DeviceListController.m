@@ -94,6 +94,7 @@ int mii;
 -(void)markAlmondTitleAndMac{
     NSLog(@"%s, self.toolkit.currentAlmond: %@", __PRETTY_FUNCTION__, self.toolkit.currentAlmond);
     _isSiteMapSupport = [ self.toolkit.currentAlmond siteMapSupportFirmware:self.toolkit.currentAlmond.firmware];
+   
     if (self.toolkit.currentAlmond == nil) {
         NSLog(@"no almond");
         [self markNewTitle:NSLocalizedString(@"router.nav-title.Get Started", @"Get Started")];
@@ -221,6 +222,8 @@ int mii;
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    SFIAlmondPlus *almond = [self.toolkit currentAlmond];
+    self.isLocal = [self.toolkit useLocalNetwork:almond.almondplusMAC];
     if ([self isNoAlmondMAC] || ![self isFirmwareCompatible] || ![[SecurifiToolkit sharedInstance] isNetworkOnline])
         return 1;
     

@@ -74,13 +74,13 @@
          [self setWiFiSignalIcon];
         if(self.cellType == ClientTable_Cell && enableSiteMap){
             self.parentrolBtn.hidden = NO;
-           // self.deviceValue.hidden = NO;
+            self.deviceValue.hidden = NO;
             
         }
         
         else{
             self.parentrolBtn.hidden = YES;
-            //self.deviceValue.hidden = YES;
+            self.deviceValue.hidden = YES;
         }
     }
     else{

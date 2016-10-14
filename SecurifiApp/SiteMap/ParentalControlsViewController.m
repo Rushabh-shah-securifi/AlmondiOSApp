@@ -12,6 +12,7 @@
 #import "ClientPayload.h"
 #import "CategoryView.h"
 #import "GenericIndexUtil.h"
+#import "UIFont+Securifi.h"
 
 @interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate>
 @property (nonatomic) NSMutableArray *parentsControlArr;
@@ -32,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *backGrayButton;
 @property BOOL isPressed;
 
+@property (weak, nonatomic) IBOutlet UILabel *blockClientTxt;
 
 
 
@@ -75,11 +77,13 @@
         }
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-19"] && [genericIndexValue.genericValue.value isEqualToString:@"1"]){
             NSLog(@"blocked ");
-            self.dataLogView.hidden = YES;
+            
             self.switchView3.on = NO;
-            self.switchView1.on = NO;
             self.switchView3.userInteractionEnabled = NO;
             self.switchView1.userInteractionEnabled = NO;
+            self.blockClientTxt.hidden = NO;
+            self.dataLogView.hidden = YES;
+            
         }
     }
     self.icon.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
@@ -126,6 +130,7 @@
 //}
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
+    self.blockClientTxt.hidden = YES;
     [self.navigationController setNavigationBarHidden:NO];
 }
 - (void)didReceiveMemoryWarning {

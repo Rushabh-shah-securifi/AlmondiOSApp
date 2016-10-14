@@ -92,6 +92,7 @@ typedef void(^InsertMethod)(BOOL);
     
 }
 -(void)viewWillAppear:(BOOL)animated{
+    NSLog(@" max date %@ and min date %@",[CompleteDB getMaxDate:self.amac clientMac:self.cmac],[CompleteDB getLastDate:self.amac clientMac:self.cmac]);
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
     
@@ -128,7 +129,7 @@ typedef void(^InsertMethod)(BOOL);
     self.NoresultFound.hidden = YES;
     self.isTapped = NO;
     [BrowsingHistoryDataBase closeDB];
-    //   [BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
+    [BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
     
     
     
@@ -198,7 +199,7 @@ typedef void(^InsertMethod)(BOOL);
 }
 -(void)InsertInDB:(NSDictionary *)dict{
     NSLog(@"In InsertDB %d %d",self.reload,self.sendReq);
-    
+
     NSLog(@"response dict =%@",dict);
     if(dict == NULL)
         return;
@@ -314,6 +315,8 @@ typedef void(^InsertMethod)(BOOL);
         NSString *str;
         //    //NSLog(@"self.dayArr Count = %ld",self.dayArr.count);
         NSArray *browsHist;
+        //[CompleteDB searchDatePresentOrNot:self.amac clientMac:self.cmac andDate:@""];
+        
         if(self.dayArr.count > indexPath.section)
             browsHist = self.dayArr[lastSectionIndex];
         NSDictionary *dict2 = browsHist[0];
