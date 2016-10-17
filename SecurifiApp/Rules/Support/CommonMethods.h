@@ -77,7 +77,14 @@
 
 +(NSString *)getShortAlmondName:(NSString*)almondName;
 
+
+#pragma mark searchPage methods
+
 +(NSString *)getTitleShortName:(NSString *)name;
 
 +(BOOL)isContainCategory:(NSString*)search;
+
++(NSDictionary *)createSearchDictObj:(NSArray*)allObj;
+
++ (NSString *)getTodayDate;
 @end

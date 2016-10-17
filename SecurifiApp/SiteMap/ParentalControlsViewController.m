@@ -13,6 +13,7 @@
 #import "CategoryView.h"
 #import "GenericIndexUtil.h"
 #import "UIFont+Securifi.h"
+#import "Analytics.h"
 
 @interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate>
 @property (nonatomic) NSMutableArray *parentsControlArr;
@@ -34,6 +35,7 @@
 @property BOOL isPressed;
 
 @property (weak, nonatomic) IBOutlet UILabel *blockClientTxt;
+@property (nonatomic) BOOL isLocal;
 
 
 
@@ -43,11 +45,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[Analytics sharedInstance] markParentalPage];
     self.parentsControlArr = [[NSMutableArray alloc]init];
     self.cat_view_more = [[CategoryView alloc]initParentalControlMoreClickView];
     self.cat_view_more.delegate = self;
     int deviceID = _genericParams.headerGenericIndexValue.deviceID;
     self.client = [Client findClientByID:@(deviceID).stringValue];//dont put in viewDid load
+     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+   
+    self.isLocal = [toolkit useLocalNetwork:almond.almondplusMAC];
     
     NSLog(@"viewDidLoad ParentalControlsViewController");
 //    [self createArr];
@@ -86,6 +93,11 @@
             
         }
     }
+    if(self.isLocal){
+        self.blockClientTxt.hidden = NO;
+        self.blockClientTxt.text = @"You are in Local connection right now. Web history and Bandwidth monitoring require active cloud connection to function.";
+    }
+        
     self.icon.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
     self.clientName.text = self.client.name;
     NSDate* date = [NSDate dateWithTimeIntervalSince1970:[self.client.deviceLastActiveTime integerValue]];
@@ -265,6 +277,7 @@
         self.viewTwoTop.constant = 1;
         self.client.webHistoryEnable = YES;
         [self saveNewValue:@"YES" forIndex:-23];
+        [[Analytics sharedInstance] markLogWebHistory];
         
     }
 });
@@ -283,6 +296,7 @@
             self.dataLogView.hidden = NO;
             self.client.bW_Enable = YES;
             [self saveNewValue:@"YES" forIndex:-25];
+            [[Analytics sharedInstance] markALogDataUsage];
             }
         
         });

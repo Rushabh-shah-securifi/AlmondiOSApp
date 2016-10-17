@@ -323,6 +323,22 @@
     [self trackScreen:@"Add Mesh Almond"];
 }
 
+//site map
+- (void)markParentalPage{
+    [self trackScreen:@"Parental control page"];
+}
+- (void)markLogWebHistory{
+    [self trackScreen:@"web history enable"];
+}
+- (void)markALogDataUsage{
+    [self trackScreen:@"log data usage"];
+}
+- (void)markWebHistoryPage{
+    [self trackScreen:@"web history page"];
+}
+- (void)markCategoryChange{
+    [self trackScreen:@"change category"];
+}
 - (void)trackScreen:(NSString *)name {
     enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
     

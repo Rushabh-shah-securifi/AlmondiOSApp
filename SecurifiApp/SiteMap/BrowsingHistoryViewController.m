@@ -22,6 +22,7 @@
 #import "ParentalControlsViewController.h"
 #import "CompleteDB.h"
 #import "MBProgressHUD.h"
+#import "Analytics.h"
 
 @interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource,BrowsingHistoryDelegate,NSURLConnectionDelegate,MBProgressHUDDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *browsingTable;
@@ -53,6 +54,7 @@ typedef void(^InsertMethod)(BOOL);
 - (void)viewDidLoad {
     NSLog(@" client name %@",self.client.name);
     self.count = 0;
+    [[Analytics sharedInstance]markWebHistoryPage];
     self.NoresultFound = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 140, 15)];
     [self.NoresultFound setCenter:self.navigationController.view.center];
     self.NoresultFound.text = @"No results found";
@@ -97,7 +99,7 @@ typedef void(^InsertMethod)(BOOL);
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
     self.NoresultFound.hidden = YES;
-    NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:30 amac:self.amac cmac:self.cmac];
+    NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:100 amac:self.amac cmac:self.cmac];
     NSLog(@"recordDict %@",recordDict);
     [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
     
@@ -206,6 +208,7 @@ typedef void(^InsertMethod)(BOOL);
     if(dict == NULL)
         return;
     NSArray *allObj = dict[@"Data"];
+    NSLog(@"response obj count %ld",(unsigned long)allObj.count);
     if(allObj == NULL)
         return;
     NSDictionary *last_uriDict = [allObj lastObject];
@@ -233,27 +236,6 @@ typedef void(^InsertMethod)(BOOL);
     
 }
 
-
-
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    //NSLog(@"didReceiveResponse");
-}
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    [_responseData appendData:data];
-    //NSLog(@"didReceiveData");
-}
-- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse*)cachedResponse {
-    //NSLog(@"willCacheResponse");
-    return nil;
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    
-}
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error { //Do something if there is an error in the connection } - See more at: https://www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
-    //NSLog(@"didFailWithError %@",error);
-}
 
 
 #pragma mark table and search delegate methods
@@ -354,6 +336,7 @@ typedef void(^InsertMethod)(BOOL);
             [self.dayArr removeAllObjects];
             NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:self.count amac:self.amac cmac:self.cmac];
             [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+            [self reloadTable];
         }
         
     }
@@ -375,33 +358,16 @@ typedef void(^InsertMethod)(BOOL);
     }
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
     [label setFont:[UIFont securifiBoldFont:15]];
-    
-    //    NSMutableArray *myMutableArray = [NSMutableArray arrayWithArray:[dict[@"Data"] allKeys]];
-    //
-    //    NSArray *aUnsorted = [dict[@"Data"] allKeys];
-    //    NSArray *arrKeys = [aUnsorted sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-    //        NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    //        [df setDateFormat:@"dd-MM-yyyy"];
-    //        NSDate *d1 = [df dateFromString:(NSString*) obj1];
-    //        NSDate *d2 = [df dateFromString:(NSString*) obj2];
-    //        return [d1 compare: d2];
-    //    }];
-    
-    //    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Date" ascending:FALSE];
-    //    [myMutableArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+   
     NSString *str;
-    //    //NSLog(@"self.dayArr Count = %ld",self.dayArr.count);
     NSArray *browsHist;
     if(self.dayArr.count > section)
         browsHist = self.dayArr[section];
     NSDictionary *dict2 = browsHist[0];
-    //    //NSLog(@"dict2 date %@",dict2);
     str = dict2[@"date"];
     NSDate *date = [NSDate convertStirngToDate:str];
-    //     //NSLog(@"date = %@",date);
     
     NSString *headerDate = [date getDayMonthFormat];
-    //    //NSLog(@"today date %@ == %@",[BrowsingHistoryDataBase getTodayDate],@"10-8-2016");
     if([str isEqualToString:[BrowsingHistoryDataBase getTodayDate]])
         label.text = @"Today";
     else
@@ -441,9 +407,8 @@ typedef void(^InsertMethod)(BOOL);
             });
             
         }
-    
-    
 }
+
 #pragma mark click handler
 - (void)onSearchButton{
     

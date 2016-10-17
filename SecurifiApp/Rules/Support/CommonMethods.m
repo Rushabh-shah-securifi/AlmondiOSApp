@@ -702,4 +702,47 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     
     return @(outVal).stringValue;
 }
+#pragma mark searchPage methods
++(NSDictionary *)createSearchDictObj:(NSArray*)allObj{
+    NSDictionary *catogeryDict = [self parseJson:@"CategoryMap"];
+    
+    NSMutableDictionary *dayDict = [NSMutableDictionary new];
+    for(NSDictionary *uriDict in allObj)
+    {
+        NSString *ID = uriDict[@"subCategory"];
+        NSDictionary *categoryName = catogeryDict[ID];
+        NSDictionary *categoryObj = @{@"ID":ID,
+                                      @"categoty":categoryName[@"category"],
+                                      @"subCategory":categoryName[@"categoryName"]};
+        
+        NSDictionary *uriInfo1 = @{
+                                   @"hostName" : uriDict[@"Domain"],
+                                   @"Epoc" : uriDict[@"LastVisitedEpoch"],
+                                   @"date" : uriDict[@"Date"],
+                                   @"categoryObj" : categoryObj
+                                   };
+        [self addToDictionary:dayDict uriInfo:uriInfo1 rowID:uriDict[@"Date"]];
+        
+    }
+    return dayDict;
+}
++ (void)addToDictionary:(NSMutableDictionary *)rowIndexValDict uriInfo:(NSDictionary *)uriInfo rowID:(NSString *)day{
+    
+    NSMutableArray *augArray = [rowIndexValDict valueForKey:[NSString stringWithFormat:@"%@",day]];
+    if(augArray != nil){
+        [augArray addObject:uriInfo];
+        [rowIndexValDict setValue:augArray forKey:[NSString stringWithFormat:@"%@",day]];
+    }else{
+        NSMutableArray *tempArray = [NSMutableArray new];
+        [tempArray addObject:uriInfo];
+        [rowIndexValDict setValue:tempArray forKey:[NSString stringWithFormat:@"%@",day]];
+    }
+}
++ (NSString *)getTodayDate{
+    NSDateFormatter *dateformate=[[NSDateFormatter alloc]init];
+    [dateformate setDateFormat:@"yyyy-MM-dd"]; // Date formater
+    NSString *date = [dateformate stringFromDate:[NSDate date]]; // Convert date to string
+    return date;
+    
+}
 @end

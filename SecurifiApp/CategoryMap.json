@@ -1,5 +1,8 @@
 {
-    
+    "0":{
+        "categoryName": "Unknown Category",
+        "category": "U"
+    },
     "1" :{
         "categoryName":"Real Estate"
         ,"category":"G"

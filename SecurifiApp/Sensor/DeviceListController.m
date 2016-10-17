@@ -373,7 +373,7 @@ int mii;
                                                                   color:clientCellColor
                                                                isSensor:NO];
        
-        [cell.commonView initialize:genericParams cellType:ClientTable_Cell isSiteMap:(self.isSiteMapSupport && !self.isLocal)];
+        [cell.commonView initialize:genericParams cellType:ClientTable_Cell isSiteMap:self.isSiteMapSupport];
     }
     return cell;
 }

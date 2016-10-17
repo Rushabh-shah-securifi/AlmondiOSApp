@@ -14,6 +14,7 @@
 #import "NSDate+Convenience.h"
 #import "CategoryView.h"
 #import "UIFont+Securifi.h"
+#import "Analytics.h"
 
 @interface ChangeCategoryViewController ()<CategoryViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
@@ -105,6 +106,12 @@
         self.catogeryFuncLbl.text = @"Some material may be inappropriate for children under 13. Parents are urged to be cautious. Some material may be inappropriate for Pre-teenagers.";
       
     }
+    else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"U"]){
+        self.globalColor = [UIColor colorFromHexString:@"825CC2"];
+        self.catogeryTag.text =@"Unknown rating";
+        self.catogeryFuncLbl.text = @"We currently have no information about the rating of this website.";
+        
+    }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"PG"]){
         self.globalColor = [UIColor colorFromHexString:@"ffc107"];
         self.catogeryTag.text =@"Parential Guidence Suggested";
@@ -168,6 +175,7 @@
             self.backGroundButton.hidden = YES;
             self.ThanksLabel.hidden = NO;
             self.bottomView.hidden = YES;
+            [[Analytics sharedInstance] markCategoryChange];
             break;
         default:
             

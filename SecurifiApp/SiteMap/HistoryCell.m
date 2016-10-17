@@ -78,9 +78,13 @@
         }
     
     
-        self.siteName.text = [NSString stringWithFormat:@"%@",uri[@"hostName"]];
+        self.siteName.text = [NSString stringWithFormat:@"%ld-%@",(long)count,uri[@"hostName"]];
         if([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"NC-17"]){
             self.categoryImg.image = [UIImage imageNamed:@"Adults_Only"];
+            
+        }
+        else if ([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"U"]){
+            self.categoryImg.image = [UIImage imageNamed:@"unknown_category"];
             
         }
         else if ([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"R"]){

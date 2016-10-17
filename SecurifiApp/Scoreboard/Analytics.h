@@ -134,4 +134,15 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 - (void)markAddAlmondScreen;
 
+
+//site map
+- (void)markParentalPage;
+
+- (void)markLogWebHistory;
+
+- (void)markALogDataUsage;
+
+- (void)markWebHistoryPage;
+
+- (void)markCategoryChange;
 @end
