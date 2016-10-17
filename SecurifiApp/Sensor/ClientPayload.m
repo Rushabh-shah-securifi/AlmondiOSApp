@@ -18,7 +18,7 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     //forboth cloud and local
     GenericCommand *genericCmd = [GenericCommand requestAlmondClients:toolkit.currentAlmond.almondplusMAC];
-    [toolkit asyncSendCommand:genericCmd];
+    [toolkit asyncSendToNetwork:genericCmd];
 }
 
 +(void)getUpdateClientPayloadForClient:(Client*)client mobileInternalIndex:(int)mii{
@@ -53,7 +53,7 @@
     
     NSLog(@"sending client payload: %@", payload);
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
 }
 
 +(BOOL)hasCompleteData:(Client*)client{
@@ -76,7 +76,7 @@
     
     [payload setValue:RemoveClient forKey:CLIENTS];
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
-    [toolkit asyncSendCommand:genericCmd];
+    [toolkit asyncSendToNetwork:genericCmd];
 }
 
 + (void)clientDidChangeNotificationSettings:(Client*)client mii:(int)mii newValue:(NSString*)notificaionVal{
@@ -95,7 +95,7 @@
     
     GenericCommand *cloudCommand = [GenericCommand jsonStringPayloadCommand:updateClientInfo commandType:CommandType_WIFI_CLIENT_UPDATE_PREFERENCE_REQUEST];
     
-    [toolkit asyncSendCommand:cloudCommand];
+    [toolkit asyncSendToNetwork:cloudCommand];
 }
 
 

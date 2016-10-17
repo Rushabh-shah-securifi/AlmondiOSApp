@@ -291,7 +291,7 @@ UIAlertView *alert;
     command.commandType = CommandType_UPDATE_REQUEST;
     command.command = [payloadDict JSONString];
     
-    [self asyncSendCommand:command];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:command];
 }
 
 - (BOOL)isSceneNameCompatibleWithAlexa{
@@ -325,18 +325,7 @@ UIAlertView *alert;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
     
-    [self asyncSendCommand:command];
-}
-
-- (void)asyncSendCommand:(GenericCommand *)command {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
-    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
-    if(local){
-        [[SecurifiToolkit sharedInstance] asyncSendToLocal:command almondMac:almond.almondplusMAC];
-    }else{
-        [[SecurifiToolkit sharedInstance] asyncSendToCloud:command];
-    }
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:command];
 }
 
 - (void)showHudWithTimeout {

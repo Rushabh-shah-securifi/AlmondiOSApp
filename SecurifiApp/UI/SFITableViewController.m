@@ -23,6 +23,7 @@
 #import "UICommonMethods.h"
 #import "UIImage+Securifi.h"
 #import "SFICloudLinkViewController.h"
+#import "ConnectionStatus.h"
 
 
 @interface SFITableViewController () <MBProgressHUDDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate, HelpScreensDelegate, MessageViewDelegate>
@@ -375,7 +376,7 @@
 
 - (SFIAlmondConnectionMode)currentConnectionMode {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    return [toolkit connectionModeForAlmond:self.almondMac];
+    return [toolkit currentConnectionMode];
 }
 
 - (void)configureNetworkSettings:(enum SFIAlmondConnectionMode)mode {
@@ -553,8 +554,8 @@
     NSString *const almondMac = self.almondMac;
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    enum SFIAlmondConnectionMode connectionMode = [toolkit connectionModeForAlmond:almondMac];
-    enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:almondMac];
+    enum SFIAlmondConnectionMode connectionMode = [toolkit currentConnectionMode];
+    enum SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
     
     switch (status) {
         case SFIAlmondConnectionStatus_disconnected: {

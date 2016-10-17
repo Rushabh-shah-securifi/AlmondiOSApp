@@ -1523,7 +1523,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
 
-    [self asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cloudCommand];
 }
 
 - (void)userProfileResponseCallback:(id)sender {
@@ -1663,7 +1663,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
 
-    [self asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cloudCommand];
 }
 
 //TODO: Localization
@@ -1722,7 +1722,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 //    [self.navigationController.view addSubview:_HUD];
 //    [self showHudWithTimeout];
 
-    [self asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cloudCommand];
 }
 
 - (void)ownedAlmondDataResponseCallback:(id)sender {
@@ -2147,7 +2147,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }
     
    GenericCommand *cmd = [[SecurifiToolkit sharedInstance] makeAlmondListCommand];
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:cmd];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cmd];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
@@ -2220,10 +2220,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
     });
-}
-
-- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
 #pragma mark - Keyboard methods

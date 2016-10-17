@@ -353,8 +353,8 @@ UIAlertView *alert;
 - (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
 {
     return ([[[alertView textFieldAtIndex:0] text] length]>0)?YES:NO;
-    
 }
+
 #pragma mark textfield delegate
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
     NSLog(@"textFieldShouldReturn");
@@ -383,9 +383,10 @@ UIAlertView *alert;
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_UPDATE_REQUEST;
     cloudCommand.command = [payload JSONString];
-    [self asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cloudCommand];
     [[Analytics sharedInstance] markAddRule];
 }
+
 - (void)showHudWithTimeout {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD show:YES];
@@ -396,17 +397,6 @@ UIAlertView *alert;
 -(void)btnCancelTap:(id)sender{
     self.rule = nil;
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    BOOL local=[toolkit useLocalNetwork:plus.almondplusMAC];
-    if(local){
-        [toolkit asyncSendToLocal:cloudCommand almondMac:plus.almondplusMAC];
-    }else{
-        [toolkit asyncSendToCloud:cloudCommand];
-    }
 }
 
 #pragma  mark uiwindow delegate methods

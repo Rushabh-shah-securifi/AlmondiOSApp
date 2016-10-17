@@ -144,7 +144,7 @@ typedef NS_ENUM(int, TabBarMode) {
     
     SFIAlmondPlus *plus = toolkit.currentAlmond;
     
-    enum SFIAlmondConnectionMode mode = [toolkit connectionModeForAlmond:plus.almondplusMAC];
+    enum SFIAlmondConnectionMode mode = [toolkit currentConnectionMode];
     switch (mode) {
         case SFIAlmondConnectionMode_cloud:
             return TabBarMode_cloud;

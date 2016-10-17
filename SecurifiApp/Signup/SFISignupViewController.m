@@ -11,6 +11,8 @@
 #import "Analytics.h"
 #import "UIFont+Securifi.h"
 #import "UIColor+Securifi.h"
+#import "KeyChainAccess.h"
+#import "HTTPRequest.h"
 
 
 #define FOOTER_TERMS_CONDS                  1
@@ -412,7 +414,25 @@
 - (void)sendSignupCommand {
     [self setSigningUpHeadline];
 
-    [[SecurifiToolkit sharedInstance] asyncSendCloudSignupWithEmail:self.emailID.text password:self.password.text];
+    [self asyncSendCloudSignupWithEmail:self.emailID.text password:self.password.text];
+}
+
+- (void)asyncSendCloudSignupWithEmail:(NSString *)email password:(NSString *)password {
+    if (email.length == 0) {
+        return;
+    }
+    
+    if (password.length == 0) {
+        return;
+    }
+    SecurifiToolkit * toolKit = [SecurifiToolkit sharedInstance];
+    // make sure cloud connection is set up
+    [toolKit tearDownLoginSession];
+    [KeyChainAccess setSecEmail:email];
+    
+    HTTPRequest *request = [HTTPRequest new];
+    [request sendAsyncHTTPSignUPRequestWithEmail:email AndPassword:password];
+    
 }
 
 - (void)onSignupResponseCallback:(id)sender {

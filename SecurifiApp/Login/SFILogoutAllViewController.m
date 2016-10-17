@@ -10,6 +10,7 @@
 #import "UIFont+Securifi.h"
 #import "MBProgressHUD.h"
 #import "Analytics.h"
+#import "LogoutAllRequest.h"
 
 @interface SFILogoutAllViewController () <MBProgressHUDDelegate, UITextFieldDelegate>
 @property(nonatomic) MBProgressHUD *HUD;
@@ -94,7 +95,19 @@
     }
     
     [self showHudWithTimeoutMsgDelegate:@"Logging out from all devices!" time:10];
-    [[SecurifiToolkit sharedInstance] asyncSendLogoutAllWithEmail:self.emailID.text password:self.password.text];
+    [self asyncSendLogoutAllWithEmail:self.emailID.text password:self.password.text];
+}
+
+- (void)asyncSendLogoutAllWithEmail:(NSString *)email password:(NSString *)password {
+    LogoutAllRequest *request = [LogoutAllRequest new];
+    request.UserID = [NSString stringWithString:email];
+    request.Password = [NSString stringWithString:password];
+    
+    GenericCommand *cmd = [GenericCommand new];
+    cmd.commandType = CommandType_LOGOUT_ALL_COMMAND;
+    cmd.command = request;
+    
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cmd];
 }
 
 #pragma mark - UITextField delegate methods

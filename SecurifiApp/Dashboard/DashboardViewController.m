@@ -25,6 +25,10 @@
 #import "HelpScreens.h"
 #import "UICommonMethods.h"
 #import "AlmondSelectionTableView.h"
+#import "ConnectionStatus.h"
+#import "SFIAlmondLocalNetworkSettings.h"
+#import "Client.h"
+
 
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate>{
     UIButton *button, *btnArrow;
@@ -765,8 +769,8 @@
 - (void)markNetworkStatusIcon {
     NSString *const almondMac = self.toolkit.currentAlmond.almondplusMAC;
     //    NSLog(@"markNetworkStatusIcon");
-    enum SFIAlmondConnectionMode connectionMode = [_toolkit connectionModeForAlmond:almondMac];
-    enum SFIAlmondConnectionStatus status = [_toolkit connectionStatusForAlmond:almondMac];
+    enum SFIAlmondConnectionMode connectionMode = [_toolkit currentConnectionMode];
+    enum SFIAlmondConnectionStatus status = [_toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
     enum SFICloudStatusState state;
     switch (status) {
         case SFIAlmondConnectionStatus_disconnected: {

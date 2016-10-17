@@ -478,7 +478,7 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     toolkit.useProductionCloud = !toolkit.useProductionCloud;
     [toolkit closeConnection];
-    [toolkit initToolkit];
+    [toolkit asyncInitNetwork];
     [self onRefresh];
 }
 

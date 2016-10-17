@@ -154,7 +154,7 @@ static const int sceneNameFont = 15;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
     
-    [self asyncSendCommand:command];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:command];
 }
 
 -(void)btnCancelTap:(id)sender{
@@ -244,17 +244,6 @@ static const int sceneNameFont = 15;
         });
     }
     
-}
-
-- (void)asyncSendCommand:(GenericCommand *)command {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
-    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
-    if(local){
-        [[SecurifiToolkit sharedInstance] asyncSendToLocal:command almondMac:almond.almondplusMAC];
-    }else{
-        [[SecurifiToolkit sharedInstance] asyncSendToCloud:command];
-    }
 }
 
 @end

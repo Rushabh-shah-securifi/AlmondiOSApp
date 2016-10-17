@@ -310,13 +310,12 @@
     [activateScenePayload setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
     [activateScenePayload setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
     
-    
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_UPDATE_REQUEST;
     cloudCommand.command = [activateScenePayload JSONString];
     
     [self showHudWithTimeoutMsg:NSLocalizedString(@"scenes.hud.activatingScene", @"Activating scene...")];
-    [self asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cloudCommand];
     
     [[Analytics sharedInstance] markActivateScene];
 }
@@ -346,16 +345,6 @@
     return local;
 }
 
-- (void)asyncSendCommand:(GenericCommand *)command {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
-    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
-    if(local){
-        [[SecurifiToolkit sharedInstance] asyncSendToLocal:command almondMac:almond.almondplusMAC];
-    }else{
-        [[SecurifiToolkit sharedInstance] asyncSendToCloud:command];
-    }
-}
 
 #pragma mark Notifications
 - (void)onCurrentAlmondChanged:(id)sender {

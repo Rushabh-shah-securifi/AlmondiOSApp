@@ -132,10 +132,9 @@
     [self sendRequest:payload commandType:CommandType_UPDATE_REQUEST];
 }
 
-
 +(void)sendRequest:(NSDictionary *)payload commandType:(enum CommandType)commandType{
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:commandType];
     genericCmd.isMeshCmd = YES;
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
 }
 @end

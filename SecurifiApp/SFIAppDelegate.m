@@ -133,7 +133,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
-    BOOL online = [toolkit isCloudOnline];
+    BOOL online = [toolkit isNetworkOnline];
     NSLog(@"Application becomes active: cloud online=%@", online ? @"YES" : @"NO");
 
     if (online) {
@@ -144,9 +144,9 @@
         // and then fetch new notifications, if any
         [toolkit tryRefreshNotifications];
     }
-    else {
-        [toolkit initToolkit];
-    }
+//    else {
+//        [toolkit asyncInitNetwork];
+//    }
 
 }
 

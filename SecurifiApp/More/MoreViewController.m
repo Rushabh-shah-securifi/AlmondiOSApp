@@ -91,8 +91,7 @@
     cloudCommand.commandType = CommandType_USER_PROFILE_REQUEST;
     cloudCommand.command = userProfileRequest;
     
-    
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cloudCommand];
 }
 
 - (void)userProfileResponseCallback:(id)sender {

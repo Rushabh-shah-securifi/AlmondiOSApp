@@ -15,6 +15,10 @@
 #import "RouterNetworkSettingsEditor.h"
 #import "SFISignupViewController.h"
 #import "UIColor+Securifi.h"
+#import "KeyChainAccess.h"
+#import "ResetPasswordRequest.h"
+#import "Login.h"
+#import "HTTPRequest.h"
 
 @interface SFILoginViewController () <UITextFieldDelegate, RouterNetworkSettingsEditorDelegate, SFISignupViewControllerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -311,8 +315,34 @@
     self.isLoggingIn = YES;
     [self showHudWithTimeout:10];
 
-    [[SecurifiToolkit sharedInstance] asyncSendLoginWithEmail:self.emailID.text password:self.password.text];
+    [self asyncSendLoginWithEmail:self.emailID.text password:self.password.text];
     [self enableLoginButton:NO]; // will be reactivated in callback handler
+}
+
+- (void)asyncSendLoginWithEmail:(NSString *)email password:(NSString *)password {
+    SecurifiToolkit* toolKit = [SecurifiToolkit sharedInstance];
+    if ([toolKit isShutdown]) {
+        DLog(@"SDK is shutdown. Returning.");
+        return;
+    }
+    
+    toolKit.scoreboard.loginCount++;
+    
+    [toolKit tearDownLoginSession];
+    [KeyChainAccess setSecEmail:email];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:YES forKey:kPREF_USER_DEFAULT_LOGGED_IN_ONCE];
+    
+    Login *loginCommand = [Login new];
+    loginCommand.UserID = email;
+    loginCommand.Password = password;
+    
+    GenericCommand *cmd = [GenericCommand new];
+    cmd.commandType = CommandType_LOGIN_COMMAND;
+    cmd.command = loginCommand;
+    
+    [toolKit asyncSendToNetwork:cmd];
 }
 
 - (void)markResetLoggingInState {
@@ -424,7 +454,29 @@
     NSString *email = self.emailID.text;
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [toolkit asyncRequestResetCloudPassword:email];
+    [self asyncRequestResetCloudPassword:email];
+}
+
+- (void)asyncRequestResetCloudPassword:(NSString *)email {
+    if (email.length == 0) {
+        return;
+    }
+    
+    ResetPasswordRequest *req = [ResetPasswordRequest new];
+    req.email = email;
+    
+    GenericCommand *cmd = [[GenericCommand alloc] init];
+    cmd.commandType = CommandType_RESET_PASSWORD_REQUEST;
+    cmd.command = req;
+    
+    // make sure cloud connection is set up
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit tearDownLoginSession];
+    [KeyChainAccess setSecEmail:email];
+    
+    HTTPRequest *request = [HTTPRequest new];
+    [request sendAsyncHTTPResetPasswordRequest:email];
+    
 }
 
 - (void)onResetPasswordResponse:(id)sender {

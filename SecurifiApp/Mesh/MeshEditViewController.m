@@ -12,6 +12,7 @@
 #import "UIViewController+Securifi.h"
 #import "MeshPayload.h"
 #import "AlmondJsonCommandKeyConstants.h"
+#import "ConnectionStatus.h"
 
 #define NETWORK_OFFLINE -1
 
@@ -210,7 +211,7 @@
         if(alertView.tag == NETWORK_OFFLINE){
             NSLog(@"on alert ok");
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:toolkit.currentAlmond.almondplusMAC];
+            enum SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
             if(status == SFIAlmondConnectionStatus_disconnected){
                 NSLog(@"ok 1");
                 [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];

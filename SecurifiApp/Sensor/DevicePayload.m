@@ -8,13 +8,16 @@
 
 #import "DevicePayload.h"
 #import "AlmondJsonCommandKeyConstants.h"
+#import "NotificationPreferences.h"
+#import "Network.h"
+#import "NetworkState.h"
 
 @implementation DevicePayload
 
 + (void)deviceListCommand{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericCommand *genericCmd = [GenericCommand requestSensorDeviceList:toolkit.currentAlmond.almondplusMAC];
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
 }
 
 +(void)getSensorIndexUpdate:(GenericIndexValue*)genericIndexValue mii:(int)mii{
@@ -29,7 +32,7 @@
     [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:ALMONDMAC];
     
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
 }
 
 //have to combile both methods
@@ -45,7 +48,7 @@
     
     [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:ALMONDMAC];
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
-    [toolkit asyncSendCommand:genericCmd];
+    [toolkit asyncSendToNetwork:genericCmd];
 }
 
 +(void)getNameLocationChange:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value{
@@ -69,7 +72,7 @@
     [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:ALMONDMAC];
     
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
-    [toolkit asyncSendCommand:genericCmd];
+    [toolkit asyncSendToNetwork:genericCmd];
 }
 
 + (void)sensorDidChangeNotificationSetting:(SFINotificationMode)newMode deviceID:(int)deviceID mii:(int)mii{
@@ -81,9 +84,38 @@
     
     NSString *action = (newMode == SFINotificationMode_off) ? kSFINotificationPreferenceChangeActionDelete : kSFINotificationPreferenceChangeActionAdd;
     
-    [toolkit asyncRequestNotificationPreferenceChange:toolkit.currentAlmond.almondplusMAC deviceList:notificationDeviceSettings forAction:action mii:mii];
+    [self asyncRequestNotificationPreferenceChange:toolkit.currentAlmond.almondplusMAC deviceList:notificationDeviceSettings forAction:action mii:mii];
 }
 
++ (void)asyncRequestNotificationPreferenceChange:(NSString *)almondMAC deviceList:(NSArray *)deviceList forAction:(NSString *)action mii:(int)mii{
+    if (almondMAC == nil) {
+        NSLog(@"asyncRequestRegisterForNotification : almond MAC is nil");
+        return;
+    }
+    
+    NotificationPreferences *req = [NotificationPreferences new];
+    req.action = action;
+    req.almondMAC = almondMAC;
+    req.userID = [[SecurifiToolkit sharedInstance] loginEmail];
+    req.preferenceCount = (int) [deviceList count];
+    req.notificationDeviceList = deviceList;
+    req.internalIndex = @(mii).stringValue;
+    // Use this as a state holder so we can get access to the actual NotificationPreferences when processing the response.
+    // This is a work-around measure until cloud dynamic updates are working; we keep track of the last mode change request and
+    // update internal state on receipt of a confirmation from the cloud; normally, we would rely on the
+    // dynamic update to inform us of actual new state.
+    NetworkPrecondition precondition = ^BOOL(Network *aNetwork, GenericCommand *aCmd) {
+        [aNetwork.networkState markExpirableRequest:ExpirableCommandType_notificationPreferencesChangesRequest namespace:@"notification" genericCommand:aCmd];
+        return YES;
+    };
+    
+    GenericCommand *cmd = [GenericCommand new];
+    cmd.commandType = CommandType_NOTIFICATION_PREF_CHANGE_REQUEST;
+    cmd.command = req;
+    cmd.networkPrecondition = precondition;
+    
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cmd];
+}
 
 @end
 

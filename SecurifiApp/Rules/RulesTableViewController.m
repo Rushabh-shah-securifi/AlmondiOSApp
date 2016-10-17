@@ -268,7 +268,7 @@ CGPoint tablePoint;
         GenericCommand *cloudCommand = [[GenericCommand alloc] init];
         cloudCommand.commandType = CommandType_UPDATE_REQUEST;
         cloudCommand.command = [payload JSONString];
-        [self.toolkit asyncSendCommand:cloudCommand];
+        [self.toolkit asyncSendToNetwork:cloudCommand];
     }
     [[Analytics sharedInstance] markDeleteRule];
 }
@@ -335,7 +335,7 @@ CGPoint tablePoint;
         GenericCommand *cloudCommand = [[GenericCommand alloc] init];
         cloudCommand.commandType = CommandType_UPDATE_REQUEST;
         cloudCommand.command = [payload JSONString];
-        [self.toolkit asyncSendCommand:cloudCommand];
+        [self.toolkit asyncSendToNetwork:cloudCommand];
     }
     [[Analytics sharedInstance] markActivateRule];
 }
