@@ -14,6 +14,7 @@
 #import "SFIColors.h"
 #import "Analytics.h"
 #import "RouterPayload.h"
+#import "ConnectionStatus.h"
 
 #define NETWORK_OFFLINE -1
 #define HELP_INFO 0
@@ -31,7 +32,6 @@
 @property (nonatomic) NSTimer *timer;
 @property (nonatomic) NSTimer *blinkTimer;
 @property (nonatomic) NSTimer *nonRepeatingTimer;
-
 @property (nonatomic) CFTimeInterval startTime;
 
 @property (strong, nonatomic) IBOutlet UIView *interfaceView;
@@ -194,7 +194,7 @@
     }else{//names
         return [self.almondNames objectAtIndex:row];
     }
-        
+    
     return @"";
 }
 
@@ -337,7 +337,7 @@
     int tag = (int)self.currentView.tag;
     NSLog(@"Load next view \n\n Current View Tag: %ld", (long)self.currentView.tag);
     CGRect frame = self.currentView.frame;
-//    [self.currentView removeFromSuperview];
+    //    [self.currentView removeFromSuperview];
     
     switch (tag) {
         case 0:{//for info screen
@@ -389,7 +389,7 @@
             [self addView:self.almondsView frame:frame];
             break;
         }
-
+            
         default:
             break;
     }
@@ -410,7 +410,7 @@
     int tag = (int)view.tag;
     NSLog(@"view tag: %d", tag);
     CGRect frame = view.frame;
-//    [view removeFromSuperview];
+    //    [view removeFromSuperview];
     switch (tag) {
         case 0:{
             if([self.item[S_NAME] isEqualToString:@"Interface"]){
@@ -502,10 +502,10 @@
     self.startTime = CACurrentMediaTime();
     //timer repeats itself for every 2 seconds until it is invalidated
     self.timer = [NSTimer scheduledTimerWithTimeInterval:2.0
-                                                   target:self
-                                                 selector:@selector(onTimeout:)
+                                                  target:self
+                                                selector:@selector(onTimeout:)
                                                 userInfo:@(tag).stringValue
-                                                  repeats:YES];
+                                                 repeats:YES];
 }
 
 -(void)sendAddableSlaveCmd{
@@ -538,7 +538,7 @@
         [self.activityIndic2 stopAnimating];
         return;
     }
-        
+    
     [self sendAddableSlaveCmd];
 }
 
@@ -581,7 +581,7 @@
         }
         [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondTitle newName:self.nameField.text];
     }
-
+    
     [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:10];
 }
 
@@ -630,9 +630,9 @@
         if([commandType isEqualToString:@"AddWiredSlaveMobile"] || [commandType isEqualToString:@"AddWirelessSlaveMobile"]){
             return;
         }
-
+        
         if([commandType isEqualToString:@"CheckForAddableWiredSlaveMobile"] || [commandType isEqualToString:@"CheckForAddableWirelessSlaveMobile"]){
-
+            
             if(self.currentView.tag == 6 || self.currentView.tag == 7){
                 //need to directly load almonds view
                 if(self.currentView.tag == 6){
@@ -660,7 +660,7 @@
             if(self.currentView.tag == ALMONDS_LIST)
                 [self loadNextView];
         }
-  
+        
         else if([commandType isEqualToString:@"SetSlaveNameMobile"]){
             [self.delegate hideHUDDelegate];
             [self loadNextView];
@@ -709,8 +709,8 @@
             [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
         
         //almond not yet added, its in adding state show hud (alerady there)
-//        else if(self.isYesBlinkTapped)
-//            [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:60];
+        //        else if(self.isYesBlinkTapped)
+        //            [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:60];
         
     }
 }
@@ -826,12 +826,10 @@
         else if(alertView.tag == NETWORK_OFFLINE){
             NSLog(@"on alert ok");
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            
-            [toolkit initToolkit];
+            [toolkit asyncInitNetwork];
             int connectionTO = 5;
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self.delegate showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
-   
         }
     }else{
         
@@ -846,7 +844,7 @@
     
     if(tag == NETWORK_OFFLINE){
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:toolkit.currentAlmond.almondplusMAC];
+        enum SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
         if(status == SFIAlmondConnectionStatus_disconnected){
             NSLog(@"ok 1");
             [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
@@ -863,6 +861,7 @@
     [self.nonRepeatingTimer invalidate];
 }
 
+
 #define network events
 - (void)onNetworkDownNotifier:(id)sender{
     NSLog(@"on network down");
@@ -870,6 +869,7 @@
         return;
     }
     [self.timer invalidate];
+    
     [self.delegate hideHUDDelegate];
     
     [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
@@ -878,21 +878,19 @@
 
 - (void)onNetworkUpNotifier:(id)sender{
     NSLog(@"mesh view network up");
+    
     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
         [[SecurifiToolkit sharedInstance] connectMesh];
     }else{
         //we wait for login response in case of cloud
     }
-    
-    //don't invalidate non repeating timer I am making it run for 5 sec, for simplicity
 }
 
 - (void)onLoginResponse:(id)sender{
     NSLog(@"mesh view on login resposne");
-    //since nonrepeating timeout is 5 sec, I am not waiting for login response
     if(self.currentView.tag == BLINK_CHECK){
-//        [RouterPayload routerSummary:_mii mac:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
-//        [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:60];
+        //        [RouterPayload routerSummary:_mii mac:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
+        //        [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:60];
     }else{
         
     }

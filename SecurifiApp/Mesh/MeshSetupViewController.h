@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "AlmondStatus.h"
+#import "AlmondJsonCommandKeyConstants.h"
 
 @interface MeshSetupViewController : UIViewController
 @property (nonatomic) AlmondStatus *almondStatObj;

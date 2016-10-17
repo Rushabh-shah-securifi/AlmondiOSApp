@@ -955,7 +955,7 @@ int mii;
      if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local)
          [[SecurifiToolkit sharedInstance] connectMesh];
      else
-         [[SecurifiToolkit sharedInstance] asyncSendCommand:[GenericCommand requestRai2UpMobile:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC]];
+         [[SecurifiToolkit sharedInstance] asyncSendToNetwork:[GenericCommand requestRai2UpMobile:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC]];
          
  }
 

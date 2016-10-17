@@ -18,6 +18,7 @@
 #import "UIViewController+Securifi.h"
 #import "Analytics.h"
 #import "MeshEditViewController.h"
+#import "ConnectionStatus.h"
 
 #define REMOVE 1
 #define FORCE_REMOVE 2
@@ -58,7 +59,7 @@ int mii;
         });
         
         if(self.almondStatObj.isMaster)
-           [[Analytics sharedInstance] markMasterScreen];
+            [[Analytics sharedInstance] markMasterScreen];
         else
             [[Analytics sharedInstance] markSlaveScreen];
     }else{
@@ -75,7 +76,6 @@ int mii;
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
     [self.removeAlmondTO invalidate];
-    
     if(self.meshView){
         [self.meshView removeNotificationObserver];
         self.meshView = nil;
@@ -86,7 +86,7 @@ int mii;
 
 -(void)initializeNotification{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
- 
+    
     [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
     
     [center addObserver:self selector:@selector(onNetworkDownNotifier:) name:NETWORK_DOWN_NOTIFIER object:nil];
@@ -163,7 +163,7 @@ int mii;
         
         [self.view addSubview:self.meshView];
         [self setUpHUD];
-//        self.meshView.backgroundColor = [UIColor grayColor];
+        //        self.meshView.backgroundColor = [UIColor grayColor];
     });
 }
 
@@ -191,7 +191,7 @@ int mii;
 #pragma mark table delegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
-//    return self.isMaster? 3: 1; for later use, as per design
+    //    return self.isMaster? 3: 1; for later use, as per design
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -209,7 +209,7 @@ int mii;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
     view.backgroundColor = [UIColor whiteColor];
-
+    
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, tableView.frame.size.width, 20)];
     NSString *headerTitle = section == 0? @"NETWORK": (section == 1? @"PREFERENCES": @"NOTIFICATIONS");
     [CommonMethods setLableProperties:label text:headerTitle textColor:[SFIColors ruleGraycolor] fontName:@"Avenir-Roman" fontSize:16 alignment:NSTextAlignmentLeft];
@@ -258,7 +258,7 @@ int mii;
 #pragma mark meshview delegates
 -(void)dismissControllerDelegate{
     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_cloud)
-        [[SecurifiToolkit sharedInstance] asyncSendCommand:[GenericCommand requestRai2DownMobile:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC]];
+        [[SecurifiToolkit sharedInstance] asyncSendToNetwork:[GenericCommand requestRai2DownMobile:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC]];
     else
         [[SecurifiToolkit sharedInstance] shutDownMesh];
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -297,7 +297,7 @@ int mii;
     alert.tag = REMOVE;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [alert show];
-    });    
+    });
 }
 
 -(void)onMeshCommandResponse:(id)sender{
@@ -318,13 +318,13 @@ int mii;
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
     }
     NSLog(@"meshcontroller mesh payload: %@", payload);
-//    NSString *commandType = payload[COMMAND_TYPE];
-
+    //    NSString *commandType = payload[COMMAND_TYPE];
+    if(![payload[COMMAND_MODE] isEqualToString:@"Reply"]) //[payload[MOBILE_INTERNAL_INDEX] intValue]!=  mii||
+        return;
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     NSString *cmdType = payload[COMMAND_TYPE];
     if(![cmdType isEqualToString:@"RemoveSlaveMobile"] && ![cmdType isEqualToString:@"ForceRemoveSlaveMobile"])
         return;
-    
     [self.removeAlmondTO invalidate];
     self.removeAlmondTO = nil;
     
@@ -368,7 +368,7 @@ int mii;
         //cancel clicked ...do your action
         if(alertView.tag == NETWORK_OFFLINE){
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:toolkit.currentAlmond.almondplusMAC];
+            enum SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
             if(status == SFIAlmondConnectionStatus_disconnected){
                 [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
             }
@@ -408,7 +408,7 @@ int mii;
     [self.removeAlmondTO invalidate];
     [self hideHUDDelegate];
     
-     [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
+    [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
 }
 
 - (void)onNetworkUpNotifier:(id)sender{

@@ -28,7 +28,7 @@
     [payload setObject:almondMac forKey:@"AlmondMAC"];
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
     NSLog(@"sending router summery request %@",payload);
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
     
 
 }/*251176215905264 251176215905264*/
@@ -45,7 +45,7 @@
     [payload setObject:almondMac forKey:@"AlmondMAC"];
     
     GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
     
 }
 /*
@@ -83,7 +83,7 @@
     [payload setObject:wirelessSetting forKey:@"WirelessSetting"];
     
     GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
     
 }
 +(void)updateFirmware:(int)mii version:(NSString*)version mac:(NSString*)almondMac{
@@ -99,7 +99,7 @@
     [payload setObject:almondMac forKey:@"AlmondMAC"];
     
     GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
     [[Analytics sharedInstance] markRouterUpdateFirmware];
     
 }
@@ -115,7 +115,7 @@
     [payload setObject:almondMac forKey:@"AlmondMAC"];
     
     GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
     [[Analytics sharedInstance] markRouterReboot];
     
 }
@@ -132,7 +132,7 @@
     [payload setObject:almondMac forKey:@"AlmondMAC"];
     
     GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
     [[Analytics sharedInstance] markSendRouterLogs];
     
 }
