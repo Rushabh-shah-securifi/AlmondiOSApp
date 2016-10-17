@@ -30,6 +30,8 @@
 @interface MeshView()<UIAlertViewDelegate>
 @property (nonatomic) NSTimer *timer;
 @property (nonatomic) NSTimer *blinkTimer;
+@property (nonatomic) NSTimer *nonRepeatingTimer;
+
 @property (nonatomic) CFTimeInterval startTime;
 
 @property (strong, nonatomic) IBOutlet UIView *interfaceView;
@@ -824,29 +826,50 @@
         else if(alertView.tag == NETWORK_OFFLINE){
             NSLog(@"on alert ok");
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:toolkit.currentAlmond.almondplusMAC];
-            if(status == SFIAlmondConnectionStatus_disconnected){
-                NSLog(@"ok 1");
-                [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
-            }else{
-                NSLog(@"ok 2");
-                if(self.currentView.tag == 6 || self.currentView.tag == 7){
-                    [self requestAddableSlave:INTERFACE_SCR];
-                }else if(self.currentView.tag == BLINK_CHECK){
-                    [RouterPayload routerSummary:_mii mac:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
-                }
-            }
+            
+            [toolkit initToolkit];
+            int connectionTO = 5;
+            self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
+            [self.delegate showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
+   
         }
     }else{
         
     }
 }
 
+-(void)onNonRepeatingTimeout:(id)sender{
+    [self.delegate hideHUDDelegate];
+    NSLog(@"self.nonRepeatingTimer.userInfo: %@", self.nonRepeatingTimer.userInfo);
+    int tag = [(NSString *)self.nonRepeatingTimer.userInfo intValue];
+    
+    
+    if(tag == NETWORK_OFFLINE){
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:toolkit.currentAlmond.almondplusMAC];
+        if(status == SFIAlmondConnectionStatus_disconnected){
+            NSLog(@"ok 1");
+            [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
+        }else{
+            NSLog(@"ok 2");
+            if(self.currentView.tag == 6 || self.currentView.tag == 7){
+                [self requestAddableSlave:INTERFACE_SCR];
+            }
+            else if(self.currentView.tag == BLINK_CHECK){
+                [RouterPayload routerSummary:_mii mac:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
+            }
+        }
+    }
+    [self.nonRepeatingTimer invalidate];
+}
+
 #define network events
 - (void)onNetworkDownNotifier:(id)sender{
     NSLog(@"on network down");
+    if([self.nonRepeatingTimer isValid]){
+        return;
+    }
     [self.timer invalidate];
-
     [self.delegate hideHUDDelegate];
     
     [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
@@ -855,16 +878,18 @@
 
 - (void)onNetworkUpNotifier:(id)sender{
     NSLog(@"mesh view network up");
-    
     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
         [[SecurifiToolkit sharedInstance] connectMesh];
     }else{
         //we wait for login response in case of cloud
     }
+    
+    //don't invalidate non repeating timer I am making it run for 5 sec, for simplicity
 }
 
 - (void)onLoginResponse:(id)sender{
     NSLog(@"mesh view on login resposne");
+    //since nonrepeating timeout is 5 sec, I am not waiting for login response
     if(self.currentView.tag == BLINK_CHECK){
 //        [RouterPayload routerSummary:_mii mac:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
 //        [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:60];

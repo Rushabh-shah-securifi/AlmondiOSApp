@@ -15,7 +15,7 @@
 
 + (void)getWirelessSettings:(int)mii mac:(NSString*)almondMac;
 
-+ (void)setWirelessSettings:(int)mii wirelessSettings:(SFIWirelessSetting*)wirelessSettingObj mac:(NSString*)almondMac isTypeEnable:(BOOL)isTypeEnable;
++ (void)setWirelessSettings:(int)mii wirelessSettings:(SFIWirelessSetting*)wirelessSettingObj mac:(NSString*)almondMac isTypeEnable:(BOOL)isTypeEnable forceUpdate:(NSString *)forceUpdate;
 
 + (void)updateFirmware:(int)mii version:(NSString*)version mac:(NSString*)almondMac;
 

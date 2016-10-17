@@ -22,10 +22,10 @@
     }
 
     NSMutableDictionary *payload = [NSMutableDictionary new];
-    [payload setValue:@"RouterSummary" forKey:@"CommandType"];
-    [payload setValue:APP_ID forKey:@"AppID"];
-    [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
-    [payload setValue:almondMac forKey:@"AlmondMAC"];
+    [payload setObject:@"RouterSummary" forKey:@"CommandType"];
+    [payload setObject:APP_ID forKey:@"AppID"];
+    [payload setObject:@(mii).stringValue forKey:@"MobileInternalIndex"];
+    [payload setObject:almondMac forKey:@"AlmondMAC"];
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
     NSLog(@"sending router summery request %@",payload);
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
@@ -39,37 +39,48 @@
         return;
     }
     NSMutableDictionary *payload = [NSMutableDictionary new];
-    [payload setValue:@"GetWirelessSettings" forKey:@"CommandType"];
-    [payload setValue:APP_ID forKey:@"AppID"];
-    [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
-    [payload setValue:almondMac forKey:@"AlmondMAC"];
+    [payload setObject:@"GetWirelessSettings" forKey:@"CommandType"];
+    [payload setObject:APP_ID forKey:@"AppID"];
+    [payload setObject:@(mii).stringValue forKey:@"MobileInternalIndex"];
+    [payload setObject:almondMac forKey:@"AlmondMAC"];
     
     GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
     
 }
+/*
+ {
+ "CommandType": "SetWirelessSettings",
+ "AppID": "1001",
+ "AlmondMAC": "251176220099140",
+ "MobileInternalIndex": "4116",
+ "ForceUpdate": "true",
+ "WirelessSetting": {
+ "Type": "5G",
+ "SSID": "Almondp"
+ }
+ */
 
-
-+ (void)setWirelessSettings:(int)mii wirelessSettings:(SFIWirelessSetting*)wirelessSettingObj mac:(NSString*)almondMac isTypeEnable:(BOOL)isTypeEnable{
++ (void)setWirelessSettings:(int)mii wirelessSettings:(SFIWirelessSetting*)wirelessSettingObj mac:(NSString*)almondMac isTypeEnable:(BOOL)isTypeEnable forceUpdate:(NSString *)forceUpdate{
 
     if ([almondMac isEqualToString:NO_ALMOND]) {
         return;
     }
     NSMutableDictionary *payload = [NSMutableDictionary new];
-    [payload setValue:@"SetWirelessSettings" forKey:@"CommandType"];
-    [payload setValue:APP_ID forKey:@"AppID"];
-    [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
-    [payload setValue:almondMac forKey:@"AlmondMAC"];
-    
+    [payload setObject:@"SetWirelessSettings" forKey:@"CommandType"];
+    [payload setObject:APP_ID forKey:@"AppID"];
+    [payload setObject:@(mii).stringValue forKey:@"MobileInternalIndex"];
+    [payload setObject:almondMac forKey:@"AlmondMAC"];
+    [payload setObject:forceUpdate forKey:@"ForceUpdate"];
     NSMutableDictionary *wirelessSetting = [NSMutableDictionary new];
     NSLog(@"type: %@", wirelessSettingObj.type);
-    [wirelessSetting setValue:wirelessSettingObj.type forKey:@"Type"];
+    [wirelessSetting setObject:wirelessSettingObj.type forKey:@"Type"];
     if(isTypeEnable)
-        [wirelessSetting setValue:wirelessSettingObj.enabled?@"true":@"false" forKey:@"Enabled"];
+        [wirelessSetting setObject:wirelessSettingObj.enabled?@"true":@"false" forKey:@"Enabled"];
     else
-        [wirelessSetting setValue:wirelessSettingObj.ssid forKey:@"SSID"];
+        [wirelessSetting setObject:wirelessSettingObj.ssid forKey:@"SSID"];
     
-    [payload setValue:wirelessSetting forKey:@"WirelessSetting"];
+    [payload setObject:wirelessSetting forKey:@"WirelessSetting"];
     
     GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
@@ -80,12 +91,12 @@
         return;
     }
     NSMutableDictionary *payload = [NSMutableDictionary new];
-    [payload setValue:@"FirmwareUpdate" forKey:@"CommandType"];
-    [payload setValue:APP_ID forKey:@"AppID"];
-    [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
-    [payload setValue:@"true" forKey:@"Available"];
-    [payload setValue:version forKey:@"Version"];
-    [payload setValue:almondMac forKey:@"AlmondMAC"];
+    [payload setObject:@"FirmwareUpdate" forKey:@"CommandType"];
+    [payload setObject:APP_ID forKey:@"AppID"];
+    [payload setObject:@(mii).stringValue forKey:@"MobileInternalIndex"];
+    [payload setObject:@"true" forKey:@"Available"];
+    [payload setObject:version forKey:@"Version"];
+    [payload setObject:almondMac forKey:@"AlmondMAC"];
     
     GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
@@ -98,10 +109,10 @@
         return;
     }
     NSMutableDictionary *payload = [NSMutableDictionary new];
-    [payload setValue:@"RebootRouter" forKey:@"CommandType"];
-    [payload setValue:APP_ID forKey:@"AppID"];
-    [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
-    [payload setValue:almondMac forKey:@"AlmondMAC"];
+    [payload setObject:@"RebootRouter" forKey:@"CommandType"];
+    [payload setObject:APP_ID forKey:@"AppID"];
+    [payload setObject:@(mii).stringValue forKey:@"MobileInternalIndex"];
+    [payload setObject:almondMac forKey:@"AlmondMAC"];
     
     GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
@@ -114,11 +125,11 @@
         return;
     }
     NSMutableDictionary *payload = [NSMutableDictionary new];
-    [payload setValue:@"SendLogs" forKey:@"CommandType"];
-    [payload setValue:APP_ID forKey:@"AppID"];
-    [payload setValue:message forKey:@"Message"];
-    [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
-    [payload setValue:almondMac forKey:@"AlmondMAC"];
+    [payload setObject:@"SendLogs" forKey:@"CommandType"];
+    [payload setObject:APP_ID forKey:@"AppID"];
+    [payload setObject:message forKey:@"Message"];
+    [payload setObject:@(mii).stringValue forKey:@"MobileInternalIndex"];
+    [payload setObject:almondMac forKey:@"AlmondMAC"];
     
     GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];

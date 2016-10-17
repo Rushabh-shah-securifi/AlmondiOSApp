@@ -263,7 +263,7 @@ int mii;
     if (self.currentConnectionMode == SFIAlmondConnectionMode_local) {
         return [self isAL3]? 2: 1;
     }else{
-        return [self isAL3]? 6: 5;
+        return 6;
     }
 }
 
@@ -345,9 +345,8 @@ int mii;
                     
             }
             case DEF_WIRELESS_SECTION:{
-
-            summaries = [self getWirelessSettingsSummary];
-            return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings") selector:@selector(onEditWirelessSettingsCard:) cardColor:[UIColor securifiRouterTileSlateColor]];
+                summaries = [self getWirelessSettingsSummary];
+                return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings") selector:@selector(onEditWirelessSettingsCard:) cardColor:[UIColor securifiRouterTileSlateColor]];
             }
             case DEF_ROUTER_VERSION_SECTION:{
                 NSString *title = NSLocalizedString(@"router.software-version-new.title.Software Version", @"Software Version");
@@ -719,7 +718,7 @@ int mii;
                      ctrl.almondMac = self.almondMac;
                      BOOL enableSwitch = YES;
                      if([self isAL3]){
-                         if(self.routerSummary.almondsList.count > 0)//has slaves
+                         if(self.routerSummary.almondsList.count > 1)//has slaves
                              enableSwitch = NO;
                      }
                      ctrl.enableRouterWirelessControl = enableSwitch;

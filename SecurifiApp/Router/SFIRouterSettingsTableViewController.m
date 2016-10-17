@@ -23,7 +23,7 @@
 @interface SFIRouterSettingsTableViewController () <SFIRouterTableViewActions, TableHeaderViewDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic) BOOL disposed;
-
+@property(nonatomic) SFIWirelessSetting *currentSetting;
 @end
 
 @implementation SFIRouterSettingsTableViewController
@@ -182,7 +182,13 @@ int mii;
             return;
         }
         if(!genericRouterCommand.commandSuccess){
+            if([genericRouterCommand.responseMessage isEqualToString:@"Slave in offline"]){
+                [self showAlert:@"" msg:@"Unable to change settings in one of the Almond.\nWould you like to continue?" cancel:@"No" other:@"Yes" tag:1];
+            }
             [self showToast:NSLocalizedString(@"ParseRouterCommand Sorry! unable to update.", @"Sorry! unable to update.")];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
             return;//
         }
         NSLog(@"genericRouterCommand.commandType %d",genericRouterCommand.commandType);
@@ -252,6 +258,8 @@ int mii;
 }
 
 - (void)onUpdateWirelessSettings:(SFIWirelessSetting *)copy isTypeEnable:(BOOL)isTypeEnable{
+    NSLog(@"onUpdateWirelessSettings*******");
+    self.currentSetting = copy;
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.disposed) {
             return;
@@ -259,8 +267,8 @@ int mii;
         [self showUpdatingSettingsHUD];
 //        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.almondMac wirelessSettings:copy];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        [RouterPayload setWirelessSettings:mii wirelessSettings:copy mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:isTypeEnable];
-        [self.HUD hide:YES afterDelay:5];
+        [RouterPayload setWirelessSettings:mii wirelessSettings:copy mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:isTypeEnable forceUpdate:@"false"];
+        [self.HUD hide:YES afterDelay:10];
     });
 }
 
@@ -281,6 +289,30 @@ int mii;
             self.tableView.tableHeaderView = nil;
         }];
     });
+}
+
+#pragma mark alert methods
+- (void)showAlert:(NSString *)title msg:(NSString *)msg cancel:(NSString*)cncl other:(NSString *)other tag:(int)tag{
+    NSLog(@"controller show alert tag: %d", tag);
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:other, nil];
+    alert.tag = tag;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [alert show];
+    });
+}
+
+#pragma mark alert delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSLog(@"router settings clicked index");
+    if (buttonIndex == [alertView cancelButtonIndex]){
+        
+    }else{
+        [self showUpdatingSettingsHUD];
+        //        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.almondMac wirelessSettings:copy];
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        [RouterPayload setWirelessSettings:mii wirelessSettings:self.currentSetting mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:NO forceUpdate:@"true"];
+        [self.HUD hide:YES afterDelay:10];
+    }
 }
 
 @end

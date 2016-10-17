@@ -97,7 +97,10 @@
 //}
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+    NSLog(@"textFieldDidEndEditing*****");
     NSString *str = textField.text;
+    if([str isEqualToString:self.wirelessSetting.ssid])
+        return;
     BOOL valid = [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
     if (valid) {
         [textField resignFirstResponder];
