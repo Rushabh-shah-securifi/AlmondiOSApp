@@ -656,7 +656,7 @@ Follow it, then login below.";
 "clamp2_energy"="CLAMP2 ENERGY";
 "occupied"="OCCUPIED";
 "unoccupied"="UNOCCUPIED";
-"ringTone"="RING TONE";
+"ringTone"="TONE";
 "alarm"="Alarm";
 "siren"="Siren";
 "doorBell"="Door-Bell";
@@ -740,8 +740,8 @@ Follow it, then login below.";
 "high" = "High";
 
 "blink" = "Blink";
-"blink_start" = "Blink Start";
-"blink_stop" = "Blink Stop";
+"blink_start" = "Start";
+"blink_stop" = "Stop";
 
 "rgb" = "RGB";
 "seconds" = "SECONDS";
@@ -749,7 +749,7 @@ Follow it, then login below.";
 "blinkTimer" = "Blink Timer";
 
 "browsingHistory" = "Browsing History";
-"buzzer_timer" = "Buzzer Timer";
+"duration" = "Duration";
 "led_off" = "LED OFF";
 "led_on" = "LED ON";
 
@@ -953,6 +953,8 @@ Follow it, then login below.";
 "almond_modes_desc"="Home and Away modes – or arm and disarm - are a key part of any home security or automation system. They are necessary because when you are home, you don’t need your sensors to trigger an alarm. Go to Rules to personalize how your system responds in these modes.";
 "more_desc"="Tap \"More\" to create rules and visit our Help Center. The Help Center lets you revisit this guide and other help topics, and contact technical support.";
 
+
+"web_history" = "Web History";
 /* ==================================================================== */
 
 /*

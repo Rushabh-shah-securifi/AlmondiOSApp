@@ -139,9 +139,14 @@
         BOOL isNameLocationField = [self.genericIndexValue.genericIndex.ID isEqualToString:@"-1"] || [self.genericIndexValue.genericIndex.ID isEqualToString:@"-2"];
         int type =  [Device getTypeForID:self.genericIndexValue.deviceID];
         
-        if( !isNameLocationField && (type == SFIDeviceType_StandardWarningDevice_21 || type == SFIDeviceType_AlmondBlink_64 || type == SFIDeviceType_AlmondSiren_63)  && ([self.deviceNameField.text integerValue] >= 65536 || [self.deviceNameField.text integerValue] < 0 ))
+        if( !isNameLocationField && (type == SFIDeviceType_StandardWarningDevice_21)  && ([self.deviceNameField.text integerValue] >= 65536 || [self.deviceNameField.text integerValue] < 0 ))
         {   NSString *locStr =NSLocalizedString(@"please_enter_value_between", @"Please Enter Value between 0 - 65535");
             [self showAlert:[NSString stringWithFormat:@"%@ 0 - 65535",locStr]];
+            
+        }
+        else if( !isNameLocationField && (type == SFIDeviceType_AlmondBlink_64 || type == SFIDeviceType_AlmondSiren_63)  && ([self.deviceNameField.text integerValue] >= 99999 || [self.deviceNameField.text integerValue] < 0 ))
+        {   NSString *locStr =NSLocalizedString(@"please_enter_value_between", @"Please Enter Value between 0 - 99999");
+            [self showAlert:[NSString stringWithFormat:@"%@ 0 - 99999",locStr]];
             
         }
         else if(!isNameLocationField &&  type == SFIDeviceType_ZWtoACIRExtender_54 && ([self.deviceNameField.text integerValue] > 999 || [self.deviceNameField.text integerValue] < 0 ))

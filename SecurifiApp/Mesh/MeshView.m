@@ -48,6 +48,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *noLedBtn;
 @property (weak, nonatomic) IBOutlet UIButton *notRtNowBtn;
 @property (weak, nonatomic) IBOutlet UIButton *namingBtn;
+@property (weak, nonatomic) IBOutlet UILabel *namingTitle;
 
 
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
@@ -739,6 +740,7 @@
 
 -(void)addNamingScreen:(CGRect)frame{
     [self.namingBtn setTitle:@"Done" forState:UIControlStateNormal];
+    self.namingTitle.text  = @"Location";
     [self addView:self.namingView frame:frame];
 }
 

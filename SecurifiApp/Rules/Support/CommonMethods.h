@@ -65,7 +65,11 @@
 #pragma mark rgb methods
 + (int )getRGBForHex:(NSString*)hueValue sliderValue:(NSString*)slider;
 
-+(float )getSatValue:(NSString *)value ;
++(void)getHSLFromDecimal:(int)decimal h:(float*)h s:(float*)s l:(float*)l;
+
++(int)getRGBDecimalFromHSL:(float)h s:(float)s l:(float)l;
+
++(float )getBrightnessValue:(NSString *)value ;
 
 +(float )getHueValue:(NSString *)value;
 

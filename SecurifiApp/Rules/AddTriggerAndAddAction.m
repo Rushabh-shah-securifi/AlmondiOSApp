@@ -425,22 +425,28 @@ labelAndCheckButtonView *labelView;
     
     else if ([self isAllDigits:textField.text]) {
         int type = dimerButton.subProperties.deviceType;
-        if( (type == SFIDeviceType_StandardWarningDevice_21 || type == SFIDeviceType_AlmondBlink_64 || type == SFIDeviceType_AlmondSiren_63)  && ([textField.text integerValue] >= 65536 || [textField.text integerValue] < 0 )){
+        if( (type == SFIDeviceType_StandardWarningDevice_21)  && ([textField.text integerValue] >= 65536 || [textField.text integerValue] < 0 )){
             NSString *locStr =NSLocalizedString(@"please_enter_value_between", @"Please Enter Value between 0 - 65535");
             [self showAlert:[NSString stringWithFormat:@"%@ 0 - 65535",locStr]];
             if(self.isTrigger)
-            dimerButton.selected = NO;
+                dimerButton.selected = NO;
+        }
+        else if((type == SFIDeviceType_AlmondBlink_64 || type == SFIDeviceType_AlmondSiren_63) && ([textField.text integerValue] > 99999 || [textField.text integerValue] < 0 )){
+            NSString *locStr =NSLocalizedString(@"please_enter_value_between", @"Please Enter Value between 0 - 99999");
+            [self showAlert:[NSString stringWithFormat:@"%@ 0 - 99999",locStr]];
+            if(self.isTrigger)
+                dimerButton.selected = NO;
         }
         else if( dimerButton.subProperties.deviceType == SFIDeviceType_ZWtoACIRExtender_54 && ([textField.text integerValue] > 999 || [textField.text integerValue] < 0 )){
             NSString *locStr =NSLocalizedString(@"please_enter_value_between", @"Please Enter Value between 0 - 999");
             [self showAlert:[NSString stringWithFormat:@"%@ 0 - 999",locStr]];
             if(self.isTrigger)
-            dimerButton.selected = NO;
+                dimerButton.selected = NO;
         }else if( dimerButton.subProperties.deviceType == SFIDeviceType_Weather && ([textField.text integerValue] > 9999 || [textField.text integerValue] < 0 )){
             NSString *locStr =NSLocalizedString(@"please_enter_value_between", @"Please Enter Value between 0 - 9999");
             [self showAlert:[NSString stringWithFormat:@"%@ 0 - 9999",locStr]];
             if(self.isTrigger)
-            dimerButton.selected = NO;
+                dimerButton.selected = NO;
         }
         else if( dimerButton.subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 && ([textField.text integerValue] > 9000 || [textField.text integerValue] < 1000 )){
             NSString *locStr =NSLocalizedString(@"please_enter_value_between", @"Please Enter Value between 1000 - 9000");
@@ -730,14 +736,14 @@ labelAndCheckButtonView *labelView;
                 indexName = [indexName isEqualToString:@"0"]?genericIndex.groupLabel:indexName;
                 [self buildTextButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view indexName:indexName];
                 break;// not allowing more than one time paintion of textButton
-            }else if ([genericIndex.layoutType isEqualToString:@"HueColorPicker"]){
-            [self buildHueColorPicker:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
-            else if([genericIndex.layoutType isEqualToString:@"HUE"]|| [genericIndex.layoutType isEqualToString:@"HUE_BLINK"]){
+            else if ([genericIndex.layoutType isEqualToString:@"HueColorPicker"]){
+                [self buildHueColorPicker:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
+            }
+            else if([genericIndex.layoutType isEqualToString:@"HUE"]){
                 [self buildColorComponent:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
-                
             }
-            else if ([genericIndex.layoutType isEqualToString:@"BrighnessSlider"]){
+            else if ([genericIndex.layoutType isEqualToString:@"BrighnessSlider"] || [genericIndex.layoutType isEqualToString:@"HUE_ONLY"]){
                 [self buildHueSliders:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
             else if ([genericIndex.layoutType isEqualToString:SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW] || [genericIndex.layoutType isEqualToString:@"SLIDER_ICON"])
@@ -754,6 +760,11 @@ labelAndCheckButtonView *labelView;
         }
     }
     return view;
+}
+
+-(void)blinkNew:(NSString *)newValue{
+    NSLog(@"need to work on it");
+    
 }
 
 -(NSDictionary*)formatterDict:(GenericIndexClass*)genericIndex{

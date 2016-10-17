@@ -74,6 +74,8 @@ int mii;
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
+    [self.removeAlmondTO invalidate];
+    
     if(self.meshView){
         [self.meshView removeNotificationObserver];
         self.meshView = nil;
@@ -114,6 +116,7 @@ int mii;
         
         [self toggleImages:YES weakImg:NO text:[self getSignalStrengthText]];
     }
+    [self setUpHUD];
 }
 
 -(UIImage *)getConnectionImage{
@@ -316,10 +319,12 @@ int mii;
     }
     NSLog(@"meshcontroller mesh payload: %@", payload);
 //    NSString *commandType = payload[COMMAND_TYPE];
-    if(![payload[COMMAND_MODE] isEqualToString:@"Reply"]) //[payload[MOBILE_INTERNAL_INDEX] intValue]!=  mii||
-        return;
+
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     NSString *cmdType = payload[COMMAND_TYPE];
+    if(![cmdType isEqualToString:@"RemoveSlaveMobile"] && ![cmdType isEqualToString:@"ForceRemoveSlaveMobile"])
+        return;
+    
     [self.removeAlmondTO invalidate];
     self.removeAlmondTO = nil;
     
@@ -392,6 +397,7 @@ int mii;
 
 #pragma mark timer
 -(void)onRemoveAlmTO:(id)sender{
+    [self.removeAlmondTO invalidate];
     self.removeAlmondTO = nil;
     [self showForceRemoveAlert];
 }

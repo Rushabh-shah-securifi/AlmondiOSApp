@@ -241,8 +241,8 @@ static const int xIndent = 10;
                 NSLog(@"hue bounds: %@", NSStringFromCGRect(self.hueFrame));
                 [view addSubview:hueView];
             }
-            else if ([genericIndexObj.layoutType isEqualToString:@"HUE_BLINK"]){
-                view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, view.frame.size.height * 2 + 20);
+            else if ([genericIndexObj.layoutType isEqualToString:@"HUE_ONLY"]){
+                view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, view.frame.size.height);
                 
                 BlinkLedView * blinlk = [[BlinkLedView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height) color:self.genericParams.color genericIndexValue:genericIndexValue];
                 self.hueFrame = view.frame;

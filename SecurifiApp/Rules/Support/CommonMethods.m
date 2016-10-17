@@ -389,6 +389,133 @@
     return colorRGB;
 }
 
+
+
++(float )getHueValue:(NSString *)value{
+    int RGB = value.intValue;
+    
+    int r =  ((RGB & 0xF800) >> 8);
+    int g = ((RGB & 0x7E0) >> 3);
+    int b = ((RGB & 0x1F) << 3);
+    NSLog(@"r= %d,g= %d,b=%d",r,g,b);
+    
+    CGFloat h, s, l;
+    RVNColorRGBtoHSL(r, g, b,
+                     &h, &s, &l);
+    
+    NSLog(@" h== %f,s== %f l== %f",h,s,l);
+    float hueVal = h*(65535/255);
+    NSLog(@"hue val: %f", hueVal);
+    return hueVal;
+    
+}
+
++(void)getHSLFromDecimal:(int)decimal h:(float*)h s:(float*)s l:(float*)l{
+    int RGB = decimal;
+    
+    int r =  ((RGB & 0xFF0000) >> 16);
+    int g = ((RGB & 0x00FF00) >> 8);
+    int b = (RGB & 0x0000FF);
+
+    float nh, ns, nl;
+    RGB2HSL(r, g, b, &nh, &ns, &nl);
+    *h = nh;
+    *s = ns;
+    *l = nl;
+}
+
++(float )getBrightnessValue:(NSString *)value{
+    
+    int RGB = value.intValue;
+    
+    int r =  ((RGB & 0xFF0000) >> 16);
+    int g = ((RGB & 0x00FF00) >> 8);
+    int b = (RGB & 0x0000FF);
+    
+//    NSLog(@"r= %d,g= %d,b=%d",r,g,b);
+//    CGFloat h, s, l;
+//    RVNColorRGBtoHSL(r, g, b,
+//                     &h, &s, &l);
+//    NSLog(@"h: %f, s: %f, l: %f", h, s, l);
+//    NSLog(@"brightness val: %f", l);
+//    return l;
+    
+    float nh, ns, nl;
+    RGB2HSL(r, g, b, &nh, &ns, &nl);
+    NSLog(@"h: %f, s: %f, l: %f", nh, ns, nl);
+    NSLog(@"brightness val: %f", nl*100);
+
+    return nl*100;
+}
+
+static void RGB2HSL(float r, float g, float b, float* outH, float* outS, float* outL)
+{
+    r = r/255.0f;
+    g = g/255.0f;
+    b = b/255.0f;
+    
+    
+    float h,s, l, v, m, vm, r2, g2, b2;
+    
+    h = 0;
+    s = 0;
+    l = 0;
+    
+    v = MAX(r, g);
+    v = MAX(v, b);
+    m = MIN(r, g);
+    m = MIN(m, b);
+    
+    l = (m+v)/2.0f;
+    
+    if (l <= 0.0){
+        if(outH)
+            *outH = h;
+        if(outS)
+            *outS = s;
+        if(outL)
+            *outL = l;
+        return;
+    }
+    
+    vm = v - m;
+    s = vm;
+    
+    if (s > 0.0f){
+        s/= (l <= 0.5f) ? (v + m) : (2.0 - v - m);
+    }else{
+        if(outH)
+            *outH = h;
+        if(outS)
+            *outS = s;
+        if(outL)
+            *outL = l;
+        return;
+    }
+    
+    r2 = (v - r)/vm;
+    g2 = (v - g)/vm;
+    b2 = (v - b)/vm;
+    
+    if (r == v){
+        h = (g == m ? 5.0f + b2 : 1.0f - g2);
+    }else if (g == v){
+        h = (b == m ? 1.0f + r2 : 3.0 - b2);
+    }else{
+        h = (r == m ? 3.0f + g2 : 5.0f - r2);
+    }
+    
+    h/=6.0f;
+    
+    if(outH)
+        *outH = h;
+    if(outS)
+        *outS = s;
+    if(outL)
+        *outL = l;
+    
+}
+
 static void RVNColorRGBtoHSL(CGFloat red, CGFloat green, CGFloat blue, CGFloat *hue, CGFloat *saturation, CGFloat *lightness)
 {
     CGFloat r = red / 255.0f;
@@ -427,7 +554,7 @@ static void RVNColorRGBtoHSL(CGFloat red, CGFloat green, CGFloat blue, CGFloat *
         
         h /= 6.0f;
     }
-    
+    NSLog(@"fun h: %f, s: %f, l: %f", h, s, l);
     if (hue) {
         *hue = roundf(h * 255.0f);
     }
@@ -441,68 +568,110 @@ static void RVNColorRGBtoHSL(CGFloat red, CGFloat green, CGFloat blue, CGFloat *
     }
 }
 
-+(int)getRGBFromHSB:(int)hue saturation:(int)saturation {
-    CGFloat red;
-    CGFloat green;
-    CGFloat blue;
-    CGFloat alpha;
++(int)getRGBDecimalFromHSL:(float)h s:(float)s l:(float)l{
+    float red, green, blue;
     
-    float h = (float)hue/65535;
-    float s = (float)(saturation)/255;
-    float l = 100.0;
-    //    h = 55.0/255.0;
-    //    s = 100.0;
-    //    l = 126.0 * 100.0/255.0;
-    NSLog(@"hue %d,and sat = %d ",hue,saturation);
     NSLog(@"h: %f, s: %f, l: %f", h, s, l);
-    UIColor *color = [UIColor colorWithHue:h saturation:s
-                                brightness:l alpha:1.0];
+    HSL2RGB(h, s, l, &red, &green, &blue);
+    NSLog(@"r = %f, g = %f, b = %f", red, green, blue);
     
-    
-    if ( [color getRed:&red green:&green blue:&blue alpha:&alpha]) {
-        // color converted
-    }
-    
-    NSLog(@"red = %f green =%f blue = %f",red*255  ,green*255  ,blue*255  );
-    int colorRGB =  ((((int)(red*255) & 0xF8) << 8) | (((int)(green*255) & 0xFC) << 3) | ((int)(blue*255) >> 3));
+
+    int colorRGB =  (((int)red << 16) | ((int)green << 8) | (int)blue);
     NSLog(@"Colorrgb: %d", colorRGB);
     return colorRGB;
 }
 
-+(float )getHueValue:(NSString *)value{
-    int RGB = value.intValue;
+static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* outB)
+{
+    float			temp1,temp2;
+    float			temp[3];
+    int				i;
     
-    int r =  ((RGB & 0xF800) >> 8);
-    int g = ((RGB & 0x7E0) >> 3);
-    int b = ((RGB & 0x1F) << 3);
-    NSLog(@"r= %d,g= %d,b=%d",r,g,b);
+    // Check for saturation. If there isn't any just return the luminance value for each, which results in gray.
+    if(s == 0.0) {
+        if(outR)
+            *outR = l;
+        if(outG)
+            *outG = l;
+        if(outB)
+            *outB = l;
+        return;
+    }
     
-    CGFloat h, s, l;
-    RVNColorRGBtoHSL(r, g, b,
-                     &h, &s, &l);
+    // Test for luminance and compute temporary values based on luminance and saturation
+    if(l < 0.5)
+        temp2 = l * (1.0 + s);
+    else
+        temp2 = l + s - l * s;
+    temp1 = 2.0 * l - temp2;
     
-    NSLog(@" h== %f,s== %f l== %f",h,s,l);
-    float hueVal = h*(65535/255);
-    NSLog(@"hue val: %f", hueVal);
-    return hueVal;
+    // Compute intermediate values based on hue
+    temp[0] = h + 1.0 / 3.0;
+    temp[1] = h;
+    temp[2] = h - 1.0 / 3.0;
     
+    for(i = 0; i < 3; ++i) {
+        
+        // Adjust the range
+        if(temp[i] < 0.0)
+            temp[i] += 1.0;
+        if(temp[i] > 1.0)
+            temp[i] -= 1.0;
+        
+        
+        if(6.0 * temp[i] < 1.0)
+            temp[i] = temp1 + (temp2 - temp1) * 6.0 * temp[i];
+        else {
+            if(2.0 * temp[i] < 1.0)
+                temp[i] = temp2;
+            else {
+                if(3.0 * temp[i] < 2.0)
+                    temp[i] = temp1 + (temp2 - temp1) * ((2.0 / 3.0) - temp[i]) * 6.0;
+                else
+                    temp[i] = temp1;
+            }
+        }
+    }
+    
+    // Assign temporary values to R, G, B
+    if(outR)
+        *outR = temp[0];
+    if(outG)
+        *outG = temp[1];
+    if(outB)
+        *outB = temp[2];
 }
-+(float )getSatValue:(NSString *)value{
+
++(int)getRGBFromHSB:(int)hue saturation:(int)saturation {
+    float red;
+    float green;
+    float blue;
     
-    int RGB = value.intValue;
+    float h = 0.0;
+    float s = 0.0;
+    float l = 94.90196078431372 * 255.0 / 100.0;
     
-    int r =  ((RGB & 0xF800) >> 8);
-    int g = ((RGB & 0x7E0) >> 3);
-    int b = ((RGB & 0x1F) << 3);
-    
-    NSLog(@"r= %d,g= %d,b=%d",r,g,b);
-    CGFloat h, s, l;
-    RVNColorRGBtoHSL(r, g, b,
-                     &h, &s, &l);
     NSLog(@"h: %f, s: %f, l: %f", h, s, l);
-    NSLog(@"saturation val: %f", s);
-    return s;
+    
+    HSL2RGB(h, s, l, &red, &green, &blue);
+    NSLog(@"r = %f, g = %f, b = %f", red, green, blue);
+    
+//    CGFloat nred;
+//    CGFloat ngreen;
+//    CGFloat nblue;
+//    CGFloat alpha;
+//    UIColor *color = [UIColor colorWithHue:h saturation:s
+//                                brightness:l alpha:1.0];
+//    if ( [color getRed:&nred green:&ngreen blue:&nblue alpha:&alpha]) {
+//        // color converted
+//    }
+//    NSLog(@"r = %f, g = %f, b = %f", nred, ngreen, nblue);
+    
+    int colorRGB =  (((int)red << 16) | ((int)green << 8) | (int)blue);;
+    NSLog(@"Colorrgb: %d", colorRGB);
+    return colorRGB;
 }
+
 +(NSString *)getShortAlmondName:(NSString*)almondName{
     return  [self getName:almondName length:20];
     

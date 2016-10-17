@@ -58,16 +58,16 @@ static const int xIndent = 0;
 -(void)layoutSubviews{
     int yPos = 0;
     NSLog(@"layoutSubView");
-    NSArray *layoutArr = @[@"HUE",@"SATURATION"];
+    NSArray *layoutArr = @[@"BRIGHTNESS"];
     for (int i = 0; i < layoutArr.count; i++) {
         UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, yPos , self.frame.size.width-xIndent, 65)];
         
-        UILabel *label;
-        if(![@"HUE" isEqualToString:layoutArr[i]]){
-            label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
-            [self setUpLable:label withPropertyName:layoutArr[i]];
-            [view addSubview:label];
-        }
+//        UILabel *label;
+//        if(![@"SATURATION" isEqualToString:layoutArr[i]]){
+//            label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
+//            [self setUpLable:label withPropertyName:layoutArr[i]];
+//            [view addSubview:label];
+//        }
 
         if ([layoutArr[i] isEqualToString:@"HUE"]) {
             self.hue = [CommonMethods getHueValue:self.genericIndexValue.genericValue.value];
@@ -78,25 +78,27 @@ static const int xIndent = 0;
 //            self.hueFrame = view.frame;
             [view addSubview:self.huePicker];
         }
-        else if ([layoutArr[i] isEqualToString:@"SATURATION"]){
-            self.sat = [CommonMethods getSatValue:self.genericIndexValue.genericValue.value];
-            NSLog(@"self.sat = %d",self.sat);
+        else if ([layoutArr[i] isEqualToString:@"BRIGHTNESS"]){
+            NSLog(@"blink sat value: %@", self.genericIndexValue.genericValue.value);
+            int brightness = [CommonMethods getBrightnessValue:self.genericIndexValue.genericValue.value];
+            
+            NSLog(@"brightness = %d", brightness);
             GenericIndexClass *genericIndex = [[GenericIndexClass alloc]initWithGenericIndex:self.genericIndexValue.genericIndex];
             genericIndex.formatter.min = 0;
-            genericIndex.formatter.max = 255;
+            genericIndex.formatter.max = 100;
             GenericValue *genValue = [GenericValue  getCopy:self.genericIndexValue.genericValue];
-            genValue.transformedValue = @(self.sat).stringValue;
+            genValue.transformedValue = @(brightness).stringValue;
             GenericIndexValue *satGenericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genValue index:_genericIndexValue.index deviceID:_genericIndexValue.deviceID];
 
-            self.saturationSlider = [[Slider alloc]initWithFrame:SLIDER_FRAME color:self.color genericIndexValue:satGenericIndexValue];
-            self.saturationSlider.delegate = self;
-            [view addSubview:self.saturationSlider];
-
-        }
-        else if ([layoutArr[i] isEqualToString:@"BRIGHTNESS"]){
-            self.brightnessSlider = [[Slider alloc]initWithFrame:SLIDER_FRAME color:self.color genericIndexValue:self.genericIndexValue];
+            self.brightnessSlider = [[Slider alloc]initWithFrame:SLIDER_FRAME color:self.color genericIndexValue:satGenericIndexValue];
             self.brightnessSlider.delegate = self;
             [view addSubview:self.brightnessSlider];
+
+        }
+        else if ([layoutArr[i] isEqualToString:@"SATURATION"]){
+            self.saturationSlider = [[Slider alloc]initWithFrame:SLIDER_FRAME color:self.color genericIndexValue:self.genericIndexValue];
+            self.saturationSlider.delegate = self;
+            [view addSubview:self.saturationSlider];
             
         }
         yPos =  yPos + view.frame.size.height + LABELSPACING;
@@ -111,17 +113,21 @@ static const int xIndent = 0;
 }
 
 -(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue currentView:(UIView*)currentView{
-    
-    NSLog(@"new value = %@",newValue);
+    NSLog(@"new value save = %@",newValue);
     self.hue = [newValue intValue];
     int new = [CommonMethods getRGBFromHSB:self.hue saturation:self.sat];
     NSLog(@"final value = %d",new);
     [self.delegate save:@(new).stringValue forGenericIndexValue:_genericIndexValue currentView:self];
 }
+
 -(void)blinkNew:(NSString *)newValue{
-    self.sat = [newValue intValue];
-    int new = [CommonMethods getRGBFromHSB:self.hue saturation:self.sat];
-    NSLog(@"final value = %d",new);
+    NSLog(@"new brightness value %@", newValue);
+    float h, s, l;
+    [CommonMethods getHSLFromDecimal:_genericIndexValue.genericValue.value.intValue h:&h s:&s l:&l];
+    l = newValue.floatValue * 255.0 / 100.0;
+    int new = [CommonMethods getRGBDecimalFromHSL:h s:s l:l];
+    
+    NSLog(@"final decimal value = %d",new);
     [self.delegate save:@(new).stringValue forGenericIndexValue:_genericIndexValue currentView:self];
 }
 @end

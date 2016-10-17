@@ -199,7 +199,7 @@ UILabel *topLabel;
             for (NSString *value in genericValueKeys) {
                 //NSLog(@"values %@",value);
                 GenericValue *gVal = genericValueDic[value];
-                BOOL isDimButton = genericIndex.layoutType!=nil && ([genericIndex.layoutType isEqualToString: SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW] || [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndex.layoutType isEqualToString:@"HUE"] || [genericIndex.layoutType isEqualToString:@"HUE_BLINK"]);
+                BOOL isDimButton = genericIndex.layoutType!=nil && ([genericIndex.layoutType isEqualToString: SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW] || [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndex.layoutType isEqualToString:@"HUE"] || [genericIndex.layoutType isEqualToString:@"HUE_ONLY"]);
                 
                 //NSLog(@"gaval.value: %@, propertyvalue: %@, displayeddata: %@", gVal.value, buttonProperties.matchData, buttonProperties.displayedData);
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties]){

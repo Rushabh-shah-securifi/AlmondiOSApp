@@ -699,6 +699,7 @@
         "name": "ColorDimmableLight",
         "isActuator": "true",
         "defaultIcon": "light_off",
+        "isTrigger":"false",
         "Indexes": {
             "1": {
                 "genericIndexID": "18",
@@ -1293,8 +1294,7 @@
         "Indexes": {
             "1": {
                 "genericIndexID": "96",
-                "row_no": 1,
-                "Placement":"Header_Detail"
+                "row_no": 1
             },
             "2": {
                 "row_no": 2,
@@ -1340,4 +1340,3 @@
         }
     }
 }
-

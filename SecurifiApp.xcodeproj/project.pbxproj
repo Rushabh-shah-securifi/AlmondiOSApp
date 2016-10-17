@@ -2458,6 +2458,7 @@
 					};
 					1CED5EF019AC82FD0023512F = {
 						DevelopmentTeam = R336EY8885;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -5187,7 +5188,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Almond-AppIcon";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-launch_image";
 				CODE_SIGN_ENTITLEMENTS = Almond/Almond.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = R336EY8885;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PODS_ROOT)/CrashlyticsFramework\"",
@@ -5217,7 +5220,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Almond-AppIcon";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-launch_image";
 				CODE_SIGN_ENTITLEMENTS = Almond/Almond.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = R336EY8885;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PODS_ROOT)/CrashlyticsFramework\"",
