@@ -20,6 +20,8 @@
 @property (nonatomic) MBProgressHUD *HUD;
 @property (nonatomic) int mii;
 @property (nonatomic) NSString *slaveName;
+@property (nonatomic) NSTimer *nonRepeatingTimer;
+
 @end
 
 @implementation MeshEditViewController
@@ -124,7 +126,6 @@
 -(void)onMeshCommandResponse:(id)sender{
     NSLog(@"mesh edit onmeshcommandresponse");
     //load next view
-    [self hideHUDDelegate];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
@@ -143,6 +144,7 @@
     NSString *commandType = payload[COMMAND_TYPE];
     if(![commandType isEqualToString:@"SetSlaveNameMobile"])
         return;
+    [self hideHUDDelegate];
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     if(isSuccessful){
         [self.delegate slaveNameDidChangeDelegate:_slaveName];
@@ -176,6 +178,10 @@
 
 - (void)onNetworkDownNotifier:(id)sender{
     NSLog(@"on network down");
+    if([self.nonRepeatingTimer isValid]){
+        return;
+    }
+    
     [self hideHUDDelegate];
     
     [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
@@ -184,7 +190,6 @@
 
 - (void)onNetworkUpNotifier:(id)sender{
     NSLog(@"mesh view network up");
-    
     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
         [[SecurifiToolkit sharedInstance] connectMesh];
     }else{
@@ -210,17 +215,31 @@
         if(alertView.tag == NETWORK_OFFLINE){
             NSLog(@"on alert ok");
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:toolkit.currentAlmond.almondplusMAC];
-            if(status == SFIAlmondConnectionStatus_disconnected){
-                NSLog(@"ok 1");
-                [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
-            }else{
-
-            }
+            [toolkit initToolkit];
+            int connectionTO = 5;
+            self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
+            [self showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
         }
     }else{
         
     }
 }
-
+#pragma mark timer methods
+-(void)onNonRepeatingTimeout:(id)sender{
+    [self hideHUDDelegate];
+    NSLog(@"self.nonRepeatingTimer.userInfo: %@", self.nonRepeatingTimer.userInfo);
+    int tag = [(NSString *)self.nonRepeatingTimer.userInfo intValue];
+    
+    if(tag == NETWORK_OFFLINE){
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:toolkit.currentAlmond.almondplusMAC];
+        if(status == SFIAlmondConnectionStatus_disconnected){
+            NSLog(@"ok 1");
+            [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
+        }else{
+            
+        }
+    }
+    [self.nonRepeatingTimer invalidate];
+}
 @end

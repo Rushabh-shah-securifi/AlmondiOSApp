@@ -151,7 +151,7 @@ int mii;
     self.tableView.tableHeaderView = nil;
     
     NSLog(@"almond mac: %@", self.almondMac);
-    if([self isNoAlmondLoaded] || ![self isFirmwareCompatible] || ![[SecurifiToolkit sharedInstance] isNetworkOnline]){
+    if([self isNoAlmondLoaded] || ![self isFirmwareCompatible] || [self isDisconnected]){
         
     }
     else{
@@ -300,6 +300,11 @@ int mii;
     return [[SecurifiToolkit sharedInstance].currentAlmond.firmware hasPrefix:@"AL3-"];
 }
 
+-(BOOL)isDisconnected{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    return [toolkit connectionStatusForAlmond:toolkit.currentAlmond.almondplusMAC] == SFIAlmondConnectionStatus_disconnected;
+}
+
 -(int)getSettingsRowHeight{
     NSArray *msgs = [self getWirelessSettingsSummary];
     int lines = (int)[SFICardView getLineCount:msgs];
@@ -308,7 +313,6 @@ int mii;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    //    NSLog(@"isAlmondUnavailable: %d, isnetworkonline: %d", self.isAlmondUnavailable, ![[SecurifiToolkit sharedInstance] isNetworkOnline]);
     if([self isFirmwareCompatible] == NO){
         tableView.scrollEnabled = NO;
         return [self createAlmondUpdateAvailableCell:tableView];
@@ -317,7 +321,7 @@ int mii;
     if([self isNoAlmondLoaded]){
         tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
-    }else if(self.isAlmondUnavailable || (![[SecurifiToolkit sharedInstance] isNetworkOnline])){
+    }else if(self.isAlmondUnavailable || [self isDisconnected]){
         tableView.scrollEnabled = NO;
         return [self createAlmondOfflineCell:tableView];
     }else{
@@ -531,7 +535,7 @@ int mii;
 }
 
 -(BOOL)isNotConnectedToCloud{
-    if ([self isNoAlmondLoaded] || self.isAlmondUnavailable || (![[SecurifiToolkit sharedInstance] isNetworkOnline])) {
+    if ([self isNoAlmondLoaded] || self.isAlmondUnavailable || [self isDisconnected]) {
         return YES;
     }
     return NO;
