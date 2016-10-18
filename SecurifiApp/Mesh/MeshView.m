@@ -15,6 +15,7 @@
 #import "Analytics.h"
 #import "RouterPayload.h"
 
+#define ADD_FAIL -2
 #define NETWORK_OFFLINE -1
 #define HELP_INFO 0
 
@@ -685,6 +686,12 @@
         if([commandType isEqualToString:@"CheckForAddableWiredSlaveMobile"] || [commandType isEqualToString:@"CheckForAddableWirelessSlaveMobile"]){
             // do not do any thing.
         }
+        else if([commandType isEqualToString:@"AddWiredSlaveMobile"] || [commandType isEqualToString:@"AddWirelessSlaveMobile"]){
+            [self.delegate hideHUDDelegate];
+            [self.blinkTimer invalidate];
+            if(self.currentView.tag == BLINK_CHECK)
+                [self showAlert:@"" msg:payload[@"Reason"] cancel:@"Ok" other:nil tag:ADD_FAIL];
+        }
         else{
             NSLog(@"for any other command on false hide hud");
             [self.delegate hideHUDDelegate];
@@ -847,6 +854,8 @@
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self.delegate showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
    
+        }else if(alertView.tag == ADD_FAIL){
+            //do nothing
         }
     }else{
         
