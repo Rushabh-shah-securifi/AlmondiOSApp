@@ -114,14 +114,19 @@
                    name:kSFIAlmondModeDidChange
                  object:nil];
     
-    [center addObserver:self
-               selector:@selector(onNetworkDownNotifier:)
-                   name:NETWORK_DOWN_NOTIFIER
-                 object:nil];
+//    [center addObserver:self
+//               selector:@selector(onNetworkDownNotifier:)
+//                   name:NETWORK_DOWN_NOTIFIER
+//                 object:nil];
+    
+//    [center addObserver:self
+//               selector:@selector(onNetworkConnectingNotifier:)
+//                   name:NETWORK_CONNECTING_NOTIFIER
+//                 object:nil];
     
     [center addObserver:self
-               selector:@selector(onNetworkConnectingNotifier:)
-                   name:NETWORK_CONNECTING_NOTIFIER
+               selector:@selector(onConnectionStatusChanged:)
+                   name:CONNECTION_STATUS_CHANGE_NOTIFIER
                  object:nil];
     
     [center addObserver:self
@@ -129,15 +134,15 @@
                    name:kSFIDidChangeAlmondConnectionMode
                  object:nil];
     
-    [center addObserver:self
-               selector:@selector(onNetworkUpNotifier:)
-                   name:NETWORK_UP_NOTIFIER
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(onReachabilityDidChange:)
-                   name:kSFIReachabilityChangedNotification
-                 object:nil];
+//    [center addObserver:self
+//               selector:@selector(onNetworkUpNotifier:)
+//                   name:NETWORK_UP_NOTIFIER
+//                 object:nil];
+//    
+//    [center addObserver:self
+//               selector:@selector(onReachabilityDidChange:)
+//                   name:kSFIReachabilityChangedNotification
+//                 object:nil];
     
     [center addObserver:self
                selector:@selector(onNotificationCountChanged:)
@@ -503,22 +508,33 @@
     });
 }
 
-- (void)onNetworkUpNotifier:(id)sender {
-    NSLog(@"onNetworkUpNotifier");
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markNetworkStatusIcon];
-        //        [self.tableView reloadData];
-        //        [self.HUD hide:YES]; // make sure it is hidden
-    });
-}
 
-- (void)onNetworkDownNotifier:(id)sender {
-    NSLog(@"onNetworkDownNotifier");
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markNetworkStatusIcon];
-        [self.tableView reloadData];
-        [self.HUD hide:YES]; // make sure it is hidden
-    });
+-(void)onConnectionStatusChanged:(id)sender {
+    NSNumber* status = [sender object];
+    int statusIntValue = [status intValue];
+    if(statusIntValue == (int)(ConnectionStatusType*)NO_NETWORK_CONNECTION){
+        NSLog(@"onNetworkDownNotifier");
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self markNetworkStatusIcon];
+            [self.tableView reloadData];
+            [self.HUD hide:YES]; // make sure it is hidden
+        });
+        NSLog(@"dashboardconnection status is no network connection");
+    }else if(statusIntValue == (int)(ConnectionStatusType*)IS_CONNECTING_TO_NETWORK){
+        NSLog(@"onNetworkConnectingNotifier");
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self markNetworkStatusIcon];
+        });
+        NSLog(@"dashboardconnection status is connecting to network");
+    }else if(statusIntValue == (int)(ConnectionStatusType*)CONNECTED_TO_NETWORK){
+        NSLog(@"onNetworkUpNotifier");
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self markNetworkStatusIcon];
+            //        [self.tableView reloadData];
+            //        [self.HUD hide:YES]; // make sure it is hidden
+        });
+        NSLog(@"dashboardconnection status is connected to network");
+    }
 }
 
 - (void)onNetworkConnectingNotifier:(id)notification {
@@ -528,13 +544,6 @@
     });
 }
 
-- (void)onReachabilityDidChange:(NSNotification *)notification {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markNetworkStatusIcon];
-        [self.tableView reloadData];
-        [self.HUD hide:NO]; // make sure it is hidden
-    });
-}
 
 - (void)onNotificationCountChanged:(id)event {
     dispatch_async(dispatch_get_main_queue(), ^() {

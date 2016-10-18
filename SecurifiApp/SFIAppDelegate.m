@@ -54,13 +54,45 @@
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window.backgroundColor = [UIColor whiteColor];
+
     return YES;
 }
 
+- (void)redirectLogToDocuments
+{
+    NSArray *allPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [allPaths objectAtIndex:0];
+    NSString *pathForLog = [documentsDirectory stringByAppendingPathComponent:@"yourFile.txt"];
+    
+    freopen([pathForLog cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
+}
+
+- (void)printDataFromLogFiles {
+    NSArray *allPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [allPaths objectAtIndex:0];
+    NSString *pathForLog = [documentsDirectory stringByAppendingPathComponent:@"yourFile.txt"];
+    NSError *error;
+    NSString *fileContents = [NSString stringWithContentsOfFile:pathForLog encoding:NSUTF8StringEncoding error:&error];
+    
+    if (error)
+        NSLog(@"Error reading file: %@", error.localizedDescription);
+    
+    // maybe for debugging...
+    NSLog(@"contents: %@", fileContents);
+    
+    [[NSFileManager defaultManager] createFileAtPath:pathForLog contents:[NSData data] attributes:nil];
+}
+
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    [self printDataFromLogFiles];
+    
+    [self redirectLogToDocuments];
+    
     NSLog(@"Application did launch");
     [self initializeSystem:application];
-
+    NSLog(@"testing log");
     NSDictionary *remote = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remote) {
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -161,7 +193,7 @@
     if ([SecurifiToolkit isInitialized]) {
         return;
     }
-
+    
     [Fabric with:@[CrashlyticsKit]];
 
     SecurifiConfigurator *config = [self toolkitConfigurator];

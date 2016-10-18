@@ -28,6 +28,7 @@
 #import "ConnectionStatus.h"
 #import "SFIAlmondLocalNetworkSettings.h"
 #import "Client.h"
+#import "ConnectionStatus.h"
 
 
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate>{
@@ -91,21 +92,10 @@
                    name:kSFIDidUpdateAlmondList
                  object:nil];
     [center addObserver:self
-               selector:@selector(onNetworkUpNotifier:)
-                   name:NETWORK_UP_NOTIFIER
+               selector:@selector(onConnectionStatusChanged:)
+                   name:CONNECTION_STATUS_CHANGE_NOTIFIER
                  object:nil];
-    [center addObserver:self
-               selector:@selector(onNetworkDownNotifier:)
-                   name:NETWORK_DOWN_NOTIFIER
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onNetworkConnectingNotifier:)
-                   name:NETWORK_CONNECTING_NOTIFIER
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onReachabilityDidChange:)
-                   name:kSFIReachabilityChangedNotification
-                 object:nil];
+
     [center addObserver:self
                selector:@selector(onDidReceiveNotifications)
                    name:kSFINotificationDidStore
@@ -340,29 +330,12 @@
     [self getRecentNotification];
 }
 
-- (void)onNetworkUpNotifier:(id)sender {
+-(void)onConnectionStatusChanged:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
     });
 }
 
-- (void)onNetworkDownNotifier:(id)sender {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markNetworkStatusIcon];
-    });
-}
-
-- (void)onNetworkConnectingNotifier:(id)notification {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markNetworkStatusIcon];
-    });
-}
-
-- (void)onReachabilityDidChange:(NSNotification *)notification {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markNetworkStatusIcon];
-    });
-}
 
 - (void)onAlmondModeDidChange:(id)sender {
     //    NSLog(@"Almond mode is changing %d",self.toolkit.mode_src);
