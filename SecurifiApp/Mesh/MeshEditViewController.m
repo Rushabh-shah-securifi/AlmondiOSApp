@@ -166,6 +166,7 @@
         f.origin.y =  y ;
         self.meshView.frame = f;
     }];
+    [self.meshView toggleTick1:YES tick2:NO];
 }
 
 -(void)onKeyboardDidHide:(id)notice{

@@ -40,6 +40,8 @@
                 <outlet property="pairingAlmondRestView" destination="PZX-is-Rha" id="sYW-9a-5uc"/>
                 <outlet property="pairingAlmondView" destination="qjI-mV-7u6" id="E1b-TA-hKn"/>
                 <outlet property="setupCompleteView" destination="ULR-I4-gxI" id="Evi-zF-B3f"/>
+                <outlet property="tickImgView1" destination="r9L-D5-SRq" id="qjs-v8-Pox"/>
+                <outlet property="tickImgView2" destination="qah-p8-g0w" id="OTu-0X-DbW"/>
                 <outlet property="troublePairingBtn" destination="0PI-N4-6Uo" id="Qvc-bY-tgh"/>
                 <outlet property="wiredBtn" destination="JYV-nP-yd6" id="JQi-cI-6S2"/>
                 <outlet property="wirelessBtn" destination="4Qb-ia-mOc" id="IRL-u4-aCY"/>
@@ -472,6 +474,18 @@
                         <outlet property="delegate" destination="-1" id="CqO-E6-cvV"/>
                     </connections>
                 </pickerView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconSceneChekmark" translatesAutoresizingMaskIntoConstraints="NO" id="r9L-D5-SRq">
+                    <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="uDr-tL-wnc"/>
+                        <constraint firstAttribute="height" constant="25" id="wRI-E6-YCP"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="imageRenderingMode">
+                            <integer key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ia0-DH-ybX" userLabel="lineView">
                     <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -520,6 +534,18 @@
                         <action selector="onBackBtnTap:" destination="-1" eventType="touchUpInside" id="9dx-D8-wHX"/>
                     </connections>
                 </button>
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconSceneChekmark" translatesAutoresizingMaskIntoConstraints="NO" id="qah-p8-g0w">
+                    <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="NzU-Nh-yhZ"/>
+                        <constraint firstAttribute="width" constant="25" id="t2V-eI-PhN"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="imageRenderingMode">
+                            <integer key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -527,6 +553,7 @@
                 <constraint firstAttribute="bottom" secondItem="LXA-KB-VVm" secondAttribute="bottom" constant="8" id="2No-wi-i71"/>
                 <constraint firstItem="iW2-5s-YIf" firstAttribute="centerX" secondItem="k8i-dQ-bjY" secondAttribute="centerX" id="7mH-ZE-dym"/>
                 <constraint firstAttribute="trailing" secondItem="LXA-KB-VVm" secondAttribute="trailing" constant="10" id="BHb-dx-0Pi"/>
+                <constraint firstItem="qah-p8-g0w" firstAttribute="top" secondItem="Ia0-DH-ybX" secondAttribute="bottom" constant="8" id="CDy-Qb-TsR"/>
                 <constraint firstItem="72h-a9-IGa" firstAttribute="top" secondItem="EGC-Tm-eSc" secondAttribute="bottom" id="DXQ-wS-tF2"/>
                 <constraint firstItem="1j2-oP-jx3" firstAttribute="centerX" secondItem="k8i-dQ-bjY" secondAttribute="centerX" id="ETe-PN-X5D"/>
                 <constraint firstItem="1j2-oP-jx3" firstAttribute="top" secondItem="toX-zt-La1" secondAttribute="bottom" constant="64" id="GIh-1M-K7r"/>
@@ -545,10 +572,13 @@
                 <constraint firstAttribute="trailing" secondItem="72h-a9-IGa" secondAttribute="trailing" id="hgH-Bv-oAA"/>
                 <constraint firstItem="EGC-Tm-eSc" firstAttribute="leading" secondItem="k8i-dQ-bjY" secondAttribute="leading" constant="12" id="n8L-UR-MV9"/>
                 <constraint firstAttribute="trailing" secondItem="YFa-8K-X6O" secondAttribute="trailing" id="nDA-39-Ie0"/>
+                <constraint firstItem="r9L-D5-SRq" firstAttribute="top" secondItem="1j2-oP-jx3" secondAttribute="bottom" constant="91" id="ni3-PV-PcY"/>
                 <constraint firstItem="72h-a9-IGa" firstAttribute="leading" secondItem="k8i-dQ-bjY" secondAttribute="leading" id="nmC-De-Dcj"/>
                 <constraint firstAttribute="trailing" secondItem="Ia0-DH-ybX" secondAttribute="trailing" id="r1w-jc-jUo"/>
+                <constraint firstAttribute="trailing" secondItem="r9L-D5-SRq" secondAttribute="trailing" constant="36" id="r3L-09-42g"/>
                 <constraint firstItem="toX-zt-La1" firstAttribute="leading" secondItem="k8i-dQ-bjY" secondAttribute="leading" id="sGZ-kq-rja"/>
                 <constraint firstAttribute="trailing" secondItem="EGC-Tm-eSc" secondAttribute="trailing" id="yna-ti-Op3"/>
+                <constraint firstAttribute="trailing" secondItem="qah-p8-g0w" secondAttribute="trailing" constant="10" id="zrr-mH-FHv"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="116" y="757"/>
@@ -1105,6 +1135,7 @@
         <image name="almond_reset" width="750" height="750"/>
         <image name="back_icon" width="64" height="64"/>
         <image name="h_wireless" width="750" height="620"/>
+        <image name="iconSceneChekmark" width="140" height="140"/>
         <image name="mesh-finish" width="750" height="1334"/>
         <image name="mesh-setup" width="750" height="750"/>
         <image name="wifi_icon" width="110" height="110"/>

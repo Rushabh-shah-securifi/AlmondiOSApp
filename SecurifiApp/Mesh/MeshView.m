@@ -58,6 +58,8 @@
 @property (weak, nonatomic) IBOutlet UIView *lineBtm;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndic1;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndic2;
+@property (weak, nonatomic) IBOutlet UIImageView *tickImgView1;
+@property (weak, nonatomic) IBOutlet UIImageView *tickImgView2;
 
 /* Mesh-help Start*/
 @property NSDictionary *item;
@@ -207,16 +209,28 @@
     }else{
         self.selectedName = self.almondNames[row];
         self.nameField.text = @"";
+        [self toggleTick1:NO tick2:YES];
     }
 }
 
+- (void)toggleTick1:(BOOL)tick1Hidden tick2:(BOOL)tick2Hidden{
+    NSLog(@"Tick 1");
+    if(_tickImgView1.isHidden == tick1Hidden && _tickImgView2.isHidden == tick2Hidden)
+        return;
+    NSLog(@"Tick 2");
+    self.tickImgView1.hidden = tick1Hidden;
+    self.tickImgView2.hidden = tick2Hidden;
+}
 #pragma mark text field delegates
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    if(textField.text.length == 0)
+        [self toggleTick1:NO tick2:YES];
     [textField resignFirstResponder];
     return  YES;
 }
 
 - (void)onKeyboardDidShow:(id)notification {
+    NSLog(@"on keyboard did show");
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
     [UIView animateWithDuration:0.3 animations:^{
@@ -225,6 +239,7 @@
         f.origin.y =  y ;
         self.frame = f;
     }];
+    [self toggleTick1:YES tick2:NO];
 }
 
 -(void)onKeyboardDidHide:(id)notice{
