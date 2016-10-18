@@ -61,6 +61,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndic2;
 @property (weak, nonatomic) IBOutlet UIImageView *tickImgView1;
 @property (weak, nonatomic) IBOutlet UIImageView *tickImgView2;
+@property (weak, nonatomic) IBOutlet UILabel *pairingAlmondRstInfo;
 
 /* Mesh-help Start*/
 @property NSDictionary *item;
@@ -500,6 +501,10 @@
     else if(view.tag == 4){ //almond name
         self.nameField.text = @"";
     }
+    else if(view.tag == PAIRING_ALMOND_2){
+        [self setPairingAlmondsScreen2];
+    }
+    
     NSLog(@"current view: %@", self.currentView);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.currentView removeFromSuperview];
@@ -507,6 +512,15 @@
         view.frame = frame;
         [self addSubview:view];
     });
+}
+
+- (void)setPairingAlmondsScreen2{
+    if(self.wiredBtn.selected){
+        self.pairingAlmondRstInfo.text = @"Having trouble pairing your Almond 3 ?\n\na. Check for loose wired connection between your Almonds.\nb. Press and hold the factory reset button on it for 5 secs.";
+    }
+    else{
+        self.pairingAlmondRstInfo.text = @"Having trouble pairing your Almond 3 ?\n\na. Bring it closer to primary Almond.\nb. Press and hold the factory reset button on it for 5 secs.";
+    }
 }
 
 #pragma mark command requests

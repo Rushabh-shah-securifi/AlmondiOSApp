@@ -84,7 +84,7 @@ static const int xIndent = 0;
             
             NSLog(@"brightness = %d", brightness);
             GenericIndexClass *genericIndex = [[GenericIndexClass alloc]initWithGenericIndex:self.genericIndexValue.genericIndex];
-            genericIndex.formatter.min = 0;
+            genericIndex.formatter.min = 1;
             genericIndex.formatter.max = 100;
             GenericValue *genValue = [GenericValue  getCopy:self.genericIndexValue.genericValue];
             genValue.transformedValue = @(brightness).stringValue;

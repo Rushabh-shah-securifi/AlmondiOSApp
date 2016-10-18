@@ -86,7 +86,7 @@ int mii;
 }
 
 -(void)tryShowLoadingDevice{
-    if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC] && ![self isDisconnected]){
+    if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC] && ![self isDisconnected] && [self isFirmwareCompatible]){
         [self showHudWithTimeoutMsg:@"Loading Device data..."];
     }
 }
