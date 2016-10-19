@@ -570,7 +570,6 @@ static void RVNColorRGBtoHSL(CGFloat red, CGFloat green, CGFloat blue, CGFloat *
 
 +(int)getRGBDecimalFromHSL:(float)h s:(float)s l:(float)l{
     float red, green, blue;
-    h= 0; s= 0; l = 1;
     NSLog(@"h: %f, s: %f, l: %f", h, s, l);
     HSL2RGB(h, s, l, &red, &green, &blue);
     NSLog(@"r = %f, g = %f, b = %f", red, green, blue);
