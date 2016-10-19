@@ -37,7 +37,6 @@
     config.enableScenes = YES;                      // NO by default
     config.enableWifiClients = YES;                 // NO by default
 //    config.enableAlmondVersionRemoteUpdate = YES;           // NO by default
-
     return config;
 }
 
@@ -48,7 +47,6 @@
 - (NSString *)assetsPrefixId {
     return DEFAULT_ASSETS_PREFIX_ID;
 }
-
 
 #pragma mark - UIApplicationDelegate methods
 
@@ -67,7 +65,47 @@
     freopen([pathForLog cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
 }
 
-- (void)printDataFromLogFiles {
+-(void) sendHTTPRequestWithDataAndDeleteLogsContent: (NSString*)data logFilePath:(NSString*)pathForLog {
+    
+    NSData *postData = [data dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    
+    NSString* url = @"https://almondlogs.securifi.com/ios/debug/logs";
+    
+    [request setURL:[NSURL URLWithString:url]];
+    
+    [request setHTTPMethod:@"POST"];
+    
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    
+    [request setValue:@"text/plain" forHTTPHeaderField:@"Content-Type"];
+    
+    [request setHTTPBody:postData];
+    
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    
+    if(conn) {
+        NSLog(@"Connection Successful");
+    } else {
+        NSLog(@"Connection could not be made");
+    }
+    
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
+        if (error){
+            NSLog(@"Error,%@", [error localizedDescription]);
+        }
+        else{
+            NSLog(@"logs successfully uploaded");
+            [[NSFileManager defaultManager] createFileAtPath:pathForLog contents:[NSData data] attributes:nil];
+            NSLog(@"the files are deleted");
+        }
+    }];
+}
+
+- (void)sendDataFromLogFilesToCloudandClearInLocal {
     NSArray *allPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [allPaths objectAtIndex:0];
     NSString *pathForLog = [documentsDirectory stringByAppendingPathComponent:@"yourFile.txt"];
@@ -78,21 +116,49 @@
         NSLog(@"Error reading file: %@", error.localizedDescription);
     
     // maybe for debugging...
-    NSLog(@"contents: %@", fileContents);
-    
-    [[NSFileManager defaultManager] createFileAtPath:pathForLog contents:[NSData data] attributes:nil];
+    //NSLog(@"contents: %@", fileContents);
+    [self sendHTTPRequestWithDataAndDeleteLogsContent: fileContents  logFilePath:(NSString*)pathForLog];
 }
 
+-(void)redirectLogsToNetwork{
+    [self redirectLogToDocuments];
+    [self sendDataFromLogFilesToCloudandClearInLocal];
+}
+
+-(void)sendHTTPRequestAnotherMethod:(NSString*)post{
+    dispatch_queue_t sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
+    dispatch_async(sendReqQueue,^(){
+        
+        NSLog(@"post req = %@",post);
+        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+        [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
+        [request setHTTPBody:postData];
+        NSURLResponse *res= Nil;
+        //[NSURLConnection connectionWithRequest:request delegate:self];
+        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&res error:nil];
+        if(data == nil)
+            return ;
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    });
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [self printDataFromLogFiles];
+    NSDateFormatter *DateFormatter=[[NSDateFormatter alloc] init];
     
-    [self redirectLogToDocuments];
+    [DateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
     
+    NSLog(@"%@ time when this method is called",[DateFormatter stringFromDate:[NSDate date]]);
+    [self redirectLogsToNetwork];
+    NSLog(@"%@ time when this method is called",[DateFormatter stringFromDate:[NSDate date]]);
     NSLog(@"Application did launch");
     [self initializeSystem:application];
-    NSLog(@"testing log");
+    
     NSDictionary *remote = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remote) {
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -112,23 +178,11 @@
     DDLogError(@"Failed to register for push notifications, error:%@", error);
 }
 
-
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     DLog(@"Registered for push notifications, device token: %@", deviceToken);
     [application securifiApplicationDidRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
-/*
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler {
-    NSLog(@"didReceiveRemoteNotification:fetchCompletionHandler");
-
-    [self initializeSystem:application];
-
-    BOOL handled = [application securifiApplicationHandleRemoteNotification:userInfo];
-    enum UIBackgroundFetchResult result = handled? UIBackgroundFetchResultNewData : UIBackgroundFetchResultNoData;
-    handler(result);
-}
-*/
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSLog(@"didReceiveRemoteNotification");
@@ -176,10 +230,9 @@
         // and then fetch new notifications, if any
         [toolkit tryRefreshNotifications];
     }
-//    else {
-//        [toolkit asyncInitNetwork];
-//    }
-
+    else {
+        [toolkit asyncInitNetwork];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -193,9 +246,7 @@
     if ([SecurifiToolkit isInitialized]) {
         return;
     }
-    
     [Fabric with:@[CrashlyticsKit]];
-
     SecurifiConfigurator *config = [self toolkitConfigurator];
     [SecurifiToolkit initialize:config];
     [SecurifiToolkit sharedInstance].useProductionCloud = YES; //TESTMD01 uncomment for testing; to force dev cloud by default
