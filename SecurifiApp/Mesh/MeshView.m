@@ -15,6 +15,7 @@
 #import "Analytics.h"
 #import "RouterPayload.h"
 
+#define DYNAMIC_ADD_FAIL -3
 #define ADD_FAIL -2
 #define NETWORK_OFFLINE -1
 #define HELP_INFO 0
@@ -645,7 +646,12 @@
                 [self loadNextView];
         }
         else{//failed
-            [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
+            if([payload[REASON] hasPrefix:@"Unplug all"]){
+                NSString *msg = [NSString stringWithFormat:@"Adding to network failed. %@", payload[REASON]];
+                [self showAlert:self.almondTitle msg:msg cancel:@"Ok" other:nil tag:DYNAMIC_ADD_FAIL];
+            }else{
+                [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
+            }
         }
         
         return;
@@ -868,7 +874,7 @@
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self.delegate showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
    
-        }else if(alertView.tag == ADD_FAIL){
+        }else if(alertView.tag == ADD_FAIL || alertView.tag == DYNAMIC_ADD_FAIL){
             //do nothing
         }
     }else{
