@@ -54,6 +54,8 @@ typedef void(^InsertMethod)(BOOL);
 - (void)viewDidLoad {
     NSLog(@" client name %@",self.client.name);
     self.count = 0;
+    
+    
     [[Analytics sharedInstance]markWebHistoryPage];
     self.NoresultFound = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 140, 15)];
     [self.NoresultFound setCenter:self.navigationController.view.center];
@@ -100,7 +102,6 @@ typedef void(^InsertMethod)(BOOL);
     [self.navigationController setNavigationBarHidden:YES];
     self.NoresultFound.hidden = YES;
     NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:100 amac:self.amac cmac:self.cmac];
-    NSLog(@"recordDict %@",recordDict);
     [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
     
     
@@ -183,7 +184,7 @@ typedef void(^InsertMethod)(BOOL);
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-        [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
+        [request setURL:[NSURL URLWithString:@"https://sitemonitoring-abhilashsecurifi.c9users.io:8081"]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
@@ -300,7 +301,6 @@ typedef void(^InsertMethod)(BOOL);
         //    //NSLog(@"self.dayArr Count = %ld",self.dayArr.count);
         NSArray *browsHist;
         
-        [CompleteDB searchDatePresentOrNot:self.amac clientMac:self.cmac andDate:@""];
         
         if(self.dayArr.count > indexPath.section)
             browsHist = self.dayArr[lastSectionIndex];

@@ -19,6 +19,20 @@
 #import "UIFont+Securifi.h"
 #import "RecentSearchDB.h"
 #import "ChangeCategoryViewController.h"
+#import "MBProgressHUD.h"
+#import "BrowsingHistoryUtil.h"
+
+
+
+#define CATEORY @"Category"
+#define LASTHOUR @"LastHour"
+#define PRESENTHOUR @"PresentHour"
+#define DOMAINNAME @"Domain"
+#define DATE @"Date"
+#define LASTWEEK @"LastWeek"
+#define WEEKDAY @"WeekDay"
+#define FROMTHISDATE @"FromThisDate"
+
 
 
 
@@ -34,7 +48,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     CategorySearch
 };
 
-@interface SearchTableViewController ()<UISearchResultsUpdating, UISearchBarDelegate,UITextFieldDelegate,BrowsingHistoryDelegate,NSURLConnectionDelegate>
+@interface SearchTableViewController ()<UISearchResultsUpdating, UISearchBarDelegate,UITextFieldDelegate,MBProgressHUDDelegate,BrowsingHistoryDelegate,NSURLConnectionDelegate>
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic) UITableView *searchTableView;
 @property (nonatomic) NSArray *suggSearchArr;
@@ -49,7 +63,6 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 @property (nonatomic) NSMutableArray *dayArr;
 @property (nonatomic) dispatch_queue_t imageDownloadQueue;
 @property BOOL isManuelSearch ;
-@property (nonatomic) NSDictionary *historyDict;
 @property (nonatomic)  UILabel *NoresultFound;
 @property (nonatomic) NSString *cmac;
 @property (nonatomic) NSString *amac;
@@ -57,6 +70,13 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 @property (nonatomic) NSMutableArray *searchStrArr;
 @property BOOL isSearchBegin;
 @property (nonatomic) NSMutableData *responseData;
+@property (nonatomic) MBProgressHUD *HUD;
+@property (nonatomic) NSDictionary *incompleteDB;
+@property (nonatomic) NSString *searchStr;
+@property (nonatomic) NSString *value;
+@property BOOL isSendReq;
+@property (nonatomic) NSMutableArray *allUri
+
 
 ;
 @end
@@ -73,26 +93,27 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.amac = toolkit.currentAlmond.almondplusMAC;
     self.dayArr = [[NSMutableArray alloc]init];
-        self.browsingHistory =[[BrowsingHistory alloc]init];
-        self.browsingHistory.delegate = self;
+    self.browsingHistory =[[BrowsingHistory alloc]init];
+    self.browsingHistory.delegate = self;
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
     self.navigationController.navigationBar.clipsToBounds = YES;
     self.navigationController.view.backgroundColor = [UIColor whiteColor];
     self.navigationController.navigationBar.tintColor = [SFIColors ruleBlueColor];
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-//    UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancleButton)];
-//    
-//    NSArray *actionButtonItems = @[search];
-//    self.navigationItem.rightBarButtonItems = actionButtonItems;
-
+    [self setUpHUD];
+    //    UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancleButton)];
+    //
+    //    NSArray *actionButtonItems = @[search];
+    //    self.navigationItem.rightBarButtonItems = actionButtonItems;
+    
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [self.tableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
     
-//    [self addSuggestionSearchObj];
-//    [self initializeSearchController ];
-    
+    //    [self addSuggestionSearchObj];
+    //    [self initializeSearchController ];
+    self.allUri = [NSMutableArray new];
     self.isManuelSearch = YES;
-    }
+}
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     NSLog(@"viewWillAppear searchPage");
@@ -103,15 +124,21 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 -(void)viewWillDisappear:(BOOL)animated{
     self.NoresultFound.hidden = YES;
     [super viewWillDisappear:YES];
+    NSLog(@"viewDidDisappear");
     
     
 }
 -(void)viewDidDisappear:(BOOL)animated{
     self.NoresultFound.hidden = YES;
     [super viewDidDisappear:YES];
-   // [self.searchTableView removeFromSuperview];
+    [self.dayArr removeAllObjects];
+    [self.allUri removeAllObjects];
+    self.incompleteDB = @{};
+    NSLog(@"viewDidDisappear");
+    // [self.searchTableView removeFromSuperview];
     
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.  [searchController.view removeFromSuperview];
@@ -119,12 +146,19 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 -(BOOL)search{
     return YES;
 }
+-(void)setUpHUD{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.dimBackground = YES;
+    _HUD.delegate = self;
+    [self.navigationController.view addSubview:_HUD];
+}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
     if(tableView == self.tableView){
-       
+        
         self.NoresultFound.hidden = YES;
         return 3;
     }
@@ -133,13 +167,16 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
             NSLog(@"self.dayArr.count %ld",(unsigned long)self.dayArr.count);
             self.NoresultFound.hidden = NO;
         }
-
+        
         return self.dayArr.count;
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 45;
+    if(tableView == self.tableView)
+        return 40;
+    else
+        return 45;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView == self.tableView){
@@ -152,9 +189,9 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     }
     else{
         
-            NSArray *browsHist = self.dayArr[section];
-            return browsHist.count;
-        }
+        NSArray *browsHist = self.dayArr[section];
+        return browsHist.count;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -162,17 +199,17 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 0.000001;
-   
+    
     
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-   
-        
+    
+    
     return [self deviceHeader:section tableView:tableView];
 }
 -(UIView*)deviceHeader:(NSInteger)section tableView:(UITableView*)tableView{
     NSString *headerDate;
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
     view.backgroundColor = [UIColor whiteColor];
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
@@ -190,14 +227,15 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         label.text = headerDate;
     }
     else{
-        NSLog(@"[self.historyDict allKeys] %@",[self.historyDict[@"Data"] allKeys]);
         NSString *str;
-        if([self.historyDict[@"Data"] allKeys].count >0 )
-        str = [[self.historyDict[@"Data"] allKeys] objectAtIndex:section];
-        NSLog(@"str date string %@",str);
+        NSArray *browsHist;
+        if(self.dayArr.count > section)
+            browsHist = self.dayArr[section];
+        NSDictionary *dict2 = browsHist[0];
+        str = dict2[@"date"];
         NSDate *date = [NSDate convertStirngToDate:str];
+        
         NSString *headerDate = [date getDayMonthFormat];
-//        headerDate = @"today";
         if([str isEqualToString:[BrowsingHistoryDataBase getTodayDate]])
             label.text = @"Today";
         else
@@ -206,7 +244,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
     label.textColor = [UIColor grayColor];
     [view addSubview:label];
-
+    
     return view;
 }
 
@@ -218,9 +256,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     if (cell == nil){
         cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"abc"];
     }
-    NSLog(@"table view inside  0");
     if(tableView == self.tableView){
-        NSLog(@"table view inside  1");
         if(indexPath.section == 0)
             [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row] hideItem:YES isCategory:NO showTime:NO count:indexPath.row+1];
         else if(indexPath.section == 1)
@@ -232,44 +268,81 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     else {
         if(self.dayArr.count > indexPath.section){
             self.NoresultFound.hidden = YES;
-        NSArray *browsHist = self.dayArr[indexPath.section];
+            NSArray *browsHist = self.dayArr[indexPath.section];
             if(browsHist.count>indexPath.row)
-        [cell setCell:browsHist[indexPath.row] hideItem:YES isCategory:YES showTime:YES count:indexPath.row+1];
+                [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO showTime:YES count:indexPath.row+1];
         }
     }
     
     return cell;
 }
+-(void)createRequest:(NSString *)search value:(NSString*)value{
+    NSString *todayDate = [CommonMethods getTodayDate];
+    NSString *req ;
+    self.searchStr = search;
+    self.value = value;
+    
+    if(self.incompleteDB[@"PS"]==NULL)
+        req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@",search,value,todayDate,self.amac,self.cmac];
+    
+    else
+        req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&pageState=%@&AMAC=%@&CMAC=%@",search,value,todayDate,self.incompleteDB[@"PS"],self.amac,self.cmac];
+        
+    self.isSendReq = YES;
+    
+    [self sendHttpRequest:req];
+    
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if(tableView == self.tableView){
         if(indexPath.section == 0){
-             [self setSearchpattenMethod:RecentSearch indexPath:indexPath];
+            [self setSearchpattenMethod:RecentSearch indexPath:indexPath];
+            [self createRequest:DOMAINNAME value:[self.searchStrArr objectAtIndex:indexPath.row]];
         }
         else if(indexPath.section == 1 && indexPath.row == 0){
-             [self setSearchpattenMethod:LastHourSearch withString:@"Last hour"];
+            [self setSearchpattenMethod:LastHourSearch withString:@"Last hour"];
+            [self createRequest:PRESENTHOUR value:[CommonMethods getPresentTime24Format]];
         }
         else if(indexPath.section == 1 && indexPath.row == 1){
-             [self setSearchpattenMethod:TodaySearch withString:@"TodaySearch"];
+            [self createRequest:DATE value:[CommonMethods getYestardayDate]];
+            [self setSearchpattenMethod:TodaySearch withString:@"Last Day"];
         }
         else if(indexPath.section == 1 && indexPath.row == 2){
-            [self setSearchpattenMethod:WeekSearch withString:@"Past Week"];
+            [self createRequest:LASTWEEK value:[CommonMethods getTodayDate]];
+            [self setSearchpattenMethod:WeekSearch withString:@"Last Week"];
         }
         else if (indexPath.section == 2 && indexPath.row == 0){
-            [self categorySearch:@"NC-17" andDisplayText:@"Adults Only"];
+            [self createRequest:@"Category" value:@"0"];
+            
+            [self categorySearch:@"U" andDisplayText:@"Unknown"];
         }
         else if (indexPath.section == 2 && indexPath.row == 1){
-            [self categorySearch:@"R" andDisplayText:@"Restricted"];
+            [self createRequest:@"Category" value:@"4"];
+            
+            
+            [self categorySearch:@"NC-17" andDisplayText:@"Adults Only"];
         }
         else if (indexPath.section == 2 && indexPath.row == 2){
+            [self createRequest:@"Category" value:@"5"];
+            
+            [self categorySearch:@"R" andDisplayText:@"Restricted"];
+        }
+        else if (indexPath.section == 2 && indexPath.row == 3){
+            [self createRequest:@"Category" value:@"3"];
+            
             [self categorySearch:@"PG-13" andDisplayText:@"Parents Strongly Cautioned"
              ];
         }
-        else if (indexPath.section == 2 && indexPath.row == 3){
+        else if (indexPath.section == 2 && indexPath.row == 4){
+            [self createRequest:@"Category" value:@"2"];
+            
             [self categorySearch:@"PG" andDisplayText:
              @"Parental Guidance Suggested"];
         }
-        else if (indexPath.section == 2 && indexPath.row == 4){
+        else if (indexPath.section == 2 && indexPath.row == 5){
+            [self createRequest:@"Category" value:@"1"];
             [self categorySearch:@"G" andDisplayText:@"General Audiences"];
         }
     }
@@ -294,67 +367,57 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     }
     
 }
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    //NSLog(@"willDisplayCell section %ld row %ld",indexPath.section,indexPath.row);
+    if(tableView != self.tableView)
+    {
+        
+    NSInteger lastSectionIndex = [tableView numberOfSections] - 1;
+    NSInteger lastRowIndex = [tableView numberOfRowsInSection:lastSectionIndex] - 1;
+    
+    
+        if ((indexPath.section == lastSectionIndex) && (indexPath.row == lastRowIndex)) {
+            if(![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
+                //send next req
+                NSLog(@"self.search %@,self.value %@",self.searchStr,self.value);
+                if(self.search && self.value)
+                [self createRequest:self.searchStr value:self.value];
+            }
+        }
+    }
+}
 #pragma mark sendReq methods
-//
-//-(void)sendReq:(SearchPatten)searchpatten withString:(NSString *)string{
-//    if(searchpatten == WeekSearch){
-//        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&week%@",_amac,_cmac,[BrowsingHistoryDataBase getTodayDate]]];
-//    }
-//    else if(searchpatten == TodaySearch){
-//        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&today%@",_amac,_cmac,[BrowsingHistoryDataBase getTodayDate]]];
-//    }
-//}
-//-(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
-//    //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
-//    
-//    // dispatch_async(self.sendReqQueue,^(){
-//    NSLog(@"post req = %@",post);
-//    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-//    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
-//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-//    [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
-//    [request setHTTPMethod:@"POST"];
-//    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-//    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
-//    [request setHTTPBody:postData];
-//    [NSURLConnection connectionWithRequest:request delegate:self];
-//    //});
-//    
-//    
-//    
-//    //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
-//}
-//- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response { _responseData = [[NSMutableData alloc] init];
-//    //NSLog(@"didReceiveResponse");
-//}
-//- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-//    [_responseData appendData:data];
-//    //NSLog(@"didReceiveData");
-//}
-//- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse*)cachedResponse {
-//    //NSLog(@"willCacheResponse");
-//    return nil;
-//}
-//- (NSDictionary*)parseJson:(NSString*)fileName{
-//    NSError *error = nil;
-//    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName
-//                                                         ofType:@"json"];
-//    NSData *dataFromFile = [NSData dataWithContentsOfFile:filePath];
-//    NSDictionary *data = [NSJSONSerialization JSONObjectWithData:dataFromFile
-//                                                         options:kNilOptions
-//                                                           error:&error];
-//    
-//    if (error != nil) {
-//        //NSLog(@"Error: was not able to load json file: %@.",fileName);
-//    }
-//    return data;
-//}
-//- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-//    //Now you can do what you want with the response string from the data
-//    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
-//    _responseData = nil;
-//    /*note get endidentifier from db */
-//    //dispatch_async(self.sendReqQueue,^(){
+
+-(void)sendReq:(SearchPatten)searchpatten withString:(NSString *)string{
+    
+    if(searchpatten == WeekSearch){
+        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&week%@",_amac,_cmac,[BrowsingHistoryDataBase getTodayDate]]];
+    }
+    else if(searchpatten == TodaySearch){
+        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&today%@",_amac,_cmac,[BrowsingHistoryDataBase getTodayDate]]];
+    }
+}
+-(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
+    //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
+    [self showHudWithTimeoutMsg:@"Loading..." withDelay:5];
+    // dispatch_async(self.sendReqQueue,^(){
+    NSLog(@"post req = %@",post);
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+    [request setURL:[NSURL URLWithString:@"https://sitemonitoring-abhilashsecurifi.c9users.io:8081"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
+    [request setHTTPBody:postData];
+    NSURLResponse *res= Nil;
+    [NSURLConnection connectionWithRequest:request delegate:self];
+//    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&res error:nil];
+//    if(data == nil)
+//        return ;
+//    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+//    NSLog(@"dict res == %@",dict);
 //    if(dict == NULL)
 //        return;
 //    NSLog(@"response dict =%@",dict);
@@ -365,79 +428,150 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 //    if(![dict[@"AMAC"] isEqualToString:self.amac] || ![dict[@"CMAC"] isEqualToString:self.cmac])
 //        return;
 //    
-//    NSDictionary *catogeryDict = [self parseJson:@"CategoryMap"];
+//    if(dict[@"ChangeHour"]!=NULL && [dict[@"ChangeHour"] isEqualToString:@"1"])
+//        [self createRequest:@"lastHour" value:self.value];
+//    
 //    NSMutableDictionary *clientBrowsingHistory = [[NSMutableDictionary alloc]init];
-//     NSMutableDictionary *dayDict = [NSMutableDictionary new];
+//    
 //    NSArray *allObj = dict[@"Data"];
-//    for(NSDictionary *uriDict in allObj)
-//    {
-//        NSString *ID = uriDict[@"subCategory"];
-//        NSDictionary *categoryName = catogeryDict[ID];
-//        NSDictionary *categoryObj = @{@"ID":ID,
-//                                      @"categoty":categoryName[@"category"],
-//                                      @"subCategory":categoryName[@"categoryName"]};
-////         NSMutableDictionary *uriInfo = [NSMutableDictionary new];
-////        [uriInfo setObject:uriDict[@"Domain"] forKey:@"hostName"];
-////        [uriInfo setObject:uriDict[@"LastVisitedEpoch"] forKey:@"Epoc"];
-////        [uriInfo setObject:uriDict[@"Date"] forKey:@"date"];
-////        [uriInfo setObject:categoryObj forKey:@"categoryObj"];
-////        
-////        [uriInfo setObject:[UIImage imageNamed:@"globe" ] forKey:@"image"];
-//        NSDictionary *uriInfo1 = @{
-//                                   @"hostName" : uriDict[@"Domain"],
-//                                   @"Epoc" : uriDict[@"LastVisitedEpoch"],
-//                                   @"date" : uriDict[@"Date"],
-//                                   @"categoryObj" : categoryObj,
-//                                   @"image" : [UIImage imageNamed:@"globe" ]
-//                                   
-//                                   };
-//         [self addToDictionary:dayDict uriInfo:uriInfo1 rowID:uriDict[@"Date"]];
-//     
-//    }
-//     
+//    NSLog(@"allObj count %ld",(unsigned long)allObj.count);
+//    NSDictionary *last_uriDict = [allObj lastObject];
+//    NSString *last_date = last_uriDict[@"Date"];
+//    if(last_date != NULL)
+//        self.incompleteDB = @{
+//                              @"lastDate" : last_date,
+//                              @"PS" : dict[@"pageState"]? : [NSNull null]
+//                              };
+//    
+//    NSDictionary *dayDict =[CommonMethods createSearchDictObj:allObj];
 //    [clientBrowsingHistory setObject:dayDict forKey:@"Data"];
 //    NSLog(@"clientBrowsingHistory %@",clientBrowsingHistory);
 //    NSArray *sortedDate = [self sortedDateArr:[dayDict allKeys]];
-//    [self.dayArr removeAllObjects];
+//    // [self.dayArr removeAllObjects];
+//    NSLog(@"self.dayarr count %ld",(unsigned long)self.dayArr.count);
 //    for (NSString *dates in sortedDate){
 //        NSArray *oneDayUris = dayDict[dates];
 //        [self.dayArr addObject:oneDayUris];
 //    }
-//    
-//    
-//}
-//-(NSArray *)sortedDateArr:(NSArray *)dayDicArr{
-//    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-//    [dateFormat setDateFormat:@"yyyy-MM-dd"];
-//    NSMutableArray *dateArr = [NSMutableArray new];
-//    for (NSString *dates in dayDicArr){
-//        NSDate *date = [dateFormat dateFromString:dates];
-//        [dateArr addObject:date];
-//    }
-//    NSArray *sortedArray = [dateArr sortedArrayUsingComparator: ^(NSDate *d1, NSDate *d2) {
-//        return [d2 compare:d1];
-//    }];
-//    [dateArr removeAllObjects];
-//    for(NSDate *date in sortedArray){
-//        NSString *string = [dateFormat stringFromDate:date];
-//        [dateArr addObject:string];
-//    }
-//    return dateArr;
-//}
-//- (void)addToDictionary:(NSMutableDictionary *)rowIndexValDict uriInfo:(NSDictionary *)uriInfo rowID:(NSString *)day{
-//    
-//    NSMutableArray *augArray = [rowIndexValDict valueForKey:[NSString stringWithFormat:@"%@",day]];
-//    if(augArray != nil){
-//        [augArray addObject:uriInfo];
-//        [rowIndexValDict setValue:augArray forKey:[NSString stringWithFormat:@"%@",day]];
-//    }else{
-//        NSMutableArray *tempArray = [NSMutableArray new];
-//        [tempArray addObject:uriInfo];
-//        [rowIndexValDict setValue:tempArray forKey:[NSString stringWithFormat:@"%@",day]];
-//    }
-//}
-//
-//#pragma mark searchDelegate methods
+//    NSLog(@"self.dayarr count %ld",(unsigned long)self.dayArr.count);
+//    [self reloadSearchTable];
+    //});
+    
+    
+    
+    //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
+}
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response { _responseData = [[NSMutableData alloc] init];
+    NSLog(@"didReceiveResponse");
+}
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    [_responseData appendData:data];
+    NSLog(@"didReceiveData");
+}
+- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse*)cachedResponse {
+    NSLog(@"willCacheResponse");
+    return nil;
+}
+- (NSDictionary*)parseJson:(NSString*)fileName{
+    NSError *error = nil;
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName
+                                                         ofType:@"json"];
+    NSData *dataFromFile = [NSData dataWithContentsOfFile:filePath];
+    NSDictionary *data = [NSJSONSerialization JSONObjectWithData:dataFromFile
+                                                         options:kNilOptions
+                                                           error:&error];
+    
+    
+    if (error != nil) {
+        //NSLog(@"Error: was not able to load json file: %@.",fileName);
+    }
+    return data;
+}
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    //Now you can do what you want with the response string from the data
+    if(_responseData == nil)
+        return;
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
+    [_responseData setLength:0];
+    _responseData = nil;
+    /*note get endidentifier from db */
+    //dispatch_async(self.sendReqQueue,^(){
+    if(dict == NULL)
+        return;
+    NSLog(@"response dict =%@",dict);
+    if(dict[@"Data"] == NULL)
+        return;
+    if(dict[@"AMAC"] == NULL || dict[@"CMAC"] == NULL)
+        return;
+    if(![dict[@"AMAC"] isEqualToString:self.amac] || ![dict[@"CMAC"] isEqualToString:self.cmac])
+        return;
+    
+    if(dict[@"ChangeHour"]!=NULL && [dict[@"ChangeHour"] isEqualToString:@"1"])
+        [self createRequest:@"lastHour" value:self.value];
+    
+    NSMutableDictionary *clientBrowsingHistory = [[NSMutableDictionary alloc]init];
+    
+    NSArray *allObj = dict[@"Data"];
+     NSLog(@"allObj count %ld",(unsigned long)allObj.count);
+    NSDictionary *last_uriDict = [allObj lastObject];
+    NSString *last_date = last_uriDict[@"Date"];
+    if(last_date != NULL)
+        self.incompleteDB = @{
+                              @"lastDate" : last_date,
+                              @"PS" : dict[@"pageState"]? : [NSNull null]
+                              };
+    for(NSDictionary *uriDict in allObj)
+    {
+        [self.allUri addObject:uriDict];
+    }
+    NSLog(@"self.allUri count = %ld",(unsigned long)self.allUri.count);
+    NSDictionary *dayDict =[CommonMethods createSearchDictObj:self.allUri];
+    [clientBrowsingHistory setObject:dayDict forKey:@"Data"];
+    NSArray *sortedDate = [self sortedDateArr:[dayDict allKeys]];
+    
+    
+    [self.dayArr removeAllObjects];
+    NSLog(@"self.dayarr count %ld",(unsigned long)self.dayArr.count);
+    for (NSString *dates in sortedDate){
+        NSLog(@"dates == %@",dates);
+        NSArray *oneDayUris = dayDict[dates];
+        [self.dayArr addObject:oneDayUris];
+    }
+    [self reloadSearchTable];
+    
+}
+-(NSArray *)sortedDateArr:(NSArray *)dayDicArr{
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"yyyy-MM-dd"];
+    NSMutableArray *dateArr = [NSMutableArray new];
+    for (NSString *dates in dayDicArr){
+        NSDate *date = [dateFormat dateFromString:dates];
+        [dateArr addObject:date];
+    }
+    NSArray *sortedArray = [dateArr sortedArrayUsingComparator: ^(NSDate *d1, NSDate *d2) {
+        return [d2 compare:d1];
+    }];
+    [dateArr removeAllObjects];
+    for(NSDate *date in sortedArray){
+        NSString *string = [dateFormat stringFromDate:date];
+        [dateArr addObject:string];
+    }
+    return dateArr;
+}
+- (void)addToDictionary:(NSMutableDictionary *)rowIndexValDict uriInfo:(NSDictionary *)uriInfo rowID:(NSString *)day{
+    
+    NSMutableArray *augArray = [rowIndexValDict valueForKey:[NSString stringWithFormat:@"%@",day]];
+    if(augArray != nil){
+        [augArray addObject:uriInfo];
+        [rowIndexValDict setValue:augArray forKey:[NSString stringWithFormat:@"%@",day]];
+    }else{
+        NSMutableArray *tempArray = [NSMutableArray new];
+        [tempArray addObject:uriInfo];
+        [rowIndexValDict setValue:tempArray forKey:[NSString stringWithFormat:@"%@",day]];
+    }
+}
+
+#pragma mark searchDelegate methods
 -(void)setSearchpattenMethod:(SearchPatten)searchpatten withString:(NSString *)string{
     self.searchPatten = searchpatten;
     self.searchController.searchBar.text = string;
@@ -447,7 +581,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     [self searchBarTextDidEndEditing:self.searchController.searchBar];
     self.searchController.active = YES;
     self.searchDisplayController.active = YES;
-
+    
 }
 
 -(void)categorySearch:(NSString *)searchstr andDisplayText:(NSString*)text{
@@ -460,7 +594,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.searchController.active = YES;
     self.searchDisplayController.active = YES;
     
-
+    
 }
 -(void)setSearchpattenMethod:(SearchPatten)searchpatten indexPath:(NSIndexPath *)indexPath{
     self.searchPatten = searchpatten;
@@ -471,7 +605,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     [self searchBarTextDidEndEditing:self.searchController.searchBar];
     self.searchController.active = YES;
     self.searchDisplayController.active = YES;
- 
+    
     
 }
 
@@ -480,16 +614,16 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSString *searchString = self.searchString;
     NSLog(@"searching string on search = %@",searchString);
     if(![searchString isEqualToString:@" "] && ![CommonMethods isContainCategory:searchString]){
-         long int currentTime = [NSDate date].timeIntervalSince1970;
-    [self.recentSearchDict setValue:searchString forKey:@(currentTime).stringValue];
+        long int currentTime = [NSDate date].timeIntervalSince1970;
+        [self.recentSearchDict setValue:searchString forKey:@(currentTime).stringValue];
     }
     
     [RecentSearchDB insertInRecentDB:searchString cmac:self.cmac amac:self.amac];
     if([self.recentSearchDict allKeys].count > 0)
-    [self.recentSearchDictObj setObject:self.recentSearchDict forKey:[NSString stringWithFormat:@"%@%@",self.amac,self.cmac]];
+        [self.recentSearchDictObj setObject:self.recentSearchDict forKey:[NSString stringWithFormat:@"%@%@",self.amac,self.cmac]];
     NSLog(@"self.recentSearchDictObj insert %@",self.recentSearchDictObj);
     [[NSUserDefaults standardUserDefaults] setObject:self.recentSearchDictObj forKey:@"recentSearch"];
-//    [self addSuggestionSearchObj];
+    //    [self addSuggestionSearchObj];
     
 }
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController{
@@ -501,8 +635,14 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 }
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
-    NSLog(@"searchBarCancelButtonClicked");
+    [self.dayArr removeAllObjects];
+    [self.allUri removeAllObjects];
+    
+    NSLog(@"searchBarCancelButtonClicked self.dayArr %ld",(unsigned long)self.dayArr.count);
+    self.incompleteDB = @{};
+    [self reloadSearchTable];
     [self reloadTable];
+    
     
     dispatch_async(dispatch_get_main_queue(), ^{
         self.NoresultFound.hidden = YES;
@@ -518,8 +658,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 -(void)onCancleButton{
     self.isManuelSearch = YES;
     self.NoresultFound.hidden = YES;
-     NSLog(@"onCancleButton");
-   // [self dismissViewControllerAnimated:YES completion:nil];
+    [self.dayArr removeAllObjects];// making sure ermovinf all obj from self .day arr
+    NSLog(@"onCancleButton");
+    [self.allUri removeAllObjects];
+    // [self dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
     
@@ -541,18 +683,18 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     return NO;
 }
 -(BOOL)textFieldShouldClear:(UITextField *)textField {
-   
+    
     NSLog(@"textFieldShouldClear");
     return NO;
 }
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-//    [self performFilteringBySearchText: searchText]; // or whatever
+    //    [self performFilteringBySearchText: searchText]; // or whatever
     NSLog(@"textDidChange: searchBar");
     self.isSearchBegin = YES;
     self.searchTableView.hidden = YES;
     [self reloadTable];
-     self.searchTableView.hidden = YES;
+    self.searchTableView.hidden = YES;
     self.NoresultFound.hidden = YES;
     self.isManuelSearch = YES;
     self.searchString = searchBar.text;
@@ -572,33 +714,41 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.isSearchBegin = NO;
     self.searchTableView.hidden = NO;
     NSString *searchString = self.searchString;
+    [self.dayArr removeAllObjects];
+    [self.allUri removeAllObjects];
     if([searchString isEqualToString:@""] || [searchBar.text isEqualToString:@""]){
         [self.dayArr removeAllObjects];
+        [self.allUri removeAllObjects];
+        self.incompleteDB = @{};
         [self searchBarCancelButtonClicked:self.searchController.searchBar];
         return;
     }
     
-        NSLog(@"abpve searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
+    NSLog(@"abpve searching string self.searchPatten %ld = %@,%ld",(long)self.searchPatten,searchString,(unsigned long)self.dayArr.count );
     
+    
+    //
     if([CommonMethods isContainMonth:searchString] ){
-            self.searchPatten = DateSearch;
+        NSString *str = [BrowsingHistoryUtil getFormateOfDate:searchString];//dd-mm-yyyy
+        [self createRequest:DATE value:str];
+        
         NSLog(@"month search String %@",searchString);
     }
-    else if ([CommonMethods isContainCategory:searchString])
-        self.searchPatten = CategorySearch;
-    else if([CommonMethods isContainWeeKday:searchString])
-        self.searchPatten = WeekDaySearch;
-    else if(self.isManuelSearch)
-        self.searchPatten = RecentSearch;
-        
-    NSLog(@"searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
-    
-    [self getHistoryFromDB:searchString];
-
-    [self.dayArr removeAllObjects];
-    [self.browsingHistory getBrowserHistoryImages:self.historyDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
-    
-    [self reloadSearchTable];
+    else if([CommonMethods isContainWeeKday:searchString]){
+        NSString *LastweekDay = [CommonMethods getLastWeekDayDate:searchString];
+        [self createRequest:DATE value:LastweekDay];
+    }
+    else if(self.isManuelSearch){
+         [self createRequest:DOMAINNAME value:[searchString lowercaseString]];
+    }
+    //    NSLog(@"searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
+    //
+    //    [self getHistoryFromDB:searchString];
+    //
+    //    [self.dayArr removeAllObjects];
+    //    [self.browsingHistory getBrowserHistoryImages:self.historyDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+    //
+    // [self reloadSearchTable];
     if(self.dayArr.count == 0)
         self.NoresultFound.hidden = YES;
     [searchBar setShowsCancelButton:YES animated:YES];
@@ -609,37 +759,40 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSDictionary *lasthour = @{@"hostName":@"Last Hour",
                                @"image" : [UIImage imageNamed:@"schedule_icon"]
                                };
-   
-    NSDictionary *today = @{@"hostName":@"Today",
-                               @"image" : [UIImage imageNamed:@"schedule_icon"]
-                               };
-    NSDictionary *thisWeek = @{@"hostName":@"Past Week",
+    
+    NSDictionary *today = @{@"hostName":@"Last Day",
                             @"image" : [UIImage imageNamed:@"schedule_icon"]
                             };
-    
-
-    self.suggSearchArr = [[NSArray alloc]initWithObjects:lasthour,today,thisWeek, nil];
-    NSDictionary *adults = @{@"hostName":@"Adults Only",
-                               @"image" : [UIImage imageNamed:@"Adults_Only"]
+    NSDictionary *thisWeek = @{@"hostName":@"Last Week",
+                               @"image" : [UIImage imageNamed:@"schedule_icon"]
                                };
+    
+    
+    self.suggSearchArr = [[NSArray alloc]initWithObjects:lasthour,today,thisWeek, nil];
+    NSDictionary *unknown = @{@"hostName":@"Unknown Rating",
+                              @"image" : [UIImage imageNamed:@"unknown_category"]
+                              };
+    NSDictionary *adults = @{@"hostName":@"Adults Only",
+                             @"image" : [UIImage imageNamed:@"Adults_Only"]
+                             };
     
     NSDictionary *restricted = @{@"hostName":@"Restricted",
-                            @"image" : [UIImage imageNamed:@"Restricted"]
-                            };
+                                 @"image" : [UIImage imageNamed:@"Restricted"]
+                                 };
     NSDictionary *PG_13 = @{@"hostName":@"Parents Strongly Cautioned",
-                               @"image" : [UIImage imageNamed:@"Parents_Strongly_Cautioned"]
-                               };
+                            @"image" : [UIImage imageNamed:@"Parents_Strongly_Cautioned"]
+                            };
     NSDictionary *PG = @{@"hostName":@"Parential Guidence Suggested",
-                               @"image" : [UIImage imageNamed:@"Parental_Guidance"]
-                               };
+                         @"image" : [UIImage imageNamed:@"Parental_Guidance"]
+                         };
     
     NSDictionary *General = @{@"hostName":@"General Audiences",
-                            @"image" : [UIImage imageNamed:@"General_Audiences"]
-                            };
-   
-    self.categorySearch = [NSArray arrayWithObjects:adults,restricted,PG_13,PG,General, nil];
-//    
-//    NSSet *set = [NSSet setWithArray:[NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"recentSearch"]]];
+                              @"image" : [UIImage imageNamed:@"General_Audiences"]
+                              };
+    
+    self.categorySearch = [NSArray arrayWithObjects:unknown,adults,restricted,PG_13,PG,General, nil];
+    //
+    //    NSSet *set = [NSSet setWithArray:[NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"recentSearch"]]];
     self.recentSearchDictObj = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"recentSearch"]];
     self.recentSearchDict = [NSMutableDictionary dictionaryWithDictionary:[self.recentSearchDictObj valueForKey:[NSString stringWithFormat:@"%@%@",self.amac,self.cmac]]];
     NSLog(@"recent search after %@ = ",self.recentSearchDict);
@@ -655,8 +808,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     [self.searchStrArr removeAllObjects];
     for (int i = 0;i<sortedArray.count;i++) {
         NSDictionary *recent = @{@"hostName":[self.recentSearchDict valueForKey:[sortedArray objectAtIndex:i]],
-                                   @"image" : [UIImage imageNamed:@"search_icon"]
-                                   };
+                                 @"image" : [UIImage imageNamed:@"search_icon"]
+                                 };
         if(i>1)
             break;
         [self.recentSearchObj addObject:recent];
@@ -669,31 +822,31 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 }
 
 
--(void)getHistoryFromDB:(NSString *)searchString{
-    NSLog(@"self.searchPatten %ld..%@",(long)self.searchPatten,searchString);
-    if(self.searchPatten == CategorySearch){
-        self.historyDict = [BrowsingHistoryDataBase searchBYCategoty:searchString almonsMac:self.amac clientMac:self.cmac];
-        NSLog(@"CategorySearch reached");
-    }
-    if(self.searchPatten == RecentSearch){
-        self.historyDict = [BrowsingHistoryDataBase getSearchString:searchString almonsMac:self.amac clientMac:self.cmac];
-    }
-    else if (self.searchPatten == WeekDaySearch){
-        self.historyDict = [BrowsingHistoryDataBase weekDaySearch:searchString almonsMac:self.amac clientMac:self.cmac];
-    }
-    else if(self.searchPatten == TodaySearch){
-        self.historyDict = [BrowsingHistoryDataBase todaySearch:self.amac clientMac:self.cmac];
-    }
-    else if(self.searchPatten == DateSearch){
-        self.historyDict = [BrowsingHistoryDataBase DaySearch:searchString almonsMac:self.amac clientMac:self.cmac];
-    }
-    else if(self.searchPatten == LastHourSearch){
-        self.historyDict = [BrowsingHistoryDataBase LastHourSearch:self.amac clientMac:self.cmac];
-    }
-    else if(self.searchPatten == WeekSearch){
-        self.historyDict = [BrowsingHistoryDataBase ThisWeekSearch:self.amac clientMac:self.cmac];
-    }
-}
+//-(void)getHistoryFromDB:(NSString *)searchString{
+//    NSLog(@"self.searchPatten %ld..%@",(long)self.searchPatten,searchString);
+//    if(self.searchPatten == CategorySearch){
+//        self.historyDict = [BrowsingHistoryDataBase searchBYCategoty:searchString almonsMac:self.amac clientMac:self.cmac];
+//        NSLog(@"CategorySearch reached");
+//    }
+//    if(self.searchPatten == RecentSearch){
+//        self.historyDict = [BrowsingHistoryDataBase getSearchString:searchString almonsMac:self.amac clientMac:self.cmac];
+//    }
+//    else if (self.searchPatten == WeekDaySearch){
+//        self.historyDict = [BrowsingHistoryDataBase weekDaySearch:searchString almonsMac:self.amac clientMac:self.cmac];
+//    }
+//    else if(self.searchPatten == TodaySearch){
+//        self.historyDict = [BrowsingHistoryDataBase todaySearch:self.amac clientMac:self.cmac];
+//    }
+//    else if(self.searchPatten == DateSearch){
+//        self.historyDict = [BrowsingHistoryDataBase DaySearch:searchString almonsMac:self.amac clientMac:self.cmac];
+//    }
+//    else if(self.searchPatten == LastHourSearch){
+//        self.historyDict = [BrowsingHistoryDataBase LastHourSearch:self.amac clientMac:self.cmac];
+//    }
+//    else if(self.searchPatten == WeekSearch){
+//        self.historyDict = [BrowsingHistoryDataBase ThisWeekSearch:self.amac clientMac:self.cmac];
+//    }
+//}
 #pragma mark parser methods
 -(void)reloadTable{
     NSLog(@"reload called");
@@ -708,12 +861,24 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [self.searchTableView reloadData];
+        [self.HUD hide:YES];
     });
     self.NoresultFound.hidden = YES;
 }
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg withDelay:(int)second {
+    NSLog(@"showHudWithTimeoutMsg");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:hudMsg];
+        [self.HUD hide:YES afterDelay:second];
+    });
+}
+- (void)showHUD:(NSString *)text {
+    self.HUD.labelText = text;
+    [self.HUD show:YES];
+}
 - (void)initializeSearchController {
     
-
+    
     UITableViewController *searchResultsController = [[UITableViewController alloc] initWithStyle:UITableViewStyleGrouped];
     
     searchResultsController.tableView.dataSource = self;
@@ -733,7 +898,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.searchController.searchResultsUpdater = self;
     self.searchController.dimsBackgroundDuringPresentation = false;
     self.searchController.searchBar.delegate = self;
-
+    
     self.searchController.hidesNavigationBarDuringPresentation = false;
     
     self.searchTableView = ((UITableViewController *)self.searchController.searchResultsController).tableView;

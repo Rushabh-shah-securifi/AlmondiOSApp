@@ -744,4 +744,41 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     return date;
     
 }
+
++ (NSString *) getLastWeekDayDate:(NSString *)weekDay{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *comps = [NSDateComponents new];
+    comps.day   = -7;
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    for(int i = 0;i<7;i++){
+        comps.day   = -i;
+        NSDate *date = [calendar dateByAddingComponents:comps toDate:[NSDate date] options:0];
+        dateFormatter.dateFormat=@"EEEE";
+        NSString *dayString = [[dateFormatter stringFromDate:date] capitalizedString];
+        if([[weekDay uppercaseString] rangeOfString:[dayString uppercaseString]].location != NSNotFound){
+            dateFormatter.dateFormat=@"yyyy-MM-dd";
+            NSString *dayString = [[dateFormatter stringFromDate:date] capitalizedString];
+            return dayString;
+        }
+        
+    }
+    return NULL;
+}
++(NSString *)getPresentTime24Format{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat=@"HH:mm";
+    return [dateFormatter stringFromDate:[NSDate date]];
+    
+}
++ (NSString *)getYestardayDate{
+    NSDateComponents *comps = [NSDateComponents new];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    comps.day   = -1;
+    NSDate *date = [calendar dateByAddingComponents:comps toDate:[NSDate date] options:0];
+    NSDateFormatter *dateformate=[[NSDateFormatter alloc]init];
+    [dateformate setDateFormat:@"yyyy-MM-dd"]; // Date formater
+    NSString *dateStr = [dateformate stringFromDate:date]; // Convert date to string
+    return dateStr;
+    
+}
 @end

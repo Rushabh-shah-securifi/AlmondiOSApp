@@ -87,4 +87,10 @@
 +(NSDictionary *)createSearchDictObj:(NSArray*)allObj;
 
 + (NSString *)getTodayDate;
+
++ (NSString *) getLastWeekDayDate:(NSString *)weekDay;
+
++(NSString *)getPresentTime24Format;
+
++ (NSString *)getYestardayDate;
 @end

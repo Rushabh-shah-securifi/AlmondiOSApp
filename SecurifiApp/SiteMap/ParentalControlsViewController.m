@@ -78,10 +78,7 @@
         
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"] && ![genericIndexValue.genericValue.value isEqualToString:@"wireless"]){
             self.dataLogView.hidden = YES;
-            self.switchView3.on = NO;
-            if(![genericIndexValue.genericValue.value isEqualToString:@"wireless"])
-            self.switchView3.userInteractionEnabled = NO;
-        }
+                    }
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-19"] && [genericIndexValue.genericValue.value isEqualToString:@"1"]){
             NSLog(@"blocked ");
             
@@ -338,7 +335,6 @@
 -(void)onWiFiClientsListResAndDynamicCallbacks:(id)sender{
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
-    NSLog(@"dataInfo parental controll %@",dataInfo);
     if(dataInfo == NULL)
         return;
     NSDictionary *mainDict = [dataInfo valueForKey:@"data"];

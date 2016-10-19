@@ -47,7 +47,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "name"
     },
-    "-12": {
+    "-12":  {
         "Name": "ClientType",
         "Type": "Actuator",
         "Placement": "Header_Detail",
@@ -133,6 +133,14 @@
             "other": {
                 "Icon": "help_icon",
                 "AppLabel": "other"
+            },
+            "identifying": {
+                "Icon": "identifying",
+                "AppLabel": "identifying"
+            },
+            "generic": {
+                "Icon": "generic",
+                "AppLabel": "generic"
             }
         }
     },

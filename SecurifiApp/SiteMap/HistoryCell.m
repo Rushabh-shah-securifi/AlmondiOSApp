@@ -66,10 +66,9 @@
                                placeholderImage:[UIImage imageNamed:@"globe"]
                                       completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                           if(error!=nil){
-                                              NSLog(@"encountered error %@ for %@",uri[@"hostName"],[error localizedDescription]);
                                               [self.webImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/favicon.ico", uri[@"hostName"]]]placeholderImage:[UIImage imageNamed:@"globe"]];
                                           }else
-                                              NSLog(@"completed loading %@",uri[@"hostName"]);
+                                          {}
                                       }];
             }
         }
