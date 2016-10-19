@@ -35,6 +35,7 @@ static const int footerHt = 60;
     self.delegate = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.bounces = NO;
+    NSLog(@"i am called");
     enum SFIAlmondConnectionMode modeValue = [[SecurifiToolkit sharedInstance] currentConnectionMode];
     self.almondList = [self buildAlmondList:modeValue];
     self.frame = CGRectMake(0, CGRectGetHeight(maskFrame)-[self getHeight], CGRectGetWidth(maskFrame), [self getHeight]);

@@ -427,6 +427,7 @@
     }
     SecurifiToolkit * toolKit = [SecurifiToolkit sharedInstance];
     // make sure cloud connection is set up
+    NSLog(@"i am called");
     [toolKit tearDownLoginSession];
     [KeyChainAccess setSecEmail:email];
     

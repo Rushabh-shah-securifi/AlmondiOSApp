@@ -406,6 +406,7 @@ CGPoint tablePoint;
 #pragma mark - MessageViewDelegate methods
 
 - (void)messageViewDidPressButton:(MessageView *)msgView {
+    NSLog(@"i am called");
     enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
     
     switch (mode) {

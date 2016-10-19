@@ -78,7 +78,7 @@
     NSUInteger milliseconds = (NSUInteger) (resResTime * 1000);
     NSNumber *interval = @(milliseconds);
     NSString *deviceTypeStr = securifi_name_to_device_type(deviceType);
-    
+    NSLog(@"i am called");
     enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
     NSString *eventCategory = @"Sensor Action";
     if(mode == SFIAlmondConnectionMode_local){
@@ -215,6 +215,7 @@
 }
 
 - (void)markEvent:(NSString *)eventName category:(NSString *)eventCategory {
+    NSLog(@"i am called");
     enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
     if(mode == SFIAlmondConnectionMode_local){
        eventCategory = [eventCategory stringByAppendingString:@" - Local"];
@@ -340,6 +341,7 @@
     [self trackScreen:@"change category"];
 }
 - (void)trackScreen:(NSString *)name {
+    NSLog(@"i am called");
     enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
     
     if(mode == SFIAlmondConnectionMode_local){

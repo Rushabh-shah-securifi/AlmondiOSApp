@@ -358,6 +358,7 @@
 
     if (section == SEC_CLOUD) {
         if (row == 0 || row == 1) {
+            NSLog(@"i am called");
             [self onSwitchServer];
             [tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger) section] withRowAnimation:UITableViewRowAnimationAutomatic];
         }

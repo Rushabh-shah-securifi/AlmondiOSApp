@@ -257,6 +257,7 @@ int mii;
 
 #pragma mark meshview delegates
 -(void)dismissControllerDelegate{
+    NSLog(@"i am called");
     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_cloud)
         [[SecurifiToolkit sharedInstance] asyncSendToNetwork:[GenericCommand requestRai2DownMobile:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC]];
     else

@@ -375,6 +375,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
                     SFIAlmondPlus *almond = settings.asLocalLinkAlmondPlus;
 
                     // switch the connection to Local
+                    NSLog(@"i am called");
                     [toolkit setConnectionMode:SFIAlmondConnectionMode_local forAlmond:almond.almondplusMAC];
                     [toolkit setCurrentAlmond:almond];
                     NSLog(@"switching to local  connection");

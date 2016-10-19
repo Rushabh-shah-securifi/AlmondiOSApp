@@ -105,6 +105,7 @@
 - (void)conditionalTryConnectOrLogon:(BOOL)onViewAppearing {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     
+    NSLog(@"i am called");
     // for apps not using local connection support: we preserve the old behavior of showing a splash screen until the
     // cloud connection is established.
     const BOOL supportsLocalConnections = toolkit.configuration.enableLocalNetworking;
@@ -268,6 +269,7 @@
     
     const BOOL supportsLocalConnections = toolkit.configuration.enableLocalNetworking;
     if (supportsLocalConnections) {
+        NSLog(@"i am called");
         if (toolkit.currentConnectionMode == SFIAlmondConnectionMode_local) {
             return;
         }

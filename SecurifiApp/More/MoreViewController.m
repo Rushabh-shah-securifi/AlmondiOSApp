@@ -39,6 +39,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    NSLog(@"i am called");
     self.isLocal = [[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local;
     self.moreFeatures= [self getFeaturesArray];
     [self initializeNotification];

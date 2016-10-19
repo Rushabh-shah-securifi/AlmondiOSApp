@@ -103,8 +103,7 @@ typedef void(^InsertMethod)(BOOL);
     NSLog(@"recordDict %@",recordDict);
     [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
     
-    
-    
+    [self sendHttpRequestDebugLog:@"Testing the debug logs"];
     
 }
 
@@ -164,6 +163,7 @@ typedef void(^InsertMethod)(BOOL);
     _HUD.delegate = self;
     [self.navigationController.view addSubview:_HUD];
 }
+
 #pragma mark HttpReqDelegateMethods
 -(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
     //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
@@ -197,10 +197,46 @@ typedef void(^InsertMethod)(BOOL);
         
         [self InsertInDB:dict];
     });
-    
-    
+
     //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
 }
+
+     -(void)sendHttpRequestDebugLog:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
+         //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
+         NSLog(@"In sendHttpRequest %d",self.sendReq);
+         
+         if(self.sendReq == NO)
+             return;
+         
+         self.reload = YES;
+         self.sendReq = NO;
+         
+         dispatch_queue_t sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
+         [self showHudWithTimeoutMsg:@"Loading..." withDelay:5];
+         dispatch_async(sendReqQueue,^(){
+             
+             NSLog(@"post req = %@",post);
+             NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+             NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+             NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+             [request setURL:[NSURL URLWithString:@"https://almondlogs.securifi.com/ios/debug/logs"]];
+             [request setHTTPMethod:@"POST"];
+             [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+             [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
+             [request setHTTPBody:postData];
+             NSURLResponse *res= Nil;
+             //[NSURLConnection connectionWithRequest:request delegate:self];
+             NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&res error:nil];
+             if(data == nil)
+                 return ;
+             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+             
+             [self InsertInDB:dict];
+         });
+         
+         //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
+     }
+     
 -(void)InsertInDB:(NSDictionary *)dict{
     NSLog(@"In InsertDB %d %d",self.reload,self.sendReq);
 

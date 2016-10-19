@@ -261,6 +261,7 @@
             break;
         }
         case SFILoginViewControllerMode_switchToLocalConnection: {
+            NSLog(@"i am called");
             [[SecurifiToolkit sharedInstance] setConnectionMode:SFIAlmondConnectionMode_local forAlmond:nil];
             [self.delegate loginControllerDidCompleteLogin:self];
             break;
@@ -327,7 +328,7 @@
     }
     
     toolKit.scoreboard.loginCount++;
-    
+    NSLog(@"i am called");
     [toolKit tearDownLoginSession];
     [KeyChainAccess setSecEmail:email];
     
@@ -471,6 +472,7 @@
     
     // make sure cloud connection is set up
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSLog(@"i am called");
     [toolkit tearDownLoginSession];
     [KeyChainAccess setSecEmail:email];
     

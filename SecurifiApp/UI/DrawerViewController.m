@@ -71,6 +71,7 @@
 
 - (void)resetAlmondList {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSLog(@"i am called");
     enum SFIAlmondConnectionMode mode = [toolkit currentConnectionMode];
 
     NSArray *almondList = [self buildAlmondList:mode];
@@ -272,7 +273,7 @@
         if (indexPath.row == [almondList count]) {
             //Add almond - Affiliation process
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
+            NSLog(@"i am called");
             switch ([[SecurifiToolkit sharedInstance] currentConnectionMode]) {
                 case SFIAlmondConnectionMode_cloud: {
                     UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
@@ -295,7 +296,7 @@
 
             SFIAlmondPlus *currentAlmond = almondList[(NSUInteger) indexPath.row];
             currentAlmond.colorCodeIndex = (int) indexPath.row;
-
+            NSLog(@"i am called");
             [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
 
             SWRevealViewController *revealController = [self revealViewController];

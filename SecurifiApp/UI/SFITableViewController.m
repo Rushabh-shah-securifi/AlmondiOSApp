@@ -380,7 +380,9 @@
 }
 
 - (SFIAlmondConnectionMode)currentConnectionMode {
+    NSLog(@"i am called");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSLog(@"i am called");
     return [toolkit currentConnectionMode];
 }
 
@@ -1028,6 +1030,7 @@
 
 #pragma mark - MessageViewDelegate methods
 - (void)messageViewDidPressButton:(MessageView *)msgView {
+    NSLog(@"i am called");
     enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
     
     switch (mode) {

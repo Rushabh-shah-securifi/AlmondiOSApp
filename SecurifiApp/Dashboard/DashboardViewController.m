@@ -731,6 +731,7 @@
 
 - (void)configureNetworkSettings:(enum SFIAlmondConnectionMode)mode {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSLog(@"i am called");
     [toolkit setConnectionMode:mode forAlmond:self.toolkit.currentAlmond.almondplusMAC];
     [self showHudWithTimeoutMsg:NSLocalizedString(@"connecting", @"Connecting...") delay:1];
     [toolkit.devices removeAllObjects];
@@ -740,10 +741,10 @@
 }
 
 - (void)markNetworkStatusIcon {
-    NSString *const almondMac = self.toolkit.currentAlmond.almondplusMAC;
     //    NSLog(@"markNetworkStatusIcon");
+    NSLog(@"i am called");
     enum SFIAlmondConnectionMode connectionMode = [_toolkit currentConnectionMode];
-    enum SFIAlmondConnectionStatus status = [_toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
+    enum SFIAlmondConnectionStatus status = [_toolkit connectionStatusFromNetworkState:(ConnectionStatusType*)[ConnectionStatus getConnectionStatus]];
     enum SFICloudStatusState state;
     switch (status) {
         case SFIAlmondConnectionStatus_disconnected: {
@@ -937,6 +938,7 @@
 - (void)onAddAlmondTapDelegate{
     NSLog(@"on add almond tap");
     [self removeAlmondSelectionView];
+    NSLog(@"i am called");
     switch ([[SecurifiToolkit sharedInstance] currentConnectionMode]) {
         case SFIAlmondConnectionMode_cloud: {
             UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
@@ -957,6 +959,7 @@
 
 -(void)onAlmondSelectedDelegate:(SFIAlmondPlus *)selectedAlmond{
     [self removeAlmondSelectionView];
+    NSLog(@"i am called");
     [[SecurifiToolkit sharedInstance] setCurrentAlmond:selectedAlmond];
 }
 
