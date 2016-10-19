@@ -902,6 +902,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="BWDownload" destination="z7G-DE-U3D" id="AK3-ad-sb2"/>
+                        <outlet property="BWUpload" destination="37H-QN-Tnq" id="jsQ-K0-hxx"/>
+                        <outlet property="MbDownTxt" destination="bKU-bK-jgC" id="b5H-j7-Vp1"/>
+                        <outlet property="MbupTxt" destination="4BX-VT-fjJ" id="TJU-N1-CGm"/>
                         <outlet property="backGrayButton" destination="sBr-FQ-b4o" id="LJw-Wd-A8h"/>
                         <outlet property="blockClientTxt" destination="Z9o-Q6-obK" id="ceb-Xo-G7d"/>
                         <outlet property="clientName" destination="hI5-Hh-Aya" id="WMX-pt-xjE"/>

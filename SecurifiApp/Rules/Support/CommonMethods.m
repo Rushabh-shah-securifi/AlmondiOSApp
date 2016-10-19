@@ -701,9 +701,23 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     
     return @(outVal).stringValue;
 }
++(NSArray *)getOrderedArr:(NSArray *)arr{
+
+    NSArray *arrTem = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        if ([[obj1 valueForKey:@"LastVisitedEpoch"] integerValue] > [[obj2 valueForKey:@"LastVisitedEpoch"] integerValue]) {
+            return (NSComparisonResult)NSOrderedAscending;
+        }
+        if ([[obj1 valueForKey:@"LastVisitedEpoch"] integerValue] < [[obj2 valueForKey:@"LastVisitedEpoch"] integerValue]) {
+            return (NSComparisonResult)NSOrderedDescending;
+        }
+        return (NSComparisonResult)NSOrderedSame;
+    }];
+    return [[NSMutableArray alloc]initWithArray:arrTem];
+}
 #pragma mark searchPage methods
 +(NSDictionary *)createSearchDictObj:(NSArray*)allObj{
     NSDictionary *catogeryDict = [self parseJson:@"CategoryMap"];
+        allObj = [self getOrderedArr:allObj];
     
     NSMutableDictionary *dayDict = [NSMutableDictionary new];
     for(NSDictionary *uriDict in allObj)

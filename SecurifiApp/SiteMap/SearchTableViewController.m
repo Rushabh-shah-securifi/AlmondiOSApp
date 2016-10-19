@@ -406,7 +406,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-    [request setURL:[NSURL URLWithString:@"https://sitemonitoring-abhilashsecurifi.c9users.io:8081"]];
+    [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
@@ -613,12 +613,12 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     NSString *searchString = self.searchString;
     NSLog(@"searching string on search = %@",searchString);
-    if(![searchString isEqualToString:@" "] && ![CommonMethods isContainCategory:searchString]){
+    if(![searchString isEqualToString:@" "] && ![CommonMethods isContainCategory:searchString] && ![CommonMethods isContainMonth:searchString] && ![CommonMethods isContainWeeKday:searchString]){
         long int currentTime = [NSDate date].timeIntervalSince1970;
         [self.recentSearchDict setValue:searchString forKey:@(currentTime).stringValue];
     }
     
-    [RecentSearchDB insertInRecentDB:searchString cmac:self.cmac amac:self.amac];
+    //[RecentSearchDB insertInRecentDB:searchString cmac:self.cmac amac:self.amac];
     if([self.recentSearchDict allKeys].count > 0)
         [self.recentSearchDictObj setObject:self.recentSearchDict forKey:[NSString stringWithFormat:@"%@%@",self.amac,self.cmac]];
     NSLog(@"self.recentSearchDictObj insert %@",self.recentSearchDictObj);
@@ -737,6 +737,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     else if([CommonMethods isContainWeeKday:searchString]){
         NSString *LastweekDay = [CommonMethods getLastWeekDayDate:searchString];
         [self createRequest:DATE value:LastweekDay];
+        
     }
     else if(self.isManuelSearch){
          [self createRequest:DOMAINNAME value:[searchString lowercaseString]];

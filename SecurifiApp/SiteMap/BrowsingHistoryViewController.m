@@ -134,7 +134,12 @@ typedef void(^InsertMethod)(BOOL);
     self.NoresultFound.hidden = YES;
     self.isTapped = NO;
     [BrowsingHistoryDataBase closeDB];
-    [BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
+    //[BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
+    NSLog(@"count otiDB %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+    [BrowsingHistoryDataBase getLastDate:self.amac clientMac:self.cmac];
+    NSLog(@"count otiDB %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+    NSLog(@"complete db lastdate %@ ",[CompleteDB getLastDate:self.amac clientMac:self.cmac]);
+     NSLog(@"complete db max %@ ",[CompleteDB getMaxDate:self.amac clientMac:self.cmac]);
     
     
     
@@ -184,7 +189,7 @@ typedef void(^InsertMethod)(BOOL);
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-        [request setURL:[NSURL URLWithString:@"https://sitemonitoring-abhilashsecurifi.c9users.io:8081"]];
+        [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
@@ -322,7 +327,7 @@ typedef void(^InsertMethod)(BOOL);
         else if(!isTodayDate && !isPresentInCompleteDB){
             NSLog(@"Sending Request in Second IF");
             NSString *ps= self.incompleteDB[@"PS"] ;
-            
+            NSLog(@"self.oldDate = %@ == str = %@",self.oldDate,str);
             if((self.oldDate != nil && [self.oldDate isEqualToString:str]) && ps != NULL)
                 [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&dateyear=%@&pageState=%@",_amac,_cmac,str,ps]];
             else
