@@ -272,6 +272,9 @@
 }
 
 + (UIColor*) getClientCellColor:(Client*)client{
+    if(client == nil)
+        return [SFIColors clientGreenColor];
+    
     if (client.deviceAllowedType == 1)
         return [SFIColors clientBlockedGrayColor];
     else if(client.isActive)
