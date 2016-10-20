@@ -517,10 +517,10 @@
 
 - (void)setPairingAlmondsScreen2{
     if(self.wiredBtn.selected){
-        self.pairingAlmondRstInfo.text = @"Having trouble pairing your Almond 3 ?\n\na. Check for loose wired connection between your Almonds.\nb. Press and hold the factory reset button on it for 5 secs.";
+        self.pairingAlmondRstInfo.text = @"Having trouble pairing your Almond 3 ?\n\n1. Check for loose wired connection between your Almonds.\n2. Press and hold the factory reset button on it for 5 secs.";
     }
     else{
-        self.pairingAlmondRstInfo.text = @"Having trouble pairing your Almond 3 ?\n\na. Bring it closer to primary Almond.\nb. Press and hold the factory reset button on it for 5 secs.";
+        self.pairingAlmondRstInfo.text = @"Having trouble pairing your Almond 3 ?\n\n1. Bring it closer to primary Almond.\n2. Press and hold the factory reset button on it for 5 secs.";
     }
 }
 
