@@ -640,7 +640,7 @@
         [self.delegate hideHUDDelegate];
         NSString *reason = payload[REASON];
         if([reason.lowercaseString hasPrefix:@"unplug all"]){
-            NSString *msg = @"Adding to network failed. On the other Almond please Unplug all the cables connected to LAN and WAN Ports. Do not unplug the power cable.";
+            NSString *msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
 //            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
             if(self.currentView.tag == BLINK_CHECK)
                 [self showAlert:self.almondTitle msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
