@@ -509,6 +509,8 @@
 		F417B2AE1DA290030073C440 /* AdvRouterHelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */; };
 		F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F426AE2E1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
+		F46129F51DB76BC500EAD7F0 /* SliderComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */; };
+		F46129F61DB76BC500EAD7F0 /* SliderComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */; };
 		F4981E961DABCDB4003A53E6 /* MeshEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */; };
 		F4981E971DABCDB4003A53E6 /* MeshEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */; };
 		F4B875431D5382D500DCF76F /* AlmondStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753A1D5382D500DCF76F /* AlmondStatus.m */; };
@@ -1144,6 +1146,8 @@
 		F426AE2B1D19515500AE60C8 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		F43814941D993B2800D5C762 /* Almond.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Almond.entitlements; sourceTree = "<group>"; };
+		F46129F31DB76BC500EAD7F0 /* SliderComponentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderComponentView.h; sourceTree = "<group>"; };
+		F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderComponentView.m; sourceTree = "<group>"; };
 		F4981E941DABCDB4003A53E6 /* MeshEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshEditViewController.h; sourceTree = "<group>"; };
 		F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeshEditViewController.m; sourceTree = "<group>"; };
 		F4B875391D5382D500DCF76F /* AlmondStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondStatus.h; sourceTree = "<group>"; };
@@ -1528,6 +1532,8 @@
 			children = (
 				F401B0711D2D241200F64CE2 /* ColorComponentView.h */,
 				F401B0721D2D241200F64CE2 /* ColorComponentView.m */,
+				F46129F31DB76BC500EAD7F0 /* SliderComponentView.h */,
+				F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */,
 				1C7E7D2E1A41A0990026F0BA /* DrawerViewController.h */,
 				CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */,
 				CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */,
@@ -2939,6 +2945,7 @@
 				F4B876671D54653500DCF76F /* ClientPropertiesCell.m in Sources */,
 				A5217EF71CBE29810089A8C3 /* SFILogsViewController.m in Sources */,
 				F4B876711D54653500DCF76F /* DeviceHeaderView.m in Sources */,
+				F46129F61DB76BC500EAD7F0 /* SliderComponentView.m in Sources */,
 				F4D93ADA1D38E5D200D55BD6 /* HelpScreens.m in Sources */,
 				1C7E7DC81A41A0990026F0BA /* SFIMainViewController.m in Sources */,
 				1C7E7D8C1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
@@ -3201,6 +3208,7 @@
 				F4B8768C1D54653500DCF76F /* PerformanceTest.m in Sources */,
 				1DF038B5E6A54CEEAFE1BE7F /* NotificationsTestStore.m in Sources */,
 				1DF037534B2784850C9B047C /* UIApplication+SecurifiNotifications.m in Sources */,
+				F46129F51DB76BC500EAD7F0 /* SliderComponentView.m in Sources */,
 				CEF6F4E01C92CAD600C68975 /* DelayPicker.m in Sources */,
 				CE40BF131D225791007C2148 /* BrowsingHistory.m in Sources */,
 				F4B876761D54653500DCF76F /* HorizontalPicker.m in Sources */,

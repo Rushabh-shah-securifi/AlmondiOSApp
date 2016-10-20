@@ -101,7 +101,7 @@
     }
     float hue = [value floatValue];
     hue = hue / factor;
-    UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
+    UIColor *color = [UIColor colorWithHue:hue saturation:1.0 brightness:1.0 alpha:1.0];
     return [color.hexString uppercaseString];
 }
 
