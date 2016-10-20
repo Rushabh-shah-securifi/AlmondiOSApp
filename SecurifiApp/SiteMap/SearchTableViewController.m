@@ -118,7 +118,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     [super viewWillAppear:animated];
     NSLog(@"viewWillAppear searchPage");
     [self addSuggestionSearchObj];
-    [self initializeSearchController ];
+    [self initializeSearchController];
     self.isManuelSearch = YES;
 }
 -(void)viewWillDisappear:(BOOL)animated{
@@ -600,7 +600,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.searchPatten = searchpatten;
     self.searchController.searchBar.text = [self.searchStrArr objectAtIndex:indexPath.row];
     self.searchString = [self.searchStrArr objectAtIndex:indexPath.row];
-    self.isManuelSearch = YES;
+    self.isManuelSearch = NO;
     [self.searchController.searchBar resignFirstResponder];
     [self searchBarTextDidEndEditing:self.searchController.searchBar];
     self.searchController.active = YES;
