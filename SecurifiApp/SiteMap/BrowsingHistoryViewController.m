@@ -135,11 +135,7 @@ typedef void(^InsertMethod)(BOOL);
     self.isTapped = NO;
     [BrowsingHistoryDataBase closeDB];
     //[BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
-    NSLog(@"count otiDB %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
-    [BrowsingHistoryDataBase getLastDate:self.amac clientMac:self.cmac];
-    NSLog(@"count otiDB %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
-    NSLog(@"complete db lastdate %@ ",[CompleteDB getLastDate:self.amac clientMac:self.cmac]);
-     NSLog(@"complete db max %@ ",[CompleteDB getMaxDate:self.amac clientMac:self.cmac]);
+    
     
     
     
@@ -153,7 +149,11 @@ typedef void(^InsertMethod)(BOOL);
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:YES];
-    
+    NSLog(@"count otiDB %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+    [BrowsingHistoryDataBase getLastDate:self.amac clientMac:self.cmac];
+    NSLog(@"count otiDB %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+    NSLog(@"complete db lastdate %@ ",[CompleteDB getLastDate:self.amac clientMac:self.cmac]);
+    NSLog(@"complete db max %@ ",[CompleteDB getMaxDate:self.amac clientMac:self.cmac]);
     if(self.dayArr != nil)
         [self.dayArr removeAllObjects];
     

@@ -505,8 +505,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         return;
     if(![dict[@"AMAC"] isEqualToString:self.amac] || ![dict[@"CMAC"] isEqualToString:self.cmac])
         return;
-    
-    if(dict[@"ChangeHour"]!=NULL && [dict[@"ChangeHour"] isEqualToString:@"1"])
+    int changedHourTag = dict[@"ChangeHour"]!=NULL?(int)dict[@"ChangeHour"]:0;
+    if(changedHourTag == 1)
         [self createRequest:@"lastHour" value:self.value];
     
     NSMutableDictionary *clientBrowsingHistory = [[NSMutableDictionary alloc]init];

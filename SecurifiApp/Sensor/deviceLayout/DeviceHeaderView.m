@@ -217,7 +217,6 @@
     }
 }
 -(void)setWiFiSignalIcon{
-    self.wifiSignalImageView.hidden = YES;
     NSArray* genericIndexValues;
     int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
     Client *client = [Client findClientByID:@(deviceID).stringValue];
@@ -247,8 +246,14 @@
 
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"] && [genericIndexValue.genericValue.value isEqualToString:@"wireless"]){
             self.wifiSignalImageView.hidden = NO;
+            self.wifiSignalImageView.image = [UIImage imageNamed:@"wifi_icon"];
+            NSLog(@"wifi_icon...");
         }
-        
+        else{
+        self.wifiSignalImageView.hidden = NO;
+        self.wifiSignalImageView.image = [UIImage imageNamed:@"wired-icon"];
+            NSLog(@"wired-icon...");
+        }
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-13"] && (self.cellType == ClientTable_Cell || self.cellType == ClientProperty_Cell || self.cellType == ClientEditProperties_cell)){
             self.label2.text = genericIndexValue.genericValue.value;
         }

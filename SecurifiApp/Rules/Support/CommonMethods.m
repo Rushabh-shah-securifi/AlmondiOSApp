@@ -769,7 +769,7 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
         NSDate *date = [calendar dateByAddingComponents:comps toDate:[NSDate date] options:0];
         dateFormatter.dateFormat=@"EEEE";
         NSString *dayString = [[dateFormatter stringFromDate:date] capitalizedString];
-        if([[weekDay uppercaseString] rangeOfString:[dayString uppercaseString]].location != NSNotFound){
+        if([[dayString uppercaseString] rangeOfString:[weekDay uppercaseString]].location != NSNotFound){
             dateFormatter.dateFormat=@"yyyy-MM-dd";
             NSString *dayString = [[dateFormatter stringFromDate:date] capitalizedString];
             return dayString;

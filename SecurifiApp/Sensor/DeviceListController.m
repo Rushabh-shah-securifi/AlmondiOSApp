@@ -97,7 +97,7 @@ int mii;
 
 -(void)markAlmondTitleAndMac{
     NSLog(@"%s, self.toolkit.currentAlmond: %@", __PRETTY_FUNCTION__, self.toolkit.currentAlmond);
-    _isSiteMapSupport = [ self.toolkit.currentAlmond siteMapSupportFirmware:self.toolkit.currentAlmond.firmware];
+    _isSiteMapSupport = [self.toolkit.currentAlmond siteMapSupportFirmware:self.toolkit.currentAlmond.firmware] && self.toolkit.configuration.siteMapEnable;
    
     if (self.toolkit.currentAlmond == nil) {
         NSLog(@"no almond");
