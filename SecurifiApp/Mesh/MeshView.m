@@ -15,7 +15,6 @@
 #import "Analytics.h"
 #import "RouterPayload.h"
 
-#define DYNAMIC_ADD_FAIL -3
 #define ADD_FAIL -2
 #define NETWORK_OFFLINE -1
 #define HELP_INFO 0
@@ -126,7 +125,9 @@
     
     [center addObserver:self selector:@selector(onKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
-    [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
+    
+    [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_COMMAND_TYPE_MESH_RESPONSE object:nil];
     
     [center addObserver:self selector:@selector(onNetworkDownNotifier:) name:NETWORK_DOWN_NOTIFIER object:nil];
     
@@ -616,15 +617,48 @@
     [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:10];
 }
 
-
 -(void)onMeshCommandResponse:(id)sender{
-    NSLog(@"mesh view onmeshcommandresponse");
+    NSLog(@"mesh cloud onmeshcommandresponse");
     //load next view
+    NSDictionary *payload = [self getPayload:sender];
+    if(payload == nil) return;
+    
+    NSLog(@"meshview mesh command payload: %@", payload);
+    NSString *commandType = payload[COMMAND_TYPE];
+    BOOL isSuccessful = [payload[SUCCESS] boolValue];
+    
+    NSLog(@"check point 1");
+    if(![commandType isEqualToString:@"AddWiredSlaveMobile"] && ![commandType isEqualToString:@"AddWirelessSlaveMobile"]){
+        return;
+    }
+    NSLog(@"check point 2");
+    if(isSuccessful){
+        //do nothing, wait for dynamic response
+    }
+    else{
+        NSLog(@"check point 3");
+        [self.delegate hideHUDDelegate];
+        NSString *reason = payload[REASON];
+        if([reason.lowercaseString hasPrefix:@"unplug all"]){
+            NSString *msg = @"Adding to network failed. On the other Almond please Unplug all the cables connected to LAN and WAN Ports. Do not unplug the power cable.";
+//            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
+            if(self.currentView.tag == BLINK_CHECK)
+                [self showAlert:self.almondTitle msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
+        }
+        else{
+            [self.blinkTimer invalidate];
+            if(self.currentView.tag == BLINK_CHECK)//on ok tap this will take to interface page
+                [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
+        }
+    }
+    
+}
+-(NSDictionary *)getPayload:(id)sender{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
     if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
-        return;
+        return nil;
     }
     BOOL local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
     NSDictionary *payload;
@@ -633,6 +667,15 @@
     }else{
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
     }
+    return payload;
+}
+
+-(void)onCommandResponse:(id)sender{
+    NSLog(@"mesh view onCommandResponse");
+    //load next view
+    NSDictionary *payload = [self getPayload:sender];
+    if(payload == nil) return;
+    
     NSLog(@"meshview mesh payload: %@", payload);
     NSString *commandType = payload[COMMAND_TYPE];
     
@@ -646,14 +689,8 @@
                 [self loadNextView];
         }
         else{//failed
-            if([payload[REASON] hasPrefix:@"Unplug all"]){
-                NSString *msg = [NSString stringWithFormat:@"Adding to network failed. %@", payload[REASON]];
-                [self showAlert:self.almondTitle msg:msg cancel:@"Ok" other:nil tag:DYNAMIC_ADD_FAIL];
-            }else{
-                [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
-            }
+            [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
         }
-        
         return;
     }
     
@@ -663,9 +700,7 @@
     
     if(isSuccessful){
         //ignore it, we are looking for dynamic command.
-        if([commandType isEqualToString:@"AddWiredSlaveMobile"] || [commandType isEqualToString:@"AddWirelessSlaveMobile"]){
-            return;
-        }
+        
 
         if([commandType isEqualToString:@"CheckForAddableWiredSlaveMobile"] || [commandType isEqualToString:@"CheckForAddableWirelessSlaveMobile"]){
 
@@ -705,12 +740,6 @@
     else{//failed
         if([commandType isEqualToString:@"CheckForAddableWiredSlaveMobile"] || [commandType isEqualToString:@"CheckForAddableWirelessSlaveMobile"]){
             // do not do any thing.
-        }
-        else if([commandType isEqualToString:@"AddWiredSlaveMobile"] || [commandType isEqualToString:@"AddWirelessSlaveMobile"]){
-            [self.delegate hideHUDDelegate];
-            [self.blinkTimer invalidate];
-            if(self.currentView.tag == BLINK_CHECK)
-                [self showAlert:@"" msg:payload[@"Reason"] cancel:@"Ok" other:nil tag:ADD_FAIL];
         }
         else{
             NSLog(@"for any other command on false hide hud");
@@ -874,10 +903,17 @@
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self.delegate showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
    
-        }else if(alertView.tag == ADD_FAIL || alertView.tag == DYNAMIC_ADD_FAIL){
-            //do nothing
+        }else if(alertView.tag == ADD_FAIL){
+            if(self.currentView.tag == BLINK_CHECK){
+                [self.blinkTimer invalidate];
+                int blinkTimeout = 120;
+                self.blinkTimer = [NSTimer scheduledTimerWithTimeInterval:blinkTimeout target:self selector:@selector(onBlinkTimeout:) userInfo:nil repeats:NO];
+                [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:blinkTimeout];
+            }
+                
         }
-    }else{
+    }
+    else{
         
     }
 }

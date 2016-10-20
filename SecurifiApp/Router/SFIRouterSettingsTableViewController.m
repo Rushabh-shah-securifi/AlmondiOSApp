@@ -182,7 +182,7 @@ int mii;
             return;
         }
         if(!genericRouterCommand.commandSuccess){
-            if([genericRouterCommand.responseMessage isEqualToString:@"Slave in offline"]){
+            if([genericRouterCommand.responseMessage.lowercaseString isEqualToString:@"slave in offline"]){
                 [self showAlert:@"" msg:@"Unable to change settings in one of the Almond.\nWould you like to continue?" cancel:@"No" other:@"Yes" tag:1];
             }
             [self showToast:NSLocalizedString(@"ParseRouterCommand Sorry! unable to update.", @"Sorry! unable to update.")];
@@ -268,7 +268,7 @@ int mii;
 //        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.almondMac wirelessSettings:copy];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         [RouterPayload setWirelessSettings:mii wirelessSettings:copy mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:isTypeEnable forceUpdate:@"false"];
-        [self.HUD hide:YES afterDelay:10];
+        [self.HUD hide:YES afterDelay:15];
     });
 }
 
@@ -311,7 +311,7 @@ int mii;
         //        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.almondMac wirelessSettings:copy];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         [RouterPayload setWirelessSettings:mii wirelessSettings:self.currentSetting mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:NO forceUpdate:@"true"];
-        [self.HUD hide:YES afterDelay:10];
+        [self.HUD hide:YES afterDelay:15];
     }
 }
 
