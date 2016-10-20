@@ -242,14 +242,14 @@
     
     NSLog(@"self.genericParams.indexValueList count = %ld",(unsigned long)self.genericParams.indexValueList.count);
     for (GenericIndexValue *genericIndexValue in arr) {
-        NSLog(@"genericIndexValue.genericIndex.ID %@",genericIndexValue.genericIndex.ID);
+        NSLog(@"genericIndexValue.genericIndex.ID %@ value %@",genericIndexValue.genericIndex.ID,genericIndexValue.genericValue.value);
 
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"] && [genericIndexValue.genericValue.value isEqualToString:@"wireless"]){
             self.wifiSignalImageView.hidden = NO;
             self.wifiSignalImageView.image = [UIImage imageNamed:@"wifi_icon"];
             NSLog(@"wifi_icon...");
         }
-        else{
+        else if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"] && ![genericIndexValue.genericValue.value isEqualToString:@"wireless"]){
         self.wifiSignalImageView.hidden = NO;
         self.wifiSignalImageView.image = [UIImage imageNamed:@"wired-icon"];
             NSLog(@"wired-icon...");

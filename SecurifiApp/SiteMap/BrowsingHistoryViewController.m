@@ -77,13 +77,7 @@ typedef void(^InsertMethod)(BOOL);
     self.sendReq = YES;
     self.reload = YES;
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
-    
-    
-    //    if([BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac] == 0){
-    //        dispatch_async(dispatch_get_main_queue(), ^{
-    //            [self showHudWithTimeoutMsg:@"Loading..." withDelay:5];
-    //        });
-    //    }
+ 
     [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac]];
     
     
@@ -103,36 +97,17 @@ typedef void(^InsertMethod)(BOOL);
     self.NoresultFound.hidden = YES;
     NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:100 amac:self.amac cmac:self.cmac];
     [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+    self.isTapped = NO;
     
     
     
-    
-}
-
--(void)loadNavigationBar{
-    /*self.headerView.backgroundColor = [SFIColors clientGreenColor];
-     self.navigationController.navigationBar.clipsToBounds = YES;
-     [self updateNavi:[SFIColors clientGreenColor] title:nil tintColor:[UIColor whiteColor] tintBarColor:[SFIColors clientGreenColor]];
-     
-     UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(onSearchButton)];
-     UIBarButtonItem *back = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backArrow"] style:UIBarButtonItemStylePlain target:self action:@selector(onBackButton)];
-     NSArray *leftAction = @[back];
-     self.navigationItem.leftBarButtonItems = leftAction;
-     NSArray *actionButtonItems = @[search];
-     self.navigationItem.rightBarButtonItems = actionButtonItems;
-     
-     [self.navigationController.navigationBar setTitleTextAttributes:
-     @{NSForegroundColorAttributeName:[UIColor whiteColor],
-     NSFontAttributeName:[UIFont securifiBoldFont:14]}];
-     self.title = @"Browsing history";
-     self.navigationController.navigationBar.topItem.title = @"Browsing history";*/
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
     [self.navigationController setNavigationBarHidden:NO];
     self.NoresultFound.hidden = YES;
-    self.isTapped = NO;
+    
     [BrowsingHistoryDataBase closeDB];
     //[BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
     

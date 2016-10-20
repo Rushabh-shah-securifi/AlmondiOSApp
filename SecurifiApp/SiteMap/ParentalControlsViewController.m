@@ -103,14 +103,26 @@
             self.switchView3.userInteractionEnabled = NO;
             self.switchView1.userInteractionEnabled = NO;
             self.blockClientTxt.hidden = NO;
+            self.blockClientTxt.text = @"Web history and Data usage are disabled for blocked devices. You can still see records from when the device was last active.";
             self.dataLogView.hidden = YES;
             
         }
     }
     
     if(self.isLocal){
-        self.blockClientTxt.hidden = NO;
-        self.blockClientTxt.text = @"You are in Local connection right now. Web history and Bandwidth monitoring require active cloud connection to function.";
+        BOOL isCloud = [[SecurifiToolkit sharedInstance]isCloudOnline];
+        BOOL isinternet = [[SecurifiToolkit sharedInstance]isCloudReachable];
+        NSLog(@"isCloud %d,%d",isCloud,isinternet);
+        if(!isinternet){
+            self.blockClientTxt.hidden = NO;
+            self.blockClientTxt.text = @"You are in Local connection right now. Web history and data usage require active cloud connection to function.";
+            self.dataLogView.hidden = YES;
+        }
+        else{
+            self.blockClientTxt.hidden = YES;
+            self.dataLogView.hidden = NO;
+        }
+
     }
     NSLog(@"client connection = %@ & router mode  = %@ ",connection,self.routerMode);
     
@@ -121,6 +133,7 @@
         else{
             self.switchView3.on = NO;
             self.switchView1.on = NO;
+           self.blockClientTxt.text = @"This device is in wired connection. Web history and data usage require wireless connection to function in RE & AP mode.";
         }
     }
     self.icon.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];

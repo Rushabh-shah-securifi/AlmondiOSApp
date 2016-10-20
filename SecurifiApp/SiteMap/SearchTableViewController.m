@@ -221,7 +221,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         else if(section == 1)
             headerDate =  @"Suggested Searches";
         else
-            headerDate =  @"Categories";
+            headerDate =  @"Ratings";
         
         
         label.text = headerDate;
