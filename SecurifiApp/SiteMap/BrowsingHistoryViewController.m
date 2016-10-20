@@ -129,8 +129,6 @@ typedef void(^InsertMethod)(BOOL);
     NSLog(@"count otiDB %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
     NSLog(@"complete db lastdate %@ ",[CompleteDB getLastDate:self.amac clientMac:self.cmac]);
     NSLog(@"complete db max %@ ",[CompleteDB getMaxDate:self.amac clientMac:self.cmac]);
-    if(self.dayArr != nil)
-        [self.dayArr removeAllObjects];
     
     
 }
@@ -294,7 +292,7 @@ typedef void(^InsertMethod)(BOOL);
         NSLog(@"Is Today Date %d %@",isTodayDate,self.incompleteDB[@"PS"]);
         NSLog(@"Is Present In Complete DB %d",isPresentInCompleteDB);
         
-        if(isTodayDate && self.incompleteDB[@"PS"] != NULL){
+        if(isTodayDate && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
             NSLog(@"Sending Request in first IF");
             [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
             
@@ -303,10 +301,12 @@ typedef void(^InsertMethod)(BOOL);
             NSLog(@"Sending Request in Second IF");
             NSString *ps= self.incompleteDB[@"PS"] ;
             NSLog(@"self.oldDate = %@ == str = %@",self.oldDate,str);
-            if((self.oldDate != nil && [self.oldDate isEqualToString:str]) && ps != NULL)
+            if((self.oldDate != nil && [self.oldDate isEqualToString:str]) && ![ps isKindOfClass:[NSNull class]])
                 [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&dateyear=%@&pageState=%@",_amac,_cmac,str,ps]];
             else
+            {   if(![ps isKindOfClass:[NSNull class]])
                 [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&dateyear=%@",_amac,_cmac,str]];
+            }
 
             self.oldDate = str;
         }
