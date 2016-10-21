@@ -37,16 +37,18 @@
 
 #define DEF_NETWORKING_SECTION          0
 #define DEF_MESH_SECTION                1
-#define DEF_WIRELESS_SECTION            2
-#define DEF_ROUTER_VERSION_SECTION      3
-#define DEF_ROUTER_REBOOT_SECTION       4
-#define DEF_ROUTER_SEND_LOGS_SECTION    5
+#define DEF_ADVANCED_ROUTER_SECTION     2
+#define DEF_WIRELESS_SECTION            3
+#define DEF_ROUTER_VERSION_SECTION      4
+#define DEF_ROUTER_REBOOT_SECTION       5
+#define DEF_ROUTER_SEND_LOGS_SECTION    6
 
 #define REBOOT_TAG 1
 #define FIRMWARE_UPDATE_TAG 2
 
 static const int networkingHeight = 100;
 static const int almondNtwkHeight = 200;
+static const int advanceRtrHeight = 70;
 static const int settingsHeight = 70;
 static const int versionHeight = 130;
 static const int rebootHeight = 110;
@@ -73,6 +75,7 @@ static const int logsHeight = 100;
 @property(nonatomic) BOOL isBUG;
 @property(nonatomic) BOOL isAlmDetailView;
 @property(nonatomic) BOOL almCount;
+@property(nonatomic) BOOL enableAdvRouter;
 
 @end
 
@@ -98,6 +101,8 @@ int mii;
     
     [self addRefreshControl];
     [self initializeRouterSummaryAndSettings];
+    self.enableAdvRouter = NO;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -197,7 +202,7 @@ int mii;
 - (void)showHudWithTimeout:(NSString*)hudMsg {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:hudMsg];
-        [self.HUD hide:YES afterDelay:5];
+        [self.HUD hide:YES afterDelay:10];
     });
 }
 
@@ -263,7 +268,7 @@ int mii;
     if (self.currentConnectionMode == SFIAlmondConnectionMode_local) {
         return [self isAL3]? 2: 1;
     }else{
-        return 6;
+        return 7;
     }
 }
 
@@ -282,6 +287,8 @@ int mii;
             return networkingHeight;
         case DEF_MESH_SECTION:
             return [self isAL3]?almondNtwkHeight: 0;
+        case DEF_ADVANCED_ROUTER_SECTION:
+            return _enableAdvRouter? advanceRtrHeight: 0;
         case DEF_WIRELESS_SECTION:
             return  [self getSettingsRowHeight];
         case DEF_ROUTER_VERSION_SECTION:
@@ -336,17 +343,17 @@ int mii;
                 if([self isAL3])
                     return [self createAlmondNetworkCell:tableView];
                 else{
-                    static NSString *CellIdentifier = @"CellIdentifier";
-                    
-                    // Dequeue or create a cell of the appropriate type.
-                    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-                    if (cell == nil) {
-                        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-                        cell.accessoryType = UITableViewCellAccessoryNone;
-                    }
-                    return cell;
+                    return [self createZeroCell:tableView];
                 }
                     
+            }
+            case DEF_ADVANCED_ROUTER_SECTION:{
+                if(_enableAdvRouter){
+                    return [self createSummaryCell:tableView summaries:nil title:@"Advanced Router Features" selector:@selector(onAdvancdFeatures:) cardColor:[SFIColors helpBlueColor]];
+                }
+                else{
+                    return [self createZeroCell:tableView];
+                }
             }
             case DEF_WIRELESS_SECTION:{
                 summaries = [self getWirelessSettingsSummary];
@@ -386,6 +393,18 @@ int mii;
     AdvanceRouterSettingsController *ctrl = [[UIStoryboard storyboardWithName:@"Router" bundle:nil] instantiateViewControllerWithIdentifier:@"AdvanceRouterSettingsController"];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
     [self.navigationController pushViewController:ctrl animated:YES];
+}
+
+-(UITableViewCell *)createZeroCell:(UITableView *)tableView{
+    static NSString *CellIdentifier = @"CellIdentifier";
+    
+    // Dequeue or create a cell of the appropriate type.
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    return cell;
 }
 
 -(UITableViewCell *)createAlmondNetworkCell:(UITableView *)tableView{

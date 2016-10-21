@@ -197,7 +197,7 @@ int mii;
                 [self processSettings:genericRouterCommand.command];
                 // settings was null, reload in case they are late arriving and the view is waiting for them
                 NSLog(@"processRouterCommandResponse reload");
-                [self showToast:NSLocalizedString(@"DeviceList Successfully updated!", @"Successfully updated!")];//
+                [self showToast:NSLocalizedString(@"successfully_updated", @"")];//
                 [self.tableView reloadData];
 
                 break;

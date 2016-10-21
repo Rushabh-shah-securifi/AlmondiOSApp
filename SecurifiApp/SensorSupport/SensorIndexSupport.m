@@ -9,6 +9,7 @@
 #import "ValueFormatter.h"
 #import "SFIConstants.h"
 #import "SFIDeviceIndex.h"
+#import "CommonMethods.h"
 
 
 @implementation SensorIndexSupport
@@ -3766,19 +3767,19 @@
                 s1.matchType = MatchType_equals;
                 s1.matchData = @"1";
                 s1.iconName = @"alarm_on";
-                s1.valueFormatter.notificationPrefix = @"set to Alarm.";
+                s1.notificationText = @" set to Alarm.";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchType = MatchType_equals;
                 s2.matchData = @"2";
                 s2.iconName = @"alarm_on";
-                s2.valueFormatter.notificationPrefix = @"set to Siren.";
+                s2.notificationText = @" set to Siren.";
                 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchType = MatchType_equals;
                 s3.matchData = @"3";
                 s3.iconName = @"alarm_on";
-                s3.valueFormatter.notificationPrefix = @"set to Door-Bell.";
+                s3.notificationText = @" set to Door-Bell.";
                 return @[s1, s2, s3];
             }
             
@@ -3787,19 +3788,19 @@
                 s1.matchType = MatchType_equals;
                 s1.matchData = @"1";
                 s1.iconName = @"low_volume_icon";
-                s1.valueFormatter.notificationPrefix = @"set to Low.";
+                s1.notificationText = @" set to Low.";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchType = MatchType_equals;
                 s2.matchData = @"2";
                 s2.iconName = @"medium_volume_icon";
-                s2.valueFormatter.notificationPrefix = @"set to Medium.";
+                s2.notificationText = @" set to Medium.";
                 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchType = MatchType_equals;
                 s3.matchData = @"3";
                 s3.iconName = @"high_volume_icon";
-                s3.valueFormatter.notificationPrefix = @"set to High.";
+                s3.notificationText = @" set to High.";
                 return @[s1, s2, s3];
             }
             
@@ -3808,41 +3809,62 @@
             
         }
         case SFIDeviceType_AlmondBlink_64: {
-            
-            if (type == SFIDevicePropertyType_ALARM_STATE) {
+            if (type == SFIDevicePropertyType_LED_STATE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
-                s1.iconName =@"alarm_off";
-                s1.notificationText = @" is Silent.";
+                s1.iconName =@"switch_off";
+                s1.notificationText = @" is Off.";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
-                s2.iconName = @"alarm_on";
-                s2.notificationText = @" is Ringing.";
+                s2.iconName = @"switch_on";
+                s2.notificationText = @" is On.";
                 return @[s1, s2];
             }
-            
-            if (type == SFIDevicePropertyType_TONE_SELECTED) {
+            if (type == SFIDevicePropertyType_BLINK_STATE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchType = MatchType_equals;
-                s1.matchData = @"1";
-                s1.iconName = @"alarm_on";
-                s1.valueFormatter.notificationPrefix = @"tone 1";
+                s1.matchData = @"false";
+                s1.iconName =@"switch_off";
+                s1.notificationText = @" stopped blinking.";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.matchType = MatchType_equals;
-                s2.matchData = @"2";
-                s2.iconName = @"alarm_on";
-                s2.valueFormatter.notificationPrefix = @"tone 2";
-                
-                IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
-                s3.matchType = MatchType_equals;
-                s3.matchData = @"3";
-                s3.iconName = @"alarm_on";
-                s3.valueFormatter.notificationPrefix = @"tone 3";
-                return @[s1, s2, s3];
+                s2.matchData = @"true";
+                s2.iconName = @"switch_on";
+                s2.notificationText = @" is blinking.";
+                return @[s1, s2];
             }
-            
+            if (type == SFIDevicePropertyType_RGB) {//currently only showing brightness
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = @"brightness-icon";
+                s1.valueTransformer = ^NSString *(NSString *value) {
+                    if (!value) {
+                        return @"";
+                    }
+                    int brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
+                    return @(brightnessValue).stringValue;
+                    
+                };
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = NSLocalizedString(@" brightness changed to ", @" brightness changed to ");
+                s1.valueFormatter.suffix = @"%";
+                return @[s1];
+            }
+            if(type == SFIDevicePropertyType_SECONDS){
+                //light_on
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"0";
+                s1.iconName = @"light_on";
+                s1.notificationText = @" blink timer set to 0 sec(infinite blink).";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchType = MatchType_any;
+                s2.iconName = @"light_on";
+                s2.valueFormatter.action = ValueFormatterAction_formatString;
+                s2.valueFormatter.notificationPrefix = @" blink timer set to ";
+                s2.valueFormatter.suffix = @"sec";
+                return @[s1, s2];
+            }
             break;
             
         }

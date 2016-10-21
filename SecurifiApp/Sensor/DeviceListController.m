@@ -555,7 +555,7 @@ int mii;
             [self showToast:NSLocalizedString(@"DeviceList Sorry, Could not update!", @"Sorry, Could not update!")];
         });
     }else{
-        [self showToast:NSLocalizedString(@"DeviceList Successfully updated!", @"Successfully updated!")];
+        [self showToast:NSLocalizedString(@"successfully_updated", @"")];
     }
 }
 

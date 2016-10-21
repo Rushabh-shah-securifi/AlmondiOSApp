@@ -532,9 +532,8 @@ static const int xIndent = 10;
                 }else{
                     [self revertToOldValue:genIndexVal];
                 }
-                NSString *str =NSLocalizedString(@"sorry_could_not_update", @"sorry_could_not_update");
                 
-                [self showToast:[NSString stringWithFormat:@"%@ %@",str,genIndexVal.genericIndex.groupLabel]];
+                [self showToast:NSLocalizedString(@"sorry_could_not_update", @"")];
             });
         }
         else{
@@ -552,7 +551,7 @@ static const int xIndent = 10;
                 [self repaintBottomView:dType];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self showToast:[NSString stringWithFormat:NSLocalizedString(@"deviceEdit %@ successfully updated", @"%@ successfully updated"), genIndexVal.genericIndex.groupLabel]];
+                [self showToast:NSLocalizedString(@"successfully_updated", @"")];
             });
             [self updateGenericIndexValueList:genIndexVal];
         }
@@ -568,11 +567,11 @@ static const int xIndent = 10;
     else{
         if(isSuccessful == NO){
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self showToast:[NSString stringWithFormat:NSLocalizedString(@"sorry_could_not_update", @"Sorry, Could not update.")]];
+                [self showToast:NSLocalizedString(@"sorry_could_not_update", @"")];
                 [self.navigationController popViewControllerAnimated:YES];
             });
         }else{
-            [self showToast:[NSString stringWithFormat:NSLocalizedString(@"deviceEdit %@ successfully updated", @"%@ successfully updated"), genIndexVal.genericIndex.groupLabel]];
+            [self showToast:NSLocalizedString(@"successfully_updated", @"")];
         }
     }
 }
@@ -718,8 +717,7 @@ static const int xIndent = 10;
         NSLog(@"notify unsuccessful");
         dispatch_async(dispatch_get_main_queue(), ^{
             [self revertToOldValue:genIndexVal];
-            NSString *str =NSLocalizedString(@"DeviceList Sorry, Could not update!", @"DeviceList Sorry, Could not update!");
-            [self showToast:[NSString stringWithFormat:@"%@ %@",str,genIndexVal.genericIndex.groupLabel]];
+            [self showToast:NSLocalizedString(@"sorry_could_not_update", @"")];
         });
     }
     else{
@@ -728,7 +726,7 @@ static const int xIndent = 10;
         
         [Device updateDeviceData:deviceCmdType value:genIndexVal.currentValue deviceID:genIndexVal.deviceID];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self showToast:[NSString stringWithFormat:NSLocalizedString(@"deviceEdit %@ successfully updated", @"%@ successfully updated"), genIndexVal.genericIndex.groupLabel]];
+            [self showToast:NSLocalizedString(@"successfully_updated", @"")];
         });
         [self updateGenericIndexValueList:genIndexVal];
     }
@@ -756,13 +754,13 @@ static const int xIndent = 10;
     }
     if ([mainDict[@"Success"] boolValue] == NO) {
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [self showToast:[NSString stringWithFormat:NSLocalizedString(@"sorry_could_not_update", @"Sorry, Could not update.")]];
+            [self showToast:NSLocalizedString(@"sorry_could_not_update", @"")];
             [self.navigationController popViewControllerAnimated:YES];
         });
         return;
     }
     else{
-        [self showToast:@"Notify Me successfully updated!"];
+        [self showToast:NSLocalizedString(@"successfully_updated", @"")];
     }
 }
 
