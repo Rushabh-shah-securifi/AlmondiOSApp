@@ -61,6 +61,7 @@ Internet route to cloud service.";
 "Password reset link has been sent to your account." = "Password reset link has been sent to your account.";
 "Sorry! Your password cannot be reset at the moment. Try again later." = "Sorry! Your password cannot be
 reset at the moment. Try again later.";
+"sensor.activation.The username was not found" = "The username was not found";
 "Login" = "Login";
 "login.local.Switch to Local Connection" = "Switch to Local Connection";
 
