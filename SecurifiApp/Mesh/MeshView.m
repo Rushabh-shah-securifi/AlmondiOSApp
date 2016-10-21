@@ -631,6 +631,9 @@
     if(![commandType isEqualToString:@"AddWiredSlaveMobile"] && ![commandType isEqualToString:@"AddWirelessSlaveMobile"]){
         return;
     }
+    if(self.currentView.tag != BLINK_CHECK)
+        return;
+    
     NSLog(@"check point 2");
     if(isSuccessful){
         //do nothing, wait for dynamic response
@@ -639,11 +642,19 @@
         NSLog(@"check point 3");
         [self.delegate hideHUDDelegate];
         NSString *reason = payload[REASON];
-        if([reason.lowercaseString hasPrefix:@"unplug all"]){
+        if([reason.lowercaseString hasPrefix:@"unplug all"] && self.wirelessBtn.selected){
             NSString *msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
 //            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
-            if(self.currentView.tag == BLINK_CHECK)
-                [self showAlert:self.almondTitle msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
+            [self showAlert:self.almondTitle msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
+        }
+        else if([reason.lowercaseString hasPrefix:@"unable to"]){
+            NSString *msg;
+            if(self.wirelessBtn.selected)
+                msg = [NSString stringWithFormat:@"Unable to reach %@. Check for loose wired connections between your Almonds and try again!", self.almondTitle];
+            else
+                msg = [NSString stringWithFormat:@"Unable to reach %@. Bring it closer to your primary Almond and try again!", self.almondTitle];
+            
+            [self showAlert:self.almondTitle msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
         }
         else{
             [self.blinkTimer invalidate];
@@ -904,13 +915,9 @@
             [self.delegate showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
    
         }else if(alertView.tag == ADD_FAIL){
-            if(self.currentView.tag == BLINK_CHECK){
-                [self.blinkTimer invalidate];
-                int blinkTimeout = 120;
-                self.blinkTimer = [NSTimer scheduledTimerWithTimeInterval:blinkTimeout target:self selector:@selector(onBlinkTimeout:) userInfo:nil repeats:NO];
-                [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:blinkTimeout];
-            }
-                
+            if(self.currentView.tag != BLINK_CHECK)
+                return;
+            [self onYesLEDBlinking:nil];
         }
     }
     else{

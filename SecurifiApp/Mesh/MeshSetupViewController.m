@@ -336,7 +336,6 @@ int mii;
         [self dismissControllerDelegate];
     }else{
         if([cmdType isEqualToString:@"RemoveSlaveMobile"]){
-            self.removeAlmondTO = nil;
             [self showForceRemoveAlert];
         }
         else if([cmdType isEqualToString:@"ForceRemoveSlaveMobile"]){
@@ -349,7 +348,7 @@ int mii;
 -(void)showForceRemoveAlert{
     NSString *title = [NSString stringWithFormat:@"Failed to remove \"%@\" Almond. Do you want to forcefully remove it?", self.almondStatObj.name];
     NSString *desc = @"If you choose to force remove an Almond, you will have to manually reset that Almond to complete the process.";
-    
+    //not using showalert because this has other button title.
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:title message:desc delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
     alert.tag = FORCE_REMOVE;
     dispatch_async(dispatch_get_main_queue(), ^() {
