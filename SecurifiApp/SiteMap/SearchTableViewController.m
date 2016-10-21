@@ -93,8 +93,6 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.amac = toolkit.currentAlmond.almondplusMAC;
     self.dayArr = [[NSMutableArray alloc]init];
-    self.browsingHistory =[[BrowsingHistory alloc]init];
-    self.browsingHistory.delegate = self;
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
     self.navigationController.navigationBar.clipsToBounds = YES;
     self.navigationController.view.backgroundColor = [UIColor whiteColor];
@@ -113,28 +111,28 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     //    [self initializeSearchController ];
     self.allUri = [NSMutableArray new];
     self.isManuelSearch = YES;
+    
+    
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     NSLog(@"viewWillAppear searchPage");
     [self addSuggestionSearchObj];
     [self initializeSearchController];
+    
+    
     self.isManuelSearch = YES;
 }
 -(void)viewWillDisappear:(BOOL)animated{
     self.NoresultFound.hidden = YES;
     [super viewWillDisappear:YES];
-    NSLog(@"viewDidDisappear");
+    
     
     
 }
 -(void)viewDidDisappear:(BOOL)animated{
     self.NoresultFound.hidden = YES;
     [super viewDidDisappear:YES];
-    [self.dayArr removeAllObjects];
-    [self.allUri removeAllObjects];
-    self.incompleteDB = @{};
-    NSLog(@"viewDidDisappear");
     // [self.searchTableView removeFromSuperview];
     
 }
@@ -240,6 +238,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
             label.text = @"Today";
         else
             label.text = headerDate;
+        NSLog(@"Header date = %@ days %ld",headerDate,(unsigned long)self.dayArr.count);
     }
     
     label.textColor = [UIColor grayColor];
@@ -316,7 +315,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         else if (indexPath.section == 2 && indexPath.row == 0){
             [self createRequest:@"Category" value:@"0"];
             
-            [self categorySearch:@"U" andDisplayText:@"Unknown"];
+            [self categorySearch:@"Unknown" andDisplayText:@"Unknown"];
         }
         else if (indexPath.section == 2 && indexPath.row == 1){
             [self createRequest:@"Category" value:@"4"];
@@ -327,7 +326,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         else if (indexPath.section == 2 && indexPath.row == 2){
             [self createRequest:@"Category" value:@"5"];
             
-            [self categorySearch:@"R" andDisplayText:@"Restricted"];
+            [self categorySearch:@"Restricted" andDisplayText:@"Restricted"];
         }
         else if (indexPath.section == 2 && indexPath.row == 3){
             [self createRequest:@"Category" value:@"3"];
@@ -505,7 +504,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         return;
     if(![dict[@"AMAC"] isEqualToString:self.amac] || ![dict[@"CMAC"] isEqualToString:self.cmac])
         return;
-    int changedHourTag = dict[@"ChangeHour"]!=NULL?(int)dict[@"ChangeHour"]:0;
+    int changedHourTag = dict[@"ChangeHour"]!=NULL?[dict[@"ChangeHour"] integerValue]:0;
     if(changedHourTag == 1)
         [self createRequest:@"lastHour" value:self.value];
     
@@ -638,16 +637,12 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     [self.dayArr removeAllObjects];
     [self.allUri removeAllObjects];
     
+    
     NSLog(@"searchBarCancelButtonClicked self.dayArr %ld",(unsigned long)self.dayArr.count);
     self.incompleteDB = @{};
     [self reloadSearchTable];
     [self reloadTable];
-    
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.NoresultFound.hidden = YES;
-    });
-    
+    self.NoresultFound.hidden = YES;
     
 }
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView;
@@ -657,11 +652,12 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 }
 -(void)onCancleButton{
     self.isManuelSearch = YES;
-    self.NoresultFound.hidden = YES;
+    
     [self.dayArr removeAllObjects];// making sure ermovinf all obj from self .day arr
     NSLog(@"onCancleButton");
     [self.allUri removeAllObjects];
     // [self dismissViewControllerAnimated:YES completion:nil];
+    self.NoresultFound.hidden = YES;
 }
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
     
@@ -723,11 +719,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         [self searchBarCancelButtonClicked:self.searchController.searchBar];
         return;
     }
-    
-    NSLog(@"abpve searching string self.searchPatten %ld = %@,%ld",(long)self.searchPatten,searchString,(unsigned long)self.dayArr.count );
-    
-    
     //
+    NSLog(@"searchString == %@",searchString);
     if([CommonMethods isContainMonth:searchString] ){
         NSString *str = [BrowsingHistoryUtil getFormateOfDate:searchString];//dd-mm-yyyy
         [self createRequest:DATE value:str];

@@ -93,4 +93,6 @@
 +(NSString *)getPresentTime24Format;
 
 + (NSString *)getYestardayDate;
+
++(NSArray *)domainEpocArr:(NSArray *)arr;
 @end

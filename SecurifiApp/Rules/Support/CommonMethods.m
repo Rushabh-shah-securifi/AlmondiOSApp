@@ -795,4 +795,23 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     return dateStr;
     
 }
++(NSArray *)domainEpocArr:(NSArray *)arr{
+    NSMutableArray *epocSArr = [NSMutableArray new];
+    NSSortDescriptor* sortOrder = [NSSortDescriptor sortDescriptorWithKey: @"self"
+                                                                ascending: NO];
+   
+    if(arr.count > 0){
+        NSDictionary *dict = [arr objectAtIndex:0];
+        if(dict[@"Epochs"]==NULL)
+            return @[];
+        NSArray *epocArr = dict[@"Epochs"];
+         arr =  [epocArr sortedArrayUsingDescriptors: [NSArray arrayWithObject: sortOrder]];
+        for(NSString *epoc in arr){
+            NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[epoc intValue]];
+            [epocSArr addObject:[dat stringFromDate]];
+        }
+    }
+    
+    return epocSArr;
+}
 @end

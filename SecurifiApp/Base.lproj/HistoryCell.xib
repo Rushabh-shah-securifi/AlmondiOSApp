@@ -74,6 +74,7 @@
                 <outlet property="siteNameXconstrain" destination="lOS-wQ-t8i" id="5rG-ep-f6C"/>
                 <outlet property="webImg" destination="nkO-tR-bJ4" id="4FO-DK-q1h"/>
                 <outlet property="webImgXConstrain" destination="Z9H-PB-z2w" id="CHv-Ku-pek"/>
+                <outlet property="webImgYConstrain" destination="suf-LK-Hax" id="TyX-BA-ijK"/>
             </connections>
             <point key="canvasLocation" x="10.5" y="-299.5"/>
         </view>

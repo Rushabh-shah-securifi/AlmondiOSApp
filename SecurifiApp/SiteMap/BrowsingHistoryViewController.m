@@ -90,13 +90,18 @@ typedef void(^InsertMethod)(BOOL);
     
 }
 -(void)viewWillAppear:(BOOL)animated{
-    
-    
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
     self.NoresultFound.hidden = YES;
-    NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:100 amac:self.amac cmac:self.cmac];
-    [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+    if([[SecurifiToolkit sharedInstance]isCloudReachable]){
+        NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:500 amac:self.amac cmac:self.cmac];
+        [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+    }
+    else
+    {
+        NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:100 amac:self.amac cmac:self.cmac];
+        [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+    }
     self.isTapped = NO;
     
     
@@ -373,19 +378,18 @@ typedef void(^InsertMethod)(BOOL);
             NSArray *browsHist = self.dayArr[indexPath.section];
             if(browsHist.count < indexPath.row)
                 return;
+           
             NSDictionary *uriDict = browsHist[indexPath.row];
-            //    //NSLog(@"uriDict = %@",uriDict);
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
-            ChangeCategoryViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ChangeCategoryViewController"];
+            
+            ChangeCategoryViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"ChangeCategoryViewController"];
+           
             viewController.uriDict = uriDict;
             viewController.client = self.client;
             self.isTapped = YES;
             [self.navigationController pushViewController:viewController animated:YES];
             dispatch_async(dispatch_get_main_queue(), ^{
                 // [self.HUD hide:YES];
-                
             });
-            
         }
 }
 

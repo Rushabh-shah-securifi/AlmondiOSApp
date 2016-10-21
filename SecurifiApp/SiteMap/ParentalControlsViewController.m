@@ -85,6 +85,27 @@
     
     NSString *connection;
     
+        
+        if(self.client.webHistoryEnable == NO){
+            self.switchView1.on = NO;
+            self.view2.hidden = YES;
+            self.viewTwoTop.constant = -40;
+        }
+        else{
+            self.switchView1.on = YES;
+            self.view2.hidden = NO;
+            self.viewTwoTop.constant = 1;
+        }
+        if(self.client.bW_Enable == NO){
+            self.switchView3.on = NO;
+            self.dataLogView.hidden = YES;
+        }
+        else{
+            self.switchView3.on = YES;
+            self.dataLogView.hidden = NO;
+        }
+    
+    
     for (GenericIndexValue *genericIndexValue in arr) {
         NSLog(@"genericIndexValue.genericIndex.ID %@ value %@",genericIndexValue.genericIndex.ID ,genericIndexValue.genericValue.value);
         
@@ -129,11 +150,12 @@
     if([self.routerMode isEqualToString:@"ap"] || [self.routerMode isEqualToString:@"re"] ||[self.routerMode isEqualToString:@"WirelessSlave"] || [self.routerMode isEqualToString:@"WiredSlave"]){
         if([connection isEqualToString:@"wireless"]){
             self.switchView3.on = NO;
+           self.blockClientTxt.text = @"For checking Data usage, Almond must be in Router Mode.";
         }
         else{
             self.switchView3.on = NO;
             self.switchView1.on = NO;
-           self.blockClientTxt.text = @"This device is in wired connection. Web history and data usage require wireless connection to function in RE & AP mode.";
+           self.blockClientTxt.text = @"This device is in wired connection. Web history requires wireless connection in RE/AP Mode. For checking Data usage, Almond must be in Router Mode.";
         }
     }
     self.icon.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
@@ -143,27 +165,7 @@
     [dateformate setDateFormat:@"EEEE dd MMMM HH:mm"]; // Date formater
     NSString *str = [dateformate stringFromDate:date];
     self.lastSeen.text = [NSString stringWithFormat:@"last activated time %@",str];
-    dispatch_async(dispatch_get_main_queue(), ^{
     
-    if(self.client.webHistoryEnable == NO){
-        self.switchView1.on = NO;
-        self.view2.hidden = YES;
-        self.viewTwoTop.constant = -40;
-    }
-    else{
-        self.switchView1.on = YES;
-        self.view2.hidden = NO;
-        self.viewTwoTop.constant = 1;
-    }
-    if(self.client.bW_Enable == NO){
-        self.switchView3.on = NO;
-        self.dataLogView.hidden = YES;
-    }
-    else{
-        self.switchView3.on = YES;
-        self.dataLogView.hidden = NO;
-    }
-    });
    
 }
 //-(void) viewWillDisappear:(BOOL) animated
