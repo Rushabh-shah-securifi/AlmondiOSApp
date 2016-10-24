@@ -35,6 +35,7 @@
 #import "AlmondStatus.h"
 #import "AdvanceRouterSettingsController.h"
 #import "ConnectionStatus.h"
+#import "LocalNetworkManagement.h"
 
 #define DEF_NETWORKING_SECTION          0
 #define DEF_MESH_SECTION                1
@@ -476,7 +477,7 @@ int mii;
 -(NSArray*)getNetworkSummary{
     //NSLog(@"self.routersummery.url: %@", self.routerSummary.url);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC];
+    SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC];
     NSString *host;
     NSString *login;
     if(self.currentConnectionMode == SFIAlmondConnectionMode_local){
@@ -718,7 +719,7 @@ int mii;
                  
                  if(self.currentConnectionMode == SFIAlmondConnectionMode_cloud){ //Do only in Cloud
                      NSLog(@"updating local network settings");
-                     [toolkit tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:self.routerSummary];
+                     [LocalNetworkManagement tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:self.routerSummary];
                      NSString *currentVersion = self.routerSummary.firmwareVersion;
                      [self tryCheckAlmondVersion:currentVersion];
                  }

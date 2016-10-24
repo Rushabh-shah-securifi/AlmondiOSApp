@@ -24,6 +24,7 @@
 #import "UIFont+Securifi.h"
 #import "MessageView.h"
 #import "SFICloudLinkViewController.h"
+#import "LocalNetworkManagement.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
@@ -506,7 +507,7 @@ CGPoint tablePoint;
 
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [toolkit setLocalNetworkSettings:newSettings];
+    [LocalNetworkManagement setLocalNetworkSettings:newSettings];
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 

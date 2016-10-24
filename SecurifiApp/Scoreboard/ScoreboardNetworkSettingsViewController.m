@@ -5,7 +5,7 @@
 
 #import "ScoreboardNetworkSettingsViewController.h"
 #import "SFIAlmondLocalNetworkSettings.h"
-
+#import "LocalNetworkManagement.h"
 
 @interface ScoreboardNetworkSettingsViewController () <UITextFieldDelegate>
 @property(nonatomic, strong) SFIAlmondLocalNetworkSettings *settings;
@@ -21,7 +21,7 @@
     NSString *almondMac = self.almond.almondplusMAC;
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:almondMac];
+    SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:almondMac];
 
     if (!settings) {
         settings = [SFIAlmondLocalNetworkSettings new];
@@ -36,7 +36,7 @@
 
     if (self.dirty) {
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        [toolkit setLocalNetworkSettings:self.settings];
+        [LocalNetworkManagement setLocalNetworkSettings:self.settings];
     }
 }
 

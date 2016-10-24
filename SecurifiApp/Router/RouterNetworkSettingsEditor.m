@@ -9,6 +9,7 @@
 #import "RouterNetworkSettingsEditor.h"
 #import "UIFont+Securifi.h"
 #import "Analytics.h"
+#import "LocalNetworkManagement.h"
 
 typedef NS_ENUM(unsigned int, TABLE_ROW) {
     TABLE_ROW_IP_ADDR,
@@ -90,7 +91,6 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
         [self.tableView reloadData];
     });
-    
 }
 
 - (void)markErrorOnLink:(NSString *)msg {
@@ -352,13 +352,15 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
         // Test the connection (and interrogate the remote Almond for info about itself; the almond Mac and name
         // will be reflected in the settings after the test
         enum TestConnectionResult result = [settings testConnection];
+        NSLog(@"test result: %d", result);
         //NSLog(@"before switch");
         switch (result) {
             case TestConnectionResult_success: {
                 
                 SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
-                SFIAlmondLocalNetworkSettings *old_settings = [toolkit localNetworkSettingsForAlmond:settings.almondplusMAC];
+                SFIAlmondLocalNetworkSettings *old_settings = [LocalNetworkManagement localNetworkSettingsForAlmond:settings.almondplusMAC];
+                NSLog(@"mac: %@, old settnigs: %@", settings.almondplusMAC, old_settings);
                 if (old_settings) {
                     //NSLog(@"settings already exists and");
                     // in "Link Mode" we believe this is Almond is unknown to the app/system. In this case, it turns
@@ -369,13 +371,14 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
                 }
 
                 // store the new/updated settings and update UI state; inform the delegate
-                [toolkit setLocalNetworkSettings:settings];
+                [LocalNetworkManagement setLocalNetworkSettings:settings];
                 //NSLog(@"storing local network %@",settings);
+                
                 if (self.makeLinkedAlmondCurrentOne) {
                     SFIAlmondPlus *almond = settings.asLocalLinkAlmondPlus;
 
                     // switch the connection to Local
-                    NSLog(@"i am called");
+                    NSLog(@"i am called mac: %@", almond.almondplusMAC);
                     [toolkit setConnectionMode:SFIAlmondConnectionMode_local forAlmond:almond.almondplusMAC];
                     [toolkit setCurrentAlmond:almond];
                     NSLog(@"switching to local  connection");
@@ -411,6 +414,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
 - (void)onSaveEdits {
     // validate edits just as if new link were being set up
+    NSLog(@"save button is clicked");
     [self onLink];
     [[Analytics sharedInstance] markEditLocalConnection];
 }
@@ -423,7 +427,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
     NSString *almondMac = self.settings.almondplusMAC;
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [toolkit removeLocalNetworkSettingsForAlmond:almondMac];
+    [LocalNetworkManagement removeLocalNetworkSettingsForAlmond:almondMac];
 
     [self.delegate networkSettingsEditorDidUnlinkAlmond:self];
 }

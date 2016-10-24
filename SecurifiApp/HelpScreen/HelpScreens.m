@@ -11,6 +11,7 @@
 #import "AlmondJsonCommandKeyConstants.h"
 #import "Colours.h"
 #import "SFIAlmondLocalNetworkSettings.h"
+#import "LocalNetworkManagement.h"
 
 @interface HelpScreens()<UIGestureRecognizerDelegate>
 @property (strong, nonatomic) IBOutlet UIView *helpPrompt; //[showme, hide]
@@ -234,7 +235,7 @@
 }
 
 -(NSURL *)getLocalURL{
-    SFIAlmondLocalNetworkSettings *settings = [[SecurifiToolkit sharedInstance] localNetworkSettingsForAlmond:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
+    SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
     return [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", settings.host]];
 }
 

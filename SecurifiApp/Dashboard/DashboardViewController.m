@@ -29,6 +29,8 @@
 #import "SFIAlmondLocalNetworkSettings.h"
 #import "Client.h"
 #import "ConnectionStatus.h"
+#import "LocalNetworkManagement.h"
+
 
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate>{
     UIButton *button, *btnArrow;
@@ -699,7 +701,7 @@
             break;
         };
         case SFICloudStatusStateConnected: {
-            SFIAlmondLocalNetworkSettings *settings = [[SecurifiToolkit sharedInstance] localNetworkSettingsForAlmond:self.toolkit.currentAlmond.almondplusMAC];
+            SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:self.toolkit.currentAlmond.almondplusMAC];
             if (settings) {
                 Title = NSLocalizedString(@"alert.message-Connected to your Almond via cloud.", @"Connected to your Almond via cloud.");
                 subTitle1 = NSLocalizedString(@"switch_local", @"Switch to Local Connection");
@@ -713,7 +715,7 @@
             break;
         };
         case SFICloudStatusStateLocalConnection: {
-            SFIAlmondLocalNetworkSettings *settings = [[SecurifiToolkit sharedInstance] localNetworkSettingsForAlmond:self.toolkit.currentAlmond.almondplusMAC];
+            SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:self.toolkit.currentAlmond.almondplusMAC];
             if(settings){
                 Title = NSLocalizedString(@"Connected to your Almond locally.", @"Connected to your Almond locally.");
                 subTitle1 = NSLocalizedString(@"switch_cloud", @"Switch to Cloud Connection");
@@ -889,7 +891,7 @@
 
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [toolkit setLocalNetworkSettings:newSettings];
+    [LocalNetworkManagement setLocalNetworkSettings:newSettings];
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -905,7 +907,7 @@
     NSString *almondMac = editor.settings.almondplusMAC;
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [toolkit removeLocalNetworkSettingsForAlmond:almondMac];
+    [LocalNetworkManagement removeLocalNetworkSettingsForAlmond:almondMac];
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 

@@ -217,6 +217,7 @@
 		A545372B1C8ED35C00DC3EC8 /* scene_names.txt in Resources */ = {isa = PBXBuildFile; fileRef = A545372A1C8ED35C00DC3EC8 /* scene_names.txt */; };
 		A54D74891CB51FD000EB46B6 /* RouterPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = A54D74881CB51FD000EB46B6 /* RouterPayload.m */; };
 		A54EB0351C45004B00CF2837 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A54EB0341C45004B00CF2837 /* Common-Images.xcassets */; };
+		A569B8E71DBE41FF00FBD429 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A569B8E51DBE416400FBD429 /* libicucore.tbd */; };
 		A58DB2611BB168C400717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB24F1BB168C400717C02 /* AccountsStoryboard_iPhone.strings */; };
 		A58DB2621BB168C400717C02 /* Almond-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB2511BB168C400717C02 /* Almond-Localizable.strings */; };
 		A58DB2631BB168C400717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB2531BB168C400717C02 /* Almond-MainStoryboard_iPhone.strings */; };
@@ -837,6 +838,7 @@
 		A54D74871CB51FD000EB46B6 /* RouterPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouterPayload.h; sourceTree = "<group>"; };
 		A54D74881CB51FD000EB46B6 /* RouterPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouterPayload.m; sourceTree = "<group>"; };
 		A54EB0341C45004B00CF2837 /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
+		A569B8E51DBE416400FBD429 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		A58DB2501BB168C400717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
 		A58DB2521BB168C400717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = "Almond-Localizable.strings"; sourceTree = "<group>"; };
 		A58DB2541BB168C400717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = "Almond-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
@@ -1315,6 +1317,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A569B8E71DBE41FF00FBD429 /* libicucore.tbd in Frameworks */,
 				1C996C781AB94E2800CB2C23 /* MessageUI.framework in Frameworks */,
 				1CA80E4C1BAFA4B1002EB836 /* libz.dylib in Frameworks */,
 				1CA80E4A1BAFA4A9002EB836 /* libsqlite3.dylib in Frameworks */,
@@ -1756,6 +1759,7 @@
 		1CED5EF319AC82FD0023512F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A569B8E51DBE416400FBD429 /* libicucore.tbd */,
 				1C0317291BB28EB6002E0405 /* libxml2.2.dylib */,
 				1C0317261BB28E8D002E0405 /* libSystem.B.dylib */,
 				1C0317241BB28E75002E0405 /* libz.1.dylib */,

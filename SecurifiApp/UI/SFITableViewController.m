@@ -24,6 +24,7 @@
 #import "UIImage+Securifi.h"
 #import "SFICloudLinkViewController.h"
 #import "ConnectionStatus.h"
+#import "LocalNetworkManagement.h"
 
 
 @interface SFITableViewController () <MBProgressHUDDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate, HelpScreensDelegate, MessageViewDelegate>
@@ -243,7 +244,7 @@
         };
             
         case SFICloudStatusStateConnected: {
-            SFIAlmondLocalNetworkSettings *settings = [[SecurifiToolkit sharedInstance] localNetworkSettingsForAlmond:self.almondMac];
+            SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:self.almondMac];
             if (settings) {
                 _alert.message = NSLocalizedString(@"alert.message-Connected to your Almond via cloud.", @"Connected to your Almond via cloud.");
                 _alert.actions = @[
@@ -296,7 +297,7 @@
             break;
         };
         case SFICloudStatusStateLocalConnection: {
-            SFIAlmondLocalNetworkSettings *settings = [[SecurifiToolkit sharedInstance] localNetworkSettingsForAlmond:self.almondMac];
+            SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:self.almondMac];
             if (settings) {
                 _alert.message = NSLocalizedString(@"Connected to your Almond locally.", @"Connected to your Almond locally.");
                 _alert.actions = @[
@@ -809,7 +810,7 @@
     NSString *mac = self.almondMac;
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:mac];
+    SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:mac];
     NSLog(@"sfitableview - presentlocalnetwork - mac: %@, settings: %@", mac, settings);
     if (!settings) {
         settings = [SFIAlmondLocalNetworkSettings new];
@@ -949,7 +950,7 @@
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
     NSLog(@"Link 2");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [toolkit setLocalNetworkSettings:newSettings];
+    [LocalNetworkManagement setLocalNetworkSettings:newSettings];
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -968,7 +969,7 @@
     NSString *almondMac = editor.settings.almondplusMAC;
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [toolkit removeLocalNetworkSettingsForAlmond:almondMac];
+    [LocalNetworkManagement removeLocalNetworkSettingsForAlmond:almondMac];
     
     [self.tableView reloadData];
     [editor dismissViewControllerAnimated:YES completion:nil];
