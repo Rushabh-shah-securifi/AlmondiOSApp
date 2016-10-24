@@ -19,6 +19,7 @@
 #import "ResetPasswordRequest.h"
 #import "Login.h"
 #import "HTTPRequest.h"
+#import "ConnectionStatus.h"
 
 @interface SFILoginViewController () <UITextFieldDelegate, RouterNetworkSettingsEditorDelegate, SFISignupViewControllerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -91,8 +92,7 @@
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-    [center addObserver:self selector:@selector(onReachabilityDidChange:) name:kSFIReachabilityChangedNotification object:nil];
-    [center addObserver:self selector:@selector(onNetworkDown:) name:NETWORK_DOWN_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onConnectionStatusChanged:) name:CONNECTION_STATUS_CHANGE_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onResetPasswordResponse:) name:RESET_PWD_RESPONSE_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onValidateResponseCallback:) name:VALIDATE_RESPONSE_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onLoginResponse:) name:kSFIDidCompleteLoginNotification object:nil];
@@ -375,29 +375,27 @@
     });
 }
 
-- (void)onReachabilityDidChange:(id)sender {
+- (void)onConnectionStatusChanged:(id)sender {
+    NSNumber* status = [sender object];
+    int statusIntValue = [status intValue];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    if ([toolkit isCloudReachable]) {
-        [self setStandardLoginMsg];
-    }
-    else {
+    if(statusIntValue == (int)(ConnectionStatusType*)NO_NETWORK_CONNECTION){
         [self setSorryMsg:NSLocalizedString(@"Unable to establish Internet route to cloud service.", @"Unable to establish Internet route to cloud service.")];
+        
+//        if (self.isLoggingIn) {
+//            [self setOopsMsg:NSLocalizedString(@"Sorry! Could not complete the request.", @"Sorry! Could not complete the request.")];
+//        }
+    }else if(statusIntValue == (int)(ConnectionStatusType*)CONNECTED_TO_NETWORK){
+        if ([toolkit isCloudReachable]) {
+            [self setStandardLoginMsg];
+        }
     }
-
+    
     [self markResetLoggingInState];
     [self tryEnableLoginButton];
+
 }
 
-- (void)onNetworkDown:(id)sender {
-    [self hideHud];
-
-    if (self.isLoggingIn) {
-        [self setOopsMsg:NSLocalizedString(@"Sorry! Could not complete the request.", @"Sorry! Could not complete the request.")];
-        [self markResetLoggingInState];
-    }
-
-    [self tryEnableLoginButton];
-}
 
 - (void)onLoginResponse:(id)sender {
     [self markResetLoggingInState];

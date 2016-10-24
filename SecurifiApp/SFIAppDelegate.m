@@ -73,7 +73,13 @@
     NSString *documentsDirectory = [allPaths objectAtIndex:0];
     NSString *pathForLog = [documentsDirectory stringByAppendingPathComponent:self.currentFileName];
     
-    //deleting logs from file
+    NSError *error;
+    if ([[NSFileManager defaultManager] isDeletableFileAtPath:pathForLog]) {
+        BOOL success = [[NSFileManager defaultManager] removeItemAtPath:self.currentFileName error:&error];
+        if (!success) {
+            NSLog(@"Error removing file at path: %@", error.localizedDescription);
+        }
+    }
     [[NSFileManager defaultManager] createFileAtPath:self.currentFileName contents:[NSData data] attributes:nil];
     freopen([pathForLog cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
 }
@@ -89,15 +95,13 @@
     
     if (error){
         NSLog(@"Error reading file: %@", error.localizedDescription);
-        NSArray *allPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [allPaths objectAtIndex:0];
-        NSString *pathForLog = [documentsDirectory stringByAppendingPathComponent:otherfile];
     }
 
     dispatch_queue_t sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
     
+    NSLog(@"post req = %@",fileContents);
+    //[self redirectLogToDocuments];
     dispatch_async(sendReqQueue,^(){
-        NSLog(@"post req = %@",fileContents);
         NSData *postData = [fileContents dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
@@ -108,11 +112,9 @@
         [request setTimeoutInterval:20.0];
         [request setHTTPBody:postData];
         NSURLResponse *res= Nil;
-        [self redirectLogToDocuments];
-//        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&res error:nil];
-        NSLog(@"logs successfully uploaded 3 %@",fileContents);
-//        if(data == nil)
-//            return ;
+        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&res error:nil];
+        if(data == nil)
+            return ;
     });
 }
 
@@ -123,8 +125,7 @@
         return @"File1.txt";
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
+-(void) sendLogsToCloud {
     NSString* fileName = [self readData];
     if(fileName==NULL){
         [self writeData:@"File1.txt"];
@@ -141,10 +142,14 @@
             NSLog(@"file name is file2");
         }
     }
-
+    
     NSLog(@"%@ is the current file name",self.currentFileName);
     [self sendHTTPRequestAnotherMethod];
+}
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    [self sendLogsToCloud];
     NSLog(@"Application did launch");
     [self initializeSystem:application];
     
@@ -199,15 +204,17 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    [SecurifiToolkit sharedInstance].isAppInForeGround = NO;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
+    [SecurifiToolkit sharedInstance].isAppInForeGround = YES;
     BOOL online = [toolkit isNetworkOnline];
     NSLog(@"Application becomes active: cloud online=%@", online ? @"YES" : @"NO");
 
