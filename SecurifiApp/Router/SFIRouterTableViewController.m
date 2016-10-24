@@ -304,7 +304,7 @@ int mii;
 }
 
 -(BOOL)isAL3{
-    return [[SecurifiToolkit sharedInstance].currentAlmond.firmware hasPrefix:@"AL3-"];
+    return [self.routerSummary.firmwareVersion hasPrefix:@"AL3-"];
 }
 
 -(BOOL)isDisconnected{
@@ -436,7 +436,9 @@ int mii;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if([self isNoAlmondLoaded])
         return 0;
-    if(section == 1 && ![self isAL3])
+    else if(section == DEF_ADVANCED_ROUTER_SECTION && self.enableAdvRouter == NO)
+        return 0;
+    else if(section == DEF_MESH_SECTION && ![self isAL3])
         return 0;
     return 10;
 }

@@ -280,11 +280,25 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconSceneChekmark" translatesAutoresizingMaskIntoConstraints="NO" id="5N0-OE-7Xx">
+                    <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="YXb-h8-CVI"/>
+                        <constraint firstAttribute="width" constant="25" id="rhc-lH-XNJ"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="imageRenderingMode">
+                            <integer key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="1aH-PE-Gtu" firstAttribute="leading" secondItem="Nsc-ph-bro" secondAttribute="leading" id="3iJ-hV-YjI"/>
+                <constraint firstItem="5N0-OE-7Xx" firstAttribute="top" secondItem="692-ae-XeD" secondAttribute="bottom" constant="81" id="4DE-g3-3QV"/>
                 <constraint firstItem="AtG-98-GnD" firstAttribute="top" secondItem="Nsc-ph-bro" secondAttribute="top" constant="14" id="77k-Kd-hPc"/>
+                <constraint firstAttribute="trailing" secondItem="5N0-OE-7Xx" secondAttribute="trailing" constant="36" id="78A-fP-hLc"/>
                 <constraint firstItem="O5I-PM-G4Q" firstAttribute="centerX" secondItem="Nsc-ph-bro" secondAttribute="centerX" id="FEN-Ts-gVC"/>
                 <constraint firstAttribute="trailing" secondItem="G7t-co-Ylc" secondAttribute="trailing" constant="9" id="G9P-pf-REe"/>
                 <constraint firstItem="C80-Xv-fgW" firstAttribute="top" secondItem="1aH-PE-Gtu" secondAttribute="bottom" constant="35" id="K9J-He-b5C"/>

@@ -102,6 +102,7 @@
 #pragma mark - Connection Management
 
 - (void)conditionalTryConnectOrLogon:(BOOL)onViewAppearing {
+    NSLog(@"conditionalTryConnectOrLogon");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
     // for apps not using local connection support: we preserve the old behavior of showing a splash screen until the
@@ -350,7 +351,7 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
             if (![[SecurifiToolkit sharedInstance] isCloudLoggedIn]) {
-                [self tryPresentLogonScreen];
+//                [self tryPresentLogonScreen];
             }
         }];
     });
