@@ -30,7 +30,6 @@
 #import "Client.h"
 #import "ConnectionStatus.h"
 
-
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate>{
     UIButton *button, *btnArrow;
 }
@@ -122,7 +121,6 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
 }
 
 -(void)initializeUI{
@@ -142,7 +140,7 @@
 }
 
 -(BOOL)isDisconnected{
-    return [_toolkit connectionStatusForAlmond:_toolkit.currentAlmond.almondplusMAC] == SFIAlmondConnectionStatus_disconnected;
+    return [_toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]] == SFIAlmondConnectionStatus_disconnected;
 }
 
 - (void)didReceiveMemoryWarning {

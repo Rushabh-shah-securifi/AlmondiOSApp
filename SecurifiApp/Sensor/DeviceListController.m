@@ -30,6 +30,7 @@
 #import "HelpCenter.h"
 #import "ParentalControlsViewController.h"
 #import "RecentSearchDB.h"
+#import "ConnectionStatus.h"
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -92,7 +93,7 @@ int mii;
 }
 
 -(BOOL)isDisconnected{
-    return [_toolkit connectionStatusForAlmond:_toolkit.currentAlmond.almondplusMAC] == SFIAlmondConnectionStatus_disconnected;
+    return [_toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]] == SFIAlmondConnectionStatus_disconnected;
 }
 
 -(void)markAlmondTitleAndMac{

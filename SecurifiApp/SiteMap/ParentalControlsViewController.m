@@ -131,7 +131,7 @@
     }
     
     if(self.isLocal){
-        BOOL isCloud = [[SecurifiToolkit sharedInstance]isCloudOnline];
+        BOOL isCloud = [[SecurifiToolkit sharedInstance] isNetworkOnline];
         BOOL isinternet = [[SecurifiToolkit sharedInstance]isCloudReachable];
         NSLog(@"isCloud %d,%d",isCloud,isinternet);
         if(!isinternet){

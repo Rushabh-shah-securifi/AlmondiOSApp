@@ -34,6 +34,7 @@
 #import "MeshPayload.h"
 #import "AlmondStatus.h"
 #import "AdvanceRouterSettingsController.h"
+#import "ConnectionStatus.h"
 
 #define DEF_NETWORKING_SECTION          0
 #define DEF_MESH_SECTION                1
@@ -309,7 +310,7 @@ int mii;
 
 -(BOOL)isDisconnected{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    return [toolkit connectionStatusForAlmond:toolkit.currentAlmond.almondplusMAC] == SFIAlmondConnectionStatus_disconnected;
+    return [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]] == SFIAlmondConnectionStatus_disconnected;
 }
 
 -(int)getSettingsRowHeight{

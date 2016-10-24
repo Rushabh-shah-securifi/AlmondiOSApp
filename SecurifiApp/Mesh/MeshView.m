@@ -14,6 +14,7 @@
 #import "SFIColors.h"
 #import "Analytics.h"
 #import "RouterPayload.h"
+#import "ConnectionStatus.h"
 
 #define ADD_FAIL -2
 #define NETWORK_OFFLINE -1
@@ -909,7 +910,7 @@
             NSLog(@"on alert ok");
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
             
-            [toolkit initToolkit];
+            [toolkit asyncInitNetwork];
             int connectionTO = 5;
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self.delegate showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
@@ -933,7 +934,7 @@
     
     if(tag == NETWORK_OFFLINE){
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:toolkit.currentAlmond.almondplusMAC];
+        enum SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
         if(status == SFIAlmondConnectionStatus_disconnected){
             NSLog(@"ok 1");
             [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
