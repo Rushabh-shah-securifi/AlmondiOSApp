@@ -111,7 +111,8 @@
         
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"] && ![genericIndexValue.genericValue.value isEqualToString:@"wireless"]){
             connection = genericIndexValue.genericValue.value;
-            self.dataLogView.hidden = YES;
+            
+            //self.dataLogView.hidden = YES;
                 }
         else {
             
