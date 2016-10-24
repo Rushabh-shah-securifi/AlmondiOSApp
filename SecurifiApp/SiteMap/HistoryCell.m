@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *webImgXConstrain;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *siteNameXconstrain;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *catImgXConstrain;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *webImgYConstrain;
 
 @end
 
@@ -32,7 +33,7 @@
 }
 
 -(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem isCategory:(BOOL)isCategory showTime :(BOOL)showTime count:(NSInteger)count{
-    NSLog(@"");
+    //NSLog(@"uri dict %@",uri);
     
         if(isCategory){
             self.catImgXConstrain.constant = -6;
@@ -44,7 +45,8 @@
         else{
             if(hideItem){
                 self.webImgXConstrain.constant = 17;
-                self.siteNameXconstrain.constant = -27;
+                self.siteNameXconstrain.constant = -29;
+                self.webImgYConstrain.constant = 13;
             }
             else {
                 self.webImgXConstrain.constant = 7;
@@ -66,10 +68,9 @@
                                placeholderImage:[UIImage imageNamed:@"globe"]
                                       completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                           if(error!=nil){
-                                              NSLog(@"encountered error %@ for %@",uri[@"hostName"],[error localizedDescription]);
                                               [self.webImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/favicon.ico", uri[@"hostName"]]]placeholderImage:[UIImage imageNamed:@"globe"]];
                                           }else
-                                              NSLog(@"completed loading %@",uri[@"hostName"]);
+                                          {}
                                       }];
             }
         }
@@ -78,7 +79,7 @@
         }
     
     
-        self.siteName.text = [NSString stringWithFormat:@"%ld-%@",(long)count,uri[@"hostName"]];
+        self.siteName.text = [NSString stringWithFormat:@"%@",uri[@"hostName"]];
         if([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"NC-17"]){
             self.categoryImg.image = [UIImage imageNamed:@"Adults_Only"];
             

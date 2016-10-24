@@ -14,8 +14,8 @@
 #import "SFIColors.h"
 #import "Analytics.h"
 #import "RouterPayload.h"
-#import "ConnectionStatus.h"
 
+#define ADD_FAIL -2
 #define NETWORK_OFFLINE -1
 #define HELP_INFO 0
 
@@ -32,6 +32,7 @@
 @property (nonatomic) NSTimer *timer;
 @property (nonatomic) NSTimer *blinkTimer;
 @property (nonatomic) NSTimer *nonRepeatingTimer;
+
 @property (nonatomic) CFTimeInterval startTime;
 
 @property (strong, nonatomic) IBOutlet UIView *interfaceView;
@@ -58,6 +59,9 @@
 @property (weak, nonatomic) IBOutlet UIView *lineBtm;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndic1;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndic2;
+@property (weak, nonatomic) IBOutlet UIImageView *tickImgView1;
+@property (weak, nonatomic) IBOutlet UIImageView *tickImgView2;
+@property (weak, nonatomic) IBOutlet UILabel *pairingAlmondRstInfo;
 
 /* Mesh-help Start*/
 @property NSDictionary *item;
@@ -121,7 +125,9 @@
     
     [center addObserver:self selector:@selector(onKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
-    [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
+    
+    [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_COMMAND_TYPE_MESH_RESPONSE object:nil];
     
     [center addObserver:self selector:@selector(onNetworkDownNotifier:) name:NETWORK_DOWN_NOTIFIER object:nil];
     
@@ -207,16 +213,28 @@
     }else{
         self.selectedName = self.almondNames[row];
         self.nameField.text = @"";
+        [self toggleTick1:NO tick2:YES];
     }
 }
 
+- (void)toggleTick1:(BOOL)tick1Hidden tick2:(BOOL)tick2Hidden{
+    NSLog(@"Tick 1");
+    if(_tickImgView1.isHidden == tick1Hidden && _tickImgView2.isHidden == tick2Hidden)
+        return;
+    NSLog(@"Tick 2");
+    self.tickImgView1.hidden = tick1Hidden;
+    self.tickImgView2.hidden = tick2Hidden;
+}
 #pragma mark text field delegates
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    if(textField.text.length == 0)
+        [self toggleTick1:NO tick2:YES];
     [textField resignFirstResponder];
     return  YES;
 }
 
 - (void)onKeyboardDidShow:(id)notification {
+    NSLog(@"on keyboard did show");
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
     [UIView animateWithDuration:0.3 animations:^{
@@ -225,6 +243,7 @@
         f.origin.y =  y ;
         self.frame = f;
     }];
+    [self toggleTick1:YES tick2:NO];
 }
 
 -(void)onKeyboardDidHide:(id)notice{
@@ -484,6 +503,10 @@
     else if(view.tag == 4){ //almond name
         self.nameField.text = @"";
     }
+    else if(view.tag == PAIRING_ALMOND_2){
+        [self setPairingAlmondsScreen2];
+    }
+    
     NSLog(@"current view: %@", self.currentView);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.currentView removeFromSuperview];
@@ -491,6 +514,15 @@
         view.frame = frame;
         [self addSubview:view];
     });
+}
+
+- (void)setPairingAlmondsScreen2{
+    if(self.wiredBtn.selected){
+        self.pairingAlmondRstInfo.text = @"Having trouble pairing your Almond 3 ?\n\n1. Check for loose wired connection between your Almonds.\n2. Press and hold the factory reset button on it for 5 secs.";
+    }
+    else{
+        self.pairingAlmondRstInfo.text = @"Having trouble pairing your Almond 3 ?\n\n1. Bring it closer to primary Almond.\n2. Press and hold the factory reset button on it for 5 secs.";
+    }
 }
 
 #pragma mark command requests
@@ -585,15 +617,59 @@
     [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:10];
 }
 
-
 -(void)onMeshCommandResponse:(id)sender{
-    NSLog(@"mesh view onmeshcommandresponse");
+    NSLog(@"mesh cloud onmeshcommandresponse");
     //load next view
+    NSDictionary *payload = [self getPayload:sender];
+    if(payload == nil) return;
+    
+    NSLog(@"meshview mesh command payload: %@", payload);
+    NSString *commandType = payload[COMMAND_TYPE];
+    BOOL isSuccessful = [payload[SUCCESS] boolValue];
+    
+    NSLog(@"check point 1");
+    if(![commandType isEqualToString:@"AddWiredSlaveMobile"] && ![commandType isEqualToString:@"AddWirelessSlaveMobile"]){
+        return;
+    }
+    if(self.currentView.tag != BLINK_CHECK)
+        return;
+    
+    NSLog(@"check point 2");
+    if(isSuccessful){
+        //do nothing, wait for dynamic response
+    }
+    else{
+        NSLog(@"check point 3");
+        [self.delegate hideHUDDelegate];
+        NSString *reason = payload[REASON];
+        if([reason.lowercaseString hasPrefix:@"unplug all"] && self.wirelessBtn.selected){
+            NSString *msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
+            //            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
+            [self showAlert:self.almondTitle msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
+        }
+        else if([reason.lowercaseString hasPrefix:@"unable to"]){
+            NSString *msg;
+            if(self.wirelessBtn.selected)
+                msg = [NSString stringWithFormat:@"Unable to reach %@. Check for loose wired connections between your Almonds and try again!", self.almondTitle];
+            else
+                msg = [NSString stringWithFormat:@"Unable to reach %@. Bring it closer to your primary Almond and try again!", self.almondTitle];
+            
+            [self showAlert:self.almondTitle msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
+        }
+        else{
+            [self.blinkTimer invalidate];
+            if(self.currentView.tag == BLINK_CHECK)//on ok tap this will take to interface page
+                [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
+        }
+    }
+    
+}
+-(NSDictionary *)getPayload:(id)sender{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
     if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
-        return;
+        return nil;
     }
     BOOL local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
     NSDictionary *payload;
@@ -602,6 +678,15 @@
     }else{
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
     }
+    return payload;
+}
+
+-(void)onCommandResponse:(id)sender{
+    NSLog(@"mesh view onCommandResponse");
+    //load next view
+    NSDictionary *payload = [self getPayload:sender];
+    if(payload == nil) return;
+    
     NSLog(@"meshview mesh payload: %@", payload);
     NSString *commandType = payload[COMMAND_TYPE];
     
@@ -617,7 +702,6 @@
         else{//failed
             [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
         }
-        
         return;
     }
     
@@ -627,9 +711,7 @@
     
     if(isSuccessful){
         //ignore it, we are looking for dynamic command.
-        if([commandType isEqualToString:@"AddWiredSlaveMobile"] || [commandType isEqualToString:@"AddWirelessSlaveMobile"]){
-            return;
-        }
+        
         
         if([commandType isEqualToString:@"CheckForAddableWiredSlaveMobile"] || [commandType isEqualToString:@"CheckForAddableWirelessSlaveMobile"]){
             
@@ -826,12 +908,19 @@
         else if(alertView.tag == NETWORK_OFFLINE){
             NSLog(@"on alert ok");
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            [toolkit asyncInitNetwork];
+            
+            [toolkit initToolkit];
             int connectionTO = 5;
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self.delegate showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
+            
+        }else if(alertView.tag == ADD_FAIL){
+            if(self.currentView.tag != BLINK_CHECK)
+                return;
+            [self onYesLEDBlinking:nil];
         }
-    }else{
+    }
+    else{
         
     }
 }
@@ -844,7 +933,7 @@
     
     if(tag == NETWORK_OFFLINE){
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        enum SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
+        enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:toolkit.currentAlmond.almondplusMAC];
         if(status == SFIAlmondConnectionStatus_disconnected){
             NSLog(@"ok 1");
             [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
@@ -861,7 +950,6 @@
     [self.nonRepeatingTimer invalidate];
 }
 
-
 #define network events
 - (void)onNetworkDownNotifier:(id)sender{
     NSLog(@"on network down");
@@ -869,7 +957,6 @@
         return;
     }
     [self.timer invalidate];
-    
     [self.delegate hideHUDDelegate];
     
     [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
@@ -878,16 +965,18 @@
 
 - (void)onNetworkUpNotifier:(id)sender{
     NSLog(@"mesh view network up");
-    
     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
         [[SecurifiToolkit sharedInstance] connectMesh];
     }else{
         //we wait for login response in case of cloud
     }
+    
+    //don't invalidate non repeating timer I am making it run for 5 sec, for simplicity
 }
 
 - (void)onLoginResponse:(id)sender{
     NSLog(@"mesh view on login resposne");
+    //since nonrepeating timeout is 5 sec, I am not waiting for login response
     if(self.currentView.tag == BLINK_CHECK){
         //        [RouterPayload routerSummary:_mii mac:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
         //        [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:60];

@@ -14,8 +14,9 @@
 #import "GenericIndexUtil.h"
 #import "UIFont+Securifi.h"
 #import "Analytics.h"
+#import "CommonMethods.h"
 
-@interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate>
+@interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,NSURLConnectionDelegate>
 @property (nonatomic) NSMutableArray *parentsControlArr;
 @property (nonatomic) CategoryView *cat_view_more;
 @property (weak, nonatomic) IBOutlet UIView *dataLogView;
@@ -36,6 +37,12 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *blockClientTxt;
 @property (nonatomic) BOOL isLocal;
+@property (nonatomic) NSString *routerMode;
+@property (weak, nonatomic) IBOutlet UILabel *BWUpload;
+@property (weak, nonatomic) IBOutlet UILabel *MbupTxt;
+
+@property (weak, nonatomic) IBOutlet UILabel *BWDownload;
+@property (weak, nonatomic) IBOutlet UILabel *MbDownTxt;
 
 
 
@@ -53,7 +60,9 @@
     self.client = [Client findClientByID:@(deviceID).stringValue];//dont put in viewDid load
      SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *almond = [toolkit currentAlmond];
-   
+    [self createRequest:@"Bandwidth" value:@"7" amac:almond.almondplusMAC];
+    self.routerMode = toolkit.routerMode;
+    
     self.isLocal = [toolkit useLocalNetwork:almond.almondplusMAC];
     
     NSLog(@"viewDidLoad ParentalControlsViewController");
@@ -73,15 +82,41 @@
     
    
     NSArray  *arr = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:self.client.deviceID];
+    
+    NSString *connection;
+    
+        
+        if(self.client.webHistoryEnable == NO){
+            self.switchView1.on = NO;
+            self.view2.hidden = YES;
+            self.viewTwoTop.constant = -40;
+        }
+        else{
+            self.switchView1.on = YES;
+            self.view2.hidden = NO;
+            self.viewTwoTop.constant = 1;
+        }
+        if(self.client.bW_Enable == NO){
+            self.switchView3.on = NO;
+            self.dataLogView.hidden = YES;
+        }
+        else{
+            self.switchView3.on = YES;
+            self.dataLogView.hidden = NO;
+        }
+    
+    
     for (GenericIndexValue *genericIndexValue in arr) {
         NSLog(@"genericIndexValue.genericIndex.ID %@ value %@",genericIndexValue.genericIndex.ID ,genericIndexValue.genericValue.value);
         
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"] && ![genericIndexValue.genericValue.value isEqualToString:@"wireless"]){
+            connection = genericIndexValue.genericValue.value;
             self.dataLogView.hidden = YES;
-            self.switchView3.on = NO;
-            if(![genericIndexValue.genericValue.value isEqualToString:@"wireless"])
-            self.switchView3.userInteractionEnabled = NO;
+                }
+        else {
+            
         }
+    
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-19"] && [genericIndexValue.genericValue.value isEqualToString:@"1"]){
             NSLog(@"blocked ");
             
@@ -89,15 +124,40 @@
             self.switchView3.userInteractionEnabled = NO;
             self.switchView1.userInteractionEnabled = NO;
             self.blockClientTxt.hidden = NO;
+            self.blockClientTxt.text = @"Web history and Data usage are disabled for blocked devices. You can still see records from when the device was last active.";
             self.dataLogView.hidden = YES;
             
         }
     }
+    
     if(self.isLocal){
-        self.blockClientTxt.hidden = NO;
-        self.blockClientTxt.text = @"You are in Local connection right now. Web history and Bandwidth monitoring require active cloud connection to function.";
+        BOOL isCloud = [[SecurifiToolkit sharedInstance]isCloudOnline];
+        BOOL isinternet = [[SecurifiToolkit sharedInstance]isCloudReachable];
+        NSLog(@"isCloud %d,%d",isCloud,isinternet);
+        if(!isinternet){
+            self.blockClientTxt.hidden = NO;
+            self.blockClientTxt.text = @"You are in Local connection right now. Web history and data usage require active cloud connection to function.";
+            self.dataLogView.hidden = YES;
+        }
+        else{
+            self.blockClientTxt.hidden = YES;
+            self.dataLogView.hidden = NO;
+        }
+
     }
-        
+    NSLog(@"client connection = %@ & router mode  = %@ ",connection,self.routerMode);
+    
+    if([self.routerMode isEqualToString:@"ap"] || [self.routerMode isEqualToString:@"re"] ||[self.routerMode isEqualToString:@"WirelessSlave"] || [self.routerMode isEqualToString:@"WiredSlave"]){
+        if([connection isEqualToString:@"wireless"]){
+            self.switchView3.on = NO;
+           self.blockClientTxt.text = @"For checking Data usage, Almond must be in Router Mode.";
+        }
+        else{
+            self.switchView3.on = NO;
+            self.switchView1.on = NO;
+           self.blockClientTxt.text = @"This device is in wired connection. Web history requires wireless connection in RE/AP Mode. For checking Data usage, Almond must be in Router Mode.";
+        }
+    }
     self.icon.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
     self.clientName.text = self.client.name;
     NSDate* date = [NSDate dateWithTimeIntervalSince1970:[self.client.deviceLastActiveTime integerValue]];
@@ -105,27 +165,7 @@
     [dateformate setDateFormat:@"EEEE dd MMMM HH:mm"]; // Date formater
     NSString *str = [dateformate stringFromDate:date];
     self.lastSeen.text = [NSString stringWithFormat:@"last activated time %@",str];
-    dispatch_async(dispatch_get_main_queue(), ^{
     
-    if(self.client.webHistoryEnable == NO){
-        self.switchView1.on = NO;
-        self.view2.hidden = YES;
-        self.viewTwoTop.constant = -40;
-    }
-    else{
-        self.switchView1.on = YES;
-        self.view2.hidden = NO;
-        self.viewTwoTop.constant = 1;
-    }
-    if(self.client.bW_Enable == NO){
-        self.switchView3.on = NO;
-        self.dataLogView.hidden = YES;
-    }
-    else{
-        self.switchView3.on = YES;
-        self.dataLogView.hidden = NO;
-    }
-    });
    
 }
 //-(void) viewWillDisappear:(BOOL) animated
@@ -338,7 +378,6 @@
 -(void)onWiFiClientsListResAndDynamicCallbacks:(id)sender{
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
-    NSLog(@"dataInfo parental controll %@",dataInfo);
     if(dataInfo == NULL)
         return;
     NSDictionary *mainDict = [dataInfo valueForKey:@"data"];
@@ -410,17 +449,116 @@
 - (IBAction)grayBackButtonClicked:(id)sender {
     [self closeMoreView];
 }
-//-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-//    NSLog(@"prepare method");
-//    if ([segue.identifier isEqualToString:@"web"]) {
-//    BrowsingHistoryViewController *controller;
-//    controller = [segue destinationViewController];
-//    controller.client = self.client;
-//    }
-//}
-//        __block BrowsingHistoryViewController *viewKart = [[BrowsingHistoryViewController alloc]initWithNibName:@"BrowsingHistoryViewController" bundle:nil];
-//        viewKart.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-//        [self presentViewController:viewKart animated:YES completion:^(void){
-//            viewKart = nil;
-//        }];
+
+-(void)createRequest:(NSString *)search value:(NSString*)value amac:(NSString*)amac{
+    NSString *todayDate = [CommonMethods getTodayDate];
+    NSString *req ;
+    NSString *cmac = [CommonMethods hexToString:self.client.deviceMAC];
+    req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@",search,value,todayDate,amac,cmac];
+    
+    [self sendHttpRequest:req];
+    
+}
+-(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
+    //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
+    dispatch_queue_t sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
+    dispatch_async(sendReqQueue,^(){
+        
+        NSLog(@"post req = %@",post);
+        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+        [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
+        [request setHTTPBody:postData];
+        NSURLResponse *res= Nil;
+        //[NSURLConnection connectionWithRequest:request delegate:self];
+        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&res error:nil];
+        if(data == nil)
+            return ;
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSLog(@"dict BW respose %@",dict);
+        
+        [self InsertInDB:dict[@"Data"]];
+    });
+    
+    
+    //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
+}
+-(void)InsertInDB:(NSDictionary *)dict{
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        NSArray *downArr = [self readableValueWithBytes:dict[@"RX"]];
+        self.BWDownload.text = [downArr objectAtIndex:0];
+        self.MbDownTxt.text = [NSString stringWithFormat:@"%@ Download",[downArr objectAtIndex:1]];
+        
+        NSArray *upArr = [self readableValueWithBytes:dict[@"TX"]];
+        self.BWUpload.text = [upArr objectAtIndex:0];
+        self.MbupTxt.text = [NSString stringWithFormat:@"%@ Upload",[upArr objectAtIndex:1]];
+        
+    });
+}
+- (NSArray *)readableValueWithBytes:(id)bytes{
+    
+    NSString *readable;
+    if (([bytes longLongValue] == 0)){
+        
+        readable = [NSString stringWithFormat:@"0 KB"];
+    }
+    //round bytes to one kilobyte, if less than 1024 bytes
+    if (([bytes longLongValue] < 1024) && ([bytes longLongValue] > 1)){
+        
+        readable = [NSString stringWithFormat:@"1 KB"];
+    }
+    
+    //kilobytes
+    if (([bytes longLongValue]/1024)>=1){
+        
+        readable = [NSString stringWithFormat:@"%lld KB", ([bytes longLongValue]/1024)];
+    }
+    
+    //megabytes
+    if (([bytes longLongValue]/1024/1024)>=1){
+        
+        readable = [NSString stringWithFormat:@"%lld MB", ([bytes longLongValue]/1024/1024)];
+    }
+    
+    //gigabytes
+    if (([bytes longLongValue]/1024/1024/1024)>=1){
+        
+        readable = [NSString stringWithFormat:@"%lld GB", ([bytes longLongValue]/1024/1024/1024)];
+        
+    }
+    
+    //terabytes
+    if (([bytes longLongValue]/1024/1024/1024/1024)>=1){
+        
+        readable = [NSString stringWithFormat:@"%lld TB", ([bytes longLongValue]/1024/1024/1024/1024)];
+    }
+    
+    //petabytes
+    if (([bytes longLongValue]/1024/1024/1024/1024/1024)>=1){
+        
+        readable = [NSString stringWithFormat:@"%lld PB", ([bytes longLongValue]/1024/1024/1024/1024/1024)];
+    }
+    
+    NSArray* arrayOfStrings = [readable componentsSeparatedByString:@" "];
+    return arrayOfStrings;
+}
+/*
+public static String[] humanReadableByteCount(long bytes) {
+    int unit = 1000;
+    String output[] = new String[2];
+    if (bytes < unit){
+        return new String[]{bytes+"" , "B"};
+    }
+    int exp = (int) (Math.log(bytes) / Math.log(unit));
+    String pre = ( "kMGTPE").charAt(exp-1) + ( "" );
+    DecimalFormat df = new DecimalFormat();
+    df.setMaximumFractionDigits(2);
+    output[0] =df.format(bytes / Math.pow(unit, exp));
+    output[1] = pre+"B";
+    return output;
+}*/
 @end

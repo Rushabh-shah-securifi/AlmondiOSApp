@@ -20,6 +20,7 @@
 #import "Login.h"
 #import "HTTPRequest.h"
 #import "ConnectionStatus.h"
+#import "UIViewController+Securifi.h"
 
 @interface SFILoginViewController () <UITextFieldDelegate, RouterNetworkSettingsEditorDelegate, SFISignupViewControllerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -228,7 +229,7 @@
 - (void)onKeyboardDidHide:(id)notice {
     if (self.lastEditedFieldWasPasswd && !self.isLoggingIn) {
         NSLog(@"lastEditedFieldWasPasswd");
-        [self trySendLoginRequest:NO];
+//        [self trySendLoginRequest:NO];
     }
 
     [self tryEnableLoginButton];
@@ -275,6 +276,10 @@
 }
 
 - (IBAction)onForgetPasswordAction:(id)sender {
+    if(self.emailID.text.length == 0){
+        [self showToast:@"Please enter your email address."];
+        return;
+    }
     dispatch_async(dispatch_get_main_queue(), ^(){
         [self.HUD show:YES];
     });

@@ -68,7 +68,7 @@
     [keyVals addObject:@{@"Connected Via":connetedVia}];
     [keyVals addObject:@{@"Interface":interface}];
     [keyVals addObject:@{@"Connection Status":(isactive? @"Active": @"Inactive")}];
-    [keyVals addObject:@{@"Internet Status":(internetStat? @"Connected": @"Disconnected")}];
+    [keyVals addObject:@{@"Internet Status":(internetStat? @"Online": @"Offline")}];
     if(!isMaster && [interface isEqualToString:@"Wireless"])
         [keyVals addObject:@{@"Signal Strength":[self getSignalStrength:signalStrength.integerValue]}];
     if(ssid2)

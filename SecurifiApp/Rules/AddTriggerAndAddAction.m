@@ -47,8 +47,9 @@
 #import "AlmondJsonCommandKeyConstants.h"
 #import "TriDimBtn.h"
 #import "ColorComponentView.h"
+#import "SliderComponentView.h"
 
-@interface AddTriggerAndAddAction ()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,UITextFieldDelegate,TimeViewDelegate,SliderViewDelegate,HueColorPickerDelegate,DimmerButtonDelegate,ColorComponentViewDelegate>
+@interface AddTriggerAndAddAction ()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,UITextFieldDelegate,TimeViewDelegate,HueColorPickerDelegate,DimmerButtonDelegate,ColorComponentViewDelegate, SliderComponentViewDelegate>
 @property (nonatomic, strong)NSMutableArray *triggers;
 @property (nonatomic, strong)NSMutableArray *actions;
 @property (nonatomic)RulesHue *ruleHueObject;
@@ -565,21 +566,13 @@ labelAndCheckButtonView *labelView;
         
     }
 }
--(void)buildHueSliders:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
-    CGRect preframe = view.frame;
-    view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, view.frame.size.height - 35);
-    labelView = [[labelAndCheckButtonView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, 20)];
-    labelView.isScene = self.isScene;
-    [labelView setUpValues:genericIndexValue.genericIndex.groupLabel withSelectButtonTitle:NSLocalizedString(@"select", @"Select")];
-    [labelView.selectButton addTarget:self action:@selector(onHueColorPickerSelectButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    Slider *hueSlider = [[Slider alloc]initWithFrame:CGRectMake(0, 20, view.frame.size.width, view.frame.size.height -20) color:[SFIColors ruleOrangeColor] genericIndexValue:genericIndexValue];
-    
-    hueSlider.delegate = self;
-    [view addSubview:labelView];
-    [view addSubview:hueSlider];
-    view.frame = preframe;
-    
+-(void)buildSlider:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
+    SFIButtonSubProperties *subproperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
+    SliderComponentView *colComp = [[SliderComponentView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height - 15) lableTitle:@"Brightness" isScene:self.isScene list:self.isTrigger?self.triggers:self.actions subproperties:subproperties genricIndexVal:genericIndexValue];
+    colComp.delegate = self;
+    [view addSubview:colComp];
 }
+
 -(void)buildColorComponent:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
     SFIButtonSubProperties *subproperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType ];
     ColorComponentView *colComp = [[ColorComponentView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height - 15) setUpValue:@"Hue" ButtonTitle:NSLocalizedString(@"select", @"Select") andIsScene:self.isScene list:self.isTrigger?self.triggers:self.actions subproperties:subproperties genricIndexVal:genericIndexValue];
@@ -599,6 +592,7 @@ labelAndCheckButtonView *labelView;
     [view addSubview:labelView];
     [view addSubview:huePicker];
 }
+
 #pragma mark delegate colorComponent
 -(void)subpropertiesUpdate:(SFIButtonSubProperties*)subproperties isSelected:(BOOL)isSelected{
     if(self.isScene){
@@ -744,7 +738,7 @@ labelAndCheckButtonView *labelView;
                 [self buildColorComponent:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
             else if ([genericIndex.layoutType isEqualToString:@"BrighnessSlider"] || [genericIndex.layoutType isEqualToString:@"HUE_ONLY"]){
-                [self buildHueSliders:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
+                [self buildSlider:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
             else if ([genericIndex.layoutType isEqualToString:SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW] || [genericIndex.layoutType isEqualToString:@"SLIDER_ICON"])
                 [self buildDimButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];//HUE_ZB
@@ -760,11 +754,6 @@ labelAndCheckButtonView *labelView;
         }
     }
     return view;
-}
-
--(void)blinkNew:(NSString *)newValue{
-    NSLog(@"need to work on it");
-    
 }
 
 -(NSDictionary*)formatterDict:(GenericIndexClass*)genericIndex{
@@ -1280,15 +1269,6 @@ rows = @[displayArr,@[NSLocalizedString(@"before", @"Before"),NSLocalizedString(
 #pragma mark delegate methods - TimeView
 -(void)AddOrUpdateTime{
     [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
-}
-#pragma mark sliderdelegate methods
--(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue{// index is genericindex for clients, normal index for sensors
-    labelView.genericIndexValue = genericIndexValue;
-    labelView.value = newValue;
-    [self onHueColorPickerSelectButtonClick:nil];
-    NSLog(@"new value %@",newValue);
-    NSLog(@" g.index id %@",genericIndexValue.genericIndex.ID);
-    
 }
 
 #pragma mark siren cases

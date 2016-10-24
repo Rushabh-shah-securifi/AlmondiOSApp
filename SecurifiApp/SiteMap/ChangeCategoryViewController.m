@@ -15,8 +15,10 @@
 #import "CategoryView.h"
 #import "UIFont+Securifi.h"
 #import "Analytics.h"
+#import "HistoryCell.h"
+#import "CommonMethods.h"
 
-@interface ChangeCategoryViewController ()<CategoryViewDelegate>
+@interface ChangeCategoryViewController ()<CategoryViewDelegate,UITableViewDelegate,UITableViewDelegate,NSURLConnectionDelegate>
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
 @property (weak, nonatomic) IBOutlet UILabel *catogeryTag;
 @property (weak, nonatomic) IBOutlet UILabel *catogeryFuncLbl;
@@ -34,15 +36,20 @@
 @property (nonatomic) NSString *catTag;
 @property (weak, nonatomic) IBOutlet UILabel *clientName;
 @property (weak, nonatomic) IBOutlet UILabel *ThanksLabel;
+@property (weak, nonatomic) IBOutlet UITableView *epocTable;
+@property (weak, nonatomic) IBOutlet UIImageView *iconMore;
 
+@property(nonatomic)NSArray *epocsArr;
 
 @end
 
 @implementation ChangeCategoryViewController
 
 - (void)viewDidLoad {
-     self.clientName.text = self.client.name;
+    
     [super viewDidLoad];
+    self.clientName.text = self.client.name;
+    [self.epocTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"epocCell"];
 
 }
 -(void)updateNavi:(UIColor *)backGroundColor title:(NSString *)title tintColor:(UIColor *)tintColor tintBarColor:(UIColor *)tintBarColor{
@@ -65,9 +72,9 @@
     self.cat_view_more = [[CategoryView alloc]initMoreClickView];
     self.cat_view_more.delegate = self;
     self.cat_view.delegate = self;
-    NSLog(@"uri dict = %@ ",self.uriDict);
+ //   NSLog(@"uri dict = %@ ",self.uriDict);
     [self categoryMap:self.uriDict[@"categoryObj"]];
-    
+        [self createRequest:@"Epoch" value:self.uriDict[@"hostName"] suggestValue:@""];
     
 }
 - (IBAction)backButtonPressed:(id)sender {
@@ -126,14 +133,14 @@
         
     }
     
-//    [self.catogeryTag setTextColor:self.globalColor];
+    self.iconMore.image = [CommonMethods imageNamed:@"iconMore" withColor:self.globalColor];
     self.bottomView.backgroundColor = self.globalColor;
     _LblCatogeryTag.backgroundColor = self.globalColor;
 //    self.catogeryTag.text =[uriDict valueForKey:@"categoty"];
     
     self.LblCatogeryTag.text =[uriDict valueForKey:@"categoty"];
    
-    self.LblCatogeryType.text = [uriDict valueForKey:@"subCategory"];
+    self.LblCatogeryType.text = [NSString stringWithFormat:@" Categroy : %@",[uriDict valueForKey:@"subCategory"]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -155,31 +162,44 @@
     [super viewWillDisappear:YES];
     [self.navigationController setNavigationBarHidden:NO];
 }
-
-- (IBAction)dismissCategoryTag:(id)sender {
-    [self.cat_view removeFromSuperview];
-    [self.cat_view_more removeFromSuperview];
-    self.backGroundButton.hidden = YES;
-    self.ThanksLabel.hidden = YES;
-    self.bottomView.hidden = NO;
+-(void)afterCategoryChange{
+    self.backGroundButton.hidden = NO;
+    self.ThanksLabel.hidden = NO;
+    self.bottomView.hidden = YES;
+    [[Analytics sharedInstance] markCategoryChange];
 }
 
 -(void )didChangeCategoryWithTag:(NSInteger)tag{
 //    NSDictionary *updatedUriDict;
     switch (tag) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            self.backGroundButton.hidden = YES;
-            self.ThanksLabel.hidden = NO;
-            self.bottomView.hidden = YES;
-            [[Analytics sharedInstance] markCategoryChange];
+        case 1:{
+            [self createRequest:@"SuggestRating" value:self.uriDict[@"hostName"] suggestValue:@"1"];
+            [self afterCategoryChange];
+            break;
+        }
+        case 2:{
+            [self createRequest:@"SuggestRating" value:self.uriDict[@"hostName"] suggestValue:@"2"];
+            [self afterCategoryChange];
+            break;
+        }
+        case 3:{
+            [self createRequest:@"SuggestRating" value:self.uriDict[@"hostName"] suggestValue:@"3"];
+            [self afterCategoryChange];
+            break;
+        }
+        case 4:{
+            [self createRequest:@"SuggestRating" value:self.uriDict[@"hostName"] suggestValue:@"4"];
+            [self afterCategoryChange];
+            break;
+        }
+        case 5:{
+            [self createRequest:@"SuggestRating" value:self.uriDict[@"hostName"] suggestValue:@"5"];
+            [self afterCategoryChange];
+            break;
+        }
+            
             break;
         default:
-            
-            self.backGroundButton.hidden = YES;
             break;
         
     }
@@ -204,6 +224,146 @@
 -(void)closeMoreView{
     [self.cat_view removeFromSuperview];
     [self.cat_view_more removeFromSuperview];
+}
+#pragma mark table and search delegate methods
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 40;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return  self.epocsArr.count;
+    
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+    
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 40;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    return [self deviceHeader:section tableView:tableView];
+}
+
+-(UIView*)deviceHeader:(NSInteger)section tableView:(UITableView*)tableView{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
+    
+    view.backgroundColor = [UIColor whiteColor];
+    if (section > 0) {
+        UITableViewHeaderFooterView *foot = (UITableViewHeaderFooterView *)view;
+        CGRect sepFrame = CGRectMake(0, 0, tableView.frame.size.width, 1);
+        UIView *seperatorView =[[UIView alloc] initWithFrame:sepFrame];
+        seperatorView.backgroundColor = [UIColor colorWithWhite:224.0/255.0 alpha:0.5];
+        [foot addSubview:seperatorView];
+    }
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
+    [label setFont:[UIFont securifiBoldFont:15]];
+    
+    NSString *str;
+    
+    str = self.uriDict[@"date"];
+    NSDate *date = [NSDate convertStirngToDate:str];
+    
+    NSString *headerDate = [date getDayMonthFormat];
+    if([str isEqualToString:[CommonMethods getTodayDate]])
+        label.text = @"Today";
+    else
+    label.text = headerDate;
+    
+    label.textColor = [UIColor grayColor];
+    [view addSubview:label];
+    
+    CGRect sepFrame = CGRectMake(0, 32, tableView.frame.size.width, 1);
+    UIView *seperatorView =[[UIView alloc] initWithFrame:sepFrame];
+    seperatorView.backgroundColor = [UIColor colorWithWhite:224.0/255.0 alpha:0.5];
+    [view addSubview:seperatorView];
+    return view;
+}
+
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    HistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"epocCell" forIndexPath:indexPath];
+    if (cell == nil){
+        cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"epocCell"];
+    }
+    if(self.epocsArr.count > indexPath.row){
+    NSDictionary *thisWeek = @{@"hostName":[NSString stringWithFormat:@"  %@",[self.epocsArr objectAtIndex:indexPath.row]],
+                               @"image" : [UIImage imageNamed:@"schedule_icon"]
+                               };
+    
+        [cell setCell:thisWeek hideItem:YES isCategory:NO showTime:NO count:indexPath.row+1];
+    }
+    return cell;
+}
+#pragma mark sendReq methods
+-(void)createRequest:(NSString *)search value:(NSString*)value suggestValue:(NSString *)suggestValue{
+    NSString *amac = [SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC;
+    NSString *cmac = [CommonMethods hexToString:self.client.deviceMAC];
+
+    NSString *Date = self.uriDict[@"date"];
+    NSString *req ;
+    if([suggestValue isEqualToString:@""])
+    req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@",search,value,Date,amac,cmac];
+    else
+    req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&suggestedValue=%@&AMAC=%@&CMAC=%@",search,value,Date,suggestValue,amac,cmac];
+    [self sendHttpRequest:req];
+    
+}
+-(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
+    //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
+    dispatch_queue_t sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
+    dispatch_async(sendReqQueue,^(){
+        
+        NSLog(@"post req = %@",post);
+        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+        [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
+        [request setHTTPBody:postData];
+        NSURLResponse *res= Nil;
+        //[NSURLConnection connectionWithRequest:request delegate:self];
+        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&res error:nil];
+        if(data == nil)
+            return ;
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSLog(@"dict respose %@",dict);
+        if(dict[@"Data"] == NULL)
+            return;
+        [self InsertInDB:dict[@"Data"]];
+    });
+    
+    
+    //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
+}
+-(void)InsertInDB:(NSArray *)dict{
+    if(dict.count==0)
+        return;
+    self.epocsArr = [CommonMethods domainEpocArr:dict];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+    [self.epocTable reloadData];
+    });
+}
+- (IBAction)moreButtonTap:(id)sender {
+    self.bottomView.hidden = NO;
+    self.backGroundButton.hidden = NO;
+}
+- (IBAction)bottomViewClose:(id)sender {
+    self.bottomView.hidden = YES;
     self.backGroundButton.hidden = YES;
+}
+
+- (IBAction)dismissCategoryTag:(id)sender {
+    [self.cat_view removeFromSuperview];
+    [self.cat_view_more removeFromSuperview];
+    self.backGroundButton.hidden = YES;
+    self.ThanksLabel.hidden = YES;
+    if(self.bottomView.hidden == NO)
+        self.bottomView.hidden = NO;
+    self.ThanksLabel.hidden = YES;
 }
 @end

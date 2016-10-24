@@ -45,6 +45,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *meshTableView;
 
 @property (nonatomic) NSTimer *removeAlmondTO;
+@property (nonatomic) NSTimer *nonRepeatingTimer;
+
 
 @end
 
@@ -76,6 +78,7 @@ int mii;
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
     [self.removeAlmondTO invalidate];
+    
     if(self.meshView){
         [self.meshView removeNotificationObserver];
         self.meshView = nil;
@@ -257,7 +260,6 @@ int mii;
 
 #pragma mark meshview delegates
 -(void)dismissControllerDelegate{
-    NSLog(@"i am called");
     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_cloud)
         [[SecurifiToolkit sharedInstance] asyncSendToNetwork:[GenericCommand requestRai2DownMobile:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC]];
     else
@@ -304,7 +306,7 @@ int mii;
 -(void)onMeshCommandResponse:(id)sender{
     NSLog(@"onmeshcommandresponse");
     //load next view
-    [self hideHUDDelegate];
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
@@ -320,12 +322,13 @@ int mii;
     }
     NSLog(@"meshcontroller mesh payload: %@", payload);
     //    NSString *commandType = payload[COMMAND_TYPE];
-    if(![payload[COMMAND_MODE] isEqualToString:@"Reply"]) //[payload[MOBILE_INTERNAL_INDEX] intValue]!=  mii||
-        return;
+    
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     NSString *cmdType = payload[COMMAND_TYPE];
     if(![cmdType isEqualToString:@"RemoveSlaveMobile"] && ![cmdType isEqualToString:@"ForceRemoveSlaveMobile"])
         return;
+    [self hideHUDDelegate];
+    
     [self.removeAlmondTO invalidate];
     self.removeAlmondTO = nil;
     
@@ -334,7 +337,6 @@ int mii;
         [self dismissControllerDelegate];
     }else{
         if([cmdType isEqualToString:@"RemoveSlaveMobile"]){
-            self.removeAlmondTO = nil;
             [self showForceRemoveAlert];
         }
         else if([cmdType isEqualToString:@"ForceRemoveSlaveMobile"]){
@@ -347,7 +349,7 @@ int mii;
 -(void)showForceRemoveAlert{
     NSString *title = [NSString stringWithFormat:@"Failed to remove \"%@\" Almond. Do you want to forcefully remove it?", self.almondStatObj.name];
     NSString *desc = @"If you choose to force remove an Almond, you will have to manually reset that Almond to complete the process.";
-    
+    //not using showalert because this has other button title.
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:title message:desc delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
     alert.tag = FORCE_REMOVE;
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -369,10 +371,11 @@ int mii;
         //cancel clicked ...do your action
         if(alertView.tag == NETWORK_OFFLINE){
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            enum SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
-            if(status == SFIAlmondConnectionStatus_disconnected){
-                [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
-            }
+            
+            [toolkit asyncInitNetwork];
+            int connectionTO = 5;
+            self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
+            [self showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
         }
     }else{
         if(alertView.tag == REMOVE){
@@ -398,13 +401,41 @@ int mii;
 
 #pragma mark timer
 -(void)onRemoveAlmTO:(id)sender{
+    if([self isDisconnected])
+        return;
+    
     [self.removeAlmondTO invalidate];
     self.removeAlmondTO = nil;
     [self showForceRemoveAlert];
 }
 
+-(void)onNonRepeatingTimeout:(id)sender{
+    [self hideHUDDelegate];
+    NSLog(@"self.nonRepeatingTimer.userInfo: %@", self.nonRepeatingTimer.userInfo);
+    int tag = [(NSString *)self.nonRepeatingTimer.userInfo intValue];
+    
+    if(tag == NETWORK_OFFLINE){
+        if([self isDisconnected]){
+            NSLog(@"ok 1");
+            [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
+        }else{
+            
+        }
+    }
+    [self.nonRepeatingTimer invalidate];
+}
+
+-(BOOL)isDisconnected{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    return [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]] ==SFIAlmondConnectionStatus_disconnected;
+}
+
 #define network events
 - (void)onNetworkDownNotifier:(id)sender{
+    if([self.nonRepeatingTimer isValid]){
+        return;
+    }
+    
     NSLog(@"meshsetupcontrolle n/w down");
     [self.removeAlmondTO invalidate];
     [self hideHUDDelegate];
@@ -414,7 +445,6 @@ int mii;
 
 - (void)onNetworkUpNotifier:(id)sender{
     NSLog(@"mesh controller network up");
-    [self hideHUDDelegate];
     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
         [[SecurifiToolkit sharedInstance] connectMesh];
     }else{

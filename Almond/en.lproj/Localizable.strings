@@ -61,6 +61,7 @@ Internet route to cloud service.";
 "Password reset link has been sent to your account." = "Password reset link has been sent to your account.";
 "Sorry! Your password cannot be reset at the moment. Try again later." = "Sorry! Your password cannot be
 reset at the moment. Try again later.";
+"sensor.activation.The username was not found" = "The username was not found";
 "Login" = "Login";
 "login.local.Switch to Local Connection" = "Switch to Local Connection";
 
@@ -1084,7 +1085,6 @@ Contact us at support@securifi.com";
 "sensors.account-confirm.label.Check activation email for instructions." = "Check activation email for instructions.";
 "sensors.account-confirm.label.Resend activation email" = "Resend activation email";
 "Smart Devices" = "Smart Devices";
-"DeviceList Successfully updated!" = "Successfully updated!";
 "DeviceList Sorry, Could not update!" = "Sorry! Could not update!";
 "activation.toast.Reactivation link sent to your registerd email ID." = "Reactivation link sent to your registerd email ID.";
 /* activation */
@@ -1099,11 +1099,9 @@ Contact us at support@securifi.com";
 /*DeviceEditViewController*/
 "deviceedit Device has been tampered" = "Device has been tampered";
 "saving" = "Saving...";
-"sorry_could_not_update %@" = "Sorry! Could not update %@";
-"deviceEdit %@ successfully updated" = "%@ successfully updated";
-"sorry_could_not_update" = "Sorry! Could not update";
-"deviceEdit Sorry, Could not update %@." = "Sorry! Could not update %@.";
-"deviceEdit %@ successfully updated" = "%@ successfully updated!";
+"successfully_updated" = "Successfully updated!";
+"sorry_could_not_update" = "Sorry! Could not update.";
+
 "deviceEdit BRIGHTNESS" = "BRIGHTNESS";
 "deviceEdit SATURATION" = "SATURATION";
 
@@ -1244,7 +1242,6 @@ Contact us at support@securifi.com";
 
 "RulesViewController Loading Rules..." = "Loading Rules...";
 "DeviceList Sorry, Could not update!" =  "Sorry! Could not update!";
-"DeviceList Successfully updated!" = "Successfully updated!";
 "newRule" = "New Rule";
 "RulesViewController Tap on add button to create your rule" = "Tap on add button to create your rule";
 "RulesViewController Deleting rule %@..." = "Deleting rule %@...";

@@ -83,7 +83,7 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    [textField selectAll:self];
+//    [textField selectAll:self];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {

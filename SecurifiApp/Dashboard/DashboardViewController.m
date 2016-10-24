@@ -132,9 +132,17 @@
 }
 
 -(void)tryShowLoadingData{
-    if([self isDeviceListEmpty] && [self isClientListEmpty] && self.toolkit.currentAlmond != nil && [[SecurifiToolkit sharedInstance] isNetworkOnline]){
+    if([self isDeviceListEmpty] && [self isClientListEmpty] && self.toolkit.currentAlmond != nil && ![self isDisconnected] && [self isFirmwareCompatible]){
         [self showHudWithTimeoutMsg:@"Loading Data..." delay:8];
     }
+}
+
+-(BOOL)isFirmwareCompatible{
+    return [SFIAlmondPlus checkIfFirmwareIsCompatible:[SecurifiToolkit sharedInstance].currentAlmond];
+}
+
+-(BOOL)isDisconnected{
+    return [_toolkit connectionStatusForAlmond:_toolkit.currentAlmond.almondplusMAC] == SFIAlmondConnectionStatus_disconnected;
 }
 
 - (void)didReceiveMemoryWarning {

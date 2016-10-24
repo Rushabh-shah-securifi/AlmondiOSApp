@@ -12,7 +12,6 @@
 #import "SFINotificationStatusBarButtonItem.h"
 #import "SFIScenesTableViewCell.h"
 #import "UIApplication+SecurifiNotifications.h"
-#import <SWRevealViewController/SWRevealViewController.h>
 #import "MBProgressHUD.h"
 #import "AlmondPlusConstants.h"
 #import "UIFont+Securifi.h"
@@ -24,6 +23,7 @@
 #import "NewAddSceneViewController.h"
 #import "SFIButtonSubProperties.h"
 #import "AlertView.h"
+#import "UIViewController+Securifi.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
@@ -300,9 +300,13 @@
 
 #pragma mark cell delegates
 - (void)activateScene:(SFIScenesTableViewCell*)cell Info:(NSDictionary*)cellInfo{
+    if([[cellInfo valueForKey:@"Active"] boolValue]){
+        [self showToast:@"Scene already active!"];
+        return;
+    }
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
-    
+    NSLog(@"cell info: %@", cellInfo);
     NSMutableDictionary *activateScenePayload = [NSMutableDictionary new];
     
     [activateScenePayload setValue:@"ActivateScene" forKey:@"CommandType"];

@@ -39,6 +39,9 @@
         return [(NSString *)obj1 compare:(NSString *)obj2 options:NSNumericSearch];
     }];
     for(NSString *key in sortedKeys){
+        if([key isEqualToString:@"identifying"])
+            continue;
+        
         GenericValue *gVal = [self.genericIndexValue.genericIndex.values valueForKey:key];
         [self.displayArray addObject:gVal.displayText];
         [self.valueArr addObject:gVal.value];

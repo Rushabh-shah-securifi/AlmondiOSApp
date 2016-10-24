@@ -101,7 +101,7 @@
     }
     float hue = [value floatValue];
     hue = hue / factor;
-    UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
+    UIColor *color = [UIColor colorWithHue:hue saturation:1.0 brightness:1.0 alpha:1.0];
     return [color.hexString uppercaseString];
 }
 
@@ -570,7 +570,6 @@ static void RVNColorRGBtoHSL(CGFloat red, CGFloat green, CGFloat blue, CGFloat *
 
 +(int)getRGBDecimalFromHSL:(float)h s:(float)s l:(float)l{
     float red, green, blue;
-    
     NSLog(@"h: %f, s: %f, l: %f", h, s, l);
     HSL2RGB(h, s, l, &red, &green, &blue);
     NSLog(@"r = %f, g = %f, b = %f", red, green, blue);
@@ -702,9 +701,23 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     
     return @(outVal).stringValue;
 }
++(NSArray *)getOrderedArr:(NSArray *)arr{
+
+    NSArray *arrTem = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        if ([[obj1 valueForKey:@"LastVisitedEpoch"] integerValue] > [[obj2 valueForKey:@"LastVisitedEpoch"] integerValue]) {
+            return (NSComparisonResult)NSOrderedAscending;
+        }
+        if ([[obj1 valueForKey:@"LastVisitedEpoch"] integerValue] < [[obj2 valueForKey:@"LastVisitedEpoch"] integerValue]) {
+            return (NSComparisonResult)NSOrderedDescending;
+        }
+        return (NSComparisonResult)NSOrderedSame;
+    }];
+    return [[NSMutableArray alloc]initWithArray:arrTem];
+}
 #pragma mark searchPage methods
 +(NSDictionary *)createSearchDictObj:(NSArray*)allObj{
     NSDictionary *catogeryDict = [self parseJson:@"CategoryMap"];
+        allObj = [self getOrderedArr:allObj];
     
     NSMutableDictionary *dayDict = [NSMutableDictionary new];
     for(NSDictionary *uriDict in allObj)
@@ -744,5 +757,61 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     NSString *date = [dateformate stringFromDate:[NSDate date]]; // Convert date to string
     return date;
     
+}
+
++ (NSString *) getLastWeekDayDate:(NSString *)weekDay{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *comps = [NSDateComponents new];
+    comps.day   = -7;
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    for(int i = 0;i<7;i++){
+        comps.day   = -i;
+        NSDate *date = [calendar dateByAddingComponents:comps toDate:[NSDate date] options:0];
+        dateFormatter.dateFormat=@"EEEE";
+        NSString *dayString = [[dateFormatter stringFromDate:date] capitalizedString];
+        if([[dayString uppercaseString] rangeOfString:[weekDay uppercaseString]].location != NSNotFound){
+            dateFormatter.dateFormat=@"yyyy-MM-dd";
+            NSString *dayString = [[dateFormatter stringFromDate:date] capitalizedString];
+            return dayString;
+        }
+        
+    }
+    return NULL;
+}
++(NSString *)getPresentTime24Format{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat=@"HH:mm";
+    return [dateFormatter stringFromDate:[NSDate date]];
+    
+}
++ (NSString *)getYestardayDate{
+    NSDateComponents *comps = [NSDateComponents new];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    comps.day   = -1;
+    NSDate *date = [calendar dateByAddingComponents:comps toDate:[NSDate date] options:0];
+    NSDateFormatter *dateformate=[[NSDateFormatter alloc]init];
+    [dateformate setDateFormat:@"yyyy-MM-dd"]; // Date formater
+    NSString *dateStr = [dateformate stringFromDate:date]; // Convert date to string
+    return dateStr;
+    
+}
++(NSArray *)domainEpocArr:(NSArray *)arr{
+    NSMutableArray *epocSArr = [NSMutableArray new];
+    NSSortDescriptor* sortOrder = [NSSortDescriptor sortDescriptorWithKey: @"self"
+                                                                ascending: NO];
+   
+    if(arr.count > 0){
+        NSDictionary *dict = [arr objectAtIndex:0];
+        if(dict[@"Epochs"]==NULL)
+            return @[];
+        NSArray *epocArr = dict[@"Epochs"];
+         arr =  [epocArr sortedArrayUsingDescriptors: [NSArray arrayWithObject: sortOrder]];
+        for(NSString *epoc in arr){
+            NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[epoc intValue]];
+            [epocSArr addObject:[dat stringFromDate]];
+        }
+    }
+    
+    return epocSArr;
 }
 @end

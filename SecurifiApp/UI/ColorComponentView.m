@@ -27,6 +27,7 @@
     }
     return self;
 }
+
 -(void)setUpComponent:(NSString *)value ButtonTitle:(NSString *)title andIsScene:(BOOL)isScene list:(NSArray *)listArr subproperties:(SFIButtonSubProperties*)subproperties genericIndexVal:(GenericIndexValue *)genericIndexValue{
     NSLog(@"setUpComponent hue component");
     self.subProperties = subproperties;
@@ -67,6 +68,7 @@
     [self saveNewValue:sensor_value];
     
 }
+
 -(void)onSelectButtonClick:(UIButton *)sender{
     NSLog(@"onSelectButtonClick");
     if(self.isScene){
@@ -81,14 +83,13 @@
         //storing current value
         [self.labelView setButtoncounter:[self getPreviousCount] isCountImageHiddn:NO];
     }
-    
-    
-    
 }
+
 -(void )saveNewValue:(int)sensor_value{
     NSLog(@"saveNewValue: %d",sensor_value);
     self.subProperties.matchData = @(sensor_value).stringValue;
 }
+
 -(int )getPreviousCount{
     int count = 0;
     for (SFIButtonSubProperties *properties in self.subPropertiesArr) {

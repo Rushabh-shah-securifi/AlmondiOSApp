@@ -661,13 +661,16 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     [genericValueDic setValue:[[GenericValue alloc]initWithDisplayText:genericIndex.groupLabel iconText:@(genericIndex.formatter.min).stringValue value:@"" excludeFrom:@"" transformedValue:@"0"] forKey:genericIndex.groupLabel];
     return genericValueDic;
 }
+
 - (NSString *)getColorHex:(NSString*)value {
     if (!value) {
         return @"";
     }
     float hue = [value floatValue];
     hue = hue / 65535;
-    UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
+    NSLog(@"hue value: %f", hue);
+    UIColor *color = [UIColor colorWithHue:hue saturation:1.0 brightness:1.0 alpha:1.0];
+    NSLog(@"color: %@, color hex: %@", color, [color.hexString uppercaseString]);
     return [color.hexString uppercaseString];
 };
 

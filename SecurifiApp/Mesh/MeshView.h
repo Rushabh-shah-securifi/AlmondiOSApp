@@ -25,7 +25,7 @@
 - (void)addInterfaceView:(CGRect)frame;
 - (void)removeNotificationObserver;
 - (void)addNamingScreen:(CGRect)frame;
-
+- (void)toggleTick1:(BOOL)tick1Hidden tick2:(BOOL)tick2Hidden;
 /* meshhekp - start */
 - (void)addInfoScreen:(CGRect)frame;
 - (void)initializeFirstScreen:(NSDictionary *)item;

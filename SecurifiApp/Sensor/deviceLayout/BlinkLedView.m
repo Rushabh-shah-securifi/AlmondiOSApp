@@ -84,7 +84,7 @@ static const int xIndent = 0;
             
             NSLog(@"brightness = %d", brightness);
             GenericIndexClass *genericIndex = [[GenericIndexClass alloc]initWithGenericIndex:self.genericIndexValue.genericIndex];
-            genericIndex.formatter.min = 0;
+            genericIndex.formatter.min = 1;
             genericIndex.formatter.max = 100;
             GenericValue *genValue = [GenericValue  getCopy:self.genericIndexValue.genericValue];
             genValue.transformedValue = @(brightness).stringValue;
@@ -122,9 +122,10 @@ static const int xIndent = 0;
 
 -(void)blinkNew:(NSString *)newValue{
     NSLog(@"new brightness value %@", newValue);
+    //new value range is 0-100 only
     float h, s, l;
     [CommonMethods getHSLFromDecimal:_genericIndexValue.genericValue.value.intValue h:&h s:&s l:&l];
-    l = newValue.floatValue * 255.0 / 100.0;
+    l = newValue.floatValue * 255.0 / 100.0; //had to convert to 255, only then its working.
     int new = [CommonMethods getRGBDecimalFromHSL:h s:s l:l];
     
     NSLog(@"final decimal value = %d",new);

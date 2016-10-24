@@ -100,7 +100,7 @@
     dispatch_queue_t sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
     
     NSLog(@"post req = %@",fileContents);
-    //[self redirectLogToDocuments];
+    [self redirectLogToDocuments];
     dispatch_async(sendReqQueue,^(){
         NSData *postData = [fileContents dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
@@ -149,7 +149,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [self sendLogsToCloud];
+    //[self sendLogsToCloud];
     NSLog(@"Application did launch");
     [self initializeSystem:application];
     

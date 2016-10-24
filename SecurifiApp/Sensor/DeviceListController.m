@@ -86,14 +86,18 @@ int mii;
 }
 
 -(void)tryShowLoadingDevice{
-    if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC] && [[SecurifiToolkit sharedInstance] isNetworkOnline]){
+    if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC] && ![self isDisconnected] && [self isFirmwareCompatible]){
         [self showHudWithTimeoutMsg:@"Loading Device data..."];
     }
 }
 
+-(BOOL)isDisconnected{
+    return [_toolkit connectionStatusForAlmond:_toolkit.currentAlmond.almondplusMAC] == SFIAlmondConnectionStatus_disconnected;
+}
+
 -(void)markAlmondTitleAndMac{
     NSLog(@"%s, self.toolkit.currentAlmond: %@", __PRETTY_FUNCTION__, self.toolkit.currentAlmond);
-    _isSiteMapSupport = [ self.toolkit.currentAlmond siteMapSupportFirmware:self.toolkit.currentAlmond.firmware];
+    _isSiteMapSupport = [self.toolkit.currentAlmond siteMapSupportFirmware:self.toolkit.currentAlmond.firmware] && self.toolkit.configuration.siteMapEnable;
    
     if (self.toolkit.currentAlmond == nil) {
         NSLog(@"no almond");
@@ -113,7 +117,7 @@ int mii;
     [self initializeColors:[self.toolkit currentAlmond]];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self tryInstallRefreshControl];
-        if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC] && [self.toolkit isNetworkOnline]){
+        if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC] && ![self isDisconnected]){
             NSLog(@"device and client current list is empty");
             [self showHudWithTimeoutMsg:@"Loading Device data..."];
         }
@@ -224,7 +228,7 @@ int mii;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     SFIAlmondPlus *almond = [self.toolkit currentAlmond];
     self.isLocal = [self.toolkit useLocalNetwork:almond.almondplusMAC];
-    if ([self isNoAlmondMAC] || ![self isFirmwareCompatible] || ![[SecurifiToolkit sharedInstance] isNetworkOnline])
+    if ([self isNoAlmondMAC] || ![self isFirmwareCompatible] || [self isDisconnected])
         return 1;
     
     if([self isDeviceListEmpty] && [self isClientListEmpty])
@@ -234,7 +238,7 @@ int mii;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible] || ![[SecurifiToolkit sharedInstance] isNetworkOnline])
+    if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible] || [self isDisconnected])
         return 1;
     
     NSLog(@"devices count %ld, client count: %ld",(unsigned long)self.toolkit.devices.count, (unsigned long)self.toolkit.clients.count);
@@ -243,7 +247,7 @@ int mii;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible] || ![[SecurifiToolkit sharedInstance] isNetworkOnline]) {
+    if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible] || [self isDisconnected]) {
         return 400;
     }
     return 85;
@@ -253,7 +257,7 @@ int mii;
     if ([self showNeedsActivationHeader] && section == 0) {
         return 100;
     }
-    if ([self isNoAlmondMAC] || ![[SecurifiToolkit sharedInstance] isNetworkOnline])
+    if ([self isNoAlmondMAC] || [self isDisconnected])
         return 0;
     
     return 30;
@@ -263,7 +267,7 @@ int mii;
     if ([self showNeedsActivationHeader] && section == 0) {
         return [self createActivationNotificationHeader];
     }
-    else if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible] || ![[SecurifiToolkit sharedInstance] isNetworkOnline])
+    else if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible] || [self isDisconnected])
         return [UIView new];
     
     return [self deviceHeader:section tableView:tableView];
@@ -327,7 +331,7 @@ int mii;
         tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
     }
-    if(![[SecurifiToolkit sharedInstance] isNetworkOnline]){
+    if([self isDisconnected]){
         tableView.scrollEnabled = NO;
         return [self createAlmondOfflineCell:tableView];
     }
@@ -551,7 +555,7 @@ int mii;
             [self showToast:NSLocalizedString(@"DeviceList Sorry, Could not update!", @"Sorry, Could not update!")];
         });
     }else{
-        [self showToast:NSLocalizedString(@"DeviceList Successfully updated!", @"Successfully updated!")];
+        [self showToast:NSLocalizedString(@"successfully_updated", @"")];
     }
 }
 
