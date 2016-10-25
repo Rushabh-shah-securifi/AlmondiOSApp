@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>aps-environment</key>
-	<string>distribution</string>
+	<string>development</string>
 	<key>com.apple.developer.default-data-protection</key>
 	<string>NSFileProtectionComplete</string>
 	<key>keychain-access-groups</key>
