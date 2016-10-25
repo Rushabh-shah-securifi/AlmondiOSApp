@@ -20,6 +20,7 @@
     [super viewDidLoad];
     
     [self showHelp];
+//    [self testWebView];
     // Do any additional setup after loading the view.
 }
 
@@ -27,6 +28,20 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (void)testWebView{
+    UIImage *img = [UIImage imageNamed:@"almond_black"];
+    NSString *htmlString = @"<html><head></head>"
+    "<body>"
+    "<p>Hello World</p>"
+    "<img src=\"almond_black.png\">"
+    "<img src=\"btnDel-redbg.png\">"
+    "<img src=btnDel.png>"
+    "<img src=\"mobile-42-mesh-setup-11a\">"
+    "</body>"
+    "</html>";
+    [self displayWebView:htmlString];
+}
+
 
 - (void)showHelp{
     switch (self.helpType) {
@@ -190,7 +205,15 @@
 - (void)displayWebView:(NSString *)strForWebView{
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-60)];
     webView.backgroundColor = [UIColor clearColor];
-    [webView loadHTMLString:strForWebView baseURL:nil];
+    
+    NSString *path = [[NSBundle mainBundle] bundlePath];
+    NSURL *baseURL = [NSURL fileURLWithPath:path];
+//    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"WEB" ofType:nil];
+//    baseURL = [NSURL fileURLWithPath:filePath];
+//    [webView  loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:filePath]]];
+    
+    NSLog(@"base url: %@", baseURL);
+    [webView loadHTMLString:strForWebView baseURL:baseURL];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.view addSubview:webView];
     });

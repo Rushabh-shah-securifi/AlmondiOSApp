@@ -48,7 +48,7 @@
 
 static const int networkingHeight = 100;
 static const int almondNtwkHeight = 200;
-static const int advanceRtrHeight = 70;
+static const int advanceRtrHeight = 100;
 static const int settingsHeight = 70;
 static const int versionHeight = 130;
 static const int rebootHeight = 110;
@@ -349,7 +349,8 @@ int mii;
             }
             case DEF_ADVANCED_ROUTER_SECTION:{
                 if(_enableAdvRouter){
-                    return [self createSummaryCell:tableView summaries:nil title:@"Advanced Router Features" selector:@selector(onAdvancdFeatures:) cardColor:[SFIColors helpBlueColor]];
+                    NSArray *summary = @[@"Learn about advanced features available in your Almond."];
+                    return [self createSummaryCell:tableView summaries:summary title:@"Advanced Router Features" selector:@selector(onAdvancdFeatures:) cardColor:[SFIColors helpBlueColor]];
                 }
                 else{
                     return [self createZeroCell:tableView];
@@ -554,6 +555,7 @@ int mii;
 -(NSArray*)getLogsSummary{
     return @[[NSString stringWithFormat:NSLocalizedString(@"router.Sends %@'s logs to our server", @"Sends %@'s logs to our server"),[CommonMethods getShortAlmondName: self.currentAlmond.almondplusName]]];
 }
+
 
 -(BOOL)isNotConnectedToCloud{
     if ([self isNoAlmondLoaded] || self.isAlmondUnavailable || [self isDisconnected]) {

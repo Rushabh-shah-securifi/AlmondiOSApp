@@ -74,7 +74,7 @@ typedef NS_ENUM(int, SFICardView_right_offset) {
 // Draws a left-aligned header with given title
 - (UILabel *)addTitle:(NSString *)title;
 
-- (void)addTitleAndOnOffSwitch:(NSString *)title target:(id)target action:(SEL)action on:(BOOL)isSwitchOn;
+- (void)addTitleAndOnOffSwitch:(NSString *)title target:(id)target action:(SEL)action shareAction:(SEL)shareAction on:(BOOL)isSwitchOn;
 
 - (void)addTitleAndButton:(NSString *)title target:(id)target action:(SEL)action buttonTitle:(NSString *)buttonTitle;
 

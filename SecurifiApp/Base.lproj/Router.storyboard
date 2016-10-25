@@ -18,7 +18,7 @@
         <scene sceneID="B0N-GW-Lw4">
             <objects>
                 <tableViewController storyboardIdentifier="AdvanceRouterSettingsController" hidesBottomBarWhenPushed="YES" id="7vP-SR-IJy" customClass="AdvanceRouterSettingsController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="tH7-vH-p36">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="tH7-vH-p36">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -27,7 +27,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pSM-je-zOD" id="mf3-JC-Cw7">
-                                    <frame key="frameInset" width="375" height="49"/>
+                                    <frame key="frameInset" width="375" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2aZ-0A-iXi">
@@ -41,11 +41,17 @@
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="down_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="9y9-vM-Sac">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rightarrow-icon" translatesAutoresizingMaskIntoConstraints="NO" id="9y9-vM-Sac">
+                                                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="25" id="5fv-dY-2cS"/>
-                                                        <constraint firstAttribute="width" constant="25" id="6iZ-AP-qsN"/>
+                                                        <constraint firstAttribute="height" constant="44.5" id="5fv-dY-2cS"/>
+                                                        <constraint firstAttribute="width" constant="46" id="6iZ-AP-qsN"/>
                                                     </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="imageRenderingMode">
+                                                            <integer key="value" value="2"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" red="0.34467230902777779" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -53,7 +59,7 @@
                                                 <constraint firstItem="9y9-vM-Sac" firstAttribute="centerY" secondItem="2aZ-0A-iXi" secondAttribute="centerY" id="D9k-RZ-fmP"/>
                                                 <constraint firstItem="NVG-WJ-8t4" firstAttribute="top" secondItem="2aZ-0A-iXi" secondAttribute="top" constant="4" id="Uil-wY-Gvf"/>
                                                 <constraint firstItem="NVG-WJ-8t4" firstAttribute="leading" secondItem="2aZ-0A-iXi" secondAttribute="leading" constant="8" id="pfi-Lg-DDH"/>
-                                                <constraint firstAttribute="trailing" secondItem="9y9-vM-Sac" secondAttribute="trailing" constant="8" id="uoy-4M-lzV"/>
+                                                <constraint firstAttribute="trailing" secondItem="9y9-vM-Sac" secondAttribute="trailing" id="uoy-4M-lzV"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -73,7 +79,7 @@
                                 <rect key="frame" x="0.0" y="78" width="375" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mgl-Jd-eB0" id="41N-dd-zvs">
-                                    <frame key="frameInset" width="375" height="44"/>
+                                    <frame key="frameInset" width="375" height="45"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dhr-Ht-t3f">
@@ -133,7 +139,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="down_arrow" width="46" height="46"/>
         <image name="rightarrow-icon" width="64" height="64"/>
     </resources>
 </document>

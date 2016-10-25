@@ -248,6 +248,29 @@ int mii;
     [self onUpdateWirelessSettings:copy isTypeEnable:YES];
 }
 
+- (void)onShareBtnTapDelegate{
+    NSLog(@"onShareBtnTapDelegate");
+    
+    NSString *textToShare = @"Look at this awesome website for aspiring iOS Developers!";
+    NSURL *myWebsite = [NSURL URLWithString:@"http://www.codingexplorer.com/"];
+    
+    NSArray *objectsToShare = @[textToShare, myWebsite];
+    
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
+    
+    NSArray *excludeActivities = @[UIActivityTypeAirDrop,
+                                   UIActivityTypePrint,
+                                   UIActivityTypeAssignToContact,
+                                   UIActivityTypeSaveToCameraRoll,
+                                   UIActivityTypeAddToReadingList,
+                                   UIActivityTypePostToFlickr,
+                                   UIActivityTypePostToVimeo];
+    
+    activityVC.excludedActivityTypes = excludeActivities;
+    
+    [self presentViewController:activityVC animated:YES completion:nil];
+}
+
 - (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString *)ssid {
     SFIWirelessSetting *copy = [setting copy];
     copy.ssid = ssid;

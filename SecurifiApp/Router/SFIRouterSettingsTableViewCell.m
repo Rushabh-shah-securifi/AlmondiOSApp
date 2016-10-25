@@ -40,7 +40,7 @@
 
     [cardView addTopBorder:self.backgroundColor];
     if (self.enableRouterWirelessControl) {
-        [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactivate:) on:setting.enabled];
+        [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactivate:) shareAction:@selector(onShareBtnTap:) on:setting.enabled];
     }
     else {
         [cardView addTitle:setting.ssid];
@@ -72,6 +72,12 @@
 - (void)onActivateDeactivate:(id)sender {
     UISwitch *ctrl = sender;
     [self.delegate onEnableDevice:self.wirelessSetting enabled:ctrl.on];
+}
+
+#pragma mark - UIButton actions
+- (void)onShareBtnTap:(id)sendesr{
+    NSLog(@"onShareBtnTap");
+    [self.delegate onShareBtnTapDelegate];
 }
 
 #pragma mark - UITextFieldDelegate methods
