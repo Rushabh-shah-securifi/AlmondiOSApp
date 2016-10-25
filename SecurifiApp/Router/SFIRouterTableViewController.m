@@ -156,13 +156,13 @@ int mii;
     self.tableView.tableHeaderView = nil;
     
     NSLog(@"almond mac: %@", self.almondMac);
-    if([self isNoAlmondLoaded] || ![self isFirmwareCompatible] || [self isDisconnected]){
+    if([self isNoAlmondLoaded] || ![self isFirmwareCompatible] || [self isDisconnected] || [self currentConnectionMode] == SFIAlmondConnectionMode_local){
         
     }
     else{
         [self showHudWithTimeout:NSLocalizedString(@"Loading router data", @"Loading router data")];
-        [RouterPayload routerSummary:mii mac:self.almondMac];
     }
+    [RouterPayload routerSummary:mii mac:self.almondMac];
 }
 
 -(void)markAlmondTitleAndMac{
