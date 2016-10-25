@@ -646,14 +646,19 @@
     else{
         NSLog(@"check point 3");
         [self.delegate hideHUDDelegate];
+        NSString *msg;
         NSString *reason = payload[REASON];
-        if([reason.lowercaseString hasPrefix:@"unplug all"] && self.wirelessBtn.selected){
-            NSString *msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
-//            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
+        if([reason.lowercaseString hasPrefix:@"unplug all"]){
+            if(self.wirelessBtn.selected){
+               msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
+                //            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
+            }
+            else{
+                msg = @"Unplug all cables except WAN cable. Do not unplug power cable";
+            }
             [self showAlert:self.almondNormalName msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
         }
         else if([reason.lowercaseString hasPrefix:@"unable to"]){
-            NSString *msg;
             if(self.wirelessBtn.selected)
                 msg = [NSString stringWithFormat:@"Unable to reach %@. Check for loose wired connections between your Almonds and try again!", self.almondNormalName];
             else
