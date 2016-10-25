@@ -640,9 +640,11 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
     NSLog(@"searchBarCancelButtonClicked self.dayArr %ld",(unsigned long)self.dayArr.count);
     self.incompleteDB = @{};
+    self.isSearchBegin = YES;
     [self reloadSearchTable];
     [self reloadTable];
     self.NoresultFound.hidden = YES;
+    
     
 }
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView;

@@ -543,7 +543,7 @@
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="37H-QN-Tnq">
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="75" id="59I-kT-Deu"/>
+                                                    <constraint firstAttribute="width" constant="97" id="59I-kT-Deu"/>
                                                     <constraint firstAttribute="height" constant="38" id="ar2-YG-Ibu"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="32"/>
@@ -580,7 +580,7 @@
                                             <constraint firstItem="4BX-VT-fjJ" firstAttribute="top" secondItem="37H-QN-Tnq" secondAttribute="bottom" constant="6" id="aJh-h4-dW6"/>
                                             <constraint firstItem="4BX-VT-fjJ" firstAttribute="leading" secondItem="Unw-No-RnA" secondAttribute="trailing" constant="-1" id="d9a-CO-s3B"/>
                                             <constraint firstAttribute="trailing" secondItem="4BX-VT-fjJ" secondAttribute="trailing" constant="42" id="kba-Pz-Jj4"/>
-                                            <constraint firstAttribute="trailing" secondItem="37H-QN-Tnq" secondAttribute="trailing" constant="43" id="mnN-6B-1M8"/>
+                                            <constraint firstAttribute="trailing" secondItem="37H-QN-Tnq" secondAttribute="trailing" constant="32" id="mnN-6B-1M8"/>
                                             <constraint firstItem="2iL-CJ-sd8" firstAttribute="top" secondItem="1GN-Ms-dww" secondAttribute="top" constant="6" id="muy-aj-DhB"/>
                                             <constraint firstItem="Unw-No-RnA" firstAttribute="top" secondItem="1GN-Ms-dww" secondAttribute="top" constant="88" id="tMi-NE-EpK"/>
                                             <constraint firstAttribute="trailing" secondItem="1op-HM-n6d" secondAttribute="trailing" constant="6" id="z02-9l-O4i"/>
@@ -609,7 +609,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z7G-DE-U3D">
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="Ajb-QT-ysJ"/>
-                                                    <constraint firstAttribute="width" constant="75" id="bSs-kY-cKZ"/>
+                                                    <constraint firstAttribute="width" constant="96" id="bSs-kY-cKZ"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="32"/>
                                                 <color key="textColor" red="0.011764705882352941" green="0.66274509803921566" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -624,7 +624,7 @@
                                         </subviews>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstItem="z7G-DE-U3D" firstAttribute="leading" secondItem="Vml-Sq-JiZ" secondAttribute="leading" constant="46" id="4DU-iY-oSf"/>
+                                            <constraint firstItem="z7G-DE-U3D" firstAttribute="leading" secondItem="Vml-Sq-JiZ" secondAttribute="leading" constant="33" id="4DU-iY-oSf"/>
                                             <constraint firstItem="rzH-eo-wmu" firstAttribute="top" secondItem="Vml-Sq-JiZ" secondAttribute="top" constant="8" id="OW2-JV-LQ9"/>
                                             <constraint firstItem="31C-VF-ILZ" firstAttribute="leading" secondItem="Vml-Sq-JiZ" secondAttribute="leading" constant="23" id="P8s-aD-B30"/>
                                             <constraint firstItem="rzH-eo-wmu" firstAttribute="leading" secondItem="Vml-Sq-JiZ" secondAttribute="leading" constant="10" id="Qum-n5-kWZ"/>

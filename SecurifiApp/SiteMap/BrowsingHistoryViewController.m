@@ -129,8 +129,12 @@ typedef void(^InsertMethod)(BOOL);
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:YES];
-    NSLog(@"count otiDB %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
-    [BrowsingHistoryDataBase getLastDate:self.amac clientMac:self.cmac];
+    int count = [BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac];
+    while(count > 500 ){
+        [BrowsingHistoryDataBase getLastDate:self.amac clientMac:self.cmac];
+        count = [BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac];
+    }
+    
     NSLog(@"count otiDB %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
     NSLog(@"complete db lastdate %@ ",[CompleteDB getLastDate:self.amac clientMac:self.cmac]);
     NSLog(@"complete db max %@ ",[CompleteDB getMaxDate:self.amac clientMac:self.cmac]);
@@ -217,6 +221,9 @@ typedef void(^InsertMethod)(BOOL);
     }
     self.sendReq = YES;
     self.reload = NO;
+    if([last_date isEqualToString:[CommonMethods getTodayDate]] && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
+        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
+    }
     
 }
 
@@ -297,12 +304,12 @@ typedef void(^InsertMethod)(BOOL);
         NSLog(@"Is Today Date %d %@",isTodayDate,self.incompleteDB[@"PS"]);
         NSLog(@"Is Present In Complete DB %d",isPresentInCompleteDB);
         
-        if(isTodayDate && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
-            NSLog(@"Sending Request in first IF");
-            [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
-            
-        }
-        else if(!isTodayDate && !isPresentInCompleteDB){
+//        if(isTodayDate && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
+//            NSLog(@"Sending Request in first IF");
+//            [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
+//            
+//        }
+         if(!isTodayDate && !isPresentInCompleteDB){
             NSLog(@"Sending Request in Second IF");
             NSString *ps= self.incompleteDB[@"PS"] ;
             NSLog(@"self.oldDate = %@ == str = %@",self.oldDate,str);

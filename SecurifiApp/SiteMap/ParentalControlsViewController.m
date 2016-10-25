@@ -516,32 +516,32 @@
     //kilobytes
     if (([bytes longLongValue]/1024)>=1){
         
-        readable = [NSString stringWithFormat:@"%lld KB", ([bytes longLongValue]/1024)];
+        readable = [NSString stringWithFormat:@"%0.1f KB", ([bytes doubleValue]/1024)];
     }
     
     //megabytes
     if (([bytes longLongValue]/1024/1024)>=1){
         
-        readable = [NSString stringWithFormat:@"%lld MB", ([bytes longLongValue]/1024/1024)];
+        readable = [NSString stringWithFormat:@"%0.1f MB", ([bytes doubleValue]/1024/1024)];
     }
     
     //gigabytes
     if (([bytes longLongValue]/1024/1024/1024)>=1){
         
-        readable = [NSString stringWithFormat:@"%lld GB", ([bytes longLongValue]/1024/1024/1024)];
+        readable = [NSString stringWithFormat:@"%0.1f GB", ([bytes doubleValue]/1024/1024/1024)];
         
     }
     
     //terabytes
     if (([bytes longLongValue]/1024/1024/1024/1024)>=1){
         
-        readable = [NSString stringWithFormat:@"%lld TB", ([bytes longLongValue]/1024/1024/1024/1024)];
+        readable = [NSString stringWithFormat:@"%0.1f TB", ([bytes doubleValue]/1024/1024/1024/1024)];
     }
     
     //petabytes
     if (([bytes longLongValue]/1024/1024/1024/1024/1024)>=1){
         
-        readable = [NSString stringWithFormat:@"%lld PB", ([bytes longLongValue]/1024/1024/1024/1024/1024)];
+        readable = [NSString stringWithFormat:@"%0.1f PB", ([bytes doubleValue]/1024/1024/1024/1024/1024)];
     }
     
     NSArray* arrayOfStrings = [readable componentsSeparatedByString:@" "];
