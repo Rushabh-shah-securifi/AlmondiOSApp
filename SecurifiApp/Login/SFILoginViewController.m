@@ -255,6 +255,7 @@
             RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
             editor.delegate = self;
             editor.makeLinkedAlmondCurrentOne = YES;
+            editor.fromLoginPage = YES;
 
             UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
 
@@ -263,7 +264,7 @@
         }
         case SFILoginViewControllerMode_switchToLocalConnection: {
             NSLog(@"i am called");
-            [[SecurifiToolkit sharedInstance] setConnectionMode:SFIAlmondConnectionMode_local forAlmond:nil];
+            [[SecurifiToolkit sharedInstance] setConnectionMode:SFIAlmondConnectionMode_local];
             [self.delegate loginControllerDidCompleteLogin:self];
             break;
         }

@@ -32,5 +32,6 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorMode) {
 @property(nonatomic, copy) SFIAlmondLocalNetworkSettings *settings;
 @property(nonatomic) BOOL enableUnlinkActionButton;
 @property(nonatomic) BOOL makeLinkedAlmondCurrentOne;
+@property(nonatomic) BOOL fromLoginPage;
 
 @end

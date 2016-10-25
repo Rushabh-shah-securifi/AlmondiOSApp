@@ -740,7 +740,7 @@
 - (void)configureNetworkSettings:(enum SFIAlmondConnectionMode)mode {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSLog(@"i am called");
-    [toolkit setConnectionMode:mode forAlmond:self.toolkit.currentAlmond.almondplusMAC];
+    [toolkit setConnectionMode:mode];
     [self showHudWithTimeoutMsg:NSLocalizedString(@"connecting", @"Connecting...") delay:1];
     [toolkit.devices removeAllObjects];
     [toolkit.clients removeAllObjects];
@@ -752,7 +752,7 @@
     //    NSLog(@"markNetworkStatusIcon");
     NSLog(@"i am called");
     enum SFIAlmondConnectionMode connectionMode = [_toolkit currentConnectionMode];
-    enum SFIAlmondConnectionStatus status = [_toolkit connectionStatusFromNetworkState:(ConnectionStatusType*)[ConnectionStatus getConnectionStatus]];
+    enum SFIAlmondConnectionStatus status = [_toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
     enum SFICloudStatusState state;
     switch (status) {
         case SFIAlmondConnectionStatus_disconnected: {

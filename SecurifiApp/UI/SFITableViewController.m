@@ -390,7 +390,7 @@
 - (void)configureNetworkSettings:(enum SFIAlmondConnectionMode)mode {
     NSLog(@"configureNetworkSettings handler method ");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [toolkit setConnectionMode:mode forAlmond:self.almondMac];
+    [toolkit setConnectionMode:mode];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:@"Connecting..."];
         [self.HUD hide:YES afterDelay:5]; // in case the request times out

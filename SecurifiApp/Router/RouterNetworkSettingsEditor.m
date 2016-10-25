@@ -10,6 +10,7 @@
 #import "UIFont+Securifi.h"
 #import "Analytics.h"
 #import "LocalNetworkManagement.h"
+#import "ConnectionStatus.h"
 
 typedef NS_ENUM(unsigned int, TABLE_ROW) {
     TABLE_ROW_IP_ADDR,
@@ -77,6 +78,31 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self
+               selector:@selector(onConnectionStatusChanged:)
+                   name:CONNECTION_STATUS_CHANGE_NOTIFIER
+                 object:nil];
+}
+
+-(void)onConnectionStatusChanged:(id)sender {
+    NSNumber* status = [sender object];
+    int statusIntValue = [status intValue];
+    if(statusIntValue == (int)(ConnectionStatusType*)NO_NETWORK_CONNECTION){
+        NSLog(@"onNetworkDownNotifier");
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.HUD hide:YES]; // make sure it is hidden
+            NSString *msg = NSLocalizedString(@"router.error-msg.An error occurred trying to link with the Almond. Please try again.", @"An error occurred trying to link with the Almond. Please try again.");
+            [self markErrorOnLink:[NSString stringWithFormat:@"%@", msg]];
+        });
+        NSLog(@"dashboardconnection status is no network connection");
+    }else if(statusIntValue == (int)(ConnectionStatusType*)CONNECTED_TO_NETWORK){
+        NSLog(@"onNetworkUpNotifier");
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.HUD hide:YES]; // make sure it is hidden
+        });
+        NSLog(@"dashboardconnection status is connected to network");
+    }
 }
 
 #pragma mark - State management
@@ -343,72 +369,86 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
     if (!settings.hasBasicCompleteSettings) {
         return;
     }
-    //NSLog(@"mac: %@, host %@, login %@, password %@", settings.almondplusMAC,settings.host,settings.login,settings.password);
+    
+    NSLog(@"mac: %@, host %@, login %@, password %@", settings.almondplusMAC,settings.host,settings.login,settings.password);
 
     self.HUD.labelText = NSLocalizedString(@"router.hud.Establishing Local Link...", @"Establishing Local Link...");
     self.HUD.minShowTime = 2;
-
+    
+    SecurifiToolkit* toolKit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus* almond = [SFIAlmondPlus new];
+    almond.almondplusMAC = @"dummyMac";
+    almond.almondplusName = @"dummyMac";
+    toolKit.currentAlmond = almond;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setInteger:SFIAlmondConnectionMode_local forKey:kPREF_DEFAULT_CONNECTION_MODE];
+    [toolKit asyncInitNetwork];
+    
     [self.HUD showAnimated:YES whileExecutingBlock:^() {
         // Test the connection (and interrogate the remote Almond for info about itself; the almond Mac and name
         // will be reflected in the settings after the test
-        enum TestConnectionResult result = [settings testConnection];
-        NSLog(@"test result: %d", result);
-        //NSLog(@"before switch");
-        switch (result) {
-            case TestConnectionResult_success: {
-                
-                SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
-                SFIAlmondLocalNetworkSettings *old_settings = [LocalNetworkManagement localNetworkSettingsForAlmond:settings.almondplusMAC];
-                NSLog(@"mac: %@, old settnigs: %@", settings.almondplusMAC, old_settings);
-                if (old_settings) {
-                    //NSLog(@"settings already exists and");
-                    // in "Link Mode" we believe this is Almond is unknown to the app/system. In this case, it turns
-                    // out we already know about it (settings already on file). So, we refuse to "link" (overwrite
-                    // the settings).
-                    [self markErrorOnLink:NSLocalizedString(@"almond_already_linked", @"This Almond is already linked.")];
-                    return;
-                }
-
-                // store the new/updated settings and update UI state; inform the delegate
-                [LocalNetworkManagement setLocalNetworkSettings:settings];
-                //NSLog(@"storing local network %@",settings);
-                
-                if (self.makeLinkedAlmondCurrentOne) {
-                    SFIAlmondPlus *almond = settings.asLocalLinkAlmondPlus;
-
-                    // switch the connection to Local
-                    NSLog(@"i am called mac: %@", almond.almondplusMAC);
-                    [toolkit setConnectionMode:SFIAlmondConnectionMode_local forAlmond:almond.almondplusMAC];
-                    [toolkit setCurrentAlmond:almond];
-                    NSLog(@"switching to local  connection");
-                }
-                
+//        enum TestConnectionResult result = [settings testConnection:self.fromLoginPage];
+//        NSLog(@"test result: %d", result);
+//        switch (result) {
+//            case TestConnectionResult_success: {
+//                
+//                SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+//
+//                SFIAlmondLocalNetworkSettings *old_settings = [LocalNetworkManagement localNetworkSettingsForAlmond:settings.almondplusMAC];
+//                NSLog(@"mac: %@, old settnigs: %@", settings.almondplusMAC, old_settings);
+//                if (old_settings) {
+//                    //NSLog(@"settings already exists and");
+//                    // in "Link Mode" we believe this is Almond is unknown to the app/system. In this case, it turns
+//                    // out we already know about it (settings already on file). So, we refuse to "link" (overwrite
+//                    // the settings).
+//                    [self markErrorOnLink:NSLocalizedString(@"almond_already_linked", @"This Almond is already linked.")];
+//                    return;
+//                }
+//
+//                // store the new/updated settings and update UI state; inform the delegate
+//                [LocalNetworkManagement setLocalNetworkSettings:settings];
+//                //NSLog(@"storing local network %@",settings);
+//            
+//                if (self.makeLinkedAlmondCurrentOne) {
+//                    
+//                    SFIAlmondPlus *almond = settings.asLocalLinkAlmondPlus;
+//                    [SecurifiToolkit sharedInstance].currentAlmond = almond;
+//                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//                    [defaults setInteger:SFIAlmondConnectionMode_local forKey:kPREF_DEFAULT_CONNECTION_MODE];
+//                    [[SecurifiToolkit sharedInstance] postNotification:kSFIDidChangeCurrentAlmond data:almond];
+//                    
+//                    // switch the connection to Local
+//                    NSLog(@"i am called mac: %@", almond.almondplusMAC);
+////                    [toolkit setConnectionMode:SFIAlmondConnectionMode_local];
+//                    
+//                    NSLog(@"switching to local  connection");
+//                }
+        
                 [self markSuccessOnLink];
                 [self.delegate networkSettingsEditorDidLinkAlmond:self settings:settings];
 
-                break;
-            }
-
-            case TestConnectionResult_unknownError:{
-                NSLog(@"unknown");
-                
-            }
-            case TestConnectionResult_unknown:{
-                NSLog(@"result unknown");
-            }
-            case TestConnectionResult_macMismatch:
-            {
-                NSLog(@"result macMismatch");
-            }
-            case TestConnectionResult_macMissing: {
-                // should not be possible to get mac-mismatch error right now because this is only relevant when
-                // editing settings on an unlinked Almond.
-                NSString *msg = NSLocalizedString(@"router.error-msg.An error occurred trying to link with the Almond. Please try again.", @"An error occurred trying to link with the Almond. Please try again.");
-                [self markErrorOnLink:[NSString stringWithFormat:@"%@ (r%d)", msg, result]];
-                break;
-            }
-        }
+//                break;
+//            }
+//
+//            case TestConnectionResult_unknownError:{
+//                NSLog(@"unknown");
+//                
+//            }
+//            case TestConnectionResult_unknown:{
+//                NSLog(@"result unknown");
+//            }
+//            case TestConnectionResult_macMismatch:
+//            {
+//                NSLog(@"result macMismatch");
+//            }
+//            case TestConnectionResult_macMissing: {
+//                // should not be possible to get mac-mismatch error right now because this is only relevant when
+//                // editing settings on an unlinked Almond.
+//                NSString *msg = NSLocalizedString(@"router.error-msg.An error occurred trying to link with the Almond. Please try again.", @"An error occurred trying to link with the Almond. Please try again.");
+//                [self markErrorOnLink:[NSString stringWithFormat:@"%@ (r%d)", msg, result]];
+//                break;
+//            }
+//        }
     }];
 }
 
