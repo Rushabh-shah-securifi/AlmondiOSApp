@@ -346,7 +346,7 @@
 
 
 - (void)onAlmondModeDidChange:(id)sender {
-    //    NSLog(@"Almond mode is changing %d",self.toolkit.mode_src);
+        NSLog(@"Almond mode is changing %d",self.toolkit.mode_src);
     [self markNetworkStatusIcon];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];

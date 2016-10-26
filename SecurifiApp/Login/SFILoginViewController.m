@@ -27,12 +27,14 @@
 @property(nonatomic) BOOL lastEditedFieldWasPasswd;
 @property(nonatomic) NSTimer *timeoutTimer;
 @property(atomic) BOOL isLoggingIn;
+@property(atomic) GenericCommand *loginCmd;
 @end
 
 @implementation SFILoginViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _loginCmd =nil;
 
     NSDictionary *titleAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
@@ -348,8 +350,14 @@
     GenericCommand *cmd = [GenericCommand new];
     cmd.commandType = CommandType_LOGIN_COMMAND;
     cmd.command = loginCommand;
+    _loginCmd = nil;
     
-    [toolKit asyncSendToNetwork:cmd];
+    if([toolKit currentConnectionMode] != SFIAlmondConnectionMode_cloud ||
+       [ConnectionStatus getConnectionStatus]!=(int)(ConnectionStatusType*)CONNECTED_TO_NETWORK){
+        [toolKit asyncInitCloud];
+        _loginCmd = cmd;
+    }else
+        [toolKit asyncSendToNetwork:cmd];
 }
 
 - (void)markResetLoggingInState {
@@ -393,6 +401,11 @@
 //        }
     }else if(statusIntValue == (int)(ConnectionStatusType*)CONNECTED_TO_NETWORK){
         if ([toolkit isCloudReachable]) {
+            if(_loginCmd!=nil){
+                [toolkit asyncSendToNetwork:_loginCmd];
+                _loginCmd=nil;
+                return;
+            }
             [self setStandardLoginMsg];
         }
     }

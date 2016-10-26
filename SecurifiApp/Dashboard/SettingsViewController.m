@@ -10,7 +10,7 @@
 
 @interface SettingsViewController (){
     NSString *Name;
-    NSArray *NetworkConfig,*NetworkConfig1;
+    NSArray *NetworkConfig1,*NetworkConfig2;
     NSArray *Preferences, *Preferences1;
     NSArray *Notifications;
     
@@ -79,9 +79,8 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     if (indexPath.section == 1) {
-        cell.textLabel.text = [NSString stringWithFormat:@"%@",[NetworkConfig objectAtIndex:indexPath.row]];
-        cell.detailTextLabel.text =[NSString stringWithFormat:@"%@",[NetworkConfig1 objectAtIndex:indexPath.row]];
-        
+        cell.textLabel.text = [NSString stringWithFormat:@"%@",[NetworkConfig1 objectAtIndex:indexPath.row]];
+        cell.detailTextLabel.text =[NSString stringWithFormat:@"%@",[NetworkConfig2 objectAtIndex:indexPath.row]];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     if (indexPath.section == 2) {

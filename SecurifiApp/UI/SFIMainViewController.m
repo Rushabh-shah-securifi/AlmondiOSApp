@@ -162,7 +162,7 @@
 #pragma mark - Reconnection
 
 - (void)onReachabilityDidChange:(id)sender {
-    [self conditionalTryConnectOrLogon:NO];
+    //[self conditionalTryConnectOrLogon:NO];
 }
 
 - (void)onNetworkUpNotifier:(id)sender {
