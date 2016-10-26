@@ -66,8 +66,7 @@
     NSDateFormatter *dateformate=[[NSDateFormatter alloc]init];//Accessed on matt's iPhone on Wed 29 June 11:00.
     [dateformate setDateFormat:@"EEEE dd MMMM HH:mm"]; // Date formater
     NSString *str = [dateformate stringFromDate:date];
-    self.LblClientLastVicited.text = [NSString stringWithFormat:@"Accessed on %@ on %@",self.client.name,str];
-    NSLog(@"LblClientLastVicited %@",[NSString stringWithFormat:@"Accessed on %@ on %@",self.client.name,str]);
+    
     self.cat_view = [[CategoryView alloc]init];
     self.cat_view_more = [[CategoryView alloc]initMoreClickView];
     self.cat_view_more.delegate = self;
@@ -103,12 +102,14 @@
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"R"]){
         self.globalColor = [UIColor colorFromHexString:@"f44336"];
+        self.LblClientLastVicited.text = [NSString stringWithFormat:@"%@ Accessed on %@",@"R",self.client.name];
         self.catogeryTag.text =@"Restricted";
         self.catogeryFuncLbl.text = @"Under 17 requires accompanying parent or adult guardian. Contains some adult material. Parents are urged to learn more about the film before taking their young children with them.";
      
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"PG-13"]){
         self.globalColor = [UIColor colorFromHexString:@"ff9800"];
+        self.LblClientLastVicited.text = [NSString stringWithFormat:@"%@ Accessed on %@",@"PG-13",self.client.name];
         self.catogeryTag.text =@"Parents Strongly Cautioned";
         self.catogeryFuncLbl.text = @"Some material may be inappropriate for children under 13. Parents are urged to be cautious. Some material may be inappropriate for Pre-teenagers.";
       
@@ -116,18 +117,21 @@
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"U"]){
         self.globalColor = [UIColor colorFromHexString:@"825CC2"];
         self.catogeryTag.text =@"Unknown rating";
+        self.LblClientLastVicited.text = [NSString stringWithFormat:@"%@ Accessed on %@",@"U",self.client.name];
         self.catogeryFuncLbl.text = @"We currently have no information about the rating of this website.";
         
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"PG"]){
         self.globalColor = [UIColor colorFromHexString:@"ffc107"];
         self.catogeryTag.text =@"Parential Guidence Suggested";
+        self.LblClientLastVicited.text = [NSString stringWithFormat:@"%@ Accessed on %@",@"PG",self.client.name];
         self.catogeryFuncLbl.text = @"Some material may not be suitable for children. Parents urged to give  \"parental guidance\". May contain some material parents might not like for their young children.";
         
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"G"]){
         self.globalColor = [UIColor colorFromHexString:@"4caf50"];
         self.catogeryTag.text =@"General Audiences";
+        self.LblClientLastVicited.text = [NSString stringWithFormat:@"%@ Accessed on %@",@"G",self.client.name];
         self.catogeryFuncLbl.font = [UIFont securifiFont:16];
         self.catogeryFuncLbl.text = @"All ages admitted. Nothing that would offend parents for viewing by children.";
         
