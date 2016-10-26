@@ -188,6 +188,7 @@ int mii;
             [self showToast:NSLocalizedString(@"ParseRouterCommand Sorry! unable to update.", @"Sorry! unable to update.")];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
+                [self.HUD hide:YES];
             });
             return;//
         }

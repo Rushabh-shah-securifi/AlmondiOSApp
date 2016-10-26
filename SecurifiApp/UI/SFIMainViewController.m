@@ -38,6 +38,17 @@
     [center removeObserver:self];
 }
 
+- (void)displayWebView:(NSString *)strForWebView{
+    NSLog(@"display web view main");
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+    webView.backgroundColor = [UIColor clearColor];
+
+    [webView loadHTMLString:strForWebView baseURL:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.view addSubview:webView];
+    });
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -92,6 +103,8 @@
             [self tryPresentLogonScreen];
         });
     }
+    //adding this so that loading webviews for help screens does not cause any problem.
+    [self displayWebView:@""];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

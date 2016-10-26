@@ -101,7 +101,7 @@ int mii;
     
     [self addRefreshControl];
     [self initializeRouterSummaryAndSettings];
-    self.enableAdvRouter = NO;
+    self.enableAdvRouter = YES;
     
 }
 
@@ -350,7 +350,7 @@ int mii;
             case DEF_ADVANCED_ROUTER_SECTION:{
                 if(_enableAdvRouter){
                     NSArray *summary = @[@"Learn about advanced features available in your Almond."];
-                    return [self createSummaryCell:tableView summaries:summary title:@"Advanced Router Features" selector:@selector(onAdvancdFeatures:) cardColor:[SFIColors helpBlueColor]];
+                    return [self createSummaryCell:tableView summaries:summary title:@"Advanced Router Features" selector:@selector(onAdvancdFeatures:) cardColor:[SFIColors ruleBlueColor]];
                 }
                 else{
                     return [self createZeroCell:tableView];
