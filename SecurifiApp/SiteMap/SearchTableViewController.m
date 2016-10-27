@@ -569,7 +569,6 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.searchController.active = YES;
     self.searchDisplayController.active = YES;
     
-    
 }
 
 
@@ -597,9 +596,12 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSLog(@"selectedScopeButtonIndexDidChange");
 }
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [self.conn cancel];
+    self.conn = nil;
     [searchBar resignFirstResponder];
     [self.dayArr removeAllObjects];
     [self.allUri removeAllObjects];
+    
     
     
     NSLog(@"searchBarCancelButtonClicked self.dayArr %ld",(unsigned long)self.dayArr.count);
@@ -612,6 +614,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.NoresultFound.hidden = YES;
     
     
+    
 }
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView;
 {
@@ -620,7 +623,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 }
 -(void)onCancleButton{
     self.isManuelSearch = YES;
-    
+    [self.conn cancel];
+    self.conn = nil;
     [self.dayArr removeAllObjects];// making sure ermovinf all obj from self .day arr
     NSLog(@"onCancleButton");
     [self.allUri removeAllObjects];
