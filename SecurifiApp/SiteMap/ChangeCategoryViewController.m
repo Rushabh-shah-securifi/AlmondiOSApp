@@ -144,7 +144,7 @@
     
     self.LblCatogeryTag.text =[uriDict valueForKey:@"categoty"];
    
-    self.LblCatogeryType.text = [NSString stringWithFormat:@" Categroy : %@",[uriDict valueForKey:@"subCategory"]];
+    self.LblCatogeryType.text = [NSString stringWithFormat:@" Category : %@",[uriDict valueForKey:@"subCategory"]];
 }
 
 - (void)didReceiveMemoryWarning {

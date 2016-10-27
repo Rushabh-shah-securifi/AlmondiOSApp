@@ -26,7 +26,7 @@
 
 @interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource,BrowsingHistoryDelegate,NSURLConnectionDelegate,MBProgressHUDDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *browsingTable;
-@property (nonatomic) NSMutableArray *dayArr;
+@property (nonatomic) NSArray *dayArr;
 @property (nonatomic) dispatch_queue_t imageDownloadQueue;
 @property (nonatomic) dispatch_queue_t sendReqQueue;
 @property (nonatomic) NSMutableData *responseData;
@@ -82,26 +82,29 @@ typedef void(^InsertMethod)(BOOL);
     [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac] showHudFirstTime:YES];
     
     
-    self.dayArr = [[NSMutableArray alloc]init];
     [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
     self.browsingHistory = [[BrowsingHistory alloc]init];
     self.browsingHistory.delegate = self;
 
     [super viewDidLoad];
-    
+    /*
+    040 29539996
+    2302008169
+    9618088274
+     */
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
     self.NoresultFound.hidden = YES;
     if([[SecurifiToolkit sharedInstance]isCloudReachable]){
-        NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:500 amac:self.amac cmac:self.cmac];
-        [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+        self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:500 amac:self.amac cmac:self.cmac];
+        //[self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
     }
     else
     {
-        NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:100 amac:self.amac cmac:self.cmac];
-        [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+        self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:100 amac:self.amac cmac:self.cmac];
+        //[self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
     }
     self.isTapped = NO;
     
@@ -165,12 +168,8 @@ typedef void(^InsertMethod)(BOOL);
     self.reload = YES;
     self.sendReq = NO;
     
-    dispatch_queue_t sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
-    if(isFirsTtime == YES)
         [self showHudWithTimeoutMsg:@"Loading..." withDelay:1];
     
-    dispatch_async(sendReqQueue,^(){
-        
         NSLog(@"post req = %@",post);
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
@@ -181,8 +180,7 @@ typedef void(^InsertMethod)(BOOL);
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
         [request setHTTPBody:postData];
         self.conn = [NSURLConnection connectionWithRequest:request delegate:self];
-    });
-    
+  
     
     //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
 }
@@ -236,10 +234,10 @@ typedef void(^InsertMethod)(BOOL);
         recordCount = self.count;
     }
     
-    NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:dict readlimit:recordCount amac:self.amac cmac:self.cmac];
+    self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:dict readlimit:recordCount amac:self.amac cmac:self.cmac];
     if(self.reload){
-        [self.dayArr removeAllObjects];
-        [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+//        [self.dayArr removeAllObjects];
+//        [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
         [self reloadTable];
     }
     self.sendReq = YES;
@@ -274,10 +272,10 @@ typedef void(^InsertMethod)(BOOL);
         recordCount = self.count;
     }
     
-    NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:dict readlimit:recordCount amac:self.amac cmac:self.cmac];
+    self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:dict readlimit:recordCount amac:self.amac cmac:self.cmac];
     if(self.reload){
-        [self.dayArr removeAllObjects];
-        [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+        //[self.dayArr removeAllObjects];
+        //[self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
         [self reloadTable];
     }
     self.sendReq = YES;
@@ -386,9 +384,9 @@ typedef void(^InsertMethod)(BOOL);
         else {
             NSLog(@"Reload from Table ELSE");
             self.count+=100;
-            [self.dayArr removeAllObjects];
-            NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:self.count amac:self.amac cmac:self.cmac];
-            [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+            //[self.dayArr removeAllObjects];
+            self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:self.count amac:self.amac cmac:self.cmac];
+            //[self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
             [self reloadTable];
         }
         
