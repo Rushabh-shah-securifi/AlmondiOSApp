@@ -82,11 +82,11 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self
-               selector:@selector(onConnectionStatusChanged:)
-                   name:CONNECTION_STATUS_CHANGE_NOTIFIER
-                 object:nil];
+//    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+//    [center addObserver:self
+//               selector:@selector(onConnectionStatusChanged:)
+//                   name:CONNECTION_STATUS_CHANGE_NOTIFIER
+//                 object:nil];
 }
 
 #pragma mark - State management
@@ -483,8 +483,8 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 - (void)onUnlinkAlmond {
     NSString *almondMac = self.settings.almondplusMAC;
 
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [LocalNetworkManagement removeLocalNetworkSettingsForAlmond:almondMac];
+//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+//    [LocalNetworkManagement removeLocalNetworkSettingsForAlmond:almondMac];
 
     [self.delegate networkSettingsEditorDidUnlinkAlmond:self];
 }

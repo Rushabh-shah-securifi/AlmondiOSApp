@@ -527,6 +527,7 @@
         NSLog(@"onNetworkConnectingNotifier");
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self markNetworkStatusIcon];
+            [self showConnectingHUD];
         });
         NSLog(@"dashboardconnection status is connecting to network");
     }else if(statusIntValue == (int)(ConnectionStatusType*)CONNECTED_TO_NETWORK){
@@ -785,6 +786,10 @@
 
 - (void)showLoadingRouterDataHUD {
     [self showHUD:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
+}
+
+- (void)showConnectingHUD {
+    [self showHUD:@"Connecting, Please wait..."];
 }
 
 - (void)showLoadingSensorDataHUD {

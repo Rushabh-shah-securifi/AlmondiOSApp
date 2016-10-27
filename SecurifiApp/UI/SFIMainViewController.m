@@ -132,7 +132,7 @@
         return;
     }
     
-    if (!supportsLocalConnections && ![KeyChainAccess hasLoginCredentials]) {
+    if (toolkit.currentAlmond==nil && ![KeyChainAccess hasLoginCredentials]) {
         // If no logon credentials we just put up the screen and then handle connection from there.
         [self tryPresentLogonScreen];
         return;
@@ -270,7 +270,7 @@
     const BOOL supportsLocalConnections = toolkit.configuration.enableLocalNetworking;
     if (supportsLocalConnections) {
         NSLog(@"i am called");
-        if (toolkit.currentConnectionMode == SFIAlmondConnectionMode_local) {
+        if (toolkit.currentConnectionMode == SFIAlmondConnectionMode_local && toolkit.currentAlmond!=nil) {
             return;
         }
     }
