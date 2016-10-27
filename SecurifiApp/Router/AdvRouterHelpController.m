@@ -208,9 +208,6 @@
     
     NSString *path = [[NSBundle mainBundle] bundlePath];
     NSURL *baseURL = [NSURL fileURLWithPath:path];
-//    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"WEB" ofType:nil];
-//    baseURL = [NSURL fileURLWithPath:filePath];
-//    [webView  loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:filePath]]];
     
     NSLog(@"base url: %@", baseURL);
     [webView loadHTMLString:strForWebView baseURL:baseURL];

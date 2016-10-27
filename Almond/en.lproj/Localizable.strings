@@ -956,6 +956,13 @@ Follow it, then login below.";
 
 
 "web_history" = "Web History";
+
+
+//help topics html strings
+"dashboard_helptopic_html" = "";
+"scene_helptopic_html" = "";
+"security_helptopic_html" = "";
+"add_device_helptopic_html" = "";
 /* ==================================================================== */
 
 /*

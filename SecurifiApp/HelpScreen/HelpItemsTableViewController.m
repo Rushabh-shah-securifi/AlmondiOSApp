@@ -70,27 +70,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"HelpScreenStoryboard" bundle:nil];
     HelpViewController *ctrl = [storyBoard instantiateViewControllerWithIdentifier:@"HelpViewController"];
-    if(self.isHelpTopic){
-        ctrl.helpTopic = [self getHelpTopic:indexPath.row]; //this is based on json
-        ctrl.isHelpTopic = YES;
-    }else{
-        ctrl.startScreen = [self.items objectAtIndex:indexPath.row];
-        ctrl.isHelpTopic = NO;
-    }
+    ctrl.startScreen = [self.items objectAtIndex:indexPath.row];
+    ctrl.isHelpTopic = self.isHelpTopic;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self presentViewController:ctrl animated:YES completion:nil];
-    });
-    
-    
-}
-
--(HelpTopic)getHelpTopic:(NSInteger)row{
-    if(row == 0)
-        return HelpTopic_Dashboard;
-    else if(row == 1)
-        return HelpTopic_Scene;
-    else
-        return HelpTopic_Securiti;
+    });  
 }
 
 @end
