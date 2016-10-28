@@ -91,11 +91,36 @@ int mii;
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     
     [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
-    
+    [center addObserver:self
+               selector:@selector(onConnectionStatusChanged:)
+                   name:CONNECTION_STATUS_CHANGE_NOTIFIER
+                 object:nil];
     [center addObserver:self selector:@selector(onNetworkDownNotifier:) name:NETWORK_DOWN_NOTIFIER object:nil];
     
     [center addObserver:self selector:@selector(onNetworkUpNotifier:) name:NETWORK_UP_NOTIFIER object:nil];
 }
+
+-(void)onConnectionStatusChanged:(id)sender {
+    NSNumber* status = [sender object];
+    int statusIntValue = [status intValue];
+ 
+    if(statusIntValue == NO_NETWORK_CONNECTION){
+        if([self.nonRepeatingTimer isValid]){
+            return;
+        }
+        
+        NSLog(@"meshsetupcontrolle n/w down");
+        [self.removeAlmondTO invalidate];
+        [self hideHUDDelegate];
+        
+        [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
+    }
+     else if(statusIntValue == (int)(ConnectionStatusType*)AUTHENTICATED){
+         if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
+             [[SecurifiToolkit sharedInstance] connectMesh];
+    }
+}
+
 
 -(void)setUpAlmondStatus{
     [self initializeNotification];
@@ -371,8 +396,8 @@ int mii;
         //cancel clicked ...do your action
         if(alertView.tag == NETWORK_OFFLINE){
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            
-            [toolkit asyncInitNetwork];
+            if([toolkit currentConnectionMode]==SFIAlmondConnectionMode_local)
+                [toolkit asyncInitNetwork];
             int connectionTO = 5;
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];

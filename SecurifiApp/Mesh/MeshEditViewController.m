@@ -55,6 +55,10 @@
     [center addObserver:self selector:@selector(onKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     
     [center addObserver:self selector:@selector(onKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    [center addObserver:self
+               selector:@selector(onConnectionStatusChanged:)
+                   name:CONNECTION_STATUS_CHANGE_NOTIFIER
+                 object:nil];
 }
 
 - (void)setupMeshNamingView{
@@ -178,6 +182,29 @@
     }];
 }
 
+
+-(void)onConnectionStatusChanged:(id)sender {
+    NSNumber* status = [sender object];
+    int statusIntValue = [status intValue];
+    
+    if(statusIntValue == NO_NETWORK_CONNECTION){
+        NSLog(@"on network down");
+        if([self.nonRepeatingTimer isValid]){
+            return;
+        }
+        
+        [self hideHUDDelegate];
+        
+        [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
+
+    }
+    else if(statusIntValue == (int)(ConnectionStatusType*)AUTHENTICATED){
+        if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
+            [[SecurifiToolkit sharedInstance] connectMesh];
+        }
+    }
+}
+
 - (void)onNetworkDownNotifier:(id)sender{
     NSLog(@"on network down");
     if([self.nonRepeatingTimer isValid]){
@@ -217,7 +244,8 @@
         if(alertView.tag == NETWORK_OFFLINE){
             NSLog(@"on alert ok");
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            [toolkit asyncInitNetwork];
+            if([toolkit currentConnectionMode]==SFIAlmondConnectionMode_local)
+                [toolkit asyncInitNetwork];
             int connectionTO = 5;
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
