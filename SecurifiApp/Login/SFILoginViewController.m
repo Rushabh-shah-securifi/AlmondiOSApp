@@ -266,7 +266,9 @@
         }
         case SFILoginViewControllerMode_switchToLocalConnection: {
             NSLog(@"i am called");
-            [[SecurifiToolkit sharedInstance] setConnectionMode:SFIAlmondConnectionMode_local];
+            SecurifiToolkit* toolkit = [SecurifiToolkit sharedInstance];
+            toolkit.currentAlmond = toolkit.localLinkedAlmondList[0];
+            [toolkit setConnectionMode:SFIAlmondConnectionMode_local];
             [self.delegate loginControllerDidCompleteLogin:self];
             break;
         }
