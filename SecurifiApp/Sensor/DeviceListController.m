@@ -648,37 +648,45 @@ int mii;
 - (void)validateResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    
-    ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
-    
-    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
-    
-    if (obj.isSuccessful) {
-        [self showToast:NSLocalizedString(@"activation.toast.Reactivation link sent to your registerd email ID.", @"Reactivation link sent to your registerd email ID.")];
-    }
-    else {
-        //Reason Code
-        NSString *failureReason;
-        switch (obj.reasonCode) {
-            case 1:
-                failureReason = NSLocalizedString(@"no_username_found", @"The username was not found");
-                break;
-            case 2:
-                failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
-                break;
-            case 4:
-                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
-                break;
-            case 3:
-            case 5:
-            default:
-                failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! Cannot send reactivation link");
-                break;
-        }
-        
+    NSString *failureReason;
+    if (![[data valueForKey:@"success"]isEqualToString:@"1"]) {
+        failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
         [self showToast:failureReason];
     }
+    else {
+        [self showToast:NSLocalizedString(@"activation.toast.Reactivation link sent to your registerd email ID.", @"Reactivation link sent to your registerd email ID.")];
+    }
+    
+//    ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
+//    
+//    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+//    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
+//    
+//    if (obj.isSuccessful) {
+//        [self showToast:NSLocalizedString(@"activation.toast.Reactivation link sent to your registerd email ID.", @"Reactivation link sent to your registerd email ID.")];
+//    }
+//    else {
+//        //Reason Code
+//        NSString *failureReason;
+//        switch (obj.reasonCode) {
+//            case 1:
+//                failureReason = NSLocalizedString(@"no_username_found", @"The username was not found");
+//                break;
+//            case 2:
+//                failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
+//                break;
+//            case 4:
+//                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
+//                break;
+//            case 3:
+//            case 5:
+//            default:
+//                failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! Cannot send reactivation link");
+//                break;
+//        }
+//        
+//        [self showToast:failureReason];
+//    }
 }
 
 #pragma mark help screens

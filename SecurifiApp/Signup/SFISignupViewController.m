@@ -439,43 +439,50 @@
 - (void)onSignupResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
+    NSLog(@"onSignupResponseCallback %@ ",data);
 
-    SignupResponse *obj = (SignupResponse *) [data valueForKey:@"data"];
-
-    if (obj.isSuccessful) {
+    if ([[data valueForKey:@"success"]isEqualToString:@"true"]) {
         [self displayScreenToLogin];
     }
     else {
         NSString *failureReason;
-        switch (obj.reasonCode) {
-            case 1:
-                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
-                break;
+        if([[data valueForKey:@"reason"] isEqualToString:@"Email Taken"]){
+            failureReason = NSLocalizedString(@"An account already exists with this email.", @"An account already exists with this email.");
+            [self setFooterForTag:FOOTER_SIGNUP_DIFF_EMAIL];
 
-            case 2: {
-                NSString *format = NSLocalizedString(@"The password should be %d - %d characters long.", @"The password should be %d - %d characters long.");
-                failureReason = [NSString stringWithFormat:format, PWD_MIN_LENGTH, PWD_MAX_LENGTH];
-                break;
-            }
-
-            case 3: {
-                failureReason = NSLocalizedString(@"An account already exists with this email.", @"An account already exists with this email.");
-                [self setFooterForTag:FOOTER_SIGNUP_DIFF_EMAIL];
-                break;
-            }
-
-            case 4:
-                //Ready for login
-                [self displayScreenToLogin];
-                break;
-
-            case 5:
-                failureReason = NSLocalizedString(@"The email or password was incorrect.", @"The email or password was incorrect.");
-                break;
-
-            default:
-                failureReason = NSLocalizedString(@"Sorry! Signup was unsuccessful.", @"Sorry! Signup was unsuccessful.");
         }
+        else{
+            failureReason = @"Fail ";
+        }
+//        switch (obj.reasonCode) {
+//            case 1:
+//                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
+//                break;
+//
+//            case 2: {
+//                NSString *format = NSLocalizedString(@"The password should be %d - %d characters long.", @"The password should be %d - %d characters long.");
+//                failureReason = [NSString stringWithFormat:format, PWD_MIN_LENGTH, PWD_MAX_LENGTH];
+//                break;
+//            }
+//
+//            case 3: {
+//                failureReason = NSLocalizedString(@"An account already exists with this email.", @"An account already exists with this email.");
+//                [self setFooterForTag:FOOTER_SIGNUP_DIFF_EMAIL];
+//                break;
+//            }
+//
+//            case 4:
+//                //Ready for login
+//                [self displayScreenToLogin];
+//                break;
+//
+//            case 5:
+//                failureReason = NSLocalizedString(@"The email or password was incorrect.", @"The email or password was incorrect.");
+//                break;
+//
+//            default:
+//                failureReason = NSLocalizedString(@"Sorry! Signup was unsuccessful.", @"Sorry! Signup was unsuccessful.");
+//        }
 
         [self setOopsMessage:failureReason];
     }
