@@ -564,8 +564,10 @@ int mii;
 - (void)onCurrentAlmondChanged:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
-    [self.toolkit.devices removeAllObjects];
-    [self.toolkit.clients removeAllObjects];
+//    if(self.toolkit.devices!=nil)
+//        [self.toolkit.devices removeAllObjects];
+//    if(self.toolkit.clients!=nil)
+//        [self.toolkit.clients removeAllObjects];
     
     [self initializeAlmondData];
     dispatch_async(dispatch_get_main_queue(), ^() {

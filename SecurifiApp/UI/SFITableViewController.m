@@ -395,9 +395,9 @@
         [self showHUD:@"Connecting..."];
         [self.HUD hide:YES afterDelay:5]; // in case the request times out
         
-        [toolkit.devices removeAllObjects];
-        [toolkit.clients removeAllObjects];
-        [toolkit.scenesArray removeAllObjects];
+//        [toolkit.devices removeAllObjects];
+//        [toolkit.clients removeAllObjects];
+//        [toolkit.scenesArray removeAllObjects];
         
         [self.tableView reloadData];
     });

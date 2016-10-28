@@ -103,7 +103,7 @@ int mii;
     
     [self addRefreshControl];
     [self initializeRouterSummaryAndSettings];
-    self.enableAdvRouter = YES;
+    self.enableAdvRouter = NO;
     
 }
 

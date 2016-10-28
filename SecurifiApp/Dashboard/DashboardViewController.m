@@ -286,8 +286,10 @@
 
 - (void)onCurrentAlmondChanged:(id)sender {
     NSLog(@"on Current almond changed");
-    [self.toolkit.devices removeAllObjects];
-    [self.toolkit.clients removeAllObjects];
+//    if(self.toolkit.devices!=nil)
+//        [self.toolkit.devices removeAllObjects];
+//    if(self.toolkit.clients!=nil)
+//        [self.toolkit.clients removeAllObjects];
     [self initializeUI];
     [self markNetworkStatusIcon];
     // getrecentnotification to instantly show onclick
@@ -742,10 +744,10 @@
     NSLog(@"i am called");
     [toolkit setConnectionMode:mode];
     [self showHudWithTimeoutMsg:NSLocalizedString(@"connecting", @"Connecting...") delay:1];
-    [toolkit.devices removeAllObjects];
-    [toolkit.clients removeAllObjects];
-    [toolkit.scenesArray removeAllObjects];
-    [toolkit.ruleList removeAllObjects];
+//    [toolkit.devices removeAllObjects];
+//    [toolkit.clients removeAllObjects];
+//    [toolkit.scenesArray removeAllObjects];
+//    [toolkit.ruleList removeAllObjects];
 }
 
 - (void)markNetworkStatusIcon {
@@ -759,6 +761,7 @@
             state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateDisconnected : SFICloudStatusStateLocalConnectionOffline;
             [self.leftButton markState:state];
             [self changeColorOfNavigationItam];
+            [self.HUD hide:YES];
             break;
         };
         case SFIAlmondConnectionStatus_connecting: {
