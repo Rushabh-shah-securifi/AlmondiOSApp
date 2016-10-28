@@ -74,26 +74,15 @@
     self.sendReq = YES;
     self.reload = YES;
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
-<<<<<<< HEAD
-    
-    [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac]];
-=======
- 
+
     [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac] showHudFirstTime:YES];
->>>>>>> octRelease
     
     
     [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
-<<<<<<< HEAD
-    self.browsingHistory = [[BrowsingHistory alloc]init];
-    self.browsingHistory.delegate = self;
-    
-    [super viewDidLoad];
-=======
->>>>>>> octRelease
     
     [super viewDidLoad];
 }
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];

@@ -118,9 +118,9 @@ int mii;
      else if(statusIntValue == (int)(ConnectionStatusType*)AUTHENTICATED){
          if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
              [[SecurifiToolkit sharedInstance] connectMesh];
-    }
+         }
+     }
 }
-
 
 -(void)setUpAlmondStatus{
     [self initializeNotification];

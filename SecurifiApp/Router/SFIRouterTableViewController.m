@@ -891,54 +891,6 @@ int mii;
 }
 
 #pragma mark mesh command resposne
-<<<<<<< HEAD
-- (void)onMeshResponse:(id)sender{
-    NSLog(@"slave list mesh response");
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.HUD hide:YES];
-    });
-    
-    if (data == nil || [data valueForKey:@"data"]==nil ) {
-        return;
-    }
-    NSDictionary *payload;
-    if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
-        payload = data[@"data"];
-    }else{
-        payload = [data[@"data"] objectFromJSONData];
-    }
-    NSLog(@"router mesh payload: %@", payload);
-    if(![payload[COMMAND_MODE] isEqualToString:@"Reply"])
-        return;
-    
-    BOOL isSuccessful = [payload[SUCCESS] boolValue];
-    NSString *commandType = payload[COMMAND_TYPE];
-    if(isSuccessful){
-        if([commandType  isEqualToString:@"SlaveDetailsMobile"]){
-            MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupViewController" isStatView:YES];
-            AlmondStatus *slaveStatus = [AlmondStatus getSlaveStatus:payload routerSummary:self.routerSummary];
-            [self presentController:slaveStatus ctrl:ctrl];
-        }
-        else if([commandType  isEqualToString:@"Rai2UpMobile"]){
-            if(self.isAlmDetailView){
-                NSDictionary *slaveDict = self.routerSummary.almondsList[_almCount];
-                [MeshPayload requestSlaveDetails:mii
-                                 slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]
-                                       almondMac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
-                
-            }else{
-                MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupAdding" isStatView:NO];
-                [self presentViewController:ctrl animated:YES completion:nil];
-            }
-        }
-    }
-    else{
-        [self showToast:@"Sorry! Please try after sometime."];
-    }
-}
-=======
  - (void)onRouterPageCommandResponse:(id)sender{
      NSLog(@"onRouterPageCommandResponse");
      NSDictionary *payload = [self getPayload:sender];
@@ -979,7 +931,6 @@ int mii;
          [self.HUD hide:YES];
      });
  }
->>>>>>> octRelease
 
 - (void)onRouterPageMeshCommandResponse:(id)sender{
     NSLog(@"onRouterPageMeshCommandResponse");
@@ -1003,32 +954,6 @@ int mii;
 }
 
 #pragma mark almondnetworkcelldelegate methods
-<<<<<<< HEAD
--(void)onAlmondTapDelegate:(int)almondCount{
-    NSLog(@"onAlmondTapDelegate");
-    //master - straight forward assemble data and send
-    if(almondCount == 0){
-        MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupViewController" isStatView:YES];
-        [self presentController:[AlmondStatus getMasterAlmondStatus:self.routerSummary] ctrl:ctrl];
-    }else{
-        self.isAlmDetailView = YES;
-        self.almCount = almondCount;
-        
-        if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local)
-            [[SecurifiToolkit sharedInstance] connectMesh];
-        else{
-            NSDictionary *slaveDict = self.routerSummary.almondsList[almondCount];
-            [MeshPayload requestSlaveDetails:mii
-                             slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]
-                                   almondMac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showHudWithTimeout:@"Requesting...Please Wait!"];
-        });
-    }
-}
-=======
  -(void)onAlmondTapDelegate:(int)almondCount{
      NSLog(@"onAlmondTapDelegate");
      //master - straight forward assemble data and send
@@ -1054,7 +979,6 @@ int mii;
          });
      }
  }
->>>>>>> octRelease
 
 -(MeshSetupViewController *)getMeshController:(NSString *)identifier isStatView:(BOOL)isStatView{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Mesh" bundle:nil];

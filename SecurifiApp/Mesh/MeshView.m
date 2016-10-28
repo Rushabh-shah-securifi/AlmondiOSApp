@@ -16,6 +16,7 @@
 #import "RouterPayload.h"
 #import "ConnectionStatus.h"
 
+
 #define ADD_FAIL -2
 #define NETWORK_OFFLINE -1
 #define HELP_INFO 0
@@ -653,22 +654,15 @@
         [self.delegate hideHUDDelegate];
         NSString *msg;
         NSString *reason = payload[REASON];
-<<<<<<< HEAD
-        if([reason.lowercaseString hasPrefix:@"unplug all"] && self.wirelessBtn.selected){
-            NSString *msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
-            //            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
-            [self showAlert:self.almondTitle msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
-=======
         if([reason.lowercaseString hasPrefix:@"unplug all"]){
             if(self.wirelessBtn.selected){
-               msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
+                msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
                 //            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
             }
             else{
                 msg = @"Unplug all cables except WAN cable. Do not unplug power cable";
             }
             [self showAlert:self.almondNormalName msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
->>>>>>> octRelease
         }
         else if([reason.lowercaseString hasPrefix:@"unable to"]){
             if(self.wirelessBtn.selected)
