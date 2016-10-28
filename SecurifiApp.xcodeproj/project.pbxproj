@@ -583,6 +583,39 @@
 		F4B8768B1D54653500DCF76F /* GenericParams.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B876611D54653500DCF76F /* GenericParams.m */; };
 		F4B8768C1D54653500DCF76F /* PerformanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B876631D54653500DCF76F /* PerformanceTest.m */; };
 		F4B8768D1D54653500DCF76F /* PerformanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B876631D54653500DCF76F /* PerformanceTest.m */; };
+		F4D633E01DC217EE000BF076 /* hue_bridge.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633BF1DC217EE000BF076 /* hue_bridge.pdf */; };
+		F4D633E11DC217EE000BF076 /* add_sensor_screenshot.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633C01DC217EE000BF076 /* add_sensor_screenshot.pdf */; };
+		F4D633E21DC217EE000BF076 /* add_sensor_zigbee_tab.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633C11DC217EE000BF076 /* add_sensor_zigbee_tab.pdf */; };
+		F4D633E31DC217EE000BF076 /* add_sensor_zigbee_tab_pairing_mode.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633C21DC217EE000BF076 /* add_sensor_zigbee_tab_pairing_mode.pdf */; };
+		F4D633E41DC217EE000BF076 /* h_adding_a_nest_account.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633C31DC217EE000BF076 /* h_adding_a_nest_account.pdf */; };
+		F4D633E51DC217EE000BF076 /* h_adding_a_zigbee.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633C41DC217EE000BF076 /* h_adding_a_zigbee.pdf */; };
+		F4D633E61DC217EE000BF076 /* h_adding_hue_bridge.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633C51DC217EE000BF076 /* h_adding_hue_bridge.pdf */; };
+		F4D633E71DC217EE000BF076 /* h_adding_hue_bulb_webui.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633C61DC217EE000BF076 /* h_adding_hue_bulb_webui.pdf */; };
+		F4D633E81DC217EE000BF076 /* h_almond_click.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633C71DC217EE000BF076 /* h_almond_click.pdf */; };
+		F4D633E91DC217EE000BF076 /* h_huebridges_list.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633C81DC217EE000BF076 /* h_huebridges_list.pdf */; };
+		F4D633EA1DC217EE000BF076 /* h_dashboard_selectals.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633C91DC217EE000BF076 /* h_dashboard_selectals.pdf */; };
+		F4D633EB1DC217EE000BF076 /* h_dashboard.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633CA1DC217EE000BF076 /* h_dashboard.pdf */; };
+		F4D633EC1DC217EE000BF076 /* ethernet_cable.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633CB1DC217EE000BF076 /* ethernet_cable.pdf */; };
+		F4D633ED1DC217EE000BF076 /* h_build_own_scenarios.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633CC1DC217EE000BF076 /* h_build_own_scenarios.pdf */; };
+		F4D633EE1DC217EE000BF076 /* home_screen.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633CD1DC217EE000BF076 /* home_screen.pdf */; };
+		F4D633EF1DC217EE000BF076 /* hue_bulb.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633CE1DC217EE000BF076 /* hue_bulb.pdf */; };
+		F4D633F01DC217EE000BF076 /* h_hue_bulbs_webui.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633CF1DC217EE000BF076 /* h_hue_bulbs_webui.pdf */; };
+		F4D633F11DC217EE000BF076 /* hue_tab.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D01DC217EE000BF076 /* hue_tab.pdf */; };
+		F4D633F21DC217EE000BF076 /* key_fob.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D11DC217EE000BF076 /* key_fob.pdf */; };
+		F4D633F31DC217EE000BF076 /* h_keyfob_image.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D21DC217EE000BF076 /* h_keyfob_image.pdf */; };
+		F4D633F41DC217EE000BF076 /* h_manage_scenes.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D31DC217EE000BF076 /* h_manage_scenes.pdf */; };
+		F4D633F51DC217EE000BF076 /* h_motion_sensor_image.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D41DC217EE000BF076 /* h_motion_sensor_image.pdf */; };
+		F4D633F61DC217EE000BF076 /* h_nest_webpage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D51DC217EE000BF076 /* h_nest_webpage.pdf */; };
+		F4D633F71DC217EE000BF076 /* h_peanut_plug_image_1.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D61DC217EE000BF076 /* h_peanut_plug_image_1.pdf */; };
+		F4D633F81DC217EE000BF076 /* h_peanut_plug_image_2.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D71DC217EE000BF076 /* h_peanut_plug_image_2.pdf */; };
+		F4D633F91DC217EE000BF076 /* h_rules_automation.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D81DC217EE000BF076 /* h_rules_automation.pdf */; };
+		F4D633FA1DC217EE000BF076 /* h_rules_engine.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D91DC217EE000BF076 /* h_rules_engine.pdf */; };
+		F4D633FB1DC217EE000BF076 /* h_scenes_action_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633DA1DC217EE000BF076 /* h_scenes_action_button.pdf */; };
+		F4D633FC1DC217EE000BF076 /* h_scenes_alexa.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633DB1DC217EE000BF076 /* h_scenes_alexa.pdf */; };
+		F4D633FD1DC217EE000BF076 /* h_scenes.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633DC1DC217EE000BF076 /* h_scenes.pdf */; };
+		F4D633FE1DC217EE000BF076 /* h_doorsensor_image.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633DD1DC217EE000BF076 /* h_doorsensor_image.pdf */; };
+		F4D633FF1DC217EE000BF076 /* h_setting_home_security.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633DE1DC217EE000BF076 /* h_setting_home_security.pdf */; };
+		F4D634001DC217EE000BF076 /* h_water_detector.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633DF1DC217EE000BF076 /* h_water_detector.pdf */; };
 		F4D93AD11D38DDFE00D55BD6 /* HelpScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4D93ACF1D38DDFE00D55BD6 /* HelpScreen.xib */; };
 		F4D93AD21D38DDFE00D55BD6 /* HelpScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4D93ACF1D38DDFE00D55BD6 /* HelpScreen.xib */; };
 		F4D93AD91D38E5D200D55BD6 /* HelpScreens.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D93AD81D38E5D200D55BD6 /* HelpScreens.m */; };
@@ -1267,6 +1300,39 @@
 		F4B876611D54653500DCF76F /* GenericParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericParams.m; sourceTree = "<group>"; };
 		F4B876621D54653500DCF76F /* PerformanceTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceTest.h; sourceTree = "<group>"; };
 		F4B876631D54653500DCF76F /* PerformanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceTest.m; sourceTree = "<group>"; };
+		F4D633BF1DC217EE000BF076 /* hue_bridge.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = hue_bridge.pdf; sourceTree = "<group>"; };
+		F4D633C01DC217EE000BF076 /* add_sensor_screenshot.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = add_sensor_screenshot.pdf; sourceTree = "<group>"; };
+		F4D633C11DC217EE000BF076 /* add_sensor_zigbee_tab.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = add_sensor_zigbee_tab.pdf; sourceTree = "<group>"; };
+		F4D633C21DC217EE000BF076 /* add_sensor_zigbee_tab_pairing_mode.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = add_sensor_zigbee_tab_pairing_mode.pdf; sourceTree = "<group>"; };
+		F4D633C31DC217EE000BF076 /* h_adding_a_nest_account.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_adding_a_nest_account.pdf; sourceTree = "<group>"; };
+		F4D633C41DC217EE000BF076 /* h_adding_a_zigbee.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_adding_a_zigbee.pdf; sourceTree = "<group>"; };
+		F4D633C51DC217EE000BF076 /* h_adding_hue_bridge.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_adding_hue_bridge.pdf; sourceTree = "<group>"; };
+		F4D633C61DC217EE000BF076 /* h_adding_hue_bulb_webui.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_adding_hue_bulb_webui.pdf; sourceTree = "<group>"; };
+		F4D633C71DC217EE000BF076 /* h_almond_click.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_almond_click.pdf; sourceTree = "<group>"; };
+		F4D633C81DC217EE000BF076 /* h_huebridges_list.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_huebridges_list.pdf; sourceTree = "<group>"; };
+		F4D633C91DC217EE000BF076 /* h_dashboard_selectals.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_dashboard_selectals.pdf; sourceTree = "<group>"; };
+		F4D633CA1DC217EE000BF076 /* h_dashboard.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_dashboard.pdf; sourceTree = "<group>"; };
+		F4D633CB1DC217EE000BF076 /* ethernet_cable.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = ethernet_cable.pdf; sourceTree = "<group>"; };
+		F4D633CC1DC217EE000BF076 /* h_build_own_scenarios.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_build_own_scenarios.pdf; sourceTree = "<group>"; };
+		F4D633CD1DC217EE000BF076 /* home_screen.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = home_screen.pdf; sourceTree = "<group>"; };
+		F4D633CE1DC217EE000BF076 /* hue_bulb.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = hue_bulb.pdf; sourceTree = "<group>"; };
+		F4D633CF1DC217EE000BF076 /* h_hue_bulbs_webui.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_hue_bulbs_webui.pdf; sourceTree = "<group>"; };
+		F4D633D01DC217EE000BF076 /* hue_tab.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = hue_tab.pdf; sourceTree = "<group>"; };
+		F4D633D11DC217EE000BF076 /* key_fob.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = key_fob.pdf; sourceTree = "<group>"; };
+		F4D633D21DC217EE000BF076 /* h_keyfob_image.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_keyfob_image.pdf; sourceTree = "<group>"; };
+		F4D633D31DC217EE000BF076 /* h_manage_scenes.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_manage_scenes.pdf; sourceTree = "<group>"; };
+		F4D633D41DC217EE000BF076 /* h_motion_sensor_image.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_motion_sensor_image.pdf; sourceTree = "<group>"; };
+		F4D633D51DC217EE000BF076 /* h_nest_webpage.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_nest_webpage.pdf; sourceTree = "<group>"; };
+		F4D633D61DC217EE000BF076 /* h_peanut_plug_image_1.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_peanut_plug_image_1.pdf; sourceTree = "<group>"; };
+		F4D633D71DC217EE000BF076 /* h_peanut_plug_image_2.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_peanut_plug_image_2.pdf; sourceTree = "<group>"; };
+		F4D633D81DC217EE000BF076 /* h_rules_automation.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_rules_automation.pdf; sourceTree = "<group>"; };
+		F4D633D91DC217EE000BF076 /* h_rules_engine.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_rules_engine.pdf; sourceTree = "<group>"; };
+		F4D633DA1DC217EE000BF076 /* h_scenes_action_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_scenes_action_button.pdf; sourceTree = "<group>"; };
+		F4D633DB1DC217EE000BF076 /* h_scenes_alexa.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_scenes_alexa.pdf; sourceTree = "<group>"; };
+		F4D633DC1DC217EE000BF076 /* h_scenes.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_scenes.pdf; sourceTree = "<group>"; };
+		F4D633DD1DC217EE000BF076 /* h_doorsensor_image.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_doorsensor_image.pdf; sourceTree = "<group>"; };
+		F4D633DE1DC217EE000BF076 /* h_setting_home_security.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_setting_home_security.pdf; sourceTree = "<group>"; };
+		F4D633DF1DC217EE000BF076 /* h_water_detector.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_water_detector.pdf; sourceTree = "<group>"; };
 		F4D93AD01D38DDFE00D55BD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = HelpScreen.xib; sourceTree = "<group>"; };
 		F4D93AD71D38E5D200D55BD6 /* HelpScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpScreens.h; sourceTree = "<group>"; };
 		F4D93AD81D38E5D200D55BD6 /* HelpScreens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpScreens.m; sourceTree = "<group>"; };
@@ -1403,6 +1469,7 @@
 				1C7E7D2D1A41A0990026F0BA /* UI */,
 				1C7E7D4C1A41A0990026F0BA /* UICategories */,
 				1C2F60781B69E69D001CCA34 /* WiFi */,
+				F4D633BE1DC217EE000BF076 /* webImages */,
 			);
 			path = SecurifiApp;
 			sourceTree = "<group>";
@@ -2372,6 +2439,46 @@
 			path = deviceLayout;
 			sourceTree = "<group>";
 		};
+		F4D633BE1DC217EE000BF076 /* webImages */ = {
+			isa = PBXGroup;
+			children = (
+				F4D633BF1DC217EE000BF076 /* hue_bridge.pdf */,
+				F4D633C01DC217EE000BF076 /* add_sensor_screenshot.pdf */,
+				F4D633C11DC217EE000BF076 /* add_sensor_zigbee_tab.pdf */,
+				F4D633C21DC217EE000BF076 /* add_sensor_zigbee_tab_pairing_mode.pdf */,
+				F4D633C31DC217EE000BF076 /* h_adding_a_nest_account.pdf */,
+				F4D633C41DC217EE000BF076 /* h_adding_a_zigbee.pdf */,
+				F4D633C51DC217EE000BF076 /* h_adding_hue_bridge.pdf */,
+				F4D633C61DC217EE000BF076 /* h_adding_hue_bulb_webui.pdf */,
+				F4D633C71DC217EE000BF076 /* h_almond_click.pdf */,
+				F4D633C81DC217EE000BF076 /* h_huebridges_list.pdf */,
+				F4D633C91DC217EE000BF076 /* h_dashboard_selectals.pdf */,
+				F4D633CA1DC217EE000BF076 /* h_dashboard.pdf */,
+				F4D633CB1DC217EE000BF076 /* ethernet_cable.pdf */,
+				F4D633CC1DC217EE000BF076 /* h_build_own_scenarios.pdf */,
+				F4D633CD1DC217EE000BF076 /* home_screen.pdf */,
+				F4D633CE1DC217EE000BF076 /* hue_bulb.pdf */,
+				F4D633CF1DC217EE000BF076 /* h_hue_bulbs_webui.pdf */,
+				F4D633D01DC217EE000BF076 /* hue_tab.pdf */,
+				F4D633D11DC217EE000BF076 /* key_fob.pdf */,
+				F4D633D21DC217EE000BF076 /* h_keyfob_image.pdf */,
+				F4D633D31DC217EE000BF076 /* h_manage_scenes.pdf */,
+				F4D633D41DC217EE000BF076 /* h_motion_sensor_image.pdf */,
+				F4D633D51DC217EE000BF076 /* h_nest_webpage.pdf */,
+				F4D633D61DC217EE000BF076 /* h_peanut_plug_image_1.pdf */,
+				F4D633D71DC217EE000BF076 /* h_peanut_plug_image_2.pdf */,
+				F4D633D81DC217EE000BF076 /* h_rules_automation.pdf */,
+				F4D633D91DC217EE000BF076 /* h_rules_engine.pdf */,
+				F4D633DA1DC217EE000BF076 /* h_scenes_action_button.pdf */,
+				F4D633DB1DC217EE000BF076 /* h_scenes_alexa.pdf */,
+				F4D633DC1DC217EE000BF076 /* h_scenes.pdf */,
+				F4D633DD1DC217EE000BF076 /* h_doorsensor_image.pdf */,
+				F4D633DE1DC217EE000BF076 /* h_setting_home_security.pdf */,
+				F4D633DF1DC217EE000BF076 /* h_water_detector.pdf */,
+			);
+			path = webImages;
+			sourceTree = "<group>";
+		};
 		F4D93AD61D38E5BB00D55BD6 /* HelpScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -2650,12 +2757,14 @@
 			files = (
 				F4D93AE51D3912FA00D55BD6 /* Changeling NeoBold.otf in Resources */,
 				CE40BF1C1D22867B007C2148 /* temp.json in Resources */,
+				F4D633F81DC217EE000BF076 /* h_peanut_plug_image_2.pdf in Resources */,
 				1C7E7E711A41A73B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */,
 				A58DB41A1BB2CD7D00717C02 /* InfoPlist.strings in Resources */,
 				A58DB2E51BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				CE3EDAF71D47754A00C153A6 /* responseMain.json in Resources */,
 				A58DB41D1BB2CD7D00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB4511BB3CD3F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
+				F4D633F21DC217EE000BF076 /* key_fob.pdf in Resources */,
 				A58DB2641BB168C400717C02 /* InfoPlist.strings in Resources */,
 				A58DB2FA1BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2F21BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
@@ -2664,8 +2773,10 @@
 				A58DB3141BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
 				846414E51B736B80008AB07F /* AvenirLTStd-Oblique.otf in Resources */,
 				A58DB3021BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
+				F4D633FA1DC217EE000BF076 /* h_rules_engine.pdf in Resources */,
 				846414E11B736B80008AB07F /* AvenirLTStd-Light.otf in Resources */,
 				A58DB4171BB2CD7D00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
+				F4D633FB1DC217EE000BF076 /* h_scenes_action_button.pdf in Resources */,
 				846414E41B736B80008AB07F /* AvenirLTStd-MediumOblique.otf in Resources */,
 				A58DB4531BB3CD3F00717C02 /* Localizable.strings in Resources */,
 				A58DB3061BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
@@ -2674,9 +2785,11 @@
 				F4B8756F1D53886700DCF76F /* Rules.storyboard in Resources */,
 				F4B8754F1D5382FF00DCF76F /* mesh.xib in Resources */,
 				CE57E5321D1BBCC400493460 /* HistoryCell.xib in Resources */,
+				F4D633F01DC217EE000BF076 /* h_hue_bulbs_webui.pdf in Resources */,
 				A58DB32F1BB16EAF00717C02 /* InfoPlist.strings in Resources */,
 				A58DB4731BB3CD5200717C02 /* termsofuse.html in Resources */,
 				A58DB2E61BB16B9F00717C02 /* Localizable.strings in Resources */,
+				F4D633EA1DC217EE000BF076 /* h_dashboard_selectals.pdf in Resources */,
 				A58DB3131BB16B9F00717C02 /* Localizable.strings in Resources */,
 				A58DB3121BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				F4D93ADD1D390B4B00D55BD6 /* HelpScreenStoryboard.storyboard in Resources */,
@@ -2687,12 +2800,15 @@
 				846414DD1B736B80008AB07F /* AvenirLTStd-Book.otf in Resources */,
 				CEABC6611D6F14CD00C2DCD4 /* categoryTab.xib in Resources */,
 				F4EA081D1D6AD9F900D6CC28 /* More.storyboard in Resources */,
+				F4D633F31DC217EE000BF076 /* h_keyfob_image.pdf in Resources */,
 				A5C68C991C92D93000110B74 /* GenericIndexesData.json in Resources */,
 				A58DB4711BB3CD5200717C02 /* MainStoryboard_iPhone.strings in Resources */,
+				F4D633FD1DC217EE000BF076 /* h_scenes.pdf in Resources */,
 				A58DB32C1BB16EAF00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB2EA1BB16B9F00717C02 /* termsofuse.html in Resources */,
 				A58DB2FF1BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A54EB0351C45004B00CF2837 /* Common-Images.xcassets in Resources */,
+				F4D633E11DC217EE000BF076 /* add_sensor_screenshot.pdf in Resources */,
 				A58DB2681BB168C400717C02 /* Scenes_Iphone.strings in Resources */,
 				F4D93AF31D3F629B00D55BD6 /* helpCenterJson.json in Resources */,
 				A58DB30F1BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
@@ -2703,6 +2819,7 @@
 				A58DB2671BB168C400717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2F91BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
 				CEABC6581D6F147B00C2DCD4 /* CategoryMap.json in Resources */,
+				F4D633E21DC217EE000BF076 /* add_sensor_zigbee_tab.pdf in Resources */,
 				A58DB3041BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
 				CEF6F50A1C92CD3D00C68975 /* deviceListJson.json in Resources */,
 				1C7E7E751A41A7470026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */,
@@ -2712,7 +2829,9 @@
 				F4B876721D54653500DCF76F /* DeviceHeaderView.xib in Resources */,
 				A58DB3071BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB3321BB16EAF00717C02 /* MainStoryboard_iPhone.strings in Resources */,
+				F4D633F51DC217EE000BF076 /* h_motion_sensor_image.pdf in Resources */,
 				846414DF1B736B80008AB07F /* AvenirLTStd-Heavy.otf in Resources */,
+				F4D633E61DC217EE000BF076 /* h_adding_hue_bridge.pdf in Resources */,
 				F4B875731D53886700DCF76F /* SensorStoryBoard.storyboard in Resources */,
 				A58DB2EE1BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB3351BB16EAF00717C02 /* termsofuse.html in Resources */,
@@ -2721,32 +2840,44 @@
 				A58DB41E1BB2CD7D00717C02 /* Scenes_Iphone.strings in Resources */,
 				A545372B1C8ED35C00DC3EC8 /* scene_names.txt in Resources */,
 				A5C68C9C1C9303D300110B74 /* DeviceListResponse.json in Resources */,
+				F4D633EE1DC217EE000BF076 /* home_screen.pdf in Resources */,
+				F4D634001DC217EE000BF076 /* h_water_detector.pdf in Resources */,
 				A58DB41C1BB2CD7D00717C02 /* Login_iPhone.strings in Resources */,
 				A58DB32E1BB16EAF00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
+				F4D633FE1DC217EE000BF076 /* h_doorsensor_image.pdf in Resources */,
 				F4D93AD11D38DDFE00D55BD6 /* HelpScreen.xib in Resources */,
 				A58DB2E71BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
+				F4D633EF1DC217EE000BF076 /* hue_bulb.pdf in Resources */,
 				A58DB2FD1BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3111BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB4541BB3CD3F00717C02 /* Login_iPhone.strings in Resources */,
 				846414DE1B736B80008AB07F /* AvenirLTStd-BookOblique.otf in Resources */,
 				A58DB2F81BB16B9F00717C02 /* Localizable.strings in Resources */,
+				F4D633FC1DC217EE000BF076 /* h_scenes_alexa.pdf in Resources */,
 				A58DB4191BB2CD7D00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
+				F4D633EC1DC217EE000BF076 /* ethernet_cable.pdf in Resources */,
 				A58DB3171BB16B9F00717C02 /* termsofuse.html in Resources */,
 				A58DB2EC1BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
+				F4D633E51DC217EE000BF076 /* h_adding_a_zigbee.pdf in Resources */,
+				F4D633E91DC217EE000BF076 /* h_huebridges_list.pdf in Resources */,
 				A58DB2E91BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
 				F4B8756B1D53886700DCF76F /* Login_iPhone.storyboard in Resources */,
 				A58DB4721BB3CD5200717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB4701BB3CD5200717C02 /* Login_iPhone.strings in Resources */,
 				A58DB2611BB168C400717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
+				F4D633F41DC217EE000BF076 /* h_manage_scenes.pdf in Resources */,
 				A58DB46E1BB3CD5200717C02 /* InfoPlist.strings in Resources */,
 				A58DB4521BB3CD3F00717C02 /* InfoPlist.strings in Resources */,
+				F4D633E81DC217EE000BF076 /* h_almond_click.pdf in Resources */,
 				A58DB2661BB168C400717C02 /* Login_iPhone.strings in Resources */,
 				A58DB2E41BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3011BB16B9F00717C02 /* Localizable.strings in Resources */,
+				F4D633F61DC217EE000BF076 /* h_nest_webpage.pdf in Resources */,
 				A58DB2E31BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
 				CEFFBD221D87D1EF00B0A7A9 /* DeviceListResponse.json in Resources */,
 				A58DB4571BB3CD3F00717C02 /* termsofuse.html in Resources */,
 				A58DB2621BB168C400717C02 /* Almond-Localizable.strings in Resources */,
+				F4D633E41DC217EE000BF076 /* h_adding_a_nest_account.pdf in Resources */,
 				A58DB2F11BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB41B1BB2CD7D00717C02 /* Localizable.strings in Resources */,
 				A58DB2631BB168C400717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
@@ -2759,17 +2890,25 @@
 				A58DB2F41BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				F4B8755B1D5383B500DCF76F /* Mesh.storyboard in Resources */,
 				1C7E7DFA1A41A0B30026F0BA /* Almond-Images.xcassets in Resources */,
+				F4D633FF1DC217EE000BF076 /* h_setting_home_security.pdf in Resources */,
+				F4D633F71DC217EE000BF076 /* h_peanut_plug_image_1.pdf in Resources */,
+				F4D633F91DC217EE000BF076 /* h_rules_automation.pdf in Resources */,
 				A58DB30A1BB16B9F00717C02 /* Localizable.strings in Resources */,
 				CEB788E41D361FE1005F75F2 /* temp_jsonResponse.json in Resources */,
+				F4D633ED1DC217EE000BF076 /* h_build_own_scenarios.pdf in Resources */,
+				F4D633F11DC217EE000BF076 /* hue_tab.pdf in Resources */,
 				A58DB3001BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB2F71BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB30C1BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2ED1BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
+				F4D633E31DC217EE000BF076 /* add_sensor_zigbee_tab_pairing_mode.pdf in Resources */,
 				CEFFBD231D87D1EF00B0A7A9 /* GenericIndexesData.json in Resources */,
 				A58DB2E81BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
+				F4D633E01DC217EE000BF076 /* hue_bridge.pdf in Resources */,
 				A58DB2FC1BB16B9F00717C02 /* termsofuse.html in Resources */,
 				A58DB46C1BB3CD5200717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB4561BB3CD3F00717C02 /* Scenes_Iphone.strings in Resources */,
+				F4D633EB1DC217EE000BF076 /* h_dashboard.pdf in Resources */,
 				A58DB2F51BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB32D1BB16EAF00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB3101BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
@@ -2789,6 +2928,7 @@
 				A58DB30D1BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
 				846414DC1B736B80008AB07F /* AvenirLTStd-BlackOblique.otf in Resources */,
 				A58DB2FE1BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
+				F4D633E71DC217EE000BF076 /* h_adding_hue_bulb_webui.pdf in Resources */,
 				A58DB4181BB2CD7D00717C02 /* Almond-Localizable.strings in Resources */,
 				1C7E7DFD1A41A0B30026F0BA /* cert.der in Resources */,
 			);

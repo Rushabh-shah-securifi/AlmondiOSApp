@@ -29,16 +29,7 @@
     // Dispose of any resources that can be recreated.
 }
 - (void)testWebView{
-    UIImage *img = [UIImage imageNamed:@"almond_black"];
-    NSString *htmlString = @"<html><head></head>"
-    "<body>"
-    "<p>Hello World</p>"
-    "<img src=\"almond_black.png\">"
-    "<img src=\"btnDel-redbg.png\">"
-    "<img src=btnDel.png>"
-    "<img src=\"mobile-42-mesh-setup-11a\">"
-    "</body>"
-    "</html>";
+    NSString *htmlString = NSLocalizedString(@"AddingDev_alScreen_desc", @"");
     [self displayWebView:htmlString];
 }
 
@@ -203,15 +194,15 @@
 }
 
 - (void)displayWebView:(NSString *)strForWebView{
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-60)];
-    webView.backgroundColor = [UIColor clearColor];
-    
-    NSString *path = [[NSBundle mainBundle] bundlePath];
-    NSURL *baseURL = [NSURL fileURLWithPath:path];
-    
-    NSLog(@"base url: %@", baseURL);
-    [webView loadHTMLString:strForWebView baseURL:baseURL];
     dispatch_async(dispatch_get_main_queue(), ^{
+        UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-60)];
+        webView.backgroundColor = [UIColor clearColor];
+        
+        NSString *path = [[NSBundle mainBundle] bundlePath];
+        NSURL *baseURL = [NSURL fileURLWithPath:path];
+        
+        NSLog(@"base url: %@", baseURL);
+        [webView loadHTMLString:strForWebView baseURL:baseURL];
         [self.view addSubview:webView];
     });
 }

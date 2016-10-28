@@ -40,11 +40,11 @@
 
 - (void)displayWebView:(NSString *)strForWebView{
     NSLog(@"display web view main");
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero];
-    webView.backgroundColor = [UIColor clearColor];
-
-    [webView loadHTMLString:strForWebView baseURL:nil];
+    //this might slow down the app, perhaps you can think of better
     dispatch_async(dispatch_get_main_queue(), ^{
+        UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+        webView.backgroundColor = [UIColor clearColor];
+        [webView loadHTMLString:strForWebView baseURL:nil];
         [self.view addSubview:webView];
     });
 }
