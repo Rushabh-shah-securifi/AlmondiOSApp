@@ -24,5 +24,6 @@
 @property (nonatomic)NSMutableArray *keyVals;
 
 +(AlmondStatus *)getMasterAlmondStatus:(SFIRouterSummary*)routerSummary;
-+(AlmondStatus *)getSlaveStatus:(NSDictionary *)payload routerSummary:(SFIRouterSummary*)routerSummary;
++(void)updateSlaveStatus:(NSDictionary *)payload routerSummary:(SFIRouterSummary*)routerSummary slaveStat:(AlmondStatus *)slaveStat;
++ (BOOL)hasCompleteDetails:(AlmondStatus *)almStat;
 @end
