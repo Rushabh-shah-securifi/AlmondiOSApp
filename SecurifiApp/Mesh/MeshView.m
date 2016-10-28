@@ -135,10 +135,6 @@
     
     [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_COMMAND_TYPE_MESH_RESPONSE object:nil];
     
-    [center addObserver:self selector:@selector(onNetworkDownNotifier:) name:NETWORK_DOWN_NOTIFIER object:nil];
-    
-    [center addObserver:self selector:@selector(onNetworkUpNotifier:) name:NETWORK_UP_NOTIFIER object:nil];
-    
     [center addObserver:self selector:@selector(onLoginResponse:) name:kSFIDidCompleteLoginNotification object:nil];
     
     [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
@@ -951,7 +947,7 @@
     
     if(tag == NETWORK_OFFLINE){
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        enum SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
+        SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
         if(status == SFIAlmondConnectionStatus_disconnected){
             NSLog(@"ok 1");
             [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
@@ -973,14 +969,15 @@
 -(void)onConnectionStatusChanged:(id)sender {
     NSNumber* status = [sender object];
     int statusIntValue = [status intValue];
-    
+    NSLog(@"status change 1");
     if(statusIntValue == NO_NETWORK_CONNECTION){
+        NSLog(@"status change 2");
         if([self.nonRepeatingTimer isValid]){
             return;
         }
         [self.timer invalidate];
         [self.delegate hideHUDDelegate];
-        
+        NSLog(@"status change 3");
         [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
     }
     else if(statusIntValue == (int)(ConnectionStatusType*)AUTHENTICATED){
@@ -988,29 +985,6 @@
             [[SecurifiToolkit sharedInstance] connectMesh];
         }
     }
-}
-
-- (void)onNetworkDownNotifier:(id)sender{
-    NSLog(@"on network down");
-    if([self.nonRepeatingTimer isValid]){
-        return;
-    }
-    [self.timer invalidate];
-    [self.delegate hideHUDDelegate];
-    
-    [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
-    
-}
-
-- (void)onNetworkUpNotifier:(id)sender{
-    NSLog(@"mesh view network up");
-    if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
-        [[SecurifiToolkit sharedInstance] connectMesh];
-    }else{
-        //we wait for login response in case of cloud
-    }
-    
-    //don't invalidate non repeating timer I am making it run for 5 sec, for simplicity
 }
 
 - (void)onLoginResponse:(id)sender{
