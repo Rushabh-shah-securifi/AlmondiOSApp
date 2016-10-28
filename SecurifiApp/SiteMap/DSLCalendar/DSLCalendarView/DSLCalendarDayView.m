@@ -32,6 +32,7 @@
 
 #import "DSLCalendarDayView.h"
 #import "NSDate+DSLCalendarView.h"
+#import "Colours.h"
 
 
 @interface DSLCalendarDayView ()
@@ -137,7 +138,7 @@
 //                [[[UIImage imageNamed:@"DSLCalendarDaySelection"] resizableImageWithCapInsets:UIEdgeInsetsMake(20, 20, 20, 20)] drawInRect:self.bounds];
 //                break;
 //        }
-        self.backgroundColor = [UIColor yellowColor];
+        self.backgroundColor = [UIColor colorFromHexString:@"825CC2"];
     }
 }
 

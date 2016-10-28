@@ -70,7 +70,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.50898450613021851" green="0.3620573878288269" blue="0.75937771797180176" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.50980392156862742" green="0.36078431372549019" blue="0.76078431372549016" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="781-4d-L0j" firstAttribute="top" secondItem="cRi-9N-HpX" secondAttribute="top" id="Aai-lB-GpA"/>
                                     <constraint firstItem="jss-1s-YxF" firstAttribute="top" secondItem="cRi-9N-HpX" secondAttribute="top" constant="26" id="FfM-Rb-n22"/>
@@ -1066,12 +1066,6 @@
                                     <constraint firstItem="DxZ-aW-HmF" firstAttribute="top" secondItem="LoS-ut-fiS" secondAttribute="top" constant="25" id="vXe-Wa-TxZ"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VPt-Y8-r8V">
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="32" id="Mb9-8w-IBN"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AyF-62-2VP" customClass="DSLCalendarView">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -1079,18 +1073,15 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="LoS-ut-fiS" firstAttribute="top" secondItem="NMr-fb-VoI" secondAttribute="top" id="7Pf-DK-QnL"/>
-                            <constraint firstItem="AyF-62-2VP" firstAttribute="leading" secondItem="NMr-fb-VoI" secondAttribute="leading" id="BCH-EQ-SKr"/>
-                            <constraint firstItem="VPt-Y8-r8V" firstAttribute="top" secondItem="l4a-b6-Z8L" secondAttribute="bottom" constant="1" id="DuJ-sv-rsy"/>
                             <constraint firstItem="l4a-b6-Z8L" firstAttribute="leading" secondItem="NMr-fb-VoI" secondAttribute="leading" id="Hcw-Uo-PGW"/>
+                            <constraint firstItem="qMf-me-k2r" firstAttribute="top" secondItem="AyF-62-2VP" secondAttribute="bottom" id="MMG-ap-a7k"/>
                             <constraint firstAttribute="trailing" secondItem="LoS-ut-fiS" secondAttribute="trailing" id="OOk-7F-TSZ"/>
                             <constraint firstAttribute="trailing" secondItem="l4a-b6-Z8L" secondAttribute="trailing" id="SPo-1P-jwt"/>
                             <constraint firstItem="LoS-ut-fiS" firstAttribute="leading" secondItem="NMr-fb-VoI" secondAttribute="leading" id="TMO-nD-PHM"/>
-                            <constraint firstItem="AyF-62-2VP" firstAttribute="top" secondItem="VPt-Y8-r8V" secondAttribute="bottom" id="Xd0-Ax-HzZ"/>
-                            <constraint firstAttribute="trailing" secondItem="AyF-62-2VP" secondAttribute="trailing" id="au8-wx-D8g"/>
+                            <constraint firstItem="AyF-62-2VP" firstAttribute="top" secondItem="l4a-b6-Z8L" secondAttribute="bottom" id="X6V-55-xCA"/>
+                            <constraint firstItem="AyF-62-2VP" firstAttribute="leading" secondItem="NMr-fb-VoI" secondAttribute="leading" id="cLQ-Ar-hFD"/>
                             <constraint firstItem="l4a-b6-Z8L" firstAttribute="top" secondItem="LoS-ut-fiS" secondAttribute="bottom" id="fro-79-Cvg"/>
-                            <constraint firstAttribute="trailing" secondItem="VPt-Y8-r8V" secondAttribute="trailing" id="i0e-6C-riZ"/>
-                            <constraint firstItem="qMf-me-k2r" firstAttribute="top" secondItem="AyF-62-2VP" secondAttribute="bottom" id="iDx-86-sdx"/>
-                            <constraint firstItem="VPt-Y8-r8V" firstAttribute="leading" secondItem="NMr-fb-VoI" secondAttribute="leading" id="lzk-dT-omT"/>
+                            <constraint firstAttribute="trailing" secondItem="AyF-62-2VP" secondAttribute="trailing" id="gY0-1M-MAG"/>
                         </constraints>
                     </view>
                     <connections>

@@ -86,7 +86,7 @@
 }
 
 - (void)commonInit {
-    _dayViewHeight = 44;
+    _dayViewHeight = 30;
     
     _visibleMonth = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekdayCalendarUnit | NSCalendarCalendarUnit fromDate:[NSDate date]];
     _visibleMonth.day = 1;
@@ -204,7 +204,7 @@
     NSString *monthViewKey = [self monthViewKeyForMonth:month];
     DSLCalendarMonthView *monthView = [self.monthViews objectForKey:monthViewKey];
     if (monthView == nil) {
-        monthView = [[[[self class] monthViewClass] alloc] initWithMonth:month width:self.bounds.size.width dayViewClass:[[self class] dayViewClass] dayViewHeight:_dayViewHeight];
+        monthView = [[[[self class] monthViewClass] alloc] initWithMonth:month width:320 dayViewClass:[[self class] dayViewClass] dayViewHeight:_dayViewHeight];
         [self.monthViews setObject:monthView forKey:monthViewKey];
         [self.monthContainerViewContentView addSubview:monthView];
 
