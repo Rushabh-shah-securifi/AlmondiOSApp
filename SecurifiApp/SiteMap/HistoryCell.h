@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "URIData.h"
 
 @interface HistoryCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *webImg;//temp

@@ -11,13 +11,10 @@
 #import "CommonMethods.h"
 #import "SFIColors.h"
 #import "UIFont+Securifi.h"
-#import "URIData.h"
-#import "BrowsingHistory.h"
 #import "NSDate+Convenience.h"
 #import "SearchTableViewController.h"
 #import "DataBaseManager.h"
 #import "BrowsingHistoryDataBase.h"
-#import "BrowsingHistory.h"
 #import "ChangeCategoryViewController.h"
 #import "ParentalControlsViewController.h"
 #import "CompleteDB.h"
@@ -51,7 +48,6 @@
 @end
 
 @implementation BrowsingHistoryViewController
-typedef void(^InsertMethod)(BOOL);
 - (void)viewDidLoad {
     NSLog(@" client name %@",self.client.name);
     self.count = 0;
@@ -83,15 +79,8 @@ typedef void(^InsertMethod)(BOOL);
     
     
     [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
-    self.browsingHistory = [[BrowsingHistory alloc]init];
-    self.browsingHistory.delegate = self;
-
+    
     [super viewDidLoad];
-    /*
-    040 29539996
-    2302008169
-    9618088274
-     */
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];

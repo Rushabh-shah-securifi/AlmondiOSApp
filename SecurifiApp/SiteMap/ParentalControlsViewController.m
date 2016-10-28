@@ -15,8 +15,9 @@
 #import "UIFont+Securifi.h"
 #import "Analytics.h"
 #import "CommonMethods.h"
+#import "DetailsPeriodViewController.h"
 
-@interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,NSURLConnectionDelegate>
+@interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,NSURLConnectionDelegate,DetailsPeriodViewControllerDelegate>
 @property (nonatomic) NSMutableArray *parentsControlArr;
 @property (nonatomic) CategoryView *cat_view_more;
 @property (weak, nonatomic) IBOutlet UIView *dataLogView;
@@ -242,33 +243,7 @@
         [self.navigationController popViewControllerAnimated:YES];
     
 }
--(void)switchPressed:(BOOL)isOn andTag:(NSInteger)tag saveNewValue:(BOOL)isSave{
-//    if(tag == 0){
-//        if(isOn == NO){
-//           [self.parentsControlArr removeObjectAtIndex:1];
-//            NSLog(@"removed obj");
-////            [self setClientHistory];//send NO req
-//            if(isSave)
-//            [self saveNewValue:@"NO" forIndex:-23];
-//        }
-//        else{
-//            if(isSave)
-//                [self saveNewValue:@"YES" forIndex:-23];
-//            [self createArr];//send YES req
-//        }
-//    }
-//    if(tag == 2){
-//        if(isOn == NO){
-//            [self saveNewValue:@"NO" forIndex:-25];
-//            self.dataLogView.hidden = YES;//send NO req
-//        }
-//        else{
-//            [self saveNewValue:@"YES" forIndex:-25];
-//            self.dataLogView.hidden = NO;//send YES req
-//        }
-// 
-//    }
-}
+
 -(void)saveNewValue:(NSString *)newValue forIndex:(int)index{
     Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
     // considering only web history
@@ -547,19 +522,14 @@
     NSArray* arrayOfStrings = [readable componentsSeparatedByString:@" "];
     return arrayOfStrings;
 }
-/*
-public static String[] humanReadableByteCount(long bytes) {
-    int unit = 1000;
-    String output[] = new String[2];
-    if (bytes < unit){
-        return new String[]{bytes+"" , "B"};
-    }
-    int exp = (int) (Math.log(bytes) / Math.log(unit));
-    String pre = ( "kMGTPE").charAt(exp-1) + ( "" );
-    DecimalFormat df = new DecimalFormat();
-    df.setMaximumFractionDigits(2);
-    output[0] =df.format(bytes / Math.pow(unit, exp));
-    output[1] = pre+"B";
-    return output;
-}*/
+- (IBAction)detailPeriodButtonClicked:(id)sender {
+    DetailsPeriodViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"DetailsPeriodViewController"];
+    newWindow.delegate = self;
+    NSLog(@"instantiateViewControllerWithIdentifier IF");
+    [self.navigationController pushViewController:newWindow animated:YES];
+}
+
+-(void)updateDetailPeriod{
+    NSLog(@"updateDetailPeriod");
+}
 @end

@@ -10,7 +10,6 @@
 #import "HistoryCell.h"
 #import "SFIColors.h"
 #import "UIFont+Securifi.h"
-#import "URIData.h"
 #import "BrowsingHistory.h"
 #import "NSDate+Convenience.h"
 #import "CommonMethods.h"

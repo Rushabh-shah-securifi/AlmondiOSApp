@@ -9,12 +9,15 @@
 #import "HistoryCell.h"
 #import "UrlImgDict.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "CommonMethods.h"
+#import "Colours.h"
 @interface HistoryCell()
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *webImgXConstrain;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *siteNameXconstrain;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *catImgXConstrain;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *webImgYConstrain;
+//@property (weak, nonatomic) IBOutlet UIImageView *checkMarkIcon;
 
 @end
 
@@ -79,7 +82,7 @@
         }
     
     
-        self.siteName.text = [NSString stringWithFormat:@"%d-%@",count,uri[@"hostName"]];
+        self.siteName.text = [NSString stringWithFormat:@"%@",uri[@"hostName"]];
         if([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"NC-17"]){
             self.categoryImg.image = [UIImage imageNamed:@"Adults_Only"];
             
@@ -109,13 +112,12 @@
 //        self.categoryImg.image = [UIImage imageNamed:@"help-icon"];
         NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[uri[@"Epoc"] intValue]];
         self.lastActTime.text = [dat stringFromDate];
-        
+//    self.checkMarkIcon.hidden = YES;
+//    if(uri[@"checked"]!=NULL)
+//    if([uri[@"checked"] isEqualToString:@"yes"]){
+//        [self changeIconColor];
+//    }
     
-}
--(void)setName:(URIData *)uri{
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        self.siteName.text = uri.hostName;
-    });
 }
 
 -(NSString*)getCounttext:(int)count{
@@ -128,5 +130,9 @@
     }
     return @"";
 }
+//-(void)changeIconColor{
+//    self.checkMarkIcon.hidden = NO;
+//    self.checkMarkIcon.image  = [CommonMethods imageNamed:@"iconSceneChekmark" withColor:[UIColor colorFromHexString:@"825CC2"]];
+//}
 
 @end
