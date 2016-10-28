@@ -219,8 +219,7 @@
         if(alertView.tag == NETWORK_OFFLINE){
             NSLog(@"on alert ok");
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            if([toolkit currentConnectionMode]==SFIAlmondConnectionMode_local)
-                [toolkit asyncInitNetwork];
+            [toolkit asyncInitNetwork];
             int connectionTO = 5;
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
