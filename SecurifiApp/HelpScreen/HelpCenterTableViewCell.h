@@ -12,7 +12,7 @@
 
 - (void)setUpHelpCell:(NSDictionary *)helpItem;
 
-- (void)setUpHelpItemCell:(NSDictionary*)helpItem row:(int)row;
+- (void)setUpHelpItemCell:(NSDictionary*)helpItem row:(NSInteger)row;
 
 - (void)setUpSupportCell:(NSArray *)countryNumber row:(NSInteger)row;
 @end

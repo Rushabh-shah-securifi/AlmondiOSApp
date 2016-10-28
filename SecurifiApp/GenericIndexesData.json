@@ -2302,7 +2302,8 @@
             "4": {
                 "Icon": "switch_off",
                 "AppLabel": "no_press",
-                "Label": "No Press"
+                "Label": "No Press",
+                "ExcludeFrom": "Rule"
             }
         }
     },

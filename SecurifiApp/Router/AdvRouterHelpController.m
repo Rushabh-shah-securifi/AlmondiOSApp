@@ -20,6 +20,7 @@
     [super viewDidLoad];
     
     [self showHelp];
+//    [self testWebView];
     // Do any additional setup after loading the view.
 }
 
@@ -27,6 +28,11 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (void)testWebView{
+    NSString *htmlString = NSLocalizedString(@"AddingDev_alScreen_desc", @"");
+    [self displayWebView:htmlString];
+}
+
 
 - (void)showHelp{
     switch (self.helpType) {
@@ -188,10 +194,15 @@
 }
 
 - (void)displayWebView:(NSString *)strForWebView{
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-60)];
-    webView.backgroundColor = [UIColor clearColor];
-    [webView loadHTMLString:strForWebView baseURL:nil];
     dispatch_async(dispatch_get_main_queue(), ^{
+        UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-60)];
+        webView.backgroundColor = [UIColor clearColor];
+        
+        NSString *path = [[NSBundle mainBundle] bundlePath];
+        NSURL *baseURL = [NSURL fileURLWithPath:path];
+        
+        NSLog(@"base url: %@", baseURL);
+        [webView loadHTMLString:strForWebView baseURL:baseURL];
         [self.view addSubview:webView];
     });
 }

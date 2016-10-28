@@ -174,6 +174,78 @@
                                         "color": "FFB6A0",
                                         "image": "foreground"
                                         }]
+                            }, {
+                            "name": "AddingDev_alScreen",
+                            "screencount": "1",
+                            "screens": [{
+                                        "title": "AddingDev_alScreen",
+                                        "description": "AddingDev_alScreen_desc",
+                                        "color": "FFB6A0",
+                                        "image": "foreground"
+                                        }]
+                            }, {
+                            "name": "AddingDev_webUI",
+                            "screencount": "1",
+                            "screens": [{
+                                        "title": "AddingDev_webUI",
+                                        "description": "AddingDev_webUI_desc",
+                                        "color": "FFB6A0",
+                                        "image": "foreground"
+                                        }]
+                            }, {
+                            "name": "Adding_motion_sensor",
+                            "screencount": "1",
+                            "screens": [{
+                                        "title": "Adding_motion_sensor",
+                                        "description": "Adding_motion_sensor_desc",
+                                        "color": "FFB6A0",
+                                        "image": "foreground"
+                                        }]
+                            }, {
+                            "name": "Adding_door_sensor",
+                            "screencount": "1",
+                            "screens": [{
+                                        "title": "Adding_door_sensor",
+                                        "description": "Adding_door_sensor_desc",
+                                        "color": "FFB6A0",
+                                        "image": "foreground"
+                                        }]
+                            }, {
+                            "name": "Adding_water_detector",
+                            "screencount": "1",
+                            "screens": [{
+                                        "title": "Adding_water_detector",
+                                        "description": "Adding_water_detector_desc",
+                                        "color": "FFB6A0",
+                                        "image": "foreground"
+                                        }]
+                            }, {
+                            "name": "Adding_keyfob",
+                            "screencount": "1",
+                            "screens": [{
+                                        "title": "Adding_keyfob",
+                                        "description": "Adding_keyfob_desc",
+                                        "color": "FFB6A0",
+                                        "image": "foreground"
+                                        }]
+                            }, {
+                            "name": "Adding_click",
+                            "screencount": "1",
+                            "screens": [{
+                                        "title": "Adding_click",
+                                        "description": "Adding_click_desc",
+                                        "color": "FFB6A0",
+                                        "image": "foreground"
+                                        }]
+                            }, {
+                            "name": "Adding_peanut_plug",
+                            "screencount": "1",
+                            "screens": [{
+                                        "title": "Adding_peanut_plug",
+                                        "description": "Adding_peanut_plug_desc",
+                                        "color": "FFB6A0",
+                                        "image": "foreground"
+                                        }]
                             }]
                   
                   
@@ -189,14 +261,17 @@
              "screens": [{
                          "title": "wired_or_wireless",
                          "description": "wired_or_wireless_desc",
+                         "description_below": "Nothing",
                          "image": "h_wired_wireless"
                          }, {
                          "title": "wired_interface",
                          "description": "wired_interface_desc",
+                         "description_below": "Nothing",
                          "image": "h_wired"
                          }, {
                          "title": "wireless_interface",
                          "description": "wireless_interface_desc",
+                         "description_below": "Nothing",
                          "image": "h_wireless"
                          }]
              },

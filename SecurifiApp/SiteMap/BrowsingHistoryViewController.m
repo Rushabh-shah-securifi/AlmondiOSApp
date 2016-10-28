@@ -11,13 +11,10 @@
 #import "CommonMethods.h"
 #import "SFIColors.h"
 #import "UIFont+Securifi.h"
-#import "URIData.h"
-#import "BrowsingHistory.h"
 #import "NSDate+Convenience.h"
 #import "SearchTableViewController.h"
 #import "DataBaseManager.h"
 #import "BrowsingHistoryDataBase.h"
-#import "BrowsingHistory.h"
 #import "ChangeCategoryViewController.h"
 #import "ParentalControlsViewController.h"
 #import "CompleteDB.h"
@@ -26,7 +23,7 @@
 
 @interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource,BrowsingHistoryDelegate,NSURLConnectionDelegate,MBProgressHUDDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *browsingTable;
-@property (nonatomic) NSMutableArray *dayArr;
+@property (nonatomic) NSArray *dayArr;
 @property (nonatomic) dispatch_queue_t imageDownloadQueue;
 @property (nonatomic) dispatch_queue_t sendReqQueue;
 @property (nonatomic) NSMutableData *responseData;
@@ -43,6 +40,7 @@
 @property (nonatomic)  UILabel *NoresultFound;
 @property (weak, nonatomic) IBOutlet UILabel *clientName;
 @property (nonatomic) NSDictionary *incompleteDB;
+@property (nonatomic) NSURLConnection *conn;
 
 @property BOOL isTapped;
 
@@ -50,7 +48,6 @@
 @end
 
 @implementation BrowsingHistoryViewController
-typedef void(^InsertMethod)(BOOL);
 - (void)viewDidLoad {
     NSLog(@" client name %@",self.client.name);
     self.count = 0;
@@ -77,30 +74,38 @@ typedef void(^InsertMethod)(BOOL);
     self.sendReq = YES;
     self.reload = YES;
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
+<<<<<<< HEAD
     
     [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac]];
+=======
+ 
+    [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac] showHudFirstTime:YES];
+>>>>>>> octRelease
     
     
-    self.dayArr = [[NSMutableArray alloc]init];
     [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
+<<<<<<< HEAD
     self.browsingHistory = [[BrowsingHistory alloc]init];
     self.browsingHistory.delegate = self;
     
     [super viewDidLoad];
+=======
+>>>>>>> octRelease
     
+    [super viewDidLoad];
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
     self.NoresultFound.hidden = YES;
     if([[SecurifiToolkit sharedInstance]isCloudReachable]){
-        NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:500 amac:self.amac cmac:self.cmac];
-        [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+        self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:500 amac:self.amac cmac:self.cmac];
+        //[self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
     }
     else
     {
-        NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:100 amac:self.amac cmac:self.cmac];
-        [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+        self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:100 amac:self.amac cmac:self.cmac];
+        //[self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
     }
     self.isTapped = NO;
     
@@ -129,12 +134,17 @@ typedef void(^InsertMethod)(BOOL);
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:YES];
-    NSLog(@"count otiDB %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
-    [BrowsingHistoryDataBase getLastDate:self.amac clientMac:self.cmac];
+    int count = [BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac];
+    while(count > 500 ){
+        [BrowsingHistoryDataBase getLastDate:self.amac clientMac:self.cmac];
+        count = [BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac];
+    }
+    
     NSLog(@"count otiDB %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
     NSLog(@"complete db lastdate %@ ",[CompleteDB getLastDate:self.amac clientMac:self.cmac]);
     NSLog(@"complete db max %@ ",[CompleteDB getMaxDate:self.amac clientMac:self.cmac]);
-    
+    [self.conn cancel];
+    self.conn = nil;
     
 }
 - (void)didReceiveMemoryWarning {
@@ -149,7 +159,7 @@ typedef void(^InsertMethod)(BOOL);
     [self.navigationController.view addSubview:_HUD];
 }
 #pragma mark HttpReqDelegateMethods
--(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
+-(void)sendHttpRequest:(NSString *)post showHudFirstTime:(BOOL)isFirsTtime{// make it paramater CMAC AMAC StartTag EndTag
     //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
     NSLog(@"In sendHttpRequest %d",self.sendReq);
     
@@ -159,10 +169,8 @@ typedef void(^InsertMethod)(BOOL);
     self.reload = YES;
     self.sendReq = NO;
     
-    dispatch_queue_t sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
-    [self showHudWithTimeoutMsg:@"Loading..." withDelay:5];
-    dispatch_async(sendReqQueue,^(){
-        
+        [self showHudWithTimeoutMsg:@"Loading..." withDelay:1];
+    
         NSLog(@"post req = %@",post);
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
@@ -172,19 +180,75 @@ typedef void(^InsertMethod)(BOOL);
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
         [request setHTTPBody:postData];
-        NSURLResponse *res= Nil;
-        //[NSURLConnection connectionWithRequest:request delegate:self];
-        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&res error:nil];
-        if(data == nil)
-            return ;
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        
-        [self InsertInDB:dict];
-    });
-    
+        self.conn = [NSURLConnection connectionWithRequest:request delegate:self];
+  
     
     //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
 }
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response { _responseData = [[NSMutableData alloc] init];
+    NSLog(@"didReceiveResponse");
+}
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    [_responseData appendData:data];
+    NSLog(@"didReceiveData");
+}
+- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse*)cachedResponse {
+    NSLog(@"willCacheResponse");
+    return nil;
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    //Now you can do what you want with the response string from the data
+    
+    
+    if(_responseData == nil)
+        return;
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
+    [_responseData setLength:0];
+    _responseData = nil;
+    /*note get endidentifier from db */
+    //dispatch_async(self.sendReqQueue,^(){
+    if(dict == NULL)
+        return;
+    if(dict[@"Data"] == NULL)
+        return;
+    if(dict[@"AMAC"] == NULL || dict[@"CMAC"] == NULL)
+        return;
+    if(![dict[@"AMAC"] isEqualToString:self.amac] || ![dict[@"CMAC"] isEqualToString:self.cmac])
+        return;
+    
+    NSArray *allObj = dict[@"Data"];
+    NSLog(@"response obj count %ld",(unsigned long)allObj.count);
+    if(allObj == NULL)
+        return;
+    NSDictionary *last_uriDict = [allObj lastObject];
+    NSString *last_date = last_uriDict[@"Date"];
+    if(last_date != NULL)
+        self.incompleteDB = @{
+                              @"lastDate" : last_date,
+                              @"PS" : dict[@"pageState"]? : [NSNull null]
+                              };
+    NSLog(@"incomplete db %@",self.incompleteDB);
+    int recordCount =0;
+    if(self.reload){
+        self.count+= 100;
+        recordCount = self.count;
+    }
+    
+    self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:dict readlimit:recordCount amac:self.amac cmac:self.cmac];
+    if(self.reload){
+//        [self.dayArr removeAllObjects];
+//        [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+        [self reloadTable];
+    }
+    self.sendReq = YES;
+    self.reload = NO;
+    if([last_date isEqualToString:[CommonMethods getTodayDate]] && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
+        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]] showHudFirstTime:NO];
+    }
+    
+}
+
 -(void)InsertInDB:(NSDictionary *)dict{
     NSLog(@"In InsertDB %d %d",self.reload,self.sendReq);
     
@@ -209,14 +273,17 @@ typedef void(^InsertMethod)(BOOL);
         recordCount = self.count;
     }
     
-    NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:dict readlimit:recordCount amac:self.amac cmac:self.cmac];
+    self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:dict readlimit:recordCount amac:self.amac cmac:self.cmac];
     if(self.reload){
-        [self.dayArr removeAllObjects];
-        [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+        //[self.dayArr removeAllObjects];
+        //[self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
         [self reloadTable];
     }
     self.sendReq = YES;
     self.reload = NO;
+    if([last_date isEqualToString:[CommonMethods getTodayDate]] && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
+        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]] showHudFirstTime:NO];
+    }
     
 }
 
@@ -297,20 +364,20 @@ typedef void(^InsertMethod)(BOOL);
         NSLog(@"Is Today Date %d %@",isTodayDate,self.incompleteDB[@"PS"]);
         NSLog(@"Is Present In Complete DB %d",isPresentInCompleteDB);
         
-        if(isTodayDate && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
-            NSLog(@"Sending Request in first IF");
-            [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
-            
-        }
-        else if(!isTodayDate && !isPresentInCompleteDB){
+//        if(isTodayDate && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
+//            NSLog(@"Sending Request in first IF");
+//            [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
+//            
+//        }
+         if(!isTodayDate && !isPresentInCompleteDB){
             NSLog(@"Sending Request in Second IF");
             NSString *ps= self.incompleteDB[@"PS"] ;
             NSLog(@"self.oldDate = %@ == str = %@",self.oldDate,str);
             if((self.oldDate != nil && [self.oldDate isEqualToString:str]) && ![ps isKindOfClass:[NSNull class]])
-                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&dateyear=%@&pageState=%@",_amac,_cmac,str,ps]];
+                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&FromThisDate=%@&pageState=%@",_amac,_cmac,str,ps] showHudFirstTime:YES];
             else
             {   if(![ps isKindOfClass:[NSNull class]])
-                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&dateyear=%@",_amac,_cmac,str]];
+                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&dateyear=%@",_amac,_cmac,str] showHudFirstTime:YES];
             }
             
             self.oldDate = str;
@@ -318,9 +385,9 @@ typedef void(^InsertMethod)(BOOL);
         else {
             NSLog(@"Reload from Table ELSE");
             self.count+=100;
-            [self.dayArr removeAllObjects];
-            NSDictionary * recordDict = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:self.count amac:self.amac cmac:self.cmac];
-            [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
+            //[self.dayArr removeAllObjects];
+            self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:self.count amac:self.amac cmac:self.cmac];
+            //[self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
             [self reloadTable];
         }
         
@@ -406,8 +473,8 @@ typedef void(^InsertMethod)(BOOL);
     //NSLog(@"reload called");
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.browsingTable reloadData];
         [self.HUD hide:YES];
+        [self.browsingTable reloadData];
     });
 }
 - (void)showHudWithTimeoutMsg:(NSString*)hudMsg withDelay:(int)second {
@@ -415,7 +482,6 @@ typedef void(^InsertMethod)(BOOL);
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:hudMsg];
         [self.HUD hide:YES afterDelay:second];
-        //[self reloadTable];
     });
 }
 - (void)showHUD:(NSString *)text {

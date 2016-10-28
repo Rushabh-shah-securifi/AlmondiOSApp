@@ -26,8 +26,6 @@
 
 + (HelpScreens *)initializeHelpScreen:(UIView *)navView isOnMainScreen:(BOOL)isOnMainScreen startScreen:(NSDictionary *)startScreen;
 
-+ (HelpScreens *)addHelpTopic:(UIView *)view HelpTopicType:(HelpTopic)type;
-
 + (void)initializeGotItView:(HelpScreens *)helpView navView:(UIView *)navView;
 
 + (void)initializeWifiPresence:(HelpScreens *)helpView view:(UIView *)mainView tabHt:(CGFloat)tabHeight;

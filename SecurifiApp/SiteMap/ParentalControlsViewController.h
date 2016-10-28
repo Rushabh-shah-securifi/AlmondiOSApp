@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GenericParams.h"
-
 @interface ParentalControlsViewController : UIViewController
 @property (nonatomic) GenericParams *genericParams;
+
 @end

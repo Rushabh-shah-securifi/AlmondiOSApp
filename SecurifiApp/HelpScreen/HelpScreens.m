@@ -36,10 +36,6 @@
 //help topics
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConst;
-@property (strong, nonatomic) IBOutlet UIView *dashboard;
-@property (strong, nonatomic) IBOutlet UIView *scene;
-@property (strong, nonatomic) IBOutlet UIView *securiti;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *securityBottomConstraint;
 
 @property (nonatomic) NSInteger prevCount;
 @end
@@ -55,7 +51,6 @@
     if(self){
         NSLog(@"frame initialized");
         [[NSBundle mainBundle] loadNibNamed:@"HelpScreen" owner:self options:nil];
-        self.securityBottomConstraint.constant = 0;
         self.prevCount = 0;
     }
     return self;
@@ -72,17 +67,6 @@
     
     [helpView addHelpItem:CGRectMake(0, 0, navView.frame.size.width, navView.frame.size.height-20)];
     
-    return helpView;
-}
-
-+ (HelpScreens *)addHelpTopic:(UIView *)view HelpTopicType:(HelpTopic)type{
-    HelpScreens *helpView = [[HelpScreens alloc]initWithFrame:CGRectMake(0, 20, view.frame.size.width, view.frame.size.height)];
-    if(type == HelpTopic_Dashboard)
-        [helpView addDashboard:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
-    else if(type == HelpTopic_Scene)
-        [helpView addScene:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
-    else if(type == HelpTopic_Securiti)
-        [helpView addSecuriti:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height)];
     return helpView;
 }
 
@@ -114,21 +98,6 @@
 - (void)addHelpPromptSubView:(CGRect)frame{
     self.helpPrompt.frame = frame;
     [self addSubview:self.helpPrompt];
-}
-
-- (void)addDashboard:(CGRect)frame{
-    self.dashboard.frame = frame;
-    [self addSubview:self.dashboard];
-}
-
-- (void)addScene:(CGRect)frame{
-    self.scene.frame = frame;
-    [self addSubview:self.scene];
-}
-
-- (void)addSecuriti:(CGRect)frame{
-    self.securiti.frame = frame;
-    [self addSubview:self.securiti];
 }
 
 - (void)addHelpItem:(CGRect)frame{

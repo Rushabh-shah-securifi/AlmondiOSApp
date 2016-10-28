@@ -820,14 +820,93 @@ Follow it, then login below.";
 
 "Nothing"="";
 
+"help_topics_dashboard"="
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<body>
+<h3>Dashboard</h3>
+<p>The dashboard has been designed to give you an overview  of your home and quick access to key functions.</p>
+<center><img src=h_dashboard.pdf/></center>
+<p> At a glance, you can see recent smart home and Wi-Fi device notifications, how many network and smart devices are active, and also set your Almond to Home or Away mode with a quick tap.</p>
+<center><img src=h_dashboard_selectals.pdf/></center>
+<p>
+If you own more than one Almond, you can quickly switch between them by tapping on the device’s name above the mode control, and picking another Almond from the list.
+</p>
+<p>
+As we continue to improve Almond, and add more features, the dashboard will be central to controlling your smart home. Stay tuned!
+</p>
+</body>
+</html>";
+
 "Explaining_Scenes"="Explaining Scenes";
-"Explaining_Scenes_desc"="Scenes make adjusting multiple smart devices much easier and faster. For example, when you go to bed you might have two or three lights to turn off, the temperature on the thermostat to adjust, and set the alarm to activate. A Scene means you can do all of them with just one tap.\n\nYou can create and manage Scenes from the Scenes tab in the Almond app. Tap the add button to create a scene. And then tap on a device and select one or more actions from the available options. Repeat this process for as many devices as you need and then tap on “Save”. Follow the onscreen instructions to complete creating your scene.\n\nTo manage a scene, tap on the quick action icon to activate the scene, and tap the options icon to change the devices in the Scene and rename it.\n\nA scene might appear to be active even if you haven’t turned it on. That is because a scene is set to active whenever all the actions that make up that scene are turned on. For example, using the Scene above, you may have decided to adjust the lights and thermostat over the course of the evening. In doing so you matched the functions in the Scene and it registers as on.\n\nNow, Almond scenes can be activated using Alexa. To begin using Alexa with Almond Scenes, activate the Almond skill on Alexa. If you are prompted to rename a Scene, choose one from the list of suggestions that comes up. These names are easiest for Alexa to understand. Once you have renamed a Scene, you will see a small Alexa icon on the Scene’s tile on the Almond app. When finished, to activate a Scene, you could say “Alexa, tell Almond to activate Outside Lights Off!” Where ‘Outside Lights Off’ is the name of the Scene.";
+"Explaining_Scenes_desc"="
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<body>
+<h3>Scenes</h3>
+<p>
+Scenes make controlling multiple smart devices easier and faster. For example, when you go to bed you might have two or three lights to turn off, the temperature on the thermostat to adjust, and an alarm clock to set. A scene means you can do all of them with a quick tap.
+</p>
+<center><img src=h_scenes.pdf/></center>
+<p>
+You can create and manage scenes from the Scenes tab in the Almond app. Tap the + button to create a scene and then tap on a device and select one or more actions from the available options. Repeat this process for as many devices as you need and then tap on “Save”. Follow the onscreen instructions to complete creating your scene.
+</p>
+<center><img src=h_scenes_action_button.pdf/></center>
+<p>
+To manage a scene, tap on the quick action icon to activate the scene, and tap the options icon to change the devices in the scene and rename it.
+</p>
+<center><img src=h_manage_scenes.pdf/></center>
+<p>
+A scene might appear to be active even if you haven’t activated it. That is because a scene is set to active whenever all the actions that make up that scene are turned on. For example, using the scene above, you may have decided to adjust the lights and thermostat over the course of the evening. In doing so you matched the functions in the scene and it registers as activated.
+</p>
+<p>
+Now, Almond scenes can be activated using Alexa. To begin using Alexa with Almond scenes, activate the Almond skill on Alexa. If you are prompted to rename a scene, choose one from the list of suggestions that comes up. These names are easiest for Alexa to understand.
+</p>
+<center><img src=h_scenes_alexa.pdf/></center>
+<p>
+Once you have renamed a scene, you will see a small Alexa icon on the scene’s tile on the Almond app. When finished, to activate a scene, you could say “Alexa, tell Almond to activate Outside Lights Off!” Where ‘Outside Lights Off’ is the name of the scene.
+</p>
+<p>
+To learn more about using Almond with Alexa, visit</br>
+<a href=\"https://www.securifi.com/rg/workswithecho\">https://www.securifi.com/rg/workswithecho</a>
+</p>
+</body>
+</html>";
 
 
 "tips_homeSecurity"="Tips For Setting Up Home Security";
-"tips_homeSecurity_desc"="With the appropriate sensors, you can use an Almond 2015, an Almond+, or an Almond 3, to create a robust and powerful DIY home security system. Almond devices  support a wide range of sensors from various manufacturers including Securifi. There is a full list here: https://www.securifi.com/sensors.\n\nWith Almond, you can build your Home Security using Rules and the Almond Modes: Home and Away.\n\nThe Almond Mode works similar to arming and disarming your car alarm or home security system. With Almond though, you don’t need to do this yourself every time. Use our Rules engine to automate this process using your WiFi presence.\n\nFor example, you could create rules like “If my iPhone disconnects from Home WiFi, set Almond mode to Away” and “If my iPhone joins Home WiFi, set Almond mode to Home” to automatically change the mode when you leave home and when you come back. You can then add another rule to make sure the alarm is sounded. For example, “If Almond mode is Away, and motion is detected, sound alarm.”\n\nExperiment with Rules to build your own scenarios. Our Rules engine is versatile and offers a large number of components with which you can build Rules, including: time, Almond Modes, and sensors.\n\nSensors may not be automatically configured to send notifications; therefore, you will need to configure them. To do so, tap on the settings icon next to the sensor and look for notifications in the menu.\n\nYou can choose one of three levels for notifications: Never, When I’m Away and Always. Each level is useful in different situations. For example, you might want to be alerted of movement in the living room only when you are away, but you might want to be alerted every time if a wall safe is opened, or a flood sensor detects water in your basement. On the other hand, you might not want to be alerted at all if a smart plug in your daughter’s room is turned on or off.";
+"tips_homeSecurity_desc"="
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<body>
+<h3>Tips For Setting Up Home Security</h3>
+<p>
+With the appropriate sensors, you can use an Almond 2015, an Almond+, or an Almond 3 to create a robust and powerful DIY home security system. Almond devices support a wide range of sensors from various manufacturers including Securifi. There is a full list here: <a href=\"https://www.securifi.com/sensors\">https://www.securifi.com/sensors</a>.
+</p>
+<p>
+With Almond, you can build your Home Security using rules and the Almond modes: Home and Away.
+</p>
+<center><img src=h_setting_home_security.pdf/></center>
+<p>
+The modes work similar to arming and disarming your car alarm or home security system. With Almond though, you don’t need to do this yourself every time. Use our rules engine to automate this process using your WiFi presence.
+</p>
+<center><img src=h_rules_engine.pdf/></center>
+<p>
+For example, you could create rules like “If Matt’s iPhone, Dana’s iPhone and Katie\’s iPod disconnect from Home WiFi, set Almond mode to Away” and “If my iPhone joins Home WiFi, set Almond mode to Home” to automatically change the mode when you and your family leave home and when you come back.
+</p>
+<center><img src=h_rules_automation.pdf/></center>
+<p>
+You can then add another rule to make sure the alarm is sounded. For example, \“If Almond mode is Away, and motion is detected, sound alarm.\”
+</p><p>
+Experiment with Rules to build your own scenarios. Our Rules engine is versatile and offers a large number of options  with which you can build rules including but not limited to: time, weather, Almond modes, and sensors.
+</p>
+<center><img src=h_build_own_scenarios.pdf/></center>
+<p>
+Sensors may not be automatically configured to send notifications; therefore, you will need to configure them. To do so, tap on the settings icon next to the sensor and look for notifications in the menu.
+</p>
+<p>You can choose one of three levels for notifications: Never, When I’m Away and Always. Each level is useful in different situations. For example, you might want to be alerted of movement in the living room only when you are away, but you might want to be alerted every time if a wall safe is opened, or a flood sensor detects water in your basement. On the other hand, you might not want to be alerted at all if a smart plug in your daughter’s room is turned on or off.
+</p>
+</body>
+</html>";
 
-"help_topics_dashboard"="The dashboard has been designed to give you an overview  of your home and quick access to key functions. You can see: recent Smart Home and Wi-Fi device notifications and how many network and smart devices are online and active. You can also set your Almond to Home or Away mode with a quick tap.\n\nIf you own more than one Almond, you can quickly switch between them by tapping on the device’s name above the mode control, and picking another Almond from the list.\n\nAs we continue to improve Almond, and add more features, the Dashboard will be central to controlling your Smart Home. Stay tuned!";
+
 
 
 "Quick_Tips"="Quick Tips";
@@ -956,6 +1035,260 @@ Follow it, then login below.";
 
 
 "web_history" = "Web History";
+
+
+//help topics html strings topic 4-11
+"AddingDev_alScreen" = "Adding Devices Through The Almond Touch Screen";
+
+"AddingDev_alScreen_desc" = "
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<body>
+<p>
+You can add Zigbee, Z-Wave or Philips Hue devices directly through the Almond touch screen. Some devices like Nest need to be added through the local web UI; read the Adding Devices Through Local Web UI topic to learn how to add devices through the local web UI. To know what type your device is, you can look at the packaging for the Zigbee or Z-Wave logos, or contact the manufacturer.
+</p>
+<p>
+Tap on the links below to jump to a section:<br/>
+<a href = \"#1\">Adding a ZigBee or Z-Wave device</a><br/>
+<a href = \"#2\">Adding a Philips Hue bridge</a><br/>
+<a href = \"#3\">Adding a new Hue bulb</a><br/>
+</p>
+<h3 id=\"1\">Adding a ZigBee or Z-Wave device</h3>
+<center><img src=home_screen.pdf/></center>
+<p>To add a ZigBee or Z-Wave device through the Almond touch screen, tap on the “Add Sensor” app on the touch screen. Z-Wave devices are only supported by Almond+ and Almond 3.</p>
+<center><img src=add_sensor_screenshot.pdf/></center>
+<p>The Add Sensor screen opens on the Zigbee tab. If you are using an Almond device that supports Z-Wave devices, you can add Z-Wave devices as well from this tab.</p>
+<p>Put the device you would like to add into pairing mode, and then press the Add button. See the device manufacturer’s instructions to learn how to put the device in pairing mode.</p>
+<center><img src=add_sensor_zigbee_tab.pdf/></center>
+<p>Tap the Add button on the Almond touch screen. The Almond will start scanning for available devices and connect with your device if it is in the pairing mode.
+</p>
+<center><img src=add_sensor_zigbee_tab_pairing_mode.pdf/></center>
+<p>Once pairing is complete, you will see a dialog to name the device and set its location. Give the device a name, and enter a location to help you remember where the device is, for example, “porch” or “kids bedroom”.</p>
+<h3 id=\"2\">Adding a Philips Hue bridge</h3>
+<center><img src=home_screen.pdf/></center>
+<p>To add a Philips Hue bridge through the Almond touch screen, connect the bridge to the Almond using an Ethernet cable, then tap on the Add Sensor app on the touch screen.</p>
+<center><img src=ethernet_cable.pdf/></center>
+<p>On the add sensor screen, tap on the Hue tab. Tap on Add Hue to start adding a Hue bridge to your Almond.</p>
+<center><img src=hue_tab.pdf/></center>
+<p>In the Choose Hue Bridge screen that comes up, select the Hue bridge that you want to add.</p>
+<center><img src=hue_bridge.pdf/></center>
+<p>Press the association button on the Hue bridge, and tap on the Start button. The Almond will detect the Hue bridge and automatically add any bulbs that are already connected to the bridge, and you will be able to control the bulbs from the Almond app on your smartphone or from the Connected Sensors app on the Almond touch screen.</p>
+<h3 id=\"3\">Adding a new Hue bulb</h3>
+<p>You can add new Hue bulbs to a bridge that you have already connected to Almond.</p>
+<center><img src=home_screen.pdf/></center>
+<p>To add a new Hue bulb through the Almond touch screen, tap on the Add Sensor app on the Almond touch screen.</p>
+<center><img src=ethernet_cable.pdf/></center>
+<p>On the add sensor screen, tap on the Hue tab. Tap on Add New Bulb to start adding a Hue bulb to your Almond.</p>
+<center><img src=hue_tab.pdf/></center>
+<p>In the Choose Hue Bridge screen that comes up, select the Hue bridge to add the bulb to.</p>
+<center><img src=hue_bulb.pdf/></center>
+<p>Make sure that the bulb is powered on and the bridge is connected to the Internet, and tap on the Search button. The bridge will automatically scan for new bulbs and add them to your Almond.</p>
+<p>If you are facing issues with previously added bulbs, you can tap on the Refresh List button on the add sensor screen, and pick a Hue bridge to refresh the bulbs attached to that bridge.</p>
+</body>
+</html>
+";
+
+"AddingDev_webUI" = "Adding Devices Through Local Web UI";
+"AddingDev_webUI_desc" = "
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<body>
+<p>You can add your Nest devices to your Almond account through the local web UI. Zigbee, Z-Wave or Philips Hue devices can be added through the local web UI or directly through the Almond touch screen; read the Adding Devices Through The Almond Touch Screen section to learn how to add the devices through your Almond\’s touch screen.</p>
+<p>
+Tap on the links below to jump to a section:<br/>
+<a href=\"#1\">Adding a ZigBee or Z-Wave device</a><br/>
+<a href=\"#2\">Adding a Nest account</a><br/>
+<a href=\"#3\">Adding a Philips Hue bridge</a><br/>
+<a href=\"#4\">Adding a Philips Hue bulb</a><br/>
+</p>
+<h3 id=\"1\">Adding a ZigBee or Z-Wave device</h3>
+<center><img src=h_adding_a_zigbee.pdf/></center>
+<p>
+Open the web UI and click on the Devices tab. Once you are on the Devices tab, hovering over the Add icon will show an Add Menu with a list of options for adding devices.
+</p>
+<p>
+To add a ZigBee device, click on Add ZigBee Device in the list of options. You will see a message that your Almond is looking for nearby devices. Put the device into pairing mode to add the device to Almond. See the device manufacturer’s instructions to learn how to put the device in pairing mode.
+</p>
+<h3 id=\"2\">Adding a Nest account</h3>
+<center><img src=h_adding_a_nest_account.pdf/></center>
+<p>
+Open the web UI and click on the Devices tab. Once you are on the Devices tab, hovering over the Add icon will show an Add Menu with a list of options for adding devices.
+</p>
+<p>
+You can control all your Nest devices by linking your Nest account to Almond. To add your Nest account, click on Add Nest Account in the list of options.
+</p>
+<center><img src=h_nest_webpage.pdf/></center>
+<p>
+Make sure you are connected to the Internet, and then click the Open Nest Webpage Now button in the pop up. This will take you to the Works with Nest page online. Use your Nest login to authenticate Almond. When you see the Nest PIN number, copy it and enter it into the text field in Step 3, then click the Add Nest Device button. Your Nest account and all associated Nest devices will be added automatically.
+</p>
+<h3 id=\"3\">Adding a Philips Hue bridge</h3>
+<center><img src=h_adding_hue_bridge.pdf/></center>
+<p>
+Connect the Hue bridge to your Almond using an Ethernet cable, and open the Almond’s web UI and click on the Devices tab. Once you are on the Devices tab, hovering over the Add icon will show an Add Menu with a list of options for adding devices.
+</p>
+<center><img src=h_huebridges_list.pdf/></center>
+<p>
+A window that lists the Hue bridges on your Almond’s network will be shown. Select the Hue bridge that you want to add and click on Continue. Press the association button on the Hue bridge to complete the pairing process. Any Hue bulbs that are already associated with the Hue bridge will also get added automatically.
+<p>
+<h3 id=\"4\">Adding a Philips Hue bulb</h3>
+<p>A Philips Hue bridge is required to control Hue devices through Almond. If you haven't added a bridge already, you can add one using the steps in Adding a Philips Hue bridge above.
+<center><img src=h_adding_hue_bulb_webui.pdf/></center>
+</p>
+<p>To add a new Hue bulb, make sure that the bulb is powered on and that the Hue bridge you would like to add it to is powered on and connected to the Internet through your Almond. open the Almond’s web UI and click on the Devices tab. Once you are on the Devices tab, hovering over the Add icon will show an Add Menu with a list of options for adding devices.
+</p>
+<center><img src=h_hue_bulbs_webui.pdf/></center>
+<p>
+Click on Add Hue Bulb, and select a Hue bridge. The bridge will automatically scan for new bulbs and add them to your Almond.
+</p>
+<p>
+If you are facing issues with previously added bulbs, you can click on the Refresh Hue Devices option in the Add Menu, and pick a Hue bridge to refresh the bulbs attached to that bridge.
+</p>
+</body>
+</html>";
+
+"Adding_motion_sensor" = "Adding a Securifi motion sensor";
+"Adding_motion_sensor_desc" = "
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<body>
+<h3>Adding a Securifi motion sensor</h3>
+<center><img src=h_motion_sensor_image.pdf/></center>
+<p>
+Remove the back of the sensor by pushing the button at the bottom of the sensor as shown above.
+</p>
+<center><img src=h_motion_sensor_image.pdf/></center>
+<p>
+Insert the battery into the battery socket labelled (1) in the image above, then press the Join/Reset button (3). The green LED on the sensor will start flashing to indicate that the sensor is searching for a hub to connect.
+</p>
+<p>
+If the LED does not flash, press and hold the Join/Reset button for 10 seconds and then let go. The LED will glow once. Press the button again, and the LED will start flashing.
+</p>
+<center><img src=home_screen.pdf/></center>
+<p>
+Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add on the next screen. The motion sensor will pair with your Almond hub.
+</p>
+<p>
+Reattach the rear cover of the sensor and make sure it snaps in place properly. On the Almond touch screen, go back to the Home screen, tap on Connected Sensors, then tap on the sensor you just added.
+</p>
+<p>
+Tap on Tampered to reset the tamper switch. Your sensor should now be fully operational and ready to be installed at your location of choice.
+</p>
+<center><img src=h_motion_sensor_image.pdf/></center>
+<p>
+You can adjust the sensitivity and timer on the motion sensor using a flat screwdriver at the top of the sensor.
+</p>
+</body>
+</html>";
+
+"Adding_door_sensor" = "Adding a Securifi door/window sensor";
+"Adding_door_sensor_desc" = "
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<body>
+<h3>Adding a Securifi door/window sensor</h3>
+<center><img src=h_doorsensor_image.pdf/></center>
+<p>
+To add a door sensor to Almond, remove the sensor cover and press the tamper switch labelled (2) for 3 seconds before inserting the battery (1). Insert the included battery with the positive side facing you while you keep the tamper switch pressed.
+</p>
+<p>
+Wait for the green indicator LED (3) to light up. Release the tamper switch while the LED is glowing. The LED starts blinking in bursts of three blinks, which indicates that the sensor is searching for a hub to connect with.
+</p>
+<center><img src=home_screen.pdf/></center>
+<p>
+Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add on the next screen. The door sensor will pair with your Almond hub.
+</p>
+<p>
+If the sensor does not pair with the Almond, remove the battery, wait for 5 seconds, and try adding it again. Reattach the cover of the sensor and make sure it snaps in place.
+</p>
+<p>
+On the Almond touch screen, return to the Home screen, tap the Connected Sensors icon, and tap the sensor you’ve just added. Press the Tampered button to reset the tamper switch.
+</p>
+<p>
+Your sensor is now be fully operational and ready to be installed at your location of choice.
+</p>
+</body>
+</html>";
+
+"Adding_water_detector" = "Adding a Securifi water detector";
+"Adding_water_detector_desc" = "
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<body>
+<h3>Adding a Securifi water detector</h3>
+<center><img src=h_water_detector.pdf/></center>
+<p>
+Gently pry open the housing and insert the batteries. Press the Join/Reset button labelled (2) in the diagram above. The LED (3) will flash in bursts of three blinks to indicate that the sensor is searching for a hub to connect with.
+</p>
+<p>
+If the LED does not flash, remove one of the batteries, press and hold the pairing button and then re-insert the battery while you keep the pairing button pressed. The LED will glow for 2 seconds after you let go of the button, and then start blinking.
+</p>
+<center><img src=home_screen.pdf/></center>
+<p>
+Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add on the next screen. The water sensor will pair with your Almond hub.
+</p>
+<p>
+Reattach the the front cover of the housing and make sure it snaps in place properly. On the Almond touch screen, go back to the Home screen and tap on Connected Sensors and tap on the sensor you just added. Next, tap on the Tampered button to reset the tamper switch. Your sensor should now be fully operational and ready to be installed.
+</p>
+</body>
+</html>";
+
+"Adding_keyfob" = "Adding a Securifi keyfob";
+"Adding_keyfob_desc" = "
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<body>
+<h3>Adding a Securifi keyfob</h3>
+<center><img src=h_keyfob_image.pdf/></center>
+<p>Use a Phillips head screwdriver to remove the screw at the back of the Key Fob
+</p>
+<p>
+Carefully lift out the circuit board and flip it over to reveal the battery compartment. Handle the circuit board by the edges to avoid damaging it.
+</p>
+<p>
+Insert the supplied battery and put the circuit board back into the housing and reassemble the key fob.
+</p>
+<center><img src=home_screen.pdf/></center>
+<p>
+Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add on the next screen to start adding the sensor. Now press and hold the button on the key fob. Keep it pressed for 1 second then press the  button quickly within one second.
+</p>
+<p>
+The LED at the top of the key fob will start flashing green and the device will join to the Almond. Repeat the process if the device doesn’t pair with the Almond.
+</p>
+</body>
+</html>";
+
+"Adding_click" = "Adding an Almond Click";
+"Adding_click_desc" = "
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<body>
+<h3>Adding an Almond Click</h3>
+<center><img src=h_almond_click.pdf/></center>
+<p>
+Remove the back cover by pulling it upwards at the groove provided in the lanyard hole labelled (5) in the image above. Insert the battery into the battery holder (3). The LED indicator (1) on the front should begin blinking.
+</p>
+<p>
+If the LED indicator does not blink, remove the battery from the battery holder. Press the join/reset button (4), and insert the battery while you keep the join/reset button pressed. Wait for 3 seconds, and then let go of the join/reset button. The LED indicator on the front of the Almond Click will start blinking.
+</p>
+<center><img src=home_screen.pdf/></center>
+<p>
+Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add on the next screen. The Almond Click will pair with your Almond hub.
+</p>
+<p>
+Make sure that the lanyard holes in the body of the Almond Click and the back cover are lined up, and snap the back cover onto the Almond Click. On the Almond’s touch screen, go to the Home screen, tap on Connected Sensors and then tap on the Almond Click you just added. Tap the Tampered button in the lower left to reset the tamper switch. Your Almond Click is now ready for use.
+</p>
+</body>
+</html>";
+
+"Adding_peanut_plug" = "Adding a Peanut plug";
+"Adding_peanut_plug_desc" = "
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<body>
+<h3>Adding a Peanut plug</h3>
+<center><img src=h_peanut_plug_image_1.pdf/></center>
+<p>
+Insert the plug into a power outlet. The LED indicator on the plug should start blinking. If the LED does not blink, press and hold the pairing button for 10 seconds while plug is plugged into a socket. Then, remove the plug from the power outlet and plug it back in. The LED indicator will start blinking.
+</p>
+<center><img src=home_screen.pdf/></center>
+<p>
+Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add on the next screen. The Peanut plug will pair with your Almond hub and will be ready for use.
+</p>
+</body>
+</html>";
+
 /* ==================================================================== */
 
 /*

@@ -3566,7 +3566,7 @@
             break;
         }
             
-        case SFIDeviceType_BuiltInSiren_60: {
+        case SFIDeviceType_BuiltInSiren_60: {//its not there
             
             if (type == SFIDevicePropertyType_ALARM_STATE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
@@ -3605,6 +3605,36 @@
             break;
             
         }
+        case SFIDeviceType_SecurifiButton_61:{
+            if (type == SFIDevicePropertyType_PRESS) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_equals;
+                s1.matchData = @"0";
+                s1.iconName = @"resume_icon";
+                s1.notificationText = @" is set to two press.";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchType = MatchType_equals;
+                s2.matchData = @"2";
+                s2.iconName = @"vibration_on";
+                s2.notificationText = @" is set to long press.";
+                
+                IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
+                s3.matchType = MatchType_equals;
+                s3.matchData = @"3";
+                s3.iconName = @"vibration_off";
+                s3.notificationText = @" is set to one press.";
+                
+                IndexValueSupport *s4 = [[IndexValueSupport alloc] initWithValueType:type];
+                s4.matchType = MatchType_equals;
+                s4.matchData = @"4";
+                s4.iconName = @"switch_off";
+                s4.notificationText = @" is set to no press.";
+                return @[s1, s2, s3, s4];
+            }
+            break;
+        }
+            
         case SFIDeviceType_ZenThermostat_62: {
             if (type == SFIDevicePropertyType_SENSOR_MULTILEVEL) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];

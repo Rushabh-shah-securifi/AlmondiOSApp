@@ -78,7 +78,7 @@ static const int logsHeight = 100;
 @property(nonatomic) BOOL isAlmDetailView;
 @property(nonatomic) BOOL almCount;
 @property(nonatomic) BOOL enableAdvRouter;
-
+@property(nonatomic) AlmondStatus *slaveStatus;
 @end
 
 @implementation SFIRouterTableViewController
@@ -141,7 +141,9 @@ int mii;
     
     [center addObserver:self selector:@selector(onClientResponse:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
     
-    [center addObserver:self selector:@selector(onMeshResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onRouterPageCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
+    
+    [center addObserver:self selector:@selector(onRouterPageMeshCommandResponse:) name:NOTIFICATION_COMMAND_TYPE_MESH_RESPONSE object:nil];
     
 }
 
@@ -889,6 +891,7 @@ int mii;
 }
 
 #pragma mark mesh command resposne
+<<<<<<< HEAD
 - (void)onMeshResponse:(id)sender{
     NSLog(@"slave list mesh response");
     NSNotification *notifier = (NSNotification *) sender;
@@ -935,9 +938,72 @@ int mii;
         [self showToast:@"Sorry! Please try after sometime."];
     }
 }
+=======
+ - (void)onRouterPageCommandResponse:(id)sender{
+     NSLog(@"onRouterPageCommandResponse");
+     NSDictionary *payload = [self getPayload:sender];
+     if(payload == nil) return;
+     
+     NSLog(@"router mesh payload: %@", payload);
+     if(![payload[COMMAND_MODE] isEqualToString:@"Reply"])
+         return;
+     
+     BOOL isSuccessful = [payload[SUCCESS] boolValue];
+     NSString *commandType = payload[COMMAND_TYPE];
+     if(isSuccessful){
+         if([commandType  isEqualToString:@"SlaveDetailsMobile"]){
+             MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupViewController" isStatView:YES];
+             [AlmondStatus updateSlaveStatus:payload routerSummary:self.routerSummary slaveStat:self.slaveStatus];
+             if([AlmondStatus hasCompleteDetails:self.slaveStatus] == NO){
+                 return;
+             }
+             [self presentController:self.slaveStatus ctrl:ctrl];
+         }
+         else if([commandType  isEqualToString:@"Rai2UpMobile"]){
+             if(self.isAlmDetailView){
+                 NSDictionary *slaveDict = self.routerSummary.almondsList[_almCount];
+                 [MeshPayload requestSlaveDetails:mii
+                                  slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]
+                                        almondMac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
 
+             }else{
+                 MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupAdding" isStatView:NO];
+                 [self presentViewController:ctrl animated:YES completion:nil];
+             }
+         }
+     }
+     else{
+         [self showToast:@"Sorry! Please try after sometime."];
+     }
+     dispatch_async(dispatch_get_main_queue(), ^{
+         [self.HUD hide:YES];
+     });
+ }
+>>>>>>> octRelease
+
+- (void)onRouterPageMeshCommandResponse:(id)sender{
+    NSLog(@"onRouterPageMeshCommandResponse");
+    [self onRouterPageCommandResponse:sender];
+}
+
+- (NSDictionary *)getPayload:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    if (data == nil || [data valueForKey:@"data"]==nil ) {
+        return nil;
+    }
+    NSDictionary *payload;
+    if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
+        payload = data[@"data"];
+    }else{
+        payload = [data[@"data"] objectFromJSONData];
+    }
+    return payload;
+}
 
 #pragma mark almondnetworkcelldelegate methods
+<<<<<<< HEAD
 -(void)onAlmondTapDelegate:(int)almondCount{
     NSLog(@"onAlmondTapDelegate");
     //master - straight forward assemble data and send
@@ -962,6 +1028,33 @@ int mii;
         });
     }
 }
+=======
+ -(void)onAlmondTapDelegate:(int)almondCount{
+     NSLog(@"onAlmondTapDelegate");
+     //master - straight forward assemble data and send
+     if(almondCount == 0){
+         MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupViewController" isStatView:YES];
+         [self presentController:[AlmondStatus getMasterAlmondStatus:self.routerSummary] ctrl:ctrl];
+     }else{
+         self.isAlmDetailView = YES;
+         self.almCount = almondCount;
+         self.slaveStatus = [AlmondStatus new];
+         
+         if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local)
+             [[SecurifiToolkit sharedInstance] connectMesh];
+         else{
+             NSDictionary *slaveDict = self.routerSummary.almondsList[almondCount];
+             [MeshPayload requestSlaveDetails:mii
+                              slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]
+                                    almondMac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
+         }
+         
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [self showHudWithTimeout:@"Requesting...Please Wait!"];
+         });
+     }
+ }
+>>>>>>> octRelease
 
 -(MeshSetupViewController *)getMeshController:(NSString *)identifier isStatView:(BOOL)isStatView{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Mesh" bundle:nil];
