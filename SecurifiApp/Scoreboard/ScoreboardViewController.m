@@ -17,6 +17,7 @@
 #import "ScoreboardTextEditorViewController.h"
 #import "ScoreboardNetworkSettingsViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "NotificationAccessAndRefreshCommands.h"
 
 @import MessageUI;
 
@@ -532,8 +533,7 @@
     }
 
     NSString *databaseCopyFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    BOOL success = [toolkit copyNotificationStoreTo:databaseCopyFilePath];
+    BOOL success = [NotificationAccessAndRefreshCommands copyNotificationStoreTo:databaseCopyFilePath];
     if (success) {
         NSData *logData = [NSData dataWithContentsOfFile:databaseCopyFilePath];
         NSString *filename = @"toolkit_store.db";

@@ -13,6 +13,7 @@
 #import "NotificationsTestStore.h"
 #import "UIApplication+SecurifiNotifications.h"
 #import "Analytics.h"
+#import "NotificationAccessAndRefreshCommands.h"
 
 @interface SFINotificationsViewController ()
 //@property(nonatomic, readonly) id <SFINotificationStore> store;
@@ -101,7 +102,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     }
     else {
         // normal Notifications/Activity Viewer storage
-        return [[SecurifiToolkit sharedInstance] newNotificationStore];
+        return [NotificationAccessAndRefreshCommands newNotificationStore];
     }
 }
 
@@ -121,7 +122,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
         // Tell the cloud add notifications were viewed
         // Note: there is a race condition that does not account for concurrent changes to this app's data store
         // while this operation is being called. This is due to an underspecified protocol between cloud and app.
-        [[SecurifiToolkit sharedInstance] tryClearNotificationCount];
+        [NotificationAccessAndRefreshCommands tryClearNotificationCount];
 
         // tell the world notifications were viewed
         [center postNotificationName:kApplicationDidViewNotifications object:nil];

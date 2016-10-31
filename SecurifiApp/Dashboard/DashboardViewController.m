@@ -30,6 +30,7 @@
 #import "Client.h"
 #import "ConnectionStatus.h"
 #import "LocalNetworkManagement.h"
+#import "NotificationAccessAndRefreshCommands.h"
 
 
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate>{
@@ -115,7 +116,7 @@
                  object:nil];
     
     [self getRecentNotification];
-    [self.toolkit tryRefreshNotifications];
+    [NotificationAccessAndRefreshCommands tryRefreshNotifications];
     [self initializeUI];
     [self markNetworkStatusIcon];
 }
@@ -197,7 +198,7 @@
     
     _notificationButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(notificationAction:)];
     
-    NSInteger count = [_toolkit countUnviewedNotifications];
+    NSInteger count = [NotificationAccessAndRefreshCommands countUnviewedNotifications];
     [_notificationButton markNotificationCount:(NSUInteger) count];
     _notificationButton.isDashBoard = YES;
     UIBarButtonItem *interSpace = [self getBarButton:20];
@@ -213,7 +214,7 @@
 
 #pragma mark notification
 -(void)loadNotification{
-    self.store = [[SecurifiToolkit sharedInstance] newNotificationStore];
+    self.store = [NotificationAccessAndRefreshCommands newNotificationStore];
 }
 
 -(void)initializeHUD{
@@ -292,7 +293,7 @@
     [self markNetworkStatusIcon];
     // getrecentnotification to instantly show onclick
     [self getRecentNotification];
-    [self.toolkit tryRefreshNotifications];
+    [NotificationAccessAndRefreshCommands tryRefreshNotifications];
 }
 
 - (void)onAlmondListDidChange:(id)sender {
@@ -330,7 +331,7 @@
 }
 
 - (void)onNotificationCountChanged:(id)event {
-    [self.notificationButton markNotificationCount:(NSUInteger) [self.toolkit notificationsBadgeCount]];
+    [self.notificationButton markNotificationCount:(NSUInteger) [NotificationAccessAndRefreshCommands notificationsBadgeCount]];
 }
 
 -(void)onDidReceiveNotifications{

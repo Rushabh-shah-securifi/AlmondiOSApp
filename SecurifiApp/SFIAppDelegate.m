@@ -11,6 +11,7 @@
 #import <Fabric/Fabric.h>
 #import "Crashlytics.h"
 #import "UIApplication+SecurifiNotifications.h"
+#import "NotificationAccessAndRefreshCommands.h"
 
 #define DEFAULT_GA_ID @"UA-52832244-2"
 #define DEFAULT_ASSETS_PREFIX_ID @"Almond"
@@ -152,11 +153,10 @@
     //[self sendLogsToCloud];
     NSLog(@"Application did launch");
     [self initializeSystem:application];
-    
     NSDictionary *remote = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remote) {
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        [toolkit tryRefreshNotifications];
+        [NotificationAccessAndRefreshCommands tryRefreshNotifications];
         [application securifiApplicationHandleUserDidTapNotification];
     }
 
@@ -209,7 +209,6 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -221,10 +220,10 @@
     if (online) {
         // Use the badge count set by APN
         NSInteger badgeNumber = application.applicationIconBadgeNumber;
-        [toolkit setNotificationsBadgeCount:badgeNumber];
+        [NotificationAccessAndRefreshCommands setNotificationsBadgeCount:badgeNumber];
 
         // and then fetch new notifications, if any
-        [toolkit tryRefreshNotifications];
+        [NotificationAccessAndRefreshCommands tryRefreshNotifications];
     }
     else {
         [toolkit asyncInitNetwork];

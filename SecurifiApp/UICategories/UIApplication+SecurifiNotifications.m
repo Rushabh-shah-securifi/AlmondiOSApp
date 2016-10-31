@@ -9,6 +9,7 @@
 #import "DebugLogger.h"
 #import "KeyChainAccess.h"
 #import "NotificationRegistration.h"
+#import "NotificationAccessAndRefreshCommands.h"
 
 NSString *const kApplicationDidBecomeActiveOnNotificationTap = @"kApplicationDidBecomeActiveOnNotificationTap";
 NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifications";
@@ -98,11 +99,11 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     if (apps_dict) {
         NSNumber *badge = apps_dict[@"badge"];
         if (badge) {
-            [toolkit setNotificationsBadgeCount:badge.integerValue];
+            [NotificationAccessAndRefreshCommands setNotificationsBadgeCount:badge.integerValue];
         }
     }
 
-    [toolkit tryRefreshNotifications];
+    [NotificationAccessAndRefreshCommands tryRefreshNotifications];
 
     const BOOL debugLogging = toolkit.configuration.enableNotificationsDebugLogging;
     if (debugLogging) {
@@ -151,8 +152,7 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
 // set the app's badge icon to the count of 'not viewed' notifications
 - (void)securifiApplicationUpdateBadgeCount {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    NSInteger count = [toolkit countUnviewedNotifications];
+    NSInteger count = [NotificationAccessAndRefreshCommands countUnviewedNotifications];
     self.applicationIconBadgeNumber = count;
 }
 

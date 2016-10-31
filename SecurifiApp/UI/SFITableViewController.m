@@ -25,6 +25,7 @@
 #import "SFICloudLinkViewController.h"
 #import "ConnectionStatus.h"
 #import "LocalNetworkManagement.h"
+#import "NotificationAccessAndRefreshCommands.h"
 
 
 @interface SFITableViewController () <MBProgressHUDDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate, HelpScreensDelegate, MessageViewDelegate>
@@ -84,7 +85,7 @@
         
         _notificationsStatusButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(onShowNotifications:)];
         
-        NSInteger count = [toolkit countUnviewedNotifications];
+        NSInteger count = [NotificationAccessAndRefreshCommands countUnviewedNotifications];
         [self.notificationsStatusButton markNotificationCount:(NSUInteger) count];
         
         // make the button but do not install; will be installed after connection state is determined
@@ -558,7 +559,7 @@
 - (void)markNotificationStatusIcon {
     if (self.enableNotificationsView) {
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        NSInteger badgeCount = [toolkit notificationsBadgeCount];
+        NSInteger badgeCount = [NotificationAccessAndRefreshCommands notificationsBadgeCount];
         [self.notificationsStatusButton markNotificationCount:(NSUInteger) badgeCount];
     }
 }

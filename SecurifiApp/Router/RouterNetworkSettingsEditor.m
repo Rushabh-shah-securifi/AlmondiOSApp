@@ -82,11 +82,6 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-//    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-//    [center addObserver:self
-//               selector:@selector(onConnectionStatusChanged:)
-//                   name:CONNECTION_STATUS_CHANGE_NOTIFIER
-//                 object:nil];
 }
 
 #pragma mark - State management
@@ -346,35 +341,6 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 }
 
 
-//#pragma mark - Network Delegates
-//- (void)networkEndpointDidConnect:(id <NetworkEndpoint>)endpoint {
-//    NSLog(@"network did connect");
-//    GenericCommand *cmd = [GenericCommand websocketAlmondNameAndMac];
-//    NSError *error = nil;
-//    [endpoint sendCommand:cmd error:&error];
-////    [SecurifiToolkit sharedInstance].network.endpoint = endpoint;
-////    [SecurifiToolkit sharedInstance].network.endpoint.delegate = [SecurifiToolkit sharedInstance].network;
-////    [self markSuccessOnLink];
-////    [ConnectionStatus setConnectionStatusTo:CONNECTED_TO_NETWORK];
-//}
-//
-//
-//- (void)networkEndpointDidDisconnect:(id <NetworkEndpoint>)endpoint {
-//    NSLog(@"didisconnect is called");
-//    NSString *msg = NSLocalizedString(@"router.error-msg.An error occurred trying to link with the Almond. Please try again.", @"An error occurred trying to link with the Almond. Please try again.");
-//    [self markErrorOnLink:[NSString stringWithFormat:@"%@", msg]];
-//}
-//
-//
-//#pragma mark - response handler
-//- (void)networkEndpoint:(id <NetworkEndpoint>)endpoint dispatchResponse:(id)payload commandType:(enum CommandType)commandType {
-//    
-//    NSLog(@"some response has come");
-//    if (commandType == CommandType_ALMOND_NAME_AND_MAC_RESPONSE) {
-//        SFIAlmondPlus* almondPlus = [self processTestConnectionResponsePayload:payload];
-//        NSLog(@"response has come %@", payload);
-//    }
-//}
 
 #pragma mark - Action handlers
 
