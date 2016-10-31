@@ -31,35 +31,35 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.labelText = NSLocalizedString(@"password.hud.Changing password...", @"Changing password...");
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
-
+    
     NSDictionary *titleAttributes = @{
-            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
-            NSFontAttributeName : [UIFont standardNavigationTitleFont]
-    };
+                                      NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+                                      NSFontAttributeName : [UIFont standardNavigationTitleFont]
+                                      };
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
     self.navigationController.navigationBar.tintColor = [UIColor securifiScreenBlue];
-
+    
     self.scrollView.scrollEnabled = NO;
     self.scrollView.scrollsToTop = NO;
-
+    
     [[Analytics sharedInstance] markSignUpForm];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    
     [self showTermsAndConditions];
-
+    
     self.password.delegate = self;
     self.emailID.delegate = self;
     self.confirmPassword.delegate = self;
-
+    
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onSignupResponseCallback:) name:SIGN_UP_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onValidateResponseCallback:) name:VALIDATE_RESPONSE_NOTIFIER object:nil];
@@ -69,11 +69,11 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-
+    
     self.emailID.delegate = nil;
     self.password.delegate = nil;
     self.confirmPassword.delegate = nil;
-
+    
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self name:SIGN_UP_NOTIFIER object:nil];
     [center removeObserver:self name:VALIDATE_RESPONSE_NOTIFIER object:nil];
@@ -84,20 +84,20 @@
 - (void)showTermsAndConditions {
     UIBarButtonItem *declineButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"signup.barbutton.Decline", @"Decline") style:UIBarButtonItemStylePlain target:self action:@selector(onDeclineAction:)];
     self.navigationItem.leftBarButtonItem = declineButton;
-
+    
     UIBarButtonItem *acceptButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"signuo.barbutton.Accept", @"Accept") style:UIBarButtonItemStylePlain target:self action:@selector(onAcceptedTermsAndConditions)];
     self.navigationItem.rightBarButtonItem = acceptButton;
-
+    
     self.navigationItem.title = NSLocalizedString(@"signup.navbar-title.Terms of Use", @"Terms of Use");
     CGRect frame = self.view.frame;
     frame.origin.y = self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y;
     
     UIWebView *webView = [[UIWebView alloc] initWithFrame:frame];
-
+    
     NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"termsofuse" ofType:@"html"];
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     [webView loadHTMLString:htmlString baseURL:nil];
-
+    
     self.webview = webView;
     self.scrollView.alpha = 0.0;
     [self.view addSubview:webView];
@@ -105,12 +105,12 @@
 
 - (void)showSignupForm {
     [self displayScreenToSignup];
-
+    
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelAction:)];
     self.navigationItem.leftBarButtonItem = cancelButton;
-
+    
     self.navigationItem.rightBarButtonItem = nil;
-
+    
     [UIView animateWithDuration:0.5
                      animations:^() {
                          self.webview.alpha = 0.0;
@@ -137,7 +137,7 @@
         self.passwordStrength.text = @"";
         self.passwordStrength.hidden = NO;
         self.passwordStrengthIndicator.hidden = NO;
-
+        
         [self setStandardHeadline];
         [self setFooterForTag:FOOTER_TERMS_CONDS];
     });
@@ -164,33 +164,33 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         NSString *label;
         NSString *button;
-
+        
         switch (tag) {
             case FOOTER_TERMS_CONDS: {
                 label = nil;
                 button = nil;
                 break;
             }
-
+                
             case FOOTER_RESEND_ACTIVATION_LINK:
                 label = @"";
                 button = NSLocalizedString(@"signup.footerbutton.Resend the activation email", @"Resend the activation email");
                 break;
-
+                
             case FOOTER_SIGNUP_DIFF_EMAIL: {
                 label = NSLocalizedString(@"signup.footerlabel.Do you want to create another account?", @"Do you want to create another account?");
                 button = NSLocalizedString(@"signup.footerbutton.Signup using another email", @"Signup using another email");
                 break;
             }
-
+                
             default: {
                 return;
             }
         }
-
+        
         self.footerLabel.text = label;
         self.footerButton.tag = tag;
-
+        
         if (button) {
             [self.footerButton setTitle:button forState:UIControlStateNormal];
             [self.footerButton setTitle:button forState:UIControlStateHighlighted];
@@ -221,36 +221,36 @@
 #pragma mark - Keyboard Methods
 
 - (void)keyboardDidShow:(NSNotification *)aNotification {
-//    [self enableContinueButton:NO];
-//
-//    NSDictionary *info = [aNotification userInfo];
-//    CGSize kbSize = [info[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-//
-//    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-//    self.scrollView.contentInset = contentInsets;
-//    self.scrollView.scrollIndicatorInsets = contentInsets;
-//
-//    // If active text field is hidden by keyboard, scroll it so it's visible
-//    CGRect fieldRect = self.activeTextField.frame;
-//    fieldRect = CGRectOffset(fieldRect, 0, 3 * CGRectGetHeight(fieldRect));
-//
-//    CGRect aRect = self.view.frame;
-//    aRect.size.height -= kbSize.height;
-//
-//    if (!CGRectContainsPoint(aRect, fieldRect.origin)) {
-//        [self.scrollView scrollRectToVisible:fieldRect animated:YES];
-//    }
+    //    [self enableContinueButton:NO];
+    //
+    //    NSDictionary *info = [aNotification userInfo];
+    //    CGSize kbSize = [info[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    //
+    //    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    //    self.scrollView.contentInset = contentInsets;
+    //    self.scrollView.scrollIndicatorInsets = contentInsets;
+    //
+    //    // If active text field is hidden by keyboard, scroll it so it's visible
+    //    CGRect fieldRect = self.activeTextField.frame;
+    //    fieldRect = CGRectOffset(fieldRect, 0, 3 * CGRectGetHeight(fieldRect));
+    //
+    //    CGRect aRect = self.view.frame;
+    //    aRect.size.height -= kbSize.height;
+    //
+    //    if (!CGRectContainsPoint(aRect, fieldRect.origin)) {
+    //        [self.scrollView scrollRectToVisible:fieldRect animated:YES];
+    //    }
 }
 
 - (void)keyboardDidHide:(NSNotification *)aNotification {
-//    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-//    self.scrollView.contentInset = contentInsets;
-//    self.scrollView.scrollIndicatorInsets = contentInsets;
-//
-//    CGRect rect = self.headingLabel.frame;
-//    if (!CGRectContainsPoint(self.view.frame, rect.origin)) {
-//        [self.scrollView scrollRectToVisible:rect animated:YES];
-//    }
+    //    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    //    self.scrollView.contentInset = contentInsets;
+    //    self.scrollView.scrollIndicatorInsets = contentInsets;
+    //
+    //    CGRect rect = self.headingLabel.frame;
+    //    if (!CGRectContainsPoint(self.view.frame, rect.origin)) {
+    //        [self.scrollView scrollRectToVisible:rect animated:YES];
+    //    }
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -282,7 +282,7 @@
         PasswordStrengthType pwdStrength = [validator validatePassword:self.password.text];
         [self displayPasswordIndicator:pwdStrength];
     }
-
+    
     return YES;
 }
 
@@ -343,7 +343,7 @@
 
 - (IBAction)onContinueAction:(id)sender {
     [self dismissKeyboard];
-
+    
     if ([self validateSignupValues]) {
         [self sendSignupCommand];
     }
@@ -413,7 +413,7 @@
 
 - (void)sendSignupCommand {
     [self setSigningUpHeadline];
-
+    
     [self asyncSendCloudSignupWithEmail:self.emailID.text password:self.password.text];
 }
 
@@ -427,26 +427,57 @@
     }
     SecurifiToolkit * toolKit = [SecurifiToolkit sharedInstance];
     // make sure cloud connection is set up
-    NSLog(@"i am called");
     [toolKit tearDownLoginSession];
     [KeyChainAccess setSecEmail:email];
     
     HTTPRequest *request = [HTTPRequest new];
     [request sendAsyncHTTPSignUPRequestWithEmail:email AndPassword:password];
-    
 }
 
 - (void)onSignupResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    
-    BOOL success = [data[@"success"] boolValue];
-    NSLog(@"%d successvalue",success);
-    if (success) {
+    if ([[data valueForKey:@"success"] boolValue] == YES) {
         [self displayScreenToLogin];
     }
     else {
-        NSString *failureReason = (NSString*)[data valueForKey:@"reason"];
+        NSString *failureReason;
+        if([[data valueForKey:@"reason"] isEqualToString:@"Email Taken"]){
+            failureReason = NSLocalizedString(@"An account already exists with this email.", @"An account already exists with this email.");
+            [self setFooterForTag:FOOTER_SIGNUP_DIFF_EMAIL];
+        }else {
+            failureReason = NSLocalizedString(@"Sorry! Signup was unsuccessful.", @"Sorry! Signup was unsuccessful.");
+        }
+        //        switch (obj.reasonCode) {
+        //            case 1:
+        //                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
+        //                break;
+        //
+        //            case 2: {
+        //                NSString *format = NSLocalizedString(@"The password should be %d - %d characters long.", @"The password should be %d - %d characters long.");
+        //                failureReason = [NSString stringWithFormat:format, PWD_MIN_LENGTH, PWD_MAX_LENGTH];
+        //                break;
+        //            }
+        //
+        //            case 3: {
+        //                failureReason = NSLocalizedString(@"An account already exists with this email.", @"An account already exists with this email.");
+        //                [self setFooterForTag:FOOTER_SIGNUP_DIFF_EMAIL];
+        //                break;
+        //            }
+        //
+        //            case 4:
+        //                //Ready for login
+        //                [self displayScreenToLogin];
+        //                break;
+        //
+        //            case 5:
+        //                failureReason = NSLocalizedString(@"The email or password was incorrect.", @"The email or password was incorrect.");
+        //                break;
+        //
+        //            default:
+        //                failureReason = NSLocalizedString(@"Sorry! Signup was unsuccessful.", @"Sorry! Signup was unsuccessful.");
+        //        }
+        
         [self setOopsMessage:failureReason];
     }
 }
@@ -458,37 +489,36 @@
 - (void)onValidateResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-
-    ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
-
-    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
-
-    if (obj.isSuccessful) {
+    if ([[data valueForKey:@"success"] boolValue] == YES) {
         [self displayScreenToLogin];
     }
     else {
-        DLog(@"Reason Code %d", obj.reasonCode);
-
-        NSString *failureReason;
-        switch (obj.reasonCode) {
-            case 1:
-                failureReason = NSLocalizedString(@"The username was not found", @"The username was not found");
-                break;
-            case 2:
-                failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
-                break;
-            case 3:
-            case 5:
-                failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
-                break;
-            case 4:
-                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
-                break;
-            default:
-                break;
+        NSString *failureReason = data[@"reason"];
+        if([[data valueForKey:@"reason"] isEqualToString:@"Already Validated"]){
+            failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
+        }else if([[data valueForKey:@"reason"] isEqualToString:@"EmailServer Down"]|| [[data valueForKey:@"reason"] isEqualToString:@"Database error"]){
+            failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
+        }else if([[data valueForKey:@"reason"] isEqualToString:@"No such user"]){
+            failureReason = NSLocalizedString(@"The username was not found", @"The username was not found");
         }
-
+        //        switch (obj.reasonCode) {
+        //            case 1:
+        //                failureReason = NSLocalizedString(@"The username was not found", @"The username was not found");
+        //                break;
+        //            case 2:
+        //                failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
+        //                break;
+        //            case 3:
+        //            case 5:
+        //                failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
+        //                break;
+        //            case 4:
+        //                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        
         [self setOopsMessage:failureReason];
     }
 }

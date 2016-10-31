@@ -14,6 +14,7 @@
 #import "UIApplication+SecurifiNotifications.h"
 #import "Analytics.h"
 #import "NotificationAccessAndRefreshCommands.h"
+#import "DeviceLogsProcessing.h"
 
 @interface SFINotificationsViewController ()
 //@property(nonatomic, readonly) id <SFINotificationStore> store;
@@ -98,7 +99,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     }
     else if (self.almondMac) {
         // Ephemeral "log" storage for the specified device
-        return [[SecurifiToolkit sharedInstance] newDeviceLogStore:self.almondMac deviceId:self.deviceID forWifiClients:self.isForWifiClients];
+        return [DeviceLogsProcessing newDeviceLogStore:self.almondMac deviceId:self.deviceID forWifiClients:self.isForWifiClients];
     }
     else {
         // normal Notifications/Activity Viewer storage
