@@ -427,6 +427,9 @@
 }
 
 -(void)createRequest:(NSString *)search value:(NSString*)value amac:(NSString*)amac{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    amac = almond.almondplusMAC;
     NSString *todayDate = [CommonMethods getTodayDate];
     NSString *req ;
     NSString *cmac = [CommonMethods hexToString:self.client.deviceMAC];

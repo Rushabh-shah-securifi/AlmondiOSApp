@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -27,7 +26,7 @@
                         <viewControllerLayoutGuide type="bottom" id="dw2-jV-lbW"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ogf-5p-TpX">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRi-9N-HpX">
@@ -112,10 +111,10 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="HistorytableCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="HistoryTableCell" id="yUh-Sz-VD3" customClass="HistoryCell">
-                                        <rect key="frame" x="0.0" y="28" width="364" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="589" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yUh-Sz-VD3" id="YEu-bD-Tgj">
-                                            <frame key="frameInset" width="364" height="44"/>
+                                            <frame key="frameInset" width="589" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -155,16 +154,16 @@
             <objects>
                 <tableViewController storyboardIdentifier="SearchTableViewController" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Pha-de-25d" customClass="SearchTableViewController" sceneMemberID="viewController">
                     <tableView key="view" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" rowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="1" id="7De-7J-KPS">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="separatorColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="searchCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="abc" id="Nnb-2F-0Wu" customClass="HistoryCell">
-                                <rect key="frame" x="0.0" y="28" width="375" height="40"/>
+                                <rect key="frame" x="0.0" y="28" width="600" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nnb-2F-0Wu" id="21A-9A-9VU">
-                                    <frame key="frameInset" width="375" height="39"/>
+                                    <frame key="frameInset" width="600" height="39"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -188,7 +187,7 @@
                         <viewControllerLayoutGuide type="bottom" id="2ii-KC-Y0x"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="MsZ-FU-rt5">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Pp-Gi-w4b">
@@ -327,10 +326,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="HistoryCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="epocCell" id="aNU-6N-zp0" customClass="HistoryCell">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aNU-6N-zp0" id="E3i-iW-I9Z">
-                                            <frame key="frameInset" width="375" height="44"/>
+                                            <frame key="frameInset" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -519,7 +518,7 @@
                         <viewControllerLayoutGuide type="bottom" id="v2p-ao-Iay"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="J7v-Za-zkb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zfw-c8-Iej">
@@ -1003,7 +1002,7 @@
                         <viewControllerLayoutGuide type="bottom" id="qMf-me-k2r"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="NMr-fb-VoI">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="l4a-b6-Z8L">
@@ -1013,10 +1012,10 @@
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell_Identifier" id="RlN-R8-pJR" customClass="HistoryCell">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RlN-R8-pJR" id="NQ2-sI-deR">
-                                            <frame key="frameInset" width="375" height="44"/>
+                                            <frame key="frameInset" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1054,14 +1053,29 @@
                                             <action selector="backButtonPressed:" destination="Qwr-yP-egu" eventType="touchUpInside" id="Bx5-gw-7sl"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zFZ-IR-UXk">
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="css-d4-5JR"/>
+                                            <constraint firstAttribute="width" constant="63" id="dRa-Bj-X5L"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="14"/>
+                                        <state key="normal" title="Done">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="doneButtonClicked:" destination="OnV-hc-Gla" eventType="touchUpInside" id="i9I-2I-xMO"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.50980392156862742" green="0.36078431372549019" blue="0.76078431372549016" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="Jpb-BX-fkG" firstAttribute="top" secondItem="LoS-ut-fiS" secondAttribute="top" id="ANx-IG-24d"/>
                                     <constraint firstAttribute="height" constant="70" id="Dme-24-Kjj"/>
                                     <constraint firstItem="smP-OA-KVv" firstAttribute="top" secondItem="LoS-ut-fiS" secondAttribute="top" constant="24" id="I3r-Vr-fIP"/>
+                                    <constraint firstAttribute="trailing" secondItem="zFZ-IR-UXk" secondAttribute="trailing" constant="8" id="STy-4x-UwP"/>
                                     <constraint firstItem="smP-OA-KVv" firstAttribute="centerX" secondItem="LoS-ut-fiS" secondAttribute="centerX" constant="7.5" id="XlM-JV-tOw"/>
                                     <constraint firstItem="Jpb-BX-fkG" firstAttribute="leading" secondItem="LoS-ut-fiS" secondAttribute="leading" id="imc-08-ah6"/>
+                                    <constraint firstItem="zFZ-IR-UXk" firstAttribute="top" secondItem="LoS-ut-fiS" secondAttribute="top" constant="13" id="k9M-U5-wOf"/>
                                     <constraint firstItem="DxZ-aW-HmF" firstAttribute="leading" secondItem="LoS-ut-fiS" secondAttribute="leading" constant="11" id="teG-rn-svf"/>
                                     <constraint firstItem="DxZ-aW-HmF" firstAttribute="top" secondItem="LoS-ut-fiS" secondAttribute="top" constant="25" id="vXe-Wa-TxZ"/>
                                 </constraints>

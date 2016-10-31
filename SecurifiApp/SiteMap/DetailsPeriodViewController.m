@@ -16,6 +16,8 @@
 @property (nonatomic) NSArray *suggSearchArr;
 @property (weak, nonatomic) IBOutlet UITableView *detailTable;
 @property (nonatomic, weak) IBOutlet DSLCalendarView *calendarView;
+@property (nonatomic) NSString *value;
+
 
 @end
 
@@ -31,6 +33,8 @@ NSDate *_dateSelected;
     [super viewDidLoad];
     [self addSuggestionSearchObj];
      self.calendarView.delegate = self;
+//    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
+//    [self.calendarView setVisibleMonth:components animated:YES];
     NSLog(@"viewDidLoad");
     [self.detailTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"cell_Identifier"];
     
@@ -70,6 +74,28 @@ NSDate *_dateSelected;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.delegate updateDetailPeriod];
+    switch (indexPath
+            .row) {
+        case 1:
+        {
+            self.value = @"1";
+        }
+            break;
+        case 2:
+        {
+            self.value = @"7";
+        }
+            break;
+        case 3:
+        {
+            self.value = @"30";
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
 }
 -(void)addSuggestionSearchObj{
     NSDictionary *realTime = @{@"hostName":@"  Real Time",
@@ -97,6 +123,8 @@ NSDate *_dateSelected;
 - (void)calendarView:(DSLCalendarView *)calendarView didSelectRange:(DSLCalendarRange *)range {
     if (range != nil) {
         NSLog( @"Selected %ld/%ld - %ld/%ld", (long)range.startDay.day, (long)range.startDay.month, (long)range.endDay.day, (long)range.endDay.month);
+        NSLog(@"day diff %ld",[self daysBetweenDate:range.startDay.date andDate:range.endDay.date]);
+        self.value = [NSString stringWithFormat:@"%ld",[self daysBetweenDate:range.startDay.date andDate:range.endDay.date] + 1];
     }
     else {
         NSLog( @"No selection" );
@@ -142,5 +170,25 @@ NSDate *_dateSelected;
 - (BOOL)day:(NSDateComponents*)day1 isBeforeDay:(NSDateComponents*)day2 {
     return ([day1.date compare:day2.date] == NSOrderedAscending);
 }
-
+- (NSInteger)daysBetweenDate:(NSDate*)fromDateTime andDate:(NSDate*)toDateTime
+{
+    NSDate *fromDate;
+    NSDate *toDate;
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    [calendar rangeOfUnit:NSCalendarUnitDay startDate:&fromDate
+                 interval:NULL forDate:fromDateTime];
+    [calendar rangeOfUnit:NSCalendarUnitDay startDate:&toDate
+                 interval:NULL forDate:toDateTime];
+    
+    NSDateComponents *difference = [calendar components:NSCalendarUnitDay
+                                               fromDate:fromDate toDate:toDate options:0];
+    
+    return [difference day];
+}
+- (IBAction)doneButtonClicked:(id)sender {
+    if(![self.value isEqualToString:@""])
+     [self.navigationController popViewControllerAnimated:YES];
+}
 @end
