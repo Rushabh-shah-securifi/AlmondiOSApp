@@ -427,21 +427,17 @@
     }
     SecurifiToolkit * toolKit = [SecurifiToolkit sharedInstance];
     // make sure cloud connection is set up
-    NSLog(@"i am called");
     [toolKit tearDownLoginSession];
     [KeyChainAccess setSecEmail:email];
     
     HTTPRequest *request = [HTTPRequest new];
     [request sendAsyncHTTPSignUPRequestWithEmail:email AndPassword:password];
-    
 }
 
 - (void)onSignupResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    NSLog(@"onSignupResponseCallback %@ ",data);
-
-    if ([[data valueForKey:@"success"]isEqualToString:@"true"]) {
+    if ([[data valueForKey:@"success"] boolValue] == YES) {
         [self displayScreenToLogin];
     }
     else {
@@ -449,10 +445,8 @@
         if([[data valueForKey:@"reason"] isEqualToString:@"Email Taken"]){
             failureReason = NSLocalizedString(@"An account already exists with this email.", @"An account already exists with this email.");
             [self setFooterForTag:FOOTER_SIGNUP_DIFF_EMAIL];
-
-        }
-        else{
-            failureReason = @"Fail ";
+        }else {
+            failureReason = NSLocalizedString(@"Sorry! Signup was unsuccessful.", @"Sorry! Signup was unsuccessful.");
         }
 //        switch (obj.reasonCode) {
 //            case 1:
@@ -495,36 +489,35 @@
 - (void)onValidateResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-
-    ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
-
-    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
-
-    if (obj.isSuccessful) {
+    if ([[data valueForKey:@"success"] boolValue] == YES) {
         [self displayScreenToLogin];
     }
     else {
-        DLog(@"Reason Code %d", obj.reasonCode);
-
-        NSString *failureReason;
-        switch (obj.reasonCode) {
-            case 1:
-                failureReason = NSLocalizedString(@"The username was not found", @"The username was not found");
-                break;
-            case 2:
-                failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
-                break;
-            case 3:
-            case 5:
-                failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
-                break;
-            case 4:
-                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
-                break;
-            default:
-                break;
+        NSString *failureReason = data[@"reason"];
+        if([[data valueForKey:@"reason"] isEqualToString:@"Already Validated"]){
+            failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
+        }else if([[data valueForKey:@"reason"] isEqualToString:@"EmailServer Down"]|| [[data valueForKey:@"reason"] isEqualToString:@"Database error"]){
+            failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
+        }else if([[data valueForKey:@"reason"] isEqualToString:@"No such user"]){
+            failureReason = NSLocalizedString(@"The username was not found", @"The username was not found");
         }
+//        switch (obj.reasonCode) {
+//            case 1:
+//                failureReason = NSLocalizedString(@"The username was not found", @"The username was not found");
+//                break;
+//            case 2:
+//                failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
+//                break;
+//            case 3:
+//            case 5:
+//                failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
+//                break;
+//            case 4:
+//                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
+//                break;
+//            default:
+//                break;
+//        }
 
         [self setOopsMessage:failureReason];
     }

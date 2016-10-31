@@ -505,7 +505,7 @@
 
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    if ([[data valueForKey:@"success"]isEqualToString:@"1"]) {
+    if ([[data valueForKey:@"success"] boolValue] == YES) {
         [self setHeadline:NSLocalizedString(@"Almost there.", @"Almost there.") subHeadline:NSLocalizedString(@"Password reset link has been sent to your account.", @"Password reset link has been sent to your account.") loginButtonEnabled:NO];
     }
     else {
