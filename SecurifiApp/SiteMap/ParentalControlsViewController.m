@@ -35,6 +35,8 @@
 @property (weak, nonatomic) IBOutlet UISwitch *switchView3;
 @property (weak, nonatomic) IBOutlet UIButton *backGrayButton;
 @property BOOL isPressed;
+@property (weak, nonatomic) IBOutlet UIButton *clrBW;
+@property (weak, nonatomic) IBOutlet UIButton *clrHis;
 
 @property (weak, nonatomic) IBOutlet UILabel *blockClientTxt;
 @property (nonatomic) BOOL isLocal;
@@ -44,6 +46,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *BWDownload;
 @property (weak, nonatomic) IBOutlet UILabel *MbDownTxt;
+@property (weak, nonatomic) IBOutlet UILabel *NosDayLabel;
 
 
 
@@ -61,7 +64,8 @@
     self.client = [Client findClientByID:@(deviceID).stringValue];//dont put in viewDid load
      SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *almond = [toolkit currentAlmond];
-    [self createRequest:@"Bandwidth" value:@"7" amac:almond.almondplusMAC];
+    NSString *todayDate = [CommonMethods getTodayDate];
+    [self createRequest:@"Bandwidth" value:@"7" date:todayDate];
     self.routerMode = toolkit.routerMode;
     
     self.isLocal = [toolkit useLocalNetwork:almond.almondplusMAC];
@@ -90,20 +94,24 @@
         if(self.client.webHistoryEnable == NO){
             self.switchView1.on = NO;
             self.view2.hidden = YES;
+            self.clrHis.hidden = YES;
             self.viewTwoTop.constant = -40;
         }
         else{
             self.switchView1.on = YES;
             self.view2.hidden = NO;
+            self.clrHis.hidden = NO;
             self.viewTwoTop.constant = 1;
         }
         if(self.client.bW_Enable == NO){
             self.switchView3.on = NO;
             self.dataLogView.hidden = YES;
+            self.clrBW.hidden = YES;
         }
         else{
             self.switchView3.on = YES;
             self.dataLogView.hidden = NO;
+            self.clrBW.hidden = NO;
         }
     
     
@@ -128,6 +136,7 @@
             self.blockClientTxt.hidden = NO;
             self.blockClientTxt.text = @"Web history and Data usage are disabled for blocked devices. You can still see records from when the device was last active.";
             self.dataLogView.hidden = YES;
+            self.clrBW.hidden = YES;
             
         }
     }
@@ -140,10 +149,12 @@
             self.blockClientTxt.hidden = NO;
             self.blockClientTxt.text = @"You are in Local connection right now. Web history and data usage require active cloud connection to function.";
             self.dataLogView.hidden = YES;
+            self.clrBW.hidden = YES;
         }
         else{
             self.blockClientTxt.hidden = YES;
             self.dataLogView.hidden = NO;
+            self.clrBW.hidden = NO;
         }
 
     }
@@ -283,6 +294,7 @@
     BOOL state = [actionSwitch isOn];
     if(state == NO){
         self.view2.hidden = YES;
+        self.clrHis.hidden = YES;
         self.viewTwoTop.constant = -40;
         self.client.webHistoryEnable = NO;
          [self saveNewValue:@"NO" forIndex:-23];
@@ -290,6 +302,7 @@
     }
     else{
         self.view2.hidden = NO;
+        self.clrHis.hidden = NO;
         self.viewTwoTop.constant = 1;
         self.client.webHistoryEnable = YES;
         [self saveNewValue:@"YES" forIndex:-23];
@@ -304,12 +317,14 @@
     BOOL state = [actionSwitch isOn];
     if(state == NO){
         self.dataLogView.hidden = YES;
+        self.clrBW.hidden = YES;
         self.client.bW_Enable = NO;
          [self saveNewValue:@"NO" forIndex:-25];
         
     }
     else{
             self.dataLogView.hidden = NO;
+            self.clrBW.hidden = NO;
             self.client.bW_Enable = YES;
             [self saveNewValue:@"YES" forIndex:-25];
             [[Analytics sharedInstance] markALogDataUsage];
@@ -384,12 +399,14 @@
      dispatch_async(dispatch_get_main_queue(), ^{
     if(isOn == NO){
         self.view2.hidden = YES;
+        self.clrHis.hidden = YES;
         self.viewTwoTop.constant = -40;
         self.client.webHistoryEnable = NO;
         
     }
     else{
         self.view2.hidden = NO;
+        self.clrHis.hidden = NO;
         self.viewTwoTop.constant = 1;
         self.client.webHistoryEnable = YES;
         
@@ -400,12 +417,14 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         if(isOn == NO){
             self.dataLogView.hidden = YES;
+            self.clrBW.hidden = YES;
             self.client.bW_Enable = NO;
             
         }
         else{
             self.dataLogView.hidden = NO;
             self.client.bW_Enable = YES;
+            self.clrBW.hidden = NO;
         }
         
     });
@@ -426,14 +445,13 @@
     [self closeMoreView];
 }
 
--(void)createRequest:(NSString *)search value:(NSString*)value amac:(NSString*)amac{
+-(void)createRequest:(NSString *)search value:(NSString*)value date:(NSString *)date{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *almond = [toolkit currentAlmond];
-    amac = almond.almondplusMAC;
-    NSString *todayDate = [CommonMethods getTodayDate];
+   NSString *amac = almond.almondplusMAC;
     NSString *req ;
     NSString *cmac = [CommonMethods hexToString:self.client.deviceMAC];
-    req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@",search,value,todayDate,amac,cmac];
+    req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@",search,value,date,amac,cmac];
     
     [self sendHttpRequest:req];
     
@@ -467,7 +485,10 @@
     //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
 }
 -(void)InsertInDB:(NSDictionary *)dict{
+    if(dict[@"RX"] == NULL || dict[@"TX"] == NULL)
+        return ;
     dispatch_async(dispatch_get_main_queue(), ^() {
+       
         NSArray *downArr = [self readableValueWithBytes:dict[@"RX"]];
         self.BWDownload.text = [downArr objectAtIndex:0];
         self.MbDownTxt.text = [NSString stringWithFormat:@"%@ Download",[downArr objectAtIndex:1]];
@@ -532,7 +553,15 @@
     [self.navigationController pushViewController:newWindow animated:YES];
 }
 
--(void)updateDetailPeriod{
+-(void)updateDetailPeriod:(NSString *)value date:(NSString*)date{
     NSLog(@"updateDetailPeriod");
+    [self createRequest:@"Bandwidth" value:value date:date];
+    self.NosDayLabel.text = [NSString stringWithFormat:@"%@ Days",value];
+}
+- (IBAction)onClrBandWidth:(id)sender {
+    [self createRequest:@"ClearBandwidth" value:@"ClearBandwidth" date:[CommonMethods getTodayDate]];
+}
+- (IBAction)onClrHistory:(id)sender {
+    [self createRequest:@"ClearHistory" value:@"ClearHistory" date:[CommonMethods getTodayDate]];
 }
 @end

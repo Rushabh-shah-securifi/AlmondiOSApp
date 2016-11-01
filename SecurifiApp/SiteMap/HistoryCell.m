@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *webImgYConstrain;
 //@property (weak, nonatomic) IBOutlet UIImageView *checkMarkIcon;
 
+
 @end
 
 @implementation HistoryCell
@@ -35,9 +36,9 @@
     // Configure the view for the selected state
 }
 
--(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem isCategory:(BOOL)isCategory showTime :(BOOL)showTime count:(NSInteger)count{
+-(void)setCell:(NSDictionary*)uri hideItem:(BOOL)hideItem isCategory:(BOOL)isCategory showTime :(BOOL)showTime count:(NSInteger)count hideCheckMarkIMg:(BOOL)hideCheckImg{
     //NSLog(@"uri dict %@",uri);
-    
+    self.checkMarkImg.hidden = hideCheckImg;
         if(isCategory){
             self.catImgXConstrain.constant = -6;
             self.webImg.hidden = YES;

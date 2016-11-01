@@ -157,7 +157,7 @@
     self.reload = YES;
     self.sendReq = NO;
     
-        [self showHudWithTimeoutMsg:@"Loading..." withDelay:1];
+        [self showHudWithTimeoutMsg:@"Loading..." withDelay:2];
     
         NSLog(@"post req = %@",post);
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -320,7 +320,7 @@
         NSArray *browsHist = self.dayArr[indexPath.section];
         if(browsHist.count > indexPath.row){
             if(browsHist[indexPath.row] != NULL)
-            [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO showTime:YES count:indexPath.row+1];
+            [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO showTime:YES count:indexPath.row+1 hideCheckMarkIMg:YES];
         }
     }
     
