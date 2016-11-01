@@ -16,8 +16,9 @@
 #import "Analytics.h"
 #import "CommonMethods.h"
 #import "DetailsPeriodViewController.h"
+#import "BrowsingHistoryDataBase.h"
 
-@interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,NSURLConnectionDelegate,DetailsPeriodViewControllerDelegate>
+@interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,NSURLConnectionDelegate,DetailsPeriodViewControllerDelegate,UIAlertViewDelegate>
 @property (nonatomic) NSMutableArray *parentsControlArr;
 @property (nonatomic) CategoryView *cat_view_more;
 @property (weak, nonatomic) IBOutlet UIView *dataLogView;
@@ -48,6 +49,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *MbDownTxt;
 @property (weak, nonatomic) IBOutlet UILabel *NosDayLabel;
 
+@property (nonatomic) NSString *cmac;
+@property (nonatomic) NSString *amac;
 
 
 @end
@@ -64,6 +67,8 @@
     self.client = [Client findClientByID:@(deviceID).stringValue];//dont put in viewDid load
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *almond = [toolkit currentAlmond];
+    self.amac = almond.almondplusMAC;
+    self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
     NSString *todayDate = [CommonMethods getTodayDate];
     [self createRequest:@"Bandwidth" value:@"7" date:todayDate];
     self.routerMode = toolkit.routerMode;
@@ -289,17 +294,24 @@
 }
 - (IBAction)switch1Action:(id)sender {
     UISwitch *actionSwitch = (UISwitch *)sender;
-    dispatch_async(dispatch_get_main_queue(), ^{
         BOOL state = [actionSwitch isOn];
         if(state == NO){
-            self.view2.hidden = YES;
-            self.clrHis.hidden = YES;
-            self.viewTwoTop.constant = -40;
-            self.client.webHistoryEnable = NO;
-            [self saveNewValue:@"NO" forIndex:-23];
+            
+            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                             message:@"Disabling Web history will delete all your previous history records. Are you sure,you want to disable web history?"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Cancel"
+                                                   otherButtonTitles:@"Done",nil];
+            [alert setDelegate:self];
+            alert.tag = 1;
+            alert.alertViewStyle = UIAlertViewStyleDefault;
+            [alert show];
+            
+          
             
         }
         else{
+            
             self.view2.hidden = NO;
             self.clrHis.hidden = NO;
             self.viewTwoTop.constant = 1;
@@ -307,20 +319,23 @@
             [self saveNewValue:@"YES" forIndex:-23];
             [[Analytics sharedInstance] markLogWebHistory];
             
+
         }
-    });
 }
 - (IBAction)switch3Action:(id)sender {
     UISwitch *actionSwitch = (UISwitch *)sender;
-    dispatch_async(dispatch_get_main_queue(), ^{
         BOOL state = [actionSwitch isOn];
         if(state == NO){
-            self.dataLogView.hidden = YES;
-            self.clrBW.hidden = YES;
-            self.client.bW_Enable = NO;
-            [self saveNewValue:@"NO" forIndex:-25];
-            
-        }
+            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                             message:@"Disabling Web history will delete all your previous history records. Are you sure,you want to disable web history?"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Cancel"
+                                                   otherButtonTitles:@"Done",nil];
+            [alert setDelegate:self];
+            alert.tag = 2;
+            alert.alertViewStyle = UIAlertViewStyleDefault;
+            [alert show];
+            }
         else{
             self.dataLogView.hidden = NO;
             self.clrBW.hidden = NO;
@@ -328,10 +343,35 @@
             [self saveNewValue:@"YES" forIndex:-25];
             [[Analytics sharedInstance] markALogDataUsage];
         }
-        
-    });
 }
-
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == [alertView cancelButtonIndex]){
+         if(alertView.tag == 1){
+             self.switchView1.on = YES;
+         }
+         else if(alertView.tag == 2){
+             self.switchView3.on = YES;
+         }
+    }
+    else{
+        if(alertView.tag == 1){
+            self.view2.hidden = YES;
+            self.clrHis.hidden = YES;
+            self.viewTwoTop.constant = -40;
+            self.client.webHistoryEnable = NO;
+            [self saveNewValue:@"NO" forIndex:-23];
+            [self createRequest:@"ClearHistory" value:@"ClearHistory" date:[CommonMethods getTodayDate]];
+            
+        }
+        else if(alertView.tag == 2){
+            self.dataLogView.hidden = YES;
+            self.clrBW.hidden = YES;
+            self.client.bW_Enable = NO;
+            [self saveNewValue:@"NO" forIndex:-25];
+            [self createRequest:@"ClearBandwidth" value:@"ClearBandwidth" date:[CommonMethods getTodayDate]];
+        }
+        }
+}
 - (BrowsingHistoryViewController *)classExistsInNavigationController:(Class)class
 {
     for (UIViewController *controller in self.navigationController.viewControllers)
@@ -445,12 +485,8 @@
 }
 
 -(void)createRequest:(NSString *)search value:(NSString*)value date:(NSString *)date{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
-    NSString *amac = almond.almondplusMAC;
     NSString *req ;
-    NSString *cmac = [CommonMethods hexToString:self.client.deviceMAC];
-    req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@",search,value,date,amac,cmac];
+    req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@",search,value,date,_amac,_cmac];
     
     [self sendHttpRequest:req];
     
@@ -476,6 +512,14 @@
             return ;
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         NSLog(@"dict BW respose %@",dict);
+        if([dict[@"search"] isEqualToString:@"ClearHistory"]){
+            NSLog(@"clear history success");
+            [BrowsingHistoryDataBase deleteDB:self.amac clientMac:self.cmac];
+            return;
+        }
+        if([dict[@"search"] isEqualToString:@"ClearBandwidth"]){
+            return;
+        }
         
         [self InsertInDB:dict[@"Data"]];
     });
@@ -556,11 +600,5 @@
     NSLog(@"updateDetailPeriod");
     [self createRequest:@"Bandwidth" value:value date:date];
     self.NosDayLabel.text = [NSString stringWithFormat:@"%@ Days",value];
-}
-- (IBAction)onClrBandWidth:(id)sender {
-    [self createRequest:@"ClearBandwidth" value:@"ClearBandwidth" date:[CommonMethods getTodayDate]];
-}
-- (IBAction)onClrHistory:(id)sender {
-    [self createRequest:@"ClearHistory" value:@"ClearHistory" date:[CommonMethods getTodayDate]];
 }
 @end
