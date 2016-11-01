@@ -20,7 +20,7 @@
 
 - (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString*)ssid;
 
-- (void)onShareBtnTapDelegate;
+- (void)onShareBtnTapDelegate:(SFIWirelessSetting *)settings;
 
 // NO == block device
 - (void)onEnableWirelessAccessForDevice:(NSString*)deviceMAC allow:(BOOL)isAllowed;

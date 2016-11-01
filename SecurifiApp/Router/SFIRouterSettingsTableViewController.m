@@ -19,6 +19,7 @@
 #import "RouterPayload.h"
 #import "UIViewController+Securifi.h"
 #import "CommonMethods.h"
+#import "NSData+Securifi.h"
 
 @interface SFIRouterSettingsTableViewController () <SFIRouterTableViewActions, TableHeaderViewDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -61,6 +62,7 @@ int mii;
     [self initializeNotifications];
     mii = arc4random()%10000;
 }
+
 - (void)onDone {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -177,15 +179,20 @@ int mii;
 }
 
 - (void)processRouterCommandResponse:(SFIGenericRouterCommand *)genericRouterCommand {
+    NSLog(@"generic router command: %@", genericRouterCommand);
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self || self.disposed) {
             return;
         }
-        if(!genericRouterCommand.commandSuccess){
+        if(genericRouterCommand.commandSuccess == NO){
             if([genericRouterCommand.responseMessage.lowercaseString isEqualToString:@"slave in offline"]){
                 [self showAlert:@"" msg:@"Unable to change settings in one of the Almond.\nWould you like to continue?" cancel:@"No" other:@"Yes" tag:1];
+                [self showToast:NSLocalizedString(@"ParseRouterCommand Sorry! unable to update.", @"Sorry! unable to update.")];
             }
-            [self showToast:NSLocalizedString(@"ParseRouterCommand Sorry! unable to update.", @"Sorry! unable to update.")];
+            if([genericRouterCommand.responseMessage.lowercaseString isEqualToString:@"ssid  is same"]){//note the extra space before "is"
+                //enable is same - ssid is same
+                [self shareWiFi:self.currentSetting.ssid password:[self getPassword:genericRouterCommand]];
+            }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
                 [self.HUD hide:YES];
@@ -209,6 +216,40 @@ int mii;
 
         [self.HUD hide:YES];
     });
+}
+
+- (NSString *)getPassword:(SFIGenericRouterCommand *)genericCmd{
+    NSString *encryptedPass = @"";
+    for(SFIWirelessSetting *setting in genericCmd.command){
+        if([setting.type isEqualToString:self.currentSetting.type]){
+            encryptedPass = setting.password;
+        }
+    }
+    
+    NSData *payload = [[NSData alloc] initWithBase64EncodedString:encryptedPass options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    return [payload securifiDecryptPasswordForAlmond:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC almondUptime:genericCmd.uptime];
+}
+
+- (void)shareWiFi:(NSString *)ssid password:(NSString *)password{
+    NSLog(@"ssid: %@, password: %@", ssid, password);
+    NSString *textToShare = [NSString stringWithFormat:@"Wi-Fi: %@ \nPassword: %@", ssid, password];
+    NSArray *objectsToShare = @[textToShare];
+    
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
+    
+    NSArray *excludeActivities = @[UIActivityTypeAirDrop,
+                                   UIActivityTypePrint,
+                                   UIActivityTypeAssignToContact,
+                                   UIActivityTypeSaveToCameraRoll,
+                                   UIActivityTypeAddToReadingList,
+                                   UIActivityTypePostToFlickr,
+                                   UIActivityTypePostToVimeo];
+    
+    activityVC.excludedActivityTypes = excludeActivities;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:activityVC animated:YES completion:nil];
+    });
+    
 }
 
 -(void)processSettings:(NSArray*)newSetting{
@@ -249,27 +290,9 @@ int mii;
     [self onUpdateWirelessSettings:copy isTypeEnable:YES];
 }
 
-- (void)onShareBtnTapDelegate{
+- (void)onShareBtnTapDelegate:(SFIWirelessSetting *)settings{
     NSLog(@"onShareBtnTapDelegate");
-    
-    NSString *textToShare = @"Look at this awesome website for aspiring iOS Developers!";
-    NSURL *myWebsite = [NSURL URLWithString:@"http://www.codingexplorer.com/"];
-    
-    NSArray *objectsToShare = @[textToShare, myWebsite];
-    
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
-    
-    NSArray *excludeActivities = @[UIActivityTypeAirDrop,
-                                   UIActivityTypePrint,
-                                   UIActivityTypeAssignToContact,
-                                   UIActivityTypeSaveToCameraRoll,
-                                   UIActivityTypeAddToReadingList,
-                                   UIActivityTypePostToFlickr,
-                                   UIActivityTypePostToVimeo];
-    
-    activityVC.excludedActivityTypes = excludeActivities;
-    
-    [self presentViewController:activityVC animated:YES completion:nil];
+    [self onUpdateWirelessSettings:settings isTypeEnable:NO];
 }
 
 - (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString *)ssid {
@@ -282,14 +305,13 @@ int mii;
 }
 
 - (void)onUpdateWirelessSettings:(SFIWirelessSetting *)copy isTypeEnable:(BOOL)isTypeEnable{
-    NSLog(@"onUpdateWirelessSettings*******");
+    NSLog(@"******onUpdateWirelessSettings*******");
     self.currentSetting = copy;
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.disposed) {
             return;
         }
         [self showUpdatingSettingsHUD];
-//        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.almondMac wirelessSettings:copy];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         [RouterPayload setWirelessSettings:mii wirelessSettings:copy mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:isTypeEnable forceUpdate:@"false"];
         [self.HUD hide:YES afterDelay:15];
@@ -332,7 +354,6 @@ int mii;
         
     }else{
         [self showUpdatingSettingsHUD];
-        //        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.almondMac wirelessSettings:copy];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         [RouterPayload setWirelessSettings:mii wirelessSettings:self.currentSetting mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:NO forceUpdate:@"true"];
         [self.HUD hide:YES afterDelay:15];

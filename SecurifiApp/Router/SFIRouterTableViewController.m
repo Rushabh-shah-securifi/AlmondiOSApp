@@ -308,7 +308,11 @@ int mii;
 }
 
 -(BOOL)isAL3{
-    return [self.routerSummary.firmwareVersion hasPrefix:@"AL3-"];
+//    possible values of "Router mode " in Router summary
+//    master/WirelessSlave/WiredSlave/re/ap/router/wwan
+    NSString *mode = _routerSummary.routerMode.lowercaseString;
+    BOOL isRouterOrMaster = [mode isEqualToString:@"router" ] || [mode isEqualToString:@"master"];
+    return [_routerSummary.firmwareVersion hasPrefix:@"AL3-"] && isRouterOrMaster;
 }
 
 -(BOOL)isDisconnected{

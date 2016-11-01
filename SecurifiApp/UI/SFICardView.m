@@ -339,8 +339,10 @@
     UILabel *label = [self makeTitleLabel:title];
     [self addSubview:label];
 
-    UIButton *button = [self makeShareLinkButton:target action:shareAction];
-    [self addSubview:button];
+    if(isSwitchOn){
+        UIButton *button = [self makeShareLinkButton:target action:shareAction];
+        [self addSubview:button];
+    }
     
     UISwitch *ctrl = [self makeOnOffSwitch:target action:action on:isSwitchOn];
     [self addSubview:ctrl];
@@ -354,17 +356,18 @@
     CGRect frame = CGRectMake(width - 160, self.baseYCoordinate, 80, 31);
     
     UIButton *btn = [[UIButton alloc] initWithFrame:frame];
-    btn.backgroundColor = [UIColor grayColor];
+    btn.layer.cornerRadius = 5.0;
+//    btn.backgroundColor = [UIColor grayColor];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     
-    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 25, 25)];
+    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 0, 25, 25)];
     imgView.contentMode = UIViewContentModeScaleAspectFit;
     imgView.image = [CommonMethods imageNamed:@"share" withColor:[UIColor whiteColor]];
     imgView.center = CGPointMake(CGRectGetMidX(imgView.bounds), CGRectGetMidY(btn.bounds));
     [btn addSubview:imgView];
     
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, 50, 30)];
-    [CommonMethods setLableProperties:label text:@"Share" textColor:[UIColor whiteColor] fontName:@"Avenir-Roman" fontSize:16 alignment:NSTextAlignmentCenter];
+    [CommonMethods setLableProperties:label text:@"Share" textColor:[UIColor whiteColor] fontName:@"Avenir-Bold" fontSize:18 alignment:NSTextAlignmentCenter];
     [btn addSubview:label];
     
     return btn;
