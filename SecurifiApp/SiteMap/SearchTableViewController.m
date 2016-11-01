@@ -257,11 +257,11 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     }
     if(tableView == self.tableView){
         if(indexPath.section == 0)
-            [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row] hideItem:YES isCategory:NO showTime:NO count:indexPath.row+1];
+            [cell setCell:[self.recentSearchObj objectAtIndex:indexPath.row] hideItem:YES isCategory:NO showTime:NO count:indexPath.row+1 hideCheckMarkIMg:YES];
         else if(indexPath.section == 1)
-            [cell setCell:[self.suggSearchArr objectAtIndex:indexPath.row]hideItem:YES isCategory:NO showTime:NO count:indexPath.row+1 ];
+            [cell setCell:[self.suggSearchArr objectAtIndex:indexPath.row]hideItem:YES isCategory:NO showTime:NO count:indexPath.row+1 hideCheckMarkIMg:YES];
         else if(indexPath.section == 2)
-            [cell setCell:[self.categorySearch objectAtIndex:indexPath.row]hideItem:YES isCategory:YES showTime:NO count:indexPath.row+1];
+            [cell setCell:[self.categorySearch objectAtIndex:indexPath.row]hideItem:YES isCategory:YES showTime:NO count:indexPath.row+1 hideCheckMarkIMg:YES];
         
     }
     else {
@@ -269,7 +269,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
             self.NoresultFound.hidden = YES;
             NSArray *browsHist = self.dayArr[indexPath.section];
             if(browsHist.count>indexPath.row)
-                [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO showTime:YES count:indexPath.row+1];
+                [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO showTime:YES count:indexPath.row+1 hideCheckMarkIMg:YES];
         }
     }
     

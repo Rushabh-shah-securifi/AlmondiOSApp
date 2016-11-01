@@ -368,6 +368,7 @@
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
             if (![[SecurifiToolkit sharedInstance] isNetworkOnline]) {
                 //[self tryPresentLogonScreen];
+
             }
         }];
     });

@@ -428,11 +428,12 @@
 		CE57A3461D7008C800F14B25 /* UrlImgDict.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57A3451D7008C800F14B25 /* UrlImgDict.m */; };
 		CE57A3491D70591A00F14B25 /* ParentalControlsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57A3481D70591A00F14B25 /* ParentalControlsViewController.m */; };
 		CE57A34C1D705B5300F14B25 /* ParentControlCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57A34B1D705B5300F14B25 /* ParentControlCell.m */; };
-		CE57E52F1D1BB82800493460 /* SiteMapStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE57E52D1D1BB82800493460 /* SiteMapStoryBoard.storyboard */; };
-		CE57E5321D1BBCC400493460 /* HistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE57E5301D1BBCC400493460 /* HistoryCell.xib */; };
 		CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58276B1D10127400843B4C /* WeatherRuleButton.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
 		CE65C4911D1A67B200C2E1C0 /* UILabel+ActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = CE65C4901D1A67B200C2E1C0 /* UILabel+ActionSheet.m */; };
+		CE7821681DC86E49006B959A /* SiteMapStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE7821661DC86E49006B959A /* SiteMapStoryBoard.storyboard */; };
+		CE78216B1DC86E82006B959A /* HistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE7821691DC86E82006B959A /* HistoryCell.xib */; };
+		CE78216D1DC8715B006B959A /* Almond-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE78216C1DC8715B006B959A /* Almond-Info.plist */; };
 		CE7E89B61DC356CB00B0C3C6 /* DetailsPeriodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7E89B51DC356CB00B0C3C6 /* DetailsPeriodViewController.m */; };
 		CE7E89C81DC357DD00B0C3C6 /* DSLCalendarDayCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7E89BB1DC357DD00B0C3C6 /* DSLCalendarDayCalloutView.m */; };
 		CE7E89C91DC357DE00B0C3C6 /* DSLCalendarDayCalloutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE7E89BC1DC357DD00B0C3C6 /* DSLCalendarDayCalloutView.xib */; };
@@ -756,7 +757,6 @@
 		1C7E7D511A41A0990026F0BA /* UIViewController+Securifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Securifi.h"; sourceTree = "<group>"; };
 		1C7E7D521A41A0990026F0BA /* UIViewController+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Securifi.m"; sourceTree = "<group>"; };
 		1C7E7DE41A41A0B30026F0BA /* Almond-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Almond-Images.xcassets"; sourceTree = "<group>"; };
-		1C7E7DE51A41A0B30026F0BA /* Almond-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Almond-Info.plist"; sourceTree = "<group>"; };
 		1C7E7DE61A41A0B30026F0BA /* Almond-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Almond-Prefix.pch"; sourceTree = "<group>"; };
 		1C7E7DE91A41A0B30026F0BA /* cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = cert.der; sourceTree = "<group>"; };
 		1C7E7DF91A41A0B30026F0BA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -1114,14 +1114,15 @@
 		CE57A3481D70591A00F14B25 /* ParentalControlsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentalControlsViewController.m; sourceTree = "<group>"; };
 		CE57A34A1D705B5300F14B25 /* ParentControlCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentControlCell.h; sourceTree = "<group>"; };
 		CE57A34B1D705B5300F14B25 /* ParentControlCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentControlCell.m; sourceTree = "<group>"; };
-		CE57E52E1D1BB82800493460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SiteMapStoryBoard.storyboard; sourceTree = "<group>"; };
-		CE57E5311D1BBCC400493460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = HistoryCell.xib; sourceTree = "<group>"; };
 		CE58276A1D10127400843B4C /* WeatherRuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherRuleButton.h; sourceTree = "<group>"; };
 		CE58276B1D10127400843B4C /* WeatherRuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherRuleButton.m; sourceTree = "<group>"; };
 		CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPickerIndicatorView1.h; sourceTree = "<group>"; };
 		CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPickerIndicatorView1.m; sourceTree = "<group>"; };
 		CE65C48F1D1A67B200C2E1C0 /* UILabel+ActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+ActionSheet.h"; sourceTree = "<group>"; };
 		CE65C4901D1A67B200C2E1C0 /* UILabel+ActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+ActionSheet.m"; sourceTree = "<group>"; };
+		CE7821671DC86E49006B959A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SiteMapStoryBoard.storyboard; sourceTree = "<group>"; };
+		CE78216A1DC86E82006B959A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = HistoryCell.xib; sourceTree = "<group>"; };
+		CE78216C1DC8715B006B959A /* Almond-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Almond-Info.plist"; sourceTree = "<group>"; };
 		CE7E89B41DC356CB00B0C3C6 /* DetailsPeriodViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsPeriodViewController.h; sourceTree = "<group>"; };
 		CE7E89B51DC356CB00B0C3C6 /* DetailsPeriodViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsPeriodViewController.m; sourceTree = "<group>"; };
 		CE7E89BA1DC357DD00B0C3C6 /* DSLCalendarDayCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSLCalendarDayCalloutView.h; path = DSLCalendar/DSLCalendarView/DSLCalendarDayCalloutView.h; sourceTree = "<group>"; };
@@ -1744,6 +1745,7 @@
 			isa = PBXGroup;
 			children = (
 				F43814941D993B2800D5C762 /* Almond.entitlements */,
+				CE78216C1DC8715B006B959A /* Almond-Info.plist */,
 				A58DB4581BB3CD5200717C02 /* zh-Hans.lproj */,
 				A58DB43C1BB3CD3F00717C02 /* ja.lproj */,
 				A58DB4041BB2CD7D00717C02 /* de.lproj */,
@@ -1755,7 +1757,6 @@
 				A58DB2CF1BB16B9F00717C02 /* tr.lproj */,
 				A58DB24E1BB168C400717C02 /* nl.lproj */,
 				1C7E7DE41A41A0B30026F0BA /* Almond-Images.xcassets */,
-				1C7E7DE51A41A0B30026F0BA /* Almond-Info.plist */,
 				1C7E7DE61A41A0B30026F0BA /* Almond-Prefix.pch */,
 				1C7E7DE71A41A0B30026F0BA /* certs */,
 				1C7E7E071A41A0D70026F0BA /* en.lproj */,
@@ -1799,7 +1800,7 @@
 				846414CE1B736B7F008AB07F /* Fonts */,
 				F4D93ACF1D38DDFE00D55BD6 /* HelpScreen.xib */,
 				F4D93ADB1D390B4B00D55BD6 /* HelpScreenStoryboard.storyboard */,
-				CE57E5301D1BBCC400493460 /* HistoryCell.xib */,
+				CE7821691DC86E82006B959A /* HistoryCell.xib */,
 				F4B875611D53886700DCF76F /* Login_iPhone.storyboard */,
 				F4B875631D53886700DCF76F /* MainDashboard.storyboard */,
 				1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */,
@@ -1810,7 +1811,7 @@
 				F4B875651D53886700DCF76F /* Rules.storyboard */,
 				F4B875671D53886700DCF76F /* Scenes_Iphone.storyboard */,
 				F4B875691D53886700DCF76F /* SensorStoryBoard.storyboard */,
-				CE57E52D1D1BB82800493460 /* SiteMapStoryBoard.storyboard */,
+				CE7821661DC86E49006B959A /* SiteMapStoryBoard.storyboard */,
 			);
 			path = Base.lproj;
 			sourceTree = "<group>";
@@ -2888,7 +2889,6 @@
 				A58DB46B1BB3CD5200717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				F4B8756F1D53886700DCF76F /* Rules.storyboard in Resources */,
 				F4B8754F1D5382FF00DCF76F /* mesh.xib in Resources */,
-				CE57E5321D1BBCC400493460 /* HistoryCell.xib in Resources */,
 				F4D633F01DC217EE000BF076 /* h_hue_bulbs_webui.pdf in Resources */,
 				A58DB32F1BB16EAF00717C02 /* InfoPlist.strings in Resources */,
 				CE7E8A421DC368D100B0C3C6 /* DSLCalendarDaySelection-right@2x.png in Resources */,
@@ -2937,6 +2937,7 @@
 				A58DB3321BB16EAF00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				F4D633F51DC217EE000BF076 /* h_motion_sensor_image.pdf in Resources */,
 				846414DF1B736B80008AB07F /* AvenirLTStd-Heavy.otf in Resources */,
+				CE7821681DC86E49006B959A /* SiteMapStoryBoard.storyboard in Resources */,
 				F4D633E61DC217EE000BF076 /* h_adding_hue_bridge.pdf in Resources */,
 				F4B875731D53886700DCF76F /* SensorStoryBoard.storyboard in Resources */,
 				A58DB2EE1BB16B9F00717C02 /* InfoPlist.strings in Resources */,
@@ -3035,9 +3036,10 @@
 				A58DB2EB1BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3331BB16EAF00717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3161BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
+				CE78216D1DC8715B006B959A /* Almond-Info.plist in Resources */,
 				F4B8756D1D53886700DCF76F /* MainDashboard.storyboard in Resources */,
+				CE78216B1DC86E82006B959A /* HistoryCell.xib in Resources */,
 				A58DB4501BB3CD3F00717C02 /* Almond-Localizable.strings in Resources */,
-				CE57E52F1D1BB82800493460 /* SiteMapStoryBoard.storyboard in Resources */,
 				CE7E8A391DC368D100B0C3C6 /* DSLCalendar-previousMonth.png in Resources */,
 				F4B875711D53886700DCF76F /* Scenes_Iphone.storyboard in Resources */,
 				A58DB30D1BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
@@ -5143,18 +5145,18 @@
 			name = termsofuse.html;
 			sourceTree = "<group>";
 		};
-		CE57E52D1D1BB82800493460 /* SiteMapStoryBoard.storyboard */ = {
+		CE7821661DC86E49006B959A /* SiteMapStoryBoard.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				CE57E52E1D1BB82800493460 /* Base */,
+				CE7821671DC86E49006B959A /* Base */,
 			);
 			name = SiteMapStoryBoard.storyboard;
 			sourceTree = "<group>";
 		};
-		CE57E5301D1BBCC400493460 /* HistoryCell.xib */ = {
+		CE7821691DC86E82006B959A /* HistoryCell.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				CE57E5311D1BBCC400493460 /* Base */,
+				CE78216A1DC86E82006B959A /* Base */,
 			);
 			name = HistoryCell.xib;
 			sourceTree = "<group>";

@@ -652,7 +652,8 @@
         NSString *reason = payload[REASON];
         if([reason.lowercaseString hasPrefix:@"unplug all"]){
             if(self.wirelessBtn.selected){
-                msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
+            msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
+
                 //            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
             }
             else{
