@@ -115,15 +115,15 @@
                    name:kSFIAlmondModeDidChange
                  object:nil];
     
-//    [center addObserver:self
-//               selector:@selector(onNetworkDownNotifier:)
-//                   name:NETWORK_DOWN_NOTIFIER
-//                 object:nil];
+    //    [center addObserver:self
+    //               selector:@selector(onNetworkDownNotifier:)
+    //                   name:NETWORK_DOWN_NOTIFIER
+    //                 object:nil];
     
-//    [center addObserver:self
-//               selector:@selector(onNetworkConnectingNotifier:)
-//                   name:NETWORK_CONNECTING_NOTIFIER
-//                 object:nil];
+    //    [center addObserver:self
+    //               selector:@selector(onNetworkConnectingNotifier:)
+    //                   name:NETWORK_CONNECTING_NOTIFIER
+    //                 object:nil];
     
     [center addObserver:self
                selector:@selector(onConnectionStatusChanged:)
@@ -135,15 +135,15 @@
                    name:kSFIDidChangeAlmondConnectionMode
                  object:nil];
     
-//    [center addObserver:self
-//               selector:@selector(onNetworkUpNotifier:)
-//                   name:NETWORK_UP_NOTIFIER
-//                 object:nil];
-//    
-//    [center addObserver:self
-//               selector:@selector(onReachabilityDidChange:)
-//                   name:kSFIReachabilityChangedNotification
-//                 object:nil];
+    //    [center addObserver:self
+    //               selector:@selector(onNetworkUpNotifier:)
+    //                   name:NETWORK_UP_NOTIFIER
+    //                 object:nil];
+    //
+    //    [center addObserver:self
+    //               selector:@selector(onReachabilityDidChange:)
+    //                   name:kSFIReachabilityChangedNotification
+    //                 object:nil];
     
     [center addObserver:self
                selector:@selector(onNotificationCountChanged:)
@@ -395,9 +395,9 @@
         [self showHUD:@"Connecting..."];
         [self.HUD hide:YES afterDelay:5]; // in case the request times out
         
-//        [toolkit.devices removeAllObjects];
-//        [toolkit.clients removeAllObjects];
-//        [toolkit.scenesArray removeAllObjects];
+        //        [toolkit.devices removeAllObjects];
+        //        [toolkit.clients removeAllObjects];
+        //        [toolkit.scenesArray removeAllObjects];
         
         [self.tableView reloadData];
     });
@@ -527,12 +527,17 @@
         NSLog(@"onNetworkConnectingNotifier");
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self markNetworkStatusIcon];
+            [self showConnectingHUD];
         });
         NSLog(@"dashboardconnection status is connecting to network");
-    }else if(statusIntValue == (int)(ConnectionStatusType*)CONNECTED_TO_NETWORK){
+    }else if(statusIntValue == (int)(ConnectionStatusType*)AUTHENTICATED){
         NSLog(@"onNetworkUpNotifier");
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self markNetworkStatusIcon];
+            
+            //        [self.tableView reloadData];
+            [self.HUD hide:YES]; // make sure it is hidden
+            
         });
         NSLog(@"dashboardconnection status is connected to network");
     }
@@ -779,6 +784,10 @@
     _isHudHidden = NO;
     self.HUD.labelText = text;
     [self.HUD show:YES];
+}
+
+- (void)showConnectingHUD {
+    [self showHUD:@"Connecting, Please wait..."];
 }
 
 - (void)showLoadingRouterDataHUD {

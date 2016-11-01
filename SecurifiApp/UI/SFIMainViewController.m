@@ -20,6 +20,7 @@
 #import "UIApplication+SecurifiNotifications.h"
 #import "SFITabBarController.h"
 #import "KeyChainAccess.h"
+#import "ConnectionStatus.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
@@ -87,6 +88,10 @@
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onReachabilityDidChange:) name:kSFIReachabilityChangedNotification object:nil];
+    [center addObserver:self
+               selector:@selector(onConnectionStatusChanged:)
+                   name:CONNECTION_STATUS_CHANGE_NOTIFIER
+                 object:nil];
     [center addObserver:self selector:@selector(onNetworkUpNotifier:) name:NETWORK_UP_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onDidCompleteLogin:) name:kSFIDidCompleteLoginNotification object:nil];
     [center addObserver:self selector:@selector(onLogoutResponse:) name:kSFIDidLogoutNotification object:nil];
@@ -113,6 +118,17 @@
     [self conditionalTryConnectOrLogon:YES];
 }
 
+-(void)onConnectionStatusChanged:(id)sender {
+    NSNumber* status = [sender object];
+    int statusIntValue = [status intValue];
+    if(statusIntValue == (int)(ConnectionStatusType*)AUTHENTICATED){
+        NSLog(@"onConnectionStatusChanged");
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.HUD hide:YES]; // make sure it is hidden
+        });
+        NSLog(@"MainViewController status is connected to network");
+    }
+}
 #pragma mark - Connection Management
 
 - (void)conditionalTryConnectOrLogon:(BOOL)onViewAppearing {
@@ -131,10 +147,10 @@
     }
     
     // Try to connect iff we are the top-level presenting view and network is down
-        if (self.presentedViewController != nil) {
-            NSLog(@"presented view controller. returning");
-            return;
-        }
+    if (self.presentedViewController != nil) {
+        NSLog(@"presented view controller. returning");
+        return;
+    }
     
     if (!supportsLocalConnections && ![toolkit isCloudReachable]) {
         // No network route to cloud. Nothing to do.
@@ -368,7 +384,7 @@
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
             if (![[SecurifiToolkit sharedInstance] isNetworkOnline]) {
                 //[self tryPresentLogonScreen];
-
+                
             }
         }];
     });
