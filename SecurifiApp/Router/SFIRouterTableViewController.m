@@ -317,7 +317,8 @@ int mii;
 
 -(BOOL)isDisconnected{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    return [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]] == SFIAlmondConnectionStatus_disconnected;
+    ConnectionStatusType connectionStat = [ConnectionStatus getConnectionStatus];
+    return [toolkit connectionStatusFromNetworkState:connectionStat] == SFIAlmondConnectionStatus_disconnected;
 }
 
 -(int)getSettingsRowHeight{
@@ -924,7 +925,9 @@ int mii;
 
              }else{
                  MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupAdding" isStatView:NO];
-                 [self presentViewController:ctrl animated:YES completion:nil];
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [self presentViewController:ctrl animated:YES completion:nil];
+                 });
              }
          }
      }
@@ -993,7 +996,9 @@ int mii;
 
 -(void)presentController:(AlmondStatus *)statObj ctrl:(MeshSetupViewController *)ctrl{
     ctrl.almondStatObj = statObj;
-    [self presentViewController:ctrl animated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:ctrl animated:YES completion:nil];
+    });
 }
 
 -(void)onAddAlmondTapDelegate{

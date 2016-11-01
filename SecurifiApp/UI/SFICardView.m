@@ -355,19 +355,30 @@
     CGFloat width = CGRectGetWidth(self.frame);
     CGRect frame = CGRectMake(width - 160, self.baseYCoordinate, 80, 31);
     
+    //button
     UIButton *btn = [[UIButton alloc] initWithFrame:frame];
     btn.layer.cornerRadius = 5.0;
 //    btn.backgroundColor = [UIColor grayColor];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     
-    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 0, 25, 25)];
+    //image
+    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 0, 20, 20)];
     imgView.contentMode = UIViewContentModeScaleAspectFit;
-    imgView.image = [CommonMethods imageNamed:@"share" withColor:[UIColor whiteColor]];
+    
+    UIImage *image = [UIImage imageNamed:@"share"];
+    imgView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [imgView setTintColor:[UIColor whiteColor]];
+    
     imgView.center = CGPointMake(CGRectGetMidX(imgView.bounds), CGRectGetMidY(btn.bounds));
     [btn addSubview:imgView];
     
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, 50, 30)];
-    [CommonMethods setLableProperties:label text:@"Share" textColor:[UIColor whiteColor] fontName:@"Avenir-Bold" fontSize:18 alignment:NSTextAlignmentCenter];
+    //label
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, 50, 25)];
+    [CommonMethods setLableProperties:label text:@"Share" textColor:[UIColor whiteColor] fontName:@"AvenirLTStd-Bold" fontSize:20 alignment:NSTextAlignmentCenter];
+    label.center = CGPointMake(CGRectGetMidX(label.frame), CGRectGetMidY(btn.bounds));
+//    label.backgroundColor = [UIColor orangeColor];
+    
+    [btn addSubview:imgView];
     [btn addSubview:label];
     
     return btn;
