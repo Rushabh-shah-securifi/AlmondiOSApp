@@ -527,15 +527,12 @@
         NSLog(@"onNetworkConnectingNotifier");
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self markNetworkStatusIcon];
-            [self showConnectingHUD];
         });
         NSLog(@"dashboardconnection status is connecting to network");
     }else if(statusIntValue == (int)(ConnectionStatusType*)CONNECTED_TO_NETWORK){
         NSLog(@"onNetworkUpNotifier");
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self markNetworkStatusIcon];
-            //        [self.tableView reloadData];
-            //        [self.HUD hide:YES]; // make sure it is hidden
         });
         NSLog(@"dashboardconnection status is connected to network");
     }
@@ -567,8 +564,8 @@
     NSString *const almondMac = self.almondMac;
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    enum SFIAlmondConnectionMode connectionMode = [toolkit currentConnectionMode];
-    enum SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
+    SFIAlmondConnectionMode connectionMode = [toolkit currentConnectionMode];
+    SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
     
     switch (status) {
         case SFIAlmondConnectionStatus_disconnected: {
@@ -786,10 +783,6 @@
 
 - (void)showLoadingRouterDataHUD {
     [self showHUD:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
-}
-
-- (void)showConnectingHUD {
-    [self showHUD:@"Connecting, Please wait..."];
 }
 
 - (void)showLoadingSensorDataHUD {
