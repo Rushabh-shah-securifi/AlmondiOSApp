@@ -15,7 +15,7 @@
     NSString *name = [SecurifiToolkit sharedInstance].currentAlmond.almondplusName;
     NSDictionary *ssid = [self getSSIDs:routerSummary];
     AlmondStatus *almondStat = [AlmondStatus new];
-    [self getStatus:almondStat name:name location:name connetedVia:@"Directly" interface:@"Wired" signalStrength:@"" ssid1:ssid[@"2G"] ssid2:ssid[@"5G"] internetStat:YES isMaster:YES active:YES];
+    [self getStatus:almondStat name:name location:name connetedVia:@"Directly" interface:@"Wired" signalStrength:@"" ssid1:ssid[@"2G"] ssid2:ssid[@"5G"] internetStat:YES isMaster:YES active:YES hop:0];
     return almondStat;
 }
 
@@ -28,11 +28,12 @@
                location:payload[NAME]
             connetedVia:payload[CONNECTED_VIA]?:@"***"
               interface:payload[INTERFACE]
-         signalStrength:payload[SIGNAL_STRENGTH]
+         signalStrength:[self hasSignalStrength:payload[SIGNAL_STRENGTH]]?payload[SIGNAL_STRENGTH]: SLAVE_OFFLINE
                   ssid1:ssid[@"2G"] ssid2:ssid[@"5G"]
            internetStat:[payload[@"InternetStatus"] boolValue]
                isMaster:NO
-                 active:[payload[ACTIVE] boolValue]];
+                 active:[payload[ACTIVE] boolValue]
+                    hop:[payload[HOP_COUNT] integerValue]];
         slaveStat.slaveUniqueName = payload[SLAVE_UNIQUE_NAME];
     }
     else if([self payloadHasPartialData:payload]){//partial data means signal strength is n/a and has connectionvia tag
@@ -47,7 +48,8 @@
                   ssid1:ssid[@"2G"] ssid2:ssid[@"5G"]
            internetStat:[payload[@"InternetStatus"] boolValue]
                isMaster:NO
-                 active:[payload[ACTIVE] boolValue]];
+                 active:[payload[ACTIVE] boolValue]
+                    hop:[payload[HOP_COUNT] integerValue]];
         slaveStat.slaveUniqueName = payload[SLAVE_UNIQUE_NAME];
         NSLog(@"signal str payload: %@, sig obj: %@", payload[SIGNAL_STRENGTH], slaveStat.signalStrength);
     }
@@ -59,6 +61,9 @@
 
     
 + (BOOL)payloadHasCompleteData:(NSDictionary *)payload{
+    if([payload[HOP_COUNT] integerValue] == 1){
+        return YES;
+    }
     if([self hasSignalStrength:payload[SIGNAL_STRENGTH]] && payload[CONNECTED_VIA]){
         return YES;
     }
@@ -89,7 +94,7 @@
     return [sigStrength.lowercaseString isEqualToString:@"n/a"]? NO: YES;
 }
 
-+ (void)getStatus:(AlmondStatus *)stat name:(NSString*)name location:(NSString*)location connetedVia:(NSString*)connetedVia interface:(NSString*)interface signalStrength:(NSString*)signalStrength ssid1:(NSString*)ssid1 ssid2:(NSString*)ssid2 internetStat:(BOOL)internetStat isMaster:(BOOL)isMaster active:(BOOL)isactive{
++ (void)getStatus:(AlmondStatus *)stat name:(NSString*)name location:(NSString*)location connetedVia:(NSString*)connetedVia interface:(NSString*)interface signalStrength:(NSString*)signalStrength ssid1:(NSString*)ssid1 ssid2:(NSString*)ssid2 internetStat:(BOOL)internetStat isMaster:(BOOL)isMaster active:(BOOL)isactive hop:(NSInteger)hopCount{
     stat.internetStat = internetStat;
     stat.isActive = isactive;
     stat.isMaster = isMaster;
@@ -100,6 +105,7 @@
     stat.signalStrength = signalStrength;
     stat.ssid1 = ssid1;
     stat.ssid2 = ssid2;
+    stat.hopCount = hopCount;
 }
 
 +(NSDictionary *)getSSIDs:(SFIRouterSummary*)routerSummary{
