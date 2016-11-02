@@ -79,7 +79,7 @@
     [center removeObserver:self name:VALIDATE_RESPONSE_NOTIFIER object:nil];
     [center removeObserver:self name:UIKeyboardDidShowNotification object:nil];
     [center removeObserver:self name:UIKeyboardDidHideNotification object:nil];
-}
+}   
 
 - (void)showTermsAndConditions {
     UIBarButtonItem *declineButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"signup.barbutton.Decline", @"Decline") style:UIBarButtonItemStylePlain target:self action:@selector(onDeclineAction:)];
@@ -91,9 +91,7 @@
     self.navigationItem.title = NSLocalizedString(@"signup.navbar-title.Terms of Use", @"Terms of Use");
     CGRect frame = self.view.frame;
     frame.origin.y = self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y;
-    
     UIWebView *webView = [[UIWebView alloc] initWithFrame:frame];
-    
     NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"termsofuse" ofType:@"html"];
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     [webView loadHTMLString:htmlString baseURL:nil];

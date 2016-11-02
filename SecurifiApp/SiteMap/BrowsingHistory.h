@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "URIData.h"
 @protocol BrowsingHistoryDelegate
 -(void)reloadTable;
 @end
@@ -18,7 +17,6 @@
 @property (nonatomic) NSString *almondMac;
 @property (nonatomic) NSString *clientMac;
 @property (nonatomic) NSMutableDictionary *allDateRecord;
-@property (nonatomic) URIData *uriInfo;
 @property (nonatomic,weak) id<BrowsingHistoryDelegate> delegate;
 -(void)getBrowserHistoryImages:(NSDictionary *)historyDict dispatchQueue:(dispatch_queue_t)imageDownloadQueue dayArr:(NSMutableArray *)dayArr;
 

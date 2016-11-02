@@ -70,7 +70,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.50898450613021851" green="0.3620573878288269" blue="0.75937771797180176" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.50980392156862742" green="0.36078431372549019" blue="0.76078431372549016" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="781-4d-L0j" firstAttribute="top" secondItem="cRi-9N-HpX" secondAttribute="top" id="Aai-lB-GpA"/>
                                     <constraint firstItem="jss-1s-YxF" firstAttribute="top" secondItem="cRi-9N-HpX" secondAttribute="top" constant="26" id="FfM-Rb-n22"/>
@@ -111,7 +111,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rj2-Du-dFq">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="HistorytableCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="historyTableCell" id="yUh-Sz-VD3" customClass="HistoryCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="HistorytableCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="HistoryTableCell" id="yUh-Sz-VD3" customClass="HistoryCell">
                                         <rect key="frame" x="0.0" y="28" width="364" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yUh-Sz-VD3" id="YEu-bD-Tgj">
@@ -308,7 +308,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.50898450613021851" green="0.3620573878288269" blue="0.75937771797180176" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.50980392156862742" green="0.36078431372549019" blue="0.76078431372549016" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="11M-BU-Rlu" firstAttribute="centerX" secondItem="gBw-wl-Uzc" secondAttribute="centerX" constant="7.5" id="26k-QF-Ctu"/>
                                     <constraint firstItem="0yG-iJ-tG0" firstAttribute="top" secondItem="gBw-wl-Uzc" secondAttribute="top" constant="25" id="Iy4-Cq-NbS"/>
@@ -532,6 +532,13 @@
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1GN-Ms-dww">
                                         <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rGA-b5-haO">
+                                                <frame key="frameInset" minX="116.5" width="71" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <connections>
+                                                    <action selector="detailPeriodButtonClicked:" destination="UZa-lx-WzC" eventType="touchUpInside" id="KFW-2t-yiw"/>
+                                                </connections>
+                                            </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7 Days" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1op-HM-n6d">
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="44" id="OXW-Dv-a0z"/>
@@ -543,7 +550,7 @@
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="37H-QN-Tnq">
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="75" id="59I-kT-Deu"/>
+                                                    <constraint firstAttribute="width" constant="97" id="59I-kT-Deu"/>
                                                     <constraint firstAttribute="height" constant="38" id="ar2-YG-Ibu"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="32"/>
@@ -580,7 +587,7 @@
                                             <constraint firstItem="4BX-VT-fjJ" firstAttribute="top" secondItem="37H-QN-Tnq" secondAttribute="bottom" constant="6" id="aJh-h4-dW6"/>
                                             <constraint firstItem="4BX-VT-fjJ" firstAttribute="leading" secondItem="Unw-No-RnA" secondAttribute="trailing" constant="-1" id="d9a-CO-s3B"/>
                                             <constraint firstAttribute="trailing" secondItem="4BX-VT-fjJ" secondAttribute="trailing" constant="42" id="kba-Pz-Jj4"/>
-                                            <constraint firstAttribute="trailing" secondItem="37H-QN-Tnq" secondAttribute="trailing" constant="43" id="mnN-6B-1M8"/>
+                                            <constraint firstAttribute="trailing" secondItem="37H-QN-Tnq" secondAttribute="trailing" constant="32" id="mnN-6B-1M8"/>
                                             <constraint firstItem="2iL-CJ-sd8" firstAttribute="top" secondItem="1GN-Ms-dww" secondAttribute="top" constant="6" id="muy-aj-DhB"/>
                                             <constraint firstItem="Unw-No-RnA" firstAttribute="top" secondItem="1GN-Ms-dww" secondAttribute="top" constant="88" id="tMi-NE-EpK"/>
                                             <constraint firstAttribute="trailing" secondItem="1op-HM-n6d" secondAttribute="trailing" constant="6" id="z02-9l-O4i"/>
@@ -609,7 +616,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z7G-DE-U3D">
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="Ajb-QT-ysJ"/>
-                                                    <constraint firstAttribute="width" constant="75" id="bSs-kY-cKZ"/>
+                                                    <constraint firstAttribute="width" constant="96" id="bSs-kY-cKZ"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="32"/>
                                                 <color key="textColor" red="0.011764705882352941" green="0.66274509803921566" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -624,7 +631,7 @@
                                         </subviews>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstItem="z7G-DE-U3D" firstAttribute="leading" secondItem="Vml-Sq-JiZ" secondAttribute="leading" constant="46" id="4DU-iY-oSf"/>
+                                            <constraint firstItem="z7G-DE-U3D" firstAttribute="leading" secondItem="Vml-Sq-JiZ" secondAttribute="leading" constant="33" id="4DU-iY-oSf"/>
                                             <constraint firstItem="rzH-eo-wmu" firstAttribute="top" secondItem="Vml-Sq-JiZ" secondAttribute="top" constant="8" id="OW2-JV-LQ9"/>
                                             <constraint firstItem="31C-VF-ILZ" firstAttribute="leading" secondItem="Vml-Sq-JiZ" secondAttribute="leading" constant="23" id="P8s-aD-B30"/>
                                             <constraint firstItem="rzH-eo-wmu" firstAttribute="leading" secondItem="Vml-Sq-JiZ" secondAttribute="leading" constant="10" id="Qum-n5-kWZ"/>
@@ -986,6 +993,105 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sfJ-mS-KKV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2032.8" y="338.68065967016497"/>
+        </scene>
+        <!--Details Period View Controller-->
+        <scene sceneID="ybc-Ek-52m">
+            <objects>
+                <viewController storyboardIdentifier="DetailsPeriodViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OnV-hc-Gla" customClass="DetailsPeriodViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="e1O-VT-uy3"/>
+                        <viewControllerLayoutGuide type="bottom" id="qMf-me-k2r"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="NMr-fb-VoI">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="l4a-b6-Z8L">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="241" id="Hsp-XO-Pq6"/>
+                                </constraints>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell_Identifier" id="RlN-R8-pJR" customClass="HistoryCell">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RlN-R8-pJR" id="NQ2-sI-deR">
+                                            <frame key="frameInset" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="OnV-hc-Gla" id="yOE-l1-oBZ"/>
+                                    <outlet property="delegate" destination="OnV-hc-Gla" id="UPI-gm-120"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LoS-ut-fiS">
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="back_icon" translatesAutoresizingMaskIntoConstraints="NO" id="DxZ-aW-HmF">
+                                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="20" id="Ojp-ej-ejW"/>
+                                            <constraint firstAttribute="height" constant="20" id="WzE-ek-tvb"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details for Periods" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="smP-OA-KVv">
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="29" id="9sP-6z-GI5"/>
+                                            <constraint firstAttribute="width" constant="170" id="Nnf-2h-Qys"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="18"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jpb-BX-fkG">
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="6eX-Gf-i8P"/>
+                                            <constraint firstAttribute="width" constant="75" id="CIK-E4-4Mq"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="backButtonPressed:" destination="Qwr-yP-egu" eventType="touchUpInside" id="Bx5-gw-7sl"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.50980392156862742" green="0.36078431372549019" blue="0.76078431372549016" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="Jpb-BX-fkG" firstAttribute="top" secondItem="LoS-ut-fiS" secondAttribute="top" id="ANx-IG-24d"/>
+                                    <constraint firstAttribute="height" constant="70" id="Dme-24-Kjj"/>
+                                    <constraint firstItem="smP-OA-KVv" firstAttribute="top" secondItem="LoS-ut-fiS" secondAttribute="top" constant="24" id="I3r-Vr-fIP"/>
+                                    <constraint firstItem="smP-OA-KVv" firstAttribute="centerX" secondItem="LoS-ut-fiS" secondAttribute="centerX" constant="7.5" id="XlM-JV-tOw"/>
+                                    <constraint firstItem="Jpb-BX-fkG" firstAttribute="leading" secondItem="LoS-ut-fiS" secondAttribute="leading" id="imc-08-ah6"/>
+                                    <constraint firstItem="DxZ-aW-HmF" firstAttribute="leading" secondItem="LoS-ut-fiS" secondAttribute="leading" constant="11" id="teG-rn-svf"/>
+                                    <constraint firstItem="DxZ-aW-HmF" firstAttribute="top" secondItem="LoS-ut-fiS" secondAttribute="top" constant="25" id="vXe-Wa-TxZ"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AyF-62-2VP" customClass="DSLCalendarView">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="LoS-ut-fiS" firstAttribute="top" secondItem="NMr-fb-VoI" secondAttribute="top" id="7Pf-DK-QnL"/>
+                            <constraint firstItem="l4a-b6-Z8L" firstAttribute="leading" secondItem="NMr-fb-VoI" secondAttribute="leading" id="Hcw-Uo-PGW"/>
+                            <constraint firstItem="qMf-me-k2r" firstAttribute="top" secondItem="AyF-62-2VP" secondAttribute="bottom" id="MMG-ap-a7k"/>
+                            <constraint firstAttribute="trailing" secondItem="LoS-ut-fiS" secondAttribute="trailing" id="OOk-7F-TSZ"/>
+                            <constraint firstAttribute="trailing" secondItem="l4a-b6-Z8L" secondAttribute="trailing" id="SPo-1P-jwt"/>
+                            <constraint firstItem="LoS-ut-fiS" firstAttribute="leading" secondItem="NMr-fb-VoI" secondAttribute="leading" id="TMO-nD-PHM"/>
+                            <constraint firstItem="AyF-62-2VP" firstAttribute="top" secondItem="l4a-b6-Z8L" secondAttribute="bottom" id="X6V-55-xCA"/>
+                            <constraint firstItem="AyF-62-2VP" firstAttribute="leading" secondItem="NMr-fb-VoI" secondAttribute="leading" id="cLQ-Ar-hFD"/>
+                            <constraint firstItem="l4a-b6-Z8L" firstAttribute="top" secondItem="LoS-ut-fiS" secondAttribute="bottom" id="fro-79-Cvg"/>
+                            <constraint firstAttribute="trailing" secondItem="AyF-62-2VP" secondAttribute="trailing" id="gY0-1M-MAG"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="calendarView" destination="AyF-62-2VP" id="14u-QE-vwd"/>
+                        <outlet property="detailTable" destination="l4a-b6-Z8L" id="E98-JL-I18"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LYj-7t-iVB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2716" y="339.58020989505252"/>
         </scene>
     </scenes>
     <resources>

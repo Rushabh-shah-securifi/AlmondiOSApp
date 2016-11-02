@@ -16,6 +16,7 @@
 #import "RouterPayload.h"
 #import "ConnectionStatus.h"
 
+
 #define ADD_FAIL -2
 #define NETWORK_OFFLINE -1
 #define HELP_INFO 0
@@ -84,7 +85,9 @@
 @property (nonatomic) NSArray *slavesDictArray;
 @property (nonatomic) NSArray *currentSlaves;
 
-@property (nonatomic) NSString *almondTitle;
+@property (nonatomic) NSString *almondUniqueName;
+@property (nonatomic) NSString *almondNormalName;
+
 @property (nonatomic) NSArray *almondNames;
 @property (nonatomic) NSString *selectedName;
 @property (nonatomic) BOOL isYesBlinkTapped;
@@ -101,6 +104,8 @@
         [[NSBundle mainBundle] loadNibNamed:@"mesh" owner:self options:nil];
         self.slavesDictArray = nil;
         self.nameField.text = @"";
+        self.almondNormalName = @"";
+        
         self.almondNames = @[@"Bed Room",@"Den",@"Dining Room",@"Down Stairs",@"Entryway",@"Family Room",@"Hallway",@"Kids Room",@"Kitchen",@"Living Room",@"Master Bedroom",@"Office",@"Upstairs"];
         self.selectedName = self.almondNames[0];
         
@@ -130,13 +135,13 @@
     
     [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_COMMAND_TYPE_MESH_RESPONSE object:nil];
     
-    [center addObserver:self selector:@selector(onNetworkDownNotifier:) name:NETWORK_DOWN_NOTIFIER object:nil];
-    
-    [center addObserver:self selector:@selector(onNetworkUpNotifier:) name:NETWORK_UP_NOTIFIER object:nil];
-    
     [center addObserver:self selector:@selector(onLoginResponse:) name:kSFIDidCompleteLoginNotification object:nil];
     
     [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
+    [center addObserver:self
+               selector:@selector(onConnectionStatusChanged:)
+                   name:CONNECTION_STATUS_CHANGE_NOTIFIER
+                 object:nil];
 }
 
 - (void)removeNotificationObserver{
@@ -210,7 +215,8 @@
     UIView *view = [thePickerView superview];
     if(view.tag == 2){ //unique slave name
         NSDictionary *slave = self.slavesDictArray[row];
-        self.almondTitle = slave[SLAVE_UNIQUE_NAME]; //this will have unique name
+        self.almondUniqueName = slave[SLAVE_UNIQUE_NAME]; //this will have unique name
+        self.almondNormalName = slave[SLAVE_NAME];
     }else{
         self.selectedName = self.almondNames[row];
         self.nameField.text = @"";
@@ -589,13 +595,13 @@
 
 -(void)requestAddSlave:(BOOL)isBlinking{
     if(self.wiredBtn.selected)
-        [MeshPayload requestAddWiredSlave:self.mii slaveName:self.almondTitle];//mii
+        [MeshPayload requestAddWiredSlave:self.mii slaveName:self.almondUniqueName];//mii
     else
-        [MeshPayload requestAddWireLessSlave:self.mii slaveName:self.almondTitle];
+        [MeshPayload requestAddWireLessSlave:self.mii slaveName:self.almondUniqueName];
 }
 
 -(void)requestblinkLED{
-    [MeshPayload requestBlinkLed:self.mii slaveName:self.almondTitle];
+    [MeshPayload requestBlinkLed:self.mii slaveName:self.almondUniqueName];
 }
 
 -(void)requestStopLED{
@@ -604,7 +610,7 @@
 
 -(void)requestSetSlaveName{
     if(self.nameField.text.length == 0){
-        [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondTitle newName:self.selectedName];
+        [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondUniqueName newName:self.selectedName];
     }else{
         if(self.nameField.text.length <= 2){
             //show toast
@@ -612,7 +618,7 @@
             [self.delegate showToastDelegate:@"Please Enter a name of atleast 3 characters."];
             return;
         }
-        [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondTitle newName:self.nameField.text];
+        [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondUniqueName newName:self.nameField.text];
     }
     
     [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:10];
@@ -642,25 +648,30 @@
     else{
         NSLog(@"check point 3");
         [self.delegate hideHUDDelegate];
+        NSString *msg;
         NSString *reason = payload[REASON];
-        if([reason.lowercaseString hasPrefix:@"unplug all"] && self.wirelessBtn.selected){
-            NSString *msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
-            //            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
-            [self showAlert:self.almondTitle msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
+        if([reason.lowercaseString hasPrefix:@"unplug all"]){
+            if(self.wirelessBtn.selected){
+                msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
+                //            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
+            }
+            else{
+                msg = @"Unplug all cables except WAN cable. Do not unplug power cable";
+            }
+            [self showAlert:self.almondNormalName msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
         }
         else if([reason.lowercaseString hasPrefix:@"unable to"]){
-            NSString *msg;
             if(self.wirelessBtn.selected)
-                msg = [NSString stringWithFormat:@"Unable to reach %@. Check for loose wired connections between your Almonds and try again!", self.almondTitle];
+                msg = [NSString stringWithFormat:@"Unable to reach %@. Check for loose wired connections between your Almonds and try again!", self.almondNormalName];
             else
-                msg = [NSString stringWithFormat:@"Unable to reach %@. Bring it closer to your primary Almond and try again!", self.almondTitle];
+                msg = [NSString stringWithFormat:@"Unable to reach %@. Bring it closer to your primary Almond and try again!", self.almondNormalName];
             
-            [self showAlert:self.almondTitle msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
+            [self showAlert:self.almondNormalName msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
         }
         else{
             [self.blinkTimer invalidate];
             if(self.currentView.tag == BLINK_CHECK)//on ok tap this will take to interface page
-                [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
+                [self showAlert:self.almondNormalName msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
         }
     }
     
@@ -701,7 +712,7 @@
                 [self loadNextView];
         }
         else{//failed
-            [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
+            [self showAlert:self.almondNormalName msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
         }
         return;
     }
@@ -763,7 +774,8 @@
 -(void)parseSlaves:(NSArray *)Slaves{
     NSDictionary *slave = Slaves[0];
     self.slavesDictArray = Slaves;
-    self.almondTitle = slave[SLAVE_UNIQUE_NAME]==nil? @"": slave[SLAVE_UNIQUE_NAME];
+    self.almondUniqueName = slave[SLAVE_UNIQUE_NAME]==nil? @"": slave[SLAVE_UNIQUE_NAME];
+    self.almondNormalName = slave[SLAVE_NAME]?: @""; //shortcut.
     [self.timer invalidate];
 }
 
@@ -778,7 +790,7 @@
         SFIRouterSummary *routerSummary = genericRouterCommand.command;
         NSLog(@"mesh view: %@", routerSummary);
         for(NSDictionary *almond in routerSummary.almondsList){
-            if([almond[SLAVE_UNIQUE_NAME] isEqualToString:self.almondTitle]){
+            if([almond[SLAVE_UNIQUE_NAME] isEqualToString:self.almondUniqueName]){
                 [self.delegate hideHUDDelegate];
                 [self.blinkTimer invalidate];
                 self.blinkTimer = nil;
@@ -789,7 +801,7 @@
         }
         
         if([self.blinkTimer isValid] == NO && self.currentView.tag == BLINK_CHECK && self.isYesBlinkTapped)
-            [self showAlert:self.almondTitle msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
+            [self showAlert:self.almondNormalName msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
         
         //almond not yet added, its in adding state show hud (alerady there)
         //        else if(self.isYesBlinkTapped)
@@ -909,8 +921,8 @@
         else if(alertView.tag == NETWORK_OFFLINE){
             NSLog(@"on alert ok");
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            
             [toolkit asyncInitNetwork];
+
             int connectionTO = 5;
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self.delegate showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
@@ -934,7 +946,7 @@
     
     if(tag == NETWORK_OFFLINE){
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        enum SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
+        SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
         if(status == SFIAlmondConnectionStatus_disconnected){
             NSLog(@"ok 1");
             [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
@@ -952,27 +964,26 @@
 }
 
 #define network events
-- (void)onNetworkDownNotifier:(id)sender{
-    NSLog(@"on network down");
-    if([self.nonRepeatingTimer isValid]){
-        return;
+    
+-(void)onConnectionStatusChanged:(id)sender {
+    NSNumber* status = [sender object];
+    int statusIntValue = [status intValue];
+    NSLog(@"status change 1");
+    if(statusIntValue == NO_NETWORK_CONNECTION){
+        NSLog(@"status change 2");
+        if([self.nonRepeatingTimer isValid]){
+            return;
+        }
+        [self.timer invalidate];
+        [self.delegate hideHUDDelegate];
+        NSLog(@"status change 3");
+        [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
     }
-    [self.timer invalidate];
-    [self.delegate hideHUDDelegate];
-    
-    [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
-    
-}
-
-- (void)onNetworkUpNotifier:(id)sender{
-    NSLog(@"mesh view network up");
-    if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
-        [[SecurifiToolkit sharedInstance] connectMesh];
-    }else{
-        //we wait for login response in case of cloud
+    else if(statusIntValue == (int)(ConnectionStatusType*)AUTHENTICATED){
+        if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
+            [[SecurifiToolkit sharedInstance] connectMesh];
+        }
     }
-    
-    //don't invalidate non repeating timer I am making it run for 5 sec, for simplicity
 }
 
 - (void)onLoginResponse:(id)sender{

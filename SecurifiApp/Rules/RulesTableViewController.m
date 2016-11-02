@@ -25,6 +25,7 @@
 #import "MessageView.h"
 #import "SFICloudLinkViewController.h"
 #import "LocalNetworkManagement.h"
+#import "ConnectionStatus.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
@@ -65,8 +66,6 @@ CGPoint tablePoint;
     [self markAlmondTitle];
     [self initializeNotifications];
     
-    
-    
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
@@ -106,8 +105,8 @@ CGPoint tablePoint;
                  object:nil];
     
     [center addObserver:self
-               selector:@selector(onNetworkUpNotifier:)
-                   name:NETWORK_UP_NOTIFIER
+               selector:@selector(onConnectionStatusDidChange:)
+                   name:CONNECTION_STATUS_CHANGE_NOTIFIER
                  object:nil];
     
 }
@@ -345,7 +344,6 @@ CGPoint tablePoint;
 - (void)onCurrentAlmondChanged:(id)sender {
     NSLog(@"on current almond change: %@", [SecurifiToolkit sharedInstance].currentAlmond);
     [self.toolkit.ruleList removeAllObjects];
-    
     [self markAlmondTitle];
     [self showHudWithTimeoutMsg:NSLocalizedString(@"RulesViewController Loading Rules...",@"Loading Rules...")];
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -360,12 +358,16 @@ CGPoint tablePoint;
     });
 }
 
-- (void)onNetworkUpNotifier:(id)sender {
-    NSLog(@"onNetworkUpNotifier");
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-        [self showHudWithTimeoutMsg:@"Loading..."];
-    });
+- (void)onConnectionStatusDidChange: (id)sender {
+    NSNumber* status = [sender object];
+    int statusIntValue = [status intValue];
+    
+    if(statusIntValue == AUTHENTICATED){
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.tableView reloadData];
+            [self showHudWithTimeoutMsg:@"Loading..."];
+        });
+    }
 }
 
 #pragma mark command response
@@ -407,9 +409,7 @@ CGPoint tablePoint;
 #pragma mark - MessageViewDelegate methods
 
 - (void)messageViewDidPressButton:(MessageView *)msgView {
-    NSLog(@"i am called");
     enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
-    
     switch (mode) {
         case SFIAlmondConnectionMode_cloud: {
             UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];

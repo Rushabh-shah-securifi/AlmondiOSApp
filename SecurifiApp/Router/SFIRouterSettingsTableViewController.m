@@ -188,6 +188,7 @@ int mii;
             [self showToast:NSLocalizedString(@"ParseRouterCommand Sorry! unable to update.", @"Sorry! unable to update.")];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
+                [self.HUD hide:YES];
             });
             return;//
         }
@@ -246,6 +247,29 @@ int mii;
     SFIWirelessSetting *copy = [setting copy];
     copy.enabled = isEnabled;
     [self onUpdateWirelessSettings:copy isTypeEnable:YES];
+}
+
+- (void)onShareBtnTapDelegate{
+    NSLog(@"onShareBtnTapDelegate");
+    
+    NSString *textToShare = @"Look at this awesome website for aspiring iOS Developers!";
+    NSURL *myWebsite = [NSURL URLWithString:@"http://www.codingexplorer.com/"];
+    
+    NSArray *objectsToShare = @[textToShare, myWebsite];
+    
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
+    
+    NSArray *excludeActivities = @[UIActivityTypeAirDrop,
+                                   UIActivityTypePrint,
+                                   UIActivityTypeAssignToContact,
+                                   UIActivityTypeSaveToCameraRoll,
+                                   UIActivityTypeAddToReadingList,
+                                   UIActivityTypePostToFlickr,
+                                   UIActivityTypePostToVimeo];
+    
+    activityVC.excludedActivityTypes = excludeActivities;
+    
+    [self presentViewController:activityVC animated:YES completion:nil];
 }
 
 - (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString *)ssid {

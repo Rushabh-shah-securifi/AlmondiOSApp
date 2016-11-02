@@ -48,13 +48,13 @@
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
     
-    [center addObserver:self selector:@selector(onNetworkDownNotifier:) name:NETWORK_DOWN_NOTIFIER object:nil];
-    
-    [center addObserver:self selector:@selector(onNetworkUpNotifier:) name:NETWORK_UP_NOTIFIER object:nil];
-    
     [center addObserver:self selector:@selector(onKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     
     [center addObserver:self selector:@selector(onKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    [center addObserver:self
+               selector:@selector(onConnectionStatusChanged:)
+                   name:CONNECTION_STATUS_CHANGE_NOTIFIER
+                 object:nil];
 }
 
 - (void)setupMeshNamingView{
@@ -178,24 +178,26 @@
     }];
 }
 
-- (void)onNetworkDownNotifier:(id)sender{
-    NSLog(@"on network down");
-    if([self.nonRepeatingTimer isValid]){
-        return;
-    }
-    
-    [self hideHUDDelegate];
-    
-    [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
-    
-}
 
-- (void)onNetworkUpNotifier:(id)sender{
-    NSLog(@"mesh view network up");
-    if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
-        [[SecurifiToolkit sharedInstance] connectMesh];
-    }else{
-        //we wait for login response in case of cloud
+-(void)onConnectionStatusChanged:(id)sender {
+    NSNumber* status = [sender object];
+    int statusIntValue = [status intValue];
+    
+    if(statusIntValue == NO_NETWORK_CONNECTION){
+        NSLog(@"on network down");
+        if([self.nonRepeatingTimer isValid]){
+            return;
+        }
+        
+        [self hideHUDDelegate];
+        
+        [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
+
+    }
+    else if(statusIntValue == (int)(ConnectionStatusType*)AUTHENTICATED){
+        if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
+            [[SecurifiToolkit sharedInstance] connectMesh];
+        }
     }
 }
 

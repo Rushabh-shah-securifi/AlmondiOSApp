@@ -116,16 +116,6 @@
                    name:kSFIAlmondModeDidChange
                  object:nil];
     
-//    [center addObserver:self
-//               selector:@selector(onNetworkDownNotifier:)
-//                   name:NETWORK_DOWN_NOTIFIER
-//                 object:nil];
-    
-//    [center addObserver:self
-//               selector:@selector(onNetworkConnectingNotifier:)
-//                   name:NETWORK_CONNECTING_NOTIFIER
-//                 object:nil];
-    
     [center addObserver:self
                selector:@selector(onConnectionStatusChanged:)
                    name:CONNECTION_STATUS_CHANGE_NOTIFIER
@@ -135,16 +125,6 @@
                selector:@selector(onNetworkConnectingNotifier:)
                    name:kSFIDidChangeAlmondConnectionMode
                  object:nil];
-    
-//    [center addObserver:self
-//               selector:@selector(onNetworkUpNotifier:)
-//                   name:NETWORK_UP_NOTIFIER
-//                 object:nil];
-//    
-//    [center addObserver:self
-//               selector:@selector(onReachabilityDidChange:)
-//                   name:kSFIReachabilityChangedNotification
-//                 object:nil];
     
     [center addObserver:self
                selector:@selector(onNotificationCountChanged:)
@@ -396,9 +376,9 @@
         [self showHUD:@"Connecting..."];
         [self.HUD hide:YES afterDelay:5]; // in case the request times out
         
-        [toolkit.devices removeAllObjects];
-        [toolkit.clients removeAllObjects];
-        [toolkit.scenesArray removeAllObjects];
+//        [toolkit.devices removeAllObjects];
+//        [toolkit.clients removeAllObjects];
+//        [toolkit.scenesArray removeAllObjects];
         
         [self.tableView reloadData];
     });
@@ -516,29 +496,21 @@
 -(void)onConnectionStatusChanged:(id)sender {
     NSNumber* status = [sender object];
     int statusIntValue = [status intValue];
-    if(statusIntValue == (int)(ConnectionStatusType*)NO_NETWORK_CONNECTION){
-        NSLog(@"onNetworkDownNotifier");
+    if(statusIntValue == NO_NETWORK_CONNECTION){
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self markNetworkStatusIcon];
             [self.tableView reloadData];
             [self.HUD hide:YES]; // make sure it is hidden
         });
-        NSLog(@"dashboardconnection status is no network connection");
-    }else if(statusIntValue == (int)(ConnectionStatusType*)IS_CONNECTING_TO_NETWORK){
-        NSLog(@"onNetworkConnectingNotifier");
+    }else if(statusIntValue == IS_CONNECTING_TO_NETWORK){
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self markNetworkStatusIcon];
             [self showConnectingHUD];
         });
-        NSLog(@"dashboardconnection status is connecting to network");
-    }else if(statusIntValue == (int)(ConnectionStatusType*)CONNECTED_TO_NETWORK){
-        NSLog(@"onNetworkUpNotifier");
+    }else if(statusIntValue == AUTHENTICATED){
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self markNetworkStatusIcon];
-            //        [self.tableView reloadData];
-            //        [self.HUD hide:YES]; // make sure it is hidden
         });
-        NSLog(@"dashboardconnection status is connected to network");
     }
 }
 

@@ -49,7 +49,7 @@
     self.backgroundColor = [SFIColors getHelpCenterColor:helpItem[COLOR]];
 }
 
-- (void)setUpHelpItemCell:(NSDictionary*)helpItem row:(int)row{
+- (void)setUpHelpItemCell:(NSDictionary*)helpItem row:(NSInteger)row{
     self.itemLabel.text = NSLocalizedString([[helpItem[ITEMS] objectAtIndex:row] valueForKey:@"name"], @"");
     self.itemImg.image = [CommonMethods imageNamed:helpItem[S_ICON] withColor:[UIColor grayColor]];
 }

@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "SFIButtonSubProperties.h"
-#import "URIData.h"
 
 @interface CommonMethods : NSObject
 + (BOOL) compareEntry:(BOOL)isSlider matchData:(NSString *)matchData eventType:(NSString *)eventType buttonProperties:(SFIButtonSubProperties *)buttonProperties;

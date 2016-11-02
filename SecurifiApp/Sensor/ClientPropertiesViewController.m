@@ -21,7 +21,6 @@
 #import "MBProgressHUD.h"
 #import "GenericIndexUtil.h"
 #import "BrowsingHistoryViewController.h"
-#import "URIData.h"
 #import "BrowsingHistory.h"
 #import "NSDate+Convenience.h"
 #import "DataBaseManager.h"

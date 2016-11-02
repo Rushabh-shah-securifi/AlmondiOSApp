@@ -17,11 +17,6 @@
             <rect key="frame" x="0.0" y="0.0" width="329" height="45"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Xz-JC-pZS">
-                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="15"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nkO-tR-bJ4">
                     <constraints>
                         <constraint firstAttribute="height" constant="15" id="co3-08-43c"/>
@@ -48,11 +43,20 @@
                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconSceneChekmark" translatesAutoresizingMaskIntoConstraints="NO" id="oSz-lx-AaM"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Xz-JC-pZS">
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="15"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.66274509800000003" green="0.66274509800000003" blue="0.66274509800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="G1p-89-vOU" firstAttribute="leading" secondItem="5Xz-JC-pZS" secondAttribute="trailing" constant="-9" id="3IB-be-Fwx"/>
+                <constraint firstAttribute="trailing" secondItem="oSz-lx-AaM" secondAttribute="trailing" constant="8" id="KnY-9x-Z6z"/>
                 <constraint firstItem="5Xz-JC-pZS" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="9" id="LcE-V6-kje"/>
+                <constraint firstItem="oSz-lx-AaM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="Q5R-ef-IMR"/>
+                <constraint firstItem="oSz-lx-AaM" firstAttribute="leading" secondItem="5Xz-JC-pZS" secondAttribute="trailing" constant="8" id="T9a-cw-ow1"/>
                 <constraint firstAttribute="trailing" secondItem="G1p-89-vOU" secondAttribute="trailing" constant="34" id="VcX-h2-0Nt"/>
                 <constraint firstItem="nkO-tR-bJ4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="Z9H-PB-z2w"/>
                 <constraint firstAttribute="bottom" secondItem="5Xz-JC-pZS" secondAttribute="bottom" constant="8" id="hQn-IU-jid"/>
@@ -61,6 +65,7 @@
                 <constraint firstItem="5Xz-JC-pZS" firstAttribute="leading" secondItem="lRV-aA-EvW" secondAttribute="trailing" constant="13" id="lOS-wQ-t8i"/>
                 <constraint firstItem="lRV-aA-EvW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="ptr-xv-Ntz"/>
                 <constraint firstItem="lRV-aA-EvW" firstAttribute="leading" secondItem="nkO-tR-bJ4" secondAttribute="trailing" constant="8" id="qge-VI-J9t"/>
+                <constraint firstAttribute="bottom" secondItem="oSz-lx-AaM" secondAttribute="bottom" constant="8" id="rYG-3Y-nrG"/>
                 <constraint firstItem="nkO-tR-bJ4" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="suf-LK-Hax"/>
                 <constraint firstItem="G1p-89-vOU" firstAttribute="leading" secondItem="5Xz-JC-pZS" secondAttribute="trailing" constant="-9" id="yze-Xe-mUU"/>
             </constraints>
@@ -79,4 +84,7 @@
             <point key="canvasLocation" x="10.5" y="-299.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="iconSceneChekmark" width="140" height="140"/>
+    </resources>
 </document>

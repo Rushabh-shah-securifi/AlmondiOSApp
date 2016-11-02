@@ -12,6 +12,7 @@
 #import "SFIHighlightedButton.h"
 #import "Colours.h"
 #import "SFICopyLabel.h"
+#import "CommonMethods.h"
 
 @interface SFICardView ()
 @property(nonatomic, readonly) CGFloat baseYCoordinate;
@@ -334,10 +335,13 @@
     return button;
 }
 
-- (void)addTitleAndOnOffSwitch:(NSString *)title target:(id)target action:(SEL)action on:(BOOL)isSwitchOn {
+- (void)addTitleAndOnOffSwitch:(NSString *)title target:(id)target action:(SEL)action shareAction:(SEL)shareAction on:(BOOL)isSwitchOn {
     UILabel *label = [self makeTitleLabel:title];
     [self addSubview:label];
 
+    UIButton *button = [self makeShareLinkButton:target action:shareAction];
+    [self addSubview:button];
+    
     UISwitch *ctrl = [self makeOnOffSwitch:target action:action on:isSwitchOn];
     [self addSubview:ctrl];
     [self addManagedControl:ctrl];
@@ -345,6 +349,30 @@
     [self markYOffsetUsingRect:label.frame addAdditional:15];
 }
 
+- (UIButton *)makeShareLinkButton:(id)target action:(SEL)action{
+    CGFloat width = CGRectGetWidth(self.frame);
+    CGRect frame = CGRectMake(width - 160, self.baseYCoordinate, 80, 31);
+    
+    UIButton *btn = [[UIButton alloc] initWithFrame:frame];
+    btn.backgroundColor = [UIColor grayColor];
+    [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    
+    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 25, 25)];
+    imgView.contentMode = UIViewContentModeScaleAspectFit;
+    imgView.image = [CommonMethods imageNamed:@"share" withColor:[UIColor whiteColor]];
+    imgView.center = CGPointMake(CGRectGetMidX(imgView.bounds), CGRectGetMidY(btn.bounds));
+    [btn addSubview:imgView];
+    
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, 50, 30)];
+    [CommonMethods setLableProperties:label text:@"Share" textColor:[UIColor whiteColor] fontName:@"Avenir-Roman" fontSize:16 alignment:NSTextAlignmentCenter];
+    [btn addSubview:label];
+    
+    return btn;
+}
+
+- (void)onShareBtnTap:(id)sender{
+    NSLog(@"on share btn tap");
+}
 - (void)addTitleAndButton:(NSString *)title target:(id)target action:(SEL)action buttonTitle:(NSString *)buttonTitle {
     UILabel *label = [self makeTitleLabel:title];
     [self addSubview:label];

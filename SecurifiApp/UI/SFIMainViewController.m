@@ -20,6 +20,7 @@
 #import "UIApplication+SecurifiNotifications.h"
 #import "SFITabBarController.h"
 #import "KeyChainAccess.h"
+#import "ConnectionStatus.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
@@ -37,6 +38,17 @@
 - (void)dealloc {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self];
+}
+
+- (void)displayWebView:(NSString *)strForWebView{
+    NSLog(@"display web view main");
+    //this might slow down the app, perhaps you can think of better
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+        webView.backgroundColor = [UIColor clearColor];
+        [webView loadHTMLString:strForWebView baseURL:nil];
+        [self.view addSubview:webView];
+    });
 }
 
 - (void)viewDidLoad {
@@ -75,8 +87,7 @@
     //    ctrl.panGestureRecognizer.delegate = self;
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(onReachabilityDidChange:) name:kSFIReachabilityChangedNotification object:nil];
-    [center addObserver:self selector:@selector(onNetworkUpNotifier:) name:NETWORK_UP_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onConnectionStatusChanged:) name:CONNECTION_STATUS_CHANGE_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onDidCompleteLogin:) name:kSFIDidCompleteLoginNotification object:nil];
     [center addObserver:self selector:@selector(onLogoutResponse:) name:kSFIDidLogoutNotification object:nil];
     [center addObserver:self selector:@selector(onLogoutAllResponse:) name:kSFIDidLogoutAllNotification object:nil];
@@ -93,6 +104,8 @@
             [self tryPresentLogonScreen];
         });
     }
+    //adding this so that loading webviews for help screens does not cause any problem.
+    [self displayWebView:@""];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -103,6 +116,7 @@
 #pragma mark - Connection Management
 
 - (void)conditionalTryConnectOrLogon:(BOOL)onViewAppearing {
+    NSLog(@"conditionalTryConnectOrLogon");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     
     NSLog(@"i am called");
@@ -153,6 +167,18 @@
 
 #pragma mark - Class methods
 
+-(void)onConnectionStatusChanged:(id)sender {
+    NSNumber* status = [sender object];
+    int statusIntValue = [status intValue];
+    if(statusIntValue == AUTHENTICATED){
+        if ([[SecurifiToolkit sharedInstance] isNetworkOnline]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.HUD hide:YES];
+            });
+        }
+    }
+}
+
 - (void)displaySplashImage {
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.imgSplash.image = nil;//[UIImage assetImageNamed:@"splash_image"];
@@ -161,9 +187,6 @@
 
 #pragma mark - Reconnection
 
-- (void)onReachabilityDidChange:(id)sender {
-    //[self conditionalTryConnectOrLogon:NO];
-}
 
 - (void)onNetworkUpNotifier:(id)sender {
     if ([[SecurifiToolkit sharedInstance] isNetworkOnline]) {
@@ -353,7 +376,7 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
             if (![[SecurifiToolkit sharedInstance] isNetworkOnline]) {
-                [self tryPresentLogonScreen];
+                //[self tryPresentLogonScreen];
             }
         }];
     });
