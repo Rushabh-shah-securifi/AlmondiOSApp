@@ -261,9 +261,9 @@
                                                 <constraint firstAttribute="width" constant="20" id="uIq-hf-Xxy"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="my cell" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I07-DE-ntg">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="my cell" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I07-DE-ntg">
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="21" id="2av-nj-ec2"/>
+                                                <constraint firstAttribute="height" constant="40" id="2av-nj-ec2"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -275,7 +275,7 @@
                                         <constraint firstItem="vFc-JE-LZU" firstAttribute="leading" secondItem="lNj-yI-VhY" secondAttribute="leading" constant="13" id="OuB-FD-9Kj"/>
                                         <constraint firstAttribute="trailing" secondItem="I07-DE-ntg" secondAttribute="trailing" constant="24" id="QhY-rg-CCf"/>
                                         <constraint firstItem="I07-DE-ntg" firstAttribute="leading" secondItem="vFc-JE-LZU" secondAttribute="trailing" constant="16" id="Txi-eS-mrv"/>
-                                        <constraint firstItem="I07-DE-ntg" firstAttribute="top" secondItem="lNj-yI-VhY" secondAttribute="top" constant="10" id="vaa-jV-eHi"/>
+                                        <constraint firstItem="I07-DE-ntg" firstAttribute="top" secondItem="lNj-yI-VhY" secondAttribute="top" id="vaa-jV-eHi"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -433,7 +433,7 @@
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="helpcentercell" id="70N-mx-k1N" customClass="HelpCenterTableViewCell">
-                                        <rect key="frame" x="0.0" y="28" width="291" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="1001" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="70N-mx-k1N" id="sVV-Pf-4yH">
                                             <frame key="frameInset" width="291" height="44"/>
