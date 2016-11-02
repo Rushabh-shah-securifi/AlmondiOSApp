@@ -914,6 +914,7 @@ int mii;
              if([AlmondStatus hasCompleteDetails:self.slaveStatus] == NO){
                  return;
              }
+             NSLog(@"hasCompleteDetails");
              [self presentController:self.slaveStatus ctrl:ctrl];
          }
          else if([commandType  isEqualToString:@"Rai2UpMobile"]){

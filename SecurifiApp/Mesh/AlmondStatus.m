@@ -19,24 +19,9 @@
     return almondStat;
 }
 
-/*
- {
- "CommandMode":"Reply",
- "CommandType":"SlaveDetailsMobile",
- "SlaveUniqueName":"Almond 2333",
- "ID":"1",
- "Name":"Downstairs",
- "Active":"true",
- "Interface":"Wired",
- "InternetStatus":"true",
- "SignalStrength":"0"
- "MobileInternalIndex":"ttWsbWY91duqYuxOz2v5C2IrGFCm65Yz",
- "Success":"true",
- "Reason":"0"
- }
- */
 +(void)updateSlaveStatus:(NSDictionary *)payload routerSummary:(SFIRouterSummary*)routerSummary slaveStat:(AlmondStatus *)slaveStat{
     if([self payloadHasCompleteData:payload]){
+        NSLog(@"status 1");
         NSDictionary *ssid = [self getSSIDs:routerSummary];
         [self getStatus:slaveStat
                    name:payload[NAME]
@@ -50,25 +35,29 @@
                  active:[payload[ACTIVE] boolValue]];
         slaveStat.slaveUniqueName = payload[SLAVE_UNIQUE_NAME];
     }
-    else if([self payloadHasPartialData:payload]){
+    else if([self payloadHasPartialData:payload]){//partial data means signal strength is n/a and has connectionvia tag
+        NSLog(@"status 2");
         NSDictionary *ssid = [self getSSIDs:routerSummary];
         [self getStatus:slaveStat
                    name:payload[NAME]
                location:payload[NAME]
             connetedVia:payload[CONNECTED_VIA]?:@"***"
               interface:payload[INTERFACE]
-         signalStrength:slaveStat.signalStrength?:@""
+         signalStrength:slaveStat.signalStrength
                   ssid1:ssid[@"2G"] ssid2:ssid[@"5G"]
            internetStat:[payload[@"InternetStatus"] boolValue]
                isMaster:NO
                  active:[payload[ACTIVE] boolValue]];
         slaveStat.slaveUniqueName = payload[SLAVE_UNIQUE_NAME];
+        NSLog(@"signal str payload: %@, sig obj: %@", payload[SIGNAL_STRENGTH], slaveStat.signalStrength);
     }
-    else{//has only signal strength
-        slaveStat.signalStrength = payload[SIGNAL_STRENGTH];
+    else{//has only signal strength (this could be n/a when slave is offline
+        NSLog(@"status 3");
+        slaveStat.signalStrength = [self hasSignalStrength:payload[SIGNAL_STRENGTH]]?payload[SIGNAL_STRENGTH]: SLAVE_OFFLINE;
     }
 }
 
+    
 + (BOOL)payloadHasCompleteData:(NSDictionary *)payload{
     if([self hasSignalStrength:payload[SIGNAL_STRENGTH]] && payload[CONNECTED_VIA]){
         return YES;
@@ -77,8 +66,8 @@
 }
 
 + (BOOL)payloadHasPartialData:(NSDictionary *)payload{
-    //partial data means data w/o signal strength
-    if([self hasSignalStrength:payload[SIGNAL_STRENGTH]] == NO){
+    //partial data means data w/o signal strength and has other keys
+    if([self hasSignalStrength:payload[SIGNAL_STRENGTH]] == NO && payload[CONNECTED_VIA] != nil){
         return  YES;
     }
     return NO;
@@ -94,6 +83,7 @@
 }
 
 + (BOOL)hasSignalStrength:(NSString *)sigStrength{
+    NSLog(@"signal strength: %@", sigStrength);
     if(sigStrength == nil)
         return NO;
     return [sigStrength.lowercaseString isEqualToString:@"n/a"]? NO: YES;
@@ -110,34 +100,7 @@
     stat.signalStrength = signalStrength;
     stat.ssid1 = ssid1;
     stat.ssid2 = ssid2;
-    
-    NSMutableArray *keyVals = [NSMutableArray new];
-    [keyVals addObject:@{@"Location":location}];
-    [keyVals addObject:@{@"Connected Via":connetedVia}];
-    [keyVals addObject:@{@"Interface":interface}];
-    [keyVals addObject:@{@"Connection Status":(isactive? @"Active": @"Inactive")}];
-    [keyVals addObject:@{@"Internet Status":(internetStat? @"Online": @"Offline")}];
-    if(!isMaster && [interface isEqualToString:@"Wireless"])
-        [keyVals addObject:@{@"Signal Strength":[self getSignalStrength:signalStrength.integerValue]}];
-    if(ssid2)
-        [keyVals addObject:@{@"5 GHz SSID":ssid2}];
-    [keyVals addObject:@{@"2.4 GHz SSID":ssid1}];
-    stat.keyVals = keyVals;
 }
-
-+ (NSString *)getSignalStrength:(NSInteger)sig{
-    // RSSI levels range from -50dBm (100%) to -100dBm (0%)
-    // Signal Quality Levels : Highest 5. Lowest 0
-    if(sig >= -50)
-        return @"Excellent";
-    else if(sig < -50 && sig >=-73)
-        return @"Good";
-    else if(sig < -73 && sig >= -87)
-        return @"Poor";
-    else
-        return @"Extremely Poor";
-}
-
 
 +(NSDictionary *)getSSIDs:(SFIRouterSummary*)routerSummary{
     NSMutableDictionary *ssids = [NSMutableDictionary new];

@@ -821,7 +821,7 @@ Follow it, then login below.";
 "Nothing"="";
 
 "help_topics_dashboard"="
-<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
 <body>
 <h3>Dashboard</h3>
 <p>The dashboard has been designed to give you an overview  of your home and quick access to key functions.</p>
@@ -839,7 +839,7 @@ As we continue to improve Almond, and add more features, the dashboard will be c
 
 "Explaining_Scenes"="Explaining Scenes";
 "Explaining_Scenes_desc"="
-<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
 <body>
 <h3>Scenes</h3>
 <p>
@@ -874,7 +874,7 @@ To learn more about using Almond with Alexa, visit</br>
 
 "tips_homeSecurity"="Tips For Setting Up Home Security";
 "tips_homeSecurity_desc"="
-<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
 <body>
 <h3>Tips For Setting Up Home Security</h3>
 <p>
@@ -1041,8 +1041,9 @@ Sensors may not be automatically configured to send notifications; therefore, yo
 "AddingDev_alScreen" = "Adding Devices Through The Almond Touch Screen";
 
 "AddingDev_alScreen_desc" = "
-<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
 <body>
+<h3>Adding Devices Through The Almond Touch Screen</h3>
 <p>
 You can add Zigbee, Z-Wave or Philips Hue devices directly through the Almond touch screen. Some devices like Nest need to be added through the local web UI; read the Adding Devices Through Local Web UI topic to learn how to add devices through the local web UI. To know what type your device is, you can look at the packaging for the Zigbee or Z-Wave logos, or contact the manufacturer.
 </p>
@@ -1089,8 +1090,9 @@ Tap on the links below to jump to a section:<br/>
 
 "AddingDev_webUI" = "Adding Devices Through Local Web UI";
 "AddingDev_webUI_desc" = "
-<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
 <body>
+<h3>Adding Devices Through Local Web UI</h3>
 <p>You can add your Nest devices to your Almond account through the local web UI. Zigbee, Z-Wave or Philips Hue devices can be added through the local web UI or directly through the Almond touch screen; read the Adding Devices Through The Almond Touch Screen section to learn how to add the devices through your Almond\’s touch screen.</p>
 <p>
 Tap on the links below to jump to a section:<br/>
@@ -1146,7 +1148,7 @@ If you are facing issues with previously added bulbs, you can click on the Refre
 
 "Adding_motion_sensor" = "Adding a Securifi motion sensor";
 "Adding_motion_sensor_desc" = "
-<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
 <body>
 <h3>Adding a Securifi motion sensor</h3>
 <center><img src=h_motion_sensor_image.pdf/></center>
@@ -1179,7 +1181,7 @@ You can adjust the sensitivity and timer on the motion sensor using a flat screw
 
 "Adding_door_sensor" = "Adding a Securifi door/window sensor";
 "Adding_door_sensor_desc" = "
-<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
 <body>
 <h3>Adding a Securifi door/window sensor</h3>
 <center><img src=h_doorsensor_image.pdf/></center>
@@ -1207,7 +1209,7 @@ Your sensor is now be fully operational and ready to be installed at your locati
 
 "Adding_water_detector" = "Adding a Securifi water detector";
 "Adding_water_detector_desc" = "
-<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
 <body>
 <h3>Adding a Securifi water detector</h3>
 <center><img src=h_water_detector.pdf/></center>
@@ -1229,15 +1231,17 @@ Reattach the the front cover of the housing and make sure it snaps in place prop
 
 "Adding_keyfob" = "Adding a Securifi keyfob";
 "Adding_keyfob_desc" = "
-<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
 <body>
 <h3>Adding a Securifi keyfob</h3>
 <center><img src=h_keyfob_image.pdf/></center>
 <p>Use a Phillips head screwdriver to remove the screw at the back of the Key Fob
 </p>
+<center><img src=h_keyfob_image_V2.pdf/></center>
 <p>
 Carefully lift out the circuit board and flip it over to reveal the battery compartment. Handle the circuit board by the edges to avoid damaging it.
 </p>
+<center><img src=h_keyfob_image_V3.pdf/></center>
 <p>
 Insert the supplied battery and put the circuit board back into the housing and reassemble the key fob.
 </p>
@@ -1253,7 +1257,7 @@ The LED at the top of the key fob will start flashing green and the device will 
 
 "Adding_click" = "Adding an Almond Click";
 "Adding_click_desc" = "
-<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
 <body>
 <h3>Adding an Almond Click</h3>
 <center><img src=h_almond_click.pdf/></center>
@@ -1275,7 +1279,7 @@ Make sure that the lanyard holes in the body of the Almond Click and the back co
 
 "Adding_peanut_plug" = "Adding a Peanut plug";
 "Adding_peanut_plug_desc" = "
-<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:95%}</style></head>
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
 <body>
 <h3>Adding a Peanut plug</h3>
 <center><img src=h_peanut_plug_image_1.pdf/></center>

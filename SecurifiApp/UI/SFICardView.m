@@ -339,7 +339,8 @@
     UILabel *label = [self makeTitleLabel:title];
     [self addSubview:label];
 
-    if(isSwitchOn){
+    BOOL isShareEnabled = NO;
+    if(isSwitchOn && isShareEnabled){
         UIButton *button = [self makeShareLinkButton:target action:shareAction];
         [self addSubview:button];
     }
