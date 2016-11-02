@@ -555,44 +555,41 @@
 
 - (void)onValidateResponseCallback:(id)sender {
     [self hideHud];
-
+    
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    NSString *failureReason;
-    if (![[data valueForKey:@"success"]isEqualToString:@"1"]) {
-       failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
-        [self setOopsMsg:failureReason];
+    if ([[data valueForKey:@"success"] boolValue] == YES) {
+        [self setHeadline:NSLocalizedString(@"Almost there.", @"Almost there.") subHeadline:NSLocalizedString(@"Password reset link has been sent to your account.", @"Password reset link has been sent to your account.") loginButtonEnabled:YES];
     }
     else {
+        NSString *failureReason = data[@"reason"];
+        if([[data valueForKey:@"reason"] isEqualToString:@"Already Validated"]){
+            failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
+        }else if([[data valueForKey:@"reason"] isEqualToString:@"EmailServer Down"]|| [[data valueForKey:@"reason"] isEqualToString:@"Database error"]){
+            failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
+        }else if([[data valueForKey:@"reason"] isEqualToString:@"No such user"]){
+            failureReason = NSLocalizedString(@"The username was not found", @"The username was not found");
+        }
+        //        switch (obj.reasonCode) {
+        //            case 1:
+        //                failureReason = NSLocalizedString(@"The username was not found", @"The username was not found");
+        //                break;
+        //            case 2:
+        //                failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
+        //                break;
+        //            case 3:
+        //            case 5:
+        //                failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
+        //                break;
+        //            case 4:
+        //                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        
+        [self setOopsMsg:failureReason];
     }
-//    ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
-//
-//    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-//    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
-//    DLog(@"%s: Reason Code %d", __PRETTY_FUNCTION__, obj.reasonCode);
-//
-//    if (!obj.isSuccessful) {
-//        NSString *failureReason;
-//        switch (obj.reasonCode) {
-//            case 1:
-//                failureReason = NSLocalizedString(@"The username was not found", @"The username was not found");
-//                break;
-//            case 2:
-//                failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
-//                break;
-//            case 3:
-//            case 5:
-//                failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
-//                break;
-//            case 4:
-//                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
-//                break;
-//            default:
-//                break;
-//        }
-//
-//        [self setOopsMsg:failureReason];
-//    }
 }
 
 - (void)presentActivationScreen {
