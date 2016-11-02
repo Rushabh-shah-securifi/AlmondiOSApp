@@ -591,14 +591,23 @@
 }
 - (IBAction)detailPeriodButtonClicked:(id)sender {
     DetailsPeriodViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"DetailsPeriodViewController"];
+    if([self.NosDayLabel.text isEqualToString:@"LastDay"])
+        newWindow.str = @"0";
+    else if ([self.NosDayLabel.text isEqualToString:@"Past week"])
+        newWindow.str = @"1";
+    else if([self.NosDayLabel.text isEqualToString:@"Past month"])
+        newWindow.str = @"2";
+    else
+        newWindow.str = @"3";
+    
     newWindow.delegate = self;
     NSLog(@"instantiateViewControllerWithIdentifier IF");
     [self.navigationController pushViewController:newWindow animated:YES];
 }
 
--(void)updateDetailPeriod:(NSString *)value date:(NSString*)date{
+-(void)updateDetailPeriod:(NSString *)value date:(NSString*)date lavelText:(NSString*)labelText{
     NSLog(@"updateDetailPeriod");
     [self createRequest:@"Bandwidth" value:value date:date];
-    self.NosDayLabel.text = [NSString stringWithFormat:@"%@ Days",value];
+    self.NosDayLabel.text = labelText;
 }
 @end

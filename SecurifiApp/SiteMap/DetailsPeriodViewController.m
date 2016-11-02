@@ -19,7 +19,7 @@
 @property (nonatomic, weak) IBOutlet DSLCalendarView *calendarView;
 @property (nonatomic) NSString *value;
 @property (nonatomic) NSString *lastDate;
-
+@property (nonatomic) NSString *labelTxt;
 
 @end
 
@@ -39,6 +39,11 @@ NSDate *_dateSelected;
     //    [self.calendarView setVisibleMonth:components animated:YES];
     NSLog(@"viewDidLoad");
     [self.detailTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"cell_Identifier"];
+    NSInteger lastSection = 0;
+    NSInteger lastRow = [self.str integerValue];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:lastRow inSection:lastSection];
+    [self.detailTable reloadData];
+    [self tableViewCheckMark:indexPath];
     
     // Do any additional setup after loading the view.
 }
@@ -74,37 +79,37 @@ NSDate *_dateSelected;
     [cell setCell:[self.suggSearchArr objectAtIndex:indexPath.row]hideItem:YES isCategory:NO showTime:NO count:indexPath.row+1  hideCheckMarkIMg:YES];
     return cell;
 }
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self.detailTable reloadData];
-    if(indexPath.row == 0)
-        return;
+-(void)tableViewCheckMark:(NSIndexPath*)indexPath{
     
-    HistoryCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+   HistoryCell* cell = [self.detailTable cellForRowAtIndexPath:indexPath];
     cell.checkMarkImg.hidden = NO;
     switch (indexPath
             .row) {
-        case 1:
+        case 0:
         {
             self.value = @"1";
             self.lastDate = [CommonMethods getTodayDate];
             self.calendarView.hidden = YES;
+            self.labelTxt = @"LastDay";
         }
             break;
-        case 2:
+        case 1:
         {
             self.value = @"7";
             self.lastDate = [CommonMethods getTodayDate];
             self.calendarView.hidden = YES;
+            self.labelTxt = @"Past week";
         }
             break;
-        case 3:
+        case 2:
         {
             self.value = @"30";
             self.lastDate = [CommonMethods getTodayDate];
             self.calendarView.hidden = YES;
+            self.labelTxt = @"Past month";
         }
             break;
-        case 4:
+        case 3:
         {
             self.calendarView.hidden = NO;
         }
@@ -113,18 +118,19 @@ NSDate *_dateSelected;
             break;
     }
 }
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self.detailTable reloadData];
+    [self tableViewCheckMark:indexPath];
+   
+}
 -(void)addSuggestionSearchObj{
-    NSDictionary *realTime = @{@"hostName":@"  Real Time",
-                               @"image" : [UIImage imageNamed:@"search_icon"]
-                               };
-    
-    NSDictionary *oneDay = @{@"hostName":@"  Today",
+    NSDictionary *oneDay = @{@"hostName":@"  Last Day",
                              @"image" : [UIImage imageNamed:@"schedule_icon"]
                              };
-    NSDictionary *sevenDays = @{@"hostName":@"  7 Days",
+    NSDictionary *sevenDays = @{@"hostName":@"  Past week",
                                 @"image" : [UIImage imageNamed:@"schedule_icon"]
                                 };
-    NSDictionary *month = @{@"hostName":@"  30 Days",
+    NSDictionary *month = @{@"hostName":@"  Past month",
                             @"image" : [UIImage imageNamed:@"schedule_icon"]
                             };
     NSDictionary *dateRange = @{@"hostName":@"  Date Range...",
@@ -132,7 +138,7 @@ NSDate *_dateSelected;
                                 };
     
     
-    self.suggSearchArr = [[NSArray alloc]initWithObjects:realTime,oneDay,sevenDays,month, dateRange,nil];
+    self.suggSearchArr = [[NSArray alloc]initWithObjects:oneDay,sevenDays,month, dateRange,nil];
 }
 #pragma mark - DSLCalendarViewDelegate methods
 
@@ -140,6 +146,7 @@ NSDate *_dateSelected;
     if (range != nil) {
         NSLog( @"Selected %@ %ld/%ld - %ld/%ld",range.endDay, (long)range.startDay.day, (long)range.startDay.month, (long)range.endDay.day, (long)range.endDay.month);
         NSLog(@"day diff %ld",[self daysBetweenDate:range.startDay.date andDate:range.endDay.date]);
+        self.labelTxt = [NSString stringWithFormat:@"%ld-%ld to %ld-%ld",(long)range.startDay.day, (long)range.startDay.month, (long)range.endDay.day, (long)range.endDay.month];
         self.lastDate = [NSString stringWithFormat:@"%ld-%ld-%ld",(long)range.endDay.year,(long)range.endDay.month,(long)range.endDay.day];
         self.value = [NSString stringWithFormat:@"%ld",[self daysBetweenDate:range.startDay.date andDate:range.endDay.date] + 1];
     }
@@ -218,8 +225,11 @@ NSDate *_dateSelected;
 }
 - (IBAction)doneButtonClicked:(id)sender {
     if(![self.value isEqualToString:@""])
-        [self.delegate updateDetailPeriod:self.value date:self.lastDate];
+        [self.delegate updateDetailPeriod:self.value date:self.lastDate lavelText:self.labelTxt];
     
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (IBAction)backButtonClicked:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
 @end
