@@ -532,6 +532,9 @@
 		F417B2AA1DA25D540073C440 /* AdvRouterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F417B2A81DA25D540073C440 /* AdvRouterTableViewCell.m */; };
 		F417B2AD1DA290030073C440 /* AdvRouterHelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */; };
 		F417B2AE1DA290030073C440 /* AdvRouterHelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */; };
+		F41E49141DC9BF8B0050D4DE /* h_keyfob_image_V2.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F41E49111DC9BF8B0050D4DE /* h_keyfob_image_V2.pdf */; };
+		F41E49151DC9BF8B0050D4DE /* h_keyfob_image_V3.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F41E49121DC9BF8B0050D4DE /* h_keyfob_image_V3.pdf */; };
+		F41E49161DC9BF8B0050D4DE /* h_keyfob_image.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F41E49131DC9BF8B0050D4DE /* h_keyfob_image.pdf */; };
 		F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F426AE2E1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F46129F51DB76BC500EAD7F0 /* SliderComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */; };
@@ -627,7 +630,6 @@
 		F4D633F01DC217EE000BF076 /* h_hue_bulbs_webui.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633CF1DC217EE000BF076 /* h_hue_bulbs_webui.pdf */; };
 		F4D633F11DC217EE000BF076 /* hue_tab.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D01DC217EE000BF076 /* hue_tab.pdf */; };
 		F4D633F21DC217EE000BF076 /* key_fob.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D11DC217EE000BF076 /* key_fob.pdf */; };
-		F4D633F31DC217EE000BF076 /* h_keyfob_image.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D21DC217EE000BF076 /* h_keyfob_image.pdf */; };
 		F4D633F41DC217EE000BF076 /* h_manage_scenes.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D31DC217EE000BF076 /* h_manage_scenes.pdf */; };
 		F4D633F51DC217EE000BF076 /* h_motion_sensor_image.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D41DC217EE000BF076 /* h_motion_sensor_image.pdf */; };
 		F4D633F61DC217EE000BF076 /* h_nest_webpage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633D51DC217EE000BF076 /* h_nest_webpage.pdf */; };
@@ -1232,6 +1234,9 @@
 		F417B2A81DA25D540073C440 /* AdvRouterTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvRouterTableViewCell.m; sourceTree = "<group>"; };
 		F417B2AB1DA290030073C440 /* AdvRouterHelpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvRouterHelpController.h; sourceTree = "<group>"; };
 		F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvRouterHelpController.m; sourceTree = "<group>"; };
+		F41E49111DC9BF8B0050D4DE /* h_keyfob_image_V2.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_keyfob_image_V2.pdf; sourceTree = "<group>"; };
+		F41E49121DC9BF8B0050D4DE /* h_keyfob_image_V3.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_keyfob_image_V3.pdf; sourceTree = "<group>"; };
+		F41E49131DC9BF8B0050D4DE /* h_keyfob_image.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_keyfob_image.pdf; sourceTree = "<group>"; };
 		F426AE2B1D19515500AE60C8 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		F43814941D993B2800D5C762 /* Almond.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Almond.entitlements; sourceTree = "<group>"; };
@@ -1375,7 +1380,6 @@
 		F4D633CF1DC217EE000BF076 /* h_hue_bulbs_webui.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_hue_bulbs_webui.pdf; sourceTree = "<group>"; };
 		F4D633D01DC217EE000BF076 /* hue_tab.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = hue_tab.pdf; sourceTree = "<group>"; };
 		F4D633D11DC217EE000BF076 /* key_fob.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = key_fob.pdf; sourceTree = "<group>"; };
-		F4D633D21DC217EE000BF076 /* h_keyfob_image.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_keyfob_image.pdf; sourceTree = "<group>"; };
 		F4D633D31DC217EE000BF076 /* h_manage_scenes.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_manage_scenes.pdf; sourceTree = "<group>"; };
 		F4D633D41DC217EE000BF076 /* h_motion_sensor_image.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_motion_sensor_image.pdf; sourceTree = "<group>"; };
 		F4D633D51DC217EE000BF076 /* h_nest_webpage.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_nest_webpage.pdf; sourceTree = "<group>"; };
@@ -2565,7 +2569,9 @@
 				F4D633CF1DC217EE000BF076 /* h_hue_bulbs_webui.pdf */,
 				F4D633D01DC217EE000BF076 /* hue_tab.pdf */,
 				F4D633D11DC217EE000BF076 /* key_fob.pdf */,
-				F4D633D21DC217EE000BF076 /* h_keyfob_image.pdf */,
+				F41E49111DC9BF8B0050D4DE /* h_keyfob_image_V2.pdf */,
+				F41E49121DC9BF8B0050D4DE /* h_keyfob_image_V3.pdf */,
+				F41E49131DC9BF8B0050D4DE /* h_keyfob_image.pdf */,
 				F4D633D31DC217EE000BF076 /* h_manage_scenes.pdf */,
 				F4D633D41DC217EE000BF076 /* h_motion_sensor_image.pdf */,
 				F4D633D51DC217EE000BF076 /* h_nest_webpage.pdf */,
@@ -2903,9 +2909,9 @@
 				A58DB2EF1BB16B9F00717C02 /* Localizable.strings in Resources */,
 				846414E01B736B80008AB07F /* AvenirLTStd-HeavyOblique.otf in Resources */,
 				846414DD1B736B80008AB07F /* AvenirLTStd-Book.otf in Resources */,
+				F41E49151DC9BF8B0050D4DE /* h_keyfob_image_V3.pdf in Resources */,
 				CEABC6611D6F14CD00C2DCD4 /* categoryTab.xib in Resources */,
 				F4EA081D1D6AD9F900D6CC28 /* More.storyboard in Resources */,
-				F4D633F31DC217EE000BF076 /* h_keyfob_image.pdf in Resources */,
 				A5C68C991C92D93000110B74 /* GenericIndexesData.json in Resources */,
 				A58DB4711BB3CD5200717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				F4D633FD1DC217EE000BF076 /* h_scenes.pdf in Resources */,
@@ -3012,6 +3018,7 @@
 				F4D633ED1DC217EE000BF076 /* h_build_own_scenarios.pdf in Resources */,
 				F4D633F11DC217EE000BF076 /* hue_tab.pdf in Resources */,
 				A58DB3001BB16B9F00717C02 /* InfoPlist.strings in Resources */,
+				F41E49161DC9BF8B0050D4DE /* h_keyfob_image.pdf in Resources */,
 				A58DB2F71BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB30C1BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2ED1BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
@@ -3026,6 +3033,7 @@
 				A58DB2F51BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
 				CE7E8A3D1DC368D100B0C3C6 /* DSLCalendarDaySelection-left.png in Resources */,
 				A58DB32D1BB16EAF00717C02 /* Almond-Localizable.strings in Resources */,
+				F41E49141DC9BF8B0050D4DE /* h_keyfob_image_V2.pdf in Resources */,
 				A58DB3101BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB4551BB3CD3F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB30B1BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
@@ -3128,7 +3136,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		8E7312B8CB56540374D80E44 /* [CP] Check Pods Manifest.lock */ = {
@@ -3143,7 +3151,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C64E9DE6572B4684A06A1BB5 /* [CP] Embed Pods Frameworks */ = {
