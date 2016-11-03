@@ -25,6 +25,7 @@
 #import "MessageView.h"
 #import "SFICloudLinkViewController.h"
 #import "LocalNetworkManagement.h"
+#import "ConnectionStatus.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
@@ -106,8 +107,8 @@ CGPoint tablePoint;
                  object:nil];
     
     [center addObserver:self
-               selector:@selector(onNetworkUpNotifier:)
-                   name:NETWORK_UP_NOTIFIER
+               selector:@selector(onConnectionStatusChanged:)
+                   name:CONNECTION_STATUS_CHANGE_NOTIFIER
                  object:nil];
     
 }
@@ -360,12 +361,15 @@ CGPoint tablePoint;
     });
 }
 
-- (void)onNetworkUpNotifier:(id)sender {
-    NSLog(@"onNetworkUpNotifier");
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-        [self showHudWithTimeoutMsg:@"Loading..."];
-    });
+-(void)onConnectionStatusChanged:(id)sender {
+    NSNumber* status = [sender object];
+    int statusIntValue = [status intValue];
+    if(statusIntValue == AUTHENTICATED){
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.tableView reloadData];
+            [self showHudWithTimeoutMsg:@"Loading..."];
+        });
+    }
 }
 
 #pragma mark command response
