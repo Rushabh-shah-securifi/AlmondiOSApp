@@ -102,17 +102,17 @@ int mii;
 
 -(void)createKeyVals:(AlmondStatus *)stat{
     NSMutableArray *keyVals = [NSMutableArray new];
-    [keyVals addObject:@{@"Location":stat.location}];
-    [keyVals addObject:@{@"Connected Via":stat.connecteVia}];
-    [keyVals addObject:@{@"Interface":stat.interface}];
+    [keyVals addObject:@{@"Location":stat.location?:@""}];
+    [keyVals addObject:@{@"Connected Via":stat.connecteVia?:@""}];
+    [keyVals addObject:@{@"Interface":stat.interface?:@""}];
     [keyVals addObject:@{@"Connection Status":(stat.isActive? @"Active": @"Inactive")}];
     if(!stat.isMaster && [stat.interface isEqualToString:@"Wireless"])
         [keyVals addObject:@{@"Connection Strength":[self getSignalStrength:stat.signalStrength.integerValue]}];
     
     [keyVals addObject:@{@"Internet Status":(stat.internetStat? @"Online": @"Offline")}];
     if(stat.ssid2)
-        [keyVals addObject:@{@"5 GHz SSID":stat.ssid2}];
-    [keyVals addObject:@{@"2.4 GHz SSID":stat.ssid1}];
+        [keyVals addObject:@{@"5 GHz SSID":stat.ssid2?:@""}];
+    [keyVals addObject:@{@"2.4 GHz SSID":stat.ssid1?:@""}];
     stat.keyVals = keyVals;
 }
    
