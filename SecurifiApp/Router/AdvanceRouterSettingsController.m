@@ -76,7 +76,7 @@ static const int headerHeight = 80;
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, headerHeight)];
         headerView.backgroundColor = [UIColor whiteColor];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, headerHeight-1)];
-        [CommonMethods setLableProperties:label text:@"Tap on an option below to learn more about the feature." textColor:[UIColor blackColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentCenter];
+        [CommonMethods setLableProperties:label text:@"At this time these advanced features are only available via Almond's local Web UI.\n\n You can find the credentials to access this web UI in the Web Admin section of the Status app on the Almond LCD." textColor:[UIColor blackColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentCenter];
         [headerView addSubview:label];
         [CommonMethods addLineSeperator:headerView yPos:headerView.frame.size.height-1];
         return headerView;

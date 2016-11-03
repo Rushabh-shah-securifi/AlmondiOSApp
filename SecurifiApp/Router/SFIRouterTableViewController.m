@@ -1009,7 +1009,7 @@ int mii;
         self.isAlmDetailView = NO;
     });
     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local)
-        [[SecurifiToolkit sharedInstance] connectMesh];
+        [[SecurifiToolkit sharedInstance] connectMesh]; //this will at end point on connection estb. sends rai2up
     else
         [[SecurifiToolkit sharedInstance] asyncSendToNetwork:[GenericCommand requestRai2UpMobile:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC]];
     
