@@ -26,12 +26,13 @@
 #import "ConnectionStatus.h"
 #import "LocalNetworkManagement.h"
 #import "NotificationAccessAndRefreshCommands.h"
+#import "NetworkStatusIcon.h"
 
 
 @interface SFITableViewController () <MBProgressHUDDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate, HelpScreensDelegate, MessageViewDelegate>
 @property(nonatomic, readonly) SFINotificationStatusBarButtonItem *notificationsStatusButton;
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *connectionStatusBarButton;
-@property(nonatomic, readonly) SFICloudStatusBarButtonItem *almondModeBarButton;
+
 @property(nonatomic) UIView *tableScrim;
 // Saved when the keyboard shows and restored when keyboard hides
 @property(nonatomic) UIEdgeInsets originalContentInsets;
@@ -90,9 +91,6 @@
         
         // make the button but do not install; will be installed after connection state is determined
         NSLog(@"_almondModeBarButton");
-        _almondModeBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onAlmondModeButtonPressed:) enableLocalNetworking:enableLocalNetworking isDashBoard:NO];
-        [_almondModeBarButton markState:SFICloudStatusStateAtHome];
-        
         [self setBarButtons];
     }
     else {
@@ -168,7 +166,7 @@
                    name:UIKeyboardWillHideNotification
                  object:nil];
     // make sure status icon is up-to-date
-    [self markNetworkStatusIcon];
+    [NetworkStatusIcon markNetworkStatusIcon:self.connectionStatusBarButton isDashBoard:NO];
     [self markNotificationStatusIcon];
 }
 
@@ -362,9 +360,7 @@
 }
 
 - (SFIAlmondConnectionMode)currentConnectionMode {
-    NSLog(@"i am called");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    NSLog(@"i am called");
     return [toolkit currentConnectionMode];
 }
 
@@ -375,57 +371,14 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:@"Connecting..."];
         [self.HUD hide:YES afterDelay:5]; // in case the request times out
-        
-//        [toolkit.devices removeAllObjects];
-//        [toolkit.clients removeAllObjects];
-//        [toolkit.scenesArray removeAllObjects];
-        
         [self.tableView reloadData];
     });
-    
 }
 
-- (void)onAlmondModeButtonPressed:(id)sender {
-    //    if (!self.enableNotificationsView) {
-    //        return;
-    //    }
-    
-    SFICloudStatusBarButtonItem *button = self.almondModeBarButton;
-    SFICloudStatusState state = button.state;
-    NSLog(@"onAlmondModeButtonPressed mode stat %lu",(unsigned long)state);
-    enum SFIAlmondMode newMode;
-    NSString *msg;
-    
-    if (state == SFICloudStatusStateAtHome) {
-        newMode = SFIAlmondMode_away;
-        msg = NSLocalizedString(@"hud message-Setting Almond to Away Mode", "Setting Almond to Away Mode");
-    }
-    else if (state == SFICloudStatusStateAway) {
-        newMode = SFIAlmondMode_home;
-        msg = NSLocalizedString(@"hud message-Setting Almond to Home Mode", "Setting Almond to Home Mode");
-    }
-    else {
-        return;
-    }
-    
-    // if the hud is already being shown then ignore the button press
-    //    if (!self.isHudHidden) {
-    //        return;
-    //    }
-    NSLog(@"showHUD ");
-    dispatch_async(dispatch_get_main_queue(), ^(){
-        [self showHUD:msg];
-        [self.HUD hide:YES afterDelay:10]; // in case the request times out
-    });
-    
-    
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [toolkit asyncRequestAlmondModeChange:self.almondMac mode:newMode];
-}
 
 - (void)onAlmondModeChangeDidComplete:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markNetworkStatusIcon];
+        [NetworkStatusIcon markNetworkStatusIcon:self.connectionStatusBarButton isDashBoard:NO];
         [self.HUD hide:YES];
     });
 }
@@ -463,16 +416,6 @@
         NSString *name = [m isEqualToString:@"2"]?@"almond_mode_home":@"almond_mode_away";
         
         UIImage *image = [UIImage imageNamed:name];
-        //        UIColor *color = [UIColor blackColor];
-        //        [self.almondModeBarButton modeUpdate:image color:color mode:m];
-        //        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        //        spacer.width = 25;
-        
-        //        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.almondModeBarButton, spacer, self.notificationsStatusButton];
-        
-        
-        
-        //        [self markNetworkStatusIcon];
     });
 }
 
@@ -498,26 +441,25 @@
     int statusIntValue = [status intValue];
     if(statusIntValue == NO_NETWORK_CONNECTION){
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [self markNetworkStatusIcon];
+            [NetworkStatusIcon markNetworkStatusIcon:self.connectionStatusBarButton isDashBoard:NO];
             [self.tableView reloadData];
             [self.HUD hide:YES]; // make sure it is hidden
         });
     }else if(statusIntValue == IS_CONNECTING_TO_NETWORK){
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [self markNetworkStatusIcon];
+            [NetworkStatusIcon markNetworkStatusIcon:self.connectionStatusBarButton isDashBoard:NO];
             [self showConnectingHUD];
         });
     }else if(statusIntValue == AUTHENTICATED){
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [self markNetworkStatusIcon];
+            [NetworkStatusIcon markNetworkStatusIcon:self.connectionStatusBarButton isDashBoard:NO];
         });
     }
 }
 
 - (void)onNetworkConnectingNotifier:(id)notification {
-    NSLog(@"onNetworkConnectingNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markNetworkStatusIcon];
+        [NetworkStatusIcon markNetworkStatusIcon:self.connectionStatusBarButton isDashBoard:NO];
     });
 }
 
@@ -530,75 +472,55 @@
 
 - (void)markNotificationStatusIcon {
     if (self.enableNotificationsView) {
-        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         NSInteger badgeCount = [NotificationAccessAndRefreshCommands notificationsBadgeCount];
         [self.notificationsStatusButton markNotificationCount:(NSUInteger) badgeCount];
     }
 }
 
-- (void)markNetworkStatusIcon {
-    NSString *const almondMac = self.almondMac;
-    
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    enum SFIAlmondConnectionMode connectionMode = [toolkit currentConnectionMode];
-    enum SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
-    
-    switch (status) {
-        case SFIAlmondConnectionStatus_disconnected: {
-            enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateDisconnected : SFICloudStatusStateLocalConnectionOffline;
-            [self.connectionStatusBarButton markState:state];
-            [self hideAlmondModeButton]; // when disconnected, not relevant to show mode or allow it to be changed
-            break;
-        };
-        case SFIAlmondConnectionStatus_connecting: {
-            [self.connectionStatusBarButton markState:SFICloudStatusStateConnecting];
-            [self hideAlmondModeButton]; // when connecting, true almond state is unknown
-            break;
-        };
-        case SFIAlmondConnectionStatus_connected: {
-            enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateConnected : SFICloudStatusStateLocalConnection;
-            [self.connectionStatusBarButton markState:state];
-            
-            if (self.enableNotificationsHomeAwayMode) {
-                SFIAlmondMode mode = [toolkit modeForAlmond:almondMac];
-                
-                if (mode == SFIAlmondMode_unknown) {
-                    [self hideAlmondModeButton]; // don't show button unless one is known
-                }
-                else {
-                    state = [self stateForAlmondMode:mode];
-                    [self.almondModeBarButton markState:state];
-                    [self showAlmondModeButton];
-                }
-            }
-            break;
-        };
-        case SFIAlmondConnectionStatus_error: {
-            [self hideAlmondModeButton]; // when connection error, true almond state is unknown
-            break;
-        };
-        case SFIAlmondConnectionStatus_error_mode: {
-            enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateCloudConnectionNotSupported : SFICloudStatusStateLocalConnectionNotSupported;
-            [self.connectionStatusBarButton markState:state];
-            [self hideAlmondModeButton]; // when disconnected, not relevant to show mode or allow it to be changed
-            break;
-        }
-    }
-}
+//- (void)markNetworkStatusIcon {
+//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+//    enum SFIAlmondConnectionMode connectionMode = [toolkit currentConnectionMode];
+//    enum SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
+//    
+//    switch (status) {
+//        case SFIAlmondConnectionStatus_disconnected: {
+//            enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateDisconnected : SFICloudStatusStateLocalConnectionOffline;
+//            [self.connectionStatusBarButton markState:state];
+//            break;
+//        };
+//        case SFIAlmondConnectionStatus_connecting: {
+//            [self.connectionStatusBarButton markState:SFICloudStatusStateConnecting];
+//            break;
+//        };
+//        case SFIAlmondConnectionStatus_connected: {
+//            enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateConnected : SFICloudStatusStateLocalConnection;
+//            [self.connectionStatusBarButton markState:state];
+//            break;
+//        };
+//        case SFIAlmondConnectionStatus_error: {
+//            break;
+//        };
+//        case SFIAlmondConnectionStatus_error_mode: {
+//            enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateCloudConnectionNotSupported : SFICloudStatusStateLocalConnectionNotSupported;
+//            [self.connectionStatusBarButton markState:state];
+//            break;
+//        }
+//    }
+//}
 
-- (enum SFICloudStatusState)stateForAlmondMode:(SFIAlmondMode)mode {
-    switch (mode) {
-        case SFIAlmondMode_home:
-            return SFICloudStatusStateAtHome;
-        case SFIAlmondMode_away:
-            return SFICloudStatusStateAway;
-            
-        case SFIAlmondMode_unknown:
-        default:
-            // can happen when the cloud connection comes up but before almond mode has been determined
-            return SFICloudStatusStateConnected;
-    }
-}
+//- (enum SFICloudStatusState)stateForAlmondMode:(SFIAlmondMode)mode {
+//    switch (mode) {
+//        case SFIAlmondMode_home:
+//            return SFICloudStatusStateAtHome;
+//        case SFIAlmondMode_away:
+//            return SFICloudStatusStateAway;
+//            
+//        case SFIAlmondMode_unknown:
+//        default:
+//            // can happen when the cloud connection comes up but before almond mode has been determined
+//            return SFICloudStatusStateConnected;
+//    }
+//}
 
 - (void)setBarButtons{
     UIBarButtonItem *spacer = [self getBarButton:20];
@@ -611,24 +533,6 @@
     return barButton;
 }
 
-- (void)hideAlmondModeButton {
-    if (!self.enableNotificationsHomeAwayMode) {
-        return;
-    }
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        //        [self setBarButtons:NO];
-    });
-}
-
-- (void)showAlmondModeButton {
-    //    if (!self.enableNotificationsHomeAwayMode) {
-    //        return;
-    //    }
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        //        [self setBarButtons:YES];
-    });
-    //    [self setBarButtons:NO];
-}
 #pragma mark cell methods
 
 -(BOOL)isFirmwareCompatible{
@@ -733,7 +637,7 @@
 - (void)markAlmondMac:(NSString *)almondMac {
     _almondMac = [almondMac copy];
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markNetworkStatusIcon];
+        [NetworkStatusIcon markNetworkStatusIcon:self.connectionStatusBarButton isDashBoard:NO];
     });
 }
 
@@ -811,7 +715,6 @@
 }
 
 #pragma mark - UIGestureRecognizerDelegate methods
-
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     UIView *view = touch.view;
     // prevent recognizing touches on the slider
@@ -881,7 +784,6 @@
         self.tabBarController.delegate = self; // stop user from switching tabs while table is locked
         self.tableView.scrollEnabled = NO;
         self.notificationsStatusButton.enabled = NO;
-        self.almondModeBarButton.enabled = NO;
         self.connectionStatusBarButton.enabled = NO;
         [self installScrimView];
     });
@@ -892,7 +794,6 @@
         self.tabBarController.delegate = nil; // uninstall delegate so tabs can be selected
         self.tableView.scrollEnabled = YES;
         self.notificationsStatusButton.enabled = YES;
-        self.almondModeBarButton.enabled = YES;
         self.connectionStatusBarButton.enabled = YES;
         [self removeScrimView];
     });

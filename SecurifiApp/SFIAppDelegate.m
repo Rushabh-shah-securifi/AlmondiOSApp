@@ -155,7 +155,6 @@
     [self initializeSystem:application];
     NSDictionary *remote = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remote) {
-        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         [NotificationAccessAndRefreshCommands tryRefreshNotifications];
         [application securifiApplicationHandleUserDidTapNotification];
     }

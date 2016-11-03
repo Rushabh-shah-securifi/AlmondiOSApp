@@ -412,6 +412,7 @@
 		A58DB4AA1BB3CD7500717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49F1BB3CD7500717C02 /* Scenes_Iphone.strings */; };
 		A58DB4AB1BB3CD7500717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4A11BB3CD7500717C02 /* termsofuse.html */; };
 		A5AC1E841CC7BA01009F362B /* RuleSceneUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AC1E831CC7BA01009F362B /* RuleSceneUtil.m */; };
+		A5B999F71DCB3FB600998557 /* NetworkStatusIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B999F61DCB3FB600998557 /* NetworkStatusIcon.m */; };
 		A5C68C991C92D93000110B74 /* GenericIndexesData.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C981C92D93000110B74 /* GenericIndexesData.json */; };
 		A5C68C9A1C92D93000110B74 /* GenericIndexesData.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C981C92D93000110B74 /* GenericIndexesData.json */; };
 		A5C68C9C1C9303D300110B74 /* DeviceListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */; };
@@ -1089,6 +1090,8 @@
 		A58DB4A21BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "zh-Hans"; path = termsofuse.html; sourceTree = "<group>"; };
 		A5AC1E821CC7BA01009F362B /* RuleSceneUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleSceneUtil.h; sourceTree = "<group>"; };
 		A5AC1E831CC7BA01009F362B /* RuleSceneUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleSceneUtil.m; sourceTree = "<group>"; };
+		A5B999F51DCB3F9400998557 /* NetworkStatusIcon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkStatusIcon.h; sourceTree = "<group>"; };
+		A5B999F61DCB3FB600998557 /* NetworkStatusIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkStatusIcon.m; sourceTree = "<group>"; };
 		A5C68C981C92D93000110B74 /* GenericIndexesData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GenericIndexesData.json; path = ../GenericIndexesData.json; sourceTree = "<group>"; };
 		A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DeviceListResponse.json; path = ../DeviceListResponse.json; sourceTree = "<group>"; };
 		A5F03F6A1C76E412006CB309 /* NewAddSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewAddSceneViewController.h; sourceTree = "<group>"; };
@@ -1942,6 +1945,8 @@
 				F41240A91D7EC1480067A94C /* AlmondSelectionTableView.m */,
 				F41240AC1D7EC6030067A94C /* AlmondSelectionCell.h */,
 				F41240AD1D7EC6030067A94C /* AlmondSelectionCell.m */,
+				A5B999F51DCB3F9400998557 /* NetworkStatusIcon.h */,
+				A5B999F61DCB3FB600998557 /* NetworkStatusIcon.m */,
 			);
 			name = Dashboard;
 			sourceTree = "<group>";
@@ -3126,7 +3131,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		8E7312B8CB56540374D80E44 /* [CP] Check Pods Manifest.lock */ = {
@@ -3141,7 +3146,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C64E9DE6572B4684A06A1BB5 /* [CP] Embed Pods Frameworks */ = {
@@ -3463,6 +3468,7 @@
 				CE7E89CD1DC357DE00B0C3C6 /* DSLCalendarMonthView.m in Sources */,
 				F4B8767C1D54653500DCF76F /* MultiButtonView.m in Sources */,
 				CE65C4911D1A67B200C2E1C0 /* UILabel+ActionSheet.m in Sources */,
+				A5B999F71DCB3FB600998557 /* NetworkStatusIcon.m in Sources */,
 				F401B0731D2D241200F64CE2 /* ColorComponentView.m in Sources */,
 				CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */,
 				CEF6F5061C92CD2400C68975 /* GenericIndexUtil.m in Sources */,

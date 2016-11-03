@@ -31,9 +31,10 @@
 #import "ConnectionStatus.h"
 #import "LocalNetworkManagement.h"
 #import "NotificationAccessAndRefreshCommands.h"
+#import "NetworkStatusIcon.h"
 
 
-@interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate>{
+@interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate, NetworkStatusIconDelegate>{
     UIButton *button, *btnArrow;
 }
 
@@ -50,10 +51,10 @@
 @property(nonatomic) HelpScreens *helpScreensObj;
 @property(nonatomic) UIView *maskView;
 @property(nonatomic) UIButton *buttonMaskView;
+
 @end
 
 @implementation DashboardViewController
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.toolkit = [SecurifiToolkit sharedInstance];
@@ -69,7 +70,6 @@
     //add almond button
     [self initializeAddButtonView];
     
-    [self markNetworkStatusIcon];
     [self initializeHUD];
 }
 
@@ -81,23 +81,27 @@
                selector:@selector(onAlmondModeDidChange:)
                    name:kSFIAlmondModeDidChange
                  object:nil];
+    
     [center addObserver:self
                selector:@selector(onDeviceListAndDynamicResponseParsed:) //for both sensors and clients
                    name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
                  object:nil];
+    
     [center addObserver:self
                selector:@selector(onCurrentAlmondChanged:)
                    name:kSFIDidChangeCurrentAlmond
                  object:nil];
+    
     [center addObserver:self
                selector:@selector(onAlmondListDidChange:)
                    name:kSFIDidUpdateAlmondList
                  object:nil];
+    
     [center addObserver:self
                selector:@selector(onConnectionStatusChanged:)
                    name:CONNECTION_STATUS_CHANGE_NOTIFIER
                  object:nil];
-
+    
     [center addObserver:self
                selector:@selector(onDidReceiveNotifications)
                    name:kSFINotificationDidStore
@@ -118,12 +122,14 @@
     [self getRecentNotification];
     [NotificationAccessAndRefreshCommands tryRefreshNotifications];
     [self initializeUI];
-    [self markNetworkStatusIcon];
+    [NetworkStatusIcon setDelegate:self];
+    [NetworkStatusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [NetworkStatusIcon setDelegate:nil];
 }
 
 -(void)initializeUI{
@@ -292,7 +298,7 @@
 //    if(self.toolkit.clients!=nil)
 //        [self.toolkit.clients removeAllObjects];
     [self initializeUI];
-    [self markNetworkStatusIcon];
+    [NetworkStatusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
     // getrecentnotification to instantly show onclick
     [self getRecentNotification];
     [NotificationAccessAndRefreshCommands tryRefreshNotifications];
@@ -323,6 +329,7 @@
     self.HUD.labelText = text;
     [self.HUD show:YES];
 }
+
 #pragma mark Update
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"dash onDeviceListAndDynamicResponseParsed");
@@ -342,15 +349,29 @@
 }
 
 -(void)onConnectionStatusChanged:(id)sender {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markNetworkStatusIcon];
-    });
+    NSNumber* status = [sender object];
+    int statusIntValue = [status intValue];
+    if(statusIntValue == NO_NETWORK_CONNECTION){
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [NetworkStatusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
+            [self.HUD hide:YES]; // make sure it is hidden
+        });
+    }else if(statusIntValue == IS_CONNECTING_TO_NETWORK){
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [NetworkStatusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
+        });
+    }else if(statusIntValue == AUTHENTICATED){
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [NetworkStatusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
+            [self updateMode:self.toolkit.mode_src];
+        });
+    }
 }
 
 
 - (void)onAlmondModeDidChange:(id)sender {
         NSLog(@"Almond mode is changing %d",self.toolkit.mode_src);
-    [self markNetworkStatusIcon];
+    [NetworkStatusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -538,7 +559,6 @@
     cell.textLabel.text = isSensor? NSLocalizedString(@"no_recent_smarthome_notification", @"No Recent SmartHome Activity"): NSLocalizedString(@"no_netwrok_notifications", @"No Recent Network Activity");
     cell.detailTextLabel.text = @"";
     
-    
     return cell;
 }
 
@@ -555,7 +575,6 @@
     if(![UIAlertController class]){ // to not support ios 7 or before
         return;
     }
-    
     UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"almond_connection", @"Almond Connection") message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     almondSelect.title = Title;
     UIAlertAction *Check = [UIAlertAction
@@ -751,45 +770,43 @@
 //    [toolkit.ruleList removeAllObjects];
 }
 
-- (void)markNetworkStatusIcon {
-    //    NSLog(@"markNetworkStatusIcon");
-    NSLog(@"i am called");
-    enum SFIAlmondConnectionMode connectionMode = [_toolkit currentConnectionMode];
-    enum SFIAlmondConnectionStatus status = [_toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
-    enum SFICloudStatusState state;
-    switch (status) {
-        case SFIAlmondConnectionStatus_disconnected: {
-            state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateDisconnected : SFICloudStatusStateLocalConnectionOffline;
-            [self.leftButton markState:state];
-            [self changeColorOfNavigationItam];
-            [self.HUD hide:YES];
-            break;
-        };
-        case SFIAlmondConnectionStatus_connecting: {
-            [self.leftButton markState:SFICloudStatusStateConnecting];
-            [self changeColorOfNavigationItam];
-            break;
-        };
-        case SFIAlmondConnectionStatus_connected: {
-            state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateConnected : SFICloudStatusStateLocalConnection;
-            [self.leftButton markState:state];
-            [self updateMode:self.toolkit.mode_src];
-            break;
-        };
-        case SFIAlmondConnectionStatus_error: {
-            [self changeColorOfNavigationItam];
-            break;
-        };
-        case SFIAlmondConnectionStatus_error_mode: {
-            state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateCloudConnectionNotSupported : SFICloudStatusStateLocalConnectionNotSupported;
-            [self.leftButton markState:state];
-            [self changeColorOfNavigationItam];
-            break;
-        }
-    }
-}
+//- (void)markNetworkStatusIcon {
+//    //    NSLog(@"markNetworkStatusIcon");
+//    enum SFIAlmondConnectionMode connectionMode = [_toolkit currentConnectionMode];
+//    enum SFIAlmondConnectionStatus status = [_toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
+//    enum SFICloudStatusState state;
+//    switch (status) {
+//        case SFIAlmondConnectionStatus_disconnected: {
+//            state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateDisconnected : SFICloudStatusStateLocalConnectionOffline;
+//            [self.leftButton markState:state];
+//            [self changeColorOfNavigationItam];
+//            break;
+//        };
+//        case SFIAlmondConnectionStatus_connecting: {
+//            [self.leftButton markState:SFICloudStatusStateConnecting];
+//            [self changeColorOfNavigationItam];
+//            break;
+//        };
+//        case SFIAlmondConnectionStatus_connected: {
+//            state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateConnected : SFICloudStatusStateLocalConnection;
+//            [self.leftButton markState:state];
+//            break;
+//        };
+//        case SFIAlmondConnectionStatus_error: {
+//            [self changeColorOfNavigationItam];
+//            break;
+//        };
+//        case SFIAlmondConnectionStatus_error_mode: {
+//            state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateCloudConnectionNotSupported : SFICloudStatusStateLocalConnectionNotSupported;
+//            [self.leftButton markState:state];
+//            [self changeColorOfNavigationItam];
+//            break;
+//        }
+//    }
+//}
 
 -(void)changeColorOfNavigationItam {
+    NSLog("change color of navigation itam is called");
     dispatch_async(dispatch_get_main_queue(), ^{
         self.navigationImg.image = [CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightGrayColor]];
         self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightGrayColor]];
