@@ -78,7 +78,9 @@ int mii;
     SFIAlmondPlus *almond = [self.toolkit currentAlmond];
       self.isLocal = [self.toolkit useLocalNetwork:almond.almondplusMAC];
     
+    NSLog(@"View will appear is called in DeviceListController");
     [self initializeNotifications];
+    
     
     [self tryShowLoadingDevice];
     dispatch_async(dispatch_get_main_queue(), ^() {

@@ -12,11 +12,14 @@
 
 -(void) changeColorOfNavigationItam;
 
+-(void) showNetworkTogglePopUp:(NSString*)title withSubTitle1:(NSString*)subTitle1 withSubTitle2:(NSString*)subTitle2 withMode1:(SFIAlmondConnectionMode)mode1 withMode2:(SFIAlmondConnectionMode)mode2 presentLocalNetworkSettingsEditor:(BOOL)present;
 @end
 
 @interface NetworkStatusIcon : NSObject
 
 + (void) setDelegate :(id<NetworkStatusIconDelegate>) dashboard;
+
++(void) onConnectionStatusButtonPressed;
 
 + (void)markNetworkStatusIcon: (SFICloudStatusBarButtonItem*)button isDashBoard:(BOOL)value;
 

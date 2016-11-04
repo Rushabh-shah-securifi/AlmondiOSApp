@@ -51,7 +51,6 @@
 @property(nonatomic) HelpScreens *helpScreensObj;
 @property(nonatomic) UIView *maskView;
 @property(nonatomic) UIButton *buttonMaskView;
-
 @end
 
 @implementation DashboardViewController
@@ -123,11 +122,13 @@
     [NotificationAccessAndRefreshCommands tryRefreshNotifications];
     [self initializeUI];
     [NetworkStatusIcon setDelegate:self];
+    NSLog(@"View will appear is called in DashBoardViewController");
     [NetworkStatusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [NetworkStatusIcon setDelegate:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [NetworkStatusIcon setDelegate:nil];
 }
@@ -571,56 +572,39 @@
 }
 
 #pragma mark onConnectionStatus
--(void)onConnection:(NSString *)Title subTitle:(NSString *)subTitle stmt:(enum SFIAlmondConnectionMode)mode{
-    if(![UIAlertController class]){ // to not support ios 7 or before
-        return;
-    }
-    UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"almond_connection", @"Almond Connection") message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    almondSelect.title = Title;
-    UIAlertAction *Check = [UIAlertAction
-                            actionWithTitle:subTitle
-                            style:UIAlertActionStyleDefault
-                            handler:^(UIAlertAction * action)
-                            {
-                                [self configureNetworkSettings:mode];
-                            }];
-    [almondSelect addAction:Check];
-    UIAlertAction *Close = [UIAlertAction
-                            actionWithTitle:NSLocalizedString(@"close", @"Close")
-                            style:UIAlertActionStyleDefault
-                            handler:^(UIAlertAction * action)
-                            {
-                                [almondSelect dismissViewControllerAnimated:YES completion:nil];
-                            }];
-    [almondSelect addAction:Close];
-    almondSelect.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0);
-    almondSelect.popoverPresentationController.sourceView = self.view;
-    almondSelect.popoverPresentationController.permittedArrowDirections = 0;
-    [self presentViewController:almondSelect animated:YES completion:nil];
-}
 
--(void)onConnection2:(NSString *)Title subTitle1:(NSString *)subTitle1 subTitle2:(NSString *)subTitle2 stmt1:(enum SFIAlmondConnectionMode)mode1 stmt2:(enum SFIAlmondConnectionMode)mode2{
+- (void) showNetworkTogglePopUp:(NSString*)title withSubTitle1:(NSString*)subTitle1 withSubTitle2:(NSString*)subTitle2 withMode1:(SFIAlmondConnectionMode)mode1 withMode2:(SFIAlmondConnectionMode)mode2 presentLocalNetworkSettingsEditor:(BOOL)present {
     if(![UIAlertController class]){ // to not support ios 7 or before
         return;
     }
+    
     UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"almond_connection", @"Almond Connection") message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    almondSelect.title = Title;
-    UIAlertAction *Check1 = [UIAlertAction
-                             actionWithTitle:subTitle1
-                             style:UIAlertActionStyleDefault
-                             handler:^(UIAlertAction * action)
-                             {
-                                 [self configureNetworkSettings:mode1];
-                             }];
-    [almondSelect addAction:Check1];
-    UIAlertAction *Check2 = [UIAlertAction
-                             actionWithTitle:subTitle2
-                             style:UIAlertActionStyleDefault
-                             handler:^(UIAlertAction * action)
-                             {
-                                 [self configureNetworkSettings:mode2];
-                             }];
-    [almondSelect addAction:Check2];
+    if([subTitle1 length] != 0){
+        almondSelect.title = title;
+        UIAlertAction *Check1 = [UIAlertAction
+                                 actionWithTitle:subTitle1
+                                 style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     if(present)
+                                         [self presentLocalNetworkSettingsEditor];
+                                     else
+                                         [self configureNetworkSettings:mode1];
+                                 }];
+        [almondSelect addAction:Check1];
+    }
+    
+    if([subTitle2 length]!=0){
+        UIAlertAction *Check2 = [UIAlertAction
+                                 actionWithTitle:subTitle2
+                                 style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     [self configureNetworkSettings:mode2];
+                                 }];
+        [almondSelect addAction:Check2];
+    }
+    
     UIAlertAction *Close = [UIAlertAction
                             actionWithTitle:NSLocalizedString(@"close", @"Close")
                             style:UIAlertActionStyleDefault
@@ -629,6 +613,7 @@
                                 [almondSelect dismissViewControllerAnimated:YES completion:nil];
                             }];
     [almondSelect addAction:Close];
+    
     almondSelect.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0);
     almondSelect.popoverPresentationController.sourceView = self.view;
     almondSelect.popoverPresentationController.permittedArrowDirections = 0;
@@ -639,34 +624,6 @@
     });
 }
 
--(void)onConnection3:(NSString *)Title subTitle:(NSString *)subTitle{
-    if(![UIAlertController class]){ // to not support ios 7 or before
-        return;
-    }
-    UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"almond_connection", @"Almond Connection") message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    almondSelect.title = Title;
-    UIAlertAction *Check = [UIAlertAction
-                            actionWithTitle:subTitle
-                            style:UIAlertActionStyleDefault
-                            handler:^(UIAlertAction * action)
-                            {
-                                [self presentLocalNetworkSettingsEditor];
-                            }];
-    [almondSelect addAction:Check];
-    UIAlertAction *Close = [UIAlertAction
-                            actionWithTitle:NSLocalizedString(@"close", @"Close")
-                            style:UIAlertActionStyleDefault
-                            handler:^(UIAlertAction * action)
-                            {
-                                [almondSelect dismissViewControllerAnimated:YES completion:nil];
-                            }];
-    [almondSelect addAction:Close];
-    almondSelect.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0);
-    almondSelect.popoverPresentationController.sourceView = self.view;
-    almondSelect.popoverPresentationController.permittedArrowDirections = 0;
-    [self presentViewController:almondSelect animated:YES completion:nil];
-    
-}
 
 - (void)presentLocalNetworkSettingsEditor {
     RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
@@ -676,104 +633,20 @@
     [self presentViewController:ctrl animated:YES completion:nil];
 }
 
+
 - (void)onConnectionStatusButtonPressed:(id)sender {
-    NSString *Title;
-    NSString *subTitle1, *subTitle2;
-    SFICloudStatusState statusState = self.leftButton.state;
-    switch (statusState) {
-        case SFICloudStatusStateCloudConnectionNotSupported: {
-            Title =NSLocalizedString(@"cloud_conn_not_supported", "Your Almond is not affiliated with the cloud. Only local connection to your Almond is supported.");
-            subTitle1 = NSLocalizedString(@"switch_local", @"Switch to Local Connection");
-            [self onConnection:Title subTitle: subTitle1 stmt: SFIAlmondConnectionMode_local ];
-            break;
-        }
-        case SFICloudStatusStateLocalConnectionNotSupported: {
-            Title = NSLocalizedString(@"alert msg offline Local connection not supported.", "Can't connect to your Almond because local connection settings are missing. Tap edit to add settings.");
-            subTitle1 =NSLocalizedString(@"switch_cloud", @"Switch to Cloud Connection") ;
-            [self onConnection:Title subTitle:subTitle1 stmt: SFIAlmondConnectionMode_cloud ];
-            break;
-        }
-        case SFICloudStatusStateConnecting: {
-            Title = NSLocalizedString(@"In process of connecting. Change connection method.", @"In process of connecting. Change connection method.");
-            subTitle1 = NSLocalizedString(@"cloud_connection", @"Cloud Connection");
-            subTitle2 = NSLocalizedString(@"local_connection", @"Local Connection");
-            [self onConnection2:Title subTitle1:subTitle1 subTitle2:subTitle2 stmt1:SFIAlmondConnectionMode_cloud stmt2:SFIAlmondConnectionMode_local];
-            break;
-        };
-        case SFICloudStatusStateDisconnected:
-        case SFICloudStatusStateAlmondOffline: {
-            Title = NSLocalizedString(@"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection.", @"Cloud connection to your Almond failed. Tap retry or switch to local connection.");
-            subTitle1 = NSLocalizedString(@"switch_local", @"Switch to Local Connection");
-            subTitle2 = NSLocalizedString(@"switch_cloud", @"Switch to Cloud Connection");
-            [self onConnection2:Title subTitle1:subTitle1 subTitle2:subTitle2 stmt1:SFIAlmondConnectionMode_local stmt2:SFIAlmondConnectionMode_cloud];
-            break;
-        };
-        case SFICloudStatusStateConnectionError: {
-            Title = NSLocalizedString(@"Can't connect to your Almond. Please select a connection method.", @"Can't connect to your Almond. Please select a connection method.");
-            subTitle1 =  NSLocalizedString(@"cloud_connection", @"Cloud Connection");
-            subTitle2 = NSLocalizedString(@"local_connection", @"Local Connection");
-            [self onConnection2:Title subTitle1:subTitle1 subTitle2:subTitle2 stmt1:SFIAlmondConnectionMode_cloud stmt2:SFIAlmondConnectionMode_local];
-            break;
-        };
-        case SFICloudStatusStateLocalConnectionOffline: {
-            Title = NSLocalizedString(@"local_conn_failed_retry", "Local connection to your Almond failed. Tap retry or switch to cloud connection.");
-            subTitle1 = NSLocalizedString(@"alert title offline Local Retry Local Connection", @"Retry Local Connection");
-            subTitle2 = NSLocalizedString(@"switch_cloud", @"Switch to Cloud Connection");
-            [self onConnection2:Title subTitle1:subTitle1 subTitle2:subTitle2 stmt1:SFIAlmondConnectionMode_local stmt2:SFIAlmondConnectionMode_cloud];
-            break;
-        };
-        case SFICloudStatusStateConnected: {
-            SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:self.toolkit.currentAlmond.almondplusMAC];
-            if (settings) {
-                Title = NSLocalizedString(@"alert.message-Connected to your Almond via cloud.", @"Connected to your Almond via cloud.");
-                subTitle1 = NSLocalizedString(@"switch_local", @"Switch to Local Connection");
-                [self onConnection:Title subTitle:subTitle1 stmt:SFIAlmondConnectionMode_local];
-            }
-            else{
-                Title = NSLocalizedString(@"alert.message-Connected to your Almond via cloud.", @"Connected to your Almond via cloud.");
-                subTitle1 = NSLocalizedString(@"Add Local Connection Settings", @"Add Local Connection Settings");
-                [self onConnection3:Title subTitle:subTitle1];
-            }
-            break;
-        };
-        case SFICloudStatusStateLocalConnection: {
-            SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:self.toolkit.currentAlmond.almondplusMAC];
-            if(settings){
-                Title = NSLocalizedString(@"Connected to your Almond locally.", @"Connected to your Almond locally.");
-                subTitle1 = NSLocalizedString(@"switch_cloud", @"Switch to Cloud Connection");
-                [self onConnection:Title subTitle:subTitle1 stmt:SFIAlmondConnectionMode_cloud];
-                break;
-            }
-            else{
-                Title = NSLocalizedString(@"alert msg offline Local connection not supported.", @"Local connection settings are missing.");
-                subTitle1 = NSLocalizedString(@"Add Local Connection Settings", @"Add Local Connection Settings");
-                [self onConnection3:Title subTitle:subTitle1];
-                break;
-            }
-        };
-        case SFICloudStatusStateAway:
-        case SFICloudStatusStateAtHome:
-            return;
-        default:
-            return;
-    }
+    [NetworkStatusIcon onConnectionStatusButtonPressed];
 }
 
 - (void)configureNetworkSettings:(enum SFIAlmondConnectionMode)mode {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    NSLog(@"i am called");
     [toolkit setConnectionMode:mode];
     [self showHudWithTimeoutMsg:NSLocalizedString(@"connecting", @"Connecting...") delay:1];
-//    [toolkit.devices removeAllObjects];
-//    [toolkit.clients removeAllObjects];
-//    [toolkit.scenesArray removeAllObjects];
-//    [toolkit.ruleList removeAllObjects];
 }
 
 
-
 -(void)changeColorOfNavigationItam {
-    NSLog("change color of navigation itam is called");
+    NSLog(@"change color of navigation itam is called");
     dispatch_async(dispatch_get_main_queue(), ^{
         self.navigationImg.image = [CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightGrayColor]];
         self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightGrayColor]];
@@ -910,7 +783,6 @@
     [view initializeView:self.buttonMaskView.frame];
     [self.buttonMaskView addSubview:view];
 
-    
     [self slideAnimation];
 }
 
