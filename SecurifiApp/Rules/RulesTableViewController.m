@@ -105,7 +105,7 @@ CGPoint tablePoint;
                  object:nil];
     
     [center addObserver:self
-               selector:@selector(onConnectionStatusDidChange:)
+               selector:@selector(onConnectionStatusChanged:)
                    name:CONNECTION_STATUS_CHANGE_NOTIFIER
                  object:nil];
     
@@ -358,10 +358,10 @@ CGPoint tablePoint;
     });
 }
 
-- (void)onConnectionStatusDidChange: (id)sender {
+
+-(void)onConnectionStatusChanged:(id)sender {
     NSNumber* status = [sender object];
     int statusIntValue = [status intValue];
-    
     if(statusIntValue == AUTHENTICATED){
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.tableView reloadData];

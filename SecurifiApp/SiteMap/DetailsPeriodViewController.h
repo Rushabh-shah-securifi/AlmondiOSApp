@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 @protocol DetailsPeriodViewControllerDelegate
--(void)updateDetailPeriod;
+
+-(void)updateDetailPeriod:(NSString *)value date:(NSString*)date lavelText:(NSString*)labelText;
 @end
 @interface DetailsPeriodViewController : UIViewController
 @property (nonatomic, weak)id<DetailsPeriodViewControllerDelegate> delegate;
+@property (nonatomic) NSString *str;
+
 @end

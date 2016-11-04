@@ -131,10 +131,10 @@
     }
     
     // Try to connect iff we are the top-level presenting view and network is down
-        if (self.presentedViewController != nil) {
-            NSLog(@"presented view controller. returning");
-            return;
-        }
+    if (self.presentedViewController != nil) {
+        NSLog(@"presented view controller. returning");
+        return;
+    }
     
     if (!supportsLocalConnections && ![toolkit isCloudReachable]) {
         // No network route to cloud. Nothing to do.

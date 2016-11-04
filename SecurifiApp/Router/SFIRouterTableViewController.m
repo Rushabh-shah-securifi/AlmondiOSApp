@@ -308,12 +308,17 @@ int mii;
 }
 
 -(BOOL)isAL3{
-    return [self.routerSummary.firmwareVersion hasPrefix:@"AL3-"];
+//    possible values of "Router mode " in Router summary
+//    master/WirelessSlave/WiredSlave/re/ap/router/wwan
+    NSString *mode = _routerSummary.routerMode.lowercaseString;
+    BOOL isRouterOrMaster = [mode isEqualToString:@"router" ] || [mode isEqualToString:@"master"];
+    return [_routerSummary.firmwareVersion hasPrefix:@"AL3-"] && isRouterOrMaster;
 }
 
 -(BOOL)isDisconnected{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    return [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]] == SFIAlmondConnectionStatus_disconnected;
+    ConnectionStatusType connectionStat = [ConnectionStatus getConnectionStatus];
+    return [toolkit connectionStatusFromNetworkState:connectionStat] == SFIAlmondConnectionStatus_disconnected;
 }
 
 -(int)getSettingsRowHeight{
@@ -920,7 +925,9 @@ int mii;
 
              }else{
                  MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupAdding" isStatView:NO];
-                 [self presentViewController:ctrl animated:YES completion:nil];
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [self presentViewController:ctrl animated:YES completion:nil];
+                 });
              }
          }
      }
@@ -989,7 +996,9 @@ int mii;
 
 -(void)presentController:(AlmondStatus *)statObj ctrl:(MeshSetupViewController *)ctrl{
     ctrl.almondStatObj = statObj;
-    [self presentViewController:ctrl animated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:ctrl animated:YES completion:nil];
+    });
 }
 
 -(void)onAddAlmondTapDelegate{
@@ -999,7 +1008,7 @@ int mii;
         self.isAlmDetailView = NO;
     });
     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local)
-        [[SecurifiToolkit sharedInstance] connectMesh];
+        [[SecurifiToolkit sharedInstance] connectMesh]; //this will at end point on connection estb. sends rai2up
     else
         [[SecurifiToolkit sharedInstance] asyncSendToNetwork:[GenericCommand requestRai2UpMobile:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC]];
     

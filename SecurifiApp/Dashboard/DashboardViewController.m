@@ -770,40 +770,7 @@
 //    [toolkit.ruleList removeAllObjects];
 }
 
-//- (void)markNetworkStatusIcon {
-//    //    NSLog(@"markNetworkStatusIcon");
-//    enum SFIAlmondConnectionMode connectionMode = [_toolkit currentConnectionMode];
-//    enum SFIAlmondConnectionStatus status = [_toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
-//    enum SFICloudStatusState state;
-//    switch (status) {
-//        case SFIAlmondConnectionStatus_disconnected: {
-//            state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateDisconnected : SFICloudStatusStateLocalConnectionOffline;
-//            [self.leftButton markState:state];
-//            [self changeColorOfNavigationItam];
-//            break;
-//        };
-//        case SFIAlmondConnectionStatus_connecting: {
-//            [self.leftButton markState:SFICloudStatusStateConnecting];
-//            [self changeColorOfNavigationItam];
-//            break;
-//        };
-//        case SFIAlmondConnectionStatus_connected: {
-//            state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateConnected : SFICloudStatusStateLocalConnection;
-//            [self.leftButton markState:state];
-//            break;
-//        };
-//        case SFIAlmondConnectionStatus_error: {
-//            [self changeColorOfNavigationItam];
-//            break;
-//        };
-//        case SFIAlmondConnectionStatus_error_mode: {
-//            state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateCloudConnectionNotSupported : SFICloudStatusStateLocalConnectionNotSupported;
-//            [self.leftButton markState:state];
-//            [self changeColorOfNavigationItam];
-//            break;
-//        }
-//    }
-//}
+
 
 -(void)changeColorOfNavigationItam {
     NSLog("change color of navigation itam is called");

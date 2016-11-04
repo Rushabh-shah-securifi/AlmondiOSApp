@@ -77,7 +77,9 @@
 #pragma mark - UIButton actions
 - (void)onShareBtnTap:(id)sendesr{
     NSLog(@"onShareBtnTap");
-    [self.delegate onShareBtnTapDelegate];
+
+    [self.delegate onShareBtnTapDelegate:self.wirelessSetting];
+
 }
 
 #pragma mark - UITextFieldDelegate methods

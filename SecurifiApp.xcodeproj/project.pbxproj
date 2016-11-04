@@ -419,6 +419,8 @@
 		A5C68C9D1C9303D300110B74 /* DeviceListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */; };
 		A5F03F6C1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		A5F03F6D1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
+		B0E41DF31DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B0E41DF21DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf */; };
+		B0E41DF51DCC1BA100D5FD2A /* h_keyfob_image_V3.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B0E41DF41DCC1BA100D5FD2A /* h_keyfob_image_V3.pdf */; };
 		CE3EDAF21D4742EC00C153A6 /* BrowsingHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3EDAEF1D4742EC00C153A6 /* BrowsingHistoryViewController.m */; };
 		CE3EDAF31D4742EC00C153A6 /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3EDAF11D4742EC00C153A6 /* SearchTableViewController.m */; };
 		CE3EDAF71D47754A00C153A6 /* responseMain.json in Resources */ = {isa = PBXBuildFile; fileRef = CE3EDAF61D47754A00C153A6 /* responseMain.json */; };
@@ -1099,6 +1101,8 @@
 		A856E5412099C069FEB9493D /* Pods-Almond.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Almond.release.xcconfig"; path = "Pods/Target Support Files/Pods-Almond/Pods-Almond.release.xcconfig"; sourceTree = "<group>"; };
 		AE77F320DE8F128358BBAFE7 /* Pods-HomeScreen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HomeScreen.release.xcconfig"; path = "Pods/Target Support Files/Pods-HomeScreen/Pods-HomeScreen.release.xcconfig"; sourceTree = "<group>"; };
 		AEB56C2FEAC393F7D8DE45B3 /* libPods-Almond.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Almond.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0E41DF21DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_keyfob_image_V2.pdf; sourceTree = "<group>"; };
+		B0E41DF41DCC1BA100D5FD2A /* h_keyfob_image_V3.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_keyfob_image_V3.pdf; sourceTree = "<group>"; };
 		CE3EDAEE1D4742EC00C153A6 /* BrowsingHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistoryViewController.h; sourceTree = "<group>"; };
 		CE3EDAEF1D4742EC00C153A6 /* BrowsingHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistoryViewController.m; sourceTree = "<group>"; };
 		CE3EDAF01D4742EC00C153A6 /* SearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewController.h; sourceTree = "<group>"; };
@@ -2550,6 +2554,8 @@
 		F4D633BE1DC217EE000BF076 /* webImages */ = {
 			isa = PBXGroup;
 			children = (
+				B0E41DF41DCC1BA100D5FD2A /* h_keyfob_image_V3.pdf */,
+				B0E41DF21DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf */,
 				F4D633BF1DC217EE000BF076 /* hue_bridge.pdf */,
 				F4D633C01DC217EE000BF076 /* add_sensor_screenshot.pdf */,
 				F4D633C11DC217EE000BF076 /* add_sensor_zigbee_tab.pdf */,
@@ -2907,6 +2913,7 @@
 				A58DB2F61BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2EF1BB16B9F00717C02 /* Localizable.strings in Resources */,
 				846414E01B736B80008AB07F /* AvenirLTStd-HeavyOblique.otf in Resources */,
+				B0E41DF51DCC1BA100D5FD2A /* h_keyfob_image_V3.pdf in Resources */,
 				846414DD1B736B80008AB07F /* AvenirLTStd-Book.otf in Resources */,
 				CEABC6611D6F14CD00C2DCD4 /* categoryTab.xib in Resources */,
 				F4EA081D1D6AD9F900D6CC28 /* More.storyboard in Resources */,
@@ -3029,6 +3036,7 @@
 				F4D633EB1DC217EE000BF076 /* h_dashboard.pdf in Resources */,
 				A58DB2F51BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
 				CE7E8A3D1DC368D100B0C3C6 /* DSLCalendarDaySelection-left.png in Resources */,
+				B0E41DF31DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf in Resources */,
 				A58DB32D1BB16EAF00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB3101BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB4551BB3CD3F00717C02 /* MainStoryboard_iPhone.strings in Resources */,

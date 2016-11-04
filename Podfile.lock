@@ -12,9 +12,9 @@ PODS:
   - Colours (5.13.0):
     - Colours/ObjC (= 5.13.0)
   - Colours/ObjC (5.13.0)
-  - Crashlytics (3.8.2):
+  - Crashlytics (3.8.3):
     - Fabric (~> 1.6.3)
-  - Fabric (1.6.9)
+  - Fabric (1.6.11)
   - GoogleAnalytics (3.17.0)
   - iToast (0.0.1)
   - MBProgressHUD (0.9.2)
@@ -47,8 +47,8 @@ SPEC CHECKSUMS:
   ASValueTrackingSlider: 45c9f78252da60de01d8f2afe869aaf90dd978d9
   CocoaLumberjack: c823149bccc5519a9447aeb433be7b1212a7d6a5
   Colours: f24220c38f13deac88612667e9b4a7fb96b871d4
-  Crashlytics: 27acca95a01b042a8294291dd6dff27f8f6af6d7
-  Fabric: bc5bec42cef4bcf1ee3ce0e218fc518e4b44dfbb
+  Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
+  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
   iToast: df147188215cc3293bd4366822833f2862fec451
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1

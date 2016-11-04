@@ -3833,7 +3833,20 @@
                 s3.notificationText = @" set to High.";
                 return @[s1, s2, s3];
             }
-            
+            if(type == SFIDevicePropertyType_SECONDS){
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"0";
+                s1.iconName = @"light_on";
+                s1.notificationText = @" timer set to 0 sec(infinite buzz).";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchType = MatchType_any;
+                s2.iconName = @"light_on";
+                s2.valueFormatter.action = ValueFormatterAction_formatString;
+                s2.valueFormatter.notificationPrefix = @" timer set to ";
+                s2.valueFormatter.suffix = @"sec";
+                return @[s1, s2];
+            }
             
             break;
             

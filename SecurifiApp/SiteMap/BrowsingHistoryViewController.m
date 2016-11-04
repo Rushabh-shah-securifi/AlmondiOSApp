@@ -158,19 +158,18 @@
     self.reload = YES;
     self.sendReq = NO;
     
-        [self showHudWithTimeoutMsg:@"Loading..." withDelay:1];
+    [self showHudWithTimeoutMsg:@"Loading..." withDelay:2];
     
-        NSLog(@"post req = %@",post);
-        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-        NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-        [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
-        [request setHTTPMethod:@"POST"];
-        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
-        [request setHTTPBody:postData];
-        self.conn = [NSURLConnection connectionWithRequest:request delegate:self];
-  
+    NSLog(@"post req = %@",post);
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+    [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
+    [request setHTTPBody:postData];
+    self.conn = [NSURLConnection connectionWithRequest:request delegate:self];
     
     //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
 }
@@ -226,8 +225,6 @@
     
     self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:dict readlimit:recordCount amac:self.amac cmac:self.cmac];
     if(self.reload){
-//        [self.dayArr removeAllObjects];
-//        [self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
         [self reloadTable];
     }
     self.sendReq = YES;
@@ -321,7 +318,7 @@
         NSArray *browsHist = self.dayArr[indexPath.section];
         if(browsHist.count > indexPath.row){
             if(browsHist[indexPath.row] != NULL)
-                [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO showTime:YES count:indexPath.row+1];
+                [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO showTime:YES count:indexPath.row+1 hideCheckMarkIMg:YES];
         }
     }
     
@@ -353,12 +350,12 @@
         NSLog(@"Is Today Date %d %@",isTodayDate,self.incompleteDB[@"PS"]);
         NSLog(@"Is Present In Complete DB %d",isPresentInCompleteDB);
         
-//        if(isTodayDate && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
-//            NSLog(@"Sending Request in first IF");
-//            [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
-//            
-//        }
-         if(!isTodayDate && !isPresentInCompleteDB){
+        //        if(isTodayDate && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
+        //            NSLog(@"Sending Request in first IF");
+        //            [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]]];
+        //
+        //        }
+        if(!isTodayDate && !isPresentInCompleteDB){
             NSLog(@"Sending Request in Second IF");
             NSString *ps= self.incompleteDB[@"PS"] ;
             NSLog(@"self.oldDate = %@ == str = %@",self.oldDate,str);

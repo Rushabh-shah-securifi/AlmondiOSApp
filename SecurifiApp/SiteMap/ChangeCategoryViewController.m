@@ -297,7 +297,7 @@
                                @"image" : [UIImage imageNamed:@"schedule_icon"]
                                };
     
-        [cell setCell:thisWeek hideItem:YES isCategory:NO showTime:NO count:indexPath.row+1];
+        [cell setCell:thisWeek hideItem:YES isCategory:NO showTime:NO count:indexPath.row+1 hideCheckMarkIMg:YES];
     }
     return cell;
 }

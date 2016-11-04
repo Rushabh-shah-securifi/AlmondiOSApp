@@ -236,7 +236,7 @@
     
     if(tag == NETWORK_OFFLINE){
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        enum SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
+        SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
         if(status == SFIAlmondConnectionStatus_disconnected){
             NSLog(@"ok 1");
             [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];

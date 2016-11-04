@@ -64,6 +64,8 @@ int mii;
             [[Analytics sharedInstance] markMasterScreen];
         else
             [[Analytics sharedInstance] markSlaveScreen];
+        
+        [self createKeyVals:self.almondStatObj];
     }else{
         [self setupMeshView];
         [[Analytics sharedInstance] markAddAlmondScreen];
@@ -96,6 +98,38 @@ int mii;
                selector:@selector(onConnectionStatusChanged:)
                    name:CONNECTION_STATUS_CHANGE_NOTIFIER
                  object:nil];
+}
+
+-(void)createKeyVals:(AlmondStatus *)stat{
+    NSMutableArray *keyVals = [NSMutableArray new];
+    [keyVals addObject:@{@"Location":stat.location?:@""}];
+    [keyVals addObject:@{@"Connected Via":stat.connecteVia?:@""}];
+    [keyVals addObject:@{@"Interface":stat.interface?:@""}];
+    [keyVals addObject:@{@"Connection Status":(stat.isActive? @"Active": @"Inactive")}];
+    if(!stat.isMaster && [stat.interface isEqualToString:@"Wireless"])
+        [keyVals addObject:@{@"Connection Strength":[self getSignalStrength:stat.signalStrength.integerValue]}];
+    
+    [keyVals addObject:@{@"Internet Status":(stat.internetStat? @"Online": @"Offline")}];
+    if(stat.ssid2)
+        [keyVals addObject:@{@"5 GHz SSID":stat.ssid2?:@""}];
+    [keyVals addObject:@{@"2.4 GHz SSID":stat.ssid1?:@""}];
+    stat.keyVals = keyVals;
+}
+   
+- (NSString *)getSignalStrength:(NSInteger)sig{
+    // RSSI levels range from -50dBm (100%) to -100dBm (0%)
+    // Signal Quality Levels : Highest 5. Lowest 0
+    NSLog(@"sig value 1: %d", sig);
+    if(sig == SLAVE_OFFLINE.intValue)
+    return @"N/A";
+    else if(sig >= -50)
+    return @"Excellent";
+    else if(sig < -50 && sig >=-73)
+    return @"Good";
+    else if(sig < -73 && sig >= -87)
+    return @"Poor";
+    else
+    return @"Extremely Poor";
 }
 
 #define network events

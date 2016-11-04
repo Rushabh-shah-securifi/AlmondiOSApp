@@ -452,7 +452,9 @@
         });
     }else if(statusIntValue == AUTHENTICATED){
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [NetworkStatusIcon markNetworkStatusIcon:self.connectionStatusBarButton isDashBoard:NO];
+        [NetworkStatusIcon markNetworkStatusIcon:self.connectionStatusBarButton isDashBoard:NO];
+        [self.HUD hide:YES];
+         NSLog(@"dashboardconnection status is connecting to network");
         });
     }
 }
@@ -476,51 +478,6 @@
         [self.notificationsStatusButton markNotificationCount:(NSUInteger) badgeCount];
     }
 }
-
-//- (void)markNetworkStatusIcon {
-//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-//    enum SFIAlmondConnectionMode connectionMode = [toolkit currentConnectionMode];
-//    enum SFIAlmondConnectionStatus status = [toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]];
-//    
-//    switch (status) {
-//        case SFIAlmondConnectionStatus_disconnected: {
-//            enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateDisconnected : SFICloudStatusStateLocalConnectionOffline;
-//            [self.connectionStatusBarButton markState:state];
-//            break;
-//        };
-//        case SFIAlmondConnectionStatus_connecting: {
-//            [self.connectionStatusBarButton markState:SFICloudStatusStateConnecting];
-//            break;
-//        };
-//        case SFIAlmondConnectionStatus_connected: {
-//            enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateConnected : SFICloudStatusStateLocalConnection;
-//            [self.connectionStatusBarButton markState:state];
-//            break;
-//        };
-//        case SFIAlmondConnectionStatus_error: {
-//            break;
-//        };
-//        case SFIAlmondConnectionStatus_error_mode: {
-//            enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateCloudConnectionNotSupported : SFICloudStatusStateLocalConnectionNotSupported;
-//            [self.connectionStatusBarButton markState:state];
-//            break;
-//        }
-//    }
-//}
-
-//- (enum SFICloudStatusState)stateForAlmondMode:(SFIAlmondMode)mode {
-//    switch (mode) {
-//        case SFIAlmondMode_home:
-//            return SFICloudStatusStateAtHome;
-//        case SFIAlmondMode_away:
-//            return SFICloudStatusStateAway;
-//            
-//        case SFIAlmondMode_unknown:
-//        default:
-//            // can happen when the cloud connection comes up but before almond mode has been determined
-//            return SFICloudStatusStateConnected;
-//    }
-//}
 
 - (void)setBarButtons{
     UIBarButtonItem *spacer = [self getBarButton:20];
@@ -661,12 +618,12 @@
     [self.HUD show:YES];
 }
 
-- (void)showLoadingRouterDataHUD {
-    [self showHUD:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
-}
-
 - (void)showConnectingHUD {
     [self showHUD:@"Connecting, Please wait..."];
+}
+
+- (void)showLoadingRouterDataHUD {
+    [self showHUD:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
 }
 
 - (void)showLoadingSensorDataHUD {

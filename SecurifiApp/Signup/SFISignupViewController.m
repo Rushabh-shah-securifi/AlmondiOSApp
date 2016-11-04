@@ -446,36 +446,36 @@
         }else {
             failureReason = NSLocalizedString(@"Sorry! Signup was unsuccessful.", @"Sorry! Signup was unsuccessful.");
         }
-        //        switch (obj.reasonCode) {
-        //            case 1:
-        //                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
-        //                break;
-        //
-        //            case 2: {
-        //                NSString *format = NSLocalizedString(@"The password should be %d - %d characters long.", @"The password should be %d - %d characters long.");
-        //                failureReason = [NSString stringWithFormat:format, PWD_MIN_LENGTH, PWD_MAX_LENGTH];
-        //                break;
-        //            }
-        //
-        //            case 3: {
-        //                failureReason = NSLocalizedString(@"An account already exists with this email.", @"An account already exists with this email.");
-        //                [self setFooterForTag:FOOTER_SIGNUP_DIFF_EMAIL];
-        //                break;
-        //            }
-        //
-        //            case 4:
-        //                //Ready for login
-        //                [self displayScreenToLogin];
-        //                break;
-        //
-        //            case 5:
-        //                failureReason = NSLocalizedString(@"The email or password was incorrect.", @"The email or password was incorrect.");
-        //                break;
-        //
-        //            default:
-        //                failureReason = NSLocalizedString(@"Sorry! Signup was unsuccessful.", @"Sorry! Signup was unsuccessful.");
-        //        }
-        
+//        switch (obj.reasonCode) {
+//            case 1:
+//                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
+//                break;
+//
+//            case 2: {
+//                NSString *format = NSLocalizedString(@"The password should be %d - %d characters long.", @"The password should be %d - %d characters long.");
+//                failureReason = [NSString stringWithFormat:format, PWD_MIN_LENGTH, PWD_MAX_LENGTH];
+//                break;
+//            }
+//
+//            case 3: {
+//                failureReason = NSLocalizedString(@"An account already exists with this email.", @"An account already exists with this email.");
+//                [self setFooterForTag:FOOTER_SIGNUP_DIFF_EMAIL];
+//                break;
+//            }
+//
+//            case 4:
+//                //Ready for login
+//                [self displayScreenToLogin];
+//                break;
+//
+//            case 5:
+//                failureReason = NSLocalizedString(@"The email or password was incorrect.", @"The email or password was incorrect.");
+//                break;
+//
+//            default:
+//                failureReason = NSLocalizedString(@"Sorry! Signup was unsuccessful.", @"Sorry! Signup was unsuccessful.");
+//        }
+
         [self setOopsMessage:failureReason];
     }
 }
@@ -499,24 +499,25 @@
         }else if([[data valueForKey:@"reason"] isEqualToString:@"No such user"]){
             failureReason = NSLocalizedString(@"The username was not found", @"The username was not found");
         }
-        //        switch (obj.reasonCode) {
-        //            case 1:
-        //                failureReason = NSLocalizedString(@"The username was not found", @"The username was not found");
-        //                break;
-        //            case 2:
-        //                failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
-        //                break;
-        //            case 3:
-        //            case 5:
-        //                failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
-        //                break;
-        //            case 4:
-        //                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        
+
+//        switch (obj.reasonCode) {
+//            case 1:
+//                failureReason = NSLocalizedString(@"The username was not found", @"The username was not found");
+//                break;
+//            case 2:
+//                failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
+//                break;
+//            case 3:
+//            case 5:
+//                failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
+//                break;
+//            case 4:
+//                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
+//                break;
+//            default:
+//                break;
+//        }
+
         [self setOopsMessage:failureReason];
     }
 }
