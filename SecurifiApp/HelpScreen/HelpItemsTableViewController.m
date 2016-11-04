@@ -48,6 +48,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSArray *items = self.helpItem[ITEMS];
+    if(self.isHelpTopic)
+        return 3;
     return items.count;
 }
 

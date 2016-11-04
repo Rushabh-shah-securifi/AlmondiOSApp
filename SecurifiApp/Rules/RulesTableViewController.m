@@ -364,7 +364,7 @@ CGPoint tablePoint;
 -(void)onConnectionStatusChanged:(id)sender {
     NSNumber* status = [sender object];
     int statusIntValue = [status intValue];
-    if(statusIntValue == AUTHENTICATED){
+    if(statusIntValue == IS_CONNECTING_TO_NETWORK){
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.tableView reloadData];
             [self showHudWithTimeoutMsg:@"Loading..."];
