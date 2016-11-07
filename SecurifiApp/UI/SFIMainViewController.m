@@ -21,6 +21,7 @@
 #import "SFITabBarController.h"
 #import "KeyChainAccess.h"
 #import "ConnectionStatus.h"
+#import "NetworkStatusIcon.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
@@ -32,13 +33,14 @@
 @end
 
 @implementation SFIMainViewController
-
+NetworkStatusIcon *statusIcon;
 #pragma mark - View Lifecycle
 
 - (void)dealloc {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self];
 }
+
 
 - (void)displayWebView:(NSString *)strForWebView{
     NSLog(@"display web view main");
@@ -51,9 +53,10 @@
     });
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     self.view.backgroundColor = [UIColor whiteColor];
     [self displaySplashImage];
     
@@ -185,17 +188,6 @@
     });
 }
 
-#pragma mark - Reconnection
-
-
-- (void)onNetworkUpNotifier:(id)sender {
-    if ([[SecurifiToolkit sharedInstance] isNetworkOnline]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.HUD hide:YES];
-        });
-        
-    }
-}
 
 #pragma mark - SFILoginViewController delegate methods
 

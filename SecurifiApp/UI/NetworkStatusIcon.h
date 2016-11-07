@@ -6,6 +6,7 @@
 //  Copyright © 2016 Securifi Ltd. All rights reserved.
 //
 
+#import "SecurifiToolkit.h"
 #import "SFICloudStatusBarButtonItem.h"
 
 @protocol NetworkStatusIconDelegate <NSObject>

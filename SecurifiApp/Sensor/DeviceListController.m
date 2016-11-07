@@ -508,9 +508,10 @@ int mii;
     [self.mobileCommandTimer invalidate];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
-        //        [self.HUD hide:YES];
+        //[self.HUD hide:YES];
     });
 }
+
 #pragma mark clientCell delegate
 
 -(void)delegateClientSettingButtonClick:(GenericParams*)genericParams{
@@ -565,12 +566,10 @@ int mii;
 #pragma mark cloud callbacks
 - (void)onCurrentAlmondChanged:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
-    
 //    if(self.toolkit.devices!=nil)
 //        [self.toolkit.devices removeAllObjects];
 //    if(self.toolkit.clients!=nil)
 //        [self.toolkit.clients removeAllObjects];
-    
     [self initializeAlmondData];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];

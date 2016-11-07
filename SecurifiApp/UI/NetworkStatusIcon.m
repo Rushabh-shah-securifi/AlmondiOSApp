@@ -8,7 +8,6 @@
 
 #import "NetworkStatusIcon.h"
 #import "ConnectionStatus.h"
-#import "DashboardViewController.h"
 #import "LocalNetworkManagement.h"
 
 @implementation NetworkStatusIcon
@@ -22,13 +21,13 @@
             enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateDisconnected : SFICloudStatusStateLocalConnectionOffline;
             [statusButton markState:state];
             if(isDashBoard)
-                [networkStatusIconDelegate changeColorOfNavigationItam];
+                [_networkStatusIconDelegate changeColorOfNavigationItam];
             break;
         };
         case SFIAlmondConnectionStatus_connecting: {
             [statusButton markState:SFICloudStatusStateConnecting];
             if(isDashBoard)
-                [networkStatusIconDelegate changeColorOfNavigationItam];
+                [_networkStatusIconDelegate changeColorOfNavigationItam];
             break;
         };
         case SFIAlmondConnectionStatus_connected: {
@@ -38,13 +37,13 @@
         };
         case SFIAlmondConnectionStatus_error: {
             if(isDashBoard)
-                [networkStatusIconDelegate changeColorOfNavigationItam];
+                [_networkStatusIconDelegate changeColorOfNavigationItam];
             break;
         };
         case SFIAlmondConnectionStatus_error_mode: {
             enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateCloudConnectionNotSupported : SFICloudStatusStateLocalConnectionNotSupported;
             if(isDashBoard)
-                [networkStatusIconDelegate changeColorOfNavigationItam];
+                [_networkStatusIconDelegate changeColorOfNavigationItam];
             [statusButton markState:state];
             break;
         }
@@ -92,7 +91,7 @@
         }
     }
     
-    [networkStatusIconDelegate showNetworkTogglePopUp:Title withSubTitle1:subTitle1 withSubTitle2:subTitle2 withMode1:mode1 withMode2:mode2 presentLocalNetworkSettingsEditor:presentLocalNetworkSettings];
+    [_networkStatusIconDelegate showNetworkTogglePopUp:Title withSubTitle1:subTitle1 withSubTitle2:subTitle2 withMode1:mode1 withMode2:mode2 presentLocalNetworkSettingsEditor:presentLocalNetworkSettings];
 }
 
 @end

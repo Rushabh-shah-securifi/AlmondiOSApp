@@ -355,20 +355,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
     
     self.HUD.labelText = NSLocalizedString(@"router.hud.Establishing Local Link...", @"Establishing Local Link...");
     self.HUD.minShowTime = 2;
-    
-    //    SecurifiToolkit* toolKit = [SecurifiToolkit sharedInstance];
-    //    SFIAlmondPlus* almond = [SFIAlmondPlus new];
-    //    almond.almondplusMAC = @"dummyMac";
-    //    almond.almondplusName = @"dummyMac";
-    //    toolKit.currentAlmond = almond;
-//    [[SecurifiToolkit sharedInstance].network shutdown];
-//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//    [defaults setInteger:SFIAlmondConnectionMode_local forKey:kPREF_DEFAULT_CONNECTION_MODE];
-//    NSString *mac = @"test_almond";
-//    NetworkConfig *config = [NetworkConfig webSocketConfig:settings almondMac:mac];
-//    WebSocketEndpoint *endpoint = [WebSocketEndpoint endpointWithConfig:config];
-//    endpoint.delegate = self;
-//    [endpoint connect];
+
     
     [self.HUD showAnimated:YES whileExecutingBlock:^() {
 //         Test the connection (and interrogate the remote Almond for info about itself; the almond Mac and name

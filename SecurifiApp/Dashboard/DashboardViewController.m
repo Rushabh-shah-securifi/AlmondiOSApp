@@ -51,11 +51,14 @@
 @property(nonatomic) HelpScreens *helpScreensObj;
 @property(nonatomic) UIView *maskView;
 @property(nonatomic) UIButton *buttonMaskView;
+@property(nonatomic) NetworkStatusIcon *statusIcon;
 @end
 
 @implementation DashboardViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _statusIcon = [NetworkStatusIcon new];
     self.toolkit = [SecurifiToolkit sharedInstance];
     if([self.toolkit isScreenShown:@"dashboard"] == NO)
         [self initializeHelpScreens];
@@ -68,7 +71,6 @@
     
     //add almond button
     [self initializeAddButtonView];
-    
     [self initializeHUD];
 }
 
@@ -121,16 +123,15 @@
     [self getRecentNotification];
     [NotificationAccessAndRefreshCommands tryRefreshNotifications];
     [self initializeUI];
-    [NetworkStatusIcon setDelegate:self];
+    _statusIcon.networkStatusIconDelegate = self;
     NSLog(@"View will appear is called in DashBoardViewController");
-    [NetworkStatusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
+    [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [NetworkStatusIcon setDelegate:nil];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [NetworkStatusIcon setDelegate:nil];
 }
 
 -(void)initializeUI{
@@ -299,7 +300,7 @@
 //    if(self.toolkit.clients!=nil)
 //        [self.toolkit.clients removeAllObjects];
     [self initializeUI];
-    [NetworkStatusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
+    [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
     // getrecentnotification to instantly show onclick
     [self getRecentNotification];
     [NotificationAccessAndRefreshCommands tryRefreshNotifications];
@@ -354,16 +355,16 @@
     int statusIntValue = [status intValue];
     if(statusIntValue == NO_NETWORK_CONNECTION){
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [NetworkStatusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
+            [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
             [self.HUD hide:YES]; // make sure it is hidden
         });
     }else if(statusIntValue == IS_CONNECTING_TO_NETWORK){
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [NetworkStatusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
+            [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
         });
     }else if(statusIntValue == AUTHENTICATED){
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [NetworkStatusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
+            [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
             [self updateMode:self.toolkit.mode_src];
         });
     }
@@ -372,7 +373,7 @@
 
 - (void)onAlmondModeDidChange:(id)sender {
         NSLog(@"Almond mode is changing %d",self.toolkit.mode_src);
-    [NetworkStatusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
+    [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -635,7 +636,7 @@
 
 
 - (void)onConnectionStatusButtonPressed:(id)sender {
-    [NetworkStatusIcon onConnectionStatusButtonPressed];
+    [_statusIcon onConnectionStatusButtonPressed];
 }
 
 - (void)configureNetworkSettings:(enum SFIAlmondConnectionMode)mode {
