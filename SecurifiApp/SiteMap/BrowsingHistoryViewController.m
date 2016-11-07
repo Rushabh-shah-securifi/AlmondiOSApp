@@ -449,14 +449,6 @@
 }
 
 #pragma mark click handler
-- (void)onSearchButton{
-    
-    SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-    ctrl.client = self.client;
-    [self presentViewController:nav_ctrl animated:YES completion:nil];
-}
-
 -(void)reloadTable{
     //NSLog(@"reload called");
     

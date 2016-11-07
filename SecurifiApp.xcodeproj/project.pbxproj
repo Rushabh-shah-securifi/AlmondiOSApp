@@ -539,6 +539,7 @@
 		F426AE2E1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F46129F51DB76BC500EAD7F0 /* SliderComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */; };
 		F46129F61DB76BC500EAD7F0 /* SliderComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */; };
+		F48CF1781DD0859500B44257 /* HelpSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48CF1771DD0859500B44257 /* HelpSearchTableViewController.m */; };
 		F4981E961DABCDB4003A53E6 /* MeshEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */; };
 		F4981E971DABCDB4003A53E6 /* MeshEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */; };
 		F4B875431D5382D500DCF76F /* AlmondStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753A1D5382D500DCF76F /* AlmondStatus.m */; };
@@ -1242,6 +1243,8 @@
 		F43814941D993B2800D5C762 /* Almond.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Almond.entitlements; sourceTree = "<group>"; };
 		F46129F31DB76BC500EAD7F0 /* SliderComponentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderComponentView.h; sourceTree = "<group>"; };
 		F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderComponentView.m; sourceTree = "<group>"; };
+		F48CF1761DD0859500B44257 /* HelpSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpSearchTableViewController.h; sourceTree = "<group>"; };
+		F48CF1771DD0859500B44257 /* HelpSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpSearchTableViewController.m; sourceTree = "<group>"; };
 		F4981E941DABCDB4003A53E6 /* MeshEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshEditViewController.h; sourceTree = "<group>"; };
 		F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeshEditViewController.m; sourceTree = "<group>"; };
 		F4B875391D5382D500DCF76F /* AlmondStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondStatus.h; sourceTree = "<group>"; };
@@ -2604,6 +2607,8 @@
 				F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */,
 				F4EA08281D6C551F00D6CC28 /* HelpViewController.h */,
 				F4EA08291D6C551F00D6CC28 /* HelpViewController.m */,
+				F48CF1761DD0859500B44257 /* HelpSearchTableViewController.h */,
+				F48CF1771DD0859500B44257 /* HelpSearchTableViewController.m */,
 			);
 			path = HelpScreen;
 			sourceTree = "<group>";
@@ -3136,7 +3141,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		8E7312B8CB56540374D80E44 /* [CP] Check Pods Manifest.lock */ = {
@@ -3151,7 +3156,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C64E9DE6572B4684A06A1BB5 /* [CP] Embed Pods Frameworks */ = {
@@ -3516,6 +3521,7 @@
 				F4B875471D5382D500DCF76F /* MeshSetupViewController.m in Sources */,
 				F4B8767A1D54653500DCF76F /* ListButtonView.m in Sources */,
 				F4D93AF71D3F882300D55BD6 /* HelpItemsTableViewController.m in Sources */,
+				F48CF1781DD0859500B44257 /* HelpSearchTableViewController.m in Sources */,
 				F41240AA1D7EC1480067A94C /* AlmondSelectionTableView.m in Sources */,
 				F4EA08261D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */,
 				1DF031024A2F8810074C455A /* TemperatureView.m in Sources */,

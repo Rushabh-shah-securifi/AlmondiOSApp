@@ -13,6 +13,7 @@
 #import "HelpItemsTableViewController.h"
 #import "SupportViewController.h"
 #import "Analytics.h"
+#import "HelpSearchTableViewController.h"
 
 @interface HelpCenter ()
 @property NSArray *helpItems;
@@ -120,7 +121,10 @@
 }
 
 - (IBAction)onSearchBtnTap:(id)sender {
-    
+    NSLog(@"onSearchBtnTap");
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HelpScreenStoryboard" bundle:nil];
+    HelpSearchTableViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"HelpSearchTableViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (IBAction)onProductsButtonTap:(id)sender {
