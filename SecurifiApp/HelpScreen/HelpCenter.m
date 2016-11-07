@@ -122,8 +122,7 @@
 
 - (IBAction)onSearchBtnTap:(id)sender {
     NSLog(@"onSearchBtnTap");
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HelpScreenStoryboard" bundle:nil];
-    HelpSearchTableViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"HelpSearchTableViewController"];
+    HelpSearchTableViewController *viewController = [self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"HelpSearchTableViewController"];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

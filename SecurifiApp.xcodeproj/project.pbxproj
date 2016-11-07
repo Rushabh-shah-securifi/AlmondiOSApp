@@ -540,6 +540,7 @@
 		F46129F51DB76BC500EAD7F0 /* SliderComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */; };
 		F46129F61DB76BC500EAD7F0 /* SliderComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */; };
 		F48CF1781DD0859500B44257 /* HelpSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48CF1771DD0859500B44257 /* HelpSearchTableViewController.m */; };
+		F48CF17F1DD0B75D00B44257 /* NSString+securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = F48CF17E1DD0B75D00B44257 /* NSString+securifi.m */; };
 		F4981E961DABCDB4003A53E6 /* MeshEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */; };
 		F4981E971DABCDB4003A53E6 /* MeshEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */; };
 		F4B875431D5382D500DCF76F /* AlmondStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753A1D5382D500DCF76F /* AlmondStatus.m */; };
@@ -1245,6 +1246,8 @@
 		F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderComponentView.m; sourceTree = "<group>"; };
 		F48CF1761DD0859500B44257 /* HelpSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpSearchTableViewController.h; sourceTree = "<group>"; };
 		F48CF1771DD0859500B44257 /* HelpSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpSearchTableViewController.m; sourceTree = "<group>"; };
+		F48CF17D1DD0B75D00B44257 /* NSString+securifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+securifi.h"; sourceTree = "<group>"; };
+		F48CF17E1DD0B75D00B44257 /* NSString+securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+securifi.m"; sourceTree = "<group>"; };
 		F4981E941DABCDB4003A53E6 /* MeshEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshEditViewController.h; sourceTree = "<group>"; };
 		F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeshEditViewController.m; sourceTree = "<group>"; };
 		F4B875391D5382D500DCF76F /* AlmondStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondStatus.h; sourceTree = "<group>"; };
@@ -1507,6 +1510,7 @@
 			children = (
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
 				1C7E7E2D1A41A26A0026F0BA /* Base.lproj */,
+				F48CF1791DD0B6BB00B44257 /* Categories */,
 				A54EB0341C45004B00CF2837 /* Common-Images.xcassets */,
 				2A4C24341D0FC3BF001191E8 /* Dashboard */,
 				F4D93AD61D38E5BB00D55BD6 /* HelpScreen */,
@@ -2456,6 +2460,15 @@
 				CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */,
 			);
 			path = Support;
+			sourceTree = "<group>";
+		};
+		F48CF1791DD0B6BB00B44257 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				F48CF17D1DD0B75D00B44257 /* NSString+securifi.h */,
+				F48CF17E1DD0B75D00B44257 /* NSString+securifi.m */,
+			);
+			path = Categories;
 			sourceTree = "<group>";
 		};
 		F4B875381D5382D500DCF76F /* Mesh */ = {
@@ -3481,6 +3494,7 @@
 				F401B0731D2D241200F64CE2 /* ColorComponentView.m in Sources */,
 				CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */,
 				CEF6F5061C92CD2400C68975 /* GenericIndexUtil.m in Sources */,
+				F48CF17F1DD0B75D00B44257 /* NSString+securifi.m in Sources */,
 				F4981E961DABCDB4003A53E6 /* MeshEditViewController.m in Sources */,
 				1DF0383EBD135988AEA6DF73 /* ValueFormatter.m in Sources */,
 				1DF03A1D3210B9478AF1DAC3 /* IndexValueSupport.m in Sources */,
