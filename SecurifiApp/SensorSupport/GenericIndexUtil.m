@@ -193,7 +193,7 @@
     if(genericIndexObject == nil || value == nil)
         return nil;
     else if(genericIndexObject.values != nil){
-        return genericIndexObject.values[value]? genericIndexObject.values[value]: [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:nil value:value excludeFrom:nil eventType:nil];
+        return genericIndexObject.values[value]? genericIndexObject.values[value]: [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:nil value:value excludeFrom:nil eventType:nil notificationText:@""];
     }
     else if(genericIndexObject.formatter != nil && ![genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] && ![genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
         NSString *formattedValue=[genericIndexObject.formatter transform:value genericId:genericIndexID];
@@ -201,7 +201,7 @@
                                                                      iconText:formattedValue
                                                                         value:value
                                                                   excludeFrom:genericIndexObject.excludeFrom
-                                                             transformedValue:[genericIndexObject.formatter transformValue:value]];
+                                                             transformedValue:[genericIndexObject.formatter transformValue:value] prefix:@""];
         return genericValue;
     }
     else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"])){
@@ -212,9 +212,9 @@
                                                   value:value
                                             excludeFrom:nil
                                               eventType:nil
-                                       transformedValue:[genericIndexObject.formatter transformValue:value]]; //need icon aswell as transformedValue
+                                       transformedValue:[genericIndexObject.formatter transformValue:value] prefix:@""]; //need icon aswell as transformedValue
     }
-    return [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:value value:value excludeFrom:genericIndexObject.excludeFrom eventType:nil];
+    return [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:value value:value excludeFrom:genericIndexObject.excludeFrom eventType:nil notificationText:@""];
 }
 
 
@@ -238,7 +238,7 @@
         }else{//notifyme
             value = @(device.notificationMode).stringValue;
         }
-        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value excludeFrom:nil transformedValue:nil];
+        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value excludeFrom:nil transformedValue:nil prefix:@""];
         GenericIndexClass *genIndexObj = toolkit.genericIndexes[@(genericIndex).stringValue];
         [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genIndexObj genericValue:genericValue index:genericIndex deviceID:device.ID]];
     }
@@ -253,7 +253,7 @@
     GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:client.deviceType]; //-12 client type - iphone, ipad etc.
 
     if(genericValue == nil){ //if devicetype is wronglysent only expected return is nil
-        genericValue = [[GenericValue alloc]initWithDisplayText:status icon:@"help_icon" toggleValue:nil value:client.deviceType excludeFrom:nil eventType:nil];
+        genericValue = [[GenericValue alloc]initWithDisplayText:status icon:@"help_icon" toggleValue:nil value:client.deviceType excludeFrom:nil eventType:nil notificationText:@""];
     }else{
         genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:status];
     }
