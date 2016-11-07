@@ -115,21 +115,23 @@ int mii;
     [keyVals addObject:@{@"2.4 GHz SSID":stat.ssid1?:@""}];
     stat.keyVals = keyVals;
 }
-   
+
 - (NSString *)getSignalStrength:(NSInteger)sig{
     // RSSI levels range from -50dBm (100%) to -100dBm (0%)
     // Signal Quality Levels : Highest 5. Lowest 0
     NSLog(@"sig value 1: %d", sig);
     if(sig == SLAVE_OFFLINE.intValue)
-    return @"N/A";
+        return @"N/A";
+    else if(sig == 0)
+        return @"N/A";
     else if(sig >= -50)
-    return @"Excellent";
-    else if(sig < -50 && sig >=-73)
-    return @"Good";
-    else if(sig < -73 && sig >= -87)
-    return @"Poor";
+        return @"Excellent";
+    else if(sig < -50 && sig >=-65)
+        return @"Good";
+    else if(sig < -65 && sig >= -80)
+        return @"Poor";
     else
-    return @"Extremely Poor";
+        return @"Extremely Poor";
 }
 #define network events
 -(void)onConnectionStatusChanged:(id)sender {
@@ -188,19 +190,20 @@ int mii;
     if(self.almondStatObj.internetStat == NO)
         return [UIImage imageNamed:@"red-connectivity-icon"];
     
-    return self.almondStatObj.signalStrength.integerValue < -87? [UIImage imageNamed:@"yellow-connectivity-icon"]: [UIImage imageNamed:@"green-connectivity-icon"];
+    return self.almondStatObj.signalStrength.integerValue < -80? [UIImage imageNamed:@"yellow-connectivity-icon"]: [UIImage imageNamed:@"green-connectivity-icon"];
 }
 
 -(NSString *)getSignalStrengthText{
     NSInteger sig = self.almondStatObj.signalStrength.integerValue;
     if(self.almondStatObj.internetStat == NO)
         return @"Offline";
-    else if(sig < -87){
+    else if(sig < -80){
         return @"Wireless signal seems to be weak.";
     }else{
         return @"Online";
     }
 }
+
 
 -(UIImage *)getSignalStrengthIcon{
     // RSSI levels range from -50dBm (100%) to -100dBm (0%)
@@ -208,9 +211,9 @@ int mii;
     NSInteger sig = self.almondStatObj.signalStrength.integerValue;
     if(sig >= -50)
         return [UIImage imageNamed:@"wifi-signal-strength4-icon"];
-    else if(sig < -50 && sig >=-73)
+    else if(sig < -50 && sig >=-65)
         return [UIImage imageNamed:@"wifi-signal-strength3-icon"];
-    else if(sig < -73 && sig >= -87)
+    else if(sig < -65 && sig >= -80)
         return [UIImage imageNamed:@"wifi-signal-strength2-icon"];
     else
         return [UIImage imageNamed:@"wifi-signal-strength1-icon"];
