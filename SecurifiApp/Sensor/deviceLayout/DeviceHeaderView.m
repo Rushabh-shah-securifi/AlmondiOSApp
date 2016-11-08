@@ -250,8 +250,8 @@
             NSLog(@"wifi_icon...");
         }
         else if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"] && ![genericIndexValue.genericValue.value isEqualToString:@"wireless"]){
-        self.wifiSignalImageView.hidden = NO;
-        self.wifiSignalImageView.image = [UIImage imageNamed:@"wired-icon"];
+        self.wifiSignalImageView.hidden = YES;
+//        self.wifiSignalImageView.image = [UIImage imageNamed:@"wired-icon"];
             NSLog(@"wired-icon...");
         }
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-13"] && (self.cellType == ClientTable_Cell || self.cellType == ClientProperty_Cell || self.cellType == ClientEditProperties_cell)){

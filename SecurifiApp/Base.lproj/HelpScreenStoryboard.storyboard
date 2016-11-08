@@ -417,24 +417,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="0AV-ks-oGx">
-                                <rect key="frame" x="0.0" y="60" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="63" width="375" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="HQu-1C-WjJ"/>
                                 </constraints>
+                                <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="2Sd-8W-GLM" id="Vfp-6d-xUM"/>
                                 </connections>
                             </searchBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QeG-Eo-7dp">
-                                <rect key="frame" x="0.0" y="104" width="375" height="563"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QeG-Eo-7dp">
+                                <rect key="frame" x="0.0" y="107" width="375" height="560"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="8Ko-rg-f3h">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Ko-rg-f3h" id="NYM-7T-OiM">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -445,13 +446,12 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.38090943770000002" blue="0.37663064889999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="0AV-ks-oGx" secondAttribute="trailing" id="0M4-je-Bwc"/>
                             <constraint firstAttribute="trailing" secondItem="QeG-Eo-7dp" secondAttribute="trailing" id="675-Ww-qlV"/>
                             <constraint firstItem="QeG-Eo-7dp" firstAttribute="top" secondItem="0AV-ks-oGx" secondAttribute="bottom" id="KkJ-QQ-22D"/>
                             <constraint firstItem="QeG-Eo-7dp" firstAttribute="leading" secondItem="JoK-aJ-X3Y" secondAttribute="leading" id="KxR-UR-Gjj"/>
-                            <constraint firstItem="0AV-ks-oGx" firstAttribute="top" secondItem="JoK-aJ-X3Y" secondAttribute="top" constant="60" id="URT-pE-UaO"/>
+                            <constraint firstItem="0AV-ks-oGx" firstAttribute="top" secondItem="JoK-aJ-X3Y" secondAttribute="top" constant="63" id="URT-pE-UaO"/>
                             <constraint firstItem="fuI-AH-oL0" firstAttribute="top" secondItem="QeG-Eo-7dp" secondAttribute="bottom" id="asr-Z9-uC0"/>
                             <constraint firstItem="0AV-ks-oGx" firstAttribute="leading" secondItem="JoK-aJ-X3Y" secondAttribute="leading" id="rq2-E2-otb"/>
                         </constraints>
