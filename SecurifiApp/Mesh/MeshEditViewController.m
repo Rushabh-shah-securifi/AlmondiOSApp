@@ -20,7 +20,7 @@
 @property (nonatomic) MeshView *meshView;
 @property (nonatomic) MBProgressHUD *HUD;
 @property (nonatomic) int mii;
-@property (nonatomic) NSString *slaveName;
+@property (nonatomic) NSString *name;
 @property (nonatomic) NSTimer *nonRepeatingTimer;
 
 @end
@@ -51,9 +51,15 @@
     [center addObserver:self selector:@selector(onKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     
     [center addObserver:self selector:@selector(onKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    
     [center addObserver:self
                selector:@selector(onConnectionStatusChanged:)
                    name:CONNECTION_STATUS_CHANGE_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(almondNameChangeResponseCallback:)
+                   name:kSFIDidChangeAlmondName
                  object:nil];
 }
 
@@ -110,19 +116,39 @@
 
 #pragma mark command methods
 -(void)requestSetSlaveNameDelegate:(NSString *)newName{
-    if(newName.length == 0){
-        [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.uniqueName newName:newName];
+    if(newName.length <= 2){
+        //show toast
+        [self showToast:@"Please Enter a name of atleast 3 characters."];
+        return;
+    }
+    else if (newName.length > 32) {
+         [self showToast:NSLocalizedString(@"accounts.itoast.almondNameMax32Characters", @"Almond Name cannot be more than 32 characters.")];
+        return;
+    }
+    if(self.isMaster){
+        SFIAlmondConnectionMode connectionMode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
+        if(connectionMode == SFIAlmondConnectionMode_cloud)
+            [[SecurifiToolkit sharedInstance] asyncRequestChangeAlmondName:newName almondMAC:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
+        else
+            [self localAlmondNameChange:_mii name:newName];
     }else{
-        if(newName.length <= 2){
-            //show toast
-            [self showToast:@"Please Enter a name of atleast 3 characters."];
-            return;
-        }
         [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.uniqueName newName:newName];
     }
-    self.slaveName = newName;
+
+    self.name = newName;
     [self showHudWithTimeoutMsgDelegate:@"Loading..." time:10];
 }
+
+-(void)localAlmondNameChange:(int)mii name:(NSString*)name{
+    NSDictionary *payload = @{
+                              @"CommandType":@"SetAlmondName",
+                              @"Name" : name,
+                              @"MobileInternalIndex":@(mii).stringValue
+                              };
+    GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ALMOND_NAME_CHANGE_REQUEST];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
+}
+
 
 -(void)onMeshCommandResponse:(id)sender{
     NSLog(@"mesh edit onmeshcommandresponse");
@@ -148,16 +174,43 @@
     [self hideHUDDelegate];
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     if(isSuccessful){
-        [self.delegate slaveNameDidChangeDelegate:_slaveName];
+        [self.delegate slaveNameDidChangeDelegate:_name];
         [self showToast:@"Successfully updated!"];
         
     }
     else{//failed
-        [self showToast:@"Sorry! cound not update."];
+        [self showToast:@"Sorry! Could not update."];
     }
     [self dismissControllerDelegate];
 }
 
+- (void)almondNameChangeResponseCallback:(id)sender {
+    NSLog(@"almondNameChangeResponseCallback");
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    SFIAlmondConnectionMode connectionMode = [toolkit currentConnectionMode];
+    
+    DynamicAlmondNameChangeResponse *obj = [dataInfo valueForKey:@"data"];
+    if(connectionMode == SFIAlmondConnectionMode_cloud && ![obj.almondplusMAC isEqualToString:toolkit.currentAlmond.almondplusMAC]){
+        return;
+    }
+
+    if (obj.almondplusMAC.length != 0) {
+            //Change Owned Almond Name
+        [self.delegate slaveNameDidChangeDelegate:_name];
+        [self showToast:@"Successfully updated!"];
+    }
+    else {
+        NSLog(@"almondNameChangeResponseCallback ");
+        [self showToast:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name2222")];
+    }
+    [self hideHUDDelegate];
+    [self dismissControllerDelegate];
+}
 - (void)onKeyboardDidShow:(id)notification {
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     

@@ -918,6 +918,7 @@
         }
         else if(alertView.tag == BLINK_CHECK){
             [self addView:self.interfaceView frame:self.currentView.frame];
+            [self.delegate hideHUDDelegate];
         }
         else if(alertView.tag == NETWORK_OFFLINE){
             NSLog(@"on alert ok");

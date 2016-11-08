@@ -44,7 +44,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *meshTableView;
 
-@property (nonatomic) NSTimer *removeAlmondTO;
+@property (nonatomic) NSTimer *removeAlmondTimer;
 @property (nonatomic) NSTimer *nonRepeatingTimer;
 
 
@@ -79,7 +79,7 @@ int mii;
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
-    [self.removeAlmondTO invalidate];
+    [self.removeAlmondTimer invalidate];
     
     if(self.meshView){
         [self.meshView removeNotificationObserver];
@@ -115,21 +115,23 @@ int mii;
     [keyVals addObject:@{@"2.4 GHz SSID":stat.ssid1?:@""}];
     stat.keyVals = keyVals;
 }
-   
+
 - (NSString *)getSignalStrength:(NSInteger)sig{
     // RSSI levels range from -50dBm (100%) to -100dBm (0%)
     // Signal Quality Levels : Highest 5. Lowest 0
     NSLog(@"sig value 1: %d", sig);
     if(sig == SLAVE_OFFLINE.intValue)
-    return @"N/A";
+        return @"N/A";
+    else if(sig == 0)
+        return @"N/A";
     else if(sig >= -50)
-    return @"Excellent";
-    else if(sig < -50 && sig >=-73)
-    return @"Good";
-    else if(sig < -73 && sig >= -87)
-    return @"Poor";
+        return @"Excellent";
+    else if(sig < -50 && sig >=-65)
+        return @"Good";
+    else if(sig < -65 && sig >= -80)
+        return @"Poor";
     else
-    return @"Extremely Poor";
+        return @"Extremely Poor";
 }
 
 #define network events
@@ -143,7 +145,7 @@ int mii;
         }
         
         NSLog(@"meshsetupcontrolle n/w down");
-        [self.removeAlmondTO invalidate];
+        [self.removeAlmondTimer invalidate];
         [self hideHUDDelegate];
         
         [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
@@ -168,6 +170,7 @@ int mii;
     }else{
         self.cloudToMstrAlmSlv.image = [self getConnectionImage];
         self.MstrAlmToSlv.image = [self getMsterToSlaveImg];
+        
         if([self.almondStatObj.interface isEqualToString:@"Wireless"]){
             self.slvSignalStrength.hidden = NO;
             self.slvSignalStrength.image = [self getSignalStrengthIcon];
@@ -181,23 +184,27 @@ int mii;
 }
 
 -(UIImage *)getConnectionImage{
-    return self.almondStatObj.internetStat ? [UIImage imageNamed:@"green-connectivity-icon"]: [UIImage imageNamed:@"red-connectivity-icon"];
+    return [UIImage imageNamed:@"green-connectivity-icon"];
 }
 
 -(UIImage *)getMsterToSlaveImg{
-    return self.almondStatObj.signalStrength.integerValue < -87? [UIImage imageNamed:@"yellow-connectivity-icon"]: [UIImage imageNamed:@"green-connectivity-icon"];
+    if(self.almondStatObj.internetStat == NO)
+        return [UIImage imageNamed:@"red-connectivity-icon"];
+    
+    return self.almondStatObj.signalStrength.integerValue < -80? [UIImage imageNamed:@"yellow-connectivity-icon"]: [UIImage imageNamed:@"green-connectivity-icon"];
 }
 
 -(NSString *)getSignalStrengthText{
     NSInteger sig = self.almondStatObj.signalStrength.integerValue;
     if(self.almondStatObj.internetStat == NO)
         return @"Offline";
-    else if(sig < -87){
+    else if(sig < -80){
         return @"Wireless signal seems to be weak.";
     }else{
         return @"Online";
     }
 }
+
 
 -(UIImage *)getSignalStrengthIcon{
     // RSSI levels range from -50dBm (100%) to -100dBm (0%)
@@ -205,9 +212,9 @@ int mii;
     NSInteger sig = self.almondStatObj.signalStrength.integerValue;
     if(sig >= -50)
         return [UIImage imageNamed:@"wifi-signal-strength4-icon"];
-    else if(sig < -50 && sig >=-73)
+    else if(sig < -50 && sig >=-65)
         return [UIImage imageNamed:@"wifi-signal-strength3-icon"];
-    else if(sig < -73 && sig >= -87)
+    else if(sig < -65 && sig >= -80)
         return [UIImage imageNamed:@"wifi-signal-strength2-icon"];
     else
         return [UIImage imageNamed:@"wifi-signal-strength1-icon"];
@@ -287,7 +294,7 @@ int mii;
     MeshStatusCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER forIndexPath:indexPath];
     //    cell.delegate = self;
     UITableViewCellAccessoryType accType;
-    if(indexPath.row == 0 && !self.almondStatObj.isMaster)
+    if(indexPath.row == 0)
         accType = UITableViewCellAccessoryDisclosureIndicator;
     else
         accType = UITableViewCellAccessoryNone;
@@ -299,10 +306,11 @@ int mii;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(indexPath.row == 0 && !self.almondStatObj.isMaster){
+    if(indexPath.row == 0){
         MeshEditViewController *ctrl = [MeshEditViewController new];
         ctrl.delegate = self;
         ctrl.uniqueName = self.almondStatObj.slaveUniqueName;
+        ctrl.isMaster = self.almondStatObj.isMaster;
         [self presentViewController:ctrl animated:YES completion:nil];
     }
 }
@@ -387,8 +395,8 @@ int mii;
         return;
     [self hideHUDDelegate];
     
-    [self.removeAlmondTO invalidate];
-    self.removeAlmondTO = nil;
+    [self.removeAlmondTimer invalidate];
+    self.removeAlmondTimer = nil;
     
     if(isSuccessful){
         [self showToast:@"Successfully Removed!"];
@@ -437,7 +445,7 @@ int mii;
     }else{
         if(alertView.tag == REMOVE){
             [self showHudWithTimeoutMsgDelegate:@"Removing...Please wait!" time:30];
-            self.removeAlmondTO = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(onRemoveAlmTO:) userInfo:nil repeats:NO];
+            self.removeAlmondTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(onRemoveAlmTimeout:) userInfo:nil repeats:NO];
             [MeshPayload requestRemoveSlave:mii uniqueName:self.almondStatObj.slaveUniqueName];
         }
         else if(alertView.tag == FORCE_REMOVE){
@@ -457,12 +465,13 @@ int mii;
 }
 
 #pragma mark timer
--(void)onRemoveAlmTO:(id)sender{
+-(void)onRemoveAlmTimeout:(id)sender{
+    NSLog(@"onRemoveAlmTimeout called");
     if([self isDisconnected])
         return;
     
-    [self.removeAlmondTO invalidate];
-    self.removeAlmondTO = nil;
+    [self.removeAlmondTimer invalidate];
+    self.removeAlmondTimer = nil;
     [self showForceRemoveAlert];
 }
 

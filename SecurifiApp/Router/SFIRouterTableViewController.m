@@ -114,6 +114,7 @@ int mii;
     
     [self initializeNotifications];
     self.routerSummary = nil;
+    self.slaveStatus = [AlmondStatus new];
     
     self.isBUG = NO;
     [self initializeAlmondData];
@@ -970,7 +971,7 @@ int mii;
      }else{
          self.isAlmDetailView = YES;
          self.almCount = almondCount;
-         self.slaveStatus = [AlmondStatus new];
+         
          
          if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local)
              [[SecurifiToolkit sharedInstance] connectMesh];

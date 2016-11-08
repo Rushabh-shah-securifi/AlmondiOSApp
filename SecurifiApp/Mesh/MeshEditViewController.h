@@ -13,5 +13,6 @@
 
 @interface MeshEditViewController : UIViewController
 @property (nonatomic) NSString *uniqueName;
+@property (nonatomic) BOOL isMaster;
 @property (nonatomic) id<MeshEditViewControllerDelegate> delegate;
 @end

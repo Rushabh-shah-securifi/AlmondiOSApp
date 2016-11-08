@@ -25,7 +25,7 @@
         NSDictionary *ssid = [self getSSIDs:routerSummary];
         [self getStatus:slaveStat
                    name:payload[NAME]
-               location:payload[NAME]
+               location:payload[LOCATION]
             connetedVia:payload[CONNECTED_VIA]?:@"***"
               interface:payload[INTERFACE]
          signalStrength:[self hasSignalStrength:payload[SIGNAL_STRENGTH]]?payload[SIGNAL_STRENGTH]: SLAVE_OFFLINE
@@ -41,7 +41,7 @@
         NSDictionary *ssid = [self getSSIDs:routerSummary];
         [self getStatus:slaveStat
                    name:payload[NAME]
-               location:payload[NAME]
+               location:payload[LOCATION]
             connetedVia:payload[CONNECTED_VIA]?:@"***"
               interface:payload[INTERFACE]
          signalStrength:slaveStat.signalStrength
@@ -61,10 +61,17 @@
 
     
 + (BOOL)payloadHasCompleteData:(NSDictionary *)payload{
-    if([payload[HOP_COUNT] integerValue] == 1){
+    NSLog(@"interface: %@", payload[INTERFACE]);
+    if([payload[INTERFACE] isEqualToString:@"Wired"]){//wired
         return YES;
     }
-    if([self hasSignalStrength:payload[SIGNAL_STRENGTH]] && payload[CONNECTED_VIA]){
+    else if(payload[@"InternetStatus"] && [payload[@"InternetStatus"] boolValue] == NO){
+        return YES;
+    }
+    else if([payload[HOP_COUNT] integerValue] == 1){//Wireless
+        return YES;
+    }
+    else if([self hasSignalStrength:payload[SIGNAL_STRENGTH]] && payload[CONNECTED_VIA]){
         return YES;
     }
     return NO;

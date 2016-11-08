@@ -89,6 +89,10 @@
                  object:nil];
     
     [center addObserver:self
+               selector:@selector(onAlmondNameDidChange:)
+                   name:kSFIDidChangeAlmondName
+                 object:nil];
+    [center addObserver:self
                selector:@selector(onCurrentAlmondChanged:)
                    name:kSFIDidChangeCurrentAlmond
                  object:nil];
@@ -136,7 +140,7 @@
 
 -(void)initializeUI{
     [self updateMode:self.toolkit.mode_src];
-    [self updateDeviceClientListCount];
+    [self updateDeviceClientListCountAndCurrentAlmond];
     [self tryShowLoadingData];
 }
 
@@ -262,7 +266,8 @@
     }
 }
 
--(void)updateDeviceClientListCount{
+-(void)updateDeviceClientListCountAndCurrentAlmond{
+    NSLog(@"updateDeviceClientListCountAndCurrentAlmond");
     if(self.toolkit.currentAlmond != nil)
     {
         dispatch_async(dispatch_get_main_queue(), ^() {
@@ -291,6 +296,24 @@
             self.inactiveNetworkDevices.text = [NSString stringWithFormat: @"%d",0];
         });
     }
+}
+
+- (void)onAlmondNameDidChange:(id)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
+        SFIAlmondPlus *obj = (SFIAlmondPlus *) [data valueForKey:@"data"];
+        if ([self.toolkit.currentAlmond.almondplusMAC isEqualToString:obj.almondplusMAC]) {
+            [self updateDeviceClientListCountAndCurrentAlmond];
+        }
+    });
 }
 
 - (void)onCurrentAlmondChanged:(id)sender {
@@ -335,7 +358,7 @@
 #pragma mark Update
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"dash onDeviceListAndDynamicResponseParsed");
-    [self updateDeviceClientListCount];
+    [self updateDeviceClientListCountAndCurrentAlmond];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
     });
