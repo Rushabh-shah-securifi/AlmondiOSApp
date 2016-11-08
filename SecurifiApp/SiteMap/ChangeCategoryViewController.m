@@ -98,11 +98,12 @@
         self.globalColor = [UIColor colorFromHexString:@"000000"];
         self.catogeryTag.text =@"Adults Only";
         self.catogeryFuncLbl.text = @"No One 17 and Under Admitted. Clearly adult. Children are not admitted.";
+        self.LblClientLastVicited.text = [NSString stringWithFormat:@"%@ site accessed on %@",@"NC-17",self.client.name];
        
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"R"]){
         self.globalColor = [UIColor colorFromHexString:@"f44336"];
-        self.LblClientLastVicited.text = [NSString stringWithFormat:@"%@ Accessed on %@",@"R",self.client.name];
+        self.LblClientLastVicited.text = [NSString stringWithFormat:@"%@ site accessed on %@",@"R",self.client.name];
         self.catogeryTag.text =@"Restricted";
         self.catogeryFuncLbl.text = @"Under 17 requires accompanying parent or adult guardian. Contains some adult material. Parents are urged to learn more about the film before taking their young children with them.";
      
