@@ -16,8 +16,9 @@
 #import "HelpSearchTableViewController.h"
 
 @interface HelpCenter ()
-@property NSArray *helpItems;
+@property (nonatomic) NSArray *helpItems;
 //@property (weak, nonatomic) IBOutlet UITableView *helpTableView;
+@property (nonatomic) HelpSearchTableViewController *helpSearchController;
 @end
 
 @implementation HelpCenter
@@ -36,7 +37,9 @@
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    NSLog(@"is being presented: %d", self.isBeingPresented);
+    if(self.helpSearchController.presentingViewController == nil)//without this it was causing ui issues, nav bar being showed
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -122,8 +125,11 @@
 
 - (IBAction)onSearchBtnTap:(id)sender {
     NSLog(@"onSearchBtnTap");
-    HelpSearchTableViewController *viewController = [self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"HelpSearchTableViewController"];
-    [self.navigationController pushViewController:viewController animated:YES];
+    self.helpSearchController = [self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"HelpSearchTableViewController"];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:self.helpSearchController animated:YES completion:nil];
+    });
+//    [self pushViewController:viewController animated:YES];
 }
 
 - (IBAction)onProductsButtonTap:(id)sender {

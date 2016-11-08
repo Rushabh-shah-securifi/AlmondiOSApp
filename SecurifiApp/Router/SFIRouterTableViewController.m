@@ -316,6 +316,11 @@ int mii;
     return [_routerSummary.firmwareVersion hasPrefix:@"AL3-"] && isRouterOrMaster;
 }
 
+-(BOOL)isInREMode{
+    NSString *mode = _routerSummary.routerMode.lowercaseString;
+    return [mode isEqualToString:@"re"];
+}
+
 -(BOOL)isDisconnected{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     ConnectionStatusType connectionStat = [ConnectionStatus getConnectionStatus];
@@ -759,6 +764,7 @@ int mii;
                             enableSwitch = NO;
                     }
                     ctrl.enableRouterWirelessControl = enableSwitch;
+                    ctrl.isREMode = [self isInREMode];
                     ctrl.hidesBottomBarWhenPushed = YES;
                     UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
                                                    initWithTitle:NSLocalizedString(@"Router Back", @"Back")

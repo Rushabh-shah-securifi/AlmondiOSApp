@@ -194,5 +194,12 @@ static const int headerHeight = 40;
     [searchBar resignFirstResponder];
 }
 
+#pragma mark action event
+- (IBAction)onCrossBtnTap:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    });
+}
+
 
 @end
