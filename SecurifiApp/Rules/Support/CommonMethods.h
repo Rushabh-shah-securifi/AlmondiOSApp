@@ -94,4 +94,6 @@
 + (NSString *)getYestardayDate;
 
 +(NSArray *)domainEpocArr:(NSArray *)arr;
+
++(NSString *)colorShadesforValue:(int)defaultcolor byValueOfcolor:(NSString *)value;
 @end
