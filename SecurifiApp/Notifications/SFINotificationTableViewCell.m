@@ -127,15 +127,19 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     [self.contentView addSubview:self.messageTextField];
     
     SFINotification *notification = self.notification;
-    _sensorSupport = [SensorSupport new];
-    [_sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
-    
-    NSLog(@"Notification - Name: %@, device type: %d, value type: %d, typestr: %@, index: %d, value: %@", notification.deviceName, notification.deviceType, notification.valueType, [SFIDeviceKnownValues propertyTypeToName:notification.valueType], notification.valueIndex, notification.value);
+//    _sensorSupport = [SensorSupport new];
+//    [_sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
+//    
+//    NSLog(@"Notification - Name: %@, device type: %d, value type: %d, typestr: %@, index: %d, value: %@", notification.deviceName, notification.deviceType, notification.valueType, [SFIDeviceKnownValues propertyTypeToName:notification.valueType], notification.valueIndex, notification.value);
+    if(notification.deviceType != SFIDeviceType_WIFIClient){
     Device *device = [Device getDeviceForID:notification.deviceId];
-    [self getGenericIndexValuesByPlacementForDevice:device value:notification.value  devicetype:notification.deviceType];
+     [self setDateLabelText:notification];
+    NSLog(@"device name %@ ID: %d",notification.deviceName,notification.deviceId);
+    [self getGenericIndexValuesByPlacementForDevice:device value:notification.value  devicetype:notification.deviceType notification:(SFINotification *)notification];
+    }
+//    [self setIcon];
+//     [self setMessageLabelText:notification];
     [self setDateLabelText:notification];
-    [self setIcon];
-    [self setMessageLabelText:notification];
 }
 -(NSArray*)deviceIndexArr:(int)deviceID{
     Device *device = [Device getDeviceForID:deviceID];
@@ -155,7 +159,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     }
     return [genericIndexesSet allObjects];
 }
-- (NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)devicert value:(NSString *)value devicetype:(int)devicetype{
+- (NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)devicert value:(NSString *)value devicetype:(int)devicetype notification:(SFINotification *)not{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericDeviceClass *genericDevice = toolkit.genericDevices[@(devicetype).stringValue];
     if(genericDevice==nil)
@@ -164,24 +168,90 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     NSLog(@"deviceIndexes %@",deviceIndexes);
     NSMutableArray *genericIndexes = [NSMutableArray new];
     NSArray *deviceIndexArr = deviceIndexes.allKeys;
-    
-    for(NSString *key in deviceIndexArr){
-        DeviceIndex *index = deviceIndexes[key];
-        [genericIndexes addObject:index.genericIndex];
-    }
-    NSLog(@"deviceIndexArr all keys id %@",genericIndexes);
+
+    NSString *indexID = [self getgenericIndexfor:not.deviceType andIndex:@(not.valueIndex).stringValue];
+    NSLog(@"deviceIndexArr all keys id %@",indexID);
     GenericValue *gval;
+    gval = [self getMatchingGenericValueForGenericIndexID:indexID forValue:value];
+   
     
-    for(NSString *genericIndexID in genericIndexes){
-        gval = [self getMatchingGenericValueForGenericIndexID:genericIndexID forValue:value];
-        if(gval.notificationText != NULL || gval.notificationPrefix != NULL)
-            break;
+    NSString *notificationString = [NSString stringWithFormat:@"%@",gval.value];
+    NSLog(@"outer notificaation obj.value %@",notificationString);
+    if(devicetype != SFIDeviceType_WIFIClient){
+    NSDictionary *notificationDict = @{
+                                       @"devicename":not.deviceName?not.deviceName:@"",
+                                       @"notificationText":gval.notificationText?gval.notificationText:@"",
+                                       @"prefix":gval.notificationPrefix?gval.notificationPrefix:@"",
+                                      @"value":gval.value
+                                       
+                                       };
+        NSLog(@"outer notificaation obj dict  %@",notificationDict);
+    [self seticon:gval.icon];
+    [self setNotificationLabel:notificationDict];
     }
-    NSString *notificationString = [NSString stringWithFormat:@"%@,%@,%@,%@",gval.notificationText,gval.notificationPrefix,value,gval.icon];
-    NSLog(@"outer notificaation obj %@",notificationString);
     return nil;
 }
-
+-(NSString *)getgenericIndexfor:(int)devicetype andIndex:(NSString *)indexId{
+    NSString *deviceTypeString = @(devicetype).stringValue;
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    GenericDeviceClass *genericDevice = toolkit.genericDevices[deviceTypeString];
+    NSDictionary *deviceIndexes = genericDevice.Indexes;
+    NSLog(@"deviceIndexes %@",deviceIndexes);
+    NSLog(@"deviceIndexArr all keys id %@",indexId);
+    BOOL match = NO;
+   
+    //    for(NSString *key in deviceIndexArr){
+    //        DeviceIndex *index = deviceIndexes[key];
+    //        [genericIndexes addObject:index.genericIndex];
+    for (NSString * ID in deviceIndexes.allKeys) {
+            DeviceIndex *index = deviceIndexes[indexId];
+            if(index){
+                return index.genericIndex;
+            }
+        }
+    return @"0";
+}
+-(void)seticon:(NSString *)iconName{
+    if(iconName != NULL){
+    self.iconView.image = [UIImage imageNamed:iconName];
+    self.iconView.tintColor = [UIColor whiteColor];
+    }
+}
+-(void)setNotificationLabel:(NSDictionary *)notification{
+    if (notification == nil) {
+        self.messageTextField.attributedText = [[NSAttributedString alloc] initWithString:@""];
+        return;
+    }
+    UIFont *bold_font = [UIFont securifiBoldFont];
+    UIFont *normal_font = [UIFont securifiNormalFont];
+    
+    NSDictionary *attr;
+    
+    attr = @{
+             NSFontAttributeName : bold_font,
+             NSForegroundColorAttributeName : [UIColor blackColor],
+             };
+    NSString *deviceName = notification[@"devicename"];
+    NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:deviceName attributes:attr];
+    
+    attr = @{
+             NSFontAttributeName : bold_font,
+             NSForegroundColorAttributeName : [UIColor lightGrayColor],
+             };
+    
+    NSString *message;
+    
+    NSMutableAttributedString *mutableAttributedString = nil;
+    message = notification[@"notificationText"];
+    if (message == nil) {
+        message = @"";
+    }
+    if(![message isEqualToString:@""])
+        self.messageTextField.text = [NSString stringWithFormat:@"%@ %@",deviceName,message];
+    else
+        self.messageTextField.text = [NSString stringWithFormat:@"%@ %@ %@ %@",deviceName,message,notification[@"value"],notification[@"prefix"]];
+    
+}
 - (GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value{
     //NSLog(@"value: %@", value);
     //    if(value.length == 0 || value == nil)
@@ -199,16 +269,27 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
 
     return genericIndexObject.values[value]? genericIndexObject.values[value]: [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:nil value:value excludeFrom:nil eventType:nil notificationText:gval.notificationText];
     }
-    if(genericIndexObject.formatter != nil && ![genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] && ![genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
+    else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"HUE_ONLY"])){
+        if([genericIndexObject.ID isEqualToString:@"99"]){
+            int brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
+            NSString *str = @(brightnessValue).stringValue;
+            GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:str prefix:genericIndexObject.formatter.prefix];
+            return genericValue1;
+        }
+        
+    }
+    else if(genericIndexObject.formatter != nil && ![genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] && ![genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] && ![genericIndexObject.layoutType isEqualToString:@"HUE_ONLY"]){
         NSString *formattedValue=[genericIndexObject.formatter transform:value genericId:genericIndexID];
         
-        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:formattedValue
-                                                                     iconText:formattedValue
-                                                                        value:value
-                                                                  excludeFrom:genericIndexObject.excludeFrom
-                                                             transformedValue:[genericIndexObject.formatter transformValue:value] prefix:genericIndexObject.formatter.prefix];
+        GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:value prefix:genericIndexObject.formatter.prefix];
         
-        return genericValue;
+//        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:formattedValue
+//                                                                     iconText:formattedValue
+//                                                                        value:value
+//                                                                  excludeFrom:genericIndexObject.excludeFrom
+//                                                             transformedValue:[genericIndexObject.formatter transformValue:value] prefix:genericIndexObject.formatter.prefix];
+        
+        return genericValue1;
     }
     else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"])){
         NSLog(@"slider icon - display text: %@, value: %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value);
@@ -224,28 +305,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
                                               eventType:nil
                                        transformedValue:[genericIndexObject.formatter transformValue:value] prefix:genericIndexObject.formatter.prefix]; //need icon aswell as transformedValue
     }
-    else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"HUE_ONLY"])){
-        int brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
-        NSString *str = @(brightnessValue).stringValue;
-        
-//        NSString *str = ^NSString *(NSString *value) {
-//            if (!value) {
-//                return @"";
-//            }
-//            int brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
-//            return @(brightnessValue).stringValue;
-//        };
-        
-        return [[GenericValue alloc]initWithDisplayText:[genericIndexObject.formatter transform:value genericId:genericIndexID]
-                                                   icon:genericIndexObject.icon
-                                            toggleValue:nil
-                                                  value:str
-                                            excludeFrom:nil
-                                              eventType:nil
-                                       transformedValue:[genericIndexObject.formatter transformValue:value]
-                                                 prefix:genericIndexObject.formatter.prefix
-                                            ];
-    }
+    
     return [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:value value:value excludeFrom:genericIndexObject.excludeFrom eventType:nil notificationText:@""];
 }
 - (UIColor *)notificationStatusColor {
