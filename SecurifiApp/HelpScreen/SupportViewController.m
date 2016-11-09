@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.navigationItem.title = @"Support";
+    self.navigationItem.title = NSLocalizedString(@"Support","");
     self.countryNumbers= @[@[@"canada",@"CA",@"+1-855-969-7328"],
                                @[@"germany",@"DE",@"+49-800-723-7994"],
                                @[@"france",@"FR",@"+33-805-080-447"],

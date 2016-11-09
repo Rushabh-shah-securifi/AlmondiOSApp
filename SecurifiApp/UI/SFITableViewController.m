@@ -705,7 +705,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:update_cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [self createCellWithMsg:@"The Almond firmware needs to be updated to remain compatible with this version of the app." cell:cell];
+        [self createCellWithMsg:NSLocalizedString(@"update_fimware", @"") cell:cell];
     }
     return cell;
 }

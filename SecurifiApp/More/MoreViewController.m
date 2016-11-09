@@ -32,7 +32,7 @@
 - (void)viewDidLoad {
     NSLog(@"more controller view did load");
     [super viewDidLoad];
-    self.title = @"More";
+    self.title = NSLocalizedString(@"more", @"");
     self.userName = @"";
     [self loadProfileImage];
 }
@@ -170,11 +170,11 @@
         }
         else if(section == 3){//app rating
             cell = [self getMorecell:tableView identifier:@"morecell4" indexPath:indexPath accessory:NO];
-            [cell setUpMoreCell4:[SFIColors ruleBlueColor] title:@"Rate Our App"];
+            [cell setUpMoreCell4:[SFIColors ruleBlueColor] title:NSLocalizedString(@"rate_app", @"")];
         }
         else if(section == 4){//logout
             cell = [self getMorecell:tableView identifier:@"morecell4" indexPath:indexPath accessory:NO];
-            [cell setUpMoreCell4:[UIColor redColor] title:@"Log Out"];
+            [cell setUpMoreCell4:[UIColor redColor] title:NSLocalizedString(@"log_out", @"")];
         }
         else if(section == 5){//logout all
             cell = [self getMorecell:tableView identifier:@"morecell5" indexPath:indexPath accessory:NO];
@@ -218,7 +218,7 @@
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
         headerView.backgroundColor = [UIColor whiteColor];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 79)];
-        [CommonMethods setLableProperties:label text:@"The Almond firmware needs to be updated to remain compatible with this version of the app." textColor:[UIColor blackColor] fontName:@"Avenir-Light" fontSize:16 alignment:NSTextAlignmentCenter];
+        [CommonMethods setLableProperties:label text:NSLocalizedString(@"update_fimware", @"") textColor:[UIColor blackColor] fontName:@"Avenir-Light" fontSize:16 alignment:NSTextAlignmentCenter];
         [headerView addSubview:label];
         [CommonMethods addLineSeperator:headerView yPos:headerView.frame.size.height-1];
         return headerView;
@@ -261,7 +261,7 @@
         }
         else if(section == 4){
             //main view will catch the response.
-            [self addHud:@"Logging out. Please wait!"];
+            [self addHud:NSLocalizedString(@"logout_hud", @"")];
             [self showHudWithTimeout];
             [[SecurifiToolkit sharedInstance] asyncSendLogout];
         }
@@ -340,7 +340,7 @@
 }
 
 -(void)setMoreBackButton{
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"More" style:UIBarButtonItemStylePlain target:nil action:nil];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"more", @"") style:UIBarButtonItemStylePlain target:nil action:nil];
     [self.navigationItem setBackBarButtonItem:backItem];
 }
 #pragma mark tableviewcell delegates
@@ -393,12 +393,12 @@
 #pragma mark almond sharing
 - (void)shareAlmondTapped{
     if([[SecurifiToolkit sharedInstance] currentAlmond] == nil){
-        [self showToast:@"Please add an Almond to share its control."];
+        [self showToast:NSLocalizedString(@"almond_share_control", @"")];
         return;
     }
     
     //Invitation Email Input Box
-    NSString *alertMessage = [NSString stringWithFormat:@"Share control of %@ by sending an invitation over email", [SecurifiToolkit sharedInstance].currentAlmond.almondplusName];
+    NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"almond_share_invite", @""), [SecurifiToolkit sharedInstance].currentAlmond.almondplusName];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.title", @"Invite By Email") message:alertMessage delegate:self cancelButtonTitle:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.Invite", @"Invite"), nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     alert.tag = USER_INVITE_ALERT;
