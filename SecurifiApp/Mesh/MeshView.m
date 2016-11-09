@@ -847,20 +847,21 @@
     self.item = item;
     NSArray *screens = item[SCREENS];
     NSDictionary *screen = screens.firstObject;
-    
-    self.helpTitle.text = NSLocalizedString(screen[TITLE], @"");
-    self.helpDescription.text = NSLocalizedString(screen[DESCRIPTION], @"");
-    if(screen[DESCRIPTION_BELOW])
-        self.helpDescBtm.text = NSLocalizedString(screen[DESCRIPTION_BELOW], @"");
-    else
-        self.helpDescBtm.text = @"";
-    
-    self.helpImg.image = [UIImage imageNamed:screen[IMAGE]];
-    self.pageControl.numberOfPages = [item[SCREENCOUNT] intValue];
-    [self.pageControl setCurrentPage:0];
-    [self.backBtn setHidden:YES];
-    [self.backBtn setEnabled:NO];
-    [self.nextBtn setEnabled:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.helpTitle.text = NSLocalizedString(screen[TITLE], @"");
+        self.helpDescription.text = NSLocalizedString(screen[DESCRIPTION], @"");
+        if(screen[DESCRIPTION_BELOW])
+            self.helpDescBtm.text = NSLocalizedString(screen[DESCRIPTION_BELOW], @"");
+        else
+            self.helpDescBtm.text = @"";
+        
+        self.helpImg.image = [UIImage imageNamed:screen[IMAGE]];
+        self.pageControl.numberOfPages = [item[SCREENCOUNT] intValue];
+        [self.pageControl setCurrentPage:0];
+        [self.backBtn setHidden:YES];
+        [self.backBtn setEnabled:NO];
+        [self.nextBtn setEnabled:NO];
+    });
 }
 
 - (IBAction)onPageControlValueChange:(UIPageControl* )pageControl {
@@ -868,25 +869,27 @@
     NSLog(@"on page control value change: %d", currntPg);
     NSArray *screens = self.item[SCREENS];
     NSDictionary *screen = [screens objectAtIndex:currntPg];
-    self.helpTitle.text = NSLocalizedString(screen[TITLE], @"");
-    self.helpDescription.text = NSLocalizedString(screen[DESCRIPTION], @"");
-    if(screen[DESCRIPTION_BELOW])
-        self.helpDescBtm.text = NSLocalizedString(screen[DESCRIPTION_BELOW], @"");
-    else
-        self.helpDescBtm.text = @"";
-    
-    self.helpImg.image = [UIImage imageNamed:screen[IMAGE]];
-    
-    if(pageControl.currentPage == 0)
-        self.backBtn.hidden = YES;
-    else
-        self.backBtn.hidden = NO;
-    
-    if(pageControl.currentPage == screens.count-1){
-        [self.nextBtn setEnabled:YES];
-    }else{
-        [self.nextBtn setEnabled:NO];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.helpTitle.text = NSLocalizedString(screen[TITLE], @"");
+        self.helpDescription.text = NSLocalizedString(screen[DESCRIPTION], @"");
+        if(screen[DESCRIPTION_BELOW])
+            self.helpDescBtm.text = NSLocalizedString(screen[DESCRIPTION_BELOW], @"");
+        else
+            self.helpDescBtm.text = @"";
+        
+        self.helpImg.image = [UIImage imageNamed:screen[IMAGE]];
+        
+        if(pageControl.currentPage == 0)
+            self.backBtn.hidden = YES;
+        else
+            self.backBtn.hidden = NO;
+        
+        if(pageControl.currentPage == screens.count-1){
+            [self.nextBtn setEnabled:YES];
+        }else{
+            [self.nextBtn setEnabled:NO];
+        }
+    });
 }
 
 //next of page control
