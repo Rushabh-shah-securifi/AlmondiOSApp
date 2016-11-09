@@ -1229,6 +1229,13 @@ Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add
 
 
 /****** advanced router help contene *******/
+"adv_feature_alert" = "At this time these advanced features are only available via Almond's local Web UI.\n\n You can find the credentials to access this web UI in the Web Admin section of the Status app on the Almond LCD.";
+"learn_more" = "Learn More";
+
+//router page
+"learn_adv_features" = "Learn about advanced features available in your Almond.";
+"adv_router_features" = "Advanced Router Features";
+
 "vpn_title" = "VPN";
 "vpn_description" = "A Virtual Private Network helps you connect your network device to another device on the Internet in a way that lets them behave as if they were connected to each other directly. A VPN can be used to connect to secure corporate networks, access your Netflix account from another country, or simply for added privacy.<br><br>By connecting your Almond to a VPN, you can connect all your network devices that use the Almond’s WiFi to another network over the internet securely and directly.";
 "vpn_title_2" = "Using VPN on an Almond, Almond 2015 or Almond 3";
