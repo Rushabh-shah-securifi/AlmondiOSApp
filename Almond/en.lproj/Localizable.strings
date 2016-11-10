@@ -1194,6 +1194,27 @@ Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add
 </html>";
 
 /***** mesh strings ********/
+"connected_via" = "Connected Via";
+"interface" = "Interface";
+"connection_stat" = "Connection Status";
+"connection_str" = "Connection Strength";
+"internet_stat" = "Internet Status";
+
+"excellent" = "Excellent";
+"good" = "Good";
+"poor" = "Poor";
+"extremely_poor" = "Extremely Poor";
+
+"no_internet_alert" = "Make sure your almond 3 has working internet connection to continue setup.";
+"weak_signal_strength" = "Wireless signal seems to be weak.";
+"remove_almond" = "Remove Almond";
+"remove_almond_alert" = "Are you sure, you want to remove %@?";
+"force_remove_almond" = "Failed to remove \"%@\" Almond. Do you want to forcefully remove it?";
+"manual_force_remove" = "If you choose to force remove an Almond, you will have to manually reset that Almond to complete the process.";
+"sorry_could_not_remove" = "Sorry! Could not remove. Try removing from Almond";
+"removing_wait" = "Removing...Please wait!";
+
+
 "wiring_primary" = "Wiring your Primary Almond ";
 "wiring_primary_desc" = "For your network to function properly, it's important to place it in the correct order.";
 "wiring_primary_desc2" = "Make sure that your primary Almond is directly connected to your ISP mdem via the internet port.";
