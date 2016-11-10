@@ -48,7 +48,7 @@
 #define REBOOT_TAG 1
 #define FIRMWARE_UPDATE_TAG 2
 
-static const int networkingHeight = 100;
+static const int networkingHeight = 110;
 static const int almondNtwkHeight = 200;
 static const int advanceRtrHeight = 100;
 static const int settingsHeight = 70;
@@ -331,7 +331,7 @@ int mii;
     NSArray *msgs = [self getWirelessSettingsSummary];
     int lines = (int)[SFICardView getLineCount:msgs];
     NSLog(@"lines: %d", lines);
-    return settingsHeight + (lines * 12);
+    return settingsHeight + (lines * 14);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
