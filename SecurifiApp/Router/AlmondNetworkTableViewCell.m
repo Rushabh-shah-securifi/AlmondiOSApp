@@ -29,22 +29,19 @@
 }
 
 - (void)layoutSubviews{
-    NSLog(@"almond n/w layout subviews");
     [super layoutSubviews];
-    
+
     CGRect rect = self.bounds;
     rect = CGRectInset(rect, 10, 0);
     self.almondView.frame = rect;
-    
     self.almondView.backgroundColor = [UIColor securifiRouterTileGreenColor];
+    [self createAlmondNetworkView];
     [self.contentView addSubview:self.almondView];
 }
 
 - (void)markReuse {
     UIView *oldView = self.almondView;
-    
     UIView *newView = [[UIView alloc] initWithFrame:self.frame];
-    
     [oldView removeFromSuperview];
     self.almondView = newView;
 }
@@ -84,7 +81,7 @@
 }
 
 - (UIView *)makeAddAlmondView:(NSArray*)titles{
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, self.yCoordinate, CGRectGetWidth(self.almondView.frame) - 30, 115)];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, self.yCoordinate, CGRectGetWidth(self.almondView.frame)-10, 115)];
 //    scrollView.backgroundColor = [UIColor lightGrayColor];
     
     CGFloat xOffset = 0;

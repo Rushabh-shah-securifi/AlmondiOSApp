@@ -92,7 +92,7 @@ int mii;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    NSLog(@"router viewDidLoad");
     if([[SecurifiToolkit sharedInstance] isScreenShown:@"wifi"] == NO)
         [self initializeHelpScreensfirst:@"wifi"];
     
@@ -438,7 +438,7 @@ int mii;
     [cell setHeading:@"Almond Network" titles:almonds almCount:almonds.count];
     //    [cell setHeading:@"Almond Network" titles:@[@"almond 1"] almCount:1];
     
-    [cell createAlmondNetworkView];
+//    [cell createAlmondNetworkView]; //moved inside layout subviews
     return cell;
 }
 
