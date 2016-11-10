@@ -121,9 +121,8 @@
     
     
     for (GenericIndexValue *genericIndexValue in arr) {
-        NSLog(@"genericIndexValue.genericIndex.ID %@ value %@",genericIndexValue.genericIndex.ID ,genericIndexValue.genericValue.value);
         
-        if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"] && ![genericIndexValue.genericValue.value isEqualToString:@"wireless"]){
+        if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"]){
             connection = genericIndexValue.genericValue.value;
             
             //self.dataLogView.hidden = YES;
@@ -167,11 +166,18 @@
     if([self.routerMode isEqualToString:@"ap"] || [self.routerMode isEqualToString:@"re"] ||[self.routerMode isEqualToString:@"WirelessSlave"] || [self.routerMode isEqualToString:@"WiredSlave"]){
         if([connection isEqualToString:@"wireless"]){
             self.switchView3.on = NO;
+            self.dataLogView.hidden = YES;
+            self.blockClientTxt.hidden = NO;
             self.blockClientTxt.text = @"For checking Data usage, Almond must be in Router Mode.";
+            self.switchView3.userInteractionEnabled = NO;
         }
         else{
             self.switchView3.on = NO;
             self.switchView1.on = NO;
+            self.switchView3.userInteractionEnabled = NO;
+            self.switchView1.userInteractionEnabled = NO;
+            self.dataLogView.hidden = YES;
+            self.blockClientTxt.hidden = NO;
             self.blockClientTxt.text = @"This device is in wired connection. Web history requires wireless connection in RE/AP Mode. For checking Data usage, Almond must be in Router Mode.";
         }
     }

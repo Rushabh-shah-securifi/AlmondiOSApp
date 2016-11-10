@@ -9,7 +9,7 @@ def shared_pods
 	pod 'ASValueTrackingSlider'
 	pod 'CocoaLumberjack'
 	#pod 'CrashlyticsLumberjack', '~> 2.0.0-rc2'
-	pod 'Fabric'
+    pod 'Fabric'
 	pod 'Crashlytics'
 	pod 'Colours', '~> 5.5'
 	pod 'GoogleAnalytics'
@@ -20,6 +20,7 @@ def shared_pods
 	pod "UIImage-ResizeMagick"
 	pod 'V8HorizontalPickerView', '~> 1.0'
 	pod 'ActionSheetPicker-3.0'
+    pod "GLCalendarView", "~> 1.0.0"
 end
 
 xcodeproj 'SecurifiApp.xcodeproj'
