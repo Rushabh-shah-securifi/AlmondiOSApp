@@ -787,7 +787,8 @@
 }
 
 - (void)showConnectingHUD {
-    [self showHUD:@"Connecting, Please wait..."];
+    [self showHUD:@"Connecting. Please wait!"];
+    [self.HUD hide:YES afterDelay:5];
 }
 
 - (void)showLoadingRouterDataHUD {
