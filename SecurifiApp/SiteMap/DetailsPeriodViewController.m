@@ -149,8 +149,8 @@ NSDate *_dateSelected;
         NSLog( @"Selected %@ %ld/%ld - %ld/%ld",range.endDay, (long)range.startDay.day, (long)range.startDay.month, (long)range.endDay.day, (long)range.endDay.month);
         NSLog(@"day diff %ld",[self daysBetweenDate:range.startDay.date andDate:range.endDay.date]);
         self.labelTxt = [NSString stringWithFormat:@"%ld-%ld to %ld-%ld",(long)range.startDay.day, (long)range.startDay.month, (long)range.endDay.day, (long)range.endDay.month];
-        self.lastDate = [NSString stringWithFormat:@"%ld-%ld-%ld",(long)range.endDay.year,(long)range.endDay.month,(long)range.endDay.day];
-        self.value = [NSString stringWithFormat:@"%ld",[self daysBetweenDate:range.startDay.date andDate:range.endDay.date] + 1];
+        self.lastDate = [NSString stringWithFormat:@"%ld-%02ld-%02ld",(long)range.endDay.year,(long)range.endDay.month,(long)range.endDay.day];
+        self.value = [NSString stringWithFormat:@"%d",[self daysBetweenDate:range.startDay.date andDate:range.endDay.date] + 1];
     }
     else {
         NSLog( @"No selection" );

@@ -47,7 +47,7 @@
     }
     [cardView addLine];
     
-    if(setting.enabled)
+    if(setting.enabled && !self.isREMode)
         [cardView addNameLabel:NSLocalizedString(@"router.settings.label.SSID", @"SSID") valueTextField:setting.ssid delegate:self tag:0];
     else
         [cardView addNameLabel:NSLocalizedString(@"router.settings.label.SSID", @"SSID") valueLabel:setting.ssid];

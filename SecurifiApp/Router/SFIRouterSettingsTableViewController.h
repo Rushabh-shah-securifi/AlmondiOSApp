@@ -13,5 +13,6 @@
 @property(nonatomic, copy) NSString *almondMac;
 @property(nonatomic, copy) NSArray *wirelessSettings;
 @property(nonatomic) BOOL enableRouterWirelessControl;
+@property(nonatomic) BOOL isREMode;
 
 @end

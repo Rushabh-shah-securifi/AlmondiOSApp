@@ -132,7 +132,7 @@
 
 #pragma mark tableView delegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.isLocal ?2: 5;
+    return self.isLocal ?2: 6;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -156,22 +156,27 @@
             [cell setUpMoreCell3];
         }
     }else{
-        if(section == 0){
+        if(section == 0){//accounts
             cell = [self getMorecell:tableView identifier:@"morecell1" indexPath:indexPath accessory:YES];
             [cell setUpMoreCell1:self.userName];
         }
-        else if(section == 1){
+        else if(section == 1){//various paths
             cell = [self getMorecell:tableView identifier:@"morecell2" indexPath:indexPath accessory:YES];
             [cell setUpMoreCell2:self.moreFeatures[indexPath.row]];
         }
-        else if(section == 2){
+        else if(section == 2){//app version
             cell = [self getMorecell:tableView identifier:@"morecell3" indexPath:indexPath accessory:NO];
             [cell setUpMoreCell3];
         }
-        else if(section == 3){
+        else if(section == 3){//app rating
             cell = [self getMorecell:tableView identifier:@"morecell4" indexPath:indexPath accessory:NO];
+            [cell setUpMoreCell4:[SFIColors ruleBlueColor] title:@"Rate Our App"];
         }
-        else if(section == 4){
+        else if(section == 4){//logout
+            cell = [self getMorecell:tableView identifier:@"morecell4" indexPath:indexPath accessory:NO];
+            [cell setUpMoreCell4:[UIColor redColor] title:@"Log Out"];
+        }
+        else if(section == 5){//logout all
             cell = [self getMorecell:tableView identifier:@"morecell5" indexPath:indexPath accessory:NO];
         }
     }
@@ -250,6 +255,11 @@
             [self callControllersOnRowSelection:row];
         }
         else if(section == 3){
+            //app rating
+            NSLog(@"app rating here");
+            [self gotoReviews];
+        }
+        else if(section == 4){
             //main view will catch the response.
             [self addHud:@"Logging out. Please wait!"];
             [self showHudWithTimeout];
@@ -257,6 +267,23 @@
         }
     }
 }
+
+- (void)gotoReviews{
+    NSLog(@"gotoReviews");
+    NSString *str;
+    NSString *appID = @"908025757"; //got it from itunes under Apple ID
+    float ver = [[[UIDevice currentDevice] systemVersion] floatValue];
+    NSLog(@"version : %f", ver);
+    if (ver >= 7.0 && ver < 7.1) {
+        str = [NSString stringWithFormat:@"itms-apps://itunes.apple.com/app/id%@",appID];
+    } else if (ver >= 8.0) {
+        str = [NSString stringWithFormat:@"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%@&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&type=Purple+Software",appID];
+    } else {
+        str = [NSString stringWithFormat:@"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%@",appID];
+    }
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+}
+
 
 -(void)callControllersOnRowSelection:(NSInteger)row{
     if(row == 0){//rules

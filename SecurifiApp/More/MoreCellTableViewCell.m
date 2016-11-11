@@ -21,6 +21,9 @@
 //morecell3
 @property (weak, nonatomic) IBOutlet UILabel *version;
 
+//morecell 4
+@property (weak, nonatomic) IBOutlet UIButton *ButtonCell4;
+
 @end
 
 @implementation MoreCellTableViewCell
@@ -59,6 +62,11 @@
 
 -(void)setUpMoreCell3{
     self.version.text = [self getVersion];
+}
+
+-(void)setUpMoreCell4:(UIColor *)color title:(NSString *)title{
+    [self.ButtonCell4 setTitle:title forState:UIControlStateNormal];
+    [self.ButtonCell4 setTitleColor:color forState:UIControlStateNormal];
 }
 
 -(NSString *)getVersion{

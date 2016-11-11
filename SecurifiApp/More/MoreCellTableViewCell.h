@@ -25,4 +25,6 @@
 -(void)setUpMoreCell2:(NSDictionary*)moreFeature;
 
 -(void)setUpMoreCell3;
+
+-(void)setUpMoreCell4:(UIColor *)color title:(NSString *)title;
 @end
