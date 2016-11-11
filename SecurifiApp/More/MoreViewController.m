@@ -164,20 +164,23 @@
             cell = [self getMorecell:tableView identifier:@"morecell2" indexPath:indexPath accessory:YES];
             [cell setUpMoreCell2:self.moreFeatures[indexPath.row]];
         }
-        else if(section == 2){//app version
-            cell = [self getMorecell:tableView identifier:@"morecell3" indexPath:indexPath accessory:NO];
-            [cell setUpMoreCell3];
-        }
-        else if(section == 3){//app rating
+        else if(section == 2){//app rating
             cell = [self getMorecell:tableView identifier:@"morecell4" indexPath:indexPath accessory:NO];
             [cell setUpMoreCell4:[SFIColors ruleBlueColor] title:NSLocalizedString(@"rate_app", @"")];
+
         }
-        else if(section == 4){//logout
+        else if(section == 3){//logout
             cell = [self getMorecell:tableView identifier:@"morecell4" indexPath:indexPath accessory:NO];
             [cell setUpMoreCell4:[UIColor redColor] title:NSLocalizedString(@"log_out", @"")];
         }
-        else if(section == 5){//logout all
+        else if(section == 4){//logout all
             cell = [self getMorecell:tableView identifier:@"morecell5" indexPath:indexPath accessory:NO];
+            
+        }
+        else if(section == 5){//app version
+            cell = [self getMorecell:tableView identifier:@"morecell3" indexPath:indexPath accessory:NO];
+            [cell setUpMoreCell3];
+            
         }
     }
     return cell;
@@ -254,12 +257,12 @@
         else if(section == 1){
             [self callControllersOnRowSelection:row];
         }
-        else if(section == 3){
+        else if(section == 2){
             //app rating
             NSLog(@"app rating here");
             [self gotoReviews];
         }
-        else if(section == 4){
+        else if(section == 3){
             //main view will catch the response.
             [self addHud:NSLocalizedString(@"logout_hud", @"")];
             [self showHudWithTimeout];
