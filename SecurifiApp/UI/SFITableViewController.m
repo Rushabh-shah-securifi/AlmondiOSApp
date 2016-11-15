@@ -687,8 +687,8 @@
 
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
     NSLog(@"Link 2");
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [LocalNetworkManagement setLocalNetworkSettings:newSettings];
+
+    [LocalNetworkManagement storeLocalNetworkSettings:newSettings];
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -706,7 +706,6 @@
     NSLog(@"Link 5");
     NSString *almondMac = editor.settings.almondplusMAC;
     
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [LocalNetworkManagement removeLocalNetworkSettingsForAlmond:almondMac];
     
     [self.tableView reloadData];

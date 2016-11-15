@@ -506,8 +506,8 @@ CGPoint tablePoint;
 }
 
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [LocalNetworkManagement setLocalNetworkSettings:newSettings];
+    
+    [LocalNetworkManagement storeLocalNetworkSettings:newSettings];
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 

@@ -36,7 +36,7 @@
 
     if (self.dirty) {
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        [LocalNetworkManagement setLocalNetworkSettings:self.settings];
+        [LocalNetworkManagement storeLocalNetworkSettings:self.settings];
     }
 }
 

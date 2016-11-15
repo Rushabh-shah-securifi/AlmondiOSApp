@@ -775,8 +775,7 @@
 }
 
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [LocalNetworkManagement setLocalNetworkSettings:newSettings];
+    [LocalNetworkManagement storeLocalNetworkSettings:newSettings];
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -790,8 +789,6 @@
 
 - (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {
     NSString *almondMac = editor.settings.almondplusMAC;
-    
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [LocalNetworkManagement removeLocalNetworkSettingsForAlmond:almondMac];
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
@@ -843,7 +840,6 @@
             editor.makeLinkedAlmondCurrentOne = YES;
             UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
             [self presentViewController:ctrl animated:YES completion:nil];
-            
             break;
         }
     }

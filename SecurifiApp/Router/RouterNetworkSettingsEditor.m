@@ -155,7 +155,6 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
         case RouterNetworkSettingsEditorMode_link:
             return (section == 0) ? TABLE_ROW_count : 2;
     }
-
     return 0;
 }
 
@@ -381,7 +380,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
                 }
 
                 // store the new/updated settings and update UI state; inform the delegate
-                [LocalNetworkManagement setLocalNetworkSettings:settings];
+                [LocalNetworkManagement storeLocalNetworkSettings:settings];
                 //NSLog(@"storing local network %@",settings);
             
                 if (self.makeLinkedAlmondCurrentOne) {
@@ -433,9 +432,9 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
     [self.delegate networkSettingsEditorDidCancel:self];
 }
 
-- (void)onUnlinkAlmond {
-    NSString *almondMac = self.settings.almondplusMAC;
 
+- (void)onUnlinkAlmond {
+//    NSString *almondMac = self.settings.almondplusMAC;
 //    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 //    [LocalNetworkManagement removeLocalNetworkSettingsForAlmond:almondMac];
 
