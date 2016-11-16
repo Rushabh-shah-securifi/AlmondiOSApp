@@ -36,8 +36,10 @@
     config.enableRouterWirelessControl = YES;       // YES by default
     config.enableLocalNetworking = YES;             // NO by default
     config.enableScenes = YES;                      // NO by default
-    config.enableWifiClients = YES;                 // NO by default
-//    config.enableAlmondVersionRemoteUpdate = YES;           // NO by default
+    config.enableWifiClients = YES;
+    //isTesting is automatically changed during runtime if we are running the test cases;
+    // NO by default
+    // config.enableAlmondVersionRemoteUpdate = YES;           // NO by default
     return config;
 }
 
@@ -47,6 +49,13 @@
 
 - (NSString *)assetsPrefixId {
     return DEFAULT_ASSETS_PREFIX_ID;
+}
+
+- (BOOL)isRunningTests{
+    NSDictionary* environment = [[NSProcessInfo processInfo] environment];
+    NSString* testEnabled = environment[@"TEST_ENABLED"];
+    NSLog(@"%d is the value of the isRunningTests", [testEnabled isEqualToString:@"YES"]);
+    return [testEnabled isEqualToString:@"YES"];
 }
 
 #pragma mark - UIApplicationDelegate methods
@@ -126,25 +135,22 @@
         return @"File1.txt";
 }
 
+
 -(void) sendLogsToCloud {
     NSString* fileName = [self readData];
     if(fileName==NULL){
         [self writeData:@"File1.txt"];
         self.currentFileName = @"File1.txt";
-        NSLog(@"file name is null");
     }else{
         if([fileName isEqualToString:@"File1.txt"]){
             [self writeData:@"File2.txt"];
             self.currentFileName = @"File2.txt";
-            NSLog(@"file name is file1");
         }else{
             [self writeData:@"File1.txt"];
             self.currentFileName = @"File1.txt";
-            NSLog(@"file name is file2");
         }
     }
     
-    NSLog(@"%@ is the current file name",self.currentFileName);
     [self sendHTTPRequestAnotherMethod];
 }
 
@@ -175,7 +181,6 @@
     DLog(@"Registered for push notifications, device token: %@", deviceToken);
     [application securifiApplicationDidRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
-
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSLog(@"didReceiveRemoteNotification");
@@ -211,11 +216,18 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    
+    if (NSClassFromString(@"XCTest") != nil) {
+        // Your code that shouldn't run under tests
+        NSLog(@"Test case is running");
+        return;
+    }
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [SecurifiToolkit sharedInstance].isAppInForeGround = YES;
     BOOL online = [toolkit isNetworkOnline];
     NSLog(@"Application becomes active: cloud online=%@", online ? @"YES" : @"NO");
-
+    
     if (online) {
         // Use the badge count set by APN
         NSInteger badgeNumber = application.applicationIconBadgeNumber;
@@ -227,6 +239,7 @@
     else {
         [toolkit asyncInitNetwork];
     }
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

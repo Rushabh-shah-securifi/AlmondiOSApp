@@ -101,7 +101,6 @@ NetworkStatusIcon *statusIcon;
     [center addObserver:self selector:@selector(onDidFailToDeregisterForNotifications) name:kSFIDidFailToDeregisterForNotifications object:nil];
     
     // At app startup, be sure to show logon when the app is in Cloud connection mode and has no logon credentials
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     if (![KeyChainAccess hasLoginCredentials]) {
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self tryPresentLogonScreen];
@@ -113,6 +112,13 @@ NetworkStatusIcon *statusIcon;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    if (NSClassFromString(@"XCTest") != nil) {
+        // Your code that shouldn't run under tests
+        NSLog(@"Test case is running");
+        return;
+    }
+
     [self conditionalTryConnectOrLogon:YES];
 }
 
