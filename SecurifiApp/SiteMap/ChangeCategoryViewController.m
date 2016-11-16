@@ -67,12 +67,9 @@
     [dateformate setDateFormat:@"EEEE dd MMMM HH:mm"]; // Date formater
     NSString *str = [dateformate stringFromDate:date];
     
-    self.cat_view = [[CategoryView alloc]init];
-    self.cat_view_more = [[CategoryView alloc]initMoreClickView];
-    self.cat_view_more.delegate = self;
-    self.cat_view.delegate = self;
+    
  //   NSLog(@"uri dict = %@ ",self.uriDict);
-    [self categoryMap:self.uriDict[@"categoryObj"]];
+        [self categoryMap:self.uriDict[@"categoryObj"]];
         [self createRequest:@"Epoch" value:self.uriDict[@"hostName"] suggestValue:@""];
     
 }
@@ -216,15 +213,17 @@
 }
 - (IBAction)moreOnCategoryClicked:(id)sender {
     NSLog(@"moreOnCategoryClicked");
-    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 200, self.navigationController.view.frame.size.width, 420);
+    self.cat_view_more = [[CategoryView alloc]initMoreClickView:CGRectMake(0, 45, 100, 420)];
+    self.cat_view_more.delegate = self;
+    self.cat_view.delegate = self;
     self.cat_view_more.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.cat_view_more];
     self.backGroundButton.hidden = NO;
 }
 -(void)showmsg{
-    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 120, self.view.frame.size.width, 320);
-    
-    [self.view addSubview:self.cat_view_more];
+//    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 120, self.view.frame.size.width, 320);
+//    
+//    [self.view addSubview:self.cat_view_more];
 }
 -(void)closeMoreView{
     [self.cat_view removeFromSuperview];
@@ -285,8 +284,6 @@
     [view addSubview:seperatorView];
     return view;
 }
-
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     HistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"epocCell" forIndexPath:indexPath];

@@ -7,6 +7,7 @@
 //
 
 #import "DetailsPeriodViewController.h"
+#import "UIViewController+Securifi.h"
 #import "HistoryCell.h"
 #import "CommonMethods.h"
 #import "GLCalendarView.h"
@@ -41,6 +42,7 @@ NSDate *_dateSelected;
     //[self loadCalendar];
     self.calendarView.delegate = self;
      self.calendarView.showMaginfier = YES;
+
 
     NSLog(@"viewDidLoad");
     [self.detailTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"cell_Identifier"];
@@ -98,7 +100,7 @@ NSDate *_dateSelected;
             self.lastDate = [CommonMethods getTodayDate];
             self.calendarView.hidden = YES;
             self.rangeUnderEdit = nil;
-            self.labelTxt = @"LastDay";
+            self.labelTxt = @"Today";
         }
             break;
         case 1:
@@ -137,7 +139,7 @@ NSDate *_dateSelected;
    
 }
 -(void)addSuggestionSearchObj{
-    NSDictionary *oneDay = @{@"hostName":@"  Last Day",
+    NSDictionary *oneDay = @{@"hostName":@"  Today",
                              @"image" : [UIImage imageNamed:@"schedule_icon"]
                              };
     NSDictionary *sevenDays = @{@"hostName":@"  Past week",
@@ -146,7 +148,7 @@ NSDate *_dateSelected;
     NSDictionary *month = @{@"hostName":@"  Past month",
                             @"image" : [UIImage imageNamed:@"schedule_icon"]
                             };
-    NSDictionary *dateRange = @{@"hostName":@"  Date Range...",
+    NSDictionary *dateRange = @{@"hostName":@"  Date Range",
                                 @"image" : [UIImage imageNamed:@"event_icon"]
                                 };
     
@@ -156,12 +158,22 @@ NSDate *_dateSelected;
 #pragma mark GLCalendarView delegate 
 - (BOOL)calenderView:(GLCalendarView *)calendarView canAddRangeWithBeginDate:(NSDate *)beginDate
 {
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    [dateComponents setDay:-30];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd-MM-YYYY"];
+    NSDate *date = [[NSCalendar currentCalendar] dateByAddingComponents:dateComponents toDate:[NSDate date] options:0];
     //    self.rangeUnderEdit = nil;
     NSLog(@"canAddRangeWithBeginDate");
-    if([self isDateBeyoundDate:beginDate])
+    if([self isDateBeyoundDate:beginDate]){
+        [self showToast:@"double tap on date for range selection"];
         return YES;
+    }
     else
+    {
+        [self showToast:[NSString stringWithFormat:@"Please select date between %@ to %@",[formatter stringFromDate:date],[formatter stringFromDate:[NSDate date]]]];
         return NO;
+    }
 }
 
 - (GLCalendarDateRange *)calenderView:(GLCalendarView *)calendarView rangeToAddWithBeginDate:(NSDate *)beginDate
@@ -172,7 +184,7 @@ NSDate *_dateSelected;
     for(GLCalendarDateRange *rang in self.calendarView.ranges)
         [self.calendarView removeRange:rang];
     [self.calendarView reload];
-    [self.calendarView scrollToDate:beginDate animated:NO];
+    [self.calendarView scrollToDate:beginDate animated:YES];
     NSDate* endDate = [GLDateUtils dateByAddingDays:0 toDate:beginDate];
     GLCalendarDateRange *range = [GLCalendarDateRange rangeWithBeginDate:beginDate endDate:endDate];
     range.backgroundColor = [UIColor colorFromHexString:@"825CC2"];
@@ -193,14 +205,23 @@ NSDate *_dateSelected;
     for(GLCalendarDateRange *rang in self.calendarView.ranges)
         [self.calendarView removeRange:rang];
     [self.calendarView reload];
+    
 }
 
 - (BOOL)calenderView:(GLCalendarView *)calendarView canUpdateRange:(GLCalendarDateRange *)range toBeginDate:(NSDate *)beginDate endDate:(NSDate *)endDate
 {
+    
     if([self isDateBeyoundDate:endDate] && [self isDateBeyoundDate:beginDate])
         return YES;
-    else
+    else{
+        NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+        [dateComponents setDay:-30];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"dd-MM-YYYY"];
+        NSDate *date = [[NSCalendar currentCalendar] dateByAddingComponents:dateComponents toDate:[NSDate date] options:0];
+         [self showToast:[NSString stringWithFormat:@"Please select date between %@ to %@",[formatter stringFromDate:date],[formatter stringFromDate:[NSDate date]]]];
         return NO;
+    }
 }
 
 - (void)calenderView:(GLCalendarView *)calendarView didUpdateRange:(GLCalendarDateRange *)range toBeginDate:(NSDate *)beginDate endDate:(NSDate *)endDate
