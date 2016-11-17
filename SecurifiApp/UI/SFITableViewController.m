@@ -64,14 +64,6 @@
     self.navigationController.navigationBar.translucent = NO;
     
     
-    if(self.needAddButton){
-        UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add_almond_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddBtnTap:)];
-        self.navigationItem.rightBarButtonItem = addButton;
-    }
-    else{
-        
-    }
-    
     if (enableLocalNetworking) {
         _connectionStatusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES isDashBoard:NO];
     }
@@ -186,6 +178,11 @@
                selector:@selector(keyboardWillHide:)
                    name:UIKeyboardWillHideNotification
                  object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onAlmondNameDidChange:)
+                   name:kSFIDidChangeAlmondName
+                 object:nil];
     // make sure status icon is up-to-date
     [self markNetworkStatusIcon];
     [self markNotificationStatusIcon];
@@ -218,9 +215,6 @@
 }
 
 #pragma Event handling
-- (void)onAddBtnTap:(id)sender{
-    NSLog(@"on add btn tap");
-}
 
 - (void)onConnectionStatusButtonPressed:(id)sender {
     self.alert = [AlertView new];
@@ -658,12 +652,45 @@
     });
     //    [self setBarButtons:NO];
 }
-#pragma mark cell methods
+
+#pragma mark helper methods
+- (void)onAlmondNameDidChange:(id)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
+        SFIAlmondPlus *obj = (SFIAlmondPlus *) [data valueForKey:@"data"];
+        if ([self isSameAsCurrentMAC:obj.almondplusMAC]) {
+            [self markNewTitle:obj.almondplusName];
+        }
+    });
+}
+
+- (BOOL)isSameAsCurrentMAC:(NSString *)aMac {
+    if (aMac == nil) {
+        return NO;
+    }
+    
+    NSString *current = self.almondMac;
+    if (current == nil) {
+        return NO;
+    }
+    
+    return [current isEqualToString:aMac];
+}
 
 -(BOOL)isFirmwareCompatible{
     return [SFIAlmondPlus checkIfFirmwareIsCompatible:[SecurifiToolkit sharedInstance].currentAlmond];
 }
 
+
+#pragma mark cell methods
 - (UITableViewCell *)createAlmondOfflineCell:(UITableView *)tableView {
     static NSString *cell_id = @"NoAlmondConnect";
     

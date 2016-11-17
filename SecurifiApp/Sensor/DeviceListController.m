@@ -88,6 +88,7 @@ int mii;
 
 -(void)tryShowLoadingDevice{
     if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC] && ![self isDisconnected] && [self isFirmwareCompatible]){
+        NSLog(@"tryShowLoadingDevice");
         [self showHudWithTimeoutMsg:@"Loading Device data..."];
     }
 }
@@ -160,11 +161,6 @@ int mii;
                  object:nil];
     
     [center addObserver:self
-               selector:@selector(onAlmondNameDidChange:)
-                   name:kSFIDidChangeAlmondName
-                 object:nil];
-    
-    [center addObserver:self
                selector:@selector(validateResponseCallback:)
                    name:VALIDATE_RESPONSE_NOTIFIER
                  object:nil];
@@ -191,19 +187,6 @@ int mii;
 
 - (BOOL)isNoAlmondMAC {
     return [self.almondMac isEqualToString:NO_ALMOND];
-}
-
-- (BOOL)isSameAsCurrentMAC:(NSString *)aMac {
-    if (aMac == nil) {
-        return NO;
-    }
-    
-    NSString *current = self.almondMac;
-    if (current == nil) {
-        return NO;
-    }
-    
-    return [current isEqualToString:aMac];
 }
 
 #pragma mark refresh control
@@ -590,25 +573,6 @@ int mii;
         NSLog(@"%s 3", __PRETTY_FUNCTION__);
         
         [self.tableView reloadData];
-    });
-}
-
-
-- (void)onAlmondNameDidChange:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data == nil) {
-        return;
-    }
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (!self) {
-            return;
-        }
-        SFIAlmondPlus *obj = (SFIAlmondPlus *) [data valueForKey:@"data"];
-        if ([self isSameAsCurrentMAC:obj.almondplusMAC]) {
-            [self markNewTitle:obj.almondplusName];
-        }
     });
 }
 

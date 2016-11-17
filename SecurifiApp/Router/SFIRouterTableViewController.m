@@ -103,7 +103,7 @@ int mii;
     
     [self addRefreshControl];
     [self initializeRouterSummaryAndSettings];
-    self.enableAdvRouter = NO;
+    self.enableAdvRouter = YES;
     
 }
 
@@ -366,7 +366,7 @@ int mii;
                 if(_enableAdvRouter){
                     
                     NSArray *summary = @[NSLocalizedString(@"learn_adv_features", @"")];
-                    return [self createSummaryCell:tableView summaries:summary title:@"adv_router_features" selector:@selector(onAdvancdFeatures:) cardColor:[SFIColors ruleBlueColor]];
+                    return [self createSummaryCell:tableView summaries:summary title:NSLocalizedString(@"adv_router_features", @"") selector:@selector(onAdvancdFeatures:) cardColor:[SFIColors ruleBlueColor]];
                 }
                 else{
                     return [self createZeroCell:tableView];

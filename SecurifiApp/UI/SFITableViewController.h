@@ -58,7 +58,6 @@
 // the user to tap to present the Notification Viewer.
 @property(nonatomic, readonly) BOOL enableNotificationsView;
 @property(nonatomic, readonly) BOOL enableNotificationsHomeAwayMode;
-@property(nonatomic)BOOL needAddButton;
 
 - (void)presentLocalNetworkSettingsEditor;
 

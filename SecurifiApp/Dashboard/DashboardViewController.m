@@ -137,6 +137,7 @@
 
 -(void)tryShowLoadingData{
     if([self isDeviceListEmpty] && [self isClientListEmpty] && self.toolkit.currentAlmond != nil && ![self isDisconnected] && [self isFirmwareCompatible]){
+        NSLog(@"tryShowLoadingDevice");
         [self showHudWithTimeoutMsg:@"Loading Data..." delay:8];
     }
 }
