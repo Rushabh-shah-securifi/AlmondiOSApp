@@ -2,12 +2,14 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "connection-cloud-success.pdf"
+      "filename" : "Asset 8.pdf"
     }
   ],
   "info" : {
     "version" : 1,
-    "author" : "xcode",
+    "author" : "xcode"
+  },
+  "properties" : {
     "template-rendering-intent" : "original"
   }
 }

@@ -17,6 +17,8 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 + (instancetype)sharedInstance;
 
+#pragma mark Events
+
 - (void)initialize:(NSString *)trackingId;
 
 - (void)markMemoryWarning;
@@ -27,11 +29,78 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 - (void)markSendRouterLogs;
 
+- (void)markDeclineSignupLicense;
+
+- (void)markActivateScene;
+
+- (void)markAddScene;
+
+- (void)markUpdateScene;
+
+- (void)markDeleteScene;
+
+- (void)markSensorLogs;
+
+- (void)markSensorNameLocationChange;
+
+- (void)markEditLocalConnection;
+
+- (void)markWifiClientUpdate;
+
+- (void)markActivateRule;
+
+- (void)markAddRule;
+
+- (void)markUpdateRule;
+
+- (void)markDeleteRule;
+//helpscreens
+- (void)markTapproducts;
+
+- (void)markTapWiFi;
+
+- (void)markTapSmartHome;
+
+- (void)markEmail;
+
+- (void)markCall;
+
+//mesh
+- (void)markWired;
+
+- (void)markWireless;
+
+- (void)markTroublePairingAlmond;
+
+- (void)markCanNotFindAlmond;
+
+- (void)markLedBlinking;
+
+- (void)markLedNotBlinking;
+
+- (void)markAddAnotherAlmond;
+
+- (void)markAddAlmondLater;
+
+#pragma mark screen Tracking
+
 - (void)markSensorClick:(SFIDeviceType)deviceType timeToComplete:(NSTimeInterval)resResTime;
 
-- (void)markSensorScreen;
+- (void)markDevicesScreen;
+
+- (void)markSceneScreen;
 
 - (void)markRouterScreen;
+
+- (void)markMoreScreen;
+
+- (void)markRuleScreen;
+
+- (void)markNewSceneScreen;
+
+- (void)markAddOrEditRuleScreen;
+
+- (void)markAccountsScreen;
 
 - (void)markNotificationsScreen;
 
@@ -41,6 +110,39 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 - (void)markSignUpForm;
 
-- (void)markDeclineSignupLicense;
+- (void)markLocalScreen;
 
+- (void)markLogoutAllScreen;
+
+- (void)markRouterSettingsScreen;
+
+//helpscreens
+- (void)markHelpCenterScreen;
+
+- (void)markQuickTipsScreen;
+
+- (void)markHelpTopicsScreen;
+
+- (void)markSupportScreen;
+
+- (void)markHelpDescriptionScreen;
+
+//mesh
+- (void)markMasterScreen;
+
+- (void)markSlaveScreen;
+
+- (void)markAddAlmondScreen;
+
+
+//site map
+- (void)markParentalPage;
+
+- (void)markLogWebHistory;
+
+- (void)markALogDataUsage;
+
+- (void)markWebHistoryPage;
+
+- (void)markCategoryChange;
 @end

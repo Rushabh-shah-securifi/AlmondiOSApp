@@ -1,0 +1,221 @@
+/*------- START Localization strings common across all apps -------*/
+
+/* Class = "IBUILabel"; text = "By tapping Continue you are indicating that
+ you have read and agreed to our"; ObjectID = "2vg-ti-ElJ"; */
+"2vg-ti-ElJ.text" = "Dotykając Dalej potwierdzasz, że
+przeczytałeś(-aś) się i zgadzasz się na nasz";
+
+/* Class = "IBUIButton"; normalTitle = "Forgot your password?"; ObjectID = "5GG-3f-pqZ"; */
+"5GG-3f-pqZ.normalTitle" = "Nie pamiętasz hasła?";
+
+/* Class = "IBUINavigationItem"; title = "Login"; ObjectID = "5Mu-Sx-mwG"; */
+"5Mu-Sx-mwG.title" = "Login";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "6rp-Kn-wIv"; */
+"6rp-Kn-wIv.placeholder" = "Hasło";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "7Fl-1P-IHp"; */
+"7Fl-1P-IHp.placeholder" = "Hasło";
+
+/* Class = "IBUIButton"; normalTitle = "Resend link."; ObjectID = "9M6-Iy-zMa"; */
+"9M6-Iy-zMa.normalTitle" = "Wyślij link ponownie.";
+
+/* Class = "IBUILabel"; text = "SSID"; ObjectID = "9ef-Xm-fQ5"; */
+"9ef-Xm-fQ5.text" = "SSID";
+
+/* Class = "IBUINavigationItem"; title = "Scenes"; ObjectID = "C8w-d3-6Kp"; */
+"C8w-d3-6Kp.title" = "Scenerie";
+
+
+/* Class = "IBUITextField"; placeholder = "Channel"; ObjectID = "Di9-Mv-GSh"; */
+"Di9-Mv-GSh.placeholder" = "Kanał";
+
+/* Class = "IBUITextField"; placeholder = "SSID"; ObjectID = "EVe-Dz-e9b"; */
+"EVe-Dz-e9b.placeholder" = "SSID";
+
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "F7a-QI-kyy"; */
+"F7a-QI-kyy.title" = "Wstecz";
+
+/* Class = "IBUIButton"; normalTitle = "Login again"; ObjectID = "HFO-nR-icT"; */
+"HFO-nR-icT.normalTitle" = "Zaloguj ponownie";
+
+/* Class = "IBUILabel"; text = "Subtitle"; ObjectID = "HJE-BA-YKX"; */
+"HJE-BA-YKX.text" = "Podpis";
+
+/* Class = "IBUITextField"; placeholder = "Wireless Mode"; ObjectID = "I82-VJ-5TH"; */
+"I82-VJ-5TH.placeholder" = "Tryb sieci bezprzewodowej";
+
+/* Class = "IBUINavigationItem"; title = "Settings"; ObjectID = "Ixz-jq-Zqv"; */
+"Ixz-jq-Zqv.title" = "Ustawienia";
+
+/* Class = "IBUIButton"; normalTitle = "Done"; ObjectID = "JnK-0B-xKR"; */
+"JnK-0B-xKR.normalTitle" = "Gotowe";
+
+/* Class = "IBUITextField"; placeholder = "Type QR Code"; ObjectID = "LKl-1e-QMG"; */
+"LKl-1e-QMG.placeholder" = "Wpisz kod QR";
+
+/* Class = "IBUITextField"; placeholder = "Confirm Password"; ObjectID = "M4K-eh-pVC"; */
+"M4K-eh-pVC.placeholder" = "Potwierdź hasło";
+
+/* Class = "IBUITextField"; placeholder = "Email"; ObjectID = "Mew-Wa-979"; */
+"Mew-Wa-979.placeholder" = "E-mail";
+
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "Ti4-9V-HdY"; */
+"Ti4-9V-HdY.title" = "Wstecz";
+
+/* Class = "IBUIButton"; normalTitle = "Sign Up"; ObjectID = "UMh-WG-lC3"; */
+"UMh-WG-lC3.normalTitle" = "Zarejestruj się";
+
+/* Class = "IBUILabel"; text = "MAC"; ObjectID = "V1p-1Y-8Lg"; */
+"V1p-1Y-8Lg.text" = "Adres MAC";
+
+
+/* Class = "IBUIButton"; normalTitle = "Terms and Conditions"; ObjectID = "Xtg-A9-Rkn"; */
+"Xtg-A9-Rkn.normalTitle" = "Regulamin";
+
+/* Class = "IBUITextField"; placeholder = "Email"; ObjectID = "Y3d-aA-TFm"; */
+"Y3d-aA-TFm.placeholder" = "E-mail";
+
+
+/* Class = "IBUILabel"; text = "Login"; ObjectID = "Zuk-ja-Rsi"; */
+"Zuk-ja-Rsi.text" = "Login";
+
+/* Class = "IBUITextField"; placeholder = "Security"; ObjectID = "aA5-x8-4LF"; */
+"aA5-x8-4LF.placeholder" = "Bezpieczeństwo";
+
+/* Class = "IBUILabel"; text = "Hooray!"; ObjectID = "bWR-DW-3hj"; */
+"bWR-DW-3hj.text" = "Hura!";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "bhP-Vb-XDN"; */
+"bhP-Vb-XDN.placeholder" = "Hasło";
+
+
+/* Class = "IBUIBarButtonItem"; title = "Login"; ObjectID = "fGC-bJ-KoF"; */
+"fGC-bJ-KoF.title" = "Login";
+
+/* Class = "IBUITextField"; placeholder = "Encryption Type"; ObjectID = "fUd-2s-lh1"; */
+"fUd-2s-lh1.placeholder" = "Rodzaj szyfrowania";
+
+/* Class = "IBUILabel"; text = "Follow the activation link
+ in the email."; ObjectID = "fgY-FB-Mro"; */
+"fgY-FB-Mro.text" = "Kliknij link aktywacyjny
+znajdujący się we wiadomości e-mail.";
+
+/* Class = "IBUINavigationItem"; title = "Affiliation"; ObjectID = "g9q-Qf-d7D"; */
+"g9q-Qf-d7D.title" = "Powiązanie";
+
+/* Class = "IBUILabel"; text = "MAC Value"; ObjectID = "hsp-Do-ff2"; */
+"hsp-Do-ff2.text" = "Adres MAC";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "jQ9-55-2JN"; */
+"jQ9-55-2JN.placeholder" = "Hasło";
+
+/* Class = "IBUIBarButtonItem"; title = "Continue"; ObjectID = "jxF-En-8yI"; */
+"jxF-En-8yI.title" = "Kontynuuj";
+
+/* Class = "IBUILabel"; text = "Almost there."; ObjectID = "la7-Qa-JAi"; */
+"la7-Qa-JAi.text" = "Już prawie gotowe.";
+
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "m92-cg-LBE"; */
+"m92-cg-LBE.title" = "Wstecz";
+
+/* Class = "IBUILabel"; text = "Name"; ObjectID = "mMM-Gk-l4v"; */
+"mMM-Gk-l4v.text" = "Nazwa";
+
+
+/* Class = "IBUINavigationItem"; title = "Device List"; ObjectID = "s5Y-pa-xGH"; */
+"s5Y-pa-xGH.title" = "Lista urządzeń";
+
+/* Class = "IBUILabel"; text = "You need to activate your account."; ObjectID = "sNA-Q6-fm9"; */
+"sNA-Q6-fm9.text" = "Musisz aktywować konto.";
+
+/* Class = "IBUINavigationItem"; title = "Device Information"; ObjectID = "sRL-VK-odq"; */
+"sRL-VK-odq.title" = "Informacje o urządzeniu";
+
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "tNX-Qm-dH0"; */
+"tNX-Qm-dH0.text" = "Tytuł";
+
+/* Class = "IBUITextField"; placeholder = "Email"; ObjectID = "v4I-0f-ocy"; */
+"v4I-0f-ocy.placeholder" = "E-mail";
+
+/* Class = "IBUILabel"; text = "Don't have an account yet?"; ObjectID = "wee-4l-TQb"; */
+"wee-4l-TQb.text" = "Nie masz jeszcze konta?";
+
+/* Class = "IBUILabel"; text = "SSID Value"; ObjectID = "xBv-yd-Shs"; */
+"xBv-yd-Shs.text" = "SSID";
+
+/* Class = "IBUITextField"; placeholder = "Enter the code"; ObjectID = "zqJ-bb-Way"; */
+"zqJ-bb-Way.placeholder" = "Wprowadź kod";
+
+
+/*------- END Localization strings common across all apps -------*/
+/* ===================================================================================================== */
+
+
+/* Class = "IBUINavigationItem"; title = "Link Almond"; ObjectID = "005-QM-TOK"; */
+"005-QM-TOK.title" = "Połącz urządzenie Almond";
+
+/* Class = "IBUILabel"; text = "Logout from all the devices connected
+ to your Almonds."; ObjectID = "0ml-DL-hua"; */
+"0ml-DL-hua.text" = "Wyloguj się ze wszystkich urządzeń podłączonych
+do Twojego urządzenia Almond.";
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "1mY-kl-NHI"; */
+"1mY-kl-NHI.text" = "Uzyskaj dostęp do Twojego urządzenia Almond i
+urządzeń domowych gdziekolwiek jesteś.";
+
+
+/* Class = "IBUINavigationItem"; title = "Device List"; ObjectID = "s5Y-pa-xGH"; */
+"CAD-J8-2aA.title" = "Lista urządzeń Almond";
+
+
+/* Class = "IBUILabel"; text = "You successfully linked your Almond with \nyour Securifi Cloud Account."; ObjectID = "Nee-HL-Q6h"; */
+"Nee-HL-Q6h.text" = "Połączenie Twojego urządzenia Almond z Twoim \nkontem w chmurze Securifi powiodło się.";
+
+/* Class = "IBUINavigationItem"; title = "Almond"; ObjectID = "ObR-J1-LOM"; */
+"ObR-J1-LOM.title" = "Almond";
+
+/* Class = "IBUILabel"; text = "Type the code shown on your\nAlmond's screen."; ObjectID = "PRW-cc-prD"; */
+"PRW-cc-prD.text" = "Wprowadź kod wyświetlony na ekranie \nTwojego urządzenia Almond.";
+
+/* Class = "IBUIButton"; normalTitle = "Link Almond"; ObjectID = "PRt-1p-fH7"; */
+"PRt-1p-fH7.normalTitle" = "Połącz Almond";
+
+/* Class = "IBUILabel"; text = "Securifi Cloud Account."; ObjectID = "Sqj-7H-5pB"; */
+"Sqj-7H-5pB.text" = "Konto w chmurze Securifi.";
+
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "Xni-ee-jgc"; */
+"Xni-ee-jgc.text" = "Uzyskaj dostęp do Twojego urządzenia Almond i
+urządzeń domowych gdziekolwiek jesteś.";
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "Zon-6Z-KzY"; */
+"Zon-6Z-KzY.text" = "Uzyskaj dostęp do Twojego urządzenia Almond i
+urządzeń domowych gdziekolwiek jesteś.";
+
+
+/* Class = "IBUILabel"; text = "To link your Almond with Securifi Cloud account, start the wizard on your Almond+.
+ The \"Add your Almond to your Securifi Cloud Account\" section will show a code which you may scan by tapping below or type the code, instead."; ObjectID = "de7-TX-jmT"; */
+"de7-TX-jmT.text" = "Aby połączyć Twoje urządzenie Almond z kontem w chmurze Securifi, uruchom kreatora instalacji na Twoim urządzeniu Almond.
+W sekcji \"Dodaj Twoje urządzenie Almond do konta w chmurze Securifi\" znajdziesz kod, który możesz zeskanować, klikając poniżej lub przepisać ręcznie.";
+
+
+/* Class = "IBUILabel"; text = "Almond Name"; ObjectID = "gRI-sr-1ga"; */
+"gRI-sr-1ga.text" = "Nazwa urządzenia Almond";
+
+/* Class = "IBUILabel"; text = "Securifi Cloud Account."; ObjectID = "qnX-eN-VhR"; */
+"qnX-eN-VhR.text" = "Konto w chmurze Securifi.";
+
+/* Class = "IBUILabel"; text = "Tip: Search spam folder or add
+ cloud@securifi.com to your contacts."; ObjectID = "vjT-j9-rhq"; */
+"vjT-j9-rhq.text" = "Wskazówka: Sprawdź folder spam lub dodaj
+cloud@securifi.com do Twojej książki adresowej.";
+
+/* Class = "IBUILabel"; text = "Search for an email from cloud@securifi.com, or"; ObjectID = "xYA-fY-SKl"; */
+"xYA-fY-SKl.text" = "Wyszukaj wiadomość e-mail od cloud@securifi.com lub";
+
+
+

@@ -10,27 +10,44 @@
 
 
 /* affiliation */
+"router.linkalmond-msg.headline" = "Let's link a\nHomeScreen.";
+"router.linkalmond-msg.message" = "Run the HomeScreen Account app on your router, and then enter the code displayed.";
+
 "Almond Linked" = "HomeScreen Linked";
 "Link Almond" = "Link HomeScreen";
+"Local Link Almond" = "Local Link";
 "Please wait while your Almond is being linked to cloud." = "Please wait while your HomeScreen is being linked to cloud.";
 "This Almond is already linked to another user." = "This HomeScreen is already linked to another user.
 Contact us at support@homescreen.com";
-"Almond could not be affiliated" = "HomeScreen could not be affiliated.%@";
+"Almond could not be affiliated" = "HomeScreen could not be affiliated.\n%@";
+
+"Run the Almond Account app and enter the code displayed." = "Type the code shown on your HomeScreen if you're already running the Touchscreen Wizard. You can also get code from the Touchscreen HomeScreen App.";
+"cloudlink.button.Link Almond" = "Link HomeScreen";
+"cloudlink.button.Add Almond Locally" = "Add HomeScreen Locally";
 
 /* login */
-"Access your Almonds and your home devices from anywhere." = "Access your HomeScreens and
-your home devices from anywhere.";
+"Monitor and Control your home from anywhere." = "Monitor and Control your home from anywhere.";
 
 /* router tab */
 "router.offline-msg.label.Almond is Offline." = "HomeScreen is Offline.";
+
+"router.msg-link.The Almond was successfully linked." = "The HomeScreen was successfully linked.";
+"router.btn-title.Unlink Almond?" = "Unlink HomeScreen?";
+"router.btn-title.Link Almond Locally" = "Link HomeScreen Locally";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Please note that without cloud control you will not receive notifications nor have the ability to control your HomeScreen remotely.";
+"router.error-msg.This Almond is already linked." = "This HomeScreen is already linked.";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." = "An error occurred trying to link with the HomeScreen. Please try again.";
+
+"router.card-title.Cloud Almond Link" = "Cloud HomeScreen Link";
+"router.card-title.Local Almond Link" = "Local HomeScreen Link";
+"router.software-version.header.instructions" = "Please tap \"Settings\" on your HomeScreen";
 
 /* sensors */
 "router.no-sensors.label.Add a sensor from your Almond." = "Add a sensor from your HomeScreen.";
 
 /* signup */
 "signup.headline-text.Securifi Cloud Account." = "HomeScreen Cloud Account.";
-"signup.headline-text.Access your Almonds" = "Access your HomeScreens and
-your home devices from anywhere.";
+"signup.headline-text.Monitor and Control" = "Monitor and Control your home from anywhere.";
 
 /* Accounts */
 "accounts.ownedAlmond.label.YouOwnThisAlmond" = "You own this HomeScreen";
@@ -57,3 +74,23 @@ your home devices from anywhere.";
 "accounts.deleteSecondaryUser.failure.reasonCode6" = "Secondary user is not associated with the given HomeScreen.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "You are not associated with this HomeScreen";
 "accounts.deleteMeAsSecondaryUser.failure.default" = "Sorry! Removing of shared HomeScreen was unsuccessful.";
+
+/* scoreboard */
+"scoreboard.section.AlmondMACs"="HomeScreen MACs";
+"Copied Almond MAC" = "Copied HomeScreen MAC";
+
+/* SFItableviewcontroller */
+"alert.message-Connected to your Almond via cloud."="Connected to your HomeScreen via cloud.";
+"alertview -Connected to your Almond via cloud."="Connected to your HomeScreen via cloud.";
+"Add Local Connection Settings"="Add Local Connection Settings";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection."="Cloud connection to your HomeScreen failed. Tap retry or switch to local connection.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection."="Local connection to your HomeScreen failed. Tap retry or switch to cloud connection.";
+"alert msg offline Local connection not supported." = "Can't connect to your HomeScreen because local connection settings are missing. Tap edit to add settings.";
+"alert msg offline Cloud connection not supported." = "Your HomeScreen is not affiliated with the cloud. Only local connection to your HomeScreen is supported.";
+"hud message-Setting Almond to Away Mode"="Setting HomeScreen to Away Mode";
+"hud message-Setting Almond to Home Mode"="Setting HomeScreen to Home Mode";
+"alertview Can't connect to your Almond. Please select a connection method."="Can't connect to your HomeScreen. Please select a connection method.";
+"alertview localconnection_Connected to your Almond locally."="Connected to your HomeScreen locally.";
+
+/* Scenes */
+"AlmondList" = "HomeScreenList";

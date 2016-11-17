@@ -35,10 +35,10 @@
     }
 
     [cardView addTopBorder:self.backgroundColor];
-    [cardView addTitleAndButton:@"Reboot the router?" target:self action:@selector(onRebootAction:) buttonTitle:@"Yes"];
+    [cardView addTitleAndButton:NSLocalizedString(@"router.reboot.title.Reboot the router?", "Reboot the router?") target:self action:@selector(onRebootAction:) buttonTitle:@"Yes"];
     [cardView addSummary:@[
-            @"It will take at least 2 minutes for the router",
-            @"to reboot. Please refresh after sometime."
+            NSLocalizedString(@"It will take at least 2 minutes for the router", @"It will take at least 2 minutes for the router"),
+            NSLocalizedString(@"to reboot. Please refresh after sometime.", @"to reboot. Please refresh after sometime.")
     ]];
 
     [cardView freezeLayout];

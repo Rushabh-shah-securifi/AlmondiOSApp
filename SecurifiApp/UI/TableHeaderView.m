@@ -44,7 +44,7 @@
 #pragma mark - Event handling
 
 - (void)onDismiss {
-    [self.delegate tableHeaderViewDidTapButton:self];
+    [self.delegate dismissHeaderView:self];
 }
 
 #pragma mark - String making

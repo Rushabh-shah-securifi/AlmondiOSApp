@@ -40,23 +40,28 @@
 
     [cardView addTopBorder:self.backgroundColor];
     if (self.enableRouterWirelessControl) {
-        [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactivate:) on:setting.enabled];
+        [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactivate:) shareAction:@selector(onShareBtnTap:) on:setting.enabled];
     }
     else {
         [cardView addTitle:setting.ssid];
     }
     [cardView addLine];
-    [cardView addNameLabel:@"SSID" valueTextField:setting.ssid delegate:self tag:0];
+    
+    if(setting.enabled && !self.isREMode)
+        [cardView addNameLabel:NSLocalizedString(@"router.settings.label.SSID", @"SSID") valueTextField:setting.ssid delegate:self tag:0];
+    else
+        [cardView addNameLabel:NSLocalizedString(@"router.settings.label.SSID", @"SSID") valueLabel:setting.ssid];
     [cardView addShortLine];
-    [cardView addNameLabel:@"Channel" valueLabel:[NSString stringWithFormat:@"%d", setting.channel]];
+    
+    [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Channel", @"Channel") valueLabel:[NSString stringWithFormat:@"%d", setting.channel]];
     [cardView addShortLine];
-    [cardView addNameLabel:@"Wireless Mode" valueLabel:setting.wirelessMode];
+    [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Wireless Mode", @"Wireless Mode") valueLabel:setting.wirelessMode];
     [cardView addShortLine];
-    [cardView addNameLabel:@"Security" valueLabel:setting.security];
+    [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Security", @"Security") valueLabel:setting.security];
     [cardView addShortLine];
-    [cardView addNameLabel:@"Encryption" valueLabel:setting.encryptionType];
+    [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Encryption",@"Encryption") valueLabel:setting.encryptionType];
     [cardView addShortLine];
-    [cardView addNameLabel:@"Country Region" valueLabel:setting.countryRegion];
+    [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Country Region", @"Country Region") valueLabel:setting.countryRegion];
     [cardView addShortLine];
 
     [cardView freezeLayout];
@@ -69,6 +74,14 @@
     [self.delegate onEnableDevice:self.wirelessSetting enabled:ctrl.on];
 }
 
+#pragma mark - UIButton actions
+- (void)onShareBtnTap:(id)sendesr{
+    NSLog(@"onShareBtnTap");
+
+    [self.delegate onShareBtnTapDelegate:self.wirelessSetting];
+
+}
+
 #pragma mark - UITextFieldDelegate methods
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
@@ -78,7 +91,7 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    [textField selectAll:self];
+//    [textField selectAll:self];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -86,13 +99,16 @@
     return [self validateSSIDNameMaxLen:str];
 }
 
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-    NSString *str = textField.text;
-    return [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
-}
+//- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+//    NSString *str = textField.text;
+//    return [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
+//}
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+    NSLog(@"textFieldDidEndEditing*****");
     NSString *str = textField.text;
+    if([str isEqualToString:self.wirelessSetting.ssid])
+        return;
     BOOL valid = [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
     if (valid) {
         [textField resignFirstResponder];

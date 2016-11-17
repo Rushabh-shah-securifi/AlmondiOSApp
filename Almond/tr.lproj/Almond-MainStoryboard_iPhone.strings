@@ -1,0 +1,68 @@
+/* ===================================================================================================== */
+
+
+/* Class = "IBUINavigationItem"; title = "Link Almond"; ObjectID = "005-QM-TOK"; */
+"005-QM-TOK.title" = "Almond'a bağla";
+
+/* Class = "IBUILabel"; text = "Logout from all the devices connected
+ to your Almonds."; ObjectID = "0ml-DL-hua"; */
+"0ml-DL-hua.text" = "Almondlarınıza bağlı tüm cihazlardaki
+oturumunuzu kapatın.";
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "1mY-kl-NHI"; */
+"1mY-kl-NHI.text" = "Almond ve ev cihazlarına
+her yerden ulaşın.";
+
+
+/* Class = "IBUINavigationItem"; title = "Almond List"; ObjectID = "CAD-J8-2aA"; */
+"CAD-J8-2aA.title" = "Almond Listesi";
+
+
+/* Class = "IBUILabel"; text = "You successfully linked your Almond with \nyour Securifi Cloud Account."; ObjectID = "Nee-HL-Q6h"; */
+"Nee-HL-Q6h.text" = "Almond'unuzu başarıyla \nSecurifi Bulut Hesabınıza bağladınız.";
+
+/* Class = "IBUINavigationItem"; title = "Almond"; ObjectID = "ObR-J1-LOM"; */
+"ObR-J1-LOM.title" = "Almond";
+
+/* Class = "IBUILabel"; text = "Type the code shown on your\nAlmond's screen."; ObjectID = "PRW-cc-prD"; */
+"PRW-cc-prD.text" = "Almond'unuzun ekranında görüntülenen\nkodu girin.";
+
+/* Class = "IBUIButton"; normalTitle = "Link Almond"; ObjectID = "PRt-1p-fH7"; */
+"PRt-1p-fH7.normalTitle" = "Almond'a bağlayın";
+
+/* Class = "IBUILabel"; text = "Securifi Cloud Account."; ObjectID = "Sqj-7H-5pB"; */
+"Sqj-7H-5pB.text" = "Securifi Bulut Hesabı.";
+
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "Xni-ee-jgc"; */
+"Xni-ee-jgc.text" = "Almond'larınıza ve ev cihazlarınıza
+her yerden ulaşın.";
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "Zon-6Z-KzY"; */
+"Zon-6Z-KzY.text" = "Almond'larınıza ve ev cihazlarınıza
+her yerden ulaşın.";
+
+
+/* Class = "IBUILabel"; text = "To link your Almond with Securifi Cloud account, start the wizard on your Almond+.
+ The \"Almond'unuzu Securifi Bulut Hesabınıza ekleyin\" bölümünde aşağıya dokunarak tarayabileceğiniz veya yazabileceğiniz bir kod gösterecektir."; ObjectID = "de7-TX-jmT"; */
+"de7-TX-jmT.text" = "To link your Almond with Securifi Cloud account, start the wizard on your Almond.
+The \"Almond'unuzu Securifi Bulut Hesabınıza ekleyin\" bölümünde aşağıya dokunarak tarayabileceğiniz veya yazabileceğiniz bir kod gösterecektir.";
+
+
+/* Class = "IBUILabel"; text = "Almond Name"; ObjectID = "gRI-sr-1ga"; */
+"gRI-sr-1ga.text" = "Almond Adı";
+
+/* Class = "IBUILabel"; text = "Securifi Cloud Account."; ObjectID = "qnX-eN-VhR"; */
+"qnX-eN-VhR.text" = "Securifi Bulut Hesabı.";
+
+/* Class = "IBUILabel"; text = "Tip: Search spam folder or add
+ cloud@securifi.com to your contacts."; ObjectID = "vjT-j9-rhq"; */
+"vjT-j9-rhq.text" = "İpucu: Spam dosyasında arama yapın veya
+cloud@securifi.com adresini kişilerinize ekleyin.";
+
+/* Class = "IBUILabel"; text = "Search for an email from cloud@securifi.com, or"; ObjectID = "xYA-fY-SKl"; */
+"xYA-fY-SKl.text" = "cloud@securifi.com adresinden gelen bir eposta arayın veya";
+

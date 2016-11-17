@@ -17,14 +17,19 @@ typedef NS_ENUM(NSUInteger, SFICloudStatusState) {
     SFICloudStatusStateConnectionError,
     SFICloudStatusStateLocalConnection,
     SFICloudStatusStateLocalConnectionOffline,
+    SFICloudStatusStateCloudConnectionNotSupported,
+    SFICloudStatusStateLocalConnectionNotSupported,
 };
 
 @interface SFICloudStatusBarButtonItem : UIBarButtonItem
 
 @property(nonatomic, readonly) SFICloudStatusState state;
 
-- (instancetype)initWithTarget:(id)target action:(SEL)action enableLocalNetworking:(BOOL)enableLocal;
+@property(nonatomic) BOOL isDashBoard;
+
+- (instancetype)initWithTarget:(id)target action:(SEL)action enableLocalNetworking:(BOOL)enableLocal isDashBoard:(BOOL)isDashboard;
 
 - (void)markState:(SFICloudStatusState)newState;
 
+- (void)modeUpdate:(UIImage *)image color:(UIColor *)color mode:(NSString *)mode;
 @end

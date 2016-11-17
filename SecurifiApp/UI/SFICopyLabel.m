@@ -35,6 +35,8 @@
 #pragma mark Clipboard
 
 - (void)copy:(id)sender {
+    if(self.text == nil)
+        return;
     UIPasteboard *pb = [UIPasteboard generalPasteboard];
     [pb setString:self.text];
 }

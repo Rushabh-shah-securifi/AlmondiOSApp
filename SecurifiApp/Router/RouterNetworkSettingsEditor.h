@@ -19,6 +19,8 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorMode) {
 
 - (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor;
 
+- (void)networkSettingsEditorDidComplete:(RouterNetworkSettingsEditor *)editor;
+
 - (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor;
 
 @end
@@ -28,5 +30,8 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorMode) {
 @property(nonatomic) enum RouterNetworkSettingsEditorMode mode;
 @property(nonatomic, weak) id <RouterNetworkSettingsEditorDelegate> delegate;
 @property(nonatomic, copy) SFIAlmondLocalNetworkSettings *settings;
+@property(nonatomic) BOOL enableUnlinkActionButton;
+@property(nonatomic) BOOL makeLinkedAlmondCurrentOne;
+@property(nonatomic) BOOL fromLoginPage;
 
 @end

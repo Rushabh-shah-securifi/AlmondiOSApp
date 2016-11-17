@@ -1,18 +1,8 @@
-/*
- Common-Localizable.strings
- Almond
- 
- Created by Priya Yerunkar on 13/12/14.
- Copyright (c) 2014 Securifi Ltd. All rights reserved.
- */
-
-
-/*------- Localization strings common across all apps -------*/
 
 
 /* hud. buttons, controls */
 "hud.One moment please..." = "One moment please...";
-"hud.Updating settings..." = "Updating settings...";
+
 "alert.button.OK" = "OK";
 "Oops!" = "Oops!";
 "Sorry!" = "Sorry!";
@@ -24,17 +14,17 @@
 "alert.msg.Logout was unsuccessful" = "Sorry. Logout was unsuccessful. Please try again.";
 "alert.title.Logout Unsuccessful" = "Logout Unsuccessful";
 
-/* activation */
+"cloudlink.title.Cloud Link" = "Cloud Link";
+"cloudlink.label.Linking to Cloud" = "Linking to Cloud";
+"cloudlink.label.Name" = "Name";
+"cloudlink.label.MAC Address" = "MAC Address";
+"cloudlink.label.WIFI SSID" = "WIFI SSID";
+"Enter code" = "Enter code";
 
-"Reactivation link has been sent to your account." = "Reactivation link has been sent to your account.";
-"sensor.activation.The username was not found" = "The username was not found";
-"The account is already validated" = "The account is already validated";
-"Sorry! Cannot send reactivation link" = "Sorry! The reactivation link cannot be
-resent at the moment. Try again later.";
-"The email ID is invalid." = "The email ID is invalid.";
+
+
 
 /* change password */
-
 "password-validation.strength-label.Password: Mismatch" = "Password: Mismatch";
 "password-validation.strength-label.Password: Too Short" = "Password: Too Short";
 "password-validation.strength-label.Password: Too Long" = "Password: Too Long";
@@ -71,10 +61,13 @@ Internet route to cloud service.";
 "Password reset link has been sent to your account." = "Password reset link has been sent to your account.";
 "Sorry! Your password cannot be reset at the moment. Try again later." = "Sorry! Your password cannot be
 reset at the moment. Try again later.";
+"sensor.activation.The username was not found" = "The username was not found";
 "Login" = "Login";
+"login.local.Switch to Local Connection" = "Switch to Local Connection";
+
+
 
 /* logout all */
-
 "logoutall.navbar-title.Continue" = "Continue";
 "logoutall.label.Logout from all devices was not successful." = "Logout from all devices was not successful.";
 "logoutall.alertview.title.Error" = "Invalid Password";
@@ -82,101 +75,88 @@ reset at the moment. Try again later.";
 
 /* router tab */
 "router.offline-msg.label.Please check the router." = "Please check the router.";
-"router.card-title.Cloud Almond Link" = "Cloud Almond Link";
-"router.card-title.Local Almond Link" = "Local Almond Link";
-"router.card-title.Wireless Settings" = "Wireless Settings";
-"router.wireless-status.Enabled" = "enabled";
-"router.wireless-status.Disabled" = "disabled";
-"router.card.Settings are not available." = "Settings are not available.";
-"router.card-title.Devices & Users" = "Devices & Users";
-"router.devices-summary.%d connected, %d blocked" = "%d connected, %d blocked";
-"router.software-version.header.Software Update Available" = "Software Update Available";
-"router.software-version.header.instructions" = "Please tap \"Settings\" on your Almond";
-"router.software-version.Update Available" = "Update Available";
-"router.software-version.Current version" = "Current version";
-"router.software-version.Not available" = "Version information is not available.";
-"router.card-title.Router Reboot" = "Router Reboot";
-"router.reboot-msg.Router is rebooting. It will take at least" = "Router is rebooting. It will take at least";
-"router.reboot-msg.2 minutes for the router to boot." = "2 minutes for the router to boot.";
-"router.reboot-msg.Please refresh after sometime." = "Please refresh after sometime.";
-"router.Router status is not available." = "Router status is not available.";
-"router.Last reboot %@ ago" = "Last reboot %@ ago";
-"router.no-almonds.nav-title.Get Started" = "Get Started";
-"router.hud.Router is now online." = "Router is now online.";
+
+
+
+
+
+
+
+
+
+
+
+
+
 "router.hud.Updating router firmware." = "Updating router software.";
-"router.hud.Router is rebooting." = "Router is rebooting.";
-"router.card-title.Send Logs" = "Send Logs";
+
+
 "router.Sends %@'s logs to our server" = "Sends %@'s logs to our server";
 "router.hud.Sending Logs." = "Instructing router to send logs";
 
-/* sensors */
 
-"Device has been tampered" = "Device has been tampered";
-"sensors.button.Dismiss" = "Dismiss";
-"sensors.label.Status" = "Status";
-"sensor.status-label.OFF" = "OFF";
-"sensor.status-label.ON" = "ON";
-"sensor.status-label.OK" = "OK";
-"sensors.label.SENSOR SETTINGS" = "SENSOR SETTINGS";
-"sensors.settings-label.Send Notifications" = "Send Notifications";
-"sensors.no-sensors.label.You don't have any sensors yet." = "You don't have any sensors yet.";
-"sensors.account-confirm.label.Please confirm your account (less than a day left)." = "Please confirm your account (less than a day left).";
-"sensors.account-confirm.label.Please confirm your account (%d days left)." = "Please confirm your account (%d days left).";
-"sensors.account-confirm.label.Check activation email for instructions." = "Check activation email for instructions.";
-"sensors.account-confirm.label.Resend activation email" = "Resend activation email";
-"activation.toast.Reactivation link sent to your registerd email ID." = "Reactivation link sent to your registerd email ID.";
-"sensor.thermostat.field-label.Set Point" = "Set Point";
-"sensor.thermostat.field-label.Heating" = "Heating";
-"sensor.thermostat.field-label.Cooling" = "Cooling";
-"sensor.thermostat.field-label.Mode" = "Mode";
-"sensor.thermostat.segment-control.Auto" = "Auto";
-"sensor.thermostat.segment-control.Heat" = "Heat";
-"sensor.thermostat.segment-control.Cool" = "Cool";
-"sensor.thermostat.segment-control.Off" = "Off";
-"sensor.thermostat.field-label.Fan" = "Fan";
-"sensor.thermostat.segment-control.Auto Low" = "Auto Low";
-"sensor.thermostat.segment-control.On Low" = "On Low";
-"sensor.thermostat.Thermostat is %@" = "Thermostat is %@";
-"sensor.thermostat.Fan is %@" = "Fan is %@";
-"sensor.thermostat.Battery is at %@%%" = "Battery is at %@%%";
-"sensor.Power is %.3fW" = "Power is %.3fW";
-"sensor.Current is %.3fA" = "Current is %.3fA";
-"sensor.Voltage is %.3fV" = "Voltage is %.3fV";
-"sensor.lock.pin-picker.Pin %ld" = "Pin %ld";
-"sensor.toast.doorlock.PassCode must be 5 to 8 digits long" = "PassCode must be 5 to 8 digits long";
-"sensor.device-name-label.Name" = "Name";
-"sensor.deivice-duration-label.Ring Duration" = "Ring Duration";
-"sensor.deivice-duration-placeholder.number of seconds" = "number of seconds";
-"sensor.deivice-location-label.Located at" = "Located at";
-"sensor.deivice-save-settings.button.Save" = "Save";
-"sensor.device-status.label.Battery OK" = "Battery OK";
-"sensor.device-status.label.Battery %" = "Battery %@%%";
-"sensor.device-status.label.Low Battery" = "Low Battery";
-"sensor.device-status.label.LOW BATTERY" = "LOW BATTERY";
-"sensor.device-status.label.Battery Unknown" = "Battery Unknown";
-"sensor.doorlock.field-label.Pins" = "Pins";
-"sensor.doorlock.pinentry-textfield.placeholder.Code is not specified." = "Code is not specified.";
-"sensor.doorlock.button.Save Pin" = "Save Pin";
-"sensor.doorlock.field-label.Code" = "Code";
-"sensor.multilevel-switch.status-label.Dimmable, %@%%" = "Dimmable, %@%%";
-"sensor.level-control.status-label.Dimmable" = "Dimmable";
-"sensor.keyfob.status-label.ALL DISARMED" = "ALL DISARMED";
-"sensor.keyfob.status-label.PERIMETER ARMED" = "PERIMETER ARMED";
-"sensor.keyfob.status-label.ALL ARMED" = "ALL ARMED";
-"sensor.lightsensor.status-label.Illuminance %@" = "Illuminance %@";
-"sensor.tempsensor.status-label.Humidity %@" = "Humidity %@";
-"sensor.moisturesensor.status.FLOODED" = "FLOODED";
-"sensor.poweswitch.label.Power %@W" = "Power %@W";
-"sensor.moisturesensor.status.Temp %@" = "Temp %@";
-"sensor.notificaiton.label.notificationMode" = "Notify me";
-"sensor.notificaiton.segment.Always" = "Always";
-"sensor.notificaiton.segment.Away" = "Away";
-"sensor.notificaiton.segment.Off" = "Off";
-"sensors.label.Color" = "Color";
+
+
+
+
+
+
+
+
+
+
+
+"Refresh router data" = "Refresh router data";
+"router.summary.IP Address : %@" = "IP Address : %@";
+"router.summary.Admin Login : %@" = "Admin Login : %@";
+"router.software-version.title.Software Version" = "Software Version";
+
+"router.software-version-new.title.Software Version" = "Software Version";
+"router.offline-msg. is offline" = " is offline";
+"router.log-textfield-placeholder.Describe your problem here" = "Describe your problem here";
+
+
+
+
+"router.version-title.Update now?" = "Update now?";
+"router.update-summary.It will take a few minutes to update the software." = "It will take a few minutes to update the software.";
+"Yes" = "Yes";
+"Local Link Almond" = "Local Link";
+"router.link-button.Link" = "Link";
+"Back to Cloud Link" = "Back to Cloud Link";
+"router.label.SSID 2.5GHz" = "SSID 2.5GHz";
+"router.label.SSID 5GHz" = "SSID 5GHz";
+"IP Address" = "IP Address";
+"router.label.Admin Login" = "Admin Login";
+"router.label.Admin Password" = "Admin Password";
+"router.hud.Establishing Local Link..." = "Establishing Local Link...";
+"router.card-title Almond Network" = "Almond Network";
+
+"REBOOT NOW" = "REBOOT NOW";
+"getWirelessSettingsSummary Settings are not available." = "Settings are not available.";
+
+
+
+
+
+"router Cancel" = "Cancel";
+
+"Router Sorry!, Unable to update." = "Sorry!, Unable to update.";
+"Router Back" = "Back";
+
+"ParseRouterCommand Successfully updated!" = "Successfully updated!";
+/*SFILogsViewController*/
+"SFILogsViewController Along with your message,this will send Almond debug infiormation and logs to our cloud.This information will help us to resolve your problem faster.Please note that we do not send any sensitive information like your passwords." = "Along with your message,this will send Almond debug infiormation and logs to our cloud.This information will help us to resolve your problem faster.Please note that we do not send any sensitive information like your passwords.";
+"SFILogsViewController Describe your problem here" = "Describe your problem here";
+"SFILogsViewController Send" = "Send";
+
+"back" = "Back";
+
+"SFILogsViewController Logs successfully sent!" = "Logs successfully sent!";
+
 
 /* signup */
-
-"signup.navbar-title.Sign up" = "Sign up";
+"signup.navbar-title.Create Account" = "Create Almond Account";
 "signup.barbutton.Decline" = "Decline";
 "signuo.barbutton.Accept" = "Accept";
 "signup.barbutton.Continue" = "Continue";
@@ -184,7 +164,7 @@ reset at the moment. Try again later.";
 "signup.subheadline-text.Please wait one moment..." = "Please wait one moment...";
 "signup.headline-text.Almost done." = "Almost done.";
 "signup.headline-text.An activation link was sent to your email" = "An activation link was sent to your email.
-Follow it, then tap Continue to login.";
+Follow it, then login below.";
 "signup.footerbutton.Resend the activation email" = "Resend the activation email";
 "signup.footerbutton.Signup using another email" = "Signup using another email";
 "signup.footerlabel.Do you want to create another account?" = "Do you want to create another account?";
@@ -272,13 +252,1067 @@ Follow it, then tap Continue to login.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode1" = "There was some error on cloud. Please try later.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode2" = "You need to fill all the fields.";
 
+/* Notifications */
+"notifications.title.Recent Activities" = "Recent Activities";
+"notifications.headerfooter.mode.The End" ="The End";
+"notifications.date.Today" = "Today";
+"notifications.bucketdate.Yesterday" = "Yesterday";
+
+/* Scenes */
 "scenes.hud.loadingScenes" = "Loading scenes...";
 "scenes.hud.deletingScene" = "Deleting Scene...";
 "scenes.hud.activatingScene" = "Activating scene...";
 "scenes.hud.creatingScene"   = "Creating scene...";
+"scenes.hud.updatingScene"   = "Updating scene...";
+
+"scene.macro.Could not update sensor\ndata." = "Could not update sensor data.";
+"scene.thermostat-title.COOLING TEMP." = "COOLING TEMP.";
+"scene.thermostat-title.HEATING TEMP." = "HEATING TEMP.";
+"scene.button.Save" = "Save";
+"scene.button.Cancel" = "Cancel";
+"scene.title.Get Started" = "Get Started";
+"scene.title.New Scene" = "New Scene";
+"scene.msg.You have to select at least 1 value" = "You have to select at least 1 value";
+"scene.cancel-title.OK" = "OK";
+"scene.hud.Loading router data" = "Loading router data";
+"scene.hud.Loading sensor data" = "Loading sensor data";
+"scene.text.Choose one or more Actions" = "Select all the actions that should be executed as part of this scene. Every gray icon below represents an action.";
+"sensor.text.%ld SENSORS" = "%ld SENSORS";
+"sensor.text.%ld SENSOR" = "%ld SENSOR";
+
+
+"DIM"="DIM";
+"HEAT-COOL"="HEAT-COOL";
+"AUTO"="AUTO";
+"HEAT"="HEAT";
+"COOL"="COOL";
+"OFF"="OFF";
+"FAN ON"="FAN ON";
+"FAN OFF"="FAN OFF";
+"HOME"="HOME";
+"AWAY"="AWAY";
+"COOLING TEMP."="COOLING TEMP.";
+"HEATING TEMP."="HEATING TEMP.";
+"Version"="Version";
+"Settings"="Settings";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
+
+
+/* Scoreboard */
+"Scoreboard" = "Scoreboard";
+"Refresh.Scoreboard" = "Refresh Scoreboard";
+"scoreboard.section.Cloud" = "Cloud";
+"scoreboard.section.PushNotifications" = "Push Notifications";
+"scoreboard.section.Events" = "Events";
+"scoreboard.section.Network" = "Network";
+"scoreboard.section.Commands & Updates" = "Commands & Updates";
+"scoreboard.section.Logs & Data" = "Logs & Data";
+"footerInsection.Last refreshed %.0f secs ago @ %@" = "Last refreshed %.0f secs ago @ %@";
+"notifications.Client Token" = "Client Token";
+"notifications.Not registered" = "Not registered";
+"Failed to send mail" = "Failed to send mail";
+"Since %@" = "Since %@";
+"notifications_logctrl.View Handler Log" = "View Handler Log";
+"notifications_viewactual.View Notifications" = "View Notifications";
+"notifications_viewtests.Unit Test UI" = "Unit Test UI";
+"events.All Events" = "All Events";
+"Network.Established Connections" = "Established Connections";
+"Network.Failed Connections" = "Failed Connections";
+"Network.Reachability Changes" = "Reachability Changes";
+"SEC_ReQUEST.Dynamic Updates" = "Dynamic Updates";
+"SEC_ReQUEST.Command Requests" = "Command Requests";
+"SEC_ReQUEST.Command Responses" = "Command Responses";
+"Email Logs & Data" = "Email Logs & Data";
+"cloudSection.row0.Production" = "Production";
+"cloudSection.row1.Development" = "Development";
+"Copied token" = "Copied token";
+"Reset counter" = "Reset counter";
+"Sending Mail is not supported on this device" = "Sending Mail is not supported on this device";
+"Scoreboard.Preparing..." = "Preparing...";
+"Local Network Enabled" = "Local Network Enabled";
+"scoreboard.localnetwork.IP Address" = "IP Address";
+"scoreboard.localnetwork.Port" = "Port";
+"scoreboard.localnetwork.Password" = "Password";
+
+/* Sensor Support */
+"sensor support- a value has changed" = "'s state changed";
+
+/* Draw View Controller */
+"Draw viecontroller.label LOCATION" = "LOCATION";
+"Draw viecontroller.label SETTINGS" = "SETTINGS";
+"Draw viecontroller.label INFO" = "INFO";
+"read-almond-version %@ (%@)" = "version %@ (%@)";
+
+/* Main View Controller */
+"Sorry! Unable to establish Internet route to cloud service." = "Sorry! Unable to establish Internet route to cloud service.";
+"mainviewcontroller_Connecting. Please wait!" = "Connecting. Please wait!";
+"mainviewcontroller_Sorry! Could not connect to the cloud service." = "Sorry! Could not connect to the cloud service.";
+"main view controller Sorry! Push Notification was not registered." = "Sorry! Push Notification was not registered.";
+"main view controller Sorry! Push Notification was not deregistered." = "Sorry! Push Notification was not deregistered.";
+"mainview-configure-Debug" = "Debug";
+
+/* Table View Controller */
+
+"Cloud Connection" = "Cloud Connection";
+"connection status Cloud Connection" = "Cloud Connection";
+"connection status Local Connection" = "Local Connection";
+"alert.title-Switch to Local Connection" = "Switch to Local Connection";
+"alert.title-Edit Local Connection Settings" = "Edit Local Connection Settings";
+"Alert view title-Retry Cloud Connection" = "Retry Cloud Connection";
+
+"Edit Local Connection Settings" = "Edit Local Connection Settings";
+"Alert view title-Edit Local Connection Settings" = "Edit Local Connection Settings";
+"alert view error_Cloud Connection" = "Cloud Connection";
+"alert view error_Local Connection" = "Local Connection";
+"alertview localconnection_Switch to Cloud Connection" = "Switch to Cloud Connection";
+"alert msg offline Local connection not supported." = "Local connection settings are missing.";
+"Add Local Connection Settings" = "Add Local Connection Settings";
+"alert msg offline Local Retry Local Connection" = "Retry Local Connection";
+
+"alert title offline Local Edit Local Connection Settings" = "Edit Local Connection Settings";
+
+"mainviewcontroller hud Loading sensor data" = "Loading sensor data";
+"mainviewcontroller hud hud.Updating settings..." = "Updating settings...";
+"Cancel" = "Cancel";
+
+
+/* Wifi */
 "wifi.hud.UpdatingWifiClient" = "Updating Wifi Client...";
-"wifi.hud.removeClient"       = "Deleting wifi client...";
-"wifi.button.deleteClient"    = "Remove";
+"wifi.hud.removeClient" = "Deleting wifi client...";
+"wifi.button.deleteClient" = "Reset";
+"wifi.Active" = "ACTIVE";
+"wifi.Inactive" = "INACTIVE";
+"wifi.textEdit.Name" = "Name";
+"wifi.textEdit.Minutes" = "Minutes";
+
+
+"SFIWiFiClientsListViewController-propertyNames-Name" = "Name";
+"SFIWiFiClientsListViewController-propertyNames-Type" = "Type";
+"SFIWiFiClientsListViewController-propertyNames-MAC Address" = "MAC Address";
+"SFIWiFiClientsListViewController-propertyNames-Last Known IP" = "Last Known IP";
+"SFIWiFiClientsListViewController-propertyNames-Connection" = "Connection";
+"SFIWiFiClientsListViewController-propertyNames-Use as Presence Sensor" = "Use as Presence Sensor";
+"SFIWiFiClientsListViewController-propertyNames-Notify me" = "Notify me";
+"SFIWiFiClientsListViewController-propertyNames-Remove" = "Remove";
+"Presence sensor Yes"="Yes";
+"Presence sensor NO" = "No";
+"response.alert-Oops" = "Oops";
+"response.alert-Sorry, There was some problem with this request, try later!" = "Sorry! There was some problem with this request, try later!";
+"response.alert-OK" = "OK";
+
+/* Sensor Index Support */
+" Fan is " = " Fan is ";
+" Fan is set to " = " Fan is set to ";
+" Fan Swing is Off" = " Fan Swing is Off";
+" Fan Swing is On" = " Fan Swing is On";
+" humidity is " = " humidity is ";
+" brightness changed to " = " brightness is ";
+" brightness changed to " = " brightness is ";
+" detected Fire." = " detected Fire.";
+" detected Gas." = " detected Gas.";
+" detected Smoke." = " detected Smoke.";
+" detected Vibration." = " detected Vibration.";
+" detected Vibration." = " detected Vibration.";
+" detected motion." = " detected motion.";
+" detected motion." = " detected motion.";
+" detected water." = " detected water.";
+" has been Tampered." = " is Tampered.";
+" hue color changed to " = " hue color is ";
+" is " = " is ";
+" is Armed." = " is Armed.";
+" is Closed." = " Closed.";
+" is Closing." = " is Closing.";
+" is Disarmed." = " is Disarmed.";
+" is Locked." = " is Locked.";
+" is Open." = " is Open.";
+" is Opened." = " Opened.";
+" is Opening." = " is Opened.";
+" is Perimeter Armed." = " is Perimeter Armed.";
+" is Ringing." = " is Ringing.";
+" is Silent." = " is Silent.";
+" is Stopped." = " is Stopped.";
+" is Unlocked." = " is Unlocked.";
+" is cooling down to " = " is cooling down to ";
+" is dimmed to " = " dimmed to ";
+" is heating up to " = " is heating up to ";
+" is not fully Locked." = " is not fully Locked.";
+" is reset from Tampered." = " is reset.";
+" is set to " = " mode is set to ";
+" is switched Off." = " switched Off.";
+" is switched On." = " switched On.";
+" is turned Off." = " turned Off.";
+" is turned On." = " turned On.";
+" is turned on for " = " turned on for ";
+" saturation changed to " = " saturation is ";
+" second" = " second";
+" seconds" = " seconds";
+" stopped leaking." = " leakage stopped.";
+" turned Off." = " turned Off.";
+" turned On." = " turned On.";
+"'s Battery is Low." = "'s Battery is Low.";
+"'s Fire is gone." = " is OK.";
+"'s Gas is gone." = "'s Gas is gone.";
+"'s Smoke is gone." = " is OK.";
+"'s color temperature changed to " = "'s color temperature changed to ";
+"'s humidiy changed to " = "'s humidiy changed to ";
+"'s light reading changed to " = "'s light reading changed to ";
+"'s motion stopped." = "'s motion stopped.";
+"'s pin code changed." = "'s pin code changed.";
+"'s power reading changed to " = "'s power reading is ";
+"'s temperature changed to " = "'s temperature is ";
+"'s temperature set point changed to " = "'s temperature is ";
+"'s vibration stopped." = "'s vibration stopped.";
+": no presence detected." = ": no presence detected.";
+": presence detected." = ": presence detected.";
+"AWAY" = "AWAY";
+"HOME" = "HOME";
+"OFF" = "OFF";
+"ON" = "ON";
+"Temperature" = "Temperature";
+"\u00B0 Farenheit" = "\u00B0 Farenheit";
+" Not Reachable" = "  Not Reachable";
+
+/* UI Accounts */
+"Drawviewcontroller.account" = "Account";
+"Drawviewcontroller.Logout" = "Logout";
+"Drawviewcontroller.Logout All" = "Logout All";
+"Draqviewcontroller.add"="Add";
+
+
+/* genericIndexes */
+"name" = "Name";
+"location"= "Location";
+"notifyMe"="Notify Me";
+
+"wifiClient"="WiFiClient";
+"type"="Type";
+"always"="Always";
+"whenAway"="When I'm Away";
+"never"="Never";
+"tablet"= "Tablet";
+"pc"="PC";
+"laptop"="Laptop";
+"androidStick"="Android Stick";
+"smartphone"="Smartphone";
+"ipod"="iPod";
+"ipad"="iPad";
+"iphone"="iPhone";
+"mac"= "MAC";
+"appleTV" ="Apple TV";
+"tv"="TV";
+"printer" ="Printer";
+"routerSwitch"="Router Switch";
+"hub"="Hub";
+"camera"="Camera";
+"nest"="Nest";
+"chromecast"="Chromecast";
+"amazon_dash"="Amazon Dash";
+"amazon_echo"="Amazon Echo";
+"other"="Other";
+"manufacturer"="Manufacturer";
+"macAddress"="MAC Address";
+"lastKnownIP"="Last Known IP";
+"connection"="Connection";
+"presenceSensor" ="Use As Presence Sensor";
+"yes"="Yes";
+"no"="No";
+"inactiveGracePeriod"="Inactive Grace Period";
+"allowOnNetwork"="Allow On Network";
+"always"="Always";
+"blocked_"="BLOCKED";
+"onSchedule"="On Schedule";
+"signalStrength"="Signal Strength";
+"Can Be Blocked"="Can Be Blocked";
+
+"userCategory"="User Category";
+"kids"="Kids";
+"others"="Others";
+"leaves"="Leaves";
+"joins"="Joins";
+"active"="ACTIVE";
+"inactive"="INACTIVE";
+"home"="Home";
+"away"="Away";
+"AUTOAWAY"="Auto-Away";
+"rebootAlmond"="Reboot Almond";
+"toggle"="Toggle";
+"switch_off"="Switch";
+"on"="ON";
+"off"="OFF";
+"door_on"="OPEN";
+"door_off"="CLOSED";
+"motion_on"="MOTION DETECTED";
+"motion_off"="NO MOTION";
+"vibration_on"="VIBRATION DETECTED";
+"vibration_off"="NO VIBRATION";
+"water_on" ="FLOODED";
+"ok"="OK";
+"gas_on"="GAS DETECTED!";
+"fire_on"="FIRE DETECTED!";
+"tampered"="TAMPERED";
+"paincAlarm"="PAINC ALARM";
+"emergencyAlarm"="EMERGENCY ALARM";
+"lowBattery"="LOW BATTERY";
+"set_alarm_for"="ALARM FOR(sec)";
+"alarm_on"="RINGING";
+"alarm_off"="SILENT";
+"smoke_on"="SMOKE DETECTED!";
+"dimmer" ="DIMMER";
+"brightness"="BRIGHTNESS";
+"start_alarm"="START ALARM";
+"stop"="STOP";
+"emergency"="EMERGENCY";
+"fire"="FIRE";
+"ambulance"="AMBULANCE";
+"police"="POLICE";
+"door_chime"="DOOR CHIME";
+"beep"="BEEP";
+"closed"="CLOSED";
+"opened"="OPENED";
+"processing"="PROCESSING";
+"powerLabel"="POWER";
+"notFullyLocked"="BOLT NOT FULLY EXTENDED";
+"doorlock_off"="UNLOCKED";
+"doorlock_on"="LOCKED";
+"doorlock_partial"="NOT FULLY LOCKED";
+"keyfob_disarmed"="ALL DISARMED";
+"keyfob_permiter_armed"="PERIMETER ARMED";
+"keyfob_armed"="ARMED";
+"temperature"="TEMPERATURE";
+"pressure"="PRESSURE";
+"humidity"="HUMIDITY";
+"luminance"="ILLUMINANCE";
+"hue"="HUE";
+"saturation"="SATURATION";
+"color_temp"="COLOR TEMPERATURE";
+"mode"="Mode";
+"auto"="Auto";
+"cool"="Cool";
+"heat"="Heat";
+"button_off"="OFF";
+"operating_state"="OPERATING STATE";
+"high_temp"="HIGH TEMPERATURE";
+"low_temp"="LOW TEMPERATURE";
+"fan_mode"="FAN MODE";
+"fan_on_low"="ON LOW";
+"fan_auto_low"="AUTO LOW";
+"fan_state"="FAN STATE";
+"target_temp"="TARGET TEMPERATURE";
+"setpoint_temp"="SETPOINT TEMPERATURE";
+"actions" ="ACTIONS";
+"close"="Close";
+"open"="Open";
+"stop_"="Stop";
+"closed"="Closed";
+"closing"="Closing";
+"stopped"="Stopped";
+"opening"="Opening";
+"opened"="Opened";
+"offMode"="Off Mode";
+"Resume"="Resume";
+"fanOnly"="Fan Only";
+"dryAir" ="Dry Air";
+"AutoChangeover"="Auto ChangeOver";
+
+"medium" ="Medium";
+"fan_on_high" ="ON HIGH";
+
+
+"swing"="SWING";
+"off"="OFF";
+"on"="ON";
+"battery"="BATTERY";
+"irCode"="IR CODE";
+"voltage"="VOLTAGE";
+"current"="CURRENT";
+"mode"="Mode";
+"nest_heat_cool"="Heat-Cool";
+"ac_cool"="Cool";
+"heat"="Heat";
+"target_temperature"="TARGET TEMPERATURE";
+
+"nest_label_away_mode"="NEST MODE";
+"Auto-away"="AUTO-AWAY";
+"fan"="FAN";
+"start"="START";
+"stop_"="STOP";
+"online"= "ONLINE";
+"offline"="OFFLINE";
+"emergency_heat" = "USING EMERGENCY HEAT";
+"heating"="HEATING";
+"cooling" ="COOLING";
+"idle"="IDLE";
+"co_lable"="CO STATUS";
+"ok"="OK";
+"warning"="WARNING";
+"emergency_"="EMERGENCY";
+"smoke_lable"="SMOKE STATUS";
+"battery"="BATTERY";
+"replace"="REPLACE";
+"energyLabel"= "ENERGY";
+"clamp1_power"="CLAMP1 POWER";
+"clamp2_power"="CLAMP2 POWER";
+"clamp1_energy"="CLAMP1 ENERGY";
+"clamp2_energy"="CLAMP2 ENERGY";
+"occupied"="OCCUPIED";
+"unoccupied"="UNOCCUPIED";
+"ringTone"="TONE";
+"alarm"="Alarm";
+"siren"="Siren";
+"doorBell"="Door-Bell";
+"canBeBlocked" = "Can Be Blocked";
+"switch1" = "Switch 1";
+"switch2" = "Switch 2";
+"switch1_on" = "Switch-1 On";
+"switch1_off" = "Switch-1 Off";
+"switch2_on" = "Switch-2 On";
+"switch2_off" = "Switch-2 Off";
+"pin" = "PIN";
+"off_camelcase" = "OFF";
+"on_camelcase" = "ON";
+"autoChangeOver" = "Auto ChangeOver";
+"resume" = "Resume";
+"shutter" = "SHUTTER";
+"lock_state" = "LOCK STATE";
+"ac_switch" = "AC SWITCH";
+"multilevel_switch" = "MULTILEVEL SWITCH";
+"one_press" = "One Press";
+"two_press" = "Two Press";
+"long_press" = "Long Press";
+"no_press" = "No Press";
+"press" = "Press";
+
+"sunRiseTime" = "SunRise";
+"sunSetTime" = "SunSet";
+"twilightTime" = "Twilight Time";
+"weather" = "Weather";
+"chancerain" = "Chance of Rain";
+"rain" = "Raining";
+"clear" = "Clear Sky";
+"cloudy" = "Cloudy";
+"tstorms" = "Thunder Storms";
+"chancesnow" = "Chance of Snow";
+"chanceflurries" = "Chance of Flurries";
+"chancesleet" = "Chance of Sleet";
+"chancetstorms" = "Chance of Storms";
+"flurries" = "Flurries";
+"fog" = "Fog";
+"hazy" = "Hazy";
+"mostlycloudy" = "Mostly Cloudy";
+"mostlysunny" = "Mostly Sunny";
+"nt_chanceflurries" = "Night: Chance of Flurries";
+"nt_chancerain" = "Night: Chance of Rain";
+"nt_chancesleet" = "Night: Chance of Sleet";
+"nt_chancesnow" = "Night: Chance of Snow";
+"nt_chancetstorms" = "Night: Chance of Storms";
+"nt_clear" = "Night: Clear Sky";
+"nt_cloudy" = "Night: Cloudy";
+"nt_flurries" = "Night: Flurries";
+"nt_fog" = "Night: Fog";
+"nt_hazy" = "Night: Hazy";
+"nt_mostlycloudy" = "Night: Mostly Cloudy";
+"nt_mostlysunny" = "Night: Mostly Moony";
+"nt_partlycloudy" = "Night: Partly Cloudy";
+"nt_partlysunny" = "Night: Partly Moony";
+"nt_rain" = "Night: Rain";
+"nt_sleet" = "Night: Sleet";
+"nt_snow" = "Night: Snow";
+"nt_sunny" = "Night: Moony";
+"nt_tstorms" = "Night: Thunder Storms";
+"partlycloudy" = "Partly Cloudy";
+"sleet" = "Sleet";
+"partlysunny" = "Partly Sunny";
+"snow" = "Snowing";
+"sunny" = "Sunny";
+"partlyMoony" = "Partly Moony";
+"mostlyMoony" = "Mostly Moony";
+"moony" = "Moony";
+"sunnycondition" = "Condition";
+
+"enable" = "ENABLE";
+"enabled" = "Enabled";
+"disabled" = "Disabled";
+
+"volume" = "VOLUME";
+"low_volume" = "Low";
+"medium_volume" = "Medium";
+"high_volume" = "High";
+"high" = "High";
+
+"blink" = "Blink";
+"blink_start" = "Start";
+"blink_stop" = "Stop";
+
+"rgb" = "RGB";
+"seconds" = "SECONDS";
+"blinking" = "Blinking";
+"blinkTimer" = "Blink Timer";
+
+"browsingHistory" = "Browsing History";
+"duration" = "Duration";
+"led_off" = "LED OFF";
+"led_on" = "LED ON";
+
+/******** After localization *********/
+/* help screens */
+"Welcome" = "Welcome";
+"The_Dashboard" = "The Dashboard";
+"Theres_More" = "There's More!";
+"Almond_Notifications" = "Notifications";
+"loginSuccess" = "You've successfully logged into your Almond account!\nThis guide will help you make the most of your Almond. Read on to learn about Almond features and how they can turn your home into a smart home.";
+"theDashboard" = "The Almond dashboard puts the status of your home at your fingertips. Know what mode your system is in right away and change it by tapping the icons. Scroll down to review smart home alerts, network activity and bandwidth usage.";
+"almModes" = "You can use the Almond modes to arm or disarm your home, just like you would do for your car. The Home mode means that you are at home, while the Away mode means that the Almond is put on alert. Secure and automate your home conveniently by writing rules to set the Almond mode, and then use the mode to write more rules.";
+"scene_mean" = "What is a Scene?";
+"What_is_scene_Desc"="A scene is a collection of actions that you can activate in one go. For example, your \"Good Night\" scene can turn off all your lights, and set your thermostat to 68˚F.";
+
+"Creating_a_Scene" = "Creating a Scene";
+"Creating_a_Scene_Desc"="Go to the Scenes tab, and tap the add button. And then tap on a device and select one or more actions from the available options. Repeat this process for as many devices as you need and then tap on  \"Save\". Follow the onscreen instructions to complete creating your scene.";
+
+"Scene_Behaviour" = "Scene Behaviour";
+"Scene_Behaviour_Desc"="A scene might appear to be active even if you haven't turned it on. That is because, a scene is set to active whenever all the actions that make up that scene are turned on.";
+
+"Alexa_and_Scenes" = "Alexa and Scenes";
+"Alexa_and_Scenes_Desc" = "If you have an Amazon Alexa device, you can control scenes with voice commands. To get started, open your Alexa account and activate the Almond Skill.";
+"Rules_Desc"="Rules allow you to automate your smarthome by setting up actions that will be performed automatically when the conditions you choose are met.You could create a rule like \"Everyday, if My iPhone joins home wifi between 6pm and 10pm, then turn on living room lights and set the thermostat to 70°\" to have your home welcome you with a comfortable atmosphere after a long day at work.";
+"Rules_Desc"="Rules enable your smart home devices to tell each other what to do. They also let you automate devices on a schedule. For example:\n\n \"On weekdays, if I come home between 6pm and 10pm, turn on living room lights and set the thermostat to 70˚F\".";
+
+"Creating_a_Rule" = "Creating a Rule";
+"Creating_a_Rule_Desc"="Go to the Rules section in the More menu, and tap the add button. Every rule needs at least one trigger (shown in blue) and one action (shown in orange). Almond lets you use a variety of triggers and actions including the weather, Home and Away modes, sensors, your mobile phone, time and the day of the week.";
+
+
+"IFTTT" = "IFTTT Now Works With Almond";
+"IFTTT_Desc"="While Almond’s Rules provide lot of flexibility (with multiple triggers and actions in a single rule), our integration with IFTTT also lets your smart home interact with hundreds of their channels (Google Drive, GPS Location, Email, SMS and more).";
+
+"More_to_Almond"="There's More To Almond";
+"More_to_Almond_Desc"="There’s more to Almond than meets the eye. Learn how Almond makes WiFi easy for you with easy to manage guest WiFi and advanced router features.";
+
+"Guest_Network" = "Guest Network";
+"Guest_Network_Desc"="You can enable a guest WiFi network for your friends. To configure a guest network, tap on the “Wireless” icon on the Almond LCD and choose \"Guest Network\".";
+"Advanced_Features"="Advanced Features";
+"Advanced_Features_Desc"="You can also access advanced features like port forwarding, FTP and more from the local Web interface of your Almond. You can find the credentials for this web page from the Almond LCD. Tap on the \"Status\" icon and choose \"Web Admin\".";
+
+
+
+"show_me" = "Show Me";
+"wifi_help"="Almond can use your mobile device’s connection to your home WiFi to detect your presence. When one of your devices connects or disconnects from your Almond, that event is called a WiFi trigger. Almond detects WiFi triggers only from devices that are connected to it directly.";
+"wifi_help1"="With WiFi triggers, you can create a rule like “Turn on the porch lights for five minutes and set the thermostat to 70˚F when my iPhone joins home Wi-Fi and the Almond mode is set to away.” You’ll never have to arrive to a cold and dark home again!";
+"wifi_help2"="To create a rule using a WiFi trigger, go to Rules inside the more menu, tap the + button to create a new rule, and select “Network devices” from the list of triggers under “IF”.";
+
+"Notifications" = "Notifications";
+"Notifications_desc"="Tap the Notifications icon to see the history of your recent notifications. Notifications let you know what’s going on with your devices. Tap on a device to set notifications that you want to receive.";
+
+"Almond_Modes" = "Modes";
+"Almond_Modes_Desc" = "Use the Almond modes to arm or disarm your home, just like you would do for your car. Write rules to automatically set the Almond mode based on your presence and trigger further functions. ";
+"Almond_Rules" = "Rules";
+"Almond_Rules_Desc" = "Almond's native rule engine allows you to automate and secure your home. To begin creating and editing rules, tap \"More\" and select \"Rules\"";
+"Take_a_pick" = "Take a Pick";
+"Adding_a_New_Device" = "Adding a New Device";
+"Adding_a_New_Device_Desc" = "To add a new Zigbee or Z-Wave smart home device, tap the Add Sensor icon on Almond’s LCD and follow the on-screen instructions.";
+"Device_Actions" = "Device Actions";
+"Device_Actions_Desc" = "Each device has it's own set of unique features. Simple devices like smart switches and lights can easily be controlled by tapping the device icon.";
+"Notification_Preferences" = "Notification Preferences";
+"Notification_Preferences_Desc" = "Managing the notifications you recieve from smart devices is easy. Simply select a device, and choose the desired setting under Notify Me.";
+"Take_a_pick_Desc"="Almond is compatible with more than 100 smart home devices including products from  Nest and Philips Hue.\n\nView the complete compatibility list here.";
+
+"Quick_Actions" = "Quick Actions";
+"Quick_Actions_Desc"="The quick action button allows you to control some of your smart home devices with a quick tap. For example, you can turn a smart lightbulb on or off by tapping the button.";
+
+"Nothing"="";
+
+"help_topics_dashboard"="
+
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
+
+<body>
+<h3>Dashboard</h3>
+<p>The dashboard has been designed to give you an overview  of your home and quick access to key functions.</p>
+<center><img src=h_dashboard.pdf/></center>
+<p> At a glance, you can see recent smart home and Wi-Fi device notifications, how many network and smart devices are active, and also set your Almond to Home or Away mode with a quick tap.</p>
+<center><img src=h_dashboard_selectals.pdf/></center>
+<p>
+If you own more than one Almond, you can quickly switch between them by tapping on the device’s name above the mode control, and picking another Almond from the list.
+</p>
+<p>
+As we continue to improve Almond, and add more features, the dashboard will be central to controlling your smart home. Stay tuned!
+</p>
+</body>
+</html>";
+
+"Explaining_Scenes"="Explaining Scenes";
+"Explaining_Scenes_desc"="
+
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
+
+<body>
+<h3>Scenes</h3>
+<p>
+Scenes make controlling multiple smart devices easier and faster. For example, when you go to bed you might have two or three lights to turn off, the temperature on the thermostat to adjust, and an alarm clock to set. A scene means you can do all of them with a quick tap.
+</p>
+<center><img src=h_scenes.pdf/></center>
+<p>
+You can create and manage scenes from the Scenes tab in the Almond app. Tap the + button to create a scene and then tap on a device and select one or more actions from the available options. Repeat this process for as many devices as you need and then tap on “Save”. Follow the onscreen instructions to complete creating your scene.
+</p>
+<center><img src=h_scenes_action_button.pdf/></center>
+<p>
+To manage a scene, tap on the quick action icon to activate the scene, and tap the options icon to change the devices in the scene and rename it.
+</p>
+<center><img src=h_manage_scenes.pdf/></center>
+<p>
+A scene might appear to be active even if you haven’t activated it. That is because a scene is set to active whenever all the actions that make up that scene are turned on. For example, using the scene above, you may have decided to adjust the lights and thermostat over the course of the evening. In doing so you matched the functions in the scene and it registers as activated.
+</p>
+<p>
+Now, Almond scenes can be activated using Alexa. To begin using Alexa with Almond scenes, activate the Almond skill on Alexa. If you are prompted to rename a scene, choose one from the list of suggestions that comes up. These names are easiest for Alexa to understand.
+</p>
+<center><img src=h_scenes_alexa.pdf/></center>
+<p>
+Once you have renamed a scene, you will see a small Alexa icon on the scene’s tile on the Almond app. When finished, to activate a scene, you could say “Alexa, tell Almond to activate Outside Lights Off!” Where ‘Outside Lights Off’ is the name of the scene.
+</p>
+<p>
+To learn more about using Almond with Alexa, visit</br>
+<a href=\"https://www.securifi.com/rg/workswithecho\">https://www.securifi.com/rg/workswithecho</a>
+</p>
+</body>
+</html>";
+
+
+"tips_homeSecurity"="Tips For Setting Up Home Security";
+"tips_homeSecurity_desc"="
+
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
+
+<body>
+<h3>Tips For Setting Up Home Security</h3>
+<p>
+With the appropriate sensors, you can use an Almond 2015, an Almond+, or an Almond 3 to create a robust and powerful DIY home security system. Almond devices support a wide range of sensors from various manufacturers including Securifi. There is a full list here: <a href=\"https://www.securifi.com/sensors\">https://www.securifi.com/sensors</a>.
+</p>
+<p>
+With Almond, you can build your Home Security using rules and the Almond modes: Home and Away.
+</p>
+<center><img src=h_setting_home_security.pdf/></center>
+<p>
+The modes work similar to arming and disarming your car alarm or home security system. With Almond though, you don’t need to do this yourself every time. Use our rules engine to automate this process using your WiFi presence.
+</p>
+<center><img src=h_rules_engine.pdf/></center>
+<p>
+For example, you could create rules like “If Matt’s iPhone, Dana’s iPhone and Katie\’s iPod disconnect from Home WiFi, set Almond mode to Away” and “If my iPhone joins Home WiFi, set Almond mode to Home” to automatically change the mode when you and your family leave home and when you come back.
+</p>
+<center><img src=h_rules_automation.pdf/></center>
+<p>
+You can then add another rule to make sure the alarm is sounded. For example, \“If Almond mode is Away, and motion is detected, sound alarm.\”
+</p><p>
+Experiment with Rules to build your own scenarios. Our Rules engine is versatile and offers a large number of options  with which you can build rules including but not limited to: time, weather, Almond modes, and sensors.
+</p>
+<center><img src=h_build_own_scenarios.pdf/></center>
+<p>
+Sensors may not be automatically configured to send notifications; therefore, you will need to configure them. To do so, tap on the settings icon next to the sensor and look for notifications in the menu.
+</p>
+<p>You can choose one of three levels for notifications: Never, When I’m Away and Always. Each level is useful in different situations. For example, you might want to be alerted of movement in the living room only when you are away, but you might want to be alerted every time if a wall safe is opened, or a flood sensor detects water in your basement. On the other hand, you might not want to be alerted at all if a smart plug in your daughter’s room is turned on or off.
+</p>
+</body>
+</html>";
+
+
+
+
+"Quick_Tips"="Quick Tips";
+
+"Notifications_Settings"="Notifications & Settings";
+"Notifications_Settings_Desc"="Tap the icon on the right to manage a device’s settings, set notifications, and change its name. To set notifications, tap on \"Notify me\" in settings.";
+
+"Wifihelp_txt"="Know when your kids come home using our WiFi presence sensing. It's pretty close to magic.";
+
+
+"rules" = "Rules";
+"wifi"="WiFi";
+"Wi_Fi_Triggers"="Wi-Fi Triggers";
+"Help_Topics"="Help Topics";
+"Dashboard"="Dashboard";
+"Managing_Your_Scenes"="Managing Your Scenes";
+"Tips_on_Home_Security"="Tips on Home Security";
+"Support"="Support";
+
+"wifi_t_detecting"="Detecting Your Presence";
+"wifi_t_presence"="Using Presence in Rules";
+"wifi_t_rules"="Tap More to use Rules";
+
+/****** advanced router help contene *******/
+"vpn_title" = "VPN";
+"vpn_description" = "A Virtual Private Network helps you connect your network device to another device on the Internet in a way that lets them behave as if they were connected to each other directly. A VPN can be used to connect to secure corporate networks, access your Netflix account from another country, or simply for added privacy.<br><br>By connecting your Almond to a VPN, you can connect all your network devices that use the Almond’s WiFi to another network over the internet securely and directly.";
+"vpn_title_2" = "Using VPN on an Almond, Almond 2015 or Almond 3";
+"vpn_description_2" = "VPN client is currently not available on Almond, Almond 2015 or Almond 3.
+";
+"vpn_title_3" = "Using VPN on an Almond+";
+"vpn_sub_description_1" = "To use VPN on your Almond+, go to the Advanced tab in the local web UI, and click on the OpenWRT tile. This will open a new window.";
+"vpn_sub_description_2" = "In the new window, hover your mouse over the Network menu item in the menu bar at the top, and click on OpenVPN Client. Note that your Almond+ has to be in router mode to use the VPN Client functionality.";
+"vpn_sub_description_3" = "Enter the VPN server details and click on Save. Contact your VPN service provider for the VPN settings.";
+
+//port forwarding
+"port_title" = "Port Forwarding";
+"port_description" = "When you need to accept incoming connections for gaming, or for running a server on a network device connected to your Almond, you can use Port Forwarding to redirect incoming IP traffic at your Almond to the network device.";
+"port_title_2" = "Using Port Forwarding on an Almond, Almond 2015 or Almond 3";
+"port_sub_description_1" = "To use port forwarding on an Almond, Almond 2015 or Almond 3, go to the Advanced tab in the local web UI, and click on the \"Forwarding\" tile.";
+"port_sub_description_2" = "In the section named “Port Forwarding”, enter the following settings:";
+"port_sub_step_1" = "Port Forwarding: Set Port Forwarding to Enable.";
+"port_sub_step_2" = "Application Name: Type an application name and pick one from the list to automatically populate the port numbers for that application. If you cannot find your application in the list, you can manually enter the port numbers. Refer to your product’s documentation to find out which port numbers it uses.";
+"port_sub_step_3" = "IP Address: Enter the IP address of the device for which you need to use port forwarding.";
+"port_sub_step_4" = "Port Range: If it is not automatically populated, you can enter it manually.";
+"port_sub_step_5" = "Protocol: Select the protocols for which the IP packets have to be forwarded.";
+"port_sub_description_3" = "Click on the Apply button to save the port forwarding entry.";
+"port_plus_title" = "Using Port Forwarding on an Almond+";
+"port_plus_sub_description_1" = "To use port forwarding on an Almond+, go to the Advanced tab in the local web UI, and click on the \"Forwarding\" tile.";
+"port_plus_sub_description_2" = "In the section named “Port Forwarding”, enter the following settings:";
+"port_plus_sub_step_1" = "Rule Name: Enter a name for your port forwarding rule.";
+"port_plus_sub_step_2" = "Protocol: Select the protocols for which the IP packets have to be forwarded.";
+"port_plus_sub_step_3" = "External Port: Enter the port number being used by incoming connections. Enter a range by separating port numbers with a ‘-’, for example ‘8080-8090’.";
+"port_plus_sub_step_4" = "Internal IP Address: Enter the IP address of the device for which you need to use port forwarding.";
+"port_plus_sub_step_5" = "Internal Port: Enter the internal port number to which the IP packets have to be forwarded. Enter a range by separating port numbers with a ‘-’, for example ‘8080-8090’.";
+
+//dns
+"dns_title" = "DNS";
+"dns_description" = "Domain Name System is the hierarchical system of servers on the Internet that lets you access websites using names like <a href=\"www.securifi.com\">www.securifi.com</a> instead of IP addresses. If you are facing problems with websites opening very slowly, it might be because of an unresponsive DNS server, and you might be able to fix it by connecting to a different DNS server.\n\nGoogle provides public DNS servers at the addresses 8.8.8.8 and 8.8.4.4";
+"dns_title_2" = "Using DNS on an Almond, Almond 2015 or Almond 3";
+"dns_sub_descr_1" = "To configure DNS on your Almond, Almond 2015 or Almond 3, go to the Router tab in the local web UI and click on the Network tile.";
+"dns_sub_descr_2" = "In the section named Settings, you can enter the IP address of the primary DNS server in DHCP Primary DNS and the secondary DNS server in DHCP Secondary DNS.";
+"dns_sub_descr_3" = "Click on Apply to save the changes.";
+
+"dns_title_3" = "Using DNS on an Almond+";
+"dns_plus_sub_descr_1" = "To configure DNS on your Almond+, go to the Advanced tab in the local web UI, and click on the OpenWRT tile. This will open a new window.";
+"dns_plus_sub_descr_2" = "In the new window, hover your mouse over the Network menu item in the menu bar at the top, and click on DHCP and DNS.";
+"dns_plus_sub_descr_3" = "In the General Settings tab, enter the IP address of your preferred DNS server in DNS Forwardings. Use the + icon to add more entries.";
+"dns_plus_sub_descr_4" = "Click on Save when you are done.";
+
+//Static IP
+"static_title" = "Static IP";
+"static_title_2" = "Assigning Static IP on an Almond, Almond 2015 or Almond 3";
+"static_sub_descr_1" = "To configure Static IP for connected network devices on your Almond, Almond 2015 or Almond 3, go to the Router tab in the local web UI and click on the Network tile.";
+"static_sub_descr_2" = "In the section named Settings, enter the MAC address of the network device in Statically Assigned MAC and enter the IP address you want to reserve in IP.";
+"static_sub_descr_3" = "Click on Apply to save the changes.";
+
+"static_title_plus" = "Assigning Static IP on an Almond+";
+"static_sub_descr_plus_1" = "To configure Static IP for connected network devices on your Almond+, go to the Router tab in the local web UI, and click on the Network tile.";
+"static_sub_descr_plus_2" = "In the section named Add Static Lease, enter the hostname in Hostname, MAC address in MAC-Address and the IP address to reserve for the device in IPv4-Address.";
+"static_sub_descr_plus_3" = "Click on Add Entry to save the entry. Add more entries in the same way.";
+"static_sub_descr_plus_4" = "Click on Save to save your settings before exiting.";
+
+//upnp
+"upnp_title" = "UPnP";
+"upnp_descr" = "UPnP allows your devices to discover each other on your network and determine what services are being offered by each device. If you turn on UPnP on your Almond, other devices can automatically configure it to set up rules for network access.";
+"upnp_title_2" = "Using UPnP on an Almond, Almond 2015 or Almond 3";
+"upnp_descr_2" = "UPnP is coming soon to Almond, Almond 2015 and Almond 3.";
+"upnp_title_3" = "Using UPnP on an Almond+";
+"upnp_sub_descr_1" = "To use UPnP on your Almond+, go to the Advanced tab in the local web UI, and click on the OpenWRT tile. This will open a new window.";
+"upnp_sub_descr_2" = "In the new window, hover your mouse over the Services menu item in the menu bar at the top, and click on UPnP.";
+"upnp_sub_descr_3" = "Click on the “Enable UPnP Service” tick box to enable UPnP.";
+
+/***** mesh strings ********/
+"wiring_primary" = "Wiring your Primary Almond ";
+"wiring_primary_desc" = "For your network to function properly, it's important to place it in the correct order.";
+"wiring_primary_desc2" = "Make sure that your primary Almond is directly connected to your ISP mdem via the internet port.";
+
+"connecting_newAl" = "Connecting your New Almond";
+"connecting_newAl_desc" = "You can connect your new Almond to the primary one directly using an Internet cable.";
+"connecting_newAl_desc2" = "Plug the additional Internet Cable into the Internet port of the new Almond, and the other end into any of the available LAN ports on the primary Almond.";
+
+"using_network_switch" = "Using a Network Switch";
+"using_network_switch_desc" = "If your home network as a switch, you can use it as well to connect your new Almond.";
+"using_network_switch_desc2" = "If you are using a network switch, connect its Internet port to the primary Almnd, and the new Almond to the switch";
+
+"place_almond" = "Place your Almond";
+"place_almond_desc" = "Walls, furniture and electrical appliances such as microwaves are archenemies of Wifi.";
+"place_almond_desc1" = "Try to minimize such obstructions between your Almonds.";
+
+"optimal_distance" = "Optimal Distance";
+"optimal_distance_desc" = "Below are some recommendations based on the layout of houses.";
+"optimal_distance_desc1" = "Follow these guide approximate guidelines in order to place your new Almond at an optimal distance from other Almonds.";
+
+"wired_or_wireless" = "Wired or Wireless?";
+"wired_or_wireless_desc" = "The Almond Wi-Fi system is highly flexible.The primary Almond has to be directly connected to your ISP modem. The additional Almonds can be connected via Wired interface or Wirelessly.";
+
+"wired_interface" = "Wired Interface";
+"wireless_interface" = "Wireless Interface";
+"wireless_interface_desc" = "If your house doesn't have internet cabling across rooms, you can simply choose \"Wireless\" mode for your additional Almonds.";
+"wired_interface_desc" = "Wi-Fi quality is best when your additional Almonds are connected via wired interace. If you have Internet cabling across rooms in your house, you can choose this mode.";
+
+"welcome_desc"="You've successfully logged into your Almond account. Here are a few quick tips to get the most out of your Almond.";
+"theDashboard_desc"="The dashboard puts the status of your home at your fingertips. Get an overview of your recent smart home and network device notifications.";
+"almond_modes_desc"="Home and Away modes – or arm and disarm - are a key part of any home security or automation system. They are necessary because when you are home, you don’t need your sensors to trigger an alarm. Go to Rules to personalize how your system responds in these modes.";
+"more_desc"="Tap \"More\" to create rules and visit our Help Center. The Help Center lets you revisit this guide and other help topics, and contact technical support.";
+
+
+"web_history" = "Web History";
+
+
+//help topics html strings topic 4-11
+"AddingDev_alScreen" = "Adding Devices Through The Almond Touch Screen";
+
+"AddingDev_alScreen_desc" = "
+
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
+<body>
+<h3>Adding Devices Through The Almond Touch Screen</h3>
+
+<p>
+You can add Zigbee, Z-Wave or Philips Hue devices directly through the Almond touch screen. Some devices like Nest need to be added through the local web UI; read the Adding Devices Through Local Web UI topic to learn how to add devices through the local web UI. To know what type your device is, you can look at the packaging for the Zigbee or Z-Wave logos, or contact the manufacturer.
+</p>
+<p>
+Tap on the links below to jump to a section:<br/>
+<a href = \"#1\">Adding a ZigBee or Z-Wave device</a><br/>
+<a href = \"#2\">Adding a Philips Hue bridge</a><br/>
+<a href = \"#3\">Adding a new Hue bulb</a><br/>
+</p>
+<h3 id=\"1\">Adding a ZigBee or Z-Wave device</h3>
+<center><img src=home_screen.pdf/></center>
+<p>To add a ZigBee or Z-Wave device through the Almond touch screen, tap on the “Add Sensor” app on the touch screen. Z-Wave devices are only supported by Almond+ and Almond 3.</p>
+<center><img src=add_sensor_screenshot.pdf/></center>
+<p>The Add Sensor screen opens on the Zigbee tab. If you are using an Almond device that supports Z-Wave devices, you can add Z-Wave devices as well from this tab.</p>
+<p>Put the device you would like to add into pairing mode, and then press the Add button. See the device manufacturer’s instructions to learn how to put the device in pairing mode.</p>
+<center><img src=add_sensor_zigbee_tab.pdf/></center>
+<p>Tap the Add button on the Almond touch screen. The Almond will start scanning for available devices and connect with your device if it is in the pairing mode.
+</p>
+<center><img src=add_sensor_zigbee_tab_pairing_mode.pdf/></center>
+<p>Once pairing is complete, you will see a dialog to name the device and set its location. Give the device a name, and enter a location to help you remember where the device is, for example, “porch” or “kids bedroom”.</p>
+<h3 id=\"2\">Adding a Philips Hue bridge</h3>
+<center><img src=home_screen.pdf/></center>
+<p>To add a Philips Hue bridge through the Almond touch screen, connect the bridge to the Almond using an Ethernet cable, then tap on the Add Sensor app on the touch screen.</p>
+<center><img src=ethernet_cable.pdf/></center>
+<p>On the add sensor screen, tap on the Hue tab. Tap on Add Hue to start adding a Hue bridge to your Almond.</p>
+<center><img src=hue_tab.pdf/></center>
+<p>In the Choose Hue Bridge screen that comes up, select the Hue bridge that you want to add.</p>
+<center><img src=hue_bridge.pdf/></center>
+<p>Press the association button on the Hue bridge, and tap on the Start button. The Almond will detect the Hue bridge and automatically add any bulbs that are already connected to the bridge, and you will be able to control the bulbs from the Almond app on your smartphone or from the Connected Sensors app on the Almond touch screen.</p>
+<h3 id=\"3\">Adding a new Hue bulb</h3>
+<p>You can add new Hue bulbs to a bridge that you have already connected to Almond.</p>
+<center><img src=home_screen.pdf/></center>
+<p>To add a new Hue bulb through the Almond touch screen, tap on the Add Sensor app on the Almond touch screen.</p>
+<center><img src=ethernet_cable.pdf/></center>
+<p>On the add sensor screen, tap on the Hue tab. Tap on Add New Bulb to start adding a Hue bulb to your Almond.</p>
+<center><img src=hue_tab.pdf/></center>
+<p>In the Choose Hue Bridge screen that comes up, select the Hue bridge to add the bulb to.</p>
+<center><img src=hue_bulb.pdf/></center>
+<p>Make sure that the bulb is powered on and the bridge is connected to the Internet, and tap on the Search button. The bridge will automatically scan for new bulbs and add them to your Almond.</p>
+<p>If you are facing issues with previously added bulbs, you can tap on the Refresh List button on the add sensor screen, and pick a Hue bridge to refresh the bulbs attached to that bridge.</p>
+</body>
+</html>
+";
+
+"AddingDev_webUI" = "Adding Devices Through Local Web UI";
+"AddingDev_webUI_desc" = "
+
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
+<body>
+<h3>Adding Devices Through Local Web UI</h3>
+<p>You can add your Nest devices to your Almond account through the local web UI. Zigbee, Z-Wave or Philips Hue devices can be added through the local web UI or directly through the Almond touch screen; read the Adding Devices Through The Almond Touch Screen section to learn how to add the devices through your Almond\’s touch screen.</p>
+<p>
+Tap on the links below to jump to a section:<br/>
+<a href=\"#1\">Adding a ZigBee or Z-Wave device</a><br/>
+<a href=\"#2\">Adding a Nest account</a><br/>
+<a href=\"#3\">Adding a Philips Hue bridge</a><br/>
+<a href=\"#4\">Adding a Philips Hue bulb</a><br/>
+</p>
+<h3 id=\"1\">Adding a ZigBee or Z-Wave device</h3>
+<center><img src=h_adding_a_zigbee.pdf/></center>
+<p>
+Open the web UI and click on the Devices tab. Once you are on the Devices tab, hovering over the Add icon will show an Add Menu with a list of options for adding devices.
+</p>
+<p>
+To add a ZigBee device, click on Add ZigBee Device in the list of options. You will see a message that your Almond is looking for nearby devices. Put the device into pairing mode to add the device to Almond. See the device manufacturer’s instructions to learn how to put the device in pairing mode.
+</p>
+<h3 id=\"2\">Adding a Nest account</h3>
+<center><img src=h_adding_a_nest_account.pdf/></center>
+<p>
+Open the web UI and click on the Devices tab. Once you are on the Devices tab, hovering over the Add icon will show an Add Menu with a list of options for adding devices.
+</p>
+<p>
+You can control all your Nest devices by linking your Nest account to Almond. To add your Nest account, click on Add Nest Account in the list of options.
+</p>
+<center><img src=h_nest_webpage.pdf/></center>
+<p>
+Make sure you are connected to the Internet, and then click the Open Nest Webpage Now button in the pop up. This will take you to the Works with Nest page online. Use your Nest login to authenticate Almond. When you see the Nest PIN number, copy it and enter it into the text field in Step 3, then click the Add Nest Device button. Your Nest account and all associated Nest devices will be added automatically.
+</p>
+<h3 id=\"3\">Adding a Philips Hue bridge</h3>
+<center><img src=h_adding_hue_bridge.pdf/></center>
+<p>
+Connect the Hue bridge to your Almond using an Ethernet cable, and open the Almond’s web UI and click on the Devices tab. Once you are on the Devices tab, hovering over the Add icon will show an Add Menu with a list of options for adding devices.
+</p>
+<center><img src=h_huebridges_list.pdf/></center>
+<p>
+A window that lists the Hue bridges on your Almond’s network will be shown. Select the Hue bridge that you want to add and click on Continue. Press the association button on the Hue bridge to complete the pairing process. Any Hue bulbs that are already associated with the Hue bridge will also get added automatically.
+<p>
+<h3 id=\"4\">Adding a Philips Hue bulb</h3>
+<p>A Philips Hue bridge is required to control Hue devices through Almond. If you haven't added a bridge already, you can add one using the steps in Adding a Philips Hue bridge above.
+<center><img src=h_adding_hue_bulb_webui.pdf/></center>
+</p>
+<p>To add a new Hue bulb, make sure that the bulb is powered on and that the Hue bridge you would like to add it to is powered on and connected to the Internet through your Almond. open the Almond’s web UI and click on the Devices tab. Once you are on the Devices tab, hovering over the Add icon will show an Add Menu with a list of options for adding devices.
+</p>
+<center><img src=h_hue_bulbs_webui.pdf/></center>
+<p>
+Click on Add Hue Bulb, and select a Hue bridge. The bridge will automatically scan for new bulbs and add them to your Almond.
+</p>
+<p>
+If you are facing issues with previously added bulbs, you can click on the Refresh Hue Devices option in the Add Menu, and pick a Hue bridge to refresh the bulbs attached to that bridge.
+</p>
+</body>
+</html>";
+
+"Adding_motion_sensor" = "Adding a Securifi motion sensor";
+"Adding_motion_sensor_desc" = "
+
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
+<body>
+<h3>Adding a Securifi motion sensor</h3>
+<center><img src=h_motion_sensor_image.pdf/></center>
+<p>
+Remove the back of the sensor by pushing the button at the bottom of the sensor as shown above.
+</p>
+<center><img src=h_motion_sensor_image.pdf/></center>
+<p>
+Insert the battery into the battery socket labelled (1) in the image above, then press the Join/Reset button (3). The green LED on the sensor will start flashing to indicate that the sensor is searching for a hub to connect.
+</p>
+<p>
+If the LED does not flash, press and hold the Join/Reset button for 10 seconds and then let go. The LED will glow once. Press the button again, and the LED will start flashing.
+</p>
+<center><img src=home_screen.pdf/></center>
+<p>
+Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add on the next screen. The motion sensor will pair with your Almond hub.
+</p>
+<p>
+Reattach the rear cover of the sensor and make sure it snaps in place properly. On the Almond touch screen, go back to the Home screen, tap on Connected Sensors, then tap on the sensor you just added.
+</p>
+<p>
+Tap on Tampered to reset the tamper switch. Your sensor should now be fully operational and ready to be installed at your location of choice.
+</p>
+<center><img src=h_motion_sensor_image.pdf/></center>
+<p>
+You can adjust the sensitivity and timer on the motion sensor using a flat screwdriver at the top of the sensor.
+</p>
+</body>
+</html>";
+
+"Adding_door_sensor" = "Adding a Securifi door/window sensor";
+"Adding_door_sensor_desc" = "
+
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
+<body>
+<h3>Adding a Securifi door/window sensor</h3>
+<center><img src=h_doorsensor_image.pdf/></center>
+<p>
+To add a door sensor to Almond, remove the sensor cover and press the tamper switch labelled (2) for 3 seconds before inserting the battery (1). Insert the included battery with the positive side facing you while you keep the tamper switch pressed.
+</p>
+<p>
+Wait for the green indicator LED (3) to light up. Release the tamper switch while the LED is glowing. The LED starts blinking in bursts of three blinks, which indicates that the sensor is searching for a hub to connect with.
+</p>
+<center><img src=home_screen.pdf/></center>
+<p>
+Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add on the next screen. The door sensor will pair with your Almond hub.
+</p>
+<p>
+If the sensor does not pair with the Almond, remove the battery, wait for 5 seconds, and try adding it again. Reattach the cover of the sensor and make sure it snaps in place.
+</p>
+<p>
+On the Almond touch screen, return to the Home screen, tap the Connected Sensors icon, and tap the sensor you’ve just added. Press the Tampered button to reset the tamper switch.
+</p>
+<p>
+Your sensor is now be fully operational and ready to be installed at your location of choice.
+</p>
+</body>
+</html>";
+
+"Adding_water_detector" = "Adding a Securifi water detector";
+"Adding_water_detector_desc" = "
+
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
+
+<body>
+<h3>Adding a Securifi water detector</h3>
+<center><img src=h_water_detector.pdf/></center>
+<p>
+Gently pry open the housing and insert the batteries. Press the Join/Reset button labelled (2) in the diagram above. The LED (3) will flash in bursts of three blinks to indicate that the sensor is searching for a hub to connect with.
+</p>
+<p>
+If the LED does not flash, remove one of the batteries, press and hold the pairing button and then re-insert the battery while you keep the pairing button pressed. The LED will glow for 2 seconds after you let go of the button, and then start blinking.
+</p>
+<center><img src=home_screen.pdf/></center>
+<p>
+Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add on the next screen. The water sensor will pair with your Almond hub.
+</p>
+<p>
+Reattach the the front cover of the housing and make sure it snaps in place properly. On the Almond touch screen, go back to the Home screen and tap on Connected Sensors and tap on the sensor you just added. Next, tap on the Tampered button to reset the tamper switch. Your sensor should now be fully operational and ready to be installed.
+</p>
+</body>
+</html>";
+
+"Adding_keyfob" = "Adding a Securifi keyfob";
+"Adding_keyfob_desc" = "
+
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
+
+<body>
+<h3>Adding a Securifi keyfob</h3>
+<center><img src=h_keyfob_image.pdf/></center>
+<p>Use a Phillips head screwdriver to remove the screw at the back of the Key Fob
+</p>
+
+<center><img src=h_keyfob_image_V2.pdf/></center>
+<p>
+Carefully lift out the circuit board and flip it over to reveal the battery compartment. Handle the circuit board by the edges to avoid damaging it.
+</p>
+<center><img src=h_keyfob_image_V3.pdf/></center>
+
+<p>
+Insert the supplied battery and put the circuit board back into the housing and reassemble the key fob.
+</p>
+<center><img src=home_screen.pdf/></center>
+<p>
+Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add on the next screen to start adding the sensor. Now press and hold the button on the key fob. Keep it pressed for 1 second then press the  button quickly within one second.
+</p>
+<p>
+The LED at the top of the key fob will start flashing green and the device will join to the Almond. Repeat the process if the device doesn’t pair with the Almond.
+</p>
+</body>
+</html>";
+
+"Adding_click" = "Adding an Almond Click";
+"Adding_click_desc" = "
+
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
+
+<body>
+<h3>Adding an Almond Click</h3>
+<center><img src=h_almond_click.pdf/></center>
+<p>
+Remove the back cover by pulling it upwards at the groove provided in the lanyard hole labelled (5) in the image above. Insert the battery into the battery holder (3). The LED indicator (1) on the front should begin blinking.
+</p>
+<p>
+If the LED indicator does not blink, remove the battery from the battery holder. Press the join/reset button (4), and insert the battery while you keep the join/reset button pressed. Wait for 3 seconds, and then let go of the join/reset button. The LED indicator on the front of the Almond Click will start blinking.
+</p>
+<center><img src=home_screen.pdf/></center>
+<p>
+Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add on the next screen. The Almond Click will pair with your Almond hub.
+</p>
+<p>
+Make sure that the lanyard holes in the body of the Almond Click and the back cover are lined up, and snap the back cover onto the Almond Click. On the Almond’s touch screen, go to the Home screen, tap on Connected Sensors and then tap on the Almond Click you just added. Tap the Tampered button in the lower left to reset the tamper switch. Your Almond Click is now ready for use.
+</p>
+</body>
+</html>";
+
+"Adding_peanut_plug" = "Adding a Peanut plug";
+"Adding_peanut_plug_desc" = "
+
+<html><head><style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}</style></head>
+
+<body>
+<h3>Adding a Peanut plug</h3>
+<center><img src=h_peanut_plug_image_1.pdf/></center>
+<p>
+Insert the plug into a power outlet. The LED indicator on the plug should start blinking. If the LED does not blink, press and hold the pairing button for 10 seconds while plug is plugged into a socket. Then, remove the plug from the power outlet and plug it back in. The LED indicator will start blinking.
+</p>
+<center><img src=home_screen.pdf/></center>
+<p>
+Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add on the next screen. The Peanut plug will pair with your Almond hub and will be ready for use.
+</p>
+</body>
+</html>";
 
 /* ==================================================================== */
 
@@ -294,9 +1328,9 @@ Follow it, then tap Continue to login.";
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Let's link \n an Almond.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Start the wizard on your Almond, then tap the symbol below.";
-
+"router.linkalmond-msg.headline" = "Get Started";
+"router.linkalmond-msg.message" = "To get started, Let's link an Almond.";
+"router.linkalmond-button.title" = "LINK ALMOND";
 "Almond Linked" = "Almond Linked";
 "Link Almond" = "Cloud Link";
 "Local Link Almond" = "Local Link";
@@ -305,20 +1339,33 @@ Follow it, then tap Continue to login.";
 Contact us at support@securifi.com";
 "Almond could not be affiliated" = "Almond could not be affiliated.\n%@";
 
+"Run the Almond Account app and enter the code displayed." = "Type the code shown on your Almond's screen if you're already running the Touchscreen Wizard. You can also get code from the Touchscreen Almond App.";
+"cloudlink.button.Link Almond" = "Link Almond";
+"cloudlink.button.Add Almond Locally" = "Add Almond Locally";
+
 /* login */
-"Access your Almonds and your home devices from anywhere." = "Access your Almonds and
-your home devices from anywhere.";
+"Monitor and Control your home from anywhere." = "Monitor and Control your home from anywhere.";
 
 /* router tab */
-"router.offline-msg.label.Almond is Offline." = "Almond is Offline.";
+"router.offline-msg.label.Almond is Offline." = "We are unable to reach your Almond at this time. Try again later.";
+
+"router.msg-link.The Almond was successfully linked." = "The Almond was successfully linked.";
+"router.btn-title.Unlink Almond?" = "Unlink Almond?";
+"router.btn-title.Link Almond Locally" = "Link Almond Locally";
+"router.title.No Cloud Warning" = "Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.";
+"almond_already_linked" = "This Almond is already linked.";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." = "An error occurred trying to link with the Almond. Please try again.";
+
+"router.card-title.Cloud Almond Link" = "Cloud Almond Link";
+"router.card-title.Local Almond Link" = "Local Almond Link";
+"router.software-version.header.instructions" = "Please tap \"Settings\" on your Almond";
 
 /* sensors */
-"router.no-sensors.label.Add a sensor from your Almond." = "Add a sensor from your Almond.";
+
 
 /* signup */
 "signup.headline-text.Securifi Cloud Account." = "Securifi Cloud Account.";
-"signup.headline-text.Access your Almonds" = "Access your Almonds and
-your home devices from anywhere.";
+"signup.headline-text.Monitor and Control" = "Monitor and Control your home from anywhere.";
 
 /* Accounts */
 "accounts.ownedAlmond.label.YouOwnThisAlmond" = "You own this Almond";
@@ -345,4 +1392,369 @@ your home devices from anywhere.";
 "accounts.deleteSecondaryUser.failure.reasonCode6" = "Secondary user is not associated with the given Almond.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "You are not associated with this Almond";
 "accounts.deleteMeAsSecondaryUser.failure.default" = "Sorry! Removing of shared Almond was unsuccessful.";
+
+/* scoreboard */
+"scoreboard.section.AlmondMACs" = "Almond MACs";
+"Copied Almond MAC" = "Copied Almond MAC";
+
+/* tableviewcontroller */
+
+
+
+
+"hud message-Setting Almond to Away Mode" = "Setting Almond to Away Mode";
+"hud message-Setting Almond to Home Mode" = "Setting Almond to Home Mode";
+"Can't connect to your Almond. Please select a connection method." = "Can't connect to your Almond. Please select a connection method.";
+"Connected to your Almond locally." = "Connected to your Almond locally.";
+
+
+/* Scenes */
+"AlmondList" = "AlmondList";
+
+"'s IR code changed." = "'s IR code changed.";
+"'s configuration changed." = "'s configuration changed.";
+" is Silent" = " is Silent";
+" is set to Emergency" = " is set to Emergency";
+" is set to Fire" = " is set to Fire";
+" is set to Ambulance" = " is set to Ambulance";
+" is set to Police" = " is set to Police";
+" is set to Door Chime" = " is set to Door Chime";
+" is set to Beep" = " is set to Beep";
+"'s energy reading is " = "'s energy reading is ";
+"'s power reading is " = "'s power reading is ";
+"'s Clamp 1 power reading is " = "'s Clamp 1 power reading is ";
+"'s Clamp 2 power reading is " = "'s Clamp 2 power reading is ";
+"'s Clamp 1 energy reading is " = "'s Clamp 1 energy reading is ";
+"'s Clamp 2 energy reading is " = "'s Clamp 2 energy reading is ";
+"'s color temperature changed to ." = "'s color temperature changed to .";
+"° Farenheit" = "° Farenheit";
+" is Up." = " is Up.";
+" is Down." = " is Down.";
+"signup.navbar-title.Terms of Use" = "Terms of Use";
+
+
+/*deviceListViewController*/
+"DeviceList Loading Device data" = "Loading Device data";
+"deviceList Force device data refresh" = "Force device data refresh";
+"noSensors" = "You don't have any sensors yet.";
+"router.no-sensors.label.Add a sensor from your Almond." = "To add one, follow the on-screen instructions on your Almond.";
+"sensors.account-confirm.label.Please confirm your account (less than a day left)." = "Please confirm your account (less than a day left).";
+"sensors.account-confirm.label.Please confirm your account (%d days left)." = "Please confirm your account (%d days left).";
+"sensors.account-confirm.label.Check activation email for instructions." = "Check activation email for instructions.";
+"sensors.account-confirm.label.Resend activation email" = "Resend activation email";
+"Smart Devices" = "Smart Devices";
+"DeviceList Sorry, Could not update!" = "Sorry! Could not update!";
+"activation.toast.Reactivation link sent to your registerd email ID." = "Reactivation link sent to your registerd email ID.";
+/* activation */
+"Reactivation link has been sent to your account." = "Reactivation link has been sent to your account.";
+"no_username_found" = "The username was not found";
+"The account is already validated" = "The account is already validated";
+"Sorry! Cannot send reactivation link" = "Sorry! The reactivation link cannot be present at the moment. Try again later.";
+"The email ID is invalid." = "The email ID is invalid.";
+"smart_devices" = "Smart Devices";
+"deviceList Network Devices" = "Network Devices";
+
+/*DeviceEditViewController*/
+"deviceedit Device has been tampered" = "Device has been tampered";
+"saving" = "Saving...";
+"successfully_updated" = "Successfully updated!";
+"sorry_could_not_update" = "Sorry! Could not update.";
+
+"deviceEdit BRIGHTNESS" = "BRIGHTNESS";
+"deviceEdit SATURATION" = "SATURATION";
+
+/*deviceHeaderView*/
+"deviceHeaderView Off" = "Off";
+"offline" = "Offline";
+"deviceHeaderView NaN" = "NaN";
+"deviceHeaderView emergency" = "emergency";
+"deviceHeaderView warning" = "warning";
+"deviceHeaderView replace" = "replace";
+"ok" = "OK";
+"smoke_and_co" = "SMOKE & CO";
+"deviceHeaderView CO EMERGENCY" = "CO EMERGENCY";
+"smoke_emergency" = "SMOKE EMERGENCY";
+"deviceHeaderView CO WARNING" = "CO WARNING";
+"smoke_warning" = "SMOKE WARNING";
+
+/*TextInput */
+"TextInput Please Enter %@" = "Please Enter %@";
+"TextInput Please Enter" = "Please Enter";
+"TextInput Please enter value between 0 - 65535" = "Please enter value between 0 - 65535";
+"TextInput Please enter value between 0 - 999" = "Please enter value between 0 - 999";
+"TextInput Please enter value between 0 - 9999" = "Please enter value between 0 - 9999";
+"TextInput Please enter value between 1000 - 9000" = "Please enter value between 1000 - 9000";
+"TextInput Please enter numbers only" = "Please enter numbers only";
+/*GridView*/
+
+"always" = "Always";
+"schedule" = "Schedule";
+"block" = "Block";
+"scheduleDescription" = "Tap on the 24/7 grid to create a schedule during which this device is blocked/unblocked on the network. Also, you can tap on (Su,Mo..) to block/unblock device on that particular day or (0,1..) for particular hour.";
+"save" = "SAVE";
+
+/*ClientpropertyViewController*/
+
+"ClientpropertyViewController Resetting %@" = "Resetting %@";
+
+/*dashBoard*/
+"dashBoard AddAlmond" = "Add Almond";
+"select_almond" = "Select Almond";
+"close" = "Close";
+"mode_home_progress" = "Setting Almond to home mode.";
+"mode_away_progress" = "Setting Almond to away mode.";
+"smart_device_noti_title" = "SMART HOME NOTIFICATIONS";
+"client_noti_title" = "NETWORK NOTIFICATIONS";
+"no_recent_smarthome_notification" = "No Recent SmartHome Activity";
+"no_netwrok_notifications" = "No Recent Network Activity";
+"almond_connection" = "Almond Connection";
+"switch_local" = "Switch to Local Connection";
+"cloud_conn_not_supported" = "Your Almond is not affiliated with the cloud. Only local connection to your Almond is supported.";
+"alert msg offline Local connection not supported." = "Can't connect to your Almond because local connection settings are missing. Tap edit to add settings.";
+"switch_cloud" = "Switch to Cloud Connection";
+"In process of connecting. Change connection method." = "In process of connecting. Change connection method.";
+"cloud_connection" = "Cloud Connection";
+"local_connection" = "Local Connection";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "Cloud connection to your Almond failed. Tap retry or switch to local connection.";
+"local_conn_failed_retry" = "Local connection to your Almond failed. Tap retry or switch to cloud connection.";
+"alert title offline Local Retry Local Connection" = "Retry Local Connection";
+
+"alert.message-Connected to your Almond via cloud." = "Connected to your Almond via cloud.";
+"alertview-Connected to your Almond via cloud." = "Connected to your Almond via cloud.";
+"Add Local Connection Settings" = "Add Local Connection Settings";
+
+"dashBoard Local Connection" = "Local Connection";
+"dashBoard Cloud Connection" = "Cloud Connection";
+"connecting" = "Connecting...";
+"almond_update_available" = "Almond Update Available";
+"almond_requires_update" = "Your Almond requires an update.";
+"updateAlmondScreen"= "With this update, you will receive a new dashboard in your Almond app as well as improvements for stability under the hood. The Almond firmware needs to be updated to remain compatible with this version of the app. Please tap on \"Settings\" on the Almond LCD and follow the on screen instructions to update your firmware.";
+
+/*AddRulrSceneClass*/
+"to_start_select_action" = "To get started, please select an action";
+"AddRulrSceneClass To get started, please select an action" = "To get started, please select an action";
+"add_action_or_save_scene" = "Add another action or press Done to finalize the Scene";
+"selectTriggerInitial" = "To get started, please select a trigger";
+"add_trigger_or_add_action" = "Add another trigger or press THEN to define action";
+"add_action_or_save_rule" = "Add another trigger/action or press Done to finalize the Rule";
+
+
+/*RuleSceneUtil*/
+"toggle" = "TOGGLE";
+
+
+/*AddRulesView*/
+"selectTriggerInitial" = "To get started, please select a trigger";
+"AddRulesView Select atleast one Trigger" = "Select atleast one Trigger";
+"AddRulesView Select atleast one Action" = "Select atleast one Action";
+"scene.alert-title.Oops" = "Oops";
+"try_later" = "Sorry! There was some problem with this request, try later!";
+"ok" = "OK";
+"selectActionInitial" = "Select action for your trigger";
+"AddRulesView Select Triggers First" = "Select Triggers First";
+"add_trigger_or_add_action" =  "Add another trigger or press THEN to define action";
+"selectTriggerInitial" = "To get started, please select a trigger";
+"New Rule" = "New Rule";
+"done" = "Done";
+"back" = "Back";
+"AddRulesView Saving Rule..." = "Saving Rule...";
+"AddRulesView Select atleast one Action" = "Select atleast one Action";
+"AddRulesView Oops" = "Oops";
+"AddRulesView Saving Rule..." = "Saving Rule...";
+"rule_name" = "Rule Name";
+"cancel" = "Cancel";
+"AddRulesView Select Triggers First" = "Select Triggers First";
+/*AddtriggerAction*/
+"AddTriggerAction Night" = "Night";
+"Day" = "Day";
+"select" = "Select scale";
+"AddTriggerAction Please enter number" = "Please enter number";
+"AddTriggerAction Please enter only numbers" = "Please enter only numbers";
+"AddTriggerAction Please enter value between 1000 - 9000" = "Please enter value between 1000 - 9000";
+"AddTriggerAction Please enter value between 0 - 9999" = "Please enter value between 0 - 9999";
+"AddTriggerAction Please enter value between 0 - 999" = "Please enter value between 0 - 999";
+"AddTriggerAction Please enter value between 0 - 65535" = "Please enter value between 0 - 65535";
+"AddTriggerAction Select" = "Select";
+"before" = "Before";
+"after" = "After";
+"sunnycondition" = "Condition";
+"Minutes" = "Minutes";
+"deviceEdit %@ successfully updated" = "%@ successfully updated!";
+
+
+/*CustomCell*/
+
+"CustomCell Are you sure, you want to delete rule - %@?"= "Are you sure, you want to delete rule - %@?";
+"CustomCell Cancel" = "Cancel";
+"delete" = "Delete";
+
+/*Delay picker*/
+"Mins" = "Mins";
+"sec" = "Secs";
+
+"rule_brightness" = "  Brightness";/*spaces are needed*/
+"rule_saturation" = "  Saturation";
+"rule_hue" = "  Hue";
+"select" = "Select";
+/*RulesViewController*/
+
+"RulesViewController Loading Rules..." = "Loading Rules...";
+"DeviceList Sorry, Could not update!" =  "Sorry! Could not update!";
+"newRule" = "New Rule";
+"RulesViewController Tap on add button to create your rule" = "Tap on add button to create your rule";
+"RulesViewController Deleting rule %@..." = "Deleting rule %@...";
+"RulesViewController Activating rule - %@..." = "Activating rule - %@...";
+"RulesViewController Deactivating rule - %@..." = "Deactivating rule - %@...";
+"RulesViewController Successfully updated!" = "Successfully updated!";
+/*subproperties */
+"SubProperties Your %@ will appear here." = "Your %@ will appear here.";
+"scene" = "Scene";
+"rule" = "Rule";
+"SubProperties TOGGLE" = "TOGGLE" ;
+"time" = "Time";
+"time_interval" = "Time Interval";
+"SubProperties 0 min after" = "0 min after";
+"SubProperties after" = "after";
+"SubProperties before" = "before";
+"SubProperties %d min %@" = "%d min %@";
+"SubProperties display" = "display";
+
+
+/*TimeView*/
+
+"anytime" = "ANYTIME";
+"precisely_at" = "PRECISELY AT";
+"between" = "BETWEEN";
+"rule_triggers_upon_sensor_change" = "The rule will trigger any time when sensor change their state";
+"TimeView The Rule will trigger when sensor change their state at precisely at %@ on %@." = "The Rule will trigger when sensor change their state at precisely at %@ on %@.";
+
+"TimeView The Rule will trigger when sensor changes their state between %@ to %@ on %@." = "The Rule will trigger when sensor changes their state between %@ to %@ on %@.";
+"TimeView The Rule will trigger when sensor changes their state between %@ to %@ on %@." = "The Rule will trigger when sensor changes their state between %@ to %@ on %@.";
+"TextInput Please Enter Number" = "Please Enter Number";
+"TextInput Please Enter Value between 1 - 60 min" = "Please Enter Value between 1 - 60 min";
+/*SFISceneTableView*/
+"please_enter_value_between" = "Please enter value between";
+
+"newScene" = "New Scene";
+"scenes.no-scenes.label.Scenes allow you to control multiple devices at the same time. For example you can turn all your lights off with a single click." = "Scenes allow you to control multiple devices at the same time. For example you can turn all your lights off with a single click.";
+
+
+
+/*LoginViewController*/
+
+"LoginViewController Did not receive any email?" = "Did not receive any email?";
+"LoginViewController Resend Activation Link" = "Resend Activation Link";
+/*newAddScene*/
+"NewAddScene Done" = "Done";
+"NewAddScene Back" = "Back";
+"newScene" = "New Scene";
+"alexa_complatible_text" = "If you want this scene name to be compatible with Amazon Echo Voice Control, click Next.\nIf not, just enter the name in the below text box and click Done.";
+"sceneNameCompatible" = "Your current scene name is already compatible with Amazon Echo Voice Control.\nClick Done to keep it as it is or Click Next to change it to a different Echo compatible name.";
+"scene_name" = "Scene Name";
+"next" = "Next";
+"NewAddScene Done" = "Done";
+"NewAddScene Oops" = "Oops";
+"AddRulesView Select atleast one Action" = "Select atleast one Action.";
+"NewAddScene Are you sure, you want to delete this Scene?" = "Are you sure, you want to delete this Scene?";
+"NewAddScene Cancel" = "Cancel";
+"delete" = "Delete";
+"Oops" = "Oops" ;
+"try_later" = "Sorry! There was some problem with this request, try later!";
+"NewAddScene Saving Scene..." = "Saving Scene...";
+
+/*sendLogs*/
+"sendingLogs" = "Sending logs";
+
+/**/
+"router.label.Admin Login" = "Admin Login";
+"router.label.Admin Password" = "Admin Password";
+"router.hud.Establishing Local Link..." = "Establishing Local Link...";
+"router.card-title.Send Logs" = "Report a Problem";
+
+"router.log-textfield-placeholder.Describe your problem here" = "Describe your problem here";
+
+
+
+
+"router.devicestatus.Connected as %@" = "Connected as %@";
+"router.devicesmac.MAC address is %@" = "MAC address is %@";
+"router.deviceIP.IP address is %@" = "IP address is %@";
+
+"router.reboot.title.Reboot the router?" = "Reboot the router?";
+"It will take at least 2 minutes for the router" = "It will take at least 2 minutes for the router";
+"to reboot. Please refresh after sometime." = "to reboot. Please refresh after sometime.";
+"Describe your problem here" = "Describe your problem here";
+"router.log-advisory message" = "Along with your message, this will send Almond debug information and logs to our cloud. This information will help us resolve your problem faster. Please note that we do not send any sensitive information like your passwords.";
+
+"router.log-send-success.summary.Thanks for sending logs" = "Thanks for sending logs";
+"router.log-send-error.There was an error sending logs" = "There was an error sending logs";
+"router.log-firmware-not-supported.Please update your router's firmware" = "Please update your router's firmware";
+"router.log-firmware-not-supported.in order to activate this functionality" = "in order to activate this functionality";
+"router.settings.label.SSID" = "SSID";
+"router.settings.label.Channel" = "Channel";
+
+"router.settings.label.Wireless Mode" = "Wireless Mode";
+"router.settings.label.Security" = "Security";
+"router.settings.label.Encryption" = "Encryption";
+
+"router.settings.label.Country Region" = "Country Region";
+
+
+
+"Get Started" = "Get Started";
+"router.nav-title.Get Started" = "Get Started";
+"router.card-title.Devices & Users" = "Devices & Users";
+"router.card-title.Wireless Settings" = "Wireless Settings";
+
+"Settings are not available." = "Settings are not available.";
+"router.devices-summary.%d connected, %d blocked" = "%d connected, %d blocked";
+
+
+"router.software-version.header.Software Update Available" = "Software Update Available";
+
+"router.software-version.Update Available" = "Update Available";
+"router.software-version.Current version" = "Current version";
+"router.software-version.Not available" = "Version information is not available.";
+"router.reboot-msg.Router is rebooting. It will take at least" = "Router is rebooting. It will take at least";
+"router.reboot-msg.2 minutes for the router to boot." = "2 minutes for the router to boot.";
+
+"router.reboot-msg.Please refresh after sometime." = "Please refresh after sometime.";
+"router.Router status is not available." = "Router status is not available.";
+"router.Last reboot %@ ago" = "Last reboot %@ ago";
+
+
+
+
+
+"router Reboot" = "Reboot";
+
+"router.hud.Router is rebooting." = "Router is rebooting.";
+
+"router.hud.Router is now online." = "Router is now online.";
+
+/*need to convert*/
+"Firmware update is in progress, it may take a while. Meanwhile, please don't turn off your Almond" = "Firmware update is in progress, it may take a while. Meanwhile, please don't turn off your Almond";
+"router Are you sure, you want to Reboot?" = "Are you sure, you want to Reboot?";
+"Update" = "Update";
+"router Are you sure, you want to Update Firmware?" = "Are you sure, you want to Update Firmware?";
+"Loading router data" = "Loading router data";
+"router Sorry, Your Almond cannot be reached for now.r" = "Sorry! Your Almond cannot be reached for now.";
+"router.devices-summary.%d Active, %d Inactive" = "%d ACTIVE, %d INACTIVE";
+"Software Version" = "Software Version";
+"UPDATE FIRMWARE" = "UPDATE FIRMWARE";
+"reboot router" = "Router Reboot";
+"enabled" = "enabled";
+"disabled" = "disabled";
+"hud.Updating settings..." = "Updating settings...";
+
+"ParseRouterCommand Sorry! unable to update." = "Sorry! unable to update.";
+
+"SFILogsViewController Sorry! Unable to send logs." = "Sorry! Unable to send logs.";
+"SFILogsViewController Send" = "Send";
+"SFILogsViewController Please write description between 10 and 180 characters." = "Please write description between 10 and 180 characters.";
+"SFILogsViewController_logs_msg_title" = "Along with your message, this will send Almond debug information and logs to our cloud. This information will help us to resolve your problem faster. Please note that we do not send any sensitive information like your passwords.";
+"Can't connect to your Almond. Please select a connection method." = "Can't connect to your Almond. Please select a connection method.";
+"Connected to your Almond locally." = "Connected to your Almond locally.";
+"Back to Cloud Link" = "Back to Cloud Link";
+"ssid_is" = "%@ is %@";
 

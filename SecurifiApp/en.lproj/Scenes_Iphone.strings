@@ -1,0 +1,18 @@
+
+/* Class = "UITabBarItem"; title = "Scenes"; ObjectID = "1wV-S3-1SM"; */
+"1wV-S3-1SM.title" = "Scenes";
+
+/* Class = "UILabel"; text = "Idle. LO 74°F. HI 86°F."; ObjectID = "Tho-VK-R3H"; */
+"Tho-VK-R3H.text" = "Idle. LO 74°F. HI 86°F.";
+
+/* Class = "UILabel"; text = "Start typing to get suggestions for names compatible with Amazon Echo."; ObjectID = "VhY-n0-ZcY"; */
+"VhY-n0-ZcY.text" = "Start typing to get suggestions for names compatible with Amazon Echo.";
+
+/* Class = "UILabel"; text = "Main Thermostat"; ObjectID = "bac-A1-Cmc"; */
+"bac-A1-Cmc.text" = "Main Thermostat";
+
+/* Class = "UITextField"; placeholder = "Name"; ObjectID = "m9c-Or-lzC"; */
+"m9c-Or-lzC.placeholder" = "Name";
+
+/* Class = "UINavigationController"; title = "ScenesNavigationController"; ObjectID = "t7m-Qy-jJh"; */
+"t7m-Qy-jJh.title" = "ScenesNavigationController";

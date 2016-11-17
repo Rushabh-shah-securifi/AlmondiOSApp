@@ -8,6 +8,8 @@
 
 @interface SFINotificationStatusBarButtonItem : UIBarButtonItem
 
+@property (nonatomic) BOOL isDashBoard;
+
 - (instancetype)initWithTarget:(id)target action:(SEL)action;
 
 - (instancetype)initWithStandard;

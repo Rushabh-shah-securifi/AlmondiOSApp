@@ -13,9 +13,11 @@
 #import "NotificationsTestStore.h"
 #import "UIApplication+SecurifiNotifications.h"
 #import "Analytics.h"
+#import "NotificationAccessAndRefreshCommands.h"
+#import "DeviceLogsProcessing.h"
 
 @interface SFINotificationsViewController ()
-@property(nonatomic, readonly) id <SFINotificationStore> store;
+//@property(nonatomic, readonly) id <SFINotificationStore> store;
 @property(nonatomic) NSArray *buckets; // NSDate instances
 @property(nonatomic) NSDictionary *bucketCounts; // NSDate :: NSNumber
 @property(atomic) BOOL lockedToStoreUpdates;
@@ -33,6 +35,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
+    NSLog(@"SFINotificationsViewController initWithStyle");
     if (self) {
         self.enableDeleteNotification = YES;
         self.markAllViewedOnDismiss = YES;
@@ -41,9 +44,11 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     return self;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    NSLog(@"SFINotificationsViewController viewdid load");
+    //NSLog(@"NotificationsViewController - ViewDidLoad");
     _store = [self pickNotificationStore];
 
     [self resetBucketsAndNotifications];
@@ -54,7 +59,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     };
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-    self.title = @"Recent Activities"; //todo localize me
+    self.title = NSLocalizedString(@"notifications.title.Recent Activities", @"Recent Activities"); //todo localize me
 
     if (self.enableDeleteAllButton) {
         UIBarButtonItem *delete = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(onDeleteAll)];
@@ -94,11 +99,11 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     }
     else if (self.almondMac) {
         // Ephemeral "log" storage for the specified device
-        return [[SecurifiToolkit sharedInstance] newDeviceLogStore:self.almondMac deviceId:self.deviceID];
+        return [DeviceLogsProcessing newDeviceLogStore:self.almondMac deviceId:self.deviceID forWifiClients:self.isForWifiClients];
     }
     else {
         // normal Notifications/Activity Viewer storage
-        return [[SecurifiToolkit sharedInstance] newNotificationStore];
+        return [NotificationAccessAndRefreshCommands newNotificationStore];
     }
 }
 
@@ -118,7 +123,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
         // Tell the cloud add notifications were viewed
         // Note: there is a race condition that does not account for concurrent changes to this app's data store
         // while this operation is being called. This is due to an underspecified protocol between cloud and app.
-        [[SecurifiToolkit sharedInstance] tryClearNotificationCount];
+        [NotificationAccessAndRefreshCommands tryClearNotificationCount];
 
         // tell the world notifications were viewed
         [center postNotificationName:kApplicationDidViewNotifications object:nil];
@@ -170,6 +175,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     }
 
     cell.notification = notification;
+    
     cell.debugCellIndexNumber = (NSUInteger) indexPath.row;
 
     return cell;
@@ -328,7 +334,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 
     // Change 10.0 to adjust the distance from bottom
     if (maximumOffset - currentOffset <= 50.0) {
-        [self.store ensureFetchNotifications];
+        [self.store ensureFetchNotifications:self.isForWifiClients];
     }
 }
 

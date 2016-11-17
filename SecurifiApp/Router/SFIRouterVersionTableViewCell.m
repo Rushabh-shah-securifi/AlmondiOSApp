@@ -36,10 +36,10 @@
     }
 
     [cardView addTopBorder:self.backgroundColor];
-    [cardView addTitleAndButton:@"Update now?" target:self action:@selector(onUpdateFirmware) buttonTitle:@"Yes"];
+    [cardView addTitleAndButton:NSLocalizedString(@"router.version-title.Update now?", @"Update now?") target:self action:@selector(onUpdateFirmware) buttonTitle:NSLocalizedString(@"Yes",@"Yes")];
 
     [cardView addSummary:@[
-            @"It will take a few minutes to update the software.",
+            NSLocalizedString(@"router.update-summary.It will take a few minutes to update the software.", @"It will take a few minutes to update the software."),
     ]];
 
     [cardView freezeLayout];

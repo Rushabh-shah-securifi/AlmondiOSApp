@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="AvenirLTStd-Roman.otf">
+            <string>AvenirLTStd-Roman</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="HistoryCell" id="iN0-l3-epB" customClass="HistoryCell">
+            <rect key="frame" x="0.0" y="0.0" width="329" height="45"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nkO-tR-bJ4">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="co3-08-43c"/>
+                        <constraint firstAttribute="width" constant="15" id="qka-Zy-jr0"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lRV-aA-EvW">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="PRZ-Rh-FBb"/>
+                        <constraint firstAttribute="height" constant="25" id="h0d-BM-FXO"/>
+                        <constraint firstAttribute="width" constant="25" id="lkJ-Y7-OGT"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="h0d-BM-FXO"/>
+                        </mask>
+                    </variation>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G1p-89-vOU">
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="nGp-mA-sEH"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                    <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Xz-JC-pZS">
+                    <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="15"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imgScene_sitemap" translatesAutoresizingMaskIntoConstraints="NO" id="oSz-lx-AaM">
+                    <constraints>
+                        <constraint firstAttribute="width" constant="22" id="WAh-h8-NLr"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="0.66274509800000003" green="0.66274509800000003" blue="0.66274509800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="G1p-89-vOU" firstAttribute="leading" secondItem="5Xz-JC-pZS" secondAttribute="trailing" constant="-9" id="3IB-be-Fwx"/>
+                <constraint firstItem="5Xz-JC-pZS" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="9" id="LcE-V6-kje"/>
+                <constraint firstAttribute="trailing" secondItem="G1p-89-vOU" secondAttribute="trailing" constant="34" id="VcX-h2-0Nt"/>
+                <constraint firstItem="nkO-tR-bJ4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="Z9H-PB-z2w"/>
+                <constraint firstItem="oSz-lx-AaM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="13" id="bIT-g6-bEP"/>
+                <constraint firstAttribute="bottom" secondItem="oSz-lx-AaM" secondAttribute="bottom" constant="15" id="eKw-2Y-V10"/>
+                <constraint firstAttribute="bottom" secondItem="5Xz-JC-pZS" secondAttribute="bottom" constant="8" id="hQn-IU-jid"/>
+                <constraint firstAttribute="trailing" secondItem="oSz-lx-AaM" secondAttribute="trailing" constant="16" id="hrB-6Q-G6M"/>
+                <constraint firstAttribute="bottom" secondItem="G1p-89-vOU" secondAttribute="bottom" constant="7" id="inc-MB-EHA"/>
+                <constraint firstItem="G1p-89-vOU" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="jIV-lI-fU6"/>
+                <constraint firstItem="5Xz-JC-pZS" firstAttribute="leading" secondItem="lRV-aA-EvW" secondAttribute="trailing" constant="13" id="lOS-wQ-t8i"/>
+                <constraint firstItem="lRV-aA-EvW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="ptr-xv-Ntz"/>
+                <constraint firstItem="lRV-aA-EvW" firstAttribute="leading" secondItem="nkO-tR-bJ4" secondAttribute="trailing" constant="8" id="qge-VI-J9t"/>
+                <constraint firstItem="nkO-tR-bJ4" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="suf-LK-Hax"/>
+                <constraint firstItem="G1p-89-vOU" firstAttribute="leading" secondItem="5Xz-JC-pZS" secondAttribute="trailing" constant="-9" id="yze-Xe-mUU"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="catImgXConstrain" destination="qge-VI-J9t" id="gFW-cY-BkV"/>
+                <outlet property="categoryImg" destination="lRV-aA-EvW" id="GRg-kU-6bo"/>
+                <outlet property="checkMarkImg" destination="oSz-lx-AaM" id="etH-rx-giM"/>
+                <outlet property="lastActTime" destination="G1p-89-vOU" id="gF5-JE-0gZ"/>
+                <outlet property="siteName" destination="5Xz-JC-pZS" id="hoy-In-bMW"/>
+                <outlet property="siteNameXconstrain" destination="lOS-wQ-t8i" id="5rG-ep-f6C"/>
+                <outlet property="webImg" destination="nkO-tR-bJ4" id="4FO-DK-q1h"/>
+                <outlet property="webImgXConstrain" destination="Z9H-PB-z2w" id="CHv-Ku-pek"/>
+                <outlet property="webImgYConstrain" destination="suf-LK-Hax" id="TyX-BA-ijK"/>
+            </connections>
+            <point key="canvasLocation" x="10.5" y="-299.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="imgScene_sitemap" width="140" height="140"/>
+    </resources>
+</document>

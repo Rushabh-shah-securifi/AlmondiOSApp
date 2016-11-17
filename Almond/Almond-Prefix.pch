@@ -17,9 +17,15 @@
 #import <CocoaLumberjack/CocoaLumberjack.h>
 #endif
 
+#import <SecurifiToolkit/Log.h>
+//#define NSLog //
+
 #define ELog(args...) DDLogError(args)
-#define NSLog(args...) DDLogInfo(args)
+//#define NSLog(args...) DDLogInfo(args) //uncommenting it was disabling logs, look into it
 #define DLog(args...) DDLogDebug(args)
+
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]//MD01
+
 
 #ifdef DEBUG
 static const DDLogLevel ddLogLevel = DDLogLevelVerbose;

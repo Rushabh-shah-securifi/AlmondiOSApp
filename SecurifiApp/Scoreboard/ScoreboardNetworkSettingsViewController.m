@@ -5,7 +5,7 @@
 
 #import "ScoreboardNetworkSettingsViewController.h"
 #import "SFIAlmondLocalNetworkSettings.h"
-
+#import "LocalNetworkManagement.h"
 
 @interface ScoreboardNetworkSettingsViewController () <UITextFieldDelegate>
 @property(nonatomic, strong) SFIAlmondLocalNetworkSettings *settings;
@@ -21,7 +21,7 @@
     NSString *almondMac = self.almond.almondplusMAC;
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:almondMac];
+    SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:almondMac];
 
     if (!settings) {
         settings = [SFIAlmondLocalNetworkSettings new];
@@ -36,7 +36,7 @@
 
     if (self.dirty) {
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        [toolkit setLocalNetworkSettings:self.settings];
+        [LocalNetworkManagement storeLocalNetworkSettings:self.settings];
     }
 }
 
@@ -57,25 +57,25 @@
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cell_id];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             }
-            cell.textLabel.text = @"Local Network Enabled";
+            cell.textLabel.text = NSLocalizedString(@"Local Network Enabled", @"Local Network Enabled");
             cell.accessoryType = self.settings.enabled ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 
             return cell;
         }
         case 1: {
             NSString *cell_id = @"host";
-            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:1 fieldLabel:@"IP Address" fieldValue:self.settings.host];
+            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:1 fieldLabel:NSLocalizedString(@"scoreboard.localnetwork.IP Address", @"IP Address") fieldValue:self.settings.host];
             return cell;
         }
         case 2: {
             NSString *cell_id = @"port";
             NSUInteger value = self.settings.port;
-            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:2 fieldLabel:@"Port" fieldValue:[NSString stringWithFormat:@"%lu", (long) value]];
+            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:2 fieldLabel:NSLocalizedString(@"scoreboard.localnetwork.Port", @"Port") fieldValue:[NSString stringWithFormat:@"%lu", (long) value]];
             return cell;
         }
         case 3: {
             NSString *cell_id = @"pwd";
-            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:3 fieldLabel:@"Password" fieldValue:self.settings.password];
+            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:3 fieldLabel:NSLocalizedString(@"scoreboard.localnetwork.Password", @"Password") fieldValue:self.settings.password];
             return cell;
         }
         default:

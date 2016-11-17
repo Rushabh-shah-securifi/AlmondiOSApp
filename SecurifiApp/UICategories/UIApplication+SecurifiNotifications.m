@@ -7,6 +7,9 @@
 #import "SFIPreferences.h"
 #import "NSData+Conversion.h"
 #import "DebugLogger.h"
+#import "KeyChainAccess.h"
+#import "NotificationRegistration.h"
+#import "NotificationAccessAndRefreshCommands.h"
 
 NSString *const kApplicationDidBecomeActiveOnNotificationTap = @"kApplicationDidBecomeActiveOnNotificationTap";
 NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifications";
@@ -37,11 +40,11 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
     // register the token with the cloud, if needed. this process will fail fast and silently
     // if the token is already registered
-    if (toolkit.isCloudLoggedIn) {
+    if (toolkit.isNetworkOnline) {
         NSData *deviceToken = [preferences pushNotificationDeviceToken];
         if (deviceToken != nil) {
             NSString *str = deviceToken.hexadecimalString;
-            [toolkit asyncRequestRegisterForNotification:str];
+            [self asyncRequestRegisterForNotification:str];
         }
     }
 }
@@ -53,8 +56,35 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     if (toolkit.isCloudLoggedIn) {
         NSString *token_str = deviceToken.hexadecimalString;
-        [toolkit asyncRequestRegisterForNotification:token_str];
+        [self asyncRequestRegisterForNotification:token_str];
     }
+}
+
+- (void)asyncRequestRegisterForNotification:(NSString *)deviceToken {
+    if (deviceToken == nil) {
+        NSLog(@"asyncRequestRegisterForNotification : device toke is nil");
+        return;
+    }
+    
+    if ([KeyChainAccess isSecApnTokenRegistered]) {
+        NSString *oldToken = [KeyChainAccess secRegisteredApnToken];
+        if ([deviceToken isEqualToString:oldToken]) {
+            // already registered
+            return;
+        }
+    }
+    
+    [KeyChainAccess setSecRegisteredApnToken:deviceToken];
+    
+    NotificationRegistration *req = [NotificationRegistration new];
+    req.regID = deviceToken;
+    req.platform = @"iOS";
+    
+    GenericCommand *cmd = [GenericCommand new];
+    cmd.commandType = CommandType_NOTIFICATION_REGISTRATION;
+    cmd.command = req;
+    
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cmd];
 }
 
 // returns YES if notification can be handled (matches an almond)
@@ -69,11 +99,11 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     if (apps_dict) {
         NSNumber *badge = apps_dict[@"badge"];
         if (badge) {
-            [toolkit setNotificationsBadgeCount:badge.integerValue];
+            [NotificationAccessAndRefreshCommands setNotificationsBadgeCount:badge.integerValue];
         }
     }
 
-    [toolkit tryRefreshNotifications];
+    [NotificationAccessAndRefreshCommands tryRefreshNotifications];
 
     const BOOL debugLogging = toolkit.configuration.enableNotificationsDebugLogging;
     if (debugLogging) {
@@ -122,8 +152,7 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
 // set the app's badge icon to the count of 'not viewed' notifications
 - (void)securifiApplicationUpdateBadgeCount {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    NSInteger count = [toolkit countUnviewedNotifications];
+    NSInteger count = [NotificationAccessAndRefreshCommands countUnviewedNotifications];
     self.applicationIconBadgeNumber = count;
 }
 

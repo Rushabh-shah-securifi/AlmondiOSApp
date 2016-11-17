@@ -20,8 +20,8 @@
 // Initializes: "no almonds attached. link one by ..."
 + (instancetype)linkRouterMessage;
 
-@property(weak) id <MessageViewDelegate> delegate;
-@property(copy) NSString *headline;
-@property(copy) NSString *message;
+@property(nonatomic, weak) id <MessageViewDelegate> delegate;
+@property(nonatomic, copy) NSString *headline;
+@property(nonatomic, copy) NSString *message;
 
 @end
