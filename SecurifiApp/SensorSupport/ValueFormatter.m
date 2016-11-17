@@ -7,6 +7,14 @@
 
 
 @implementation ValueFormatter
+//- (instancetype)init
+//{
+//    self = [super init];
+//    if (self) {
+//        <#statements#>
+//    }
+//    return self;
+//}
 
 - (NSString *)formatNotificationValue:(NSString *)sensorValue {
     switch (self.action) {
@@ -20,15 +28,15 @@
     return sensorValue;
 }
 
-- (NSString *)scaledValue:(NSString *)value {
-    float value_float = value.floatValue;
-    float max_value = self.maxValue;
-    float scaled_max = self.scaledMaxValue;
+- (NSString *)scaledValue:(NSString *)value{
+    return [NSString stringWithFormat:@"%d", (int)ceil([value intValue]*self.factor)];
+}
 
-    float converted = value_float * (scaled_max / max_value);
-    converted = roundf(converted);
-
-    return [NSString stringWithFormat:@"%d", (int) converted];
+- (float )factor {
+    if (self.scaledMaxValue==0 || self.maxValue==0) {
+        return 1;
+    }
+    return (float)self.scaledMaxValue/self.maxValue;
 }
 
 - (NSString *)formattedString:(NSString *)value {

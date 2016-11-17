@@ -13,7 +13,7 @@
 
 @implementation SFICloudStatusBarButtonItem
 
-- (instancetype)initWithTarget:(id)target action:(SEL)action enableLocalNetworking:(BOOL)enableLocal {
+- (instancetype)initWithTarget:(id)target action:(SEL)action enableLocalNetworking:(BOOL)enableLocal isDashBoard:(BOOL)isDashboard{
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0, 0, 30, 25);
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
@@ -26,6 +26,7 @@
         _button = button;
         _state = initialState;
         _enableLocalNetworking = enableLocal;
+        _isDashBoard = isDashboard;
 
         [self setStatusImage:initialState];
     }
@@ -47,8 +48,17 @@
     UIColor *color = [self tintForState:state localNetworkMode:localNetworking];
 
     UIButton *button = self.button;
-    button.tintColor = color;
+    button.tintColor = self.isDashBoard? [UIColor whiteColor]: color;
     [button setImage:image forState:UIControlStateNormal];
+}
+
+- (void)modeUpdate:(UIImage *)image color:(UIColor *)color mode:(NSString *)mode{
+    _state = [mode isEqualToString:@"2"]?SFICloudStatusStateAtHome:SFICloudStatusStateAway;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        NSLog(@"INside modeUpdate %@",mode);
+        self.button.tintColor = color;
+        [self.button setImage:image forState:UIControlStateNormal];
+    });
 }
 
 - (UIImage *)imageForState:(SFICloudStatusState)state localNetworkingMode:(BOOL)localNetworkingMode {
@@ -58,14 +68,14 @@
     switch (state) {
         case SFICloudStatusStateDisconnected:
             name = localNetworkingMode ? @"connection_cloud_error" : @"connection_status_01";
-            if (localNetworkingMode) mode = UIImageRenderingModeAlwaysOriginal;
+            if (localNetworkingMode) mode = self.isDashBoard? UIImageRenderingModeAlwaysTemplate: UIImageRenderingModeAlwaysOriginal;
             break;
         case SFICloudStatusStateConnecting:
             name = @"connection_status_02";
             break;
         case SFICloudStatusStateConnected:
-            name = localNetworkingMode ? @"connection_cloud_success" : @"connection_status_03";
-            if (localNetworkingMode) mode = UIImageRenderingModeAlwaysOriginal;
+            name = localNetworkingMode ?@"connection_cloud_success" : @"connection_status_03";
+            if (localNetworkingMode) mode = self.isDashBoard? UIImageRenderingModeAlwaysTemplate:UIImageRenderingModeAlwaysOriginal;
             break;
         case SFICloudStatusStateAlmondOffline:
             name = @"connection_status_04";
@@ -78,13 +88,21 @@
             break;
         case SFICloudStatusStateConnectionError:
             name = @"connection_error_icon";
-            if (localNetworkingMode) mode = UIImageRenderingModeAlwaysOriginal;
+            if (localNetworkingMode) mode = self.isDashBoard? UIImageRenderingModeAlwaysTemplate: UIImageRenderingModeAlwaysOriginal;
             break;
         case SFICloudStatusStateLocalConnection:
             name = @"connection_local_success";
-            mode = UIImageRenderingModeAlwaysOriginal;
+            mode = self.isDashBoard? UIImageRenderingModeAlwaysTemplate:UIImageRenderingModeAlwaysOriginal;
             break;
         case SFICloudStatusStateLocalConnectionOffline:
+            name = @"connection_local_error";
+            mode = self.isDashBoard? UIImageRenderingModeAlwaysTemplate:UIImageRenderingModeAlwaysOriginal;
+            break;
+        case SFICloudStatusStateCloudConnectionNotSupported:
+            name = @"connection_error_icon";
+            if (localNetworkingMode) mode = UIImageRenderingModeAlwaysOriginal;
+            break;
+        case SFICloudStatusStateLocalConnectionNotSupported:
             name = @"connection_local_error";
             mode = UIImageRenderingModeAlwaysOriginal;
             break;
@@ -93,6 +111,7 @@
     }
 
     UIImage *image = [UIImage imageNamed:name];
+    NSLog(@"image name %@",name);
     return [image imageWithRenderingMode:mode];
 }
 
@@ -111,6 +130,8 @@
         case SFICloudStatusStateConnectionError:
         case SFICloudStatusStateLocalConnection:
         case SFICloudStatusStateLocalConnectionOffline:
+        case SFICloudStatusStateCloudConnectionNotSupported:
+        case SFICloudStatusStateLocalConnectionNotSupported:
         default:
             return nil;
     }

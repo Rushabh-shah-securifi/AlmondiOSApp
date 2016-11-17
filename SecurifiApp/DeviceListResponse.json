@@ -1,0 +1,866 @@
+{
+    "MobileInternalIndex":"<random key>",
+    "CommandType":"DeviceList",
+    "Devices":{
+        "111": {
+           "Data":{ "Name": "Thermostat21",
+            "FriendlyDeviceType": "Thermostat",
+            "Type": "111",
+            "deviceid": "111",
+            "Location": "Main door"
+           },
+            "DeviceValues": {
+                "1": {
+                    "Name": "SETPOINT COOLING",
+                    "Value": "Auto"
+                },
+                "2": {
+                    "Index": "2",
+                    "Name": "FAN MODE",
+                    "Value": "92",
+                    "GenericIndex": "39"
+                },
+                "3": {
+                    "Index": "3",
+                    "Name": "RANGELOW",
+                    "Value": "25",
+                    "GenericIndex": "58"
+                },
+                "4": {
+                    "Index": "4",
+                    "Name": "RANGE",
+                    "Value": "75",
+                    "GenericIndex": "32"
+                },
+                "5": {
+                    "Index": "4",
+                    "Name": "SETPOINT",
+                    "Value": "75",
+                    "GenericIndex": "30"
+                }
+            }
+        },
+            "18": {
+                "Data":{
+                "Name": "Contact switch",
+                "FriendlyDeviceType": "ContactSwitch",
+                "Type": "12",
+                "deviceid": "2",
+                "Location": "Main door"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "STATE",
+                        "Value": "true",
+                        "GenericIndex": "4"
+                    },
+                    "2": {
+                        "Index": "2",
+                        "Name": "LOW BATTERY",
+                        "Value": "true",
+                        "GenericIndex": "12"
+                    },
+                    "3": {
+                        "Index": "3",
+                        "Name": "TAMPER",
+                        "Value": "true",
+                        "GenericIndex": "9"
+                    }
+                }
+            },
+            "999": {
+                "Data":{
+                "Name": "motion sensor",
+                "FriendlyDeviceType": "MotionSensor",
+                "Type": "11",
+                "deviceid": "4",
+                "Location": "Hall"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "STATE",
+                        "Value": "false",
+                        "GenericIndex": "30"
+                    },
+                    "2": {
+                        "Index": "2",
+                        "Name": "LOW BATTERY",
+                        "Value": "false",
+                        "GenericIndex": "12"
+                    },
+                    "3": {
+                        "Index": "3",
+                        "Name": "TAMPER",
+                        "Value": "false",
+                        "GenericIndex": "9"
+                    },
+                    "4": {
+                        "Index": "4",
+                        "Name": "Temperature",
+                        "Value": "50",
+                        "GenericIndex": "25"
+                    }
+                }
+            },
+            "987": {
+                "Name": "DoorSensor",
+                "FriendlyDeviceType": "BinarySensor",
+                "Type": "39",
+                "deviceid": "7",
+                "Location": "Default",
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "SENSOR BINARY",
+                        "Value": "true",
+                        "GenericIndex": "4"
+                    },
+                    "2": {
+                        "Index": "2",
+                        "Name": "BATTERY",
+                        "Value": "100",
+                        "GenericIndex": "50"
+                    },
+                    "3": {
+                        "Index": "3",
+                        "Name": "TAMPER",
+                        "Value": "false",
+                        "GenericIndex": "9"
+                    }
+                }
+            },
+            "15": {
+                "Data":{
+                "Name": "SmokeDetector",
+                "FriendlyDeviceType": "Alarm",
+                "Type": "36",
+                "deviceid": "15",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "BASIC",
+                        "Value": "0",
+                        "GenericIndex": "15"
+                    },
+                    "2": {
+                        "Index": "2",
+                        "Name": "BATTERY",
+                        "Value": "100",
+                        "GenericIndex": "50"
+                    }
+                }
+            },
+            "1": {
+                "Data":{
+                "Name": "BinarySwitch 1",
+                "FriendlyDeviceType": "BinarySwitch",
+                "Type": "1",
+                "deviceid": "18",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "SWITCH BINARY",
+                        "Value": "false",
+                        "GenericIndex": "1"
+                    }
+                }
+            },
+            "26": {
+                "Data":{
+                "Name": "FloodSensor zigbee",
+                "FriendlyDeviceType": "WaterSensor",
+                "Type": "14",
+                "deviceid": "26",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "STATE",
+                        "Value": "false",
+                        "GenericIndex": "6"
+                    },
+                    "2": {
+                        "Index": "2",
+                        "Name": "LOW BATTERY",
+                        "Value": "true",
+                        "GenericIndex": "12"
+                    },
+                    "3": {
+                        "Index": "3",
+                        "Name": "TAMPER",
+                        "Value": "false",
+                        "GenericIndex": "9"
+                    }
+                }
+            },
+            "27": {
+                "Data":{
+                "Name": "KeyFob ",
+                "FriendlyDeviceType": "KeyFob",
+                "Type": "19",
+                "deviceid": "27",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "ARMMODE",
+                        "Value": "0",
+                        "GenericIndex": "30"
+                    },
+                    "2": {
+                        "Index": "2",
+                        "Name": "PANIC_ALARM",
+                        "Value": "false",
+                        "GenericIndex": "10"
+                    },
+                    "3": {
+                        "Index": "3",
+                        "Name": "EMER_ALARM",
+                        "Value": "false",
+                        "GenericIndex": "11"
+                    }
+                }
+            },
+            "2": {
+                "Data":{
+                "Name": "Impo",
+                "FriendlyDeviceType": "MultilevelSwitch",
+                "Type": "2",
+                "deviceid": "32",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "SWITCH MULTILEVEL",
+                        "Value": "0",
+                        "GenericIndex": "17"
+                    }
+                }
+            },
+            "33": {
+                "Data":{
+                "Name": "StandardWarningDevice #33",
+                "FriendlyDeviceType": "StandardWarningDevice",
+                "Type": "21",
+                "deviceid": "33",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "ALARM_STATE",
+                        "Value": "1",
+                        "GenericIndex": "13"
+                    },
+                    "2": {
+                        "Index": "2",
+                        "Name": "LOW BATTERY",
+                        "Value": "true",
+                        "GenericIndex": "12"
+                    },
+                    "3": {
+                        "Index": "3",
+                        "Name": "TAMPER",
+                        "Value": "false",
+                        "GenericIndex": "9"
+                    }
+                }
+            },
+            "6": {
+                "Data":{
+                "Name": "Alarm Sensor",
+                "FriendlyDeviceType": "Alarm",
+                "Type": "6",
+                "deviceid": "88",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "BASIC",
+                        "Value": "0",
+                        "GenericIndex": "14"
+                    },
+                    "2": {
+                        "Index": "2",
+                        "Name": "BATTERY",
+                        "Value": "75",
+                        "GenericIndex": "50"
+                    }
+                }
+            },
+            "89": {
+                "Data":{
+                "Name": "DoorSensor #89",
+                "FriendlyDeviceType": "BinarySensor",
+                "Type": "39",
+                "deviceid": "89",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "SENSOR BINARY",
+                        "Value": "true",
+                        "GenericIndex": "4"
+                    },
+                    "2": {
+                        "Index": "2",
+                        "Name": "BATTERY",
+                        "Value": "100",
+                        "GenericIndex": "50"
+                    },
+                    "3": {
+                        "Index": "3",
+                        "Name": "TAMPER",
+                        "Value": "false",
+                        "GenericIndex": "9"
+                    }
+                }
+            },
+            "92": {
+                "Data":{
+                "Name": "GarageDoorOpener",
+                "FriendlyDeviceType": "GarageDoorOpener",
+                "Type": "53",
+                "deviceid": "92",
+                "Location": "Default"
+                },
+                
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "BARRIER OPERATOR",
+                        "Value": "253",
+                        "GenericIndex": "44"
+                    }
+                }
+            },
+            "127": {
+                "Data":{
+                "Name": "SmokeDetector #127",
+                "FriendlyDeviceType": "Alarm",
+                "Type": "36",
+                "deviceid": "127",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "BASIC",
+                        "Value": "0",
+                        "GenericIndex": "15"
+                    },
+                    "2": {
+                        "Index": "2",
+                        "Name": "BATTERY",
+                        "Value": "100",
+                        "GenericIndex": "50"
+                    }
+                }
+            },
+            "129": {
+                "Data":{
+                "Name": "Alarm Sensor ",
+                "FriendlyDeviceType": "Alarm",
+                "Type": "6",
+                "deviceid": "129",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "BASIC",
+                        "Value": "0",
+                        "GenericIndex": "14"
+                    },
+                    "2": {
+                        "Index": "2",
+                        "Name": "BATTERY",
+                        "Value": "38",
+                        "GenericIndex": "50"
+                    }
+                }
+            },
+            "148": {
+                "Data":{
+                "Name": "MultilevelSwitch #148",
+                "FriendlyDeviceType": "MultilevelSwitch",
+                "Type": "2",
+                "deviceid": "148",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "SWITCH MULTILEVEL",
+                        "Value": "0",
+                        "GenericIndex": "17"
+                    }
+                }
+            },
+            "159": {
+                "Data":{
+                "Name": "BinaryPowerSwitch #159",
+                "FriendlyDeviceType": "BinaryPowerSwitch",
+                "Type": "45",
+                "deviceid": "159",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "SWITCH BINARY",
+                        "Value": "true",
+                        "GenericIndex": "1"
+                    },
+                    "2": {
+                        "Index": "2",
+                        "Name": "POWER",
+                        "Value": "8.989W",
+                        "GenericIndex": "34"
+                    }
+                }
+            },
+            "168": {
+                "Data":{
+                "Name": "DoorLock  ",
+                "FriendlyDeviceType": "ZigbeeDoorLock",
+                "Type": "28",
+                "deviceid": "168",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "LOCK_STATE",
+                        "Value": "2",
+                        "GenericIndex": "23"
+                    }
+                }
+            },
+            "3": {
+                "Data":{
+                "Name": "BinarySensor #180",
+                "FriendlyDeviceType": "BinarySensor",
+                "Type": "3",
+                "deviceid": "180",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "SENSOR BINARY",
+                        "Value": "false",
+                        "GenericIndex": "2"
+                    },
+                    "2": {
+                        "Index": "2",
+                        "Name": "BATTERY",
+                        "Value": "91",
+                        "GenericIndex": "50"
+                    },
+                    "3": {
+                        "Index": "3",
+                        "Name": "TAMPER",
+                        "Value": "false",
+                        "GenericIndex": "9"
+                    }
+                }
+            },
+            "184": {
+                "Data":{
+                "Name": "MultiSoundSiren #184",
+                "FriendlyDeviceType": "MultilevelSwitch",
+                "Type": "55",
+                "deviceid": "184",
+                "Location": "Default"
+                },
+                "DeviceValues": {
+                    "1": {
+                        "Index": "1",
+                        "Name": "SWITCH MULTILEVEL",
+                        "Value": "0",
+                        "GenericIndex": "19"
+                    }
+                }
+            },
+        "4": {
+            "Data":{
+            "Name": "ON_OFFMultilevelSwitch #185",
+            "FriendlyDeviceType": "MultilevelSwitch",
+            "Type": "4",
+            "deviceid": "185",
+            "Location": "Default"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Index": "1",
+                    "Name": "SWITCH MULTILEVEL",
+                    "Value": "true",
+                    "GenericIndex": "1"
+                },
+                "2": {
+                    "Index": "2",
+                    "Name": "DIMMER_LEVEL",
+                    "Value": "20",
+                    "GenericIndex": "18"
+                }
+            }
+        },
+        "5": {
+            "Data":{
+            "Name": "DoorLock #5",
+            "FriendlyDeviceType": "dooelock",
+            "Type": "5",
+            "deviceid": "186",
+            "Location": "Default"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Name": "LOCK_STATE",
+                    "Value": "0",
+                    "GenericIndex": "22"
+                },
+                "3": {
+                    "Name": "battery",
+                    "Value": "50",
+                    "GenericIndex": "50"
+                },
+                "4": {
+                    "Name": "max users",
+                    "Value": "4",
+                    "GenericIndex": "79"
+                },
+                "5": {
+                    "Name": "pin",
+                    "Value": "1234",
+                    "GenericIndex": "95"
+                },
+                "6": {
+                    "Name": "pin",
+                    "Value": "1234",
+                    "GenericIndex": "95"
+                },
+                "7": {
+                    "Name": "pin",
+                    "Value": "1234",
+                    "GenericIndex": "95"
+                },
+                "8": {
+                    "Name": "pin",
+                    "Value": "6789",
+                    "GenericIndex": "95"
+                }
+            }
+        },
+            
+        "7": {
+            "Data":{
+            "Name": "Thermostat",
+            "FriendlyDeviceType": "thermostat",
+            "Type": "7",
+            "deviceid": "7",
+            "Location": "Default"},
+            "DeviceValues": {
+                "1": {
+                    "Index": "1",
+                    "Name": "switch multilevel",
+                    "Value": "50",
+                    "GenericIndex": "25"
+                },
+                "2": {
+                    "Index": "2",
+                    "Name": "thermostat mode",
+                    "Value": "Heat",
+                    "GenericIndex": "35"
+                },
+                "3": {
+                    "Index": "3",
+                    "Name": "operating state",
+                    "Value": "",
+                    "GenericIndex": "36"
+                },
+                "4": {
+                    "Index": "4",
+                    "Name": "thermostat heating",
+                    "Value": "40",
+                    "GenericIndex": "37"
+                },
+                "5": {
+                    "Index": "5",
+                    "Name": "thermostat cooling",
+                    "Value": "70",
+                    "GenericIndex": "38"
+                },
+                "6": {
+                    "Index": "6",
+                    "Name": "thermostat fan mode",
+                    "Value": "On low",
+                    "GenericIndex": "39"
+                },
+                "7": {
+                    "Index": "7",
+                    "Name": "fan state",
+                    "Value": "20",
+                    "GenericIndex": "40"
+                },
+                "8": {
+                    "Index": "8",
+                    "Name": "Battery",
+                    "Value": "20",
+                    "GenericIndex": "50"
+                }
+            }
+        },
+        "48": {
+            "Data":{
+                "Name": "Hue Lamp",
+                "FriendlyDeviceType": "hue lamp",
+                "Type": "48",
+                "deviceid": "187",
+                "Location": "Default"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Index": "1",
+                    "Name": "SWITCH BINARY",
+                    "Value": "true",
+                    "GenericIndex": "1"
+                },
+                "2": {
+                    "Index": "2",
+                    "Name": "HUE",
+                    "Value": "451",
+                    "GenericIndex": "30"
+                },
+                "3": {
+                    "Index": "3",
+                    "Name": "SWITCH MULTILEVEL",
+                    "Value": "85",
+                    "GenericIndex": "17"
+                },
+                "4": {
+                    "Index": "4",
+                    "Name": "SATURATION",
+                    "Value": "115",
+                    "GenericIndex": "32"
+                }
+
+            }
+        },
+        "825": {
+            "Data":{
+                "Name": "ZEXtender #825",
+                "FriendlyDeviceType": "StandardWarningDevice",
+                "Type": "54",
+                "deviceid": "825",
+                "Location": "Default"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Index": "1",
+                    "Name": "ALARM_STATE",
+                    "Value": "60",
+                    "GenericIndex": "25"
+                },
+                "2": {
+                    "Index": "2",
+                    "Name": "Heat",
+                    "Value": "Heat",
+                    "GenericIndex": "45"
+                },
+                "3": {
+                    "Index": "3",
+                    "Name": "TAMPER",
+                    "Value": "60",
+                    "GenericIndex": "46"
+                },
+                "4": {
+                    "Index": "4",
+                    "Name": "TAMPER",
+                    "Value": "60",
+                    "GenericIndex": "47"
+                },
+                
+                "5": {
+                    "Index": "5",
+                    "Name": "TAMPER",
+                    "Value": "On Low",
+                    "GenericIndex": "48"
+                },
+                "6": {
+                    "Index": "6",
+                    "Name": "TAMPER",
+                    "Value": "0",
+                    "GenericIndex": "50"
+                },
+                "8": {
+                    "Index": "8",
+                    "Name": "TAMPER",
+                    "Value": "0",
+                    "GenericIndex": "49"
+                },
+                "10": {
+                    "Index": "10",
+                    "Name": "TAMPER",
+                    "Value": "10",
+                    "GenericIndex": "51"
+                },
+                "9": {
+                    "Index": "9",
+                    "Name": "TAMPER",
+                    "Value": "10",
+                    "GenericIndex": "21"
+                }
+            }
+        },
+        "862": {
+            "Data":{
+                "Name": "multiswitch",
+                "FriendlyDeviceType": "multiswitch",
+                "Type": "43",
+                "deviceid": "862",
+                "Location": "Main door"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Index": "1",
+                    "Name": "STATE",
+                    "Value": "true",
+                    "GenericIndex": "1"
+                },
+                "2": {
+                    "Index": "2",
+                    "Name": "LOW BATTERY",
+                    "Value": "true",
+                    "GenericIndex": "1"
+                }
+            }
+        },
+        "863": {
+            "Data":{
+                "Name": "setpoint thermostat",
+                "FriendlyDeviceType": "multiswitch",
+                "Type": "46",
+                "deviceid": "863",
+                "Location": "Main door"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Index": "1",
+                    "Name": "STATE",
+                    "Value": "50",
+                    "GenericIndex": "41"
+                },
+                "2": {
+                    "Index": "2",
+                    "Name": "LOW BATTERY",
+                    "Value": "50",
+                    "GenericIndex": "50"
+                }
+                ,
+                "4": {
+                    "Index": "2",
+                    "Name": "LOW BATTERY",
+                    "Value": "50",
+                    "GenericIndex": "25"
+                }
+            }
+        },
+        "864": {
+            "Data":{
+                "Name": "roller shutter",
+                "FriendlyDeviceType": "roller",
+                "Type": "52",
+                "deviceid": "864",
+                "Location": "Main door"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Name": "STATE",
+                    "Value": "0",
+                    "GenericIndex": "20"
+                },
+                "2": {
+                    "Name": "LOW BATTERY",
+                    "Value": "0",
+                    "GenericIndex": "42"
+                }
+                ,
+                "3": {
+                    "Name": "LOW BATTERY",
+                    "Value": "true",
+                    "GenericIndex": "43"
+                }
+            }
+        },
+        "865": {
+            "Data":{
+                "Name": "Temperature sensor 27",
+                "FriendlyDeviceType": "Temperature sensor",
+                "Type": "27",
+                "deviceid": "865",
+                "Location": "Hall"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Name": "Temp",
+                    "Value": "50",
+                    "GenericIndex": "25"
+                },
+                "2": {
+                    "Name": "Humidity",
+                    "Value": "50",
+                    "GenericIndex": "27"
+                },
+                "3": {
+                    "Name": "Battery",
+                    "Value": "false",
+                    "GenericIndex": "50"
+                }
+            }
+        },
+        "866": {
+            "Data":{
+                "Name": "Temperature sensor 29",
+                "FriendlyDeviceType": "Temperature sensor",
+                "Type": "29",
+                "deviceid": "866",
+                "Location": "Hall"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Name": "Temp",
+                    "Value": "50",
+                    "GenericIndex": "25"
+                }
+            }
+        },
+        "867": {
+            "Data":{
+                "Name": "Temperature sensor 29",
+                "FriendlyDeviceType": "Temperature sensor",
+                "Type": "29",
+                "deviceid": "866",
+                "Location": "Hall"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Name": "Temp",
+                    "Value": "50",
+                    "GenericIndex": "25"
+                }
+            }
+        }
+    }
+}

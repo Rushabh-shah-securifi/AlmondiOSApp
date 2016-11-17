@@ -17,8 +17,6 @@
 @implementation AlertView
 
 - (void)layoutSubviews {
-    [super layoutSubviews];
-
     for (UIView *view in self.subviews.copy) {
         [view removeFromSuperview];
     }
@@ -51,7 +49,7 @@
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
     button.titleLabel.font = [UIFont standardHeadingBoldFont];
-    [button setTitle:@"Cancel" forState:UIControlStateNormal];
+    [button setTitle:NSLocalizedString(@"Cancel",@"Cancel") forState:UIControlStateNormal];
     [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
     [button setTitleColor:buttonPressedColor forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(onCancelButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -59,6 +57,8 @@
     [self addSubview:button];
 
     [self addConstraints];
+
+    [super layoutSubviews];
 }
 
 - (void)updateConstraints {
@@ -80,10 +80,10 @@
 
     UIView *previousView = nil;
     for (UIView *view in views) {
-        [view autoPinEdgeToSuperviewMargin:ALEdgeLeading];
-        [view autoPinEdgeToSuperviewMargin:ALEdgeTrailing];
+        [view autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:20];
+        [view autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:20];
 
-        CGFloat size = (CGFloat) ((view == message_view) ? 100.0 : 40.0);
+        CGFloat size = (CGFloat) ((view == message_view) ? 60.0 : 40.0);
         [view autoSetDimension:ALDimensionHeight toSize:size];
 
         if (previousView) {

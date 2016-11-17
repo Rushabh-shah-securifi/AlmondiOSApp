@@ -10,5 +10,5 @@
 
 @property UIColor *highlightedBackgroundColor;
 @property UIColor *normalBackgroundColor;
-
+- (SFIHighlightedButton *)addButton:(NSString *)buttonName button:(SFIHighlightedButton *)button color:(UIColor *)color;
 @end

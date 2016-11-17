@@ -1,0 +1,91 @@
+/* 
+  Almond-Localizable.strings
+  Almond
+
+  Created by Priya Yerunkar on 13/12/14.
+  Copyright (c) 2014 Securifi Ltd. All rights reserved.
+*/
+
+/*------- Localization strings specific to Almond app -------*/
+
+
+
+/* affiliation */
+"router.linkalmond-msg.headline" = "Bir Almond \n bağlayalım.";
+"router.linkalmond-msg.message" = "Almond'unuzda sihirbazı başlatın ve aşağıdaki sembole dokunun.";
+"Almond Linked" = "Almond Bağlandı";
+"Link Almond" = "Bulut Linki";
+"Local Link Almond" = "Yerel Link";
+"Please wait while your Almond is being linked to cloud." = "Lütfen buluta bağlanırken bekleyin.";
+"This Almond is already linked to another user." = "Bu Almond başka bir kullanıcıya bağlıdır.
+Bizimle support@securifi.com adresinden iletişime geçebilirsiniz";
+"Almond could not be affiliated" = "Almond ilişkilendirilemedi.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "Almond Hesabı uygulamasını çalıştırın ve görüntülenen kodu girin.";
+"cloudlink.button.Link Almond" = "Almond'u Bağla";
+"cloudlink.button.Add Almond Locally" = "Almond'u Yerel Olarak Ekle";
+
+
+/* router tab */
+"router.offline-msg.label.Almond is Offline." = "Almond Çevrimdışı.";
+//m
+"router.msg-link.The Almond was successfully linked." = "Almond başarıyla bağlandı.";
+"router.btn-title.Unlink Almond?" = "Almond Bağlantısı Kaldırılsın mı?";
+"router.btn-title.Link Almond Locally" = "Almond'u Yerel Olarak Bağlayın";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Lüten bulut kontrolü olmadan bildirim alamayacağınızı veya Almond'unuzu uzaktan kontrol edemeyeceğinizi dikkate alın.";
+"router.error-msg.This Almond is already linked." = "Bu Almond zaten bağlandı.";
+"router.error-msg.An error occurred trying to link with the Almond. Lütfen tekrar deneyin." = "Almond ile bağlantı kurmaya çalışırken hata oluştu. Lütfen tekrar deneyin.";
+
+/* sensors */
+"router.no-sensors.label.Add a sensor from your Almond." = "Almond'unuzdan bir sensör ekleyin.";
+
+/* signup */
+"signup.headline-text.Securifi Cloud Account." = "Securifi Bulut Hesabı.";
+"signup.headline-text.Access your Almonds" = "Almondlarınıza ve ev cihazlarınıza
+her yerden ulaşabilirsiniz.";
+
+/* Accounts */
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "Bu Almond size ait";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "Almond Adı";
+"accounts.ownedAlmond.button.RenameAlmond" = "Almond'u Yeniden Adlandır";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = "Almond Adı";
+"accounts.sharedAlmond.button.RenameAlmond" = "Almond'u Yeniden Adlandır";
+"accounts.alert.onDeleteAccount.message" = "Hesabı silmek Almond'larınızın bağlantısını kaldıracak ve kullanıcı tercihlerini silecektir. Hesap silme işlemini doğrulamak için aşağıya parolanızı girin.";
+"accounts.alert.onUnlinkAlmond.title" = "Almond Bağlantısını Kesin";
+"accounts.alert.onUnlinkAlmond.message" = "Almond bağlantısını kesmeyi onaylamak için parolanızı aşağıya girin.";
+"accounts.itoast.almondNameMax32Characters" = "Almond Adı 32 karakterden fazla olamaz.";
+"accounts.itoast.unableToChangeAlmondName" = "Üzgünüz! Almond'un adını değiştiremedik";
+"accounts.hud.unlinkingAlmond" = "Almond Bağlantısı Kaldırılıyor...";
+"accounts.hud.inviteUserToShareAlmond" = "Kullanıcı Almond'u paylaşmaya davet ediliyor...";
+"accounts.hud.changeAlmondName" = "Almond adını değiştir...";
+"accounts.hud.removeSharedAlmond" = "Paylaşılan almondu kaldır...";
+"accounts.unlinkAlmond.failure.default" = "Üzgünüz! Almond bağlantısı kaldırılamadı.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "Bu kullanıcının bir Securifi hesabı yok.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "Kullanıcı henüz Securifi hesabını doğrulamadı.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "Bu almond size ait değil.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "Bu almond'u zaten kullanıcı ile paylaştınız.";
+"accounts.inviteUserToShareAlmond.failure.default" = "Üzgünüz! Almond paylaşımı başarısız.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "Bu Almond ile ilişkilendirilmediniz";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "İkincil kullanıcı verili Almond ile ilişkilendirilmedi.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "Bu Almond ile ilişkilendirilmediniz";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "Üzgünüz! Paylaşılan Almond kaldırılamadı.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "Almond MAC'leri";
+"Copied Almond MAC" = "Kopyalanan Almond MAC";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "Almond'unuza bulut üzerinden bağlandınız.";
+"alertview -Connected to your Almond via cloud." = "Almond'unuza bulut üzerinden bağlandınız.";
+"Add Local Connection Settings" = "Yerel Bağlantı Ayarlarını Ekleyin";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "Almond bulut bağlantısı kurulamadı. Yeniden deneye dokunun veya yerel bağlantıya geçin.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = "Almond yerel bağlantısı kurulamadı. Dokunup yeniden deneyin veya bulut bağlantısına geçin.";
+"hud message-Setting Almond to Away Mode" = "Almond Uzakta Moduna Getiriliyor";
+"hud message-Setting Almond to Home Mode" = "Almond Ev Moduna Getiriliyor";
+"alertview Can't connect to your Almond. Please select a connection method." = "Almond'unuza bağlanamıyor. Lütfen bir bağlantı yöntemi seçin.";
+"alertview localconnection_Connected to your Almond locally." = "Almond'unuza yerel olarak bağlandı.";
+
+//To be translated
+/* login */
+"Monitor and Control your home from anywhere." = "Monitör ve her yerden evinize Kontrol.";

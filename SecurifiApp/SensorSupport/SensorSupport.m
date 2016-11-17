@@ -11,7 +11,6 @@
 
 @interface SensorSupport ()
 @property(nonatomic) SFIDeviceType deviceType;
-@property(nonatomic, strong) IndexValueSupport *valueSupport;
 @property(nonatomic, copy) NSString *sensorValue;
 @end
 
@@ -38,7 +37,7 @@
 }
 
 - (UIImage *)notificationImage {
-    NSString *const defaultIconName = @"n_default_device";
+    NSString *const defaultIconName = @"default_device";
 
     if (self.valueSupport == nil) {
         return [self imageNamed:defaultIconName];
@@ -49,18 +48,19 @@
         name = defaultIconName;
     }
 
-    name = [@"n_" stringByAppendingString:name];
+//    name = [@"n_" stringByAppendingString:name];
+    //NSLog(@"image name : %@", name);
     return [self imageNamed:name];
 }
 
 - (NSString *)notificationText {
     if (self.valueSupport == nil) {
-        return @" a value has changed";
+        return NSLocalizedString(@"sensor support- a value has changed",@" a value has changed");
     }
 
     NSString *text = [self.valueSupport formatNotificationText:self.sensorValue];
     if (text == nil) {
-        return @" a value has changed";
+        return NSLocalizedString(@"sensor support- a value has changed",@" a value has changed");
     }
 
     return text;

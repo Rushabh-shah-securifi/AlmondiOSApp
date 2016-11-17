@@ -86,6 +86,7 @@ reset at the moment. Try again later.";
 "router.card.Settings are not available." = "Settings are not available.";
 "router.card-title.Devices & Users" = "Devices & Users";
 "router.devices-summary.%d connected, %d blocked" = "%d connected, %d blocked";
+"router.devices-summary.%d Active, %d Inactive" = "%d ACTIVE, %d INACTIVE";
 "router.software-version.Current version" = "Current version";
 "router.software-version.Not available" = "Version information is not available.";
 "router.card-title.Router Reboot" = "Router Reboot";
@@ -109,6 +110,7 @@ reset at the moment. Try again later.";
 "sensors.label.SENSOR SETTINGS" = "SENSOR SETTINGS";
 "sensors.settings-label.Send Notifications" = "Send Notifications";
 "sensors.no-sensors.label.You don't have any sensors yet." = "You don't have any sensors yet.";
+"scenes.no-scenes.label.Scenes allow you to control multiple devices at the same time. For example you can turn all your lights off with a single click." = "Scenes allow you to control multiple devices at the same time. For example you can turn all your lights off with a single click.";
 "sensors.account-confirm.label.Please confirm your account (less than a day left)." = "Please confirm your account (less than a day left).";
 "sensors.account-confirm.label.Please confirm your account (%d days left)." = "Please confirm your account (%d days left).";
 "sensors.account-confirm.label.Check activation email for instructions." = "Check activation email for instructions.";
@@ -158,10 +160,14 @@ reset at the moment. Try again later.";
 "sensor.notificaiton.segment.Always" = "Always";
 "sensor.notificaiton.segment.Home" = "Home";
 "sensor.notificaiton.segment.Away" = "Away";
+"sensor.hud.UpdatingSensordata" = "Updating Sensor Data...";
+"sensors.heating.temperature" = "High Temperature";
+"sensors.cooling.temperature" = "Low Temperature";
+
 
 /* signup */
 
-"signup.navbar-title.Sign up" = "Sign up";
+"signup.navbar-title.Create Account" = "Create Account";
 "signup.barbutton.Decline" = "Decline";
 "signuo.barbutton.Accept" = "Accept";
 "signup.barbutton.Continue" = "Continue";
@@ -256,3 +262,18 @@ Follow it, then tap Continue to login.";
 
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode1" = "There was some error on cloud. Please try later.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode2" = "You need to fill all the fields.";
+
+"scenes.hud.loadingScenes"   = "Loading scenes...";
+"scenes.hud.activatingScene" = "Activating scene...";
+"scenes.hud.creatingScene"   = "Creating scene...";
+"scenes.hud.updatingScene"   = "Updating scene...";
+"scenes.hud.deletingScene"   = "Deleting Scene...";
+"wifi.hud.UpdatingWifiClient" = "Updating Wifi Client...";
+"wifi.hud.removeClient"       = "Deleting wifi client...";
+"wifi.button.deleteClient"    = "Remove";
+"wifi.textEdit.Name" = "Name";
+"wifi.textEdit.Minutes" = "Minutes";
+
+
+
+

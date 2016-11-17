@@ -27,6 +27,7 @@
         self.countLabel.alpha = 0;
         [self.countButton addSubview:self.countLabel];
         [self setImageForNotificationCount:0];
+        self.isDashBoard = NO;
     }
 
     return self;
@@ -37,6 +38,7 @@
     if (self) {
         [self.countButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
         [self.countLabel setTarget:target touchAction:action];
+        self.isDashBoard = NO;
     }
     return self;
 }
@@ -78,10 +80,10 @@
 
 - (UIImage *)iconForNotificationCount:(NSUInteger)count {
     if (count == 0) {
-        return [UIImage imageNamed:@"bell_empty"];
+        return [UIImage imageNamed:self.isDashBoard?@"bell_empty_white":@"bell_empty"];
     }
     else {
-        return [UIImage imageNamed:@"bell_icon_tilted"];
+        return [UIImage imageNamed:self.isDashBoard?@"bell_icon_White":@"bell_icon_tilted"];
     }
 }
 

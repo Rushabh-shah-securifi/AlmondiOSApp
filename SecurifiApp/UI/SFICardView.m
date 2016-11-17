@@ -12,6 +12,7 @@
 #import "SFIHighlightedButton.h"
 #import "Colours.h"
 #import "SFICopyLabel.h"
+#import "CommonMethods.h"
 
 @interface SFICardView ()
 @property(nonatomic, readonly) CGFloat baseYCoordinate;
@@ -35,8 +36,8 @@
         self.rightOffset = SFICardView_right_offset_normal;
         self.textColor = [UIColor whiteColor];
         self.headlineFont = [UIFont standardHeadingBoldFont];
-        self.summaryFont = [UIFont standardUILabelFont];
-        self.bodyFont = [UIFont standardUITextFieldFont];
+        self.summaryFont = [UIFont securifiBoldFontLarge];
+        self.bodyFont = [UIFont securifiBoldFontLarge];
         _enableActionButtons = YES;
         _enabledDisableControls = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
     }
@@ -85,7 +86,7 @@
 
 - (void)addLine {
     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, self.baseYCoordinate, self.frame.size.width - 15, 1)];
-    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.image = [UIImage imageNamed:@"line"];
     imgLine.alpha = 0.6;
     [self addSubview:imgLine];
     [self markYOffset:5];
@@ -93,7 +94,7 @@
 
 - (void)addShortLine {
     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(10, self.baseYCoordinate, self.frame.size.width - 20, 1)];
-    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.image = [UIImage imageNamed:@"line"];
     imgLine.alpha = 0.3;
     [self addSubview:imgLine];
     [self markYOffset:5];
@@ -146,11 +147,30 @@
     else {
         msg = @"";
     }
-
-    NSUInteger lineCount = msgs.count;
+    NSLog(@"cardview summary msg = %@",msg);
+    NSUInteger lineCount = [SFICardView getLineCount:msgs];
     lineCount = (lineCount == 0) ? 1 : lineCount + 1;
 
     UILabel *label = [self makeMultiLineLabel:msg font:self.summaryFont alignment:NSTextAlignmentLeft numberOfLines:(int)lineCount rightOffset:self.rightOffset];
+    [self addSubview:label];
+    [self markYOffsetUsingRect:label.frame addAdditional:0];
+    return label;
+}
+
++ (NSInteger)getLineCount:(NSArray*)msgs{
+    int lines = 0;
+    for(NSString *msg in msgs){
+        if(msg.length > 21){ //after 21 chars msg goes to 2 lines
+            lines += 2;
+        }else{
+            lines++;
+        }
+    }
+    return lines;
+}
+
+- (UILabel *)addLongSummary:(NSString*)msg {
+    UILabel *label = [self makeMultiLineLabel:msg font:self.summaryFont alignment:NSTextAlignmentLeft numberOfLines:6 rightOffset:self.rightOffset];
     [self addSubview:label];
     [self markYOffsetUsingRect:label.frame addAdditional:0];
 
@@ -233,15 +253,15 @@
     }
 
     CGFloat width = CGRectGetWidth(self.frame);
-    CGRect frame = CGRectMake(width - 40, 37, 23, 23);
+    CGRect frame = CGRectMake(width - 40, 30, 23, 23);
 
-    UIImage *image = [UIImage imageNamed:@"icon_config.png"];
+   // UIImage *image = [UIImage imageNamed:@"icon_config"];
 
     UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     settingsButton.frame = frame;
     settingsButton.backgroundColor = [UIColor clearColor];
     [settingsButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    [settingsButton setImage:image forState:UIControlStateNormal];
+    [settingsButton setImage:[UIImage imageNamed:@"icon_config"] forState:UIControlStateNormal];
 
     self.settingsButton = settingsButton;
     [self setEditIconEditing:editing];
@@ -315,10 +335,16 @@
     return button;
 }
 
-- (void)addTitleAndOnOffSwitch:(NSString *)title target:(id)target action:(SEL)action on:(BOOL)isSwitchOn {
+- (void)addTitleAndOnOffSwitch:(NSString *)title target:(id)target action:(SEL)action shareAction:(SEL)shareAction on:(BOOL)isSwitchOn {
     UILabel *label = [self makeTitleLabel:title];
     [self addSubview:label];
 
+    BOOL isShareEnabled = NO;
+    if(isSwitchOn && isShareEnabled){
+        UIButton *button = [self makeShareLinkButton:target action:shareAction];
+        [self addSubview:button];
+    }
+    
     UISwitch *ctrl = [self makeOnOffSwitch:target action:action on:isSwitchOn];
     [self addSubview:ctrl];
     [self addManagedControl:ctrl];
@@ -326,6 +352,42 @@
     [self markYOffsetUsingRect:label.frame addAdditional:15];
 }
 
+- (UIButton *)makeShareLinkButton:(id)target action:(SEL)action{
+    CGFloat width = CGRectGetWidth(self.frame);
+    CGRect frame = CGRectMake(width - 160, self.baseYCoordinate, 80, 31);
+    
+    //button
+    UIButton *btn = [[UIButton alloc] initWithFrame:frame];
+    btn.layer.cornerRadius = 5.0;
+//    btn.backgroundColor = [UIColor grayColor];
+    [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    
+    //image
+    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 0, 20, 20)];
+    imgView.contentMode = UIViewContentModeScaleAspectFit;
+    
+    UIImage *image = [UIImage imageNamed:@"share"];
+    imgView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [imgView setTintColor:[UIColor whiteColor]];
+    
+    imgView.center = CGPointMake(CGRectGetMidX(imgView.bounds), CGRectGetMidY(btn.bounds));
+    [btn addSubview:imgView];
+    
+    //label
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, 50, 25)];
+    [CommonMethods setLableProperties:label text:@"Share" textColor:[UIColor whiteColor] fontName:@"AvenirLTStd-Bold" fontSize:20 alignment:NSTextAlignmentCenter];
+    label.center = CGPointMake(CGRectGetMidX(label.frame), CGRectGetMidY(btn.bounds));
+//    label.backgroundColor = [UIColor orangeColor];
+    
+    [btn addSubview:imgView];
+    [btn addSubview:label];
+    
+    return btn;
+}
+
+- (void)onShareBtnTap:(id)sender{
+    NSLog(@"on share btn tap");
+}
 - (void)addTitleAndButton:(NSString *)title target:(id)target action:(SEL)action buttonTitle:(NSString *)buttonTitle {
     UILabel *label = [self makeTitleLabel:title];
     [self addSubview:label];

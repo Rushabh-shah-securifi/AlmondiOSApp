@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "RouterNetworkSettingsEditor.h"
+#import "HelpScreens.h"
+#import "MessageView.h"
 
 @class MBProgressHUD;
 
@@ -32,8 +34,14 @@
 // Current almond mac being displayed
 @property(nonatomic, readonly) NSString *almondMac;
 
+@property(nonatomic) HelpScreens *helpScreensObj;
+
+@property(nonatomic) UIView *maskView;
+
 // declares the almond mac being displayed
 - (void)markAlmondMac:(NSString *)almondMac;
+
+- (void)markNewTitle:(NSString *)title;
 
 - (void)showHUD:(NSString *)text;
 
@@ -50,10 +58,27 @@
 // the user to tap to present the Notification Viewer.
 @property(nonatomic, readonly) BOOL enableNotificationsView;
 @property(nonatomic, readonly) BOOL enableNotificationsHomeAwayMode;
-
-// Enabled by default; when NO, the Reveal button is disabled. Useful when the UI needs to be locked during updates.
-@property(nonatomic) BOOL enableDrawer;
+@property(nonatomic)BOOL needAddButton;
 
 - (void)presentLocalNetworkSettingsEditor;
 
+- (enum SFIAlmondConnectionMode)currentConnectionMode;
+
+- (void)removeAlert;
+
+- (void)initializeHelpScreensfirst:(NSString*)itemName;
+
+- (void)resetViewDelegate;
+
+- (UITableViewCell *)createAlmondUpdateAvailableCell:(UITableView *)tableView;
+
+- (UITableViewCell *)createEmptyCell:(UITableView *)tableView;
+
+- (UITableViewCell *)createAlmondOfflineCell:(UITableView *)tableView;
+
+- (BOOL)isFirmwareCompatible;
+
+- (void)onUnlockTable;
+
+- (MessageView *)addMessagegView;
 @end

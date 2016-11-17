@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 
 #import "SFITableViewController.h"
-
+#import "NotificationsTestStore.h"
 @interface SFINotificationsViewController : UITableViewController
 
 // Required
@@ -36,6 +36,16 @@
 // When specified, only notifications for the specified device and Almond are shown
 @property(nonatomic) sfi_id deviceID;
 
+// Default NO
+@property(nonatomic) BOOL isForWifiClients;
+
+@property(nonatomic) id <SFINotificationStore> store;
+@property(nonatomic) BOOL resetBucketsAndNotifications;
+-(NSDate *)tryGetBucket:(NSInteger)section ;
+- (SFINotification *)tryGetNotificationForBucket:(NSDate *)bucket row:(NSInteger)row ;
+- (SFINotification *)notificationForIndexPath:(NSIndexPath *)path;
+- (NotificationsTestStore *)pickNotificationStore;
+- (NSInteger)tryGetCachedNotificationCount:(NSDate *)bucket ;
 @end
 
 

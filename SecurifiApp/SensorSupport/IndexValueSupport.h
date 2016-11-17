@@ -4,7 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "SecurifiToolkit/SecurifiTypes.h"
 @class ValueFormatter;
 
 typedef NS_ENUM(int, MatchType) {
@@ -19,6 +19,12 @@ typedef NSString *(^IndexValueTransformer)(NSString *);
 
 @interface IndexValueSupport : NSObject
 
+@property(nonatomic) NSString *layoutType;
+@property(nonatomic) NSString *displayText;
+@property(nonatomic) NSInteger minValue;
+@property(nonatomic) NSInteger maxValue;
+@property(nonatomic) NSString* eventType;
+
 // When YES, the index value is ignored for processing Notifications and any such value is silently dropped
 // Defaults to NO
 @property(nonatomic) BOOL notificationIgnoreIndex;
@@ -27,6 +33,7 @@ typedef NSString *(^IndexValueTransformer)(NSString *);
 
 // match data value; when nil, then match always is TRUE---this can be used to simply express a value formatter
 @property(nonatomic) NSString *matchData;
+
 
 // controls how matchesData compares values with this instance's data.
 // defaults to MatchType_equals
@@ -54,5 +61,7 @@ typedef NSString *(^IndexValueTransformer)(NSString *);
 - (BOOL)matchesData:(NSString *)value;
 
 - (NSString *)formatNotificationText:(NSString *)sensorValue;
+- (NSString *)getDisplayText:(NSString *)value;
+
 
 @end

@@ -45,49 +45,50 @@
 #pragma mark - Cloud command and handlers
 
 - (void)sendReactivationRequest {
-    ValidateAccountRequest *validateCommand = [[ValidateAccountRequest alloc] init];
-    validateCommand.email = self.emailID;
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_VALIDATE_REQUEST;
-    cloudCommand.command = validateCommand;
-
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendValidateCloudAccount:self.emailID];
 }
 
 - (void)validateResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-
-    ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
-
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (obj.isSuccessful) {
-            self.subHeadingLabel.text = NSLocalizedString(@"Reactivation link has been sent to your account.", @"Reactivation link has been sent to your account.");
-        }
-        else {
-            NSString *failureReason;
-            switch (obj.reasonCode) {
-                case 1:
-                    failureReason = NSLocalizedString(@"sensor.activation.The username was not found", @"The username was not found");
-                    break;
-                case 2:
-                    failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
-                    break;
-                case 3:
-                case 5:
-                    failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
-                    break;
-                case 4:
-                    failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
-                    break;
-                default:
-                    break;
-            }
-            self.headingLabel.text = NSLocalizedString(@"Oops!", @"Oops!");
-            self.subHeadingLabel.text = failureReason;
-        }
-    });
+    NSString *failureReason;
+    if ([[data valueForKey:@"success"] boolValue] != YES) {
+        failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
+        self.headingLabel.text = NSLocalizedString(@"Oops!", @"Oops!");
+        self.subHeadingLabel.text = failureReason;
+    }
+    else {
+        self.subHeadingLabel.text = NSLocalizedString(@"Reactivation link has been sent to your account.", @"Reactivation link has been sent to your account.");
+    }
+//    ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
+//
+//    dispatch_async(dispatch_get_main_queue(), ^() {
+//        if (obj.isSuccessful) {
+//            self.subHeadingLabel.text = NSLocalizedString(@"Reactivation link has been sent to your account.", @"Reactivation link has been sent to your account.");
+//        }
+//        else {
+//            NSString *failureReason;
+//            switch (obj.reasonCode) {
+//                case 1:
+//                    failureReason = NSLocalizedString(@"sensor.activation.The username was not found", @"The username was not found");
+//                    break;
+//                case 2:
+//                    failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
+//                    break;
+//                case 3:
+//                case 5:
+//                    failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
+//                    break;
+//                case 4:
+//                    failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
+//                    break;
+//                default:
+//                    break;
+//            }
+//            self.headingLabel.text = NSLocalizedString(@"Oops!", @"Oops!");
+//            self.subHeadingLabel.text = failureReason;
+//        }
+//    });
 }
 
 @end

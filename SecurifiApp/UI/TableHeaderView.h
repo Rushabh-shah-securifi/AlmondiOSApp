@@ -7,7 +7,7 @@
 
 @protocol TableHeaderViewDelegate
 
-- (void)tableHeaderViewDidTapButton:(TableHeaderView *)view;
+- (void)dismissHeaderView:(TableHeaderView *)view;
 
 @end
 

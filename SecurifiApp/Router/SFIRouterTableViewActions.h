@@ -9,7 +9,7 @@
 
 // Delegate protocol adopted by the SFIRouterTableViewController and used to communicate UI actions from the table view cells.
 @protocol SFIRouterTableViewActions <NSObject>
-
+@optional
 - (void)onRebootRouterActionCalled;
 
 - (void)onUpdateRouterFirmwareActionCalled;
@@ -19,6 +19,8 @@
 - (void)onEnableDevice:(SFIWirelessSetting *)setting enabled:(BOOL)isEnabled;
 
 - (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString*)ssid;
+
+- (void)onShareBtnTapDelegate:(SFIWirelessSetting *)settings;
 
 // NO == block device
 - (void)onEnableWirelessAccessForDevice:(NSString*)deviceMAC allow:(BOOL)isAllowed;

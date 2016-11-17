@@ -4,7 +4,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "736h",
-      "filename" : "launch-image-1242x2208-1.png",
+      "filename" : "almond_iOS_splash_screen_1242x2208.png",
       "minimum-system-version" : "8.0",
       "orientation" : "portrait",
       "scale" : "3x"
@@ -13,7 +13,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "667h",
-      "filename" : "launch-image-750x1334-1.png",
+      "filename" : "almond_iOS_splash_screen_750x1334.png",
       "minimum-system-version" : "8.0",
       "orientation" : "portrait",
       "scale" : "2x"
@@ -21,16 +21,16 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
+      "filename" : "almond_iOS_splash_screen_640x960.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
-      "filename" : "launch-image-640x960.png",
       "scale" : "2x"
     },
     {
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "retina4",
-      "filename" : "launch-image-640x1136.png",
+      "filename" : "almond_iOS_splash_screen_640x1136.png",
       "minimum-system-version" : "7.0",
       "orientation" : "portrait",
       "scale" : "2x"
@@ -38,17 +38,17 @@
     {
       "orientation" : "portrait",
       "idiom" : "ipad",
+      "filename" : "almond_iOS_splash_screen_768x1024.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
-      "filename" : "768x1024.png",
       "scale" : "1x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "ipad",
+      "filename" : "almond_iOS_splash_screen_1536x2048.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
-      "filename" : "launch-image-1536x2048-1.png",
       "scale" : "2x"
     }
   ],

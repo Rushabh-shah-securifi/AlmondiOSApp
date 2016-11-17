@@ -8,8 +8,12 @@
 
 #import "SFILogoutAllViewController.h"
 #import "UIFont+Securifi.h"
+#import "MBProgressHUD.h"
+#import "Analytics.h"
+#import "LogoutAllRequest.h"
 
-@interface SFILogoutAllViewController () <UITextFieldDelegate>
+@interface SFILogoutAllViewController () <MBProgressHUDDelegate, UITextFieldDelegate>
+@property(nonatomic) MBProgressHUD *HUD;
 @end
 
 @implementation SFILogoutAllViewController
@@ -36,6 +40,8 @@
     self.password.delegate = self;
 
     [self enableContinueButton:NO];
+    
+    [self setUpHUD];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -47,6 +53,8 @@
     else {
         [self.password becomeFirstResponder];
     }
+    
+    [[Analytics sharedInstance] markLogoutAllScreen];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -60,6 +68,14 @@
 
 - (void)enableContinueButton:(BOOL)enabled {
     self.navigationItem.rightBarButtonItem.enabled = enabled;
+}
+
+-(void)setUpHUD{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.dimBackground = YES;
+    _HUD.delegate = self;
+    [self.navigationController.view addSubview:_HUD];
 }
 
 #pragma mark - Actions
@@ -77,8 +93,21 @@
     else if ([self.password isFirstResponder]) {
         [self.password resignFirstResponder];
     }
+    
+    [self showHudWithTimeoutMsgDelegate:@"Logging out from all devices!" time:10];
+    [self asyncSendLogoutAllWithEmail:self.emailID.text password:self.password.text];
+}
 
-    [[SecurifiToolkit sharedInstance] asyncSendLogoutAllWithEmail:self.emailID.text password:self.password.text];
+- (void)asyncSendLogoutAllWithEmail:(NSString *)email password:(NSString *)password {
+    LogoutAllRequest *request = [LogoutAllRequest new];
+    request.UserID = [NSString stringWithString:email];
+    request.Password = [NSString stringWithString:password];
+    
+    GenericCommand *cmd = [GenericCommand new];
+    cmd.commandType = CommandType_LOGOUT_ALL_COMMAND;
+    cmd.command = request;
+    
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cmd];
 }
 
 #pragma mark - UITextField delegate methods
@@ -109,6 +138,10 @@
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
+    
     if (data == nil) {
         self.logMessageLabel.text = NSLocalizedString(@"logoutall.label.Logout from all devices was not successful.", @"Logout from all devices was not successful.");
         return;
@@ -136,6 +169,20 @@
             }
         });
     }
+}
+
+#pragma mark hud methods
+- (void)showHudWithTimeoutMsgDelegate:(NSString*)hudMsg time:(NSTimeInterval)sec{
+    NSLog(@"showHudWithTimeoutMsg");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:hudMsg];
+        [self.HUD hide:YES afterDelay:sec];
+    });
+}
+
+- (void)showHUD:(NSString *)text {
+    self.HUD.labelText = text;
+    [self.HUD show:YES];
 }
 
 @end
