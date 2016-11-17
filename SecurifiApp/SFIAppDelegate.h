@@ -13,6 +13,7 @@
 
 @property(strong, nonatomic) UIWindow *window;
 
+@property(strong, nonatomic) NSString *currentFileName;
 // Returns a Configurator to be used by the app to configure the toolkit; subclasses override to set up configurations for different branded app.
 // By default, returns the configurator needed by the Almond app.
 - (SecurifiConfigurator *)toolkitConfigurator;

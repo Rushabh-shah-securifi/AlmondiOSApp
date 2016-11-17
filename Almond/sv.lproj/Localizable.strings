@@ -1,0 +1,821 @@
+/*
+ Common-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+
+/*------- Localization strings common across all apps -------*/
+
+
+/* hud. buttons, controls */
+"hud.One moment please..." = "Ett ögonblick...";
+"hud.Updating settings..." = "Uppdaterar inställningar...";
+"alert.button.OK" = "OK";
+"Oops!" = "Oops!";
+"Sorry!" = "Tyvärr!";
+"toast.Saving..." = "Spara...";
+
+/* affiliation */
+"Please try later." = "Var god försök igen senare.";
+"Please enter a valid code." = "Var god ange en giltig kod.";
+"alert.msg.Logout was unsuccessful" = "Tyvärr. Utloggningen misslyckades. Var god försök igen.";
+"alert.title.Logout Unsuccessful" = "Utloggningen Misslyckades";
+//m
+"cloudlink.title.Cloud Link" = "Molnlänk";
+"cloudlink.label.Linking till moln" = "Länka till Molnet";
+"cloudlink.label.Name" = "Namn";
+"cloudlink.label.MAC adress" = "MAC-adress";
+"cloudlink.label.WIFI SSID" = "WIFI SSID";
+"Ange kod" = "Ange kod";
+
+
+/* activation */
+
+"Reactivation link has been sent to your account." = "Aktiveringslänken har skickats till ditt konto.";
+"sensor.activation.The username was not found" = "Användarnamnet hittades inte";
+"The account is already validated" = "Kontot har redan godkänts";
+"Sorry! Cannot send reactivation link" = "Tyvärr! Aktiveringslänken kan inte skickas för tillfället. Försök igen senare.";
+"The email ID is invalid." = "Emailet är ogiltigt.";
+
+/* change password */
+
+"password-validation.strength-label.Password: Mismatch" = "Lösenord: Matchar inte";
+"password-validation.strength-label.Password: Too Short" = "Lösenord: För Kort";
+"password-validation.strength-label.Password: Too Long" = "Lösenord: För långt";
+"password-validation.strength-label.Password: Weak" = "Lösenord: Svagt";
+"password-validation.strength-label.Password: Medium" = "Lösenord: Medium";
+"password-validation.strength-label.Password: Strong" = "Lösenord: Starkt";
+"The password should be %d - %d characters long." = "Lösenordet bör vara %d - %d tecken långt.";
+"An account already exists with this email." = "Det finns redan ett konto med denna email.";
+"The email or password was incorrect." = "Email eller lösenord var felaktigt.";
+"Sorry! Signup was unsuccessful." = "Tyvärr! Registreringen misslyckades.";
+"The username was not found" = "Användarnamnet hittades inte";
+"There is a password mismatch." = "Lösenord matchar inte.";
+"You forgot to enter your password." = "Du glömde att ange ditt lösenord.";
+"You have entered an invalid email ID." = "Du har angett en ogiltig email.";
+"You forgot to enter your email ID." = "Du glömde att ange din email.";
+"password.hud.Changing password..." = "Ändrar lösenord...";
+"password.label-text.There was some error on cloud. Please try later." = "Ett fel uppstod i molnet. Var god försök igen senare.";
+"Sorry! You are not registered with us yet." = "Tyvärr! Du är inte registrerad hos oss ännu.";
+"You need to fill all the fields." = "Du måste fylla i alla fält.";
+"The current password was incorrect." = "Dt nuvarande lösenordet var inkorrekt.";
+"Sorry! Password change was unsuccessful." = "Tyvärr! Ändring av lösenord misslyckades.";
+
+/* login */
+"Please enter Username and Password" = "Var god ange Användarnamn och Lösenord";
+"Sorry! Could not complete the request." = "Tyvärr! Kunde inte fullfölja din begäran.";
+"Unable to establish Internet route to cloud service." = "Det gick inte att koppla ihop
+Internet router med molntjänst.";
+"Sorry! Login was unsuccessful." = "Tyvärr! Inlogg misslyckades.";
+"The email was not found." = "Email hittades inte.";
+"The password is incorrect." = "Lösenordet är felaktigt.";
+"Almost there." = "Nästan klar.";
+"You need to activate your account." = "Du måste aktivera ditt konto.";
+"The email or password is incorrect" = "Emailen eller lösenord är felaktigt";
+"Reactivation link has been sent to your account." = "Länk med återställning av lösenord har skickats till ditt konto";
+"Sorry! Your password cannot be reset at the moment. Try again later." = "Sorry! Lösenordet kan inte återställas för tillfället. Försök igen senare.";
+"Login" = "Logga in";
+
+/* logout all */
+
+"logoutall.navbar-title.Continue" = "Fortsätt";
+"logoutall.label.Logout from all devices was not successful." = "Utloggning från alla enheter misslyckades.";
+"logoutall.alertview.title.Error" = "Ogiltigt lösenord";
+"logoutall.alertview.msg.The password is invalid." = "Lösenordet är ogiltigt.";
+
+/* router tab */
+"router.offline-msg.label.Please check the router." = "Var god kontrollera routern.";
+"router.card-title.Cloud Almond Link" = "Moln Almond Länk";
+"router.card-title.Local Almond länk" = "Lokal Almond Länk ";
+"router.card-title.Wireless Settings" = "Trådlösa Inställningar ";
+"router.wireless-status.Enabled" = "aktiverad";
+"router.wireless-status.Disabled" = "inaktiverad";
+"router.card.Settings are not available." = "Inställningar är inte tillgängliga.";
+"router.card-title.Devices & Users" = "Enheter & Användare";
+"router.devices-summary.%d connected, %d blocked" = "%d ansluten, %d blockerad";
+"router.software-version.header.Software Update Available" = "Uppdatering av Programvara Tillgänglig";
+"router.software-version.header.instructions" = "Please tap \"Inställningar\" på din Almond";
+"router.software-version.Update Available" = "Uppdatering Tillgänglig";
+"router.software-version.Current version" = "Aktuell Version";
+"router.software-version.Not tillgängliga" = "Information om versionen finns inte.";
+"router.card-title.Router Reboot" = "Starta om Router";
+"router.reboot-msg.Router is rebooting. It will take at least" = "Router startar om. Det kommer att ta minst";
+"router.reboot-msg.2 minutes for the router to boot." = "2 minuter för routern att start om.";
+"router.reboot-msg.Please refresh after sometime." = "Var god uppdatera efter en stund. ";
+"router.Router status is not available." = "Routerstatus är inte tillgänglig.";
+"router.Last reboot %@ ago" = "Senaste omstart %@ sedan";
+"router.no-almonds.nav-title.Get igång" = "Komma igång";
+"router.hud.Router is now online." = "Router är nu online.";
+"router.hud.Updating router firmware." = "Uppdaterar router programvara.";
+"router.hud.Router is rebooting." = "Router startar om";
+"router.card-title.Send loggar" = "Skicka Loggar";
+"router.Sends %@'s logs to our server" = "Skickar %@'s loggar till vår server";
+"router.hud.Sending Logs." = "Instruerar routern att skicka loggar";
+//m
+"router.devicestatus.Connected as %@" = "Anslutna som %@";
+"router.devicesmac.MAC address är % @" = "MAC-adress är % @";
+"router.deviceIP.IP address is %@" = "IP-adress är %@";
+"router.reboot.title.Reboot the router?" = "Starta om routern?";
+"It will take at least 2 minutes for the router" = "Det tar minst 2 minuter för routern";
+"to reboot. Please refresh after sometime." = "att starta om. Var god uppdatera efter en stund.";
+"router.settings.label.SSID" = "SSID";
+"router.settings.label.Channel" = "Kanal";
+"router.settings.label.Wireless Mode" = "Trådlöst Läge";
+"router.settings.label.Security" = "Säkerhet";
+"router.settings.label.Encryption" = "Kryptering";
+"router.settings.label.Country Region" = "Landsregion";
+"router.nav-title.Get igång" = "Komma igång";
+"router.refresh-title.Refresh router data" = "Uppdatera routerinformation";
+"router.summary.IP adress: %@" = "IP-address : %@";
+"router.summary.Admin Login : %@" = "Administratörs Inloggning: %@";
+"router.software-version.title.Software Version" = "Programvaruversion";
+"router.software-version-new.title.Software Version *" = "Programvaruversion *";
+"router.software-version-new.title.Software Version" = "Programvaruversionversion";
+"router.offline-msg. is offline" = "är offline";
+"router.log-textfield-placeholder.Describe your problem here" = "Beskriv ditt problem här";
+"router.log-send-success.summary.Thanks for sending logs" = "Tack för att du skickar loggar";
+"router.log-firmware-not-supported.Please update your router's firmware" = "Var god uppdatera din routers firmware";
+"router.log-firmware-not-supported.in order to activate this functionality" = "för att kunna aktivera denna funktion";
+"router.version-title.Update now?" = "Uppdatera nu?";
+"router.update-summary.It will take a few minutes to update the software." = "Det tar några minuter att uppdatera programvaran.";
+"router.network-title.Local link" = "Lokal Länk ";
+"router.link-button.Link" = "Länk";
+"router.btn-title.Back to Cloud Link" = "Tillbaka till moln";
+"router.label.SSID 2.5GHz" = "SSID 2.5GHz";
+"router.label.SSID 5GHz" = "SSID 5GHz";
+"router.label.IP Address" = "IP-aress";
+"router.label.Admin Login" = "Administratörs Inloggning";
+"router.label.Admin Password" = "Administratörs Lösenord";
+"router.hud.Establishing lokal länk..." = "Förankrar Lokal Länk...";
+
+
+/* sensors */
+
+"Device has been tampered" = "Enheten har ändrats";
+"sensors.button.Dismiss" = "Avfärda";
+"sensors.label.Status" = "Status";
+"sensor.status-label.OFF" = "AV";
+"sensor.status-label.ON" = "PÅ";
+"sensor.status-label.OK" = "OK";
+"sensors.label.SENSOR SETTINGS" = "SENSORINSTÄLLNINGAR";
+"sensors.settings-label.Send Notifications" = "Skicka Meddelanden";
+"sensors.no-sensors.label.You don't have any sensors yet." = "Du har ingen sensor ännu.";
+"scenes.no-scenes.label.A scene is a group of sensors and a desired state for these sensors." = "En scen är en grupp av sensorer och ett önskat läge för dessa sensorer.";
+"sensors.account-confirm.label.Please confirm your account (less than a day left)." = "Var god bekräfta ditt konto (mindre än en dag kvar).";
+"sensors.account-confirm.label.Please confirm your account (%d days left)." = "Var god bekräfta ditt konto (%d dagar kvar).";
+"sensors.account-confirm.label.Check activation email for instructions." = "Kolla aktiveringsmail för instruktioner.";
+"sensors.account-confirm.label.Resend activation email" = "Skicka aktiveringsemail igen";
+"activation.toast.Reactivation link sent to your registerd email ID." = "Aktiveringlänk har skickats till din email.";
+"sensor.thermostat.field-label.Set Point" = "Set Point";
+"sensor.thermostat.field-label.Heating" = "Uppvärmning";
+"sensor.thermostat.field-label.Cooling" = "Kylning";
+"sensor.thermostat.field-label.Mode" = "Läge";
+"sensor.thermostat.segment-control.Auto" = "Automatiskt";
+"sensor.thermostat.segment-control.Heat" = "Värme";
+"sensor.thermostat.segment-control.Cool" = "Kyla";
+"sensor.thermostat.segment-control.Off" = "Av";
+"sensor.thermostat.field-label.Fan" = "Fläkt";
+"sensor.thermostat.segment-control.Auto Low" = "Auto Låg";
+"sensor.thermostat.segment-control.On Low" = "På Låg";
+"sensor.thermostat.Thermostat is %@" = "Termostat är %@";
+"sensor.thermostat.Fan is %@" = "Fläkten är %@";
+"sensor.thermostat.Battery is at %@%%" = "Batterinivån är %@%%";
+"sensor. Power är %.3fW"="Strömmen är %.3fW";
+"sensor.Current is %.3fA" = "Nuvarande är %.3fA";
+"sensor.Voltage is %.3fV" = "Spänningen är %.3fV";
+"sensor.lock.pin-picker.Pin %ld" = "Pin %ld";
+"sensor.toast.doorlock.PassCode must be 5 to 8 digits long" = "Passkod måste vara mellan 5 och 8 siffor lång";
+"sensor.device-name-label.Name" = "Namn";
+"sensor.deivice-duration-label.Ring Duration" = "Längd för Rington";
+"sensor.deivice-duration-placeholder.number of seconds" = "antal sekunder";
+"sensor.deivice-location-label.Located at" = "Finns på";
+"sensor.deivice-spara-settings.button.Save" = "Spara";
+"sensor.device-status.label.Battery OK" = "Batteri OK";
+"sensor.device-status.label.Battery %" = "Batteri % @%%";
+"sensor.device-status.label.Low Battery" = "Lågt Batteri";
+"sensor.device-status.label.LOW BATTERY" = "LÅGT BATTERI";
+"sensor.device-status.label.Battery Unknown" = "Batteri Okänt";
+"sensor.doorlock.field-label.Pins" = "Pins";
+"sensor.doorlock.pinentry-textfield.placeholder.Code is not specified." = "Kod anges inte.";
+"sensor.doorlock.button.Save Pin" = "Spara Pin";
+"sensor.doorlock.field-label.Code" = "Kod";
+"sensor.multilevel-switch.status-label.Dimmable, % @%%" = "Dimbara, % @%%";
+"sensor.level-control.status-label.Dimmable" = "Dimbar";
+"sensor.keyfob.status-label.ALL DISARMED" = "ALLA FRÅNKOPPLADE";
+"sensor.keyfob.status-label.PERIMETER ARMED" = "PERIMETER FRÅNKOPPLAD";
+"sensor.keyfob.status-label.ALL ARMED" = "ALLA KOPPLADE";
+"sensor.lightsensor.status-label.Illuminance %@" = "Belysning %@";
+"sensor.tempsensor.status-label.Humidity % @" = "Luftfuktighet %@";
+"sensor.moisturesensor.status.FLOODED" = "ÖVERSVÄMMAD";
+"sensor.poweswitch.label.Power %@W" = "Ström %@W";
+"sensor.moisturesensor.status.Temp % @" = "Temperatur %@";
+"sensor.notificaiton.label.notificationMode" = "Meddela mig";
+"sensor.notificaiton.segment.Always" = "Alltid";
+"sensor.notificaiton.segment.Away" = "Borta";
+"sensor.notificaiton.segment.Off" = "Av";
+"sensors.label.Color" = "Färg";
+"sensor.hud.UpdatingSensordata" = "Uppdaterar sensorinformation...";
+
+//r
+"sensor.deivice-showlog.button.viewlogs" = "Visa Loggar";
+"sensor.deivice-warning_rightview.seconds" = "sekunder";
+"sensor.deivice.Highlightbutton stänga av" = "Stäng av";
+"sensor.deivice.Highlightbutton vända på" = "Slå PÅ";
+"Temperaturen är % @% @" = "Temperaturen är %@%@";
+"Humidity is %@%%" = "Luftfuktigheten är %@%%";
+"sensors.label.DimmableLight-Brightness" = "Ljusstyrka";
+"sensors.label.DimmableLight-Saturation" = "Mättnad";
+"sensors.label.DimmableLight-Color Temperature" = "Färgtemperatur";
+"sensors.label.HueLamp-Brightness" = "Ljusstyrka";
+"sensors.label.HueLamp-Saturation" = "Mättnad";
+"sensors.label.HueLamp-Color" = "Färg";
+
+//rn
+"smoke-detector-Warning" = "Varning";
+"rök-detektor-Emergency" = "Nödsituation";
+"smoke-detector Smoke :%@ , CO :%@"="Rök :%@ , CO :%@";
+
+
+"sensor-detail-Fan cell On" = "På";
+"sensor-detail-Fan cell Off" = "Av";
+"sensor-detail-Target Temp" = "Måltemperatur";
+
+
+"sensor.notificaiton.fanindexpath.On" = "På";
+"sensor.notificaiton.fanindexpath.Off" = "Av";
+"sensor.awaymode.indexpath Home" = "Hem";
+"sensor.mode indexpath Off" = "Av";
+"sensor.mode indexpath Cool" = "Kyla";
+"sensor.mode indexpath Heat" = "Värme";
+"sensor.mode indexpath Heat-Cool" = "Värme-Kyla";
+
+"enhet-property-fanindexpah false" = "falska";
+"enhet-property-fanindexpah true" = "sanna";
+"device property on mobile hud Unable to update sensor"="Det gick inte att uppdatera sensor";
+
+/* signup */
+
+"signup.navbar-title.Create Account" = "Registrera dig";
+"signup.barbutton.Decline" = "Neka";
+"signuo.barbutton.Accept" = "Godkänn";
+"signup.barbutton.Continue" = "Fortsätta";
+"signup.headline-text.Signing up." = "Registrera.";
+"signup.subheadline-text.Please wait one moment..." = "Var god vänta ett ögonblick...";
+"signup.headline-text.Almost done." = "Nästan klar.";
+"signup.headline-text.An activation link was sent to your email" = "En aktiveringslänk skickades till din email.
+Följ den, sedan trycker du på Fortsätt för att logga in.";
+"signup.footerbutton.Resend the activation email" = "Skicka aktiveringsemail igen";
+"signup.footerbutton.Signup using another email" = "Registrering med hjälp av en annan email";
+"signup.footerlabel.Do you want to create another account?" = "Vill du skapa ett ytterligare konto?";
+
+
+/* Accounts */
+"accounts.navbar-title.settings" = "Inställningar";
+"accounts.userprofile.title.account" = "Konto";
+"accounts.userprofile.label.primaryEmail" = "PRIMÄR EMAIL";
+"accounts.userprofile.label.password" = "LÖSENORD";
+"accounts.userprofile.label.firstName" = "FÖRNAMN";
+"accounts.userprofile.label.lastName" = "EFTERNAMN";
+"accounts.userprofile.label.address" = "ADRESS";
+"accounts.userprofile.label.country" = "LAND";
+"accounts.userprofile.label.zipCode" = "POSTNUMMER";
+
+"accounts.userprofile.title.placeholder.name" = "Vi vet inte ditt namn ännu";
+"accounts.userprofile.textfield.placeholder.firstName" = "Vi vet inte ditt förnamn ännu";
+"accounts.userprofile.textfield.placeholder.lastName" = "Vi vet inte ditt efternamn ännu";
+"accounts.userprofile.textfield.placeholder.address1" = "Adressrad 1";
+"accounts.userprofile.textfield.placeholder.address2" = "Adressrad 2";
+"accounts.userprofile.textfield.placeholder.address3" = "Adressrad 3";
+"accounts.userprofile.textfield.placeholder.country" = "I vilket land bor du?";
+"accounts.userprofile.textfield.placeholder.zipCode" = "Vad är ditt postnummer?";
+
+"accounts.userprofile.button.changePassword" = "Ändra Lösenord";
+"accounts.userprofile.button.edit" = "Redigera";
+"accounts.userprofile.button.add" = "Lägg till";
+"accounts.userprofile.button.done" = "Klart";
+"accounts.userprofile.button.deleteAccount" = "TA BORT KONTO";
+"accounts.ownedAlmond.label.SharedWithOthers" = "Delat med %d andra";
+"accounts.ownedAlmond.label.deviceName" = "ENHETENS NAMN";
+"accounts.ownedAlmond.label.accessEmail" = "TILLGÅG TILL EMAIL";
+"accounts.ownedAlmond.button.Unlink" = "Ta bort länken";
+
+"accounts.ownedAlmond.button.Remove" = "Ta bort";
+"accounts.ownedAlmond.button.InviteMore" = "BJUD IN FLER";
+"accounts.sharedAlmond.label.SharedWithYouBy" = " Delad av dig";
+"accounts.sharedAlmond.label.deviceName" = "ENHETENS NAMN";
+"accounts.sharedAlmond.button.Remove" = "Ta bort";
+
+"accounts.alert.onDeleteAccount.title" = "Ta bort konto";
+"accounts.alert.onDeleteAccount.delete" = "Ta bort";
+"accounts.alert.onDeleteAccount.Cancel" = "Avbryt";
+"accounts.alert.onUnlinkAlmond.Unlink" = "Ta bort länken";
+"accounts.alert.onUnlinkAlmond.Cancel" = "Avbryt";
+
+"accounts.alert.onInviteToShareAlmond.title" = "Bjud in via email";
+"accounts.alert.onInviteToShareAlmond.message" = "Genom att bjuda in någon de kan komma åt %@";
+"accounts.alert.onInviteToShareAlmond.Invite" = "Bjud in";
+"accounts.alert.onInviteToShareAlmond.Cancel" = "Avbryt";
+
+"accounts.hud.loadingDetails" = "Laddar kontouppgifter...";
+"accounts.hud.deletingAccount" = "Ta bort konto...";
+"accounts.hud.updatingDetails" = "Uppdaterar kontoinformation...";
+"accounts.hud.removeUserFromSharedList" = "Ta bort användare från delad lista...";
+
+"accounts.deleteAccount.failure.reasonCode1" = "Ett fel uppstod på molnet. Var god försök igen senare.";
+"accounts.deleteAccount.failure.reasonCode2" = "Tyvärr! Du är inte registrerad hos oss ännu.";
+"accounts.deleteAccount.failure.reasonCode3" = "Du behöver aktivera ditt konto.";
+"accounts.deleteAccount.failure.reasonCode4" = "Du behöver fylla i alla fält.";
+"accounts.deleteAccount.failure.reasonCode5" = "Det nuvarande lösenordet var felaktigt.";
+"accounts.deleteAccount.failure.reasonCode6" = "Ett fel uppstod på molnet. Var god försök igen senare.";
+"accounts.deleteAccount.failure.default" = "Tyvärr! Borttagning av konto misslyckades.";
+
+"accounts.updateAccount.failure.reasonCode1" = "Ett fel uppstod på molnet. Var god försök igen senare.";
+"accounts.updateAccount.failure.reasonCode2" = "Du behöver fylla i alla fält.";
+"accounts.updateAccount.failure.reasonCode3" = "Tyvärr! Du är inte registrerad hos oss ännu.";
+"accounts.updateAccount.failure.default" = "Tyvärr! Uppdatering misslyckades.";
+
+"accounts.unlinkAlmond.failure.reasonCode1" = "Ett fel uppstod på molnet. Var god försök igen senare.";
+"accounts.unlinkAlmond.failure.reasonCode2" = "Tyvärr! Du är inte registrerad hos oss ännu.";
+"accounts.unlinkAlmond.failure.reasonCode3" = "Du behöver uppdatera ditt konto.";
+"accounts.unlinkAlmond.failure.reasonCode4" = "Du behöver fylla i alla fält.";
+"accounts.unlinkAlmond.failure.reasonCode5" = "Det nuvarande lösenordet var felaktigt.";
+"accounts.unlinkAlmond.failure.reasonCode6" = "Ett fel uppstod på molnet. Var god försök igen senare.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode1" = "Ett fel uppstod på molnet. Var god försök igen senare.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode5" = "Du behöver fylla i alla fält.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode7" = "Du kan inte lägga till dig själv som sekundär användare.";
+"accounts.deleteSecondaryUser.failure.reasonCode1" = "Ett fel uppstod på molnet. Var god försök igen senare.";
+"accounts.deleteSecondaryUser.failure.reasonCode2" = "Du behöver fylla i alla fält.";
+"accounts.deleteSecondaryUser.failure.reasonCode5" = "Sekundär användare hittades inte.";
+"accounts.deleteSecondaryUser.failure.default" = "Tyvärr! Något gick fel. Försök senare.";
+
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode1" = "Ett fel uppstod på molnet. Var god försök senare.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode2" = "Du behöver fylla i alla fält.";
+
+
+/* Notifications */
+
+//m
+"notifications.title.Recent Activities" = "Senaste Aktiviteterna";
+"notifications.headerfooter.mode.The End" = "Slutet";
+"notifications.date.Today" = "Idag";
+"notifications.bucketdate.Yesterday" = "Igår";
+
+/* Scenes */
+
+"scenes.hud.loadingScenes" = "Laddar scener...";
+"scenes.hud.deletingScene" = "Tar bort scen...";
+"scenes.hud.activatingScene" = "Aktiverar scen...";
+"scenes.hud.creatingScene" = "Skapar scen...";
+//m
+"scene.macro.Could not update sensor\ndata." = "Kunde inte uppdatera sensorinformation.";
+"scene.thermostat-title.COOLING TEMP." = "KYLTEMPERERATUR.";
+"scene.thermostat-title.HEATING TEMP." = "UPPVÄRMINGSTEMPERATUR.";
+"scene.button.Save" = "Spara";
+"scene.button.Cancel" = "Avbryt";
+"scene.title.Get Started" = "Komma Igång";
+"scene.msg.You have to select at least 1 value" = "Du måste ha minst 1 i värde";
+"scene.cancel-title.OK" = "OK";
+"scene.hud.Loading router data" = "Inläsning av routerinformation";
+"scene.hud.Loading sensor data" = "Laddar sensorinformation";
+"scene.text.Choose one or more Actions" = "Välj en eller flera åtgärder";
+"scene.alert-title.Oops" = "Oops";
+"scene.alert-msg.Sorry, There was some problem with this request, try later!" = "Tyvärr, det fanns vissa problem med denna begäran, försök senare!";
+"scene.alert-button.OK" = "OK";
+
+
+/* Scoreboard */
+//r
+"Scoreboard" = "Resultattavla";
+"Refresh.Scoreboard" = "Uppdatera Resultattavla";
+"scoreboard.section.Cloud" = "Molnet";
+"scoreboard.section.PushNotifications" = "Pushmeddelanden";
+"scoreboard.section.Events" = "Händelser";
+"scoreboard.section.Network" = "Nätverk";
+"scoreboard.section.Commands & uppdateringar" = "Kommandon & Uppdateringar";
+"scoreboard.section.Logs & Data" = "Loggar & Data";
+"footerInsection.Last refreshed %.0f secs ago @ %@" = "Senaste uppdateringen %.sekunder sedan @ %@";
+"-meddelanden. Client Token"="Klientsymbol";
+"-meddelanden. Not registered"="Inte registrerad";
+"Failed to send mail" = "Kunde inte skicka email";
+"Since %@" = "Eftersom %@";
+"notifications_logctrl.View Handler Log" = "Visa Hanteringsloggar";
+"notifications_viewactual. View Notifications" = "Visa Meddelanden";
+"notifications_viewtests. Enhetstest UI" = "Enhetstest UI";
+"events.All Events" = "Alla Händelser";
+"Network.Established anslutningar" = " Etablerade anslutningar";
+"Network.Failed Connections" = "Det gick inte att ansluta";
+"Network.Reachability Changes" = "Räckviddsförändringar";
+"SEC_ReQUEST.Dynamic Updates" = "Dynamiska Uppdateringar";
+"SEC_ReQUEST.Command Requests" = "Kommandoförfrågningar";
+"SEC_ReQUEST.Command Responses" = "Kommandosvar";
+"Email Logs & Data" = "Email Loggar & Data";
+"cloudSection.row0.Production" = "Produktion";
+"cloudSection.row1.Development" = "Utveckling";
+"Kopierade token" = " Kopierade token ";
+"Reset counter" = "Återställ räknare";
+"Sending Mail is not supported on this device" = "Att skicka email stöds inte på denna enhet";
+"Scoreboard.Preparing..." = "Förbereder...";
+"Local Network Enabled" = "Lokalt Nätverk Etablerat";
+"scoreboard.localnetwork.IP Address" = "IP-adress";
+"scoreboard.localnetwork.Port" = "Port";
+"scoreboard.localnetwork.Password" = "Lösenord";
+
+/* Sensor Support */
+//r
+"sensor support- a value has changed" = "ett värde har ändrats";
+
+/* Draw View Controller */
+//r
+"Draw viecontroller.label LOCATION" = "PLATS";
+"Draw viecontroller.label SETTINGS" = "Inställningar";
+"Draw viecontroller.label INFO" = "Information";
+
+/* Main View Controller */
+//r
+"Sorry! Unable to establish Internet route to cloud service." = "Tyvärr! Det gick inte att etablera Internet router till molntjänst.";
+"mainviewcontroller_Connecting. Please wait!" = "Ansluter. Var god vänta!";
+"mainviewcontroller_Sorry! Could not connect to the cloud service." = "Tyvärr! Kunde inte ansluta till molntjänst.";
+"main view controller Sorry! Push Notification was not registered." = "Tyvärr! Pushmeddelanden registrerades inte.";
+"main view controller Sorry! Push Notification was not deregistered." = "Tyvärr! Pushmeddelanden avregistrerades inte.";
+
+/* Table View Controller */
+//r
+"In process of connecting. Change connection method." = "Ansluter. Ändra anslutningsmetod.";
+"Cloud Connection" = "Molnanslutning.";
+"connection status Local Connection" = "Anslutning";
+"alert.title-Switch to Local Connection" = "Ändra till Lokal Anslutning";
+"alert.title-Edit Local Connection Settings" = "Redigera Inställningar för Lokal Anslutning";
+"Alert view title-Retry Cloud Connection" = "Återuppkoppla Molnanslutning";
+"Alert view title-Switch to Local Connection" = "Växla till lokal anslutning";
+"Edit Local Connection Settings" = "Edit Local Connection Settings";
+"Alert view title-Edit Local Connection Settings" = "Redigera inställningar för lokal anslutning";
+"alert view error_Cloud Connection" = "Molnanslutning";
+"alert view error_Local Connection" = "Lokal Anslutning";
+"alertview localconnection_Switch to Cloud Connection" = "Växla till molnanslutning";
+"alertview Local connection settings are missing." = "Inställningar för lokal anslutning saknas. ";
+"alertview title Add Local Connection Settings" = "Lägg till lokala inställningar";
+"alert msg offline Local Retry Local Connection" = "Återuppkoppla Lokal Asnlutning";
+"alert title offline Local Switch to Cloud Connection" = "Växla till molnanslutning";
+"alert title offline Local Edit Local Connection Settings" = "Redigera inställningar för lokal anslutning";
+"mainviewcontroller hud Loading router data" = "Laddar routerinformation";
+"mainviewcontroller hud Loading sensor data" = "Laddar sensorinformation";
+"mainviewcontroller hud hud.Updating settings..." = "Uppdaterar inställningar...";
+"Cancel"="Avbryt";
+
+/* Wifi */
+"wifi.hud.UpdatingWifiClient" = "Uppdatera Wifi klient...";
+"wifi.hud.removeClient" = "Tar bort wifi-klient...";
+"wifi.button.deleteClient" = "Ta bort";
+
+//r
+"CONNECTED" = "ANSLUTEN";
+"NOT CONNECTED" = "INTE ANSLUTEN";
+
+"SFIWiFiClientsListViewController-propertyNames-Name" = "Namn";
+"SFIWiFiClientsListViewController-propertyNames-Type" = "Typ";
+"SFIWiFiClientsListViewController-propertyNames-MAC Address" = "MAC-address";
+"SFIWiFiClientsListViewController-propertyNames-sista kända IP" = "Senast kända IP-adress ";
+"SFIWiFiClientsListViewController-propertyNames-Connection" = "Anslutning";
+"SFIWiFiClientsListViewController-propertyNames-Use as Presence Sensor" = "Använd som förstahandsval för Sensor Presence Sensor";
+"SFIWiFiClientsListViewController-propertyNames-Notify me" = "Meddela mig";
+"SFIWiFiClientsListViewController-propertyNames-Remove" = "Ta bort";
+"Presence sensor Yes"="Ja";
+"Presence sensor NO" = "Nej";
+"response.alert-Oops" = "Oops";
+"response.alert-Sorry, There was some problem with this request, try later!" = "Sorry, There was some problem with this request, try later!";
+"response.alert-OK" = "OK";
+
+/* Sensor Index Support */
+
+" Fan is " = "Fläkt är ";
+" Fan is set to " = "Fläkt är inställd på ";
+" brightness changed to " = "ljusstyrka ändrad till ";
+" brightness changed to " = "ljusstyrka ändrad till ";
+" detected Fire." = " upptäckt Brand .";
+" detected Gas." = "upptäckt Gas.";
+" detected Smoke." = "upptäckt Rök.";
+" detected Vibration." = "upptäckt Vibration.";
+" detected Vibration." = "upptäckt Vibration.";
+" detected motion." = "upptäckt rörelse.";
+" detected motion." = "upptäckt rörelse.";
+" detected water." = "upptäckt Vatten.";
+" has been Tampered." = " har Ändrats.";
+" hue color changed to " = "hue-färg ändrad till";
+" is " = " är ";
+" is Armed." = "är kopplad.";
+" is Closed." = "är Stängd.";
+" is Closing." = "Stänger.";
+" is Disarmed." = "är Frånkopplad.";
+" is Locked." = "är Låst.";
+" is Open." = "är Öppen.";
+" is Opened." = "är Öpnnad.";
+" is Opening." = "Öppnar.";
+" is Perimeter Armed." = " är Perimeterkopplad.";
+" is Ringing." = "Ringer.";
+" is Silent." = "är Tyst.";
+" is Stopped." = "är Stoppad.";
+" is Unlocked." = "är Olåst.";
+" is cooling down to " = "kyler ner till ";
+" is dimmed to " = "är nedtonad till ";
+" is heating up to " = "är uppvärmd till ";
+" is not fully Locked." = "är inte helt låst.";
+" is reset from Tampered." = " är återställd från Ändrad .";
+" is set to " = "är inställd på ";
+" is switched Off." = "är avstängd .";
+" is switched On." = "är påslagen .";
+" is turned Off." = "är avstängd.";
+" is turned On." = "är påslagen .";
+" is turned on for " = "är aktiverad för ";
+" saturation changed to " = "mättnad ändrad till ";
+" seconds" = "sekunder";
+" stopped leaking." = "slutade läcka. ";
+" turned Off." = "avstängd.";
+" turned On." = "påslagen.";
+"'s Battery is Low." = "s Batteriet är lågt .";
+"'s Fire is gone." = "s Brand är borta.";
+"'s Gas is gone." = "s Gas är borta.";
+"'s Smoke is gone." = "s Rök är borta .";
+"'s color temperature changed to " = "s färgtemperatur ändrades till";
+"'s humidiy changed to " = "s luftfuktighet ändrades till ";
+"'s light reading changed to " = "s ljusmätning ändrades till ";
+"'s motion stopped." = "s rörelse stoppades.";
+"'s pin code changed." = "s pin-kod ändrades.";
+"'s power reading changed to " = "s strömmätning ändrades till ";
+"'s temperature changed to " = "s temperatur ändrades till";
+"'s temperature set point changed to " = "s temperature set point ändrades till ";
+"'s vibration stopped." = "s vibration stoppades.";
+": no presence detected." = ":ingen närvaro upptäcktes.";
+": presence detected." = ":närvaro upptäcktes.";
+"AWAY" = "BORTA ";
+"HOME" = "HEM";
+"OFF" = "AV";
+"ON" = "PÅ ";
+"Temperatur" = "Temperatur ";
+"\u00B0 Farenheit" = "\u00B0 Farenheit";
+
+//To be translated
+"DIM" = "DUNKEL";
+"HEAT-COOL"="HEAT-COOL";
+"AUTO"="AUTO";
+"HEAT" = "hetta";
+"COOL" = "HÄFTIGT";
+"OFF" = "AV";
+"FAN ON" = "FAN ON";
+"FAN OFF" = "FAN OFF";
+"HOME" = "HEM";
+"AWAY" = "BORTA";
+"COOLING TEMP." = "KYLA TEMP.";
+"HEATING TEMP." = "UPPVÄRMNING TEMP.";
+"Version" = "Version";
+"Settings" = "Inställningar";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
+
+
+
+"login.local.Switch to Local Connection" = "Ändra till Lokal Anslutning";
+
+//new added
+"router.log-send-error.There was an error sending logs" = "Det uppstod ett fel skickar loggarna";
+"Sensorview-almondata-Get Started" = "Komma igång";
+"showtoast Unable to update sensor" = "Det går inte att uppdatera sensor";
+"Force sensor data refresh" = "Force sensor data refresh";
+"tableviewcell-Updating sensor data.\nPlease wait." = "Updating sensor data.\nPlease wait.";
+"Tharmostat_setpoint-SET POINT %@%@" = "börvärde%@%@";
+"Tharmostat_setpoint-temperature" = "temperatur";
+"sensor-property-edit smokedetector Warning" = "Varning";
+"sensor-property-edit smokedetector Emergency" = "nödläge";
+"read-almond-version %@ (%@)" = "variant%@ (%@)";
+
+
+"Cancel" = "Annullera";
+"router.card-title.Local Almond Link" = "lokal Almond länk";
+"router.software-version.Update Available" = "ändringTillgängliga";
+"router.software-version.header.instructions" = "Vänligen knacka\"inställningar\" på din Almond";
+"sensor.awaymode.indexpath Away" = "bort";
+"mainview-configure-Debug" = " felrättn";
+"connection status Cloud Connection" = "Molnet anslutning";
+"alert title offline Local Retry Local Connection" = "Försök lokal anslutning";
+"connection status Local Connection" = "Lokal anslutning";
+
+
+//--------------
+
+
+
+
+/* UI Accounts */
+"Drawviewcontroller.account" = "konto";
+"Drawviewcontroller.Logout" = "Logga ut";
+"Drawviewcontroller.Logout All" = "Logga ut alla";
+"Draqviewcontroller.add"="lägga till";
+
+//new - sensor table view cell
+
+"sensor.field-macro.PinCodeField" = "pinkod fält";
+"sensor.status-label.PRESENCE DETECTED" = "NÄRVARO DETEKTERAS";
+"sensor.macro-msg.Could not update sensor\ndata." = "kunde inte uppdatera sensordata.";
+"sensor.status-label.OPEN" = "ÖPPEN";
+"sensor.status-label.CLOSED" = "STÄNGT";
+"sensor.status-label.UNLOCKED" = "OLÅST";
+"sensor.status-label.LOCKED" = "LÅST";
+"sensor.status-label.ACTIVE" = "AKTIV";
+"sensor.status-label.INACTIVE" = "INAKTIV";
+"sensor.status-label.MOTION DETECTED" = "RÖRELSE DETEKTERAS";
+"sensor.status-label.NO MOTION" = "INGEN RÖRELSE";
+"sensor.status-label.ALARM: FIRE DETECTED" = "LARM: BRAND UPPTÄCKS";
+"sensor.status-label.OK" = "OK";
+"sensor.status-label.FLOODED" = "SVÄMMADE";
+"sensor.status-label.ALARM: GAS DETECTED" = "LARM: GAS UPPTÄCKS";
+"sensor.status-label.VIBRATION DETECTED" = "VIBRATIONER DETEKTERAS";
+"sensor.status-label.NO VIBRATION" = "INGA VIBRATIONER";
+"sensor.msg-label.State data unknown.\nUse manual controls." = "tillståndsdata okända. använda manuella kontroller.";
+"sensor.status-label.PRESENCE DETECTED" = "NÄRVARO DETEKTERAS";
+
+"sensor.status-label.NO PRESENCE" = "INGEN NÄRVARO";
+"sensor.status-label.SMOKE DETECTED!" = "RÖK DETEKTERAS!";
+"sensor.status-label.RINGING" = "RINGANDE";
+"sensor.status-label.CLOSING" = "STÄNGNING";
+"sensor.status-label.STOPPED" = "STOPPAD";
+"sensor.status-label.OPENING" = "ÖPPNING";
+
+//Some more
+"sensor.text.%ld SENSORS" = "%ld SENSORER";
+"sensor.text.%ld SENSOR" = "%ld SENSOR";
+
+"Device.propertyeditview.controller.Name" = "namn";
+"Device.propertyeditview.controller.Location" = "Läge";
+"Device.propertyeditview.controller.Enter IR Code" = "Ange IR kod";
+"Device.propertyeditview.controller.Example 444" = "Exempel 444";
+
+"scenes.new-scene.label.New Scene" = "ny scen";
+
+//24-9
+"View Device History”=“View Device History";
+"Name" = "Name";
+"Location" = "Location";
+"Actions" = "Actions";
+"Stop" = "Stop";
+"Battery" = "Battery";
+"Clamp 1 Power" = "Clamp 1 Power";
+"Clamp 1 Energy" = "Clamp 1 Energy";
+"Clamp 2 Power" = "Clamp 2 Power";
+"Clamp 2 Energy" = "Clamp 2 Energy";
+"Siren" = "Siren";
+"Switch 1" = "Switch 1";
+"Switch 2" = "Switch 2";
+"Temperature" = "Temperature";
+"AC Mode" = "AC Mode";
+"High Temperature" = "High Temperature";
+"Low Temperature" = "Low Temperature";
+"Swing" = "Swing";
+"Power" = "Power";
+"IR Code" = "IR Code";
+"Configuration" = "Configuration";
+"Humidity" = "Humidity";
+"Luminance" = "Luminance";
+"Away Mode" = "Away Mode";
+"CO Level" = "CO Level";
+"Smoke Level" = "Smoke Level";
+"Mode" = "Mode";
+"Target Range" = "Target Range";
+"Fan Mode" = "Fan Mode";
+"Fan" = "Fan";
+"Notify me" = "Notify me";
+
+
+
+
+/* ==================================================================== */
+
+/*
+ Almond-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+/*------- Localization strings specific to Almond app -------*/
+
+
+/* affiliation */
+"router.linkalmond-msg.headline" = "Låt oss koppla\n en Almond.";
+"router.linkalmond-msg.message" = "Starta guiden på din Almond och tryck sedan på symbolen nedan.";
+"Almond Linked" = "Almond Kopplad";
+"Link Almond" = "Molnlänk";
+"Local Link Almond" = "Lokal Länk";
+"Please wait while your Almond is being linked to cloud." = "Var god vänta medan din Almond kopplas till molnet.";
+"This Almond is already linked to another user." = "Denna Almond är redam kopplad till en annan användare. Kontakta oss på support@securifi.com ";
+"Almond could not be affiliated" = "Almond kunde inte anslutas.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "Kör Almond Konto-appen och ange kodes som visas.";
+"cloudlink.button.Link Almond" = "Koppla Almond";
+"cloudlink.button.Add Almond Locally" = "Lägg till Almond Lokalt";
+
+
+/* router tab */
+"router.offline-msg.label.Almond is Offline." = "Almond är Offline.";
+//m
+"router.msg-link.The Almond was successfully linked." = "Almond kopplades.";
+"router.btn-title.Unlink Almond?" = "Koppla från Almond?";
+"router.btn-title.Link Almond Locally" = "Koppla Almond Lokalt";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Var god notera att du utan molnkontroll inte tar emot meddelanden eller har möjlighet att fjärrstyra din Almond.";
+"router.error-msg.This Almond is already linked." = "Denna Almond är redan kopplad.";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." = "Ett fel inträffade vid försök att koppla Almond. Var god försök igen.";
+
+/* sensors */
+"router.no-sensors.label.Add a sensor from your Almond." = "Lägg till en sensor från din Almond.";
+
+/* signup */
+"signup.headline-text.Securifi Cloud Account." = "Securifi Molnkonto.";
+"signup.headline-text.Access your Almonds" = "Få tillgång till din Almond och
+dina hemenheter från var som helst.";
+
+/* Accounts */
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "Du äger denna Almond";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "Almond Namn";
+"accounts.ownedAlmond.button.RenameAlmond" = "Byt namn på Almond";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = "Almond Namn";
+"accounts.sharedAlmond.button.RenameAlmond" = "Byt namn på Almond";
+"accounts.alert.onDeleteAccount.message" = "Om du tar bort kontot  kopplar du från ALmond(s) och raderar användarinställningar. För att bekräfta borttagning av kontot ange ditt lösenord nedan.";
+"accounts.alert.onUnlinkAlmond.title" = "Koppla från Almond";
+"accounts.alert.onUnlinkAlmond.message" = "För att bekräfta koppling av Almond ange ditt lösenord nedan.";
+"accounts.itoast.almondNameMax32Characters" = "Almond namn kan inte vara mer än 32 tecken.";
+"accounts.itoast.unableToChangeAlmondName" = "Tyvärr! Det gick inte att ändra Almonds namn";
+"accounts.hud.unlinkingAlmond" = "Koppla från Almond...";
+"accounts.hud.inviteUserToShareAlmond" = "Att bjuda in användare att dela Almond...";
+"accounts.hud.changeAlmondName" = "Ändra Almond namn ...";
+"accounts.hud.removeSharedAlmond" = "Ta bort delad Almond...";
+"accounts.unlinkAlmond.failure.default" = "Tyvärr! Det gick inte att koppla från Almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "Den här användaren har inte ett Securifi-konto.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "Användaren har inte verifierat Securifi-kontot ännu.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "Du inte ägare av denna Almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "Du har redan delat denna Almond med användaren.";
+"accounts.inviteUserToShareAlmond.failure.default" = "Tyvärr! Det gick inte att dela Almond.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "Du är inte ihopkopplad med denna Almond ";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "Sekundära användare är inte ihopkopplade med denna Almond.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "Du är inte ihopkopplad med denna Almond.";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "Tyvärr! Det gick inte att ta bort delad Almond.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "Almond MACs";
+"Copied Almond MAC" = "Kopierad Almond MAC";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "Ansluten till din Almond via moln.";
+"alertview -Connected to your Almond via cloud." = "Ansluten till din Almond via moln.";
+"Add Local Connection Settings" = "Lägg till inställningar för Lokal Anslutning";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "Molnanslutning till din Almond misslyckades. Tryck försök igen eller ändra till lokal anslutning.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = "Lokal anslutning till din Almond misslyckades. Tryck försök igen eller ändra till lokal anslutning.";
+"hud message-Setting Almond to Away Mode" = "Ställ in till Borta-läge";
+"hud message-Setting Almond to Home Mode" = "Ställ in Almond till Hem-läge";
+"alertview Can't connect to your Almond. Please select a connection method." = "Kan inte koppla till din Almond. Var god välj ett anslutningsalternativ.";
+"alertview localconnection_Connected to your Almond locally." = "Ansluten till din Almond lokalt.";
+
+
+
+
+//To be translated
+/* login */
+"Monitor and Control your home from anywhere." = "Övervaka och styra ditt hem från var som helst.";
+
+"AlmondList" = "AlmondLista";
+
+
+
+
+
+
+
+
+" Fan Swing is Off" = " Fan Swing is Off";
+" Fan Swing is On" = " Fan Swing is On";
+"'s IR code changed." = "'s IR code changed.";
+"'s configuration changed." = "'s configuration changed.";
+" is Silent" = " is Silent";
+" is set to Emergency" = " is set to Emergency";
+" is set to Fire" = " is set to Fire";
+" is set to Ambulance" = " is set to Ambulance";
+" is set to Police" = " is set to Police";
+" is set to Door Chime" = " is set to Door Chime";
+" is set to Beep" = " is set to Beep";
+"'s energy reading is " = "'s energy reading is ";
+"'s power reading is " = "'s power reading is ";
+"'s Clamp 1 power reading is " = "'s Clamp 1 power reading is ";
+"'s Clamp 2 power reading is " = "'s Clamp 2 power reading is ";
+"'s Clamp 1 energy reading is " = "'s Clamp 1 energy reading is ";
+"'s Clamp 2 energy reading is " = "'s Clamp 2 energy reading is ";
+"'s color temperature changed to ." = "'s color temperature changed to .";
+"° Farenheit" = "° Farenheit";
+" second" = " second";
+" humidity is " = " humidity is ";
+" is Up." = " is Up.";
+" is Down." = " is Down.";
+"router.linkalmond-button.title" = "LINK ALMOND";
+"signup.navbar-title.Terms of Use" = "Terms of Use";
+"router.log-advisory message" = "Along with your message, this will send Almond debug information and logs to our cloud. This information will help us resolve your problem faster. Please note that we do not send any sensitive information like your passwords.";

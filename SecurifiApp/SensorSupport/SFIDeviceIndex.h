@@ -7,13 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SecurifiToolkit/SecurifiTypes.h"
 
 @interface SFIDeviceIndex : NSObject
 
 - (instancetype)initWithValueType:(SFIDevicePropertyType)valueType;
 
-
+@property(nonatomic) int cellId;
 @property(nonatomic, readonly) SFIDevicePropertyType valueType;
 @property(nonatomic) NSArray *indexValues;
 @property(nonatomic) int indexID;
+@property(nonatomic) BOOL isEditableIndex;
+@property(nonatomic) BOOL isToggle;
 @end

@@ -74,13 +74,16 @@ typedef NS_ENUM(int, SFICardView_right_offset) {
 // Draws a left-aligned header with given title
 - (UILabel *)addTitle:(NSString *)title;
 
-- (void)addTitleAndOnOffSwitch:(NSString *)title target:(id)target action:(SEL)action on:(BOOL)isSwitchOn;
+- (void)addTitleAndOnOffSwitch:(NSString *)title target:(id)target action:(SEL)action shareAction:(SEL)shareAction on:(BOOL)isSwitchOn;
 
 - (void)addTitleAndButton:(NSString *)title target:(id)target action:(SEL)action buttonTitle:(NSString *)buttonTitle;
 
 // Draws a summary message. Usually added after calling addTitle and addHeader to create the standard
 // card header view.
 - (UILabel *)addSummary:(NSArray *)msgs;
+
+// Draws a text label for displaying a long message up to 6 lines long.
+- (UILabel *)addLongSummary:(NSString *)msg;
 
 // Standard method for laying out a row of info. The name label is left justified, and the value label is right justified.
 - (void)addNameLabel:(NSString *)name valueLabel:(NSString *)value;
@@ -93,5 +96,7 @@ typedef NS_ENUM(int, SFICardView_right_offset) {
 // on the card, relative to the current Y-offset, and wires up the button to the specified target and action selector.
 // The parameter "editing" controls the current visual state, which changes when the card is being edited or not.
 - (void)addEditIconTarget:(id)target action:(SEL)action editing:(BOOL)editing;
+
++ (NSInteger)getLineCount:(NSArray*)msgs;
 
 @end

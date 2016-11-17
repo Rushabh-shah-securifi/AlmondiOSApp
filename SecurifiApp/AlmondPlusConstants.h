@@ -51,7 +51,7 @@
 #define SECURITY @"Security"
 #define WIRELESS_MODE @"WirelessMode"
 #define COUNTRY_REGION @"CountryRegion"
-#define INDEX @"index"
+//#define INDEX @"index"
 #define ACTION @"action"
 
 //PY 271113 - Router Summary
@@ -59,10 +59,14 @@
 #define ROUTER_SUMMARY @"AlmondRouterSummary"
 #define ENABLED @"enabled"
 #define ROUTER_UPTIME @"RouterUptime"
+#define ROUTER_UPTIME_RAW @"Uptime"
 #define WIRELESS_SETTINGS_SUMMARY @"AlmondWirelessSettingsSummary"
 #define CONNECTED_DEVICES_SUMMARY @"AlmondConnectedDevicesSummary"
 #define BLOCKED_MAC_SUMMARY @"AlmondBlockedMACSummary"
 #define BLOCKED_CONTENT_SUMMARY @"AlmondBlockedContentSummary"
 #define FIRMWARE_VERSION @"FirmwareVersion"
+#define ROUTER_URL @"Url"
+#define ROUTER_LOGIN @"Login"
+#define ROUTER_PASSWORD @"TempPass"
 
 #endif

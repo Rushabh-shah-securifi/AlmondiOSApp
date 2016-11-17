@@ -15,6 +15,7 @@
         _notificationIgnoreIndex = NO;
         _valueType = valueType;
         _matchType = MatchType_equals;
+        self.eventType=nil;
     }
 
     return self;
@@ -39,6 +40,13 @@
 
     return NO;
 }
+- (NSString *)getDisplayText:(NSString *)value {
+    if(self.layoutType!=nil && ([self.layoutType isEqualToString:@"dimButton"] || [self.layoutType isEqualToString:@"textButton"]))
+        return [NSString stringWithFormat:@"%@ %@%@", self.displayText, value, self.valueFormatter.suffix];
+    return self.displayText;
+}
+
+
 
 - (NSString *)formatNotificationText:(NSString *)sensorValue {
     if (sensorValue == nil) {

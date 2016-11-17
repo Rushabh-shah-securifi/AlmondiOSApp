@@ -17,6 +17,7 @@
     __weak IBOutlet UILabel *lblName;
     __weak IBOutlet UILabel *lblInfo;
     IBOutlet UIButton *btnActivate;
+    IBOutlet UIImageView *alexaImg;
 }
 
 @end
@@ -58,8 +59,8 @@
 - (void)createScenesCell:(id)info {
     self.cellInfo = info;
     viewGridIcon.backgroundColor = self.cellColor;
-    lblName.text = info[@"SceneName"];
-    //TEST
+    lblName.text = info[@"Name"];
+
     if ([info[@"SceneEntryList"] isKindOfClass:[NSArray class]]) {
         self.deviceIndexes = info[@"SceneEntryList"];
     }else{
@@ -68,19 +69,43 @@
         NSData * data = [strSceneEntryList dataUsingEncoding:NSUTF8StringEncoding] ;
         self.deviceIndexes = [data objectFromJSONData];
     }
-    if ([[info valueForKey:@"IsActive"] boolValue]) {
+    if ([[info valueForKey:@"Active"] boolValue]) {
         [btnActivate setImage:[UIImage imageNamed:@"iconSceneChekmark"] forState:UIControlStateNormal];
     }else{
         [btnActivate setImage:[UIImage imageNamed:@"iconSceneCircle"] forState:UIControlStateNormal];
     }
-    if (self.deviceIndexes.count>1) {
-        lblInfo.text = [NSString stringWithFormat:@"%ld SENSORS",(long)self.deviceIndexes.count];
+    BOOL isCompatible = [self isSceneNameCompatibleWithAlexa];
+    if (isCompatible){
+        alexaImg.image = [UIImage imageNamed:@"amazon_echo_voice"];
     }else{
-        lblInfo.text = [NSString stringWithFormat:@"%ld SENSOR",(long)self.deviceIndexes.count];
+        alexaImg.image = nil;
+    }
+    if (self.deviceIndexes.count>1) {
+        lblInfo.text = [NSString stringWithFormat:NSLocalizedString(@"sensor.text.%ld SENSORS", "SENSORS"),(long)self.deviceIndexes.count];
+    }else{
+        lblInfo.text = [NSString stringWithFormat:NSLocalizedString(@"sensor.text.%ld SENSOR", "SENSOR"),(long)self.deviceIndexes.count];
     }
     
 }
 - (IBAction)btnActivateTap:(id)sender {
     [self.delegate activateScene:self Info:self.cellInfo];
 }
+
+- (BOOL)isSceneNameCompatibleWithAlexa{
+    NSArray *sceneNameList;
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"scene_names" ofType:@"txt"];
+    NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    sceneNameList = [content componentsSeparatedByString:@","];
+    NSString *lowerCaseSceneName = lblName.text.lowercaseString;
+    BOOL isCompatible = NO;
+    for(NSString *name in sceneNameList){
+        if([name.lowercaseString isEqualToString:lowerCaseSceneName]){
+            isCompatible = YES;
+            break;
+        }
+    }
+    return isCompatible;
+}
+
+
 @end

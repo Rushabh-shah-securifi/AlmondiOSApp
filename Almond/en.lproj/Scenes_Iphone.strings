@@ -1,0 +1,127 @@
+/* 
+  Scenes_Iphone.strings
+  SecurifiApp
+
+  Created by Masood on 16/09/15.
+  Copyright (c) 2015 Securifi Ltd. All rights reserved.
+*/
+
+/* Class = "UILabel"; text = "Hall Lamp"; ObjectID = "0eg-Dz-Wu1"; */
+"0eg-Dz-Wu1.text" = "Hall Lamp";
+
+/* Class = "UITabBarItem"; title = "Scenes"; ObjectID = "1wV-S3-1SM"; */
+"1wV-S3-1SM.title" = "Scenes";
+
+/* Class = "UILabel"; text = "Matt’s iPad"; ObjectID = "3T6-RK-IdY"; */
+"3T6-RK-IdY.text" = "Matt’s iPad";
+
+/* Class = "UILabel"; text = "CONNECTED"; ObjectID = "3pu-Ud-Zmz"; */
+"3pu-Ud-Zmz.text" = "CONNECTED";
+
+/* Class = "UILabel"; text = "Use as Presence Sensor"; ObjectID = "5VS-Ii-DVv"; */
+"5VS-Ii-DVv.text" = "Use as Presence Sensor";
+
+/* Class = "UITextField"; placeholder = "Device Name"; ObjectID = "9QV-YC-3yk"; */
+"9QV-YC-3yk.placeholder" = "Device Name";
+
+/* Class = "UILabel"; text = "Heating Target Temperature"; ObjectID = "9gM-uJ-gk4"; */
+"9gM-uJ-gk4.text" = "High Temperature";
+
+/* Class = "UILabel"; text = "CONNECTED"; ObjectID = "B0M-NR-giG"; */
+"B0M-NR-giG.text" = "CONNECTED";
+
+/* Class = "UILabel"; text = "Saturation"; ObjectID = "CNM-GN-H2I"; */
+"CNM-GN-H2I.text" = "Saturation";
+
+/* Class = "UILabel"; text = "Cooling Target Temperature"; ObjectID = "DG7-SK-dZj"; */
+"DG7-SK-dZj.text" = "Low Temperature";
+
+/* Class = "UILabel"; text = "Matt’s iPad"; ObjectID = "DcB-dP-4gB"; */
+"DcB-dP-4gB.text" = "Matt’s iPad";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "GgT-hK-vcf"; */
+"GgT-hK-vcf.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "   Back"; ObjectID = "I6n-bO-qew"; */
+"I6n-bO-qew.normalTitle" = "   Back";
+
+/* Class = "UILabel"; text = "Hue"; ObjectID = "InX-U3-YwC"; */
+"InX-U3-YwC.text" = "Hue";
+
+/* Class = "UILabel"; text = "CONNECTED"; ObjectID = "JW0-Tz-Kzx"; */
+"JW0-Tz-Kzx.text" = "CONNECTED";
+
+/* Class = "UILabel"; text = "Celsius"; ObjectID = "M8d-eW-7pP"; */
+"M8d-eW-7pP.text" = "Celsius";
+
+/* Class = "UILabel"; text = "Main Thermostat"; ObjectID = "PJz-Pb-UKi"; */
+"PJz-Pb-UKi.text" = "Main Thermostat";
+
+/* Class = "UIButton"; normalTitle = "REMOVE"; ObjectID = "RPx-f9-Q3y"; */
+"RPx-f9-Q3y.normalTitle" = "REMOVE";
+
+/* Class = "UILabel"; text = "Idle. LO 74°F. HI 86°F."; ObjectID = "Tho-VK-R3H"; */
+"Tho-VK-R3H.text" = "Idle. LO 74°F. HI 86°F.";
+
+/* Class = "UILabel"; text = "Stop"; ObjectID = "UD3-CH-HWr"; */
+"UD3-CH-HWr.text" = "Stop";
+
+/* Class = "UIButton"; normalTitle = "Save"; ObjectID = "UqN-q8-qkX"; */
+"UqN-q8-qkX.normalTitle" = "Save";
+
+/* Class = "UIButton"; normalTitle = "BLOCK"; ObjectID = "VN7-N7-QGm"; */
+"VN7-N7-QGm.normalTitle" = "BLOCK";
+
+/* Class = "UIButton"; normalTitle = "Delete this Scene?"; ObjectID = "Wnf-Cb-xqC"; */
+"Wnf-Cb-xqC.normalTitle" = "Delete this Scene?";
+
+/* Class = "UILabel"; text = "Matt’s iPad"; ObjectID = "Ys5-fh-bQ6"; */
+"Ys5-fh-bQ6.text" = "Matt’s iPad";
+
+/* Class = "UILabel"; text = "Matt’s iPad"; ObjectID = "arc-jr-cg8"; */
+"arc-jr-cg8.text" = "Matt’s iPad";
+
+/* Class = "UILabel"; text = "Main Thermostat"; ObjectID = "bac-A1-Cmc"; */
+"bac-A1-Cmc.text" = "Main Thermostat";
+
+/* Class = "UILabel"; text = "Enabled"; ObjectID = "bnN-vT-5Qb"; */
+"bnN-vT-5Qb.text" = "Enabled";
+
+/* Class = "UILabel"; text = "Enabled"; ObjectID = "cba-u6-VtR"; */
+"cba-u6-VtR.text" = "Enabled";
+
+/* Class = "UILabel"; text = "Fahrenheit"; ObjectID = "i21-pk-ncq"; */
+"i21-pk-ncq.text" = "Fahrenheit";
+
+/* Class = "UILabel"; text = "Name this Scene"; ObjectID = "i3B-lM-Pjx"; */
+"i3B-lM-Pjx.text" = "Name this Scene";
+
+/* Class = "UIButton"; normalTitle = "   Back"; ObjectID = "iyJ-Ty-6BZ"; */
+"iyJ-Ty-6BZ.normalTitle" = "   Back";
+
+/* Class = "UILabel"; text = "Show"; ObjectID = "llv-JB-aiq"; */
+"llv-JB-aiq.text" = "Show";
+
+/* Class = "UILabel"; text = "CONNECTED"; ObjectID = "loe-Vf-Ewy"; */
+"loe-Vf-Ewy.text" = "CONNECTED";
+
+/* Class = "UILabel"; text = "CONNECTED"; ObjectID = "p41-iv-30S"; */
+"p41-iv-30S.text" = "CONNECTED";
+
+/* Class = "UILabel"; text = "Enabled"; ObjectID = "qhb-IZ-ClC"; */
+"qhb-IZ-ClC.text" = "Enabled";
+
+/* Class = "UINavigationController"; title = "ScenesNavigationController"; ObjectID = "t7m-Qy-jJh"; */
+"t7m-Qy-jJh.title" = "ScenesNavigationController";
+
+/* Class = "UIButton"; normalTitle = "Save"; ObjectID = "tdp-8A-tJu"; */
+"tdp-8A-tJu.normalTitle" = "Save";
+
+/* Class = "UILabel"; text = "Brightness"; ObjectID = "umo-Pz-pWi"; */
+"umo-Pz-pWi.text" = "Brightness";
+
+/* Class = "UITextField"; placeholder = "Name"; ObjectID = "xfq-vN-gjS"; */
+"xfq-vN-gjS.placeholder" = "Name";
+
+/* Class = "UIViewController"; title = "NewScene"; ObjectID = "ytT-kF-AP3"; */
+"ytT-kF-AP3.title" = "NewScene";

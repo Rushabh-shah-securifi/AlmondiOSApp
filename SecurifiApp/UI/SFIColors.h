@@ -24,6 +24,58 @@
 
 + (SFIColors *)yellowColor;
 
++ (UIColor *)ruleBlueColor;
+
++ (UIColor *)ruleOrangeColor;
+
++ (UIColor *)ruleGraycolor;
+
++ (UIColor *)ruleLightGrayColor;
+
++ (UIColor *)darkGrayColor;
+
++ (UIColor *)lightGreenColor;
+
++ (UIColor *)ruleLightOrangeColor;
+
++ (UIColor *)disableGreenColor;
+
++ (UIColor *)clientInActiveGrayColor;
+
++ (UIColor *)clientBlockedGrayColor;
+
++ (UIColor *)clientGreenColor;
+
++ (UIColor *)gridBlockColor;
+
++ (UIColor *)testGrayColor;
+
++ (UIColor *)test1GrayColor;
+
++ (UIColor *)lightBlueColor;
+
++ (UIColor *)lightOrangeDashColor;
+
++ (UIColor *)lightGrayColor;
+
++ (UIColor *)maskColor;
+
++ (UIColor *)helpYellowColor;
+
++ (UIColor *)helpOrangeColor;
+
++ (UIColor *)helpGreenColor;
+
++ (UIColor *)helpBlueColor;
+
++ (UIColor *)helpTextDescription;
+
++ (UIColor *)helpPurpleColor;
+
++ (UIColor *)grayShade;
+
++ (UIColor *)lineColor;
+
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName;
 
 // Returns a UIColor whose brightness is computed as an incrementally gradation on the position index.
@@ -38,4 +90,11 @@
 // Brightness value: 0 - 100.
 - (UIColor *)colorWithBrightness:(int)brightness;
 
++ (UIColor *)lighterColorForColor:(UIColor *)c;
+
++ (UIColor *)darkerColorForColor:(UIColor *)c;
+
++ (UIColor *)getHelpCenterColor:(NSString*)color;
+
++ (UIColor*)getClientCellColor:(Client*)client;
 @end

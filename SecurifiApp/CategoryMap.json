@@ -1,0 +1,399 @@
+{
+    "0":{
+        "categoryName": "Unknown Category",
+        "category": "U"
+    },
+    "1" :{
+        "categoryName":"Real Estate"
+        ,"category":"G"
+    },
+    
+    "2" :{
+        "categoryName":"Computer and Internet Security"
+        ,"category":"G"
+    },
+    
+    "3" :{
+        "categoryName":"Financial Services"
+        ,"category":"G"
+    },
+    
+    "4" :{
+        "categoryName":"Business and Economy"
+        ,"category":"G"
+    },
+    
+    "5" :{
+        "categoryName":"Computer and Internet Info"
+        ,"category":"G"
+    },
+    
+    "6" :{
+        "categoryName":"Auctions"
+        ,"category":"PG"
+    },
+    
+    "7" :{
+        "categoryName":"Shopping"
+        ,"category":"G"
+    },
+    
+    "8" :{
+        "categoryName":"Cult and Occult"
+        ,"category":"PG-13"
+    },
+    
+    "9" :{
+        "categoryName":"Travel"
+        ,"category":"G"
+    },
+    
+    "10" :{
+        "categoryName":"Abused Drugs"
+        ,"category":"NC-17"
+    },
+    
+    "11" :{
+        "categoryName":"Adult and Pornography"
+        ,"category":"NC-17"
+    },
+    
+    "12" :{
+        "categoryName":"Home and Garden"
+        ,"category":"G"
+    },
+    
+    "13" :{
+        "categoryName":"Military"
+        ,"category":"PG-13"
+    },
+    
+    "14" :{
+        "categoryName":"Social Networking"
+        ,"category":"PG-13"
+    },
+    
+    "15" :{
+        "categoryName":"Dead Sites"
+        ,"category":"G"
+    },
+    
+    "16" :{
+        "categoryName":"Individual Stock Advice and Tools"
+        ,"category":"G"
+    },
+    
+    "17" :{
+        "categoryName":"Training and Tools"
+        ,"category":"G"
+    },
+    
+    "18" :{
+        "categoryName":"Dating"
+        ,"category":"R"
+    },
+    
+    "19" :{
+        "categoryName":"Sex Education"
+        ,"category":"PG-13"
+    },
+    
+    "20" :{
+        "categoryName":"Religion"
+        ,"category":"PG"
+    },
+    
+    "21" :{
+        "categoryName":"Entertainment and Arts"
+        ,"category":"G"
+    },
+    
+    "22" :{
+        "categoryName":"Personal sites and Blogs"
+        ,"category":"PG"
+    },
+    
+    "23" :{
+        "categoryName":"Legal"
+        ,"category":"G"
+    },
+    
+    "24" :{
+        "categoryName":"Local Information"
+        ,"category":"G"
+    },
+    
+    "25" :{
+        "categoryName":"Streaming Media"
+        ,"category":"PG-13"
+    },
+    
+    "26" :{
+        "categoryName":"Job Search"
+        ,"category":"G"
+    },
+    
+    "27" :{
+        "categoryName":"Gambling"
+        ,"category":"NC-17"
+    },
+    
+    "28" :{
+        "categoryName":"Translation"
+        ,"category":"G"
+    },
+    
+    "29" :{
+        "categoryName":"Reference and Research"
+        ,"category":"G"
+    },
+    
+    "30" :{
+        "categoryName":"Shareware and Freeware"
+        ,"category":"PG"
+    },
+    
+    "31" :{
+        "categoryName":"Peer to Peer"
+        ,"category":"PG-13"
+    },
+    
+    "32" :{
+        "categoryName":"Marijuana"
+        ,"category":"NC-17"
+    },
+    
+    "33" :{
+        "categoryName":"Hacking"
+        ,"category":"NC-17"
+    },
+    
+    "34" :{
+        "categoryName":"Games"
+        ,"category":"PG-13"
+    },
+    
+    "35" :{
+        "categoryName":"Philosophy and Political Advocacy"
+        ,"category":"PG"
+    },
+    
+    "36" :{
+        "categoryName":"Weapons"
+        ,"category":"NC-17"
+    },
+    
+    "37" :{
+        "categoryName":"Pay to Surf"
+        ,"category":"R"
+    },
+    
+    "38" :{
+        "categoryName":"Hunting and Fishing"
+        ,"category":"PG-13"
+    },
+    
+    "39" :{
+        "categoryName":"Society"
+        ,"category":"G"
+    },
+    
+    "40" :{
+        "categoryName":"Educational Institutions"
+        ,"category":"G"
+    },
+    
+    "41" :{
+        "categoryName":"Online Greeting cards"
+        ,"category":"G"
+    },
+    
+    "42" :{
+        "categoryName":"Sports"
+        ,"category":"G"
+    },
+    
+    "43" :{
+        "categoryName":"Swimsuits & Intimate Apparel"
+        ,"category":"PG-13"
+    },
+    
+    "44" :{
+        "categoryName":"Questionable"
+        ,"category":"R"
+    },
+    
+    "45" :{
+        "categoryName":"Kids"
+        ,"category":"G"
+    },
+    
+    "46" :{
+        "categoryName":"Hate and Racism"
+        ,"category":"NC-17"
+    },
+    
+    "47" :{
+        "categoryName":"Personal Storage"
+        ,"category":"PG-13"
+    },
+    
+    "48" :{
+        "categoryName":"Violence"
+        ,"category":"NC-17"
+    },
+    
+    "49" :{
+        "categoryName":"Keyloggers and Monitoring"
+        ,"category":"R"
+    },
+    
+    "50" :{
+        "categoryName":"Search Engines"
+        ,"category":"G"
+    },
+    
+    "51" :{
+        "categoryName":"Internet Portals"
+        ,"category":"G"
+    },
+    
+    "52" :{
+        "categoryName":"Web Advertisements"
+        ,"category":"PG-13"
+    },
+    
+    "53" :{
+        "categoryName":"Cheating"
+        ,"category":"NC-17"
+    },
+    
+    "54" :{
+        "categoryName":"Gross"
+        ,"category":"NC-17"
+    },
+    
+    "55" :{
+        "categoryName":"Web based email"
+        ,"category":"G"
+    },
+    
+    "56" :{
+        "categoryName":"Malware Sites"
+        ,"category":"NC-17"
+    },
+    
+    "57" :{
+        "categoryName":"Phishing and Other Frauds"
+        ,"category":"NC-17"
+    },
+    
+    "58" :{
+        "categoryName":"Proxy Avoidance and Anonymizers"
+        ,"category":"R"
+    },
+    
+    "59" :{
+        "categoryName":"Spyware and Adware"
+        ,"category":"NC-17"
+    },
+    
+    "60" :{
+        "categoryName":"Music"
+        ,"category":"G"
+    },
+    
+    "61" :{
+        "categoryName":"Government"
+        ,"category":"G"
+    },
+    
+    "62" :{
+        "categoryName":"Nudity"
+        ,"category":"NC-17"
+    },
+    
+    "63" :{
+        "categoryName":"News and Media"
+        ,"category":"G"
+    },
+    
+    "64" :{
+        "categoryName":"Illegal"
+        ,"category":"NC-17"
+    },
+    
+    "65" :{
+        "categoryName":"Content Delivery Networks"
+        ,"category":"PG-13"
+    },
+    
+    "66" :{
+        "categoryName":"Internet Communications"
+        ,"category":"G"
+    },
+    
+    "67" :{
+        "categoryName":"Bot Nets"
+        ,"category":"NC-17"
+    },
+    
+    "68" :{
+        "categoryName":"Abortion"
+        ,"category":"PG-13"
+    },
+    
+    "69" :{
+        "categoryName":"Health and Medicine"
+        ,"category":"PG"
+    },
+    
+    "71" :{
+        "categoryName":"SPAM URLs"
+        ,"category":"NC-17"
+    },
+    
+    "74" :{
+        "categoryName":"Dynamically Generated Content"
+        ,"category":"G"
+    },
+    
+    "75" :{
+        "categoryName":"Parked Domains"
+        ,"category":"G"
+    },
+    
+    "76" :{
+        "categoryName":"Alcohol and Tobacco"
+        ,"category":"NC-17"
+    },
+    
+    "77" :{
+        "categoryName":"Private IP Addresses"
+        ,"category":"G"
+    },
+    
+    "78" :{
+        "categoryName":"Image and Video Search"
+        ,"category":"G"
+    },
+    
+    "79" :{
+        "categoryName":"Fashion and Beauty"
+        ,"category":"PG-13"
+    },
+    
+    "80" :{
+        "categoryName":"Recreation and Hobbies"
+        ,"category":"G"
+    },
+    
+    "81" :{
+        "categoryName":"Motor Vehicles"
+        ,"category":"G"
+    },
+    
+    "82" :{
+        "categoryName":"Web Hosting"
+        ,"category":"G"
+    } }

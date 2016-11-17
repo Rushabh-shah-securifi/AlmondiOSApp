@@ -7,6 +7,8 @@
 #import "SFIPreferences.h"
 #import "NSData+Conversion.h"
 #import "DebugLogger.h"
+#import "KeyChainAccess.h"
+#import "NotificationRegistration.h"
 
 NSString *const kApplicationDidBecomeActiveOnNotificationTap = @"kApplicationDidBecomeActiveOnNotificationTap";
 NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifications";
@@ -37,11 +39,11 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
     // register the token with the cloud, if needed. this process will fail fast and silently
     // if the token is already registered
-    if (toolkit.isCloudLoggedIn) {
+    if (toolkit.isNetworkOnline) {
         NSData *deviceToken = [preferences pushNotificationDeviceToken];
         if (deviceToken != nil) {
             NSString *str = deviceToken.hexadecimalString;
-            [toolkit asyncRequestRegisterForNotification:str];
+            [self asyncRequestRegisterForNotification:str];
         }
     }
 }
@@ -53,8 +55,35 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     if (toolkit.isCloudLoggedIn) {
         NSString *token_str = deviceToken.hexadecimalString;
-        [toolkit asyncRequestRegisterForNotification:token_str];
+        [self asyncRequestRegisterForNotification:token_str];
     }
+}
+
+- (void)asyncRequestRegisterForNotification:(NSString *)deviceToken {
+    if (deviceToken == nil) {
+        NSLog(@"asyncRequestRegisterForNotification : device toke is nil");
+        return;
+    }
+    
+    if ([KeyChainAccess isSecApnTokenRegistered]) {
+        NSString *oldToken = [KeyChainAccess secRegisteredApnToken];
+        if ([deviceToken isEqualToString:oldToken]) {
+            // already registered
+            return;
+        }
+    }
+    
+    [KeyChainAccess setSecRegisteredApnToken:deviceToken];
+    
+    NotificationRegistration *req = [NotificationRegistration new];
+    req.regID = deviceToken;
+    req.platform = @"iOS";
+    
+    GenericCommand *cmd = [GenericCommand new];
+    cmd.commandType = CommandType_NOTIFICATION_REGISTRATION;
+    cmd.command = req;
+    
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cmd];
 }
 
 // returns YES if notification can be handled (matches an almond)

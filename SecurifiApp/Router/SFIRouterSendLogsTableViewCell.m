@@ -41,24 +41,29 @@
         case SFIRouterTableViewActionsMode_unknown:
         case SFIRouterTableViewActionsMode_enterReason: {
             [cardView markYOffset:20];
-            [cardView addTextFieldPlaceHolder:@"Describe your problem here" placeHolderColor:[UIColor whiteColor] delegate:self tag:0 target:self action:@selector(onSendAction:) buttonTitle:@"Send"];
+            [cardView addTextFieldPlaceHolder:NSLocalizedString(@"Describe your problem here", @"Describe your problem here") placeHolderColor:[UIColor whiteColor] delegate:self tag:0 target:self action:@selector(onSendAction:) buttonTitle:@"Send"];
+            [cardView markYOffset:20];
+
+            NSString *msg = NSLocalizedString(@"router.log-advisory message", @"Along with your message, this will send Almond debug information and logs to our cloud....");
+            [cardView addLongSummary:msg];
+
             break;
         };
 
         case SFIRouterTableViewActionsMode_commandSuccess: {
             [cardView markYOffset:20];
-            [cardView addSummary:@[@"Thanks for sending logs"]];
+            [cardView addSummary:@[NSLocalizedString(@"router.log-send-success.summary.Thanks for sending logs", @"Thanks for sending logs")]];
             break;
 
         };
         case SFIRouterTableViewActionsMode_commandError: {
             [cardView markYOffset:20];
-            [cardView addSummary:@[@"There was an error sending logs"]];
+            [cardView addSummary:@[NSLocalizedString(@"router.log-send-error.There was an error sending logs", @"There was an error sending logs")]];
             break;
         };
         case SFIRouterTableViewActionsMode_firmwareNotSupported: {
             [cardView markYOffset:20];
-            [cardView addSummary:@[@"Please update your router's firmware", @"in order to activate this functionality"]];
+            [cardView addSummary:@[NSLocalizedString(@"router.log-firmware-not-supported.Please update your router's firmware", @"Please update your router's firmware"), NSLocalizedString(@"router.log-firmware-not-supported.in order to activate this functionality", @"in order to activate this functionality")]];
             break;
         };
     }

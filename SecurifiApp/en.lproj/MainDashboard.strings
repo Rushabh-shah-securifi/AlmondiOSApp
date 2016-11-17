@@ -1,0 +1,36 @@
+
+/* Class = "UILabel"; text = "ACTIVE NETWORK DEVICES"; ObjectID = "1yr-pN-i8A"; */
+"1yr-pN-i8A.text" = "INACTIVE NETWORK DEVICES";
+
+/* Class = "UIButton"; normalTitle = "Done"; ObjectID = "FbR-XR-S4X"; */
+"FbR-XR-S4X.normalTitle" = "Done";
+
+/* Class = "UILabel"; text = "MASTER"; ObjectID = "GMh-sX-mwO"; */
+"GMh-sX-mwO.text" = "MASTER";
+
+/* Class = "UILabel"; text = "Almond Settings"; ObjectID = "He5-pq-OVf"; */
+"He5-pq-OVf.text" = "Almond Settings";
+
+/* Class = "UILabel"; text = "SMART HOME DEVICES"; ObjectID = "OIj-tJ-Ux3"; */
+"OIj-tJ-Ux3.text" = "ACTIVE NETWORK DEVICES";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "Rz9-Pa-fTV"; */
+"Rz9-Pa-fTV.text" = "0";
+
+/* Class = "UIButton"; normalTitle = "Add Almond"; ObjectID = "Xkz-Xh-1r6"; */
+"Xkz-Xh-1r6.normalTitle" = "Add Almond";
+
+/* Class = "UILabel"; text = "CONNECTED DEVICES"; ObjectID = "exw-pf-RKs"; */
+"exw-pf-RKs.text" = "SMART HOME DEVICES";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "pPW-br-umt"; */
+"pPW-br-umt.text" = "0";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "van-2Y-GZf"; */
+"van-2Y-GZf.text" = "0";
+
+/* Class = "UILabel"; text = "AWAY"; ObjectID = "wMA-qN-Fdi"; */
+"wMA-qN-Fdi.text" = "AWAY";
+
+/* Class = "UILabel"; text = "HOME"; ObjectID = "wmQ-Wm-9ba"; */
+"wmQ-Wm-9ba.text" = "HOME";

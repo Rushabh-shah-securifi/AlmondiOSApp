@@ -1,0 +1,95 @@
+/* 
+  Almond-Localizable.strings
+  Almond
+
+  Created by Priya Yerunkar on 13/12/14.
+  Copyright (c) 2014 Securifi Ltd. All rights reserved.
+*/
+
+/*------- Localization strings specific to Almond app -------*/
+
+
+/* affiliation */
+"router.linkalmond-msg.headline" = "Połączmy urządzenie Almond.";
+"router.linkalmond-msg.message" = "Uruchom kreatora instalacji na Twoim urządzeniu Almond, a następnie dotknij symbolu poniżej.";
+"Almond Linked" = "Almond połączony";
+"Link Almond" = "Połączenie z chmurą";
+"Local Link Almond" = "Połączenie lokalne";
+"Please wait while your Almond is being linked to cloud." = "Proszę czekać, podczas gdy Twoje urządzenie Almond jest łączone z chmurą.";
+"This Almond is already linked to another user." = "To urządzenie Almond jest już przypisane do innego użytkownika.
+Skontaktuj się z nami, pisząc na adres support@securifi.com";
+"Almond could not be affiliated" = "Nie udało się przypisać urządzenia Almond.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "Uruchom aplikację Almond Account i wprowadź podany kod.";
+"cloudlink.button.Link Almond" = "Połącz urządzenie Almond";
+"cloudlink.button.Add Almond Locally" = "Dodaj urządzenie Almond lokalnie";
+
+
+
+/* router tab */
+"router.offline-msg.label.Almond is Offline." = "Almond jest w trybie offline.";
+//m
+"router.msg-link.The Almond was successfully linked." = "Urządzenie Almond zostało połączone pomyślnie.";
+"router.btn-title.Unlink Almond?" = "Rozłączyć urządzenie Almond?";
+"router.btn-title.Link Almond Locally" = "Połącz urządzenie Almond lokalnie";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Miej na uwadze, że bez możliwości kontroli przez chmurę nie będziesz mieć możliwości zdalnej kontroli nad Twoim urządzeniem Almond.";
+"router.error-msg.This Almond is already linked." = "To urządzenie Almond jest już połączone.";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." = "Wystąpił błąd podczas próby połączenia z urządzeniem Almond. Spróbuj ponownie.";
+
+/* sensors */
+"router.no-sensors.label.Add a sensor from your Almond." = "Dodaj czujnik przez Almond.";
+
+/* signup */
+"signup.headline-text.Securifi Cloud Account." = "Konto w chmurze Securifi.";
+"signup.headline-text.Access your Almonds" = "Dostęp do Twojego urządzenia Almond i
+urządzeń domowych gdziekolwiek jesteś.";
+
+/* Accounts */
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "Jesteś właścicielem tego urządzenia Almond";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "Nazwa urządzenia Almond";
+"accounts.ownedAlmond.button.RenameAlmond" = "Zmień nazwę urządzenia Almond";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = "Nazwa urządzenia Almond";
+"accounts.sharedAlmond.button.RenameAlmond" = "Zmień nazwę urządzenia Almond";
+"accounts.alert.onDeleteAccount.message" = "Usunięcie konta spowoduje rozłączenie Twoich urządzeń Almond i usunięcie ustawień użytkownika. Aby potwierdzić usunięcie konta, wpisz poniżej Twoje hasło.";
+"accounts.alert.onUnlinkAlmond.title" = "Rozłącz urządzenie Almond";
+"accounts.alert.onUnlinkAlmond.message" = "Aby potwierdzić rozłączenie Urządzenia Almond, wpisz poniżej Twoje hasło.";
+"accounts.itoast.almondNameMax32Characters" = "Nazwa urządzenia Almond nie może składać się z więcej niż 32 znaków.";
+"accounts.itoast.unableToChangeAlmondName" = "Przepraszamy! Nie udało się zmienić nazwy urządzenia Almond";
+"accounts.hud.unlinkingAlmond" = "Rozłączanie urządzenia Almond...";
+"accounts.hud.inviteUserToShareAlmond" = "Zapraszanie użytkownika do współdzielenia urządzenia Almond...";
+"accounts.hud.changeAlmondName" = "Zmień nazwę urządzenia Almond...";
+"accounts.hud.removeSharedAlmond" = "Usuń współdzielone urządzenie Almond...";
+"accounts.unlinkAlmond.failure.default" = "Przepraszamy! Nie udało się rozłączyć urządzenia Almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "Ten użytkownik nie ma konta Securifi.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "Użytkownik nie zweryfikował jeszcze konta Securifi.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "Nie jesteś właścicielem tego urządzenia Almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "Już współdzielisz urządzenie Almond z tym użytkownikiem.";
+"accounts.inviteUserToShareAlmond.failure.default" = "Przepraszamy! Nie udało się udostępnić urządzenia Almond.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "Nie jesteś powiązany z tym urządzeniem Almond";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "Dodatkowy użytkownik nie jest powiązany z tym urządzeniem Almond.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "Nie jesteś powiązany z tym urządzeniem Almond";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "Przepraszamy! Nie udało się usunąć współdzielonego urządzenia Almond.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "Adresy MAC Almond";
+"Copied Almond MAC" = "Skopiowane adresy MAC Almond";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "Połącz się z Twoim Almond przez chmurę.";
+"alertview -Connected to your Almond via cloud." = "Połączono z Twoim Almond przez chmurę.";
+"Add Local Connection Settings" = "Dodaj ustawienia połączenia lokalnego";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "Połączenie z Twoim Almond przez chmurę nie powiodło się. Spróbuj ponownie lub przełącz na połączenie lokalne.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = "Połączenie lokalne z Twoim Almond nie powiodło się. Spróbuj ponownie lub przełącz na połączenie przez chmurę.";
+"hud message-Setting Almond to Away Mode" = "Przestawianie urządzenia Almond w tryb Poza domem";
+"hud message-Setting Almond to Home Mode" = "Przestawianie urządzenia Almond w tryb W domu";
+"alertview Can't connect to your Almond. Please select a connection method." = "Nie można połączyć się z Twoim urządzeniem Almond. Wybierz rodzaj połączenia.";
+"alertview localconnection_Connected to your Almond locally." = "Połączono z Twoim Almond lokalnie.";
+
+"router.card-title.Local Almond Link" = "Lokalna Almond link";
+"router.software-version.header.instructions" = "Proszę wybierz \"Ustawienia\" na Almond";
+"router.offline-msg.label.Almond is Offline." = "Almond is Offline.";
+
+//To be translated
+/* login */
+"Monitor and Control your home from anywhere." = "Monitorować i kontrolować swój dom z dowolnego miejsca.";

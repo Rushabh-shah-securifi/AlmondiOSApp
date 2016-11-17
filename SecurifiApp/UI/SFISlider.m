@@ -12,6 +12,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.autoAdjustTrackColor = NO;
+        self.allowToSlide = YES;
     }
 
     return self;
@@ -38,9 +39,24 @@
     return value;
 }
 
+-(int)getConvertedValue:(float)factor{
+    float slider_value = self.value;
+    return roundf(slider_value/factor);
+}
+
 - (NSString *)sliderFormattedValue {
     return [self.numberFormatter stringFromNumber:@(self.value)];
 }
 
+
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    //md01
+    if (!self.allowToSlide) {
+        [super cancelTrackingWithEvent:event];
+        return NO;
+    }
+    return [super beginTrackingWithTouch:touch withEvent:event];
+}
 
 @end

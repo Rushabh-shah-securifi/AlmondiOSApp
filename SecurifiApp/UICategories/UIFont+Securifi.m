@@ -69,7 +69,7 @@
 }
 
 +(UIFont*)standardNavigationTitleFont{
-    return [UIFont fontWithName:AVENIR_ROMAN size:18.0];
+    return [UIFont fontWithName:AVENIR_ROMAN size:20.0];
 }
 
 @end

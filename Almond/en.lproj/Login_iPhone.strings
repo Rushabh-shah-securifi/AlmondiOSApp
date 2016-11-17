@@ -1,0 +1,33 @@
+/* 
+  Login_iPhone.strings
+  SecurifiApp
+
+  Created by Masood on 18/09/15.
+  Copyright (c) 2015 Securifi Ltd. All rights reserved.
+*/
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "7Fl-1P-IHp"; */
+"7Fl-1P-IHp.placeholder" = "Password";
+
+/* Class = "UIButton"; normalTitle = "Login"; ObjectID = "9ZE-dj-qTz"; */
+"9ZE-dj-qTz.normalTitle" = "Login";
+
+/* Class = "UIButton"; normalTitle = "Create Account"; ObjectID = "APV-X7-KCb"; */
+"APV-X7-KCb.normalTitle" = "Create Almond Account";
+
+/* Class = "UIButton"; normalTitle = "Add Almond Locally"; ObjectID = "UMh-WG-lC3"; */
+"UMh-WG-lC3.normalTitle" = "Add Almond Locally";
+
+/* Class = "UITextField"; placeholder = "Email Address"; ObjectID = "Y3d-aA-TFm"; */
+"Y3d-aA-TFm.placeholder" = "Email Address";
+
+/* Class = "UILabel"; text = "Access your home devices from anywhere."; ObjectID = "Zon-6Z-KzY"; */
+"Zon-6Z-KzY.text" = "Access your home devices from anywhere.";
+
+/* Class = "UILabel"; text = "Almond"; ObjectID = "Zuk-ja-Rsi"; */
+"Zuk-ja-Rsi.text" = "Almond";
+
+/* Class = "UIButton"; normalTitle = "Forgot?"; ObjectID = "slZ-Ce-Cut"; */
+"slZ-Ce-Cut.normalTitle" = "Forgot?";
+
+/* Class = "UILabel"; text = "Alternatively, you can control your Almond and home devices locally, without a Securifi Cloud Account."; ObjectID = "wee-4l-TQb"; */
+"wee-4l-TQb.text" = "Alternatively, you can control your Almond and home devices locally, without a Securifi Almond Account.";

@@ -1,0 +1,93 @@
+/* ==================================================================== */
+
+/*
+ Almond-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+/*------- Localization strings specific to Almond app -------*/
+
+
+/* affiliation */
+"router.linkalmond-msg.headline" = "Vamos a vincular \n el Almond.";
+"router.linkalmond-msg.message" = "Inicie el asistente en el Almond y, a continuación, toque el símbolo de abajo.";
+"Almond Linked" = "Almond vinculado";
+"Link Almond" = "Vínculo a la nube";
+"Local Link Almond" = "Vínculo local";
+"Please wait while your Almond is being linked to cloud." = "Espere mientras se vincula el Almond con la nube.";
+"This Almond is already linked to another user." = "Este Almond ya está vinculado a otro usuario.
+Contacte con nosotros en support@securifi.com";
+"Almond could not be affiliated" = "No se ha podido afiliar el Almond.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "Ejecute la aplicación Almond Account e introduzca el código mostrado.";
+"cloudlink.button.Link Almond" = "Vincular Almond";
+"cloudlink.button.Add Almond Locally" = "Agregar Almond localmente";
+
+
+/* router tab */
+"router.offline-msg.label.Almond is Offline." = "El Almond está desconectado.";
+//m
+"router.msg-link.The Almond was successfully linked." = "El Almond se vinculó correctamente.";
+"router.btn-title.Unlink Almond?" = "¿Desvincular el Almond?";
+"router.btn-title.Link Almond Locally" = "Vincular Almond localmente";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Tenga en cuenta que si no dispone de control en la nube no recibirá notificaciones ni podrá controlar el Almond de forma remota.";
+"router.error-msg.This Almond is already linked." = "Este Almond ya está vinculado.";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." = "Se ha producido un error al intentar vincular con el Almond. Inténtelo de nuevo.";
+
+/* sensors */
+"router.no-sensors.label.Add a sensor from your Almond." = "Agregar sensor desde el Almond.";
+
+/* signup */
+"signup.headline-text.Securifi Cloud Account." = "Cuenta en la nube de Securifi.";
+"signup.headline-text.Access your Almonds" = "Acceda a sus Almond y
+a los dispositivos de su hogar desde cualquier lugar.";
+
+/* Accounts */
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "Es propietario de este Almond";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "Nombre del Almond";
+"accounts.ownedAlmond.button.RenameAlmond" = "Cambiar nombre del Almond";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = "Nombre del Almond";
+"accounts.sharedAlmond.button.RenameAlmond" = "Cambiar nombre del Almond";
+"accounts.alert.onDeleteAccount.message" = "Si elimina la cuenta se desvincularán sus Almond y se eliminarán las preferencias de usuario. Para confirmar la eliminación de la cuenta, introduzca la contraseña.";
+"accounts.alert.onUnlinkAlmond.title" = "Desvincular Almond";
+"accounts.alert.onUnlinkAlmond.message" = "Para confirmar la desvinculación del Almond, introduzca la contraseña.";
+"accounts.itoast.almondNameMax32Characters" = "El nombre del Almond no puede tener más de 32 caracteres.";
+"accounts.itoast.unableToChangeAlmondName" = "Lo sentimos. No se ha podido cambiar el nombre del Almond.";
+"accounts.hud.unlinkingAlmond" = "Desvinculando el Almond...";
+"accounts.hud.inviteUserToShareAlmond" = "Invitando al usuario a compartir el Almond...";
+"accounts.hud.changeAlmondName" = "Cambiar nombre del Almond...";
+"accounts.hud.removeSharedAlmond" = "Quitar Almond compartido...";
+"accounts.unlinkAlmond.failure.default" = "Lo sentimos. Se ha producido un error al intentar desvincular el Almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "Este usuario no tiene cuenta de Securifi.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "El usuario no ha verificado su cuenta de Securifi.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "No es propietario de este Almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "Ya ha compartido este Almond con el usuario.";
+"accounts.inviteUserToShareAlmond.failure.default" = "Lo sentimos. Se ha producido un error al intentar compartir el Almond.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "No está asociado con este Almond";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "El usuario secundario no está asociado con el Almond en cuestión.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "No está asociado con este Almond";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "Lo sentimos. Se ha producido un error al intentar quitar el Almond compartido.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "Direcciones MAC de Almond";
+"Copied Almond MAC" = "Dirección MAC del Almond copiada";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "Conectado al Almond a través de la nube.";
+"alertview -Connected to your Almond via cloud." = "Conectado al Almond a través de la nube.";
+"Add Local Connection Settings" = "Agregar ajustes de conexión local";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "Error al intentar conectar al Almond a través de la nube. Pulse Reintentar o cambie a conexión local.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = "Error al intentar conectar al Almond localmente. Pulse Reintentar o cambie a conexión a la nube.";
+"hud message-Setting Almond to Away Mode" = "Estableciendo el Almond en modo ausente";
+"hud message-Setting Almond to Home Mode" = "Estableciendo el Almond en modo casa";
+"alertview Can't connect to your Almond. Please select a connection method." = "No se puede conectar al Almond. Seleccione un método de conexión.";
+"alertview localconnection_Connected to your Almond locally." = "Conectado al Almond localmente.";
+
+//to be translated
+
+/* login */
+"Monitor and Control your home from anywhere." = "Supervisar y controlar su casa desde cualquier lugar.";

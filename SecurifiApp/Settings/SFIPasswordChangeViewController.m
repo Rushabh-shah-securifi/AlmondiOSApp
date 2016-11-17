@@ -56,9 +56,11 @@
 
 - (IBAction)doneButtonHandler:(id)sender {
     //Send Password change command
-    [self.HUD show:YES];
-    [self.HUD hide:YES afterDelay:10];
-    [self sendUserPasswordChangeRequest];
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self.HUD show:YES];
+        [self.HUD hide:YES afterDelay:10];
+        [self sendUserPasswordChangeRequest];
+    });
 }
 
 - (IBAction)cancelButtonHandler:(id)sender {
@@ -168,7 +170,9 @@
 
     if (obj.isSuccessful) {
         //Dismiss this view
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        });
     }
     else {
         ELog(@"Failed to change password, reason:%d", obj.reasonCode);

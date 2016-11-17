@@ -4,6 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IndexValueSupport.h"
 
 /*
 
@@ -31,5 +32,6 @@ SensorSupport = {
 
 // The notification alert message
 - (NSString *)notificationText;
+@property(nonatomic, strong) IndexValueSupport *valueSupport;
 
 @end

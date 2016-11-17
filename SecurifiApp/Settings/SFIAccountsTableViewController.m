@@ -10,6 +10,7 @@
 #import "MBProgressHUD.h"
 #import "iToast.h"
 #import "UIFont+Securifi.h"
+#import "Analytics.h"
 
 static NSString *simpleTableIdentifier = @"AccountCell";
 
@@ -136,7 +137,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
     [center addObserver:self
                selector:@selector(almondNameChangeResponseCallback:)
-                   name:ALMOND_NAME_CHANGE_NOTIFIER
+                   name:kSFIDidChangeAlmondName
                  object:nil];
 
     [center addObserver:self
@@ -155,6 +156,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
                  object:nil];
 
     [self sendUserProfileRequest];
+    
+    [[Analytics sharedInstance] markAccountsScreen];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -350,7 +353,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
     baseYCordinate = 45;
     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.image = [UIImage imageNamed:@"line"];
     imgLine.alpha = 0.5;
     [backgroundLabel addSubview:imgLine];
     baseYCordinate += 5;
@@ -359,7 +362,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, 110);
 
-        imgArrow.image = [UIImage imageNamed:@"down_arrow.png"];
+        imgArrow.image = [UIImage imageNamed:@"down_arrow"];
 
         baseYCordinate += 5;
 
@@ -391,7 +394,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     else {
         //Expanded View
         backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, EXPANDED_PROFILE_ROW_HEIGHT - 10);
-        imgArrow.image = [UIImage imageNamed:@"up_arrow.png"];
+        imgArrow.image = [UIImage imageNamed:@"up_arrow"];
 
         //PRIMARY EMAIL
         UILabel *lblEmailTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width - 30, 30)];
@@ -415,7 +418,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         baseYCordinate += 30;
 
         UIImageView *imgLine1 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine1.image = [UIImage imageNamed:@"line.png"];
+        imgLine1.image = [UIImage imageNamed:@"line"];
         imgLine1.alpha = 0.2;
         [backgroundLabel addSubview:imgLine1];
 
@@ -442,7 +445,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         baseYCordinate += 30;
         UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine2.image = [UIImage imageNamed:@"line.png"];
+        imgLine2.image = [UIImage imageNamed:@"line"];
         imgLine2.alpha = 0.2;
         [backgroundLabel addSubview:imgLine2];
 
@@ -496,7 +499,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         baseYCordinate += 30;
 
         UIImageView *imgLine3 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine3.image = [UIImage imageNamed:@"line.png"];
+        imgLine3.image = [UIImage imageNamed:@"line"];
         imgLine3.alpha = 0.2;
         [backgroundLabel addSubview:imgLine3];
 
@@ -547,7 +550,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         baseYCordinate += 30;
         UIImageView *imgLine4 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine4.image = [UIImage imageNamed:@"line.png"];
+        imgLine4.image = [UIImage imageNamed:@"line"];
         imgLine4.alpha = 0.2;
         [backgroundLabel addSubview:imgLine4];
 
@@ -634,7 +637,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         baseYCordinate += 30;
         UIImageView *imgLine5 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine5.image = [UIImage imageNamed:@"line.png"];
+        imgLine5.image = [UIImage imageNamed:@"line"];
         imgLine5.alpha = 0.2;
         [backgroundLabel addSubview:imgLine5];
 
@@ -685,7 +688,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         baseYCordinate += 30;
         UIImageView *imgLine6 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine6.image = [UIImage imageNamed:@"line.png"];
+        imgLine6.image = [UIImage imageNamed:@"line"];
         imgLine6.alpha = 0.2;
         [backgroundLabel addSubview:imgLine6];
 
@@ -736,7 +739,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         baseYCordinate += 30;
         UIImageView *imgLine7 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine7.image = [UIImage imageNamed:@"line.png"];
+        imgLine7.image = [UIImage imageNamed:@"line"];
         imgLine7.alpha = 0.2;
         [backgroundLabel addSubview:imgLine7];
 
@@ -799,7 +802,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
     baseYCordinate = 45;
     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.image = [UIImage imageNamed:@"line"];
     imgLine.alpha = 0.5;
     [backgroundLabel addSubview:imgLine];
     baseYCordinate += 5;
@@ -808,7 +811,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, 110);
 
-        imgArrow.image = [UIImage imageNamed:@"down_arrow.png"];
+        imgArrow.image = [UIImage imageNamed:@"down_arrow"];
 
         baseYCordinate += 5;
 
@@ -839,7 +842,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
             expandedLabelSize = expandedLabelSize + 30 + ([currentAlmond.accessEmailIDs count] * 25);
         }
         backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, expandedLabelSize - 10);
-        imgArrow.image = [UIImage imageNamed:@"up_arrow.png"];
+        imgArrow.image = [UIImage imageNamed:@"up_arrow"];
 
         //Almond Name
         UILabel *lblAlmondTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 120, 30)];
@@ -894,7 +897,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         baseYCordinate += 30;
         UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine2.image = [UIImage imageNamed:@"line.png"];
+        imgLine2.image = [UIImage imageNamed:@"line"];
         imgLine2.alpha = 0.2;
         [backgroundLabel addSubview:imgLine2];
 
@@ -935,7 +938,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
             baseYCordinate += 30;
             UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-            imgLine.image = [UIImage imageNamed:@"line.png"];
+            imgLine.image = [UIImage imageNamed:@"line"];
             imgLine.alpha = 0.2;
             [backgroundLabel addSubview:imgLine];
         }
@@ -998,7 +1001,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
     baseYCoordinate = 45;
     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCoordinate, self.tableView.frame.size.width - 35, 1)];
-    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.image = [UIImage imageNamed:@"line"];
     imgLine.alpha = 0.5;
     [backgroundLabel addSubview:imgLine];
     baseYCoordinate += 5;
@@ -1007,7 +1010,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, 110);
 
-        imgArrow.image = [UIImage imageNamed:@"down_arrow.png"];
+        imgArrow.image = [UIImage imageNamed:@"down_arrow"];
 
         baseYCoordinate += 5;
 
@@ -1033,7 +1036,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     else {
         //Expanded View
         backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, EXPANDED_SHARED_ALMOND_ROW_HEIGHT - 10);
-        imgArrow.image = [UIImage imageNamed:@"up_arrow.png"];
+        imgArrow.image = [UIImage imageNamed:@"up_arrow"];
 
         //Almond Name
         UILabel *lblAlmondTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCoordinate, 120, 30)];
@@ -1088,7 +1091,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         baseYCoordinate += 30;
         UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCoordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine2.image = [UIImage imageNamed:@"line.png"];
+        imgLine2.image = [UIImage imageNamed:@"line"];
         imgLine2.alpha = 0.2;
         [backgroundLabel addSubview:imgLine2];
     }
@@ -1460,7 +1463,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 #pragma  mark - Alertview delgate
 
 - (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView {
-
+    NSLog(@"alertViewShouldEnableFirstOtherButton");
     UITextField *password = [alertView textFieldAtIndex:0];
     BOOL flag = TRUE;
     if (password.text.length == 0) {
@@ -1472,7 +1475,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    DLog(@"Button Index =%ld", (long) buttonIndex);
+    NSLog(@"Button Index =%ld", (long) buttonIndex);
     if (alertView.tag == DELETE_ACCOUNT_CONFIRMATION) {
         if (buttonIndex == 1) {  //Delete Account
             UITextField *password = [alertView textFieldAtIndex:0];
@@ -1492,7 +1495,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     else if (alertView.tag == USER_INVITE_ALERT) {
         if (buttonIndex == 1) {  //Invite user to share Almond
             UITextField *emailID = [alertView textFieldAtIndex:0];
-            DLog(@"emailID: %@", emailID.text);
+            NSLog(@"emailID: %@", emailID.text);
             changedEmailID = emailID.text;
             //Send request to delete
             [self sendUserInviteRequest:emailID.text almondMAC:currentAlmondMAC];
@@ -1520,7 +1523,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
 
-    [self asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cloudCommand];
 }
 
 - (void)userProfileResponseCallback:(id)sender {
@@ -1555,7 +1558,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }
     else {
         DLog(@"Reason Code %d", obj.reasonCode);
-        [self.HUD hide:YES];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.HUD hide:YES];
+        });
     }
 
     [self sendOwnedAlmondDataRequest];
@@ -1589,7 +1594,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
 
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
     if (!obj.isSuccessful) {
         DLog(@"Reason Code %d", obj.reasonCode);
         //Display appropriate reason
@@ -1656,7 +1663,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
 
-    [self asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cloudCommand];
 }
 
 //TODO: Localization
@@ -1669,7 +1676,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
 
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
     if (!obj.isSuccessful) {
 
         DLog(@"Reason Code %d", obj.reasonCode);
@@ -1713,7 +1722,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 //    [self.navigationController.view addSubview:_HUD];
 //    [self showHudWithTimeout];
 
-    [self asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cloudCommand];
 }
 
 - (void)ownedAlmondDataResponseCallback:(id)sender {
@@ -1827,7 +1836,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)sendUserInviteRequest:(NSString *)emailID almondMAC:(NSString *)almondMAC {
@@ -1913,7 +1924,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)sendDelSecondaryUserRequest:(NSString *)emailID almondMAC:(NSString *)almondMAC {
@@ -1995,7 +2008,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)sendAlmondNameChangeRequest:(NSString *)almondplusMAC {
@@ -2022,8 +2037,11 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [self.almondNameChangeTimer invalidate];
 
     if (!self.isAlmondNameChangeSuccessful) {
-        [self.HUD hide:YES];
-        [[[iToast makeText:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.HUD hide:YES];
+        });
+        NSLog(@"onChangeAlmondNameTimeout nnnnnn");
+        [[[iToast makeText:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name111")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
 }
 
@@ -2031,16 +2049,16 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 - (void)almondNameChangeResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
+    NSLog(@"AlmondNameChangeResponse %@",data);
+    DynamicAlmondNameChangeResponse *obj = (DynamicAlmondNameChangeResponse *) [data valueForKey:@"data"];
 
-    AlmondNameChangeResponse *obj = (AlmondNameChangeResponse *) [data valueForKey:@"data"];
-
-    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-
+    //DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    
     // Timeout the commander timer
     [self.almondNameChangeTimer invalidate];
     self.isAlmondNameChangeSuccessful = TRUE;
-
-    if (obj.isSuccessful) {
+    
+    if (obj.almondplusMAC.length != 0) {
         if (nameChangedForAlmond == NAME_CHANGED_OWNED_ALMOND) {
             //Change Owned Almond Name
             for (SFIAlmondPlus *currentAlmond in ownedAlmondList) {
@@ -2068,15 +2086,19 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
     }
     else {
-        [[[iToast makeText:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        NSLog(@"almondNameChangeResponseCallback nnnnnn");
+        
+        [[[iToast makeText:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name2222")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)mobileCommandResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-
+    
     MobileCommandResponse *obj = (MobileCommandResponse *) [data valueForKey:@"data"];
 
     DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
@@ -2087,9 +2109,15 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
     if (!obj.isSuccessful) {
         NSString *failureReason = obj.reason;
-        [[[iToast makeText:[NSString stringWithFormat:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name. %@"), failureReason]] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        NSLog(@"mobileCommandResponseCallback nnnnnn");
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [[[iToast makeText:[NSString stringWithFormat:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name3333. %@"), failureReason]] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+
+        });
     }
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)sendSharedWithMeAlmondRequest {
@@ -2117,7 +2145,13 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     else {
         DLog(@"Reason %@", obj.reason);
     }
-    [self.HUD hide:YES];
+    
+   GenericCommand *cmd = [[SecurifiToolkit sharedInstance] makeAlmondListCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cmd];
+    
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)sendDelMeAsSecondaryUserRequest:(NSString *)almondMAC {
@@ -2183,11 +2217,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
-    [self.HUD hide:YES];
-}
-
-- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 #pragma mark - Keyboard methods
