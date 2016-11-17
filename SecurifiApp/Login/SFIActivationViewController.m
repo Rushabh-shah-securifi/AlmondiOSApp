@@ -52,7 +52,7 @@
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     NSString *failureReason;
-    if (![[data valueForKey:@"success"]isEqualToString:@"1"]) {
+    if ([[data valueForKey:@"success"] boolValue] != YES) {
         failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
         self.headingLabel.text = NSLocalizedString(@"Oops!", @"Oops!");
         self.subHeadingLabel.text = failureReason;

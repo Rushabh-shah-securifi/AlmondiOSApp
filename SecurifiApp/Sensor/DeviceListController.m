@@ -54,6 +54,7 @@ int mii;
     NSLog(@"devicelist - viewDidLoad");
     [super viewDidLoad];
     self.toolkit = [SecurifiToolkit sharedInstance];
+    [Device getGenericIndexes];
     if([self.toolkit isScreenShown:@"devices"] == NO)
         [self initializeHelpScreensfirst:@"Devices"];
     
@@ -649,7 +650,7 @@ int mii;
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     NSString *failureReason;
-    if (![[data valueForKey:@"success"]isEqualToString:@"1"]) {
+    if ([[data valueForKey:@"success"] boolValue] != YES) {
         failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
         [self showToast:failureReason];
     }

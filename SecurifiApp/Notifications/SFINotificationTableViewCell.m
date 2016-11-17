@@ -132,6 +132,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
 //    
 //    NSLog(@"Notification - Name: %@, device type: %d, value type: %d, typestr: %@, index: %d, value: %@", notification.deviceName, notification.deviceType, notification.valueType, [SFIDeviceKnownValues propertyTypeToName:notification.valueType], notification.valueIndex, notification.value);
     Device *device = [Device getDeviceForID:notification.deviceId];
+    NSLog(@"notification text %@,device type %d,value type %d",notification.value,notification.deviceType,notification.valueType);
     NSLog(@"device name %@ ID: %d",notification.deviceName,notification.deviceId);
     [self getGenericIndexValuesByPlacementForDevice:device value:notification.value  devicetype:notification.deviceType notification:(SFINotification *)notification];
 //    [self setIcon];

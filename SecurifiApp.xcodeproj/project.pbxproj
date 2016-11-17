@@ -458,6 +458,7 @@
 		CE7E8A421DC368D100B0C3C6 /* DSLCalendarDaySelection-right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A341DC368D100B0C3C6 /* DSLCalendarDaySelection-right@2x.png */; };
 		CE7E8A431DC368D100B0C3C6 /* DSLCalendarDaySelection.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A351DC368D100B0C3C6 /* DSLCalendarDaySelection.png */; };
 		CE7E8A441DC368D100B0C3C6 /* DSLCalendarDaySelection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A361DC368D100B0C3C6 /* DSLCalendarDaySelection@2x.png */; };
+		CE99A3411DD04C3300101405 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CE99A3401DD04C3300101405 /* deviceListJson.json */; };
 		CEABC6581D6F147B00C2DCD4 /* CategoryMap.json in Resources */ = {isa = PBXBuildFile; fileRef = CEABC6571D6F147B00C2DCD4 /* CategoryMap.json */; };
 		CEABC65B1D6F14A000C2DCD4 /* CategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEABC65A1D6F14A000C2DCD4 /* CategoryView.m */; };
 		CEABC65E1D6F14A900C2DCD4 /* ChangeCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEABC65D1D6F14A900C2DCD4 /* ChangeCategoryViewController.m */; };
@@ -511,8 +512,6 @@
 		CEF6F5031C92CAD600C68975 /* TimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D71C92CAD600C68975 /* TimeView.m */; };
 		CEF6F5061C92CD2400C68975 /* GenericIndexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */; };
 		CEF6F5071C92CD2400C68975 /* GenericIndexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */; };
-		CEF6F50A1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
-		CEF6F50B1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
 		CEFFBD221D87D1EF00B0A7A9 /* DeviceListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = CEFFBD201D87D1EF00B0A7A9 /* DeviceListResponse.json */; };
 		CEFFBD231D87D1EF00B0A7A9 /* GenericIndexesData.json in Resources */ = {isa = PBXBuildFile; fileRef = CEFFBD211D87D1EF00B0A7A9 /* GenericIndexesData.json */; };
 		F400B6C11D65ECCD00DDEE50 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */; };
@@ -1157,6 +1156,7 @@
 		CE7E8A341DC368D100B0C3C6 /* DSLCalendarDaySelection-right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendarDaySelection-right@2x.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendarDaySelection-right@2x.png"; sourceTree = "<group>"; };
 		CE7E8A351DC368D100B0C3C6 /* DSLCalendarDaySelection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DSLCalendarDaySelection.png; path = DSLCalendar/DSLCalendarView/Images/DSLCalendarDaySelection.png; sourceTree = "<group>"; };
 		CE7E8A361DC368D100B0C3C6 /* DSLCalendarDaySelection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendarDaySelection@2x.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendarDaySelection@2x.png"; sourceTree = "<group>"; };
+		CE99A3401DD04C3300101405 /* deviceListJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = deviceListJson.json; path = SecurifiApp/deviceListJson.json; sourceTree = SOURCE_ROOT; };
 		CEABC6571D6F147B00C2DCD4 /* CategoryMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CategoryMap.json; path = SecurifiApp/CategoryMap.json; sourceTree = SOURCE_ROOT; };
 		CEABC6591D6F14A000C2DCD4 /* CategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryView.h; sourceTree = "<group>"; };
 		CEABC65A1D6F14A000C2DCD4 /* CategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryView.m; sourceTree = "<group>"; };
@@ -1214,7 +1214,6 @@
 		CEF6F4D71C92CAD600C68975 /* TimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeView.m; sourceTree = "<group>"; };
 		CEF6F5041C92CD2400C68975 /* GenericIndexUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericIndexUtil.h; sourceTree = "<group>"; };
 		CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericIndexUtil.m; sourceTree = "<group>"; };
-		CEF6F5081C92CD3D00C68975 /* deviceListJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = deviceListJson.json; path = ../deviceListJson.json; sourceTree = "<group>"; };
 		CEFFBD201D87D1EF00B0A7A9 /* DeviceListResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DeviceListResponse.json; path = SecurifiApp/DeviceListResponse.json; sourceTree = SOURCE_ROOT; };
 		CEFFBD211D87D1EF00B0A7A9 /* GenericIndexesData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GenericIndexesData.json; path = SecurifiApp/GenericIndexesData.json; sourceTree = SOURCE_ROOT; };
 		F400B6BF1D65ECCD00DDEE50 /* SupportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportViewController.h; sourceTree = "<group>"; };
@@ -2510,8 +2509,8 @@
 				CEABC6571D6F147B00C2DCD4 /* CategoryMap.json */,
 				CEFFBD201D87D1EF00B0A7A9 /* DeviceListResponse.json */,
 				CEFFBD211D87D1EF00B0A7A9 /* GenericIndexesData.json */,
+				CE99A3401DD04C3300101405 /* deviceListJson.json */,
 				A5C68C981C92D93000110B74 /* GenericIndexesData.json */,
-				CEF6F5081C92CD3D00C68975 /* deviceListJson.json */,
 				A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */,
 				A545372A1C8ED35C00DC3EC8 /* scene_names.txt */,
 				CE40BF1A1D228650007C2148 /* temp.json */,
@@ -2839,7 +2838,6 @@
 				A58DB3E11BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3DC1BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB3F01BB1960900717C02 /* termsofuse.html in Resources */,
-				CEF6F50B1C92CD3D00C68975 /* deviceListJson.json in Resources */,
 				A58DB4871BB3CD6800717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				F4B875721D53886700DCF76F /* Scenes_Iphone.storyboard in Resources */,
 				A58DB3E91BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
@@ -2932,7 +2930,6 @@
 				CEABC6581D6F147B00C2DCD4 /* CategoryMap.json in Resources */,
 				F4D633E21DC217EE000BF076 /* add_sensor_zigbee_tab.pdf in Resources */,
 				A58DB3041BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
-				CEF6F50A1C92CD3D00C68975 /* deviceListJson.json in Resources */,
 				1C7E7E751A41A7470026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */,
 				846414E31B736B80008AB07F /* AvenirLTStd-Medium.otf in Resources */,
 				A58DB2691BB168C400717C02 /* termsofuse.html in Resources */,
@@ -3025,6 +3022,7 @@
 				F4D633E31DC217EE000BF076 /* add_sensor_zigbee_tab_pairing_mode.pdf in Resources */,
 				CEFFBD231D87D1EF00B0A7A9 /* GenericIndexesData.json in Resources */,
 				A58DB2E81BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
+				CE99A3411DD04C3300101405 /* deviceListJson.json in Resources */,
 				F4D633E01DC217EE000BF076 /* hue_bridge.pdf in Resources */,
 				A58DB2FC1BB16B9F00717C02 /* termsofuse.html in Resources */,
 				A58DB46C1BB3CD5200717C02 /* Almond-Localizable.strings in Resources */,
@@ -3136,7 +3134,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		8E7312B8CB56540374D80E44 /* [CP] Check Pods Manifest.lock */ = {
@@ -3151,7 +3149,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C64E9DE6572B4684A06A1BB5 /* [CP] Embed Pods Frameworks */ = {
