@@ -213,7 +213,7 @@
 }
 - (IBAction)moreOnCategoryClicked:(id)sender {
     NSLog(@"moreOnCategoryClicked");
-    self.cat_view_more = [[CategoryView alloc]initMoreClickView:CGRectMake(0, 45, 100, 420)];
+    self.cat_view_more = [[CategoryView alloc]initMoreClickView:CGRectMake(0, self.view.frame.size.height - 200, self.navigationController.view.frame.size.width, 420)];
     self.cat_view_more.delegate = self;
     self.cat_view.delegate = self;
     self.cat_view_more.backgroundColor = [UIColor whiteColor];

@@ -30,6 +30,7 @@
     if(self){
         NSLog(@"frame initialized");
         [[NSBundle mainBundle] loadNibNamed:@"categoryTab" owner:self options:nil];
+//        self.moreClickView.frame = frame;
         [self addSubview:self.moreClickView];
     }
     return self;
