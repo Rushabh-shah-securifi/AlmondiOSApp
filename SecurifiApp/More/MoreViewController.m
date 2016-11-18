@@ -120,8 +120,8 @@
     NSString *addAlmondText = self.isLocal? @"Add Almond": @"Link Almond to Account";
     [moreFeatures addObject:@{@"link_almond_icon":addAlmondText}];
     if(!self.isLocal)
-        [moreFeatures addObject:@{@"help_center_icon":@"Almond Sharing"}];
-    [moreFeatures addObject:@{@"almond_sharing_icon":@"Help Center"}];
+        [moreFeatures addObject:@{@"almond_sharing_icon":@"Almond Sharing"}];
+    [moreFeatures addObject:@{@"help_center_icon":@"Help Center"}];
     return moreFeatures;
 }
 
