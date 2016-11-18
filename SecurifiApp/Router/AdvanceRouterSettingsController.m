@@ -110,6 +110,7 @@ static const int headerHeight = 180;
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     AdvRouterHelpController *ctrl = [AdvRouterHelpController new];
     ctrl.helpType = indexPath.section;
+    self.navigationController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:ctrl animated:YES];
     return;
     
