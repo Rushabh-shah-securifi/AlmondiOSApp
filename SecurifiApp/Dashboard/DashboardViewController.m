@@ -19,7 +19,6 @@
 #import "Colours.h"
 #import "SFINotificationStatusBarButtonItem.h"
 #import "CommonMethods.h"
-#import "UILabel+ActionSheet.h"
 #import "UIFont+Securifi.h"
 #import "SWRevealViewController.h"
 #import "HelpScreens.h"
