@@ -12,7 +12,6 @@
 #import "SecurifiToolkit/SecurifiTypes.h"
 #import "Colours.h"
 #import "SFIDeviceIndex.h"
-#import "SensorIndexSupport.h"
 #import "IndexValueSupport.h"
 #import "ValueFormatter.h"
 #import "RulesConstants.h"

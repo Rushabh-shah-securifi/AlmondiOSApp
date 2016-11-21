@@ -9,7 +9,6 @@
 #import "AddTriggerAndAddAction.h"
 #import "AddRulesViewController.h"
 #import "RulesDeviceNameButton.h"
-#import "SensorIndexSupport.h"
 #import "Colours.h"
 #import "SFIColors.h"
 #import "RulesConstants.h"

@@ -8,7 +8,6 @@
 
 #import "SFISubPropertyBuilder.h"
 #import "RulesConstants.h"
-#import "SensorIndexSupport.h"
 #import "SecurifiToolkit/SFIDevice.h"
 #import "DeviceListAndValues.h"
 #import "SFIDeviceIndex.h"

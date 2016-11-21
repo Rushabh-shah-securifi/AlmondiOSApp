@@ -175,7 +175,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     cell.notification = notification;
     
     cell.debugCellIndexNumber = (NSUInteger) indexPath.row;
-
+    //notification.viewed = YES;
     return cell;
 }
 
@@ -408,7 +408,9 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     }
 
     NSUInteger index = (NSUInteger) (row + 0);
-    return [self.store fetchNotificationForBucket:bucket index:index];
+    SFINotification *notiFication = [self.store fetchNotificationForBucket:bucket index:index];
+    NSLog(@"notiFication Id: %ld, viewed %d",notiFication.notificationId,notiFication.viewed);
+    return notiFication;
 }
 
 #pragma mark - Notification event handlers

@@ -820,7 +820,7 @@
                 "Icon": "panic_icon",
                 "AppLabel": "paincAlarm",
                 "Label": "Panic Alarm",
-                "Notification": "notification_keyfob_disarmed"
+                "Notification": "notification_keyfob_armed"
             },
             "false": {
                 "Icon": "panic_icon",
@@ -843,14 +843,14 @@
                 "Icon": "emergency_icon",
                 "AppLabel": "emergencyAlarm",
                 "Label": "Emergency Alarm",
-                "Notification": "notification_keyfob_disarmed"
+                "Notification": "Alarm on"
             },
             "false": {
                 "Icon": "emergency_icon",
                 "Label": "NO",
                 "AppLabel": "no",
                 "ExcludeFrom": "Rule",
-                "Notification": "notification_keyfob_disarmed"
+                "Notification": "Alarm Off"
             }
         }
     },
@@ -1807,7 +1807,7 @@
             "Min": "50",
             "Max": "90",
             "Unit": "\u00B0F",
-            "prefix": "current"
+            "prefix": "changed_to"
         }
     },
     "58": {
@@ -2576,7 +2576,7 @@
         "Formatter": {
             "Min": "1",
             "Max": "16777215",
-            "prefix": "changed_to2"
+            "prefix": "changed_to"
         }
     },
     "100": {

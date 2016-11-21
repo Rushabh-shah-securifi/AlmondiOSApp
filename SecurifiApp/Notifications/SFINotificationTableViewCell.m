@@ -32,6 +32,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
 @property(nonatomic, strong) UIView *verticalLine;
 @property(nonatomic, strong) UIImageView *iconView;
 @property(nonatomic, strong) UITextView *messageTextField;
+@property(nonatomic, strong) UILabel *messageText;
 @property(nonatomic, strong) CircleView *circleView;
 @property(nonatomic, strong, readonly) SensorSupport *sensorSupport;
 @property(nonatomic) SFINotificationTableViewCellDebugMode debugMessageMode;
@@ -93,44 +94,58 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     
     CGFloat message_x = left_padding + date_width + padding + circle_width + padding;
     rect = CGRectMake(message_x, 5, cell_width - message_x - padding, circle_width);
-    //
-    UITextView *textView = [[UITextView alloc] initWithFrame:rect];
-    self.messageTextField = textView;
-    // allow copy but not edit/paste
-    textView.userInteractionEnabled = YES;
-    textView.editable = NO;
-    // remove left margin
-    textView.textContainer.lineFragmentPadding = 0;
-    textView.textContainerInset = UIEdgeInsetsZero;
-    // vertically center the content
-    [textView addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
-    //
+    
     if (self.enableDebugMode) {
+        UITextView *textView = [[UITextView alloc] initWithFrame:rect];
+        self.messageTextField = textView;
+        // allow copy but not edit/paste
+        textView.userInteractionEnabled = YES;
+        textView.editable = NO;
+        // remove left margin
+        textView.textContainer.lineFragmentPadding = 0;
+        textView.textContainerInset = UIEdgeInsetsZero;
+        // vertically center the content
+        [textView addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
         // tapping on label will change text to show Notification external ID
         UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDebugMessageTap)];
         recognizer.numberOfTapsRequired = 1;
         [textView addGestureRecognizer:recognizer];
+        CGFloat fontSize = 25.0;
+        textView.font = [textView.font fontWithSize:fontSize];
+        //
+        while (textView.contentSize.height > textView.frame.size.height && fontSize > 8.0) {
+            fontSize -= 1.0;
+            textView.font = [textView.font fontWithSize:fontSize];
+        }
+        [self.contentView addSubview:self.messageTextField];
+    }
+    else{
+        
+        UILabel *textView = [[UILabel alloc] initWithFrame:rect];
+        self.messageText = textView;
+        // allow copy but not edit/paste
+        textView.userInteractionEnabled = YES;
+        // remove left margin
+        textView.textAlignment = NSTextAlignmentLeft;
+        textView.userInteractionEnabled = NO;
+        textView.numberOfLines = 2;
+        textView.lineBreakMode = NSLineBreakByWordWrapping;
+        textView.font = [UIFont securifiFont:12];
+        
+        // vertically center the content
+        [self.contentView addSubview:self.messageText];
     }
     //
     // auto resize text to fit view bounds
-    CGFloat fontSize = 25.0;
-    textView.font = [textView.font fontWithSize:fontSize];
-    //
-    while (textView.contentSize.height > textView.frame.size.height && fontSize > 8.0) {
-        fontSize -= 1.0;
-        textView.font = [textView.font fontWithSize:fontSize];
-    }
+    
     
     [self.contentView addSubview:self.dateLabel];
     [self.contentView addSubview:self.verticalLine];
     [self.contentView addSubview:self.circleView];
-    [self.contentView addSubview:self.messageTextField];
+    
     
     SFINotification *notification = self.notification;
-//    _sensorSupport = [SensorSupport new];
-//    [_sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
-//    
-//    NSLog(@"Notification - Name: %@, device type: %d, value type: %d, typestr: %@, index: %d, value: %@", notification.deviceName, notification.deviceType, notification.valueType, [SFIDeviceKnownValues propertyTypeToName:notification.valueType], notification.valueIndex, notification.value);
+
     Device *device = [Device getDeviceForID:notification.deviceId];
     NSLog(@"notification text %@,device type %d,value type %d",notification.value,notification.deviceType,notification.valueType);
     NSLog(@"device name %@ ID: %d",notification.deviceName,notification.deviceId);
@@ -166,7 +181,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     NSLog(@"deviceIndexes %@",deviceIndexes);
     
     NSString *indexID = [self getgenericIndexfor:not.deviceType andIndex:@(not.valueIndex).stringValue];
-    NSLog(@"deviceIndexArr all keys id %@",indexID);
+    NSLog(@"deviceIndexArr cll keys id %@",indexID);
     GenericValue *gval;
     gval = [self getMatchingGenericValueForGenericIndexID:indexID forValue:value];
    
@@ -178,7 +193,8 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
                                        @"devicename":not.deviceName?not.deviceName:@"",
                                        @"notificationText":gval.notificationText?gval.notificationText:@"",
                                        @"prefix":gval.notificationPrefix?gval.notificationPrefix:@"",
-                                      @"value":gval.value
+                                      @"value":gval.value,
+                                       @"unit":gval.unit?gval.unit:@""
                                        
                                        };
         NSLog(@"outer notificaation obj dict  %@",notificationDict);
@@ -187,7 +203,6 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     }
     if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
         NSString *deviceName;
-        NSString *message;
         UIFont *bold_font = [UIFont securifiBoldFont];
         UIFont *normal_font = [UIFont securifiNormalFont];
          NSMutableAttributedString *mutableAttributedString = nil;
@@ -195,45 +210,38 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         
         attr = @{
                  NSFontAttributeName : bold_font,
-                 NSForegroundColorAttributeName : [UIColor blackColor],
+                 NSForegroundColorAttributeName : [UIColor grayColor],
                  };
         
         
-        NSArray * properties = [self.notification.deviceName componentsSeparatedByString:@"|"];
+        Client *client = [Client new];
+        client.deviceType = @"other";
+        self.iconView.image = [UIImage imageNamed:[client iconName]];
         
-            Client *client = [Client new];
-            client.deviceType = @"other";
-            self.iconView.image = [UIImage imageNamed:[client iconName]];
+        NSArray * properties = [not.deviceName componentsSeparatedByString:@"|"];
+        NSString *name = properties[3];
+        //        NSLog(@" name notification Name == %@",name);
+        if([name rangeOfString:@"An unknown device" options:NSCaseInsensitiveSearch].location != NSNotFound){
+            NSArray *nameArr = [name componentsSeparatedByString:@"An unknown device"];
+            deviceName = nameArr[1];
+        }
+        else
+            deviceName = name;
         
-        deviceName = properties[0];
-        message = properties[3];
         NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:deviceName attributes:attr];
         //NSLog(@"notification msg: %@", message);
-        NSRange nameRangeInMessage = [message rangeOfString:deviceName];
-        if (nameRangeInMessage.location != NSNotFound) {
-            mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:message attributes:attr];
-            
-            [mutableAttributedString addAttribute:NSFontAttributeName value:bold_font range:nameRangeInMessage];
-            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:nameRangeInMessage];
-        }
-        if (message == nil) {
-            message = @"";
-        }
         
+        [self setTextFieldOrTextView:nameStr];
         
-        if (!mutableAttributedString) {
-            NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:message attributes:attr];
-            NSMutableAttributedString *container = [NSMutableAttributedString new];
-            [container appendAttributedString:nameStr];
-            [container appendAttributedString:eventStr];
-            
-            self.messageTextField.attributedText = container;
-        }else{
-            self.messageTextField.attributedText = mutableAttributedString;
-        }
         
     }
     return nil;
+}
+-(void)setTextFieldOrTextView:(NSAttributedString*)attributedString{
+    if(self.enableDebugMode)
+        self.messageTextField.attributedText = attributedString;
+    else
+        self.messageText.attributedText = attributedString;
 }
 -(NSString *)getgenericIndexfor:(int)devicetype andIndex:(NSString *)indexId{
     NSString *deviceTypeString = @(devicetype).stringValue;
@@ -263,14 +271,13 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
 }
 -(void)setNotificationLabel:(NSDictionary *)notification{
     if (notification == nil) {
-        self.messageTextField.attributedText = [[NSAttributedString alloc] initWithString:@""];
+        //self.messageTextField.attributedText = [[NSAttributedString alloc] initWithString:@""];
+        [self setTextFieldOrTextView:[[NSAttributedString alloc] initWithString:@""]];
         return;
     }
     UIFont *bold_font = [UIFont securifiBoldFont];
     UIFont *normal_font = [UIFont securifiNormalFont];
-    
     NSDictionary *attr;
-    
     attr = @{
              NSFontAttributeName : bold_font,
              NSForegroundColorAttributeName : [UIColor blackColor],
@@ -290,11 +297,26 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     if (message == nil) {
         message = @"";
     }
-    if(![message isEqualToString:@""])
-        self.messageTextField.text = [NSString stringWithFormat:@"%@ %@",deviceName,message];
-    else
-        self.messageTextField.text = [NSString stringWithFormat:@"%@ %@ %@ %@",deviceName,message,notification[@"value"],notification[@"prefix"]];
-    
+    if(![message isEqualToString:@""]){
+        NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:message attributes:attr];
+        NSMutableAttributedString *container = [NSMutableAttributedString new];
+        [container appendAttributedString:nameStr];
+        [container appendAttributedString:[[NSAttributedString alloc] initWithString:@" " attributes:nil]];
+        [container appendAttributedString:eventStr];
+        
+        [self setTextFieldOrTextView:container];
+//        self.messageTextField.text = [NSString stringWithFormat:@"%@ %@",deviceName,message];
+    }
+    else{
+        NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@ %@%@",notification[@"prefix"],message,notification[@"value"],notification[@"unit"]] attributes:attr];
+        NSMutableAttributedString *container = [NSMutableAttributedString new];
+        [container appendAttributedString:nameStr];
+       [container appendAttributedString:eventStr];
+
+        [self setTextFieldOrTextView:container];
+       // self.messageTextField.text = [NSString stringWithFormat:@"%@ %@ %@ %@%@",deviceName,notification[@"prefix"],message,notification[@"value"],notification[@"unit"]];
+            }
+ 
 }
 - (GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value{
     //NSLog(@"value: %@", value);
@@ -325,15 +347,18 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         if([genericIndexObject.ID isEqualToString:@"99"]){
             int brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
             NSString *str = @(brightnessValue).stringValue;
-            GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:str prefix:genericIndexObject.formatter.prefix];
+             NSLog(@"slider icon1 - display text: %@, value: %@ units : %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units);
+            
+            GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:str prefix:genericIndexObject.formatter.prefix andUnit:genericIndexObject.formatter.units];
             return genericValue1;
         }
         
     }
     else if(genericIndexObject.formatter != nil && ![genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] && ![genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] && ![genericIndexObject.layoutType isEqualToString:@"HUE_ONLY"]){
         NSString *formattedValue=[genericIndexObject.formatter transform:value genericId:genericIndexID];
-        
-        GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:value prefix:genericIndexObject.formatter.prefix];
+         NSLog(@"slider icon2 - display text: %@, value: %@ units : %@ ,formattedValue = %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units,formattedValue);
+        //NSString *formattedValue = [NSString stringWithFormat:@"",[value floatValue] * genericIndexObject.formatter.factor];
+        GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:formattedValue prefix:genericIndexObject.formatter.prefix andUnit:@""];
         
 //        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:formattedValue
 //                                                                     iconText:formattedValue
@@ -349,13 +374,16 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         if([genericIndexObject.ID isEqualToString:@"100"])
             brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
         NSString *value = @(brightnessValue).stringValue;
+         NSLog(@"slider icon3 - display text: %@, value: %@ units : %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units);
+        NSString *formattedValue = [NSString stringWithFormat:@"",[value floatValue] * genericIndexObject.formatter.factor];
         return [[GenericValue alloc]initWithDisplayText:[genericIndexObject.formatter transform:value genericId:genericIndexID]
                                                    icon:genericIndexObject.icon
                                             toggleValue:nil
-                                                  value:value
+                                                  value:formattedValue
                                             excludeFrom:nil
                                               eventType:nil
-                                       transformedValue:[genericIndexObject.formatter transformValue:value] prefix:genericIndexObject.formatter.prefix]; //need icon aswell as transformedValue
+                                       transformedValue:[genericIndexObject.formatter transformValue:value] prefix:genericIndexObject.formatter.prefix andUnits:genericIndexObject.formatter.units]; //need icon aswell as transformedValue
+        
     }
     
     return [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:value value:value excludeFrom:genericIndexObject.excludeFrom eventType:nil notificationText:@""];
@@ -432,7 +460,8 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
 - (void)setMessageLabelText:(SFINotification *)notification {
     //NSLog(@"Notification: %@", notification);
     if (notification == nil) {
-        self.messageTextField.attributedText = [[NSAttributedString alloc] initWithString:@""];
+        [self setTextFieldOrTextView:[[NSAttributedString alloc] initWithString:@""]];
+//        self.messageTextField.attributedText = [[NSAttributedString alloc] initWithString:@""];
         return;
     }
     UIFont *bold_font = [UIFont securifiBoldFont];
@@ -448,8 +477,15 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     //md01<<<
     if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
         //NSLog(@"client device name: %@", self.notification.deviceName);
-        NSArray * properties = [self.notification.deviceName componentsSeparatedByString:@"|"];
-        deviceName = properties[0];
+        NSArray * properties = [notification.deviceName componentsSeparatedByString:@"|"];
+        NSString *name = properties[3];
+        //        NSLog(@" name notification Name == %@",name);
+        if([name rangeOfString:@"An unknown device" options:NSCaseInsensitiveSearch].location != NSNotFound){
+            NSArray *nameArr = [name componentsSeparatedByString:@"An unknown device"];
+            deviceName = nameArr[1];
+        }
+        else
+            deviceName = name;
     }
     
     //md01>>>
@@ -517,9 +553,11 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         [container appendAttributedString:nameStr];
         [container appendAttributedString:eventStr];
         
-        self.messageTextField.attributedText = container;    
+//        self.messageTextField.attributedText = container;
+        [self setTextFieldOrTextView:container];
     }else{
-        self.messageTextField.attributedText = mutableAttributedString;
+        [self setTextFieldOrTextView:mutableAttributedString];
+//        self.messageTextField.attributedText = mutableAttributedString;
     }
 }
 
