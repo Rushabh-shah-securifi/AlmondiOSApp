@@ -21,11 +21,16 @@
 #import "CommonMethods.h"
 #import "NSData+Securifi.h"
 
+#define SLAVE_OFFLINE_TAG   1
+#define ENABLE_TYPE_TAG     2
+
 @interface SFIRouterSettingsTableViewController () <SFIRouterTableViewActions, TableHeaderViewDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic) BOOL disposed;
 @property(nonatomic) BOOL isSharing;
+@property(nonatomic) BOOL isEnabled;
 @property(nonatomic) SFIWirelessSetting *currentSetting;
+
 @end
 
 @implementation SFIRouterSettingsTableViewController
@@ -130,7 +135,7 @@ int mii;
     cell.cardView.backgroundColor = setting.enabled ? [[SFIColors blueColor] color] : [UIColor lightGrayColor];
     cell.wirelessSetting = setting;
     cell.enableRouterWirelessControl = self.enableRouterWirelessControl;
-    cell.isREMode = self.isREMode;
+    cell.mode = self.mode;
     cell.delegate = self;
 
     return cell;
@@ -197,7 +202,7 @@ int mii;
         }
         else if(genericRouterCommand.commandSuccess == NO){
             if([genericRouterCommand.responseMessage.lowercaseString isEqualToString:@"slave in offline"]){
-                [self showAlert:@"" msg:@"Unable to change settings in one of the Almond.\nWould you like to continue?" cancel:@"No" other:@"Yes" tag:1];
+                [self showAlert:@"" msg:@"Unable to change settings in one of the Almond.\nWould you like to continue?" cancel:@"No" other:@"Yes" tag:SLAVE_OFFLINE_TAG];
                 [self showToast:NSLocalizedString(@"ParseRouterCommand Sorry! unable to update.", @"Sorry! unable to update.")];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -292,9 +297,9 @@ int mii;
 }
 
 - (void)onEnableDevice:(SFIWirelessSetting *)setting enabled:(BOOL)isEnabled {
-    SFIWirelessSetting *copy = [setting copy];
-    copy.enabled = isEnabled;
-    [self onUpdateWirelessSettings:copy isTypeEnable:YES];
+    self.currentSetting = setting;
+    self.isEnabled = isEnabled;
+    [self showAlert:[SecurifiToolkit sharedInstance].currentAlmond.almondplusName msg:@"Your Almond will reboot. Do you want to proceed?" cancel:@"No" other:@"Yes" tag:ENABLE_TYPE_TAG];
 }
 
 - (void)onShareBtnTapDelegate:(SFIWirelessSetting *)settings{
@@ -359,12 +364,24 @@ int mii;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSLog(@"router settings clicked index");
     if (buttonIndex == [alertView cancelButtonIndex]){
-        
+        if(alertView.tag == ENABLE_TYPE_TAG){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+        }
     }else{
-        [self showUpdatingSettingsHUD];
-        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        [RouterPayload setWirelessSettings:mii wirelessSettings:self.currentSetting mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:NO forceUpdate:@"true"];
-        [self.HUD hide:YES afterDelay:15];
+        if(alertView.tag == ENABLE_TYPE_TAG){
+            SFIWirelessSetting *copy = [self.currentSetting copy];
+            copy.enabled = self.isEnabled;
+            [self onUpdateWirelessSettings:copy isTypeEnable:YES];
+        }
+        else if(alertView.tag == SLAVE_OFFLINE_TAG){
+            [self showUpdatingSettingsHUD];
+            SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+            [RouterPayload setWirelessSettings:mii wirelessSettings:self.currentSetting mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:NO forceUpdate:@"true"];
+            [self.HUD hide:YES afterDelay:15];
+        }
+        
     }
 }
 
