@@ -82,6 +82,7 @@ UIAlertView *alert;
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
     }
+    
     [CommonMethods clearTopScroll:self.triggersActionsScrollView middleScroll:self.deviceListScrollView bottomScroll:self.deviceIndexButtonScrollView];
 }
 

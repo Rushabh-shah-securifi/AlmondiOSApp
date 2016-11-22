@@ -83,17 +83,17 @@
     long n_id = 0;
 
     NSMutableArray *notifications = [NSMutableArray new];
-    for (unsigned int index = 0; index <= SFIDeviceType_count; index++) {
-        SFIDeviceType type = (SFIDeviceType) index;
-
-        SensorIndexSupport *support = [SensorIndexSupport new];
-        NSArray *indexes = [support indexesFor:type];
-
-        NSArray *array = [self makeNotificationsFor:indexes type:type notificationId:n_id];
-        [notifications addObjectsFromArray:array];
-
-        n_id += array.count;
-    }
+//    for (unsigned int index = 0; index <= SFIDeviceType_count; index++) {
+//        SFIDeviceType type = (SFIDeviceType) index;
+//
+//        SensorIndexSupport *support = [SensorIndexSupport new];
+//        NSArray *indexes = [support indexesFor:type];
+//
+//        NSArray *array = [self makeNotificationsFor:indexes type:type notificationId:n_id];
+//        [notifications addObjectsFromArray:array];
+//
+//        n_id += array.count;
+//    }
 
     self.notifications = @{bucket : notifications};
 }
