@@ -13,6 +13,7 @@
 typedef NS_ENUM(int, SFICardView_right_offset) {
     SFICardView_right_offset_normal = 0,
     SFICardView_right_offset_inset = 1,
+    SFICardView_right_offset_share = 2
 };
 
 

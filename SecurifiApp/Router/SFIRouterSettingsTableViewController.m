@@ -24,6 +24,7 @@
 @interface SFIRouterSettingsTableViewController () <SFIRouterTableViewActions, TableHeaderViewDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic) BOOL disposed;
+@property(nonatomic) BOOL isSharing;
 @property(nonatomic) SFIWirelessSetting *currentSetting;
 @end
 
@@ -185,14 +186,19 @@ int mii;
         if (!self || self.disposed) {
             return;
         }
-        if(genericRouterCommand.commandSuccess == NO){
+        if(self.isSharing){
+           [self shareWiFi:self.currentSetting.ssid password:[self getPassword:genericRouterCommand]];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+                [self.HUD hide:YES];
+            });
+            self.isSharing = NO;
+            return;//
+        }
+        else if(genericRouterCommand.commandSuccess == NO){
             if([genericRouterCommand.responseMessage.lowercaseString isEqualToString:@"slave in offline"]){
                 [self showAlert:@"" msg:@"Unable to change settings in one of the Almond.\nWould you like to continue?" cancel:@"No" other:@"Yes" tag:1];
                 [self showToast:NSLocalizedString(@"ParseRouterCommand Sorry! unable to update.", @"Sorry! unable to update.")];
-            }
-            if([genericRouterCommand.responseMessage.lowercaseString isEqualToString:@"ssid  is same"]){//note the extra space before "is"
-                //enable is same - ssid is same
-                [self shareWiFi:self.currentSetting.ssid password:[self getPassword:genericRouterCommand]];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
@@ -293,6 +299,7 @@ int mii;
 
 - (void)onShareBtnTapDelegate:(SFIWirelessSetting *)settings{
     NSLog(@"onShareBtnTapDelegate");
+    self.isSharing = YES;
     [self onUpdateWirelessSettings:settings isTypeEnable:NO];
 }
 

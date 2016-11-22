@@ -93,6 +93,7 @@ int mii;
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"router viewDidLoad");
+    [self displayWebView:@""];
     if([[SecurifiToolkit sharedInstance] isScreenShown:@"wifi"] == NO)
         [self initializeHelpScreensfirst:@"wifi"];
     
@@ -105,6 +106,17 @@ int mii;
     [self initializeRouterSummaryAndSettings];
     self.enableAdvRouter = YES;
     
+}
+
+- (void)displayWebView:(NSString *)strForWebView{
+    NSLog(@"display web view main");
+    //this might slow down the app, perhaps you can think of better
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+        webView.backgroundColor = [UIColor clearColor];
+        [webView loadHTMLString:strForWebView baseURL:nil];
+        [self.view addSubview:webView];
+    });
 }
 
 - (void)viewWillAppear:(BOOL)animated {
