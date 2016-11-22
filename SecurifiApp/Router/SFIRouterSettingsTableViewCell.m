@@ -43,7 +43,7 @@
         [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactivate:) shareAction:@selector(onShareBtnTap:) on:setting.enabled];
     }
     else {
-        [cardView addTitle:setting.ssid];
+        [cardView addTitleAndShare:setting.ssid target:self shareAction:@selector(onShareBtnTap:)];
     }
     [cardView addLine];
     

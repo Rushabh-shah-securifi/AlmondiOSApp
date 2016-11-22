@@ -132,6 +132,16 @@
     return label;
 }
 
+- (void)addTitleAndShare:(NSString *)title target:(id)target shareAction:(SEL)shareAction{
+    UILabel *label = [self makeSettingTitle:title];
+    [self addSubview:label];
+    
+    UIButton *button = [self makeShareLinkButton:target action:shareAction];
+    [self addSubview:button];
+    
+    [self markYOffsetUsingRect:label.frame addAdditional:15];
+}
+
 - (UILabel *)addTitle:(NSString *)title {
     UILabel *label = [self makeTitleLabel:title];
     [self addSubview:label];

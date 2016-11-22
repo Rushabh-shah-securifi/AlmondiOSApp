@@ -327,7 +327,7 @@ int mii;
 }
 
 - (void)showUpdatingSettingsHUD {
-    [self showHUD:NSLocalizedString(@"hud.Updating settings...", @"Updating settings...")];
+    [self showHUD:@"Please Wait!"];
 }
 
 - (void)showHUD:(NSString *)text {
