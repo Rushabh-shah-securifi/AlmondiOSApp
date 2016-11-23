@@ -28,11 +28,25 @@
     }
     return self;
 }
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color text:(NSString *)text isRule:(BOOL)isRule
+{
+    self = [super initWithFrame:frame];
+    if(self){
+        self.color = color;
+        self.isRule = isRule;
+        [self drawTextField:text];
+    }
+    return self;
+}
 
 -(void)drawTextField:(NSString *)text{
-    self.Label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width -15, self.frame.size.height - 5)];
-    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width -25, 0, 25, self.frame.size.height - 5)];
-    imageView.image = [UIImage imageNamed:@"rightarrow-icon"];
+    UIImageView *imageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 5, 20, 20)];
+    
+    imageView1.image = [UIImage imageNamed:self.isRule?@"icon_rules":@"icon_scenes"];
+    
+    self.Label = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, self.frame.size.width -45, self.frame.size.height - 5)];
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width -25, 5, 12, 15)];
+    imageView.image = [UIImage imageNamed:@"right-arrow"];
     
     UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width -50, 0, 50, self.frame.size.height - 5)];
     [button addTarget:self action:@selector(onButtonClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -50,6 +64,7 @@
     [self addSubview:OnelineView];
     [self addSubview:self.Label];
     if(self.rule){
+        [self addSubview:imageView1];
         [self addSubview:imageView];
         [self addSubview:button];
     }

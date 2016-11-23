@@ -1813,7 +1813,7 @@ Contact us at support@securifi.com";
 "thermostat_fanMode" = " Fan Mode ";
 
 "thermostat_fanState" = " Fan ";
-"temperature_prefix_comma" = " Temp, ";
+"temperature_prefix_comma" = " Temp ";
 
 
 "auto" = " Auto";

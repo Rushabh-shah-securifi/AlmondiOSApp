@@ -330,10 +330,12 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     if([genericIndexObject.ID isEqualToString:@"30"]){
         NSString *colorShade = [CommonMethods colorShadesforValue:65535 byValueOfcolor:value];
         GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:colorShade prefix:genericIndexObject.formatter.prefix];
+        return genericValue1;
     }
    else if([genericIndexObject.ID isEqualToString:@"31"]){
         NSString *colorShade = [CommonMethods colorShadesforValue:255 byValueOfcolor:value];
         GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:colorShade prefix:genericIndexObject.formatter.prefix];
+        return genericValue1;
     }
     else if(genericIndexObject.values != nil){
         GenericValue *gval = genericIndexObject.values[value];
@@ -358,12 +360,6 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
          NSLog(@"slider icon2 - display text: %@, value: %@ units : %@ ,formattedValue = %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units,formattedValue);
         //NSString *formattedValue = [NSString stringWithFormat:@"",[value floatValue] * genericIndexObject.formatter.factor];
         GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:formattedValue prefix:genericIndexObject.formatter.prefix andUnit:@""];
-        
-//        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:formattedValue
-//                                                                     iconText:formattedValue
-//                                                                        value:value
-//                                                                  excludeFrom:genericIndexObject.excludeFrom
-//                                                             transformedValue:[genericIndexObject.formatter transformValue:value] prefix:genericIndexObject.formatter.prefix];
         
         return genericValue1;
     }

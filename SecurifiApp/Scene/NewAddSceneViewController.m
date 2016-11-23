@@ -106,6 +106,7 @@ UIAlertView *alert;
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [self removeDeleteSceneButton];
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 -(void) setUpNavigationBar{

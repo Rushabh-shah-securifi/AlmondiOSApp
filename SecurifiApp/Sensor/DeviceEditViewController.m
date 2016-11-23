@@ -48,6 +48,7 @@
 #define VIEW_FRAME_SMALL CGRectMake(xIndent, yPos, self.indexesScroll.frame.size.width-xIndent, LABELHEIGHT)
 #define VIEW_FRAME_LARGE CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, 65)
 #define LABEL_FRAME CGRectMake(0, 0, view.frame.size.width-16, LABELHEIGHT)
+#define LABEL_FRAME2 CGRectMake(0, 0, view2.frame.size.width-16, LABELHEIGHT)
 #define SLIDER_FRAME CGRectMake(0, LABELHEIGHT + LABELVALUESPACING,view.frame.size.width-10, 35)
 #define BUTTON_FRAME CGRectMake(0, LABELHEIGHT + LABELVALUESPACING,view.frame.size.width-10,  35)
 static const int xIndent = 10;
@@ -314,37 +315,70 @@ static const int xIndent = 10;
         [self.indexesScroll addSubview:view];
     }
     if(self.genericParams.isSensor){
-         UIView *view = [[UIView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp, self.indexesScroll.frame.size.width-xIndent, 65)];
+        NSArray *sceneArr = [self isPresentInRuleList:NO];
+        NSLog(@"scn arr count %ld",sceneArr.count);
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp, self.indexesScroll.frame.size.width-xIndent, 65)];
         UILabel *label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
         [self setUpLable:label withPropertyName:@"SCENES"];
         [view addSubview:label];
-        
-        Rule *scene = [self isPresentInRuleList:NO];
-        
-        LabelView *lableView = [[LabelView alloc]initWithFrame:BUTTON_FRAME color:self.genericParams.color rule:scene isRule:NO];
-        lableView.delegate = self;
-        [view addSubview:lableView];
-        CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.keyBoardComp + 65);
-        yPos = yPos + view.frame.size.height + LABELSPACING;
-        self.keyBoardComp = yPos;
-        [self.indexesScroll setContentSize:scrollableSize];
         [self.indexesScroll addSubview:view];
+        yPos = yPos + view.frame.size.height - 20;
         self.keyBoardComp = yPos;
-        
-        UIView *view2 = [[UIView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp, self.indexesScroll.frame.size.width-xIndent, 65)];
+        if(sceneArr.count == 0){
+            
+            LabelView *lableView = [[LabelView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp,view.frame.size.width-10,  35) color:self.genericParams.color text:@"This device is not part of any scene" isRule:NO];
+            lableView.delegate = self;
+            CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.keyBoardComp + 65);
+            yPos = yPos + lableView.frame.size.height + LABELSPACING;
+            self.keyBoardComp = yPos;
+            [self.indexesScroll setContentSize:scrollableSize];
+            [self.indexesScroll addSubview:lableView];
+        }
+        else
+        for(Rule *scene in sceneArr){
+           
+            LabelView *lableView = [[LabelView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp,view.frame.size.width-10,  35) color:self.genericParams.color rule:scene isRule:NO];
+            lableView.delegate = self;
+            CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.keyBoardComp + 35);
+            yPos = yPos + lableView.frame.size.height + LABELSPACING;
+            self.keyBoardComp = yPos;
+            [self.indexesScroll setContentSize:scrollableSize];
+            [self.indexesScroll addSubview:lableView];
+        }
+        NSArray *ruleArr = [self isPresentInRuleList:YES];
+        NSLog(@"ruleArr arr count %ld",ruleArr.count);
+        {
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp, self.indexesScroll.frame.size.width-xIndent, 65)];
         UILabel *label2 = [[UILabel alloc]initWithFrame:LABEL_FRAME];
         [self setUpLable:label2 withPropertyName:@"RULES"];
-        [view2 addSubview:label2];
-        Rule *rule = [self isPresentInRuleList:YES];
-        LabelView *lableView2 = [[LabelView alloc]initWithFrame:BUTTON_FRAME color:self.genericParams.color rule:rule isRule:YES];
-        lableView2.delegate = self;
-        [view2 addSubview:lableView2];
-        CGSize scrollableSize2 = CGSizeMake(self.indexesScroll.frame.size.width,self.keyBoardComp + 65);
-        yPos = yPos + view.frame.size.height + LABELSPACING;
-        self.keyBoardComp = yPos;
-        [self.indexesScroll setContentSize:scrollableSize2];
-        [self.indexesScroll addSubview:view2];
-        self.keyBoardComp = yPos;
+        [view addSubview:label2];
+        [self.indexesScroll addSubview:view];
+        yPos = yPos + view.frame.size.height - 20;
+         self.keyBoardComp = yPos;
+        if(ruleArr.count == 0){
+           
+            
+            LabelView *lableView2 = [[LabelView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp,view.frame.size.width-10,  35) color:self.genericParams.color text:@"This device is not part of any rules" isRule:YES];
+            lableView2.delegate = self;
+            CGSize scrollableSize2 = CGSizeMake(self.indexesScroll.frame.size.width,self.keyBoardComp + 35);
+            yPos = yPos + lableView2.frame.size.height + LABELSPACING;
+            [self.indexesScroll setContentSize:scrollableSize2];
+            [self.indexesScroll addSubview:lableView2];
+
+        }
+        for(Rule *rule in ruleArr){
+            
+            LabelView *lableView2 = [[LabelView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp,view.frame.size.width-10,  35) color:self.genericParams.color rule:rule isRule:YES];
+            lableView2.delegate = self;
+            [view addSubview:lableView2];
+            CGSize scrollableSize2 = CGSizeMake(self.indexesScroll.frame.size.width,self.keyBoardComp + 35);
+            yPos = yPos + lableView2.frame.size.height + LABELSPACING;
+            self.keyBoardComp = yPos;
+            [self.indexesScroll setContentSize:scrollableSize2];
+            [self.indexesScroll addSubview:lableView2];
+            
+        }
+        }
     }
 }
 -(void)onShowSensorLogs{
@@ -867,7 +901,9 @@ static const int xIndent = 10;
         [self.navigationController pushViewController:viewController animated:YES];
     }
 }
--(Rule *)isPresentInRuleList:(BOOL)isRule{
+-(NSMutableArray *)isPresentInRuleList:(BOOL)isRule{
+    NSMutableArray *ruleArr = [[NSMutableArray alloc]init];
+    
     NSArray *ruleList = isRule?self.toolkit.ruleList:self.toolkit.scenesArray;
     NSLog(@"ruleList arr %@",ruleList);
     if(!isRule){
@@ -875,28 +911,31 @@ static const int xIndent = 10;
             Rule *scene = [self getScene:sceneDict];
             for(SFIButtonSubProperties *subProperty in scene.triggers){
                 if(subProperty.deviceId == self.genericParams.headerGenericIndexValue.deviceID){
-                    return scene;
+                    [ruleArr addObject: scene];
+                    break;
+                    
                 }
             }
             
         }
-        return nil;
+        return ruleArr;
     }
     for(Rule *rules in ruleList){
         for(SFIButtonSubProperties *subProperty in rules.triggers){
             if(subProperty.deviceId == self.genericParams.headerGenericIndexValue.deviceID){
-                return rules;
+                    [ruleArr addObject: rules];
+                break;
+                }
             }
-        }
         for(SFIButtonSubProperties *subProperty in rules.actions){
             if(subProperty.deviceId == self.genericParams.headerGenericIndexValue.deviceID){
-                return rules;
+                [ruleArr addObject: rules];
+                break;
             }
         }
         
     }
-    
-    return nil;
+return ruleArr;
 }
 -(Rule *)getScene:(NSDictionary*)dict{
     Rule *scene = [[Rule alloc]init];
