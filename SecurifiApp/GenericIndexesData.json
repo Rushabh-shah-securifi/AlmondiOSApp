@@ -760,13 +760,13 @@
                 "AppLabel": "gas_on",
                 "Icon": "fire_on",
                 "Label": "GAS DETECTED",
-                "Notification": "notification_gas_off"
+                "Notification": "notification_gas_on"
             },
             "false": {
                 "AppLabel": "ok",
                 "Icon": "fire_off",
                 "Label": "OK",
-                "Notification": "notification_gas_on"
+                "Notification": "notification_gas_off"
             }
         }
     },
@@ -787,7 +787,7 @@
                 "AppLabel": "ok",
                 "Icon": "fire_off",
                 "Label": "OK",
-                "Notification": "notification_fire_off"
+                "Notification": "is_ok"
             }
         }
     },
@@ -820,14 +820,14 @@
                 "Icon": "panic_icon",
                 "AppLabel": "paincAlarm",
                 "Label": "Panic Alarm",
-                "Notification": "notification_keyfob_armed"
+                "Notification": "paincAlarm"
             },
             "false": {
                 "Icon": "panic_icon",
                 "Label": "NO",
                 "AppLabel": "no",
                 "ExcludeFrom": "Rule",
-                "Notification": "notification_keyfob_disarmed"
+                "Notification": "paincAlarm"
             }
         }
     },
@@ -843,14 +843,14 @@
                 "Icon": "emergency_icon",
                 "AppLabel": "emergencyAlarm",
                 "Label": "Emergency Alarm",
-                "Notification": "Alarm on"
+                "Notification": "emergencyAlarm"
             },
             "false": {
                 "Icon": "emergency_icon",
                 "Label": "NO",
                 "AppLabel": "no",
                 "ExcludeFrom": "Rule",
-                "Notification": "Alarm Off"
+                "Notification": "emergencyAlarm"
             }
         }
     },
@@ -949,7 +949,7 @@
                 "AppLabel": "water_on",
                 "Icon": "water_on",
                 "Label": "FLOODED",
-                "Notification": "notification_water_off"
+                "Notification": "notification_water_on"
             }
         }
     },
@@ -995,49 +995,49 @@
                 "Icon": "alarm_off",
                 "AppLabel": "stop",
                 "Label": "OFF",
-                "Notification": "stoped"
+                "Notification": "sirenStoped"
             },
             "1": {
                 "ToggleValue": "0",
                 "Icon": "alarm_on",
                 "AppLabel": "emergency",
                 "Label": "EMERGENCY MODE: ON",
-                "Notification": "emergency"
+                "Notification": "emergencyTone_text"
             },
             "2": {
                 "ToggleValue": "0",
                 "Icon": "alarm_on",
                 "AppLabel": "fire",
                 "Label": "FIRE MODE: ON",
-                "Notification": "fire"
+                "Notification": "fire_text"
             },
             "3": {
                 "ToggleValue": "0",
                 "Icon": "alarm_on",
                 "AppLabel": "ambulance",
                 "Label": "AMBULANCE MODE: ON",
-                "Notification": "ambulance"
+                "Notification": "ambulance_text"
             },
             "4": {
                 "Icon": "alarm_on",
                 "ToggleValue": "0",
                 "AppLabel": "police",
                 "Label": "POLICE MODE: ON",
-                "Notification": "police"
+                "Notification": "police_text"
             },
             "5": {
                 "Icon": "alarm_on",
                 "ToggleValue": "0",
                 "AppLabel": "door_chime",
                 "Label": "DOOR MODE: ON",
-                "Notification": "door_chime"
+                "Notification": "door_chime_text"
             },
             "6": {
                 "Icon": "alarm_on",
                 "ToggleValue": "0",
                 "AppLabel": "beep",
                 "Label": "BEEP MODE: ON",
-                "Notification": "beep"
+                "Notification": "beep_text"
             }
         }
     },
@@ -1085,14 +1085,14 @@
                 "Icon": "switch_off",
                 "AppLabel": "off",
                 "Label": "OFF",
-                "Notification": "off"
+                "Notification": "power_off"
             },
             "255": {
                 "ToggleValue": "0",
                 "Icon": "switch_on",
                 "AppLabel": "on",
                 "Label": "ON",
-                "Notification": "on"
+                "Notification": "power_on"
             }
         }
     },
@@ -1215,7 +1215,7 @@
             "Max": "3276",
             "Unit": "mb",
             "Factor": "1",
-            "prefix": "pressure_changed_to"
+            "prefix": "changed_to"
         }
     },
     "27": {
@@ -1231,7 +1231,7 @@
             "Max": "100",
             "Unit": "%",
             "Factor": "1",
-            "prefix": "humidity"
+            "prefix": "humidityChange"
         }
     },
     "28": {
@@ -1245,7 +1245,7 @@
             "Min": "0",
             "Max": "3000",
             "Unit": "Lux",
-            "prefix": "notification_light_prefix"
+            "prefix": "illuminanceChange"
         }
     },
     "29": {
@@ -1259,7 +1259,7 @@
             "Min": "0",
             "Max": "100",
             "Unit": "%",
-            "prefix": "notification_light_prefix"
+            "prefix": "illuminanceChange"
         }
     },
     "30": {
@@ -1272,7 +1272,7 @@
         "Formatter": {
             "Min": "0",
             "Max": "65535",
-            "prefix": "notificationColor"
+            "prefix": "set_to"
         }
     },
     "31": {
@@ -1285,7 +1285,7 @@
         "Formatter": {
             "Min": "0",
             "Max": "255",
-            "prefix": "notificationColor"
+            "prefix": "set_to"
         }
     },
     "32": {
@@ -1300,7 +1300,7 @@
             "Max": "100",
             "Factor": "0.394",
             "Unit": "%",
-            "prefix": "notificationSaturation"
+            "prefix": "saturation_set_to"
         }
     },
     "33": {
@@ -1314,7 +1314,7 @@
         "Formatter": {
             "Min": "1000",
             "Max": "9000",
-            "prefix": "color_temp",
+            "prefix": "color_temp_is",
             "Unit": "Kelvin"
         }
     },
@@ -1330,7 +1330,7 @@
             "Min": "0",
             "Max": "9999",
             "Unit": "W",
-            "prefix": "power_prefix"
+            "prefix": "powerReading"
         }
     },
     "35": {
@@ -1345,25 +1345,25 @@
                 "Icon": "img_auto",
                 "AppLabel": "auto",
                 "Label": "Auto",
-                "Notification": "nest_heat_cool"
+                "Notification": "modeChangeAuto"
             },
             "Cool": {
                 "Icon": "img_cool",
                 "AppLabel": "cool",
                 "Label": "Cool",
-                "Notification": "thermostat_mode"
+                "Notification": "modeChangeCool"
             },
             "Heat": {
                 "Icon": "img_heat",
                 "AppLabel": "heat",
                 "Label": "Heat",
-                "Notification": "thermostat_mode"
+                "Notification": "modeChangeHeat"
             },
             "Off": {
                 "Icon": "img_off",
                 "AppLabel": "button_off",
                 "Label": "Off",
-                "Notification": "thermostat_mode"
+                "Notification": "modeChangeOff"
             }
         }
     },
@@ -1373,6 +1373,7 @@
         "Placement": "HeaderOnly",
         "Layout": "TEXT_VIEW",
         "AppLabel": "operating_state",
+        "DefaultIcon": "img_off",
         "ExcludeFrom": "Rule"
     },
     "37": {
@@ -1388,7 +1389,7 @@
             "Max": "95",
             "Unit": "\u00B0F",
             "Factor": "1",
-            "prefix": "thermostat_heat"
+            "prefix": "heatingUp"
         }
     },
     "38": {
@@ -1404,7 +1405,7 @@
             "Max": "95",
             "Unit": "\u00B0F",
             "Factor": "1",
-            "prefix": "thermostat_cool"
+            "prefix": "coolingDown"
         }
     },
     "39": {
@@ -1419,13 +1420,13 @@
                 "Icon": "btn_fan_off",
                 "AppLabel": "fan_on_low",
                 "Label": "On low",
-                "Notification": "thermostat_fanMode"
+                "Notification": "fanOnLow_text"
             },
             "Auto Low": {
                 "Icon": "btn_fan_on",
                 "AppLabel": "fan_auto_low",
                 "Label": "Auto low",
-                "Notification": "thermostat_fanMode"
+                "Notification": "fanAutoLow_text"
             }
         }
     },
@@ -1436,6 +1437,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "fan_state",
         "ExcludeFrom": "Rule",
+        "DefaultIcon":"img_off",
         "Notification": "thermostat_fanState"
     },
     "41": {
@@ -1450,7 +1452,7 @@
             "Min": "32",
             "Max": "104",
             "Unit": "\u00B0F",
-            "prefix": "temperature_prefix_comma"
+            "prefix": "temp_changed_to"
         }
     },
     "42": {
@@ -1491,7 +1493,7 @@
                 "AppLabel": "stop_",
                 "Icon": "motion_off",
                 "Label": "Stop",
-                "Notification": "stopped"
+                "Notification": "stoped"
             }
         }
     },
@@ -1524,7 +1526,7 @@
                 "AppLabel": "stopped",
                 "Label": "STOPPED",
                 "ExcludeFrom": "Scene",
-                "Notification": "notification_stopped"
+                "Notification": "stoped"
             },
             "254": {
                 "ToggleValue": "0",
@@ -1555,49 +1557,49 @@
                 "Icon": "img_auto",
                 "AppLabel": "auto",
                 "Label": "Auto",
-                "Notification": "auto"
+                "Notification": "modeChangeAuto"
             },
             "Cool": {
                 "Icon": "img_cool",
                 "AppLabel": "cool",
                 "Label": "Cool",
-                "Notification": "thermostat_mode"
+                "Notification": "modeChangeCool"
             },
             "Heat": {
                 "Icon": "img_heat",
                 "AppLabel": "heat",
                 "Label": "Heat",
-                "Notification": "thermostat_mode"
+                "Notification": "modeChangeHeat"
             },
             "Off": {
                 "Icon": "img_off",
                 "AppLabel": "offMode",
                 "Label": "Off",
-                "Notification": "off"
+                "Notification": "modeChangeOff"
             },
             "Resume": {
                 "Icon": "resume_icon",
                 "AppLabel": "resume",
                 "Label": "Resume",
-                "Notification": "resume"
+                "Notification": "modeChangeResume"
             },
             "Fan Only": {
                 "Icon": "btn_fan_off",
                 "AppLabel": "fanOnly",
                 "Label": "Fan Only",
-                "Notification": "fanOnly"
+                "Notification": "modeChangeFanOnly"
             },
             "Dry Air": {
                 "Icon": "water_off",
                 "AppLabel": "dryAir",
                 "Label": "Dry Air",
-                "Notification": "dryAir"
+                "Notification": "modeChangeDryAir"
             },
             "Auto Changeover": {
                 "Icon": "img_auto",
                 "AppLabel": "autoChangeOver",
                 "Label": "Auto Changeover",
-                "Notification": "autoChangeOver"
+                "Notification": "modeChangeAutoChangeOver"
             }
         }
     },
@@ -1613,7 +1615,7 @@
             "Min": "60",
             "Max": "86",
             "Unit": "\u00B0F",
-            "prefix": "thermostat_heat"
+            "prefix": "heatingUp"
         }
     },
     "47": {
@@ -1628,7 +1630,7 @@
             "Min": "60",
             "Max": "86",
             "Unit": "\u00B0F",
-            "prefix": "thermostat_cool"
+            "prefix": "coolingDown"
         }
     },
     "48": {
@@ -1643,25 +1645,25 @@
                 "Icon": "fan_auto",
                 "AppLabel": "fan_auto_low",
                 "Label": "Auto",
-                "Notification": "thermostat_fanMode"
+                "Notification": "fanAutoLow_text"
             },
             "On Low": {
                 "Icon": "fan_low",
                 "AppLabel": "fan_on_low",
                 "Label": "Low",
-                "Notification": "thermostat_fanMode"
+                "Notification": "fanOnLow_text"
             },
             "Unknown 5": {
                 "Icon": "fan_medium",
                 "AppLabel": "medium",
                 "Label": "Medium",
-                "Notification": "medium"
+                "Notification": "fanUnknown_text"
             },
             "On High": {
                 "Icon": "fan_high",
                 "AppLabel": "fan_on_high",
                 "Label": "High",
-                "Notification": "thermostat_fanMode"
+                "Notification": "fanOnHigh_text"
             }
         }
     },
@@ -1678,14 +1680,14 @@
                 "Icon": "swingoff_icon",
                 "AppLabel": "off_camelcase",
                 "Label": "Off",
-                "Notification": "swing_off"
+                "Notification": "swingOff_text"
             },
             "1": {
                 "ToggleValue": "0",
                 "Icon": "swingon_icon",
                 "AppLabel": "on_camelcase",
                 "Label": "On",
-                "Notification": "swing_on"
+                "Notification": "swingOn_text"
             }
         }
     },
@@ -1702,7 +1704,7 @@
             "Max": "100",
             "Unit": "%",
             "Factor": "1",
-            "prefix": "battery_status"
+            "prefix": "battery_is"
         }
     },
     "51": {
@@ -1712,7 +1714,7 @@
         "Layout": "TEXT_VIEW_ONLY",
         "AppLabel": "irCode",
         "ExcludeFrom": "Trigger",
-        "DefaultIcon": "current_temperature",
+        "DefaultIcon": "target_temperature",
         "Formatter": {
             "Min": "0",
             "Max": "999",
@@ -1726,12 +1728,12 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "voltage",
         "Conditional": "true",
-        "DefaultIcon": "current_temperature",
+        "DefaultIcon": "target_temperature",
         "Formatter": {
             "Min": "0",
             "Max": "240",
             "Unit": "V",
-            "prefix": "voltage"
+            "prefix": "voltageReading"
         }
     },
     "53": {
@@ -1741,12 +1743,12 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "current",
         "Conditional": "true",
-        "DefaultIcon": "current_temperature",
+        "DefaultIcon": "target_temperature",
         "Formatter": {
             "Min": "0",
             "Max": "15",
             "Unit": "A",
-            "prefix": "current"
+            "prefix": "currentReading"
         }
     },
     "54": {
@@ -1773,25 +1775,25 @@
                 "Icon": "img_auto",
                 "AppLabel": "nest_heat_cool",
                 "Label": "Heat-Cool",
-                "Notification": "nest_heat_cool"
+                "Notification": "modeChangeHC"
             },
             "cool": {
                 "Icon": "img_cool",
                 "AppLabel": "ac_cool",
                 "Label": "Cool",
-                "Notification": "thermostat_mode"
+                "Notification": "modeChangeCool"
             },
             "heat": {
                 "Icon": "img_heat",
                 "AppLabel": "heat",
                 "Label": "Heat",
-                "Notification": "thermostat_mode"
+                "Notification": "modeChangeHeat"
             },
             "off": {
                 "Icon": "img_off",
                 "AppLabel": "off",
                 "Label": "Off",
-                "Notification": "thermostat_mode"
+                "Notification": "modeChangeOff"
             }
         }
     },
@@ -1807,7 +1809,7 @@
             "Min": "50",
             "Max": "90",
             "Unit": "\u00B0F",
-            "prefix": "changed_to"
+            "prefix": "thermostat_setpoint"
         }
     },
     "58": {
@@ -1822,7 +1824,7 @@
             "Min": "50",
             "Max": "87",
             "Unit": "\u00B0F",
-            "prefix": "nest_label_low_range"
+            "prefix": "coolingDown"
         }
     },
     "59": {
@@ -1837,7 +1839,7 @@
             "Min": "53",
             "Max": "90",
             "Unit": "\u00B0F",
-            "prefix": "nest_label_high_range"
+            "prefix": "heatingUp"
         }
     },
     "60": {
@@ -1853,20 +1855,20 @@
                 "Icon": "home_white",
                 "AppLabel": "home",
                 "Label": "Home",
-                "Notification": "nest_label_away_mode"
+                "Notification": "nest_mode_home_text"
             },
             "away": {
                 "Icon": "away_white",
                 "AppLabel": "away",
                 "Label": "Away",
-                "Notification": "nest_label_away_mode"
+                "Notification": "nest_mode_away_text"
             },
             "auto-away": {
                 "Icon": "away_white",
                 "AppLabel": "AUTOAWAY",
                 "ReadOnly": "true",
                 "Label": "Auto-away",
-                "Notification": "nest_label_away_mode"
+                "Notification": "nest_mode_autoaway_text"
             }
         }
     },
@@ -1882,13 +1884,13 @@
                 "Icon": "btn_fan_on",
                 "AppLabel": "start",
                 "Label": "Start",
-                "Notification": "thermostat_fanMode"
+                "Notification": "fan_started"
             },
             "false": {
                 "Icon": "btn_fan_off",
                 "AppLabel": "stop_",
                 "Label": "Stop",
-                "Notification": "thermostat_fanMode"
+                "Notification": "fan_stopped"
             }
         }
     },
@@ -1931,11 +1933,12 @@
         "Type": "Functional",
         "Placement": "Hidden",
         "ExcludeFrom": "Scene_Rule",
+        "DefaultIcon":"img_off",
         "Values": {
             "true": {
                 "AppLabel": "emergency_heat",
                 "Label": "Using Emergency Heat",
-                "Notification": "thermostat_mode"
+                "Notification": "notification_emergency_heat"
             }
         }
     },
@@ -1957,19 +1960,19 @@
                 "Icon": "img_heat",
                 "AppLabel": "heating",
                 "Label": "HEATING",
-                "Notification": "nest_label_away_mode"
+                "Notification": "is_heating"
             },
             "cooling": {
                 "Icon": "img_cool",
                 "AppLabel": "cooling",
                 "Label": "COOLING",
-                "Notification": "nest_label_away_mode"
+                "Notification": "is_cooling"
             },
             "off": {
                 "Icon": "img_off",
                 "AppLabel": "off",
                 "Label": "IDLE",
-                "Notification": "nest_label_away_mode"
+                "Notification": "is_off"
             }
         }
     },
@@ -1984,66 +1987,107 @@
         "Type": "Info",
         "Placement": "Message",
         "ExcludeFrom": "Scene_Rule",
+        "DefaultIcon":"img_off",
         "Values": {
             "-1": {
-                "Label": "Wrong mode selection"
+                "Icon": "img_off",
+                "Label": "Wrong mode selection",
+                "Notification":"error_1"
             },
             "-2": {
-                "Label": "Cannot change target temperature while structure is away"
+                "Icon": "img_off",
+                "Label": "Cannot change target temperature while structure is away",
+                "Notification":"error_2"
             },
             "-3": {
-                "Label": "Thermostat is not online"
+                "Icon": "img_off",
+                "Label": "Thermostat is not online",
+                "Notification":"error_3"
             },
             "-4": {
-                "Label": "Cannot change fan_timer_active while structure is Away"
+                "Icon": "img_off",
+                "Label": "Cannot change fan_timer_active while structure is Away",
+                "Notification":"error_4"
             },
             "-5": {
-                "Label": "heat-cool mode 3 unit issue"
+                "Icon": "img_off",
+                "Label": "heat-cool mode 3 unit issue",
+                "Notification":"error_5"
             },
             "-6": {
-                "Label": "Cannot change HVAC mode while thermostat lock is enabled"
+                "Icon": "img_off",
+                "Label": "Cannot change HVAC mode while thermostat lock is enabled",
+                "Notification":"error_6"
             },
             "-7": {
-                "Label": "Cannot set c and f temperatures simultaneously"
+                "Icon": "img_off",
+                "Label": "Cannot set c and f temperatures simultaneously",
+                "Notification":"error_7"
             },
             "-8": {
-                "Label": "Cannot set target temperature closer than N degrees C/F"
+                "Icon": "img_off",
+                "Label": "Cannot set target temperature closer than N degrees C/F",
+                "Notification":"error_8"
             },
             "-9": {
-                "Label": "Temperature C/F value is too low"
+                "Icon": "img_off",
+                "Label": "Temperature C/F value is too low",
+                "Notification":"error_9"
             },
             "-10": {
-                "Label": "Temperature C/F value is too high"
+                "Icon": "img_off",
+                "Label": "Temperature C/F value is too high",
+                "Notification":"error_10"
             },
             "-11": {
-                "Label": "Temperature C/F value too low for lock temperature"
+                "Icon": "img_off",
+                "Label": "Temperature C/F value too low for lock temperature",
+                "Notification":"error_11"
             },
             "-12": {
-                "Label": "Temperature C/F value too high for lock temperature"
+                "Icon": "img_off",
+                "Label": "Temperature C/F value too high for lock temperature",
+                "Notification":"error_12"
             },
             "-13": {
-                "Label": "Cannot change HVAC mode during energy-saving events"
+                "Icon": "img_off",
+                "Label": "Cannot change HVAC mode during energy-saving events",
+                "Notification":"error_13"
             },
             "-14": {
-                "Label": "Cannot change HVAC mode to Heat/Cool"
+                "Icon": "img_off",
+                "Label": "Cannot change HVAC mode to Heat/Cool",
+                "Notification":"error_14"
             },
             "-15": {
-                "Label": "Invalid HVAC mode"
+                "Icon": "img_off",
+                "Label": "Invalid HVAC mode",
+                "Notification":"error_15"
             },
             "-16": {
-                "Label": "Cannot activate fan during smoke/co safety shutoff"
+                "Icon": "img_off",
+                "Label": "Cannot activate fan during smoke/co safety shutoff",
+                "Notification":"error_16"
             },
             "-17": {
-                "Label": "fan_timer_active not set"
+                "Icon": "img_off",
+                "Label": "fan_timer_active not set",
+                "Notification":"error_17"
             },
             "-18": {
-                "Label": "Cannot change Away state while emergency heat is on"
+                "Icon": "img_off",
+                "Label": "Cannot change Away state while emergency heat is on",
+                "Notification":"error_18"
             },
             "503": {
-                "Label": "Service Unavailable"
+                "Icon": "img_off",
+                "Label": "Service Unavailable",
+                "Notification":"error_503"
             },
             "429": {
-                "Label": "Too Many Requests"
+                "Icon": "img_off",
+                "Label": "Too Many Requests",
+                "Notification":"tooMany"
             }
         }
     },
@@ -2060,19 +2104,19 @@
                 "Icon": "nest_protect_icon",
                 "AppLabel": "ok",
                 "Label": "OK",
-                "Notification": "smoke_ok"
+                "Notification": "co_not_detected_text"
             },
             "warning": {
                 "Icon": "icon_tampered_yellow",
                 "AppLabel": "warning",
                 "Label": "WARNING",
-                "Notification": "co_detected"
+                "Notification": "co_warning_text"
             },
             "emergency": {
                 "Icon": "icon_tampered_red",
                 "AppLabel": "emergency_",
                 "Label": "EMERGENCY",
-                "Notification": "co_detected"
+                "Notification": "co_emergency_text"
             }
         }
     },
@@ -2089,19 +2133,19 @@
                 "Icon": "nest_protect_icon",
                 "AppLabel": "ok",
                 "Label": "OK",
-                "Notification": "smoke_ok"
+                "Notification": "smoke_not_detected_text"
             },
             "warning": {
                 "Icon": "icon_tampered_yellow",
                 "AppLabel": "warning",
                 "Label": "WARNING",
-                "Notification": "smoke_on"
+                "Notification": "smoke_warning_text"
             },
             "emergency": {
                 "Icon": "icon_tampered_red",
                 "AppLabel": "emergency_",
                 "Label": "EMERGENCY",
-                "Notification": "smoke_on"
+                "Notification": "smoke_emergency_text"
             }
         }
     },
@@ -2138,6 +2182,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "battery",
         "ExcludeFrom": "Scene_Rule",
+        "DefaultIcon":"img_off",
         "Values": {
             "ok": {
                 "Label": "OK",
@@ -2169,7 +2214,7 @@
             "Min": "0",
             "Max": "9999",
             "Unit": "KWh",
-            "prefix": "energy"
+            "prefix": "energyReading"
         }
     },
     "81": {
@@ -2191,7 +2236,7 @@
             "Min": "0",
             "Max": "9999",
             "Unit": "W",
-            "prefix": "clamp1_power"
+            "prefix": "clamp1Power_text"
         }
     },
     "83": {
@@ -2205,7 +2250,7 @@
             "Min": "0",
             "Max": "9999",
             "Unit": "W",
-            "prefix": "clamp2_power"
+            "prefix": "clamp2Power_text"
         }
     },
     "84": {
@@ -2220,7 +2265,7 @@
             "Min": "0",
             "Max": "9999",
             "Unit": "kWh",
-            "prefix": "clamp1_energy"
+            "prefix": "clamp1Energy_text"
         }
     },
     "85": {
@@ -2235,7 +2280,7 @@
             "Min": "0",
             "Max": "9999",
             "Unit": "kWh",
-            "prefix": "clamp2_energy"
+            "prefix": "clamp2Energy_text"
         }
     },
     "86": {
@@ -2245,11 +2290,12 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "powerLabel",
         "Conditional": "true",
+        "DefaultIcon":"target_temperature",
         "Formatter": {
             "Min": "0",
             "Max": "1920",
             "Unit": "W",
-            "prefix": "notification_power_prefix"
+            "prefix": "powerReading"
         }
         
     },
@@ -2264,13 +2310,13 @@
                 "AppLabel": "occupied",
                 "Icon": "motion_on",
                 "Label": "OCCUPIED",
-                "Notification": "occupied"
+                "Notification": "presenceDetected"
             },
             "false": {
                 "AppLabel": "unoccupied",
                 "Icon": "motion_off",
                 "Label": "UNOCCUPIED",
-                "Notification": "unoccupied"
+                "Notification": "presenceNotDetected"
             }
         }
     },
@@ -2287,14 +2333,14 @@
                 "Icon": "alarm_on",
                 "AppLabel": "alarm_on",
                 "Label": "ON",
-                "Notification": "notification_switch_on"
+                "Notification": "notification_alarm_on"
             },
             "false": {
                 "ToggleValue": "true",
                 "Icon": "alarm_off",
                 "AppLabel": "off",
                 "Label": "OFF",
-                "Notification": "notification_switch_off"
+                "Notification": "notification_alarm_off"
             }
         }
     },
@@ -2361,19 +2407,19 @@
                 "Icon": "alarm_on",
                 "AppLabel": "alarm",
                 "Label": "Alarm",
-                "Notification": "alarm"
+                "Notification": "tone_alarm"
             },
             "2": {
                 "Icon": "alarm_on",
                 "AppLabel": "siren",
                 "Label": "Siren",
-                "Notification": "siren"
+                "Notification": "tone_siren"
             },
             "3": {
                 "Icon": "alarm_on",
                 "AppLabel": "doorBell",
                 "Label": "Door Bell",
-                "Notification": "doorBell"
+                "Notification": "tone_doorbell"
             }
         }
     },
@@ -2416,14 +2462,14 @@
                 "Icon": "switch_on",
                 "AppLabel": "switch1_on",
                 "Label": "SWITCH1 ON",
-                "Notification": "notification_switch_on"
+                "Notification": "notification_swith1_on"
             },
             "false": {
                 "ToggleValue": "true",
                 "Icon": "switch_off",
                 "AppLabel": "switch1_off",
                 "Label": "SWITCH1 OFF",
-                "Notification": "notification_switch_off"
+                "Notification": "notification_swith1_off"
             }
         }
     },
@@ -2441,14 +2487,14 @@
                 "Icon": "switch_on",
                 "AppLabel": "switch2_on",
                 "Label": "SWITCH2 ON",
-                "Notification": "notification_switch_on"
+                "Notification": "notification_swith2_on"
             },
             "false": {
                 "ToggleValue": "true",
                 "Icon": "switch_off",
                 "AppLabel": "switch2_off",
                 "Label": "SWITCH2 OFF",
-                "Notification": "notification_switch_off"
+                "Notification": "notification_swith2_off"
             }
         }
     },
@@ -2501,14 +2547,14 @@
                 "Icon": "switch_on",
                 "AppLabel": "enabled",
                 "Label": "Enabled",
-                "Notification": "enabled"
+                "Notification": "is_enabled"
             },
             "false": {
                 "ToggleValue": "true",
                 "Icon": "switch_off",
                 "AppLabel": "disabled",
                 "Label": "Disabled",
-                "Notification": "disabled"
+                "Notification": "is_disabled"
             }
         }
     },
@@ -2525,19 +2571,19 @@
                 "Icon": "low_volume_icon",
                 "AppLabel": "low_volume",
                 "Label": "Low",
-                "Notification": "low_volume"
+                "Notification": "volume_low_text"
             },
             "2": {
                 "Icon": "medium_volume_icon",
                 "AppLabel": "medium_volume",
                 "Label": "Medium",
-                "Notification": "medium_volume"
+                "Notification": "volume_medium_text"
             },
             "3": {
                 "Icon": "high_volume_icon",
                 "AppLabel": "high_volume",
                 "Label": "High",
-                "Notification": "high_volume"
+                "Notification": "volume_high_text"
             }
         }
     },
@@ -2554,14 +2600,14 @@
                 "Icon": "switch_on",
                 "AppLabel": "blink_start",
                 "Label": "Blink Start",
-                "Notification": "blink_start"
+                "Notification": "blink_start_text"
             },
             "false": {
                 "ToggleValue": "true",
                 "Icon": "switch_off",
                 "AppLabel": "blink_stop",
                 "Label": "Off",
-                "Notification": "blink_stop"
+                "Notification": "blink_stop_text"
             }
         }
     },
@@ -2576,7 +2622,7 @@
         "Formatter": {
             "Min": "1",
             "Max": "16777215",
-            "prefix": "changed_to"
+            "prefix": "brightness_changed"
         }
     },
     "100": {
@@ -2590,7 +2636,8 @@
         "Formatter": {
             "Min": "0",
             "Max": "99999",
-            "prefix": "changed_to"
+            "Unit": "sec",
+            "prefix": "timer_text"
         }
     },
     "101": {
@@ -2604,7 +2651,8 @@
         "Formatter": {
             "Min": "0",
             "Max": "99999",
-            "prefix": "changed_to"
+            "Unit": "sec",
+            "prefix": "timer_text"
             
         }
     },

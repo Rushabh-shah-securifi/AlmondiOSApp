@@ -301,7 +301,6 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:message attributes:attr];
         NSMutableAttributedString *container = [NSMutableAttributedString new];
         [container appendAttributedString:nameStr];
-        [container appendAttributedString:[[NSAttributedString alloc] initWithString:@" " attributes:nil]];
         [container appendAttributedString:eventStr];
         
         [self setTextFieldOrTextView:container];
