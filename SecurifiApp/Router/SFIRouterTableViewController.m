@@ -452,7 +452,7 @@ int mii;
 -(NSArray *)getAlmondTitles{
     NSMutableArray *titles = [NSMutableArray new];
     for(NSDictionary *dict in self.routerSummary.almondsList){
-        [titles addObject:dict[LOCATION]];
+        [titles addObject:dict[LOCATION]?:@"***"];
     }
     return titles;
 }
