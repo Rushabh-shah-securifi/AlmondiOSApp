@@ -200,9 +200,11 @@ int mii;
             self.isSharing = NO;
             return;//
         }
+            
         else if(genericRouterCommand.commandSuccess == NO){
             if([genericRouterCommand.responseMessage.lowercaseString isEqualToString:@"slave in offline"]){
-                [self showAlert:@"" msg:@"Unable to change settings in one of the Almond.\nWould you like to continue?" cancel:@"No" other:@"Yes" tag:SLAVE_OFFLINE_TAG];
+                NSString *msg = [NSString stringWithFormat:@"Unable to change settings. Check if \"%@\" Almond(s) is/are active and with in range of other \nAlmond 3 units in your Home WiFi network.", genericRouterCommand.offlineSlaves];
+                [self showAlert:@"" msg:msg cancel:@"Ok" other:nil tag:SLAVE_OFFLINE_TAG];
                 [self showToast:NSLocalizedString(@"ParseRouterCommand Sorry! unable to update.", @"Sorry! unable to update.")];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -376,10 +378,10 @@ int mii;
             [self onUpdateWirelessSettings:copy isTypeEnable:YES];
         }
         else if(alertView.tag == SLAVE_OFFLINE_TAG){
-            [self showUpdatingSettingsHUD];
+            /*[self showUpdatingSettingsHUD];
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
             [RouterPayload setWirelessSettings:mii wirelessSettings:self.currentSetting mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:NO forceUpdate:@"true"];
-            [self.HUD hide:YES afterDelay:15];
+            [self.HUD hide:YES afterDelay:15];*/
         }
         
     }

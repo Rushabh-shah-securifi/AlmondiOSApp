@@ -41,7 +41,7 @@
     [cardView addTopBorder:self.backgroundColor];
     NSLog(@"ssid: %@, mode: %@", setting.ssid, self.mode);
     if([self isInREMode] || [self isGuestAndAP] || !self.enableRouterWirelessControl){
-        [cardView addTitleAndShare:setting.ssid target:self shareAction:@selector(onShareBtnTap:)];
+        [cardView addTitleAndShare:setting.ssid target:self shareAction:@selector(onShareBtnTap:) on:setting.enabled];
     }
     else{
         [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactivate:) shareAction:@selector(onShareBtnTap:) on:setting.enabled];
@@ -58,7 +58,8 @@
     
     
     
-    /*if (self.enableRouterWirelessControl && ![self isInREMode]) {
+    /*
+     if (self.enableRouterWirelessControl && ![self isInREMode]) {
         [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactivate:) shareAction:@selector(onShareBtnTap:) on:setting.enabled];
     }
     else {
