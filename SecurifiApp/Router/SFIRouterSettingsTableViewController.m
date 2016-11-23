@@ -299,9 +299,20 @@ int mii;
 }
 
 - (void)onEnableDevice:(SFIWirelessSetting *)setting enabled:(BOOL)isEnabled {
-    self.currentSetting = setting;
-    self.isEnabled = isEnabled;
-    [self showAlert:[SecurifiToolkit sharedInstance].currentAlmond.almondplusName msg:@"Your Almond will reboot. Do you want to proceed?" cancel:@"No" other:@"Yes" tag:ENABLE_TYPE_TAG];
+    if([self isGuestNw:setting.type]){
+        self.currentSetting = setting;
+        self.isEnabled = isEnabled;
+        [self showAlert:[SecurifiToolkit sharedInstance].currentAlmond.almondplusName msg:@"Your Almond will reboot. Do you want to proceed?" cancel:@"No" other:@"Yes" tag:ENABLE_TYPE_TAG];
+    }
+    else{
+        SFIWirelessSetting *copy = [setting copy];
+        copy.enabled = isEnabled;
+        [self onUpdateWirelessSettings:copy isTypeEnable:YES];
+    }
+}
+
+- (BOOL)isGuestNw:(NSString *)nwType{
+    return [nwType.lowercaseString hasPrefix:@"guest"];
 }
 
 - (void)onShareBtnTapDelegate:(SFIWirelessSetting *)settings{
