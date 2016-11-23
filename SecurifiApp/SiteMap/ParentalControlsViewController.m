@@ -304,16 +304,20 @@
     UISwitch *actionSwitch = (UISwitch *)sender;
         BOOL state = [actionSwitch isOn];
         if(state == NO){
-            
-            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                             message:@"Disabling Web history will delete all your previous history records. Are you sure,you want to disable web history?"
-                                                            delegate:self
-                                                   cancelButtonTitle:@"Cancel"
-                                                   otherButtonTitles:@"Done",nil];
-            [alert setDelegate:self];
-            alert.tag = 1;
-            alert.alertViewStyle = UIAlertViewStyleDefault;
-            [alert show];
+            self.view2.hidden = YES;
+            self.clrHis.hidden = YES;
+            self.viewTwoTop.constant = -40;
+            self.client.webHistoryEnable = NO;
+            [self saveNewValue:@"NO" forIndex:-23];
+//            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
+//                                                             message:@"Disabling Web history will delete all your previous history records. Are you sure,you want to disable web history?"
+//                                                            delegate:self
+//                                                   cancelButtonTitle:@"Cancel"
+//                                                   otherButtonTitles:@"Done",nil];
+//            [alert setDelegate:self];
+//            alert.tag = 1;
+//            alert.alertViewStyle = UIAlertViewStyleDefault;
+//            [alert show];
             
           
             
@@ -334,15 +338,19 @@
     UISwitch *actionSwitch = (UISwitch *)sender;
         BOOL state = [actionSwitch isOn];
         if(state == NO){
-            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                             message:@"Disabling Web history will delete all your previous history records. Are you sure,you want to disable web history?"
-                                                            delegate:self
-                                                   cancelButtonTitle:@"Cancel"
-                                                   otherButtonTitles:@"Done",nil];
-            [alert setDelegate:self];
-            alert.tag = 2;
-            alert.alertViewStyle = UIAlertViewStyleDefault;
-            [alert show];
+            self.dataLogView.hidden = YES;
+            self.clrBW.hidden = YES;
+            self.client.bW_Enable = NO;
+            [self saveNewValue:@"NO" forIndex:-25];
+//            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
+//                                                             message:@"Disabling Web history will delete all your previous history records. Are you sure,you want to disable web history?"
+//                                                            delegate:self
+//                                                   cancelButtonTitle:@"Cancel"
+//                                                   otherButtonTitles:@"Done",nil];
+//            [alert setDelegate:self];
+//            alert.tag = 2;
+//            alert.alertViewStyle = UIAlertViewStyleDefault;
+//            [alert show];
             }
         else{
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Usage cycle reset date" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
@@ -368,6 +376,12 @@
          else if(alertView.tag == 3){
              self.switchView3.on = NO;
              self.dataLogView.hidden = YES;
+         }
+         else if (alertView.tag == 5){
+             
+         }
+         else if (alertView.tag == 6){
+             
          }
 
     }
@@ -395,6 +409,13 @@
             self.client.bW_Enable = YES;
             [self saveNewValue:@"YES" forIndex:-25];
             [[Analytics sharedInstance] markALogDataUsage];
+        }
+        else if(alertView.tag == 5){
+            [self createRequest:@"ClearBandwidth" value:@"ClearBandwidth" date:[CommonMethods getTodayDate]];
+           
+        }
+        else if(alertView.tag == 6){
+             [self createRequest:@"ClearHistory" value:@"ClearHistory" date:[CommonMethods getTodayDate]];
         }
         }
 }
@@ -659,5 +680,27 @@
     NSLog(@"updateDetailPeriod");
     [self createRequest:@"Bandwidth" value:value date:date];
     self.NosDayLabel.text = labelText;
+}
+- (IBAction)deleteDataUsage:(id)sender {
+    UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                                                        message:@"Are you sure,you want to delete data usage?"
+                                                                                       delegate:self
+                                                                              cancelButtonTitle:@"Cancel"
+                                                                              otherButtonTitles:@"Done",nil];
+                                       [alert setDelegate:self];
+                                       alert.tag = 5;
+                                       alert.alertViewStyle = UIAlertViewStyleDefault;
+                                       [alert show];
+}
+- (IBAction)deleteHistory:(id)sender {
+                UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                                 message:@"Are you sure,you want to delete web history?"
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Cancel"
+                                                       otherButtonTitles:@"Done",nil];
+                [alert setDelegate:self];
+                alert.tag = 6;
+                alert.alertViewStyle = UIAlertViewStyleDefault;
+                [alert show];
 }
 @end

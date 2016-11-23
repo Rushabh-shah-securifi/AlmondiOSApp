@@ -809,13 +809,26 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ykv-80-aoQ">
+                                                <rect key="frame" x="283" y="7" width="30" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="30" id="FMk-Yk-dsN"/>
+                                                    <constraint firstAttribute="height" constant="30" id="pbL-6R-np6"/>
+                                                </constraints>
+                                                <state key="normal" image="delete"/>
+                                                <connections>
+                                                    <action selector="deleteHistory:" destination="UZa-lx-WzC" eventType="touchUpInside" id="nR9-be-5ew"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="XV1-Yg-fkg" firstAttribute="leading" secondItem="Hkn-fa-lqE" secondAttribute="trailing" constant="15" id="6Ep-sN-L5F"/>
                                             <constraint firstAttribute="bottom" secondItem="Xvu-3L-ick" secondAttribute="bottom" id="BgL-6W-NLL"/>
                                             <constraint firstAttribute="trailing" secondItem="r25-n2-liZ" secondAttribute="trailing" constant="8" id="DaG-gF-rhE"/>
+                                            <constraint firstItem="Ykv-80-aoQ" firstAttribute="top" secondItem="4qD-Ye-bSO" secondAttribute="top" constant="7" id="GbI-D5-PDf"/>
                                             <constraint firstItem="r25-n2-liZ" firstAttribute="leading" secondItem="XV1-Yg-fkg" secondAttribute="trailing" constant="65" id="Hro-z0-HaL"/>
+                                            <constraint firstItem="r25-n2-liZ" firstAttribute="leading" secondItem="Ykv-80-aoQ" secondAttribute="trailing" constant="5" id="OBF-oS-dom"/>
                                             <constraint firstItem="Xvu-3L-ick" firstAttribute="leading" secondItem="4qD-Ye-bSO" secondAttribute="leading" id="OuA-XA-Tze"/>
                                             <constraint firstItem="Hkn-fa-lqE" firstAttribute="leading" secondItem="4qD-Ye-bSO" secondAttribute="leading" constant="12" id="RMA-GU-9SI"/>
                                             <constraint firstAttribute="bottom" secondItem="XV1-Yg-fkg" secondAttribute="bottom" constant="9" id="Tfm-wx-ocJ"/>
@@ -859,14 +872,27 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9LP-kr-doG">
+                                                <rect key="frame" x="283" y="7" width="30" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="30" id="Gqo-Gh-4EI"/>
+                                                    <constraint firstAttribute="height" constant="30" id="dVQ-n9-myg"/>
+                                                </constraints>
+                                                <state key="normal" image="delete"/>
+                                                <connections>
+                                                    <action selector="deleteDataUsage:" destination="UZa-lx-WzC" eventType="touchUpInside" id="anz-3o-PZo"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="HOd-YF-PLt" firstAttribute="top" secondItem="K69-xe-1V6" secondAttribute="top" constant="11" id="1ui-AI-WGC"/>
                                             <constraint firstAttribute="bottom" secondItem="HOd-YF-PLt" secondAttribute="bottom" constant="9" id="FXH-pB-bLt"/>
+                                            <constraint firstItem="l7M-7k-KpR" firstAttribute="leading" secondItem="9LP-kr-doG" secondAttribute="trailing" constant="5" id="HdT-oV-g2S"/>
                                             <constraint firstAttribute="height" constant="45" id="OCf-kq-yIk"/>
                                             <constraint firstAttribute="trailing" secondItem="hW0-sc-x2o" secondAttribute="trailing" id="Os7-DV-Nka"/>
                                             <constraint firstItem="l7M-7k-KpR" firstAttribute="top" secondItem="K69-xe-1V6" secondAttribute="top" constant="6" id="S12-D9-Hze"/>
+                                            <constraint firstItem="9LP-kr-doG" firstAttribute="top" secondItem="K69-xe-1V6" secondAttribute="top" constant="7" id="Wmu-sf-cLk"/>
                                             <constraint firstItem="uH2-3S-Spr" firstAttribute="leading" secondItem="K69-xe-1V6" secondAttribute="leading" constant="12" id="ais-eI-bYW"/>
                                             <constraint firstItem="HOd-YF-PLt" firstAttribute="leading" secondItem="uH2-3S-Spr" secondAttribute="trailing" constant="15" id="edI-1e-Dqv"/>
                                             <constraint firstAttribute="bottom" secondItem="hW0-sc-x2o" secondAttribute="bottom" id="jpR-KX-1LQ"/>
@@ -1016,9 +1042,6 @@
                             <button hidden="YES" opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sBr-FQ-b4o">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="579"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <action selector="grayBackButtonClicked:" destination="UZa-lx-WzC" eventType="touchUpInside" id="tKg-vj-ioG"/>
-                                </connections>
                             </button>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Web history and Data usage are disabled for blocked devices. You can still see records from when the device was last active." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z9o-Q6-obK">
                                 <rect key="frame" x="0.0" y="276" width="375" height="100"/>
@@ -1205,6 +1228,7 @@
         <image name="back_icon" width="64" height="64"/>
         <image name="cross_icon" width="28" height="28"/>
         <image name="datausage" width="48" height="48"/>
+        <image name="delete" width="30" height="30"/>
         <image name="file_download" width="48" height="48"/>
         <image name="file_upload" width="48" height="48"/>
         <image name="iconMore" width="4" height="19"/>
