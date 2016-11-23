@@ -162,7 +162,7 @@ int mii;
 
 -(void)setUpAlmondStatus{
     [self initializeNotification];
-    self.almondName.text = self.almondStatObj.name;
+    self.almondName.text = self.almondStatObj.location;
     if(self.almondStatObj.isMaster){//check if master or slave
         //more to be done depending upon connection status images need to be updated
         //will put set of images in a view and hide/unhide the view.

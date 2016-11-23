@@ -15,7 +15,7 @@
     NSString *name = [SecurifiToolkit sharedInstance].currentAlmond.almondplusName;
     NSDictionary *ssid = [self getSSIDs:routerSummary];
     AlmondStatus *almondStat = [AlmondStatus new];
-    [self getStatus:almondStat name:name location:name connetedVia:@"Directly" interface:@"Wired" signalStrength:@"" ssid1:ssid[@"2G"] ssid2:ssid[@"5G"] internetStat:YES isMaster:YES active:YES hop:0];
+    [self getStatus:almondStat name:name location:routerSummary.location connetedVia:@"Directly" interface:@"Wired" signalStrength:@"" ssid1:ssid[@"2G"] ssid2:ssid[@"5G"] internetStat:YES isMaster:YES active:YES hop:0];
     return almondStat;
 }
 
