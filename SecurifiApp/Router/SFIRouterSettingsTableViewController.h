@@ -14,5 +14,6 @@
 @property(nonatomic, copy) NSArray *wirelessSettings;
 @property(nonatomic) BOOL enableRouterWirelessControl;
 @property(nonatomic) NSString *mode;
+@property(nonatomic) NSString *firmware;
 
 @end

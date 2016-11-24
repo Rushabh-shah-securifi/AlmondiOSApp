@@ -773,6 +773,7 @@ int mii;
                     }
                     ctrl.enableRouterWirelessControl = enableSwitch;
                     ctrl.mode = _routerSummary.routerMode;
+                    ctrl.firmware = self.routerSummary.firmwareVersion;
                     ctrl.hidesBottomBarWhenPushed = YES;
                     UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
                                                    initWithTitle:NSLocalizedString(@"Router Back", @"Back")

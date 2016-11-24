@@ -303,7 +303,7 @@ int mii;
 }
 
 - (void)onEnableDevice:(SFIWirelessSetting *)setting enabled:(BOOL)isEnabled {
-    if([self isGuestNw:setting.type]){
+    if([self isGuestNw:setting.type] && ![self isAlmondPlus]){
         self.currentSetting = setting;
         self.isEnabled = isEnabled;
         [self showAlert:[SecurifiToolkit sharedInstance].currentAlmond.almondplusName msg:@"Your Almond will reboot. Do you want to proceed?" cancel:@"No" other:@"Yes" tag:ENABLE_TYPE_TAG];
@@ -313,6 +313,10 @@ int mii;
         copy.enabled = isEnabled;
         [self onUpdateWirelessSettings:copy isTypeEnable:YES];
     }
+}
+
+- (BOOL)isAlmondPlus{
+    return [self.firmware.lowercaseString hasPrefix:@"ap2"];
 }
 
 - (BOOL)isGuestNw:(NSString *)nwType{
