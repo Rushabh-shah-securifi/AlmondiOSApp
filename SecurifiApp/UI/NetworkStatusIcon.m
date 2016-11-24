@@ -9,6 +9,8 @@
 #import "NetworkStatusIcon.h"
 #import "ConnectionStatus.h"
 #import "LocalNetworkManagement.h"
+#import "SFIAlmondLocalNetworkSettings.h"
+#import "AlmondManagement.h"
 
 @implementation NetworkStatusIcon
 
@@ -59,8 +61,16 @@
     
     if([ConnectionStatus getConnectionStatus]==AUTHENTICATED){
         if([toolKit currentConnectionMode] == SFIAlmondConnectionMode_cloud){
-            SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:toolKit.currentAlmond.almondplusMAC];
+            SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement getCurrentLocalAlmondSettings];
+            NSArray* localAlmonds = [AlmondManagement localLinkedAlmondList];
+            NSLog(@"%@ is the local almond mac name",settings.almondplusMAC);
             if (settings){
+                for(SFIAlmondPlus* localAlmond in localAlmonds){
+                    if([settings.almondplusMAC isEqualToString:localAlmond.almondplusMAC]){
+                        [AlmondManagement writeCurrentAlmond:localAlmond];
+                        break;
+                    }
+                }
                 Title = NSLocalizedString(@"alert.message-Connected to your Almond via cloud.", @"Connected to your Almond via cloud.");
                 subTitle1 = NSLocalizedString(@"switch_local", @"Switch to Local Connection");
                 mode1 = SFIAlmondConnectionMode_local;

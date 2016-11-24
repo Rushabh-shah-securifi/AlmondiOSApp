@@ -218,7 +218,6 @@
 		A54D74891CB51FD000EB46B6 /* RouterPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = A54D74881CB51FD000EB46B6 /* RouterPayload.m */; };
 		A54EB0351C45004B00CF2837 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A54EB0341C45004B00CF2837 /* Common-Images.xcassets */; };
 		A569B8E71DBE41FF00FBD429 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A569B8E51DBE416400FBD429 /* libicucore.tbd */; };
-		A57016EB1DD5A47800F83624 /* AlmondUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = A57016EA1DD5A47800F83624 /* AlmondUITests.m */; };
 		A58DB2611BB168C400717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB24F1BB168C400717C02 /* AccountsStoryboard_iPhone.strings */; };
 		A58DB2621BB168C400717C02 /* Almond-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB2511BB168C400717C02 /* Almond-Localizable.strings */; };
 		A58DB2631BB168C400717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB2531BB168C400717C02 /* Almond-MainStoryboard_iPhone.strings */; };
@@ -673,16 +672,6 @@
 		F4EA082B1D6C551F00D6CC28 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EA08291D6C551F00D6CC28 /* HelpViewController.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		A57016ED1DD5A47800F83624 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1CED5EE919AC82FD0023512F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1CED5EF019AC82FD0023512F;
-			remoteInfo = Almond;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		03D5A16CB91A808E47DC85B8 /* Pods-HomeScreen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HomeScreen.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HomeScreen/Pods-HomeScreen.debug.xcconfig"; sourceTree = "<group>"; };
 		1C0317241BB28E75002E0405 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = ../../../../../../usr/lib/libz.1.dylib; sourceTree = "<group>"; };
@@ -911,7 +900,6 @@
 		A54D74881CB51FD000EB46B6 /* RouterPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouterPayload.m; sourceTree = "<group>"; };
 		A54EB0341C45004B00CF2837 /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
 		A569B8E51DBE416400FBD429 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
-		A57016E81DD5A47800F83624 /* AlmondUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlmondUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A57016EA1DD5A47800F83624 /* AlmondUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlmondUITests.m; sourceTree = "<group>"; };
 		A57016EC1DD5A47800F83624 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A58DB2501BB168C400717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
@@ -1106,6 +1094,7 @@
 		A58DB49E1BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
 		A58DB4A01BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
 		A58DB4A21BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "zh-Hans"; path = termsofuse.html; sourceTree = "<group>"; };
+		A5AAEA041DE41770004A4FBF /* Network_m_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Network_m_Tests.m; path = ../../iostoolkit/SecurifiToolkitTests/Network_m_Tests.m; sourceTree = "<group>"; };
 		A5AC1E821CC7BA01009F362B /* RuleSceneUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleSceneUtil.h; sourceTree = "<group>"; };
 		A5AC1E831CC7BA01009F362B /* RuleSceneUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleSceneUtil.m; sourceTree = "<group>"; };
 		A5C68C981C92D93000110B74 /* GenericIndexesData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GenericIndexesData.json; path = ../GenericIndexesData.json; sourceTree = "<group>"; };
@@ -1478,13 +1467,6 @@
 				1CED5EF919AC82FD0023512F /* UIKit.framework in Frameworks */,
 				1CED5EF519AC82FD0023512F /* Foundation.framework in Frameworks */,
 				23C39F99DC85F9571BCF46E1 /* libPods-Almond.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A57016E51DD5A47800F83624 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1910,7 +1892,6 @@
 			children = (
 				1CED5EF119AC82FD0023512F /* Almond.app */,
 				1C2056061A2EBBBA00975495 /* HomeScreen.app */,
-				A57016E81DD5A47800F83624 /* AlmondUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2023,6 +2004,7 @@
 		A57016E91DD5A47800F83624 /* AlmondUITests */ = {
 			isa = PBXGroup;
 			children = (
+				A5AAEA041DE41770004A4FBF /* Network_m_Tests.m */,
 				A57016EA1DD5A47800F83624 /* AlmondUITests.m */,
 				A57016EC1DD5A47800F83624 /* Info.plist */,
 			);
@@ -2719,24 +2701,6 @@
 			productReference = 1CED5EF119AC82FD0023512F /* Almond.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A57016E71DD5A47800F83624 /* AlmondUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A57016F11DD5A47800F83624 /* Build configuration list for PBXNativeTarget "AlmondUITests" */;
-			buildPhases = (
-				A57016E41DD5A47800F83624 /* Sources */,
-				A57016E51DD5A47800F83624 /* Frameworks */,
-				A57016E61DD5A47800F83624 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A57016EE1DD5A47800F83624 /* PBXTargetDependency */,
-			);
-			name = AlmondUITests;
-			productName = AlmondUITests;
-			productReference = A57016E81DD5A47800F83624 /* AlmondUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -2775,11 +2739,6 @@
 							};
 						};
 					};
-					A57016E71DD5A47800F83624 = {
-						CreatedOnToolsVersion = 8.0;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 1CED5EF019AC82FD0023512F;
-					};
 				};
 			};
 			buildConfigurationList = 1CED5EEC19AC82FD0023512F /* Build configuration list for PBXProject "SecurifiApp" */;
@@ -2807,7 +2766,6 @@
 			targets = (
 				1CED5EF019AC82FD0023512F /* Almond */,
 				1C2056051A2EBBBA00975495 /* HomeScreen */,
-				A57016E71DD5A47800F83624 /* AlmondUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -3137,13 +3095,6 @@
 				A58DB4181BB2CD7D00717C02 /* Almond-Localizable.strings in Resources */,
 				CE7E89C91DC357DE00B0C3C6 /* DSLCalendarDayCalloutView.xib in Resources */,
 				1C7E7DFD1A41A0B30026F0BA /* cert.der in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A57016E61DD5A47800F83624 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3621,23 +3572,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A57016E41DD5A47800F83624 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A57016EB1DD5A47800F83624 /* AlmondUITests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		A57016EE1DD5A47800F83624 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1CED5EF019AC82FD0023512F /* Almond */;
-			targetProxy = A57016ED1DD5A47800F83624 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1C7E7E2E1A41A26A0026F0BA /* AccountsStoryboard_iPhone.storyboard */ = {
@@ -5634,51 +5569,6 @@
 			};
 			name = Release;
 		};
-		A57016EF1DD5A47800F83624 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				"BUNDLE_LOADER[arch=*]" = "";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = AlmondUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.masood.securifi.AlmondUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				"TEST_HOST[sdk=*]" = "";
-				TEST_TARGET_NAME = Almond;
-			};
-			name = Debug;
-		};
-		A57016F01DD5A47800F83624 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = AlmondUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.masood.securifi.AlmondUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = Almond;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -5708,14 +5598,6 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
-		};
-		A57016F11DD5A47800F83624 /* Build configuration list for PBXNativeTarget "AlmondUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A57016EF1DD5A47800F83624 /* Debug */,
-				A57016F01DD5A47800F83624 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
