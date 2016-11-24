@@ -194,7 +194,12 @@ int mii;
             return;
         }
         if(self.isSharing){
-           [self shareWiFi:self.currentSetting.ssid password:[self getPassword:genericRouterCommand]];
+            NSLog(@"genericrouter command: %@", genericRouterCommand.command);
+            if(((NSArray *)genericRouterCommand.command).count == 0)//only for al3, when slave is offline
+                [self showToast:@"Sorry! Please try after some time."];
+            else{
+                [self shareWiFi:self.currentSetting.ssid password:[self getPassword:genericRouterCommand]];
+            }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
                 [self.HUD hide:YES];

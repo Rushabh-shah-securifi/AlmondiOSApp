@@ -66,7 +66,11 @@
                selector:@selector(onDynamicAlmondLocationChange:)
                    name:DYNAMIC_ALMOND_LOCATION_CHANIGE_NOTIFIER
                  object:nil];
+    
+    [center addObserver:self selector:@selector(onAlmondLocationChange:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
 }
+
+
 
 - (void)setupMeshNamingView{
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -153,6 +157,30 @@
     [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
 }
 */
+- (void)onAlmondLocationChange:(id)sender{
+    NSDictionary *payload;
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    
+    if (dataInfo==nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    
+    if([SecurifiToolkit sharedInstance].currentConnectionMode == SFIAlmondConnectionMode_local){
+        payload = dataInfo[@"data"];
+    }else{
+        payload = [dataInfo[@"data"] objectFromJSONData];
+    }
+    
+    BOOL isSuccessful = [payload[@"Success"] boolValue];
+    if(isSuccessful == NO){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showToast:NSLocalizedString(@"sorry_could_not_update", @"")];
+        });
+    }
+    
+}
 
 -(void)onMeshCommandResponse:(id)sender{
     NSLog(@"mesh edit onmeshcommandresponse");
