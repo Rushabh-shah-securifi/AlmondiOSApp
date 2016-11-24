@@ -510,7 +510,7 @@ int mii;
             
         }
     }
-    [self.nonRepeatingTimer invalidate];
+    self.nonRepeatingTimer = nil;
 }
 
 -(BOOL)isDisconnected{

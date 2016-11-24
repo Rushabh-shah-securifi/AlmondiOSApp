@@ -854,7 +854,7 @@ int mii;
         self.newAlmondFirmwareVersionAvailable = newVersionAvailable;
         self.latestAlmondVersionAvailable = latestAlmondVersion;
         
-        if (newVersionAvailable) {
+        if (newVersionAvailable && [SecurifiToolkit sharedInstance].currentConnectionMode == SFIAlmondConnectionMode_cloud) {
             TableHeaderView *view = [TableHeaderView newAlmondVersionMessage];
             view.frame = CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), 100);
             view.backgroundColor = [UIColor whiteColor];
