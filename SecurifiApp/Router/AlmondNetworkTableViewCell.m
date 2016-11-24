@@ -29,26 +29,22 @@
 }
 
 - (void)layoutSubviews{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [super layoutSubviews];
+    [super layoutSubviews];
 
-        CGRect rect = self.bounds;
-        rect = CGRectInset(rect, 10, 0);
-        self.almondView.frame = rect;
-        self.almondView.backgroundColor = [UIColor securifiRouterTileGreenColor];
-    
-        [self createAlmondNetworkView];
-        [self.contentView addSubview:self.almondView];
-    });
+    CGRect rect = self.bounds;
+    rect = CGRectInset(rect, 10, 0);
+    self.almondView.frame = rect;
+    self.almondView.backgroundColor = [UIColor securifiRouterTileGreenColor];
+
+    [self createAlmondNetworkView];
+    [self.contentView addSubview:self.almondView];
 }
 
 - (void)markReuse {
     UIView *oldView = self.almondView;
     UIView *newView = [[UIView alloc] initWithFrame:self.frame];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [oldView removeFromSuperview];
-        self.almondView = newView;
-    });
+    [oldView removeFromSuperview];
+    self.almondView = newView;
 }
 
 - (void)setHeading:(NSString*)heading titles:(NSArray *)titles almCount:(NSInteger)almCount{
