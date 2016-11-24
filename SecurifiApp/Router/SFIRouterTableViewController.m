@@ -1007,6 +1007,7 @@ int mii;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Mesh" bundle:nil];
     MeshSetupViewController *meshController = [storyboard instantiateViewControllerWithIdentifier:identifier];
     meshController.isStatusView = isStatView;
+    meshController.hasLocationTag = self.routerSummary.location? YES: NO;
     return meshController;
 }
 

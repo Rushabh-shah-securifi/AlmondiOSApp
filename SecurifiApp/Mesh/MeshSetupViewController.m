@@ -102,7 +102,8 @@ int mii;
 
 -(void)createKeyVals:(AlmondStatus *)stat{
     NSMutableArray *keyVals = [NSMutableArray new];
-    [keyVals addObject:@{NSLocalizedString(@"location", @""):stat.location?:@""}];
+    NSString *location = self.hasLocationTag?stat.location:stat.name;
+    [keyVals addObject:@{NSLocalizedString(@"location", @""):location?:@""}];
     [keyVals addObject:@{NSLocalizedString(@"connected_via", @""):stat.connecteVia?:@""}];
     [keyVals addObject:@{NSLocalizedString(@"interface", @""):stat.interface?:@""}];
     
@@ -299,8 +300,17 @@ int mii;
     MeshStatusCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER forIndexPath:indexPath];
     //    cell.delegate = self;
     UITableViewCellAccessoryType accType;
-    if(indexPath.row == 0)
-        accType = UITableViewCellAccessoryDisclosureIndicator;
+    if(indexPath.row == 0 ){
+        if(self.hasLocationTag)
+            accType = UITableViewCellAccessoryDisclosureIndicator;
+        else{
+            if(self.almondStatObj.isMaster)
+                accType = UITableViewCellAccessoryNone;
+            else
+                accType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+    }
+    
     else
         accType = UITableViewCellAccessoryNone;
     
@@ -311,13 +321,20 @@ int mii;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(indexPath.row == 0){
-        MeshEditViewController *ctrl = [MeshEditViewController new];
-        ctrl.delegate = self;
-        ctrl.uniqueName = self.almondStatObj.slaveUniqueName;
-        ctrl.isMaster = self.almondStatObj.isMaster;
-        [self presentViewController:ctrl animated:YES completion:nil];
+    if(indexPath.row == 0 ){
+        if(self.hasLocationTag)
+            [self presentMeshController];
+        else if(!self.almondStatObj.isMaster)
+            [self presentMeshController];
     }
+}
+
+- (void)presentMeshController{
+    MeshEditViewController *ctrl = [MeshEditViewController new];
+    ctrl.delegate = self;
+    ctrl.uniqueName = self.almondStatObj.slaveUniqueName;
+    ctrl.isMaster = self.almondStatObj.isMaster;
+    [self presentViewController:ctrl animated:YES completion:nil];
 }
 
 #pragma mark mesh edit delegate

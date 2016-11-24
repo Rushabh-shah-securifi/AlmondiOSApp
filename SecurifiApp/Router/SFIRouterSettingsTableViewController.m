@@ -182,6 +182,8 @@ int mii;
     }
 
     SFIGenericRouterCommand *response = (SFIGenericRouterCommand *) [data valueForKey:@"data"];
+    if(response.commandType != SFIGenericRouterCommandType_WIRELESS_SETTINGS)
+        return;
     [self processRouterCommandResponse:response];
 }
 
@@ -234,6 +236,8 @@ int mii;
 
 - (NSString *)getPassword:(SFIGenericRouterCommand *)genericCmd{
     NSString *encryptedPass = @"";
+    if(genericCmd.command == nil)
+        return @"";
     for(SFIWirelessSetting *setting in genericCmd.command){
         if([setting.type isEqualToString:self.currentSetting.type]){
             encryptedPass = setting.password;
