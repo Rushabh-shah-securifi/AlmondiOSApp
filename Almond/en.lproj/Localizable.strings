@@ -924,7 +924,7 @@ For example, you could create rules like “If Matt’s iPhone, Dana’s iPhone 
 </p>
 <center><img src=h_rules_automation.pdf/></center>
 <p>
-You can then add another rule to make sure the alarm is sounded. For example, \“If Almond mode is Away, and motion is detected, sound alarm.\”
+You can then add another rule to make sure the alarm is sounded. For example, \“If Almond mode is Away, and a door is opened, sound alarm.\”
 </p><p>
 Experiment with Rules to build your own scenarios. Our Rules engine is versatile and offers a large number of options  with which you can build rules including but not limited to: time, weather, Almond modes, and sensors.
 </p>
