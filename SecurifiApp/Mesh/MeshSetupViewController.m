@@ -163,7 +163,7 @@ int mii;
 
 -(void)setUpAlmondStatus{
     [self initializeNotification];
-    self.almondName.text = self.almondStatObj.location;
+    self.almondName.text =  self.hasLocationTag?self.almondStatObj.location:self.almondStatObj.name;
     if(self.almondStatObj.isMaster){//check if master or slave
         //more to be done depending upon connection status images need to be updated
         //will put set of images in a view and hide/unhide the view.
@@ -301,16 +301,12 @@ int mii;
     //    cell.delegate = self;
     UITableViewCellAccessoryType accType;
     if(indexPath.row == 0 ){
-        if(self.hasLocationTag)
+        if(self.almondStatObj.isMaster && !self.hasLocationTag){
+            accType = UITableViewCellAccessoryNone;
+        }else{
             accType = UITableViewCellAccessoryDisclosureIndicator;
-        else{
-            if(self.almondStatObj.isMaster)
-                accType = UITableViewCellAccessoryNone;
-            else
-                accType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
-    
     else
         accType = UITableViewCellAccessoryNone;
     
@@ -322,10 +318,11 @@ int mii;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.row == 0 ){
-        if(self.hasLocationTag)
+        if(self.almondStatObj.isMaster && !self.hasLocationTag){
+            
+        }else{
             [self presentMeshController];
-        else if(!self.almondStatObj.isMaster)
-            [self presentMeshController];
+        }
     }
 }
 
