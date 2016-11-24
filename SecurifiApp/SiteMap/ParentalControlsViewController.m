@@ -408,6 +408,7 @@
             self.clrBW.hidden = NO;
             self.client.bW_Enable = YES;
             [self saveNewValue:@"YES" forIndex:-25];
+            [self createRequest:@"DataUsageReset" value:self.resetBWDate date:[CommonMethods getTodayDate]];
             [[Analytics sharedInstance] markALogDataUsage];
         }
         else if(alertView.tag == 5){
@@ -533,6 +534,7 @@
 }
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     self.resetBWDate = [NSString stringWithFormat:@"%ld",row+1];
+    NSLog(@"self.resetBWDate %@",self.resetBWDate);
     return ;
 }
 - (IBAction)iconOutletClicked:(id)sender {
