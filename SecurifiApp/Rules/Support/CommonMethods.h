@@ -96,4 +96,8 @@
 +(NSArray *)domainEpocArr:(NSArray *)arr;
 
 +(NSString *)colorShadesforValue:(int)defaultcolor byValueOfcolor:(NSString *)value;
+
++(void)setLabelProperties:(UILabel*)button title:(NSString *)title titleColor:(UIColor*)titleColor bgColor:(UIColor *)bgColor font:(UIFont *)font;
+
+
 @end

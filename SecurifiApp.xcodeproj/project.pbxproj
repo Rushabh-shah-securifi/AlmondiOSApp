@@ -459,6 +459,8 @@
 		CE7E8A421DC368D100B0C3C6 /* DSLCalendarDaySelection-right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A341DC368D100B0C3C6 /* DSLCalendarDaySelection-right@2x.png */; };
 		CE7E8A431DC368D100B0C3C6 /* DSLCalendarDaySelection.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A351DC368D100B0C3C6 /* DSLCalendarDaySelection.png */; };
 		CE7E8A441DC368D100B0C3C6 /* DSLCalendarDaySelection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A361DC368D100B0C3C6 /* DSLCalendarDaySelection@2x.png */; };
+		CE838E2C1DE6E6AE000D3368 /* SortView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE838E2B1DE6E6AE000D3368 /* SortView.m */; };
+		CE838E2F1DE6ED8C000D3368 /* SortTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE838E2E1DE6ED8C000D3368 /* SortTypeView.m */; };
 		CE99A3411DD04C3300101405 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CE99A3401DD04C3300101405 /* deviceListJson.json */; };
 		CEABC6581D6F147B00C2DCD4 /* CategoryMap.json in Resources */ = {isa = PBXBuildFile; fileRef = CEABC6571D6F147B00C2DCD4 /* CategoryMap.json */; };
 		CEABC65B1D6F14A000C2DCD4 /* CategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEABC65A1D6F14A000C2DCD4 /* CategoryView.m */; };
@@ -1159,6 +1161,10 @@
 		CE7E8A341DC368D100B0C3C6 /* DSLCalendarDaySelection-right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendarDaySelection-right@2x.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendarDaySelection-right@2x.png"; sourceTree = "<group>"; };
 		CE7E8A351DC368D100B0C3C6 /* DSLCalendarDaySelection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DSLCalendarDaySelection.png; path = DSLCalendar/DSLCalendarView/Images/DSLCalendarDaySelection.png; sourceTree = "<group>"; };
 		CE7E8A361DC368D100B0C3C6 /* DSLCalendarDaySelection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendarDaySelection@2x.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendarDaySelection@2x.png"; sourceTree = "<group>"; };
+		CE838E2A1DE6E6AE000D3368 /* SortView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SortView.h; sourceTree = "<group>"; };
+		CE838E2B1DE6E6AE000D3368 /* SortView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SortView.m; sourceTree = "<group>"; };
+		CE838E2D1DE6ED8C000D3368 /* SortTypeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SortTypeView.h; sourceTree = "<group>"; };
+		CE838E2E1DE6ED8C000D3368 /* SortTypeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SortTypeView.m; sourceTree = "<group>"; };
 		CE99A3401DD04C3300101405 /* deviceListJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = deviceListJson.json; path = SecurifiApp/deviceListJson.json; sourceTree = SOURCE_ROOT; };
 		CEABC6571D6F147B00C2DCD4 /* CategoryMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CategoryMap.json; path = SecurifiApp/CategoryMap.json; sourceTree = SOURCE_ROOT; };
 		CEABC6591D6F14A000C2DCD4 /* CategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryView.h; sourceTree = "<group>"; };
@@ -2547,6 +2553,10 @@
 				F4B876571D54653500DCF76F /* TextInput.m */,
 				CE705BE21DE314CF007D38A3 /* LabelView.h */,
 				CE705BE31DE314CF007D38A3 /* LabelView.m */,
+				CE838E2A1DE6E6AE000D3368 /* SortView.h */,
+				CE838E2B1DE6E6AE000D3368 /* SortView.m */,
+				CE838E2D1DE6ED8C000D3368 /* SortTypeView.h */,
+				CE838E2E1DE6ED8C000D3368 /* SortTypeView.m */,
 			);
 			path = deviceLayout;
 			sourceTree = "<group>";
@@ -3483,6 +3493,7 @@
 				F4981E961DABCDB4003A53E6 /* MeshEditViewController.m in Sources */,
 				1DF0383EBD135988AEA6DF73 /* ValueFormatter.m in Sources */,
 				1DF03A1D3210B9478AF1DAC3 /* IndexValueSupport.m in Sources */,
+				CE838E2F1DE6ED8C000D3368 /* SortTypeView.m in Sources */,
 				F4B876801D54653500DCF76F /* TextInput.m in Sources */,
 				1DF0362BB7839519E771D769 /* SensorIndexSupport.m in Sources */,
 				F4B8768C1D54653500DCF76F /* PerformanceTest.m in Sources */,
@@ -3495,6 +3506,7 @@
 				CEF6F4E81C92CAD600C68975 /* RulesHue.m in Sources */,
 				F4B876841D54653500DCF76F /* DevicePayload.m in Sources */,
 				1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */,
+				CE838E2C1DE6E6AE000D3368 /* SortView.m in Sources */,
 				1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */,
 				F4EA082A1D6C551F00D6CC28 /* HelpViewController.m in Sources */,
 				1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */,

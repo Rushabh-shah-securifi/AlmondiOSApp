@@ -249,6 +249,12 @@
     button.titleLabel.font = font;
 }
 
++(void)setLabelProperties:(UILabel*)button title:(NSString *)title titleColor:(UIColor*)titleColor bgColor:(UIColor *)bgColor font:(UIFont *)font{
+    button.text = title;
+    button.textColor = titleColor;
+    button.backgroundColor = bgColor;
+    button.font = font;
+}
 #pragma mark ui methods
 +(void)addLineSeperator:(UIView*)view yPos:(int)ypos{
     UIView *lineSeperator = [[UIView alloc]initWithFrame:CGRectMake(0, ypos, view.frame.size.width, 1)];

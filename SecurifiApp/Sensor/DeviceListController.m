@@ -31,6 +31,8 @@
 #import "ParentalControlsViewController.h"
 #import "RecentSearchDB.h"
 #import "ConnectionStatus.h"
+#import "SortView.h"
+#import "SortTypeView.h"
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -38,13 +40,14 @@
 #define HEADER_FONT_SIZE 16
 #define COUNT_FONT_SIZE 12
 
-@interface DeviceListController ()<UITableViewDataSource,UITableViewDelegate,DeviceHeaderViewDelegate>
+@interface DeviceListController ()<UITableViewDataSource,UITableViewDelegate,DeviceHeaderViewDelegate,SortViewDelegate>
 
 @property(nonatomic, readonly) SFIColors *almondColor;
 @property(nonatomic) NSTimer *mobileCommandTimer;
 @property(nonatomic) SecurifiToolkit *toolkit;
 @property(nonatomic) BOOL isSiteMapSupport;
 @property(nonatomic) BOOL isLocal;
+@property(nonatomic) UIButton *buttonMaskView;
 @end
 
 @implementation DeviceListController
@@ -306,11 +309,66 @@ int mii;
     //    }
     vHeader.textLabel.textColor = [UIColor lightGrayColor];
     vHeader.textLabel.attributedText = aAttrString;
-    
+    UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 40, 2, 25, 25)];
+    button.tag = (section == 0)?0:1;
+    [button addTarget:self action:@selector(sortButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [button setImage:[UIImage imageNamed:@"filter_list_black"] forState:UIControlStateNormal];
+    [vHeader.contentView addSubview:button];
     return vHeader;
 }
 
+-(void)sortButtonClicked:(id)sender{
+    UIButton *btn = (UIButton *)sender;
+    self.buttonMaskView = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
+    self.buttonMaskView.backgroundColor = [SFIColors maskColor];
+    [self.buttonMaskView addTarget:self action:@selector(onBtnMskTap:) forControlEvents:UIControlEventTouchUpInside];
+    NSArray *filterList ;
+    NSDictionary *sortType ;
+    
+    if(btn.tag == 0){
+        filterList = [NSArray arrayWithObjects:@"All",@"Visible",@"Hidden", nil];
+        sortType = @{@"Name":@"filter_list_black",
+                     @"Type":@"filter_list_black",
+                     @"Location":@"filter_list_black",
+                     @"Emergency" : @"filter_list_black"};
+        
+    }
+    else{
+        filterList = [NSArray arrayWithObjects:@"All",@"Visible",@"Hidden",@"Active",@"Inactive",@"Blocked", nil];
+        sortType = @{@"Name":@"filter_list_black",
+                     @"Type":@"filter_list_black",
+                     @"Activity":@"filter_list_black",
+                     @"Data Usage" : @"filter_list_black"};
+    }
+    SortView *view = [SortView new];
+    view.methodsDelegate = self;
+    [view initializeView:self.buttonMaskView.frame:filterList SortType:sortType];
+    [self.buttonMaskView addSubview:view];
+    [self slideAnimation];
 
+}
+-(void)slideAnimation{
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.3;
+    transition.type = kCATransitionReveal;
+    [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    [self.buttonMaskView.layer addAnimation:transition forKey:nil];
+    [self.tabBarController.view addSubview:self.buttonMaskView];
+}
+-(void)onBtnMskTap:(id)sender{
+    [self removeAlmondSelectionView];
+}
+-(void)removeAlmondSelectionView{
+    [UIView animateWithDuration:0.3
+                          delay:0.0
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.buttonMaskView.alpha = 0;
+                     }completion:^(BOOL finished){
+                         [self.buttonMaskView removeFromSuperview];
+                     }];
+    self.buttonMaskView = nil;
+}
 
 - (BOOL)showNeedsActivationHeader {
     BOOL isAccountActivated = [[SecurifiToolkit sharedInstance] isAccountActivated];
