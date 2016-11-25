@@ -69,14 +69,6 @@
     self.navigationController.navigationBar.translucent = NO;
     
     
-    if(self.needAddButton){
-        UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add_almond_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddBtnTap:)];
-        self.navigationItem.rightBarButtonItem = addButton;
-    }
-    else{
-        
-    }
-    
     if (enableLocalNetworking) {
         _connectionStatusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES isDashBoard:NO];
     }
@@ -168,6 +160,11 @@
                selector:@selector(keyboardWillHide:)
                    name:UIKeyboardWillHideNotification
                  object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onAlmondNameDidChange:)
+                   name:kSFIDidChangeAlmondName
+                 object:nil];
     // make sure status icon is up-to-date
     NSLog(@"View will appear is called in SFITableViewController");
     [self markNotificationStatusIcon];
@@ -199,9 +196,6 @@
 }
 
 #pragma Event handling
-- (void)onAddBtnTap:(id)sender{
-    NSLog(@"on add btn tap");
-}
 
 -(void) showNetworkTogglePopUp:(NSString*)title withSubTitle1:(NSString*)subTitle1 withSubTitle2:(NSString*)subTitle2 withMode1:(SFIAlmondConnectionMode)mode1 withMode2:(SFIAlmondConnectionMode)mode2 presentLocalNetworkSettingsEditor:(BOOL)present{
     
@@ -392,12 +386,66 @@
     return barButton;
 }
 
+
 #pragma mark cell methods
+
+- (void)hideAlmondModeButton {
+    if (!self.enableNotificationsHomeAwayMode) {
+        return;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        //        [self setBarButtons:NO];
+    });
+}
+
+- (void)showAlmondModeButton {
+    //    if (!self.enableNotificationsHomeAwayMode) {
+    //        return;
+    //    }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        //        [self setBarButtons:YES];
+    });
+    //    [self setBarButtons:NO];
+}
+
+#pragma mark helper methods
+- (void)onAlmondNameDidChange:(id)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
+        SFIAlmondPlus *obj = (SFIAlmondPlus *) [data valueForKey:@"data"];
+        if ([self isSameAsCurrentMAC:obj.almondplusMAC]) {
+            [self markNewTitle:obj.almondplusName];
+        }
+    });
+}
+
+- (BOOL)isSameAsCurrentMAC:(NSString *)aMac {
+    if (aMac == nil) {
+        return NO;
+    }
+    
+    NSString *current = self.almondMac;
+    if (current == nil) {
+        return NO;
+    }
+    
+    return [current isEqualToString:aMac];
+}
 
 -(BOOL)isFirmwareCompatible{
     return [SFIAlmondPlus checkIfFirmwareIsCompatible:[SecurifiToolkit sharedInstance].currentAlmond];
 }
 
+
+#pragma mark cell methods
 - (UITableViewCell *)createAlmondOfflineCell:(UITableView *)tableView {
     static NSString *cell_id = @"NoAlmondConnect";
     
@@ -439,7 +487,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:update_cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [self createCellWithMsg:@"The Almond firmware needs to be updated to remain compatible with this version of the app." cell:cell];
+        [self createCellWithMsg:NSLocalizedString(@"update_fimware", @"") cell:cell];
     }
     return cell;
 }
@@ -521,7 +569,8 @@
 }
 
 - (void)showConnectingHUD {
-    [self showHUD:@"Connecting, Please wait..."];
+    [self showHUD:@"Connecting. Please wait!"];
+    [self.HUD hide:YES afterDelay:5];
 }
 
 - (void)showLoadingRouterDataHUD {

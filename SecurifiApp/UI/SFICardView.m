@@ -132,6 +132,18 @@
     return label;
 }
 
+- (void)addTitleAndShare:(NSString *)title target:(id)target shareAction:(SEL)shareAction on:(BOOL)isSwitchOn{
+    UILabel *label = [self makeSettingTitle:title];
+    [self addSubview:label];
+    
+    if(isSwitchOn){
+        UIButton *button = [self makeShareLinkButton:target action:shareAction];
+        [self addSubview:button];
+    }
+    
+    [self markYOffsetUsingRect:label.frame addAdditional:15];
+}
+
 - (UILabel *)addTitle:(NSString *)title {
     UILabel *label = [self makeTitleLabel:title];
     [self addSubview:label];
@@ -336,11 +348,15 @@
 }
 
 - (void)addTitleAndOnOffSwitch:(NSString *)title target:(id)target action:(SEL)action shareAction:(SEL)shareAction on:(BOOL)isSwitchOn {
-    UILabel *label = [self makeTitleLabel:title];
+    UILabel *label;
+    if(isSwitchOn)
+        label = [self makeSettingTitle:title];
+    else
+        label = [self makeTitleLabel:title];
+    
     [self addSubview:label];
 
-    BOOL isShareEnabled = NO;
-    if(isSwitchOn && isShareEnabled){
+    if(isSwitchOn){
         UIButton *button = [self makeShareLinkButton:target action:shareAction];
         [self addSubview:button];
     }
@@ -398,6 +414,10 @@
     [self markYOffsetUsingRect:button.frame addAdditional:0];
 }
 
+- (UILabel *)makeSettingTitle:(NSString *)title{
+    return [self makeMultiLineLabel:title font:self.headlineFont alignment:NSTextAlignmentLeft numberOfLines:1 rightOffset:SFICardView_right_offset_share];
+}
+
 - (UILabel *)makeTitleLabel:(NSString *)title {
     return [self makeMultiLineLabel:title font:self.headlineFont alignment:NSTextAlignmentLeft numberOfLines:1 rightOffset:SFICardView_right_offset_inset];
 }
@@ -443,8 +463,12 @@
 }
 
 - (CGFloat)standardRightOffset:(SFICardView_right_offset)rightOffset {
-    CGFloat offset = (rightOffset == SFICardView_right_offset_normal) ? 30 : 75;
-    return offset;
+    if(rightOffset == SFICardView_right_offset_normal)
+        return 30;
+    else if(rightOffset == SFICardView_right_offset_inset)
+        return 75;
+    else
+        return 75 + 100;
 }
 
 /*

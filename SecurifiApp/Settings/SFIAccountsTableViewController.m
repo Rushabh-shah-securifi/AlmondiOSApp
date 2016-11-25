@@ -883,7 +883,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [tfRenameAlmond addTarget:self action:@selector(almondNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
         [backgroundLabel addSubview:tfRenameAlmond];
 
-
+        /*
         UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
         btnChangeAlmondName.frame = CGRectMake(10 + rename_textfield_width, baseYCordinate, rename_button_width, 30);
         btnChangeAlmondName.backgroundColor = [UIColor clearColor];
@@ -894,7 +894,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         btnChangeAlmondName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangeAlmondName addTarget:self action:@selector(onChangeAlmondNameClicked:) forControlEvents:UIControlEventTouchUpInside];
         [backgroundLabel addSubview:btnChangeAlmondName];
-
+         */
         baseYCordinate += 30;
         UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
         imgLine2.image = [UIImage imageNamed:@"line"];
@@ -1077,7 +1077,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [tfRenameAlmond addTarget:self action:@selector(almondNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
         [backgroundLabel addSubview:tfRenameAlmond];
 
-
+        /*
         UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
         btnChangeAlmondName.frame = CGRectMake(10 + rename_textfield_width, baseYCoordinate, rename_button_width, 30);
         btnChangeAlmondName.backgroundColor = [UIColor clearColor];
@@ -1088,7 +1088,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         btnChangeAlmondName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangeAlmondName addTarget:self action:@selector(onChangeSharedAlmondNameClicked:) forControlEvents:UIControlEventTouchUpInside];
         [backgroundLabel addSubview:btnChangeAlmondName];
-
+         */
         baseYCoordinate += 30;
         UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCoordinate, self.tableView.frame.size.width - 35, 1)];
         imgLine2.image = [UIImage imageNamed:@"line"];

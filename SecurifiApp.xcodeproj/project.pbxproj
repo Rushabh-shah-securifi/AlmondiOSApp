@@ -214,7 +214,6 @@
 		A5217EF61CBE29810089A8C3 /* SFILogsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5217EF51CBE29810089A8C3 /* SFILogsViewController.m */; };
 		A5217EF71CBE29810089A8C3 /* SFILogsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5217EF51CBE29810089A8C3 /* SFILogsViewController.m */; };
 		A54537291C8ED1ED00DC3EC8 /* SceneNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A54537281C8ED1ED00DC3EC8 /* SceneNameViewController.m */; };
-		A545372B1C8ED35C00DC3EC8 /* scene_names.txt in Resources */ = {isa = PBXBuildFile; fileRef = A545372A1C8ED35C00DC3EC8 /* scene_names.txt */; };
 		A54D74891CB51FD000EB46B6 /* RouterPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = A54D74881CB51FD000EB46B6 /* RouterPayload.m */; };
 		A54EB0351C45004B00CF2837 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A54EB0341C45004B00CF2837 /* Common-Images.xcassets */; };
 		A569B8E71DBE41FF00FBD429 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A569B8E51DBE416400FBD429 /* libicucore.tbd */; };
@@ -412,21 +411,39 @@
 		A58DB4AA1BB3CD7500717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49F1BB3CD7500717C02 /* Scenes_Iphone.strings */; };
 		A58DB4AB1BB3CD7500717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4A11BB3CD7500717C02 /* termsofuse.html */; };
 		A5AC1E841CC7BA01009F362B /* RuleSceneUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AC1E831CC7BA01009F362B /* RuleSceneUtil.m */; };
-		A5C68C991C92D93000110B74 /* GenericIndexesData.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C981C92D93000110B74 /* GenericIndexesData.json */; };
-		A5C68C9A1C92D93000110B74 /* GenericIndexesData.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C981C92D93000110B74 /* GenericIndexesData.json */; };
-		A5C68C9C1C9303D300110B74 /* DeviceListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */; };
-		A5C68C9D1C9303D300110B74 /* DeviceListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */; };
 		A5F03F6C1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		A5F03F6D1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
+		B017E87B1DE85EF800BC0DE8 /* AlmondSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B017E8781DE85EF800BC0DE8 /* AlmondSelectionCell.m */; };
+		B017E87C1DE85EF800BC0DE8 /* AlmondSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B017E8781DE85EF800BC0DE8 /* AlmondSelectionCell.m */; };
+		B017E87D1DE85EF800BC0DE8 /* AlmondSelectionTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B017E87A1DE85EF800BC0DE8 /* AlmondSelectionTableView.m */; };
+		B017E87E1DE85EF800BC0DE8 /* AlmondSelectionTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B017E87A1DE85EF800BC0DE8 /* AlmondSelectionTableView.m */; };
+		B017E8801DE85FB500BC0DE8 /* DescriptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B017E87F1DE85FB500BC0DE8 /* DescriptionView.xib */; };
+		B017E8811DE85FB500BC0DE8 /* DescriptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B017E87F1DE85FB500BC0DE8 /* DescriptionView.xib */; };
+		B017E88B1DE8600400BC0DE8 /* CategoryMap.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E8821DE8600400BC0DE8 /* CategoryMap.json */; };
+		B017E88C1DE8600400BC0DE8 /* CategoryMap.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E8821DE8600400BC0DE8 /* CategoryMap.json */; };
+		B017E88D1DE8600400BC0DE8 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E8831DE8600400BC0DE8 /* deviceListJson.json */; };
+		B017E88E1DE8600400BC0DE8 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E8831DE8600400BC0DE8 /* deviceListJson.json */; };
+		B017E88F1DE8600400BC0DE8 /* DeviceListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E8841DE8600400BC0DE8 /* DeviceListResponse.json */; };
+		B017E8901DE8600400BC0DE8 /* DeviceListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E8841DE8600400BC0DE8 /* DeviceListResponse.json */; };
+		B017E8911DE8600400BC0DE8 /* GenericIndexesData.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E8851DE8600400BC0DE8 /* GenericIndexesData.json */; };
+		B017E8921DE8600400BC0DE8 /* GenericIndexesData.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E8851DE8600400BC0DE8 /* GenericIndexesData.json */; };
+		B017E8931DE8600400BC0DE8 /* helpCenterJson.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E8861DE8600400BC0DE8 /* helpCenterJson.json */; };
+		B017E8941DE8600400BC0DE8 /* helpCenterJson.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E8861DE8600400BC0DE8 /* helpCenterJson.json */; };
+		B017E8951DE8600400BC0DE8 /* responseMain.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E8871DE8600400BC0DE8 /* responseMain.json */; };
+		B017E8961DE8600400BC0DE8 /* responseMain.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E8871DE8600400BC0DE8 /* responseMain.json */; };
+		B017E8971DE8600400BC0DE8 /* scene_names.txt in Resources */ = {isa = PBXBuildFile; fileRef = B017E8881DE8600400BC0DE8 /* scene_names.txt */; };
+		B017E8981DE8600400BC0DE8 /* scene_names.txt in Resources */ = {isa = PBXBuildFile; fileRef = B017E8881DE8600400BC0DE8 /* scene_names.txt */; };
+		B017E8991DE8600400BC0DE8 /* temp_jsonResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E8891DE8600400BC0DE8 /* temp_jsonResponse.json */; };
+		B017E89A1DE8600400BC0DE8 /* temp_jsonResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E8891DE8600400BC0DE8 /* temp_jsonResponse.json */; };
+		B017E89B1DE8600400BC0DE8 /* temp.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E88A1DE8600400BC0DE8 /* temp.json */; };
+		B017E89C1DE8600400BC0DE8 /* temp.json in Resources */ = {isa = PBXBuildFile; fileRef = B017E88A1DE8600400BC0DE8 /* temp.json */; };
 		B095F99A1DCF7CBF00CBCCDF /* NetworkStatusIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = B095F9991DCF7CBF00CBCCDF /* NetworkStatusIcon.m */; };
 		B0E41DF31DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B0E41DF21DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf */; };
 		B0E41DF51DCC1BA100D5FD2A /* h_keyfob_image_V3.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B0E41DF41DCC1BA100D5FD2A /* h_keyfob_image_V3.pdf */; };
 		CE3EDAF21D4742EC00C153A6 /* BrowsingHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3EDAEF1D4742EC00C153A6 /* BrowsingHistoryViewController.m */; };
 		CE3EDAF31D4742EC00C153A6 /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3EDAF11D4742EC00C153A6 /* SearchTableViewController.m */; };
-		CE3EDAF71D47754A00C153A6 /* responseMain.json in Resources */ = {isa = PBXBuildFile; fileRef = CE3EDAF61D47754A00C153A6 /* responseMain.json */; };
 		CE40BF131D225791007C2148 /* BrowsingHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF0A1D225791007C2148 /* BrowsingHistory.m */; };
 		CE40BF151D225791007C2148 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF0E1D225791007C2148 /* HistoryCell.m */; };
-		CE40BF1C1D22867B007C2148 /* temp.json in Resources */ = {isa = PBXBuildFile; fileRef = CE40BF1A1D228650007C2148 /* temp.json */; };
 		CE4DB3F61CEF340F00CBD6DE /* TriDimBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */; };
 		CE57A3461D7008C800F14B25 /* UrlImgDict.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57A3451D7008C800F14B25 /* UrlImgDict.m */; };
 		CE57A3491D70591A00F14B25 /* ParentalControlsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57A3481D70591A00F14B25 /* ParentalControlsViewController.m */; };
@@ -435,36 +452,10 @@
 		CE57E5321D1BBCC400493460 /* HistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE57E5301D1BBCC400493460 /* HistoryCell.xib */; };
 		CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58276B1D10127400843B4C /* WeatherRuleButton.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
-		CE65C4911D1A67B200C2E1C0 /* UILabel+ActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = CE65C4901D1A67B200C2E1C0 /* UILabel+ActionSheet.m */; };
 		CE7E89B61DC356CB00B0C3C6 /* DetailsPeriodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7E89B51DC356CB00B0C3C6 /* DetailsPeriodViewController.m */; };
-		CE7E89C81DC357DD00B0C3C6 /* DSLCalendarDayCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7E89BB1DC357DD00B0C3C6 /* DSLCalendarDayCalloutView.m */; };
-		CE7E89C91DC357DE00B0C3C6 /* DSLCalendarDayCalloutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE7E89BC1DC357DD00B0C3C6 /* DSLCalendarDayCalloutView.xib */; };
-		CE7E89CA1DC357DE00B0C3C6 /* DSLCalendarDayView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7E89BE1DC357DD00B0C3C6 /* DSLCalendarDayView.m */; };
-		CE7E89CB1DC357DE00B0C3C6 /* DSLCalendarMonthSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7E89C01DC357DD00B0C3C6 /* DSLCalendarMonthSelectorView.m */; };
-		CE7E89CC1DC357DE00B0C3C6 /* DSLCalendarMonthSelectorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE7E89C11DC357DD00B0C3C6 /* DSLCalendarMonthSelectorView.xib */; };
-		CE7E89CD1DC357DE00B0C3C6 /* DSLCalendarMonthView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7E89C31DC357DD00B0C3C6 /* DSLCalendarMonthView.m */; };
-		CE7E89CE1DC357DE00B0C3C6 /* DSLCalendarRange.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7E89C51DC357DD00B0C3C6 /* DSLCalendarRange.m */; };
-		CE7E89CF1DC357DE00B0C3C6 /* DSLCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7E89C71DC357DD00B0C3C6 /* DSLCalendarView.m */; };
-		CE7E89D21DC357E500B0C3C6 /* NSDate+DSLCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7E89D11DC357E500B0C3C6 /* NSDate+DSLCalendarView.m */; };
-		CE7E8A371DC368D100B0C3C6 /* DSLCalendar-nextMonth.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A291DC368D100B0C3C6 /* DSLCalendar-nextMonth.png */; };
-		CE7E8A381DC368D100B0C3C6 /* DSLCalendar-nextMonth@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A2A1DC368D100B0C3C6 /* DSLCalendar-nextMonth@2x.png */; };
-		CE7E8A391DC368D100B0C3C6 /* DSLCalendar-previousMonth.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A2B1DC368D100B0C3C6 /* DSLCalendar-previousMonth.png */; };
-		CE7E8A3A1DC368D100B0C3C6 /* DSLCalendar-previousMonth@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A2C1DC368D100B0C3C6 /* DSLCalendar-previousMonth@2x.png */; };
-		CE7E8A3B1DC368D100B0C3C6 /* DSLCalendarDayCallout.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A2D1DC368D100B0C3C6 /* DSLCalendarDayCallout.png */; };
-		CE7E8A3C1DC368D100B0C3C6 /* DSLCalendarDayCallout@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A2E1DC368D100B0C3C6 /* DSLCalendarDayCallout@2x.png */; };
-		CE7E8A3D1DC368D100B0C3C6 /* DSLCalendarDaySelection-left.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A2F1DC368D100B0C3C6 /* DSLCalendarDaySelection-left.png */; };
-		CE7E8A3E1DC368D100B0C3C6 /* DSLCalendarDaySelection-left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A301DC368D100B0C3C6 /* DSLCalendarDaySelection-left@2x.png */; };
-		CE7E8A3F1DC368D100B0C3C6 /* DSLCalendarDaySelection-middle.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A311DC368D100B0C3C6 /* DSLCalendarDaySelection-middle.png */; };
-		CE7E8A401DC368D100B0C3C6 /* DSLCalendarDaySelection-middle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A321DC368D100B0C3C6 /* DSLCalendarDaySelection-middle@2x.png */; };
-		CE7E8A411DC368D100B0C3C6 /* DSLCalendarDaySelection-right.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A331DC368D100B0C3C6 /* DSLCalendarDaySelection-right.png */; };
-		CE7E8A421DC368D100B0C3C6 /* DSLCalendarDaySelection-right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A341DC368D100B0C3C6 /* DSLCalendarDaySelection-right@2x.png */; };
-		CE7E8A431DC368D100B0C3C6 /* DSLCalendarDaySelection.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A351DC368D100B0C3C6 /* DSLCalendarDaySelection.png */; };
-		CE7E8A441DC368D100B0C3C6 /* DSLCalendarDaySelection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE7E8A361DC368D100B0C3C6 /* DSLCalendarDaySelection@2x.png */; };
-		CEABC6581D6F147B00C2DCD4 /* CategoryMap.json in Resources */ = {isa = PBXBuildFile; fileRef = CEABC6571D6F147B00C2DCD4 /* CategoryMap.json */; };
 		CEABC65B1D6F14A000C2DCD4 /* CategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEABC65A1D6F14A000C2DCD4 /* CategoryView.m */; };
 		CEABC65E1D6F14A900C2DCD4 /* ChangeCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEABC65D1D6F14A900C2DCD4 /* ChangeCategoryViewController.m */; };
 		CEABC6611D6F14CD00C2DCD4 /* categoryTab.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEABC65F1D6F14CD00C2DCD4 /* categoryTab.xib */; };
-		CEB788E41D361FE1005F75F2 /* temp_jsonResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = CEB788E31D361FE1005F75F2 /* temp_jsonResponse.json */; };
 		CEEAB7AD1CAD26A2003C5290 /* UICommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */; };
 		CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEF425C1C47E0E300E36C9B /* ScenePayload.m */; };
 		CEF6F4D81C92CAD600C68975 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */; };
@@ -513,18 +504,10 @@
 		CEF6F5031C92CAD600C68975 /* TimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D71C92CAD600C68975 /* TimeView.m */; };
 		CEF6F5061C92CD2400C68975 /* GenericIndexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */; };
 		CEF6F5071C92CD2400C68975 /* GenericIndexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */; };
-		CEF6F50A1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
-		CEF6F50B1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
-		CEFFBD221D87D1EF00B0A7A9 /* DeviceListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = CEFFBD201D87D1EF00B0A7A9 /* DeviceListResponse.json */; };
-		CEFFBD231D87D1EF00B0A7A9 /* GenericIndexesData.json in Resources */ = {isa = PBXBuildFile; fileRef = CEFFBD211D87D1EF00B0A7A9 /* GenericIndexesData.json */; };
 		F400B6C11D65ECCD00DDEE50 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */; };
 		F400B6C21D65ECCD00DDEE50 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */; };
 		F401B0731D2D241200F64CE2 /* ColorComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F401B0721D2D241200F64CE2 /* ColorComponentView.m */; };
 		F401B0741D2D241200F64CE2 /* ColorComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F401B0721D2D241200F64CE2 /* ColorComponentView.m */; };
-		F41240AA1D7EC1480067A94C /* AlmondSelectionTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F41240A91D7EC1480067A94C /* AlmondSelectionTableView.m */; };
-		F41240AB1D7EC1480067A94C /* AlmondSelectionTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F41240A91D7EC1480067A94C /* AlmondSelectionTableView.m */; };
-		F41240AE1D7EC6030067A94C /* AlmondSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F41240AD1D7EC6030067A94C /* AlmondSelectionCell.m */; };
-		F41240AF1D7EC6030067A94C /* AlmondSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F41240AD1D7EC6030067A94C /* AlmondSelectionCell.m */; };
 		F41586F41D6F06140004C577 /* AlmondUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F41586F31D6F06140004C577 /* AlmondUpdateViewController.m */; };
 		F417B2A11DA25B7B0073C440 /* Router.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F417B29F1DA25B7B0073C440 /* Router.storyboard */; };
 		F417B2A21DA25B7C0073C440 /* Router.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F417B29F1DA25B7B0073C440 /* Router.storyboard */; };
@@ -658,8 +641,6 @@
 		F4D93AE61D3912FA00D55BD6 /* Changeling NeoBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F4D93AE41D3912FA00D55BD6 /* Changeling NeoBold.otf */; };
 		F4D93AF01D3F5C2500D55BD6 /* HelpCenterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D93AEF1D3F5C2500D55BD6 /* HelpCenterTableViewCell.m */; };
 		F4D93AF11D3F5C2500D55BD6 /* HelpCenterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D93AEF1D3F5C2500D55BD6 /* HelpCenterTableViewCell.m */; };
-		F4D93AF31D3F629B00D55BD6 /* helpCenterJson.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D93AF21D3F629B00D55BD6 /* helpCenterJson.json */; };
-		F4D93AF41D3F629B00D55BD6 /* helpCenterJson.json in Resources */ = {isa = PBXBuildFile; fileRef = F4D93AF21D3F629B00D55BD6 /* helpCenterJson.json */; };
 		F4D93AF71D3F882300D55BD6 /* HelpItemsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D93AF61D3F882300D55BD6 /* HelpItemsTableViewController.m */; };
 		F4D93AF81D3F882300D55BD6 /* HelpItemsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D93AF61D3F882300D55BD6 /* HelpItemsTableViewController.m */; };
 		F4EA081D1D6AD9F900D6CC28 /* More.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4EA081B1D6AD9F900D6CC28 /* More.storyboard */; };
@@ -895,7 +876,6 @@
 		A5217EF51CBE29810089A8C3 /* SFILogsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFILogsViewController.m; sourceTree = "<group>"; };
 		A54537271C8ED1ED00DC3EC8 /* SceneNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneNameViewController.h; sourceTree = "<group>"; };
 		A54537281C8ED1ED00DC3EC8 /* SceneNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneNameViewController.m; sourceTree = "<group>"; };
-		A545372A1C8ED35C00DC3EC8 /* scene_names.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = scene_names.txt; path = ../scene_names.txt; sourceTree = "<group>"; };
 		A54D74871CB51FD000EB46B6 /* RouterPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouterPayload.h; sourceTree = "<group>"; };
 		A54D74881CB51FD000EB46B6 /* RouterPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouterPayload.m; sourceTree = "<group>"; };
 		A54EB0341C45004B00CF2837 /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
@@ -1097,13 +1077,25 @@
 		A5AAEA041DE41770004A4FBF /* Network_m_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Network_m_Tests.m; path = ../../iostoolkit/SecurifiToolkitTests/Network_m_Tests.m; sourceTree = "<group>"; };
 		A5AC1E821CC7BA01009F362B /* RuleSceneUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleSceneUtil.h; sourceTree = "<group>"; };
 		A5AC1E831CC7BA01009F362B /* RuleSceneUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleSceneUtil.m; sourceTree = "<group>"; };
-		A5C68C981C92D93000110B74 /* GenericIndexesData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GenericIndexesData.json; path = ../GenericIndexesData.json; sourceTree = "<group>"; };
-		A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DeviceListResponse.json; path = ../DeviceListResponse.json; sourceTree = "<group>"; };
 		A5F03F6A1C76E412006CB309 /* NewAddSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewAddSceneViewController.h; sourceTree = "<group>"; };
 		A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewAddSceneViewController.m; sourceTree = "<group>"; };
 		A856E5412099C069FEB9493D /* Pods-Almond.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Almond.release.xcconfig"; path = "Pods/Target Support Files/Pods-Almond/Pods-Almond.release.xcconfig"; sourceTree = "<group>"; };
 		AE77F320DE8F128358BBAFE7 /* Pods-HomeScreen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HomeScreen.release.xcconfig"; path = "Pods/Target Support Files/Pods-HomeScreen/Pods-HomeScreen.release.xcconfig"; sourceTree = "<group>"; };
 		AEB56C2FEAC393F7D8DE45B3 /* libPods-Almond.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Almond.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B017E8771DE85EF800BC0DE8 /* AlmondSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlmondSelectionCell.h; path = Dashboard/AlmondSelectionCell.h; sourceTree = "<group>"; };
+		B017E8781DE85EF800BC0DE8 /* AlmondSelectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlmondSelectionCell.m; path = Dashboard/AlmondSelectionCell.m; sourceTree = "<group>"; };
+		B017E8791DE85EF800BC0DE8 /* AlmondSelectionTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlmondSelectionTableView.h; path = Dashboard/AlmondSelectionTableView.h; sourceTree = "<group>"; };
+		B017E87A1DE85EF800BC0DE8 /* AlmondSelectionTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlmondSelectionTableView.m; path = Dashboard/AlmondSelectionTableView.m; sourceTree = "<group>"; };
+		B017E87F1DE85FB500BC0DE8 /* DescriptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DescriptionView.xib; sourceTree = "<group>"; };
+		B017E8821DE8600400BC0DE8 /* CategoryMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CategoryMap.json; sourceTree = "<group>"; };
+		B017E8831DE8600400BC0DE8 /* deviceListJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = deviceListJson.json; sourceTree = "<group>"; };
+		B017E8841DE8600400BC0DE8 /* DeviceListResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeviceListResponse.json; sourceTree = "<group>"; };
+		B017E8851DE8600400BC0DE8 /* GenericIndexesData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GenericIndexesData.json; sourceTree = "<group>"; };
+		B017E8861DE8600400BC0DE8 /* helpCenterJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = helpCenterJson.json; sourceTree = "<group>"; };
+		B017E8871DE8600400BC0DE8 /* responseMain.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = responseMain.json; sourceTree = "<group>"; };
+		B017E8881DE8600400BC0DE8 /* scene_names.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scene_names.txt; sourceTree = "<group>"; };
+		B017E8891DE8600400BC0DE8 /* temp_jsonResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = temp_jsonResponse.json; sourceTree = "<group>"; };
+		B017E88A1DE8600400BC0DE8 /* temp.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = temp.json; sourceTree = "<group>"; };
 		B095F9981DCF7C9700CBCCDF /* NetworkStatusIcon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkStatusIcon.h; sourceTree = "<group>"; };
 		B095F9991DCF7CBF00CBCCDF /* NetworkStatusIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkStatusIcon.m; sourceTree = "<group>"; };
 		B0E41DF21DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_keyfob_image_V2.pdf; sourceTree = "<group>"; };
@@ -1112,12 +1104,10 @@
 		CE3EDAEF1D4742EC00C153A6 /* BrowsingHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistoryViewController.m; sourceTree = "<group>"; };
 		CE3EDAF01D4742EC00C153A6 /* SearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewController.h; sourceTree = "<group>"; };
 		CE3EDAF11D4742EC00C153A6 /* SearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewController.m; sourceTree = "<group>"; };
-		CE3EDAF61D47754A00C153A6 /* responseMain.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = responseMain.json; path = ../responseMain.json; sourceTree = "<group>"; };
 		CE40BF091D225791007C2148 /* BrowsingHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistory.h; sourceTree = "<group>"; };
 		CE40BF0A1D225791007C2148 /* BrowsingHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistory.m; sourceTree = "<group>"; };
 		CE40BF0D1D225791007C2148 /* HistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCell.h; sourceTree = "<group>"; };
 		CE40BF0E1D225791007C2148 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
-		CE40BF1A1D228650007C2148 /* temp.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = temp.json; path = ../temp.json; sourceTree = "<group>"; };
 		CE4DB3F41CEF340D00CBD6DE /* TriDimBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriDimBtn.h; sourceTree = "<group>"; };
 		CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TriDimBtn.m; sourceTree = "<group>"; };
 		CE57A3441D7008C800F14B25 /* UrlImgDict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlImgDict.h; sourceTree = "<group>"; };
@@ -1132,47 +1122,13 @@
 		CE58276B1D10127400843B4C /* WeatherRuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherRuleButton.m; sourceTree = "<group>"; };
 		CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPickerIndicatorView1.h; sourceTree = "<group>"; };
 		CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPickerIndicatorView1.m; sourceTree = "<group>"; };
-		CE65C48F1D1A67B200C2E1C0 /* UILabel+ActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+ActionSheet.h"; sourceTree = "<group>"; };
-		CE65C4901D1A67B200C2E1C0 /* UILabel+ActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+ActionSheet.m"; sourceTree = "<group>"; };
 		CE7E89B41DC356CB00B0C3C6 /* DetailsPeriodViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsPeriodViewController.h; sourceTree = "<group>"; };
 		CE7E89B51DC356CB00B0C3C6 /* DetailsPeriodViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsPeriodViewController.m; sourceTree = "<group>"; };
-		CE7E89BA1DC357DD00B0C3C6 /* DSLCalendarDayCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSLCalendarDayCalloutView.h; path = DSLCalendar/DSLCalendarView/DSLCalendarDayCalloutView.h; sourceTree = "<group>"; };
-		CE7E89BB1DC357DD00B0C3C6 /* DSLCalendarDayCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSLCalendarDayCalloutView.m; path = DSLCalendar/DSLCalendarView/DSLCalendarDayCalloutView.m; sourceTree = "<group>"; };
-		CE7E89BC1DC357DD00B0C3C6 /* DSLCalendarDayCalloutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DSLCalendarDayCalloutView.xib; path = DSLCalendar/DSLCalendarView/DSLCalendarDayCalloutView.xib; sourceTree = "<group>"; };
-		CE7E89BD1DC357DD00B0C3C6 /* DSLCalendarDayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSLCalendarDayView.h; path = DSLCalendar/DSLCalendarView/DSLCalendarDayView.h; sourceTree = "<group>"; };
-		CE7E89BE1DC357DD00B0C3C6 /* DSLCalendarDayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSLCalendarDayView.m; path = DSLCalendar/DSLCalendarView/DSLCalendarDayView.m; sourceTree = "<group>"; };
-		CE7E89BF1DC357DD00B0C3C6 /* DSLCalendarMonthSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSLCalendarMonthSelectorView.h; path = DSLCalendar/DSLCalendarView/DSLCalendarMonthSelectorView.h; sourceTree = "<group>"; };
-		CE7E89C01DC357DD00B0C3C6 /* DSLCalendarMonthSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSLCalendarMonthSelectorView.m; path = DSLCalendar/DSLCalendarView/DSLCalendarMonthSelectorView.m; sourceTree = "<group>"; };
-		CE7E89C11DC357DD00B0C3C6 /* DSLCalendarMonthSelectorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DSLCalendarMonthSelectorView.xib; path = DSLCalendar/DSLCalendarView/DSLCalendarMonthSelectorView.xib; sourceTree = "<group>"; };
-		CE7E89C21DC357DD00B0C3C6 /* DSLCalendarMonthView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSLCalendarMonthView.h; path = DSLCalendar/DSLCalendarView/DSLCalendarMonthView.h; sourceTree = "<group>"; };
-		CE7E89C31DC357DD00B0C3C6 /* DSLCalendarMonthView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSLCalendarMonthView.m; path = DSLCalendar/DSLCalendarView/DSLCalendarMonthView.m; sourceTree = "<group>"; };
-		CE7E89C41DC357DD00B0C3C6 /* DSLCalendarRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSLCalendarRange.h; path = DSLCalendar/DSLCalendarView/DSLCalendarRange.h; sourceTree = "<group>"; };
-		CE7E89C51DC357DD00B0C3C6 /* DSLCalendarRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSLCalendarRange.m; path = DSLCalendar/DSLCalendarView/DSLCalendarRange.m; sourceTree = "<group>"; };
-		CE7E89C61DC357DD00B0C3C6 /* DSLCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSLCalendarView.h; path = DSLCalendar/DSLCalendarView/DSLCalendarView.h; sourceTree = "<group>"; };
-		CE7E89C71DC357DD00B0C3C6 /* DSLCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSLCalendarView.m; path = DSLCalendar/DSLCalendarView/DSLCalendarView.m; sourceTree = "<group>"; };
-		CE7E89D01DC357E500B0C3C6 /* NSDate+DSLCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+DSLCalendarView.h"; path = "DSLCalendar/DSLCalendarView/NSDate+DSLCalendarView.h"; sourceTree = "<group>"; };
-		CE7E89D11DC357E500B0C3C6 /* NSDate+DSLCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+DSLCalendarView.m"; path = "DSLCalendar/DSLCalendarView/NSDate+DSLCalendarView.m"; sourceTree = "<group>"; };
-		CE7E8A291DC368D100B0C3C6 /* DSLCalendar-nextMonth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendar-nextMonth.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendar-nextMonth.png"; sourceTree = "<group>"; };
-		CE7E8A2A1DC368D100B0C3C6 /* DSLCalendar-nextMonth@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendar-nextMonth@2x.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendar-nextMonth@2x.png"; sourceTree = "<group>"; };
-		CE7E8A2B1DC368D100B0C3C6 /* DSLCalendar-previousMonth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendar-previousMonth.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendar-previousMonth.png"; sourceTree = "<group>"; };
-		CE7E8A2C1DC368D100B0C3C6 /* DSLCalendar-previousMonth@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendar-previousMonth@2x.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendar-previousMonth@2x.png"; sourceTree = "<group>"; };
-		CE7E8A2D1DC368D100B0C3C6 /* DSLCalendarDayCallout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DSLCalendarDayCallout.png; path = DSLCalendar/DSLCalendarView/Images/DSLCalendarDayCallout.png; sourceTree = "<group>"; };
-		CE7E8A2E1DC368D100B0C3C6 /* DSLCalendarDayCallout@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendarDayCallout@2x.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendarDayCallout@2x.png"; sourceTree = "<group>"; };
-		CE7E8A2F1DC368D100B0C3C6 /* DSLCalendarDaySelection-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendarDaySelection-left.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendarDaySelection-left.png"; sourceTree = "<group>"; };
-		CE7E8A301DC368D100B0C3C6 /* DSLCalendarDaySelection-left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendarDaySelection-left@2x.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendarDaySelection-left@2x.png"; sourceTree = "<group>"; };
-		CE7E8A311DC368D100B0C3C6 /* DSLCalendarDaySelection-middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendarDaySelection-middle.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendarDaySelection-middle.png"; sourceTree = "<group>"; };
-		CE7E8A321DC368D100B0C3C6 /* DSLCalendarDaySelection-middle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendarDaySelection-middle@2x.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendarDaySelection-middle@2x.png"; sourceTree = "<group>"; };
-		CE7E8A331DC368D100B0C3C6 /* DSLCalendarDaySelection-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendarDaySelection-right.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendarDaySelection-right.png"; sourceTree = "<group>"; };
-		CE7E8A341DC368D100B0C3C6 /* DSLCalendarDaySelection-right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendarDaySelection-right@2x.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendarDaySelection-right@2x.png"; sourceTree = "<group>"; };
-		CE7E8A351DC368D100B0C3C6 /* DSLCalendarDaySelection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DSLCalendarDaySelection.png; path = DSLCalendar/DSLCalendarView/Images/DSLCalendarDaySelection.png; sourceTree = "<group>"; };
-		CE7E8A361DC368D100B0C3C6 /* DSLCalendarDaySelection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DSLCalendarDaySelection@2x.png"; path = "DSLCalendar/DSLCalendarView/Images/DSLCalendarDaySelection@2x.png"; sourceTree = "<group>"; };
-		CEABC6571D6F147B00C2DCD4 /* CategoryMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CategoryMap.json; path = SecurifiApp/CategoryMap.json; sourceTree = SOURCE_ROOT; };
 		CEABC6591D6F14A000C2DCD4 /* CategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryView.h; sourceTree = "<group>"; };
 		CEABC65A1D6F14A000C2DCD4 /* CategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryView.m; sourceTree = "<group>"; };
 		CEABC65C1D6F14A900C2DCD4 /* ChangeCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeCategoryViewController.h; sourceTree = "<group>"; };
 		CEABC65D1D6F14A900C2DCD4 /* ChangeCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeCategoryViewController.m; sourceTree = "<group>"; };
 		CEABC6601D6F14CD00C2DCD4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = categoryTab.xib; sourceTree = "<group>"; };
-		CEB788E31D361FE1005F75F2 /* temp_jsonResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = temp_jsonResponse.json; path = ../temp_jsonResponse.json; sourceTree = "<group>"; };
 		CEEAB7AB1CAD26A2003C5290 /* UICommonMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICommonMethods.h; sourceTree = "<group>"; };
 		CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICommonMethods.m; sourceTree = "<group>"; };
 		CEEF425B1C47E0E300E36C9B /* ScenePayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenePayload.h; sourceTree = "<group>"; };
@@ -1223,17 +1179,10 @@
 		CEF6F4D71C92CAD600C68975 /* TimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeView.m; sourceTree = "<group>"; };
 		CEF6F5041C92CD2400C68975 /* GenericIndexUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericIndexUtil.h; sourceTree = "<group>"; };
 		CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericIndexUtil.m; sourceTree = "<group>"; };
-		CEF6F5081C92CD3D00C68975 /* deviceListJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = deviceListJson.json; path = ../deviceListJson.json; sourceTree = "<group>"; };
-		CEFFBD201D87D1EF00B0A7A9 /* DeviceListResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DeviceListResponse.json; path = SecurifiApp/DeviceListResponse.json; sourceTree = SOURCE_ROOT; };
-		CEFFBD211D87D1EF00B0A7A9 /* GenericIndexesData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GenericIndexesData.json; path = SecurifiApp/GenericIndexesData.json; sourceTree = SOURCE_ROOT; };
 		F400B6BF1D65ECCD00DDEE50 /* SupportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportViewController.h; sourceTree = "<group>"; };
 		F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportViewController.m; sourceTree = "<group>"; };
 		F401B0711D2D241200F64CE2 /* ColorComponentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorComponentView.h; sourceTree = "<group>"; };
 		F401B0721D2D241200F64CE2 /* ColorComponentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorComponentView.m; sourceTree = "<group>"; };
-		F41240A81D7EC1480067A94C /* AlmondSelectionTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondSelectionTableView.h; sourceTree = "<group>"; };
-		F41240A91D7EC1480067A94C /* AlmondSelectionTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlmondSelectionTableView.m; sourceTree = "<group>"; };
-		F41240AC1D7EC6030067A94C /* AlmondSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondSelectionCell.h; sourceTree = "<group>"; };
-		F41240AD1D7EC6030067A94C /* AlmondSelectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlmondSelectionCell.m; sourceTree = "<group>"; };
 		F41586F21D6F06140004C577 /* AlmondUpdateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondUpdateViewController.h; sourceTree = "<group>"; };
 		F41586F31D6F06140004C577 /* AlmondUpdateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlmondUpdateViewController.m; sourceTree = "<group>"; };
 		F417B2A01DA25B7B0073C440 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Router.storyboard; sourceTree = "<group>"; };
@@ -1413,7 +1362,6 @@
 		F4D93AE41D3912FA00D55BD6 /* Changeling NeoBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Changeling NeoBold.otf"; sourceTree = "<group>"; };
 		F4D93AEE1D3F5C2500D55BD6 /* HelpCenterTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpCenterTableViewCell.h; sourceTree = "<group>"; };
 		F4D93AEF1D3F5C2500D55BD6 /* HelpCenterTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpCenterTableViewCell.m; sourceTree = "<group>"; };
-		F4D93AF21D3F629B00D55BD6 /* helpCenterJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = helpCenterJson.json; path = ../helpCenterJson.json; sourceTree = "<group>"; };
 		F4D93AF51D3F882300D55BD6 /* HelpItemsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpItemsTableViewController.h; sourceTree = "<group>"; };
 		F4D93AF61D3F882300D55BD6 /* HelpItemsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpItemsTableViewController.m; sourceTree = "<group>"; };
 		F4EA081C1D6AD9F900D6CC28 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = More.storyboard; sourceTree = "<group>"; };
@@ -1952,16 +1900,14 @@
 		2A4C24341D0FC3BF001191E8 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				B017E8771DE85EF800BC0DE8 /* AlmondSelectionCell.h */,
+				B017E8781DE85EF800BC0DE8 /* AlmondSelectionCell.m */,
+				B017E8791DE85EF800BC0DE8 /* AlmondSelectionTableView.h */,
+				B017E87A1DE85EF800BC0DE8 /* AlmondSelectionTableView.m */,
 				2A4C243A1D0FC412001191E8 /* SettingsViewController.m */,
 				2A4C24391D0FC403001191E8 /* SettingsViewController.h */,
 				2A4C24361D0FC3FA001191E8 /* DashboardViewController.m */,
 				2A4C24351D0FC3EB001191E8 /* DashboardViewController.h */,
-				CE65C48F1D1A67B200C2E1C0 /* UILabel+ActionSheet.h */,
-				CE65C4901D1A67B200C2E1C0 /* UILabel+ActionSheet.m */,
-				F41240A81D7EC1480067A94C /* AlmondSelectionTableView.h */,
-				F41240A91D7EC1480067A94C /* AlmondSelectionTableView.m */,
-				F41240AC1D7EC6030067A94C /* AlmondSelectionCell.h */,
-				F41240AD1D7EC6030067A94C /* AlmondSelectionCell.m */,
 			);
 			name = Dashboard;
 			sourceTree = "<group>";
@@ -2345,7 +2291,6 @@
 		CE40BF081D225791007C2148 /* SiteMap */ = {
 			isa = PBXGroup;
 			children = (
-				CE7E89B71DC3577400B0C3C6 /* DSLCalendarView */,
 				CE7E89B41DC356CB00B0C3C6 /* DetailsPeriodViewController.h */,
 				CE7E89B51DC356CB00B0C3C6 /* DetailsPeriodViewController.m */,
 				CEABC65C1D6F14A900C2DCD4 /* ChangeCategoryViewController.h */,
@@ -2354,6 +2299,7 @@
 				CEABC65A1D6F14A000C2DCD4 /* CategoryView.m */,
 				CE40BF091D225791007C2148 /* BrowsingHistory.h */,
 				CE40BF0A1D225791007C2148 /* BrowsingHistory.m */,
+				B017E87F1DE85FB500BC0DE8 /* DescriptionView.xib */,
 				CE40BF0D1D225791007C2148 /* HistoryCell.h */,
 				CE40BF0E1D225791007C2148 /* HistoryCell.m */,
 				CE3EDAEE1D4742EC00C153A6 /* BrowsingHistoryViewController.h */,
@@ -2368,51 +2314,6 @@
 				CE57A34B1D705B5300F14B25 /* ParentControlCell.m */,
 			);
 			path = SiteMap;
-			sourceTree = "<group>";
-		};
-		CE7E89B71DC3577400B0C3C6 /* DSLCalendarView */ = {
-			isa = PBXGroup;
-			children = (
-				CE7E89D31DC357F200B0C3C6 /* images */,
-				CE7E89D01DC357E500B0C3C6 /* NSDate+DSLCalendarView.h */,
-				CE7E89D11DC357E500B0C3C6 /* NSDate+DSLCalendarView.m */,
-				CE7E89BA1DC357DD00B0C3C6 /* DSLCalendarDayCalloutView.h */,
-				CE7E89BB1DC357DD00B0C3C6 /* DSLCalendarDayCalloutView.m */,
-				CE7E89BC1DC357DD00B0C3C6 /* DSLCalendarDayCalloutView.xib */,
-				CE7E89BD1DC357DD00B0C3C6 /* DSLCalendarDayView.h */,
-				CE7E89BE1DC357DD00B0C3C6 /* DSLCalendarDayView.m */,
-				CE7E89BF1DC357DD00B0C3C6 /* DSLCalendarMonthSelectorView.h */,
-				CE7E89C01DC357DD00B0C3C6 /* DSLCalendarMonthSelectorView.m */,
-				CE7E89C11DC357DD00B0C3C6 /* DSLCalendarMonthSelectorView.xib */,
-				CE7E89C21DC357DD00B0C3C6 /* DSLCalendarMonthView.h */,
-				CE7E89C31DC357DD00B0C3C6 /* DSLCalendarMonthView.m */,
-				CE7E89C41DC357DD00B0C3C6 /* DSLCalendarRange.h */,
-				CE7E89C51DC357DD00B0C3C6 /* DSLCalendarRange.m */,
-				CE7E89C61DC357DD00B0C3C6 /* DSLCalendarView.h */,
-				CE7E89C71DC357DD00B0C3C6 /* DSLCalendarView.m */,
-			);
-			name = DSLCalendarView;
-			sourceTree = "<group>";
-		};
-		CE7E89D31DC357F200B0C3C6 /* images */ = {
-			isa = PBXGroup;
-			children = (
-				CE7E8A291DC368D100B0C3C6 /* DSLCalendar-nextMonth.png */,
-				CE7E8A2A1DC368D100B0C3C6 /* DSLCalendar-nextMonth@2x.png */,
-				CE7E8A2B1DC368D100B0C3C6 /* DSLCalendar-previousMonth.png */,
-				CE7E8A2C1DC368D100B0C3C6 /* DSLCalendar-previousMonth@2x.png */,
-				CE7E8A2D1DC368D100B0C3C6 /* DSLCalendarDayCallout.png */,
-				CE7E8A2E1DC368D100B0C3C6 /* DSLCalendarDayCallout@2x.png */,
-				CE7E8A2F1DC368D100B0C3C6 /* DSLCalendarDaySelection-left.png */,
-				CE7E8A301DC368D100B0C3C6 /* DSLCalendarDaySelection-left@2x.png */,
-				CE7E8A311DC368D100B0C3C6 /* DSLCalendarDaySelection-middle.png */,
-				CE7E8A321DC368D100B0C3C6 /* DSLCalendarDaySelection-middle@2x.png */,
-				CE7E8A331DC368D100B0C3C6 /* DSLCalendarDaySelection-right.png */,
-				CE7E8A341DC368D100B0C3C6 /* DSLCalendarDaySelection-right@2x.png */,
-				CE7E8A351DC368D100B0C3C6 /* DSLCalendarDaySelection.png */,
-				CE7E8A361DC368D100B0C3C6 /* DSLCalendarDaySelection@2x.png */,
-			);
-			name = images;
 			sourceTree = "<group>";
 		};
 		CEF6F4AA1C92CAD600C68975 /* Rules */ = {
@@ -2541,17 +2442,15 @@
 		F4B876391D54646500DCF76F /* JsonFiles */ = {
 			isa = PBXGroup;
 			children = (
-				CEABC6571D6F147B00C2DCD4 /* CategoryMap.json */,
-				CEFFBD201D87D1EF00B0A7A9 /* DeviceListResponse.json */,
-				CEFFBD211D87D1EF00B0A7A9 /* GenericIndexesData.json */,
-				A5C68C981C92D93000110B74 /* GenericIndexesData.json */,
-				CEF6F5081C92CD3D00C68975 /* deviceListJson.json */,
-				A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */,
-				A545372A1C8ED35C00DC3EC8 /* scene_names.txt */,
-				CE40BF1A1D228650007C2148 /* temp.json */,
-				CEB788E31D361FE1005F75F2 /* temp_jsonResponse.json */,
-				F4D93AF21D3F629B00D55BD6 /* helpCenterJson.json */,
-				CE3EDAF61D47754A00C153A6 /* responseMain.json */,
+				B017E8821DE8600400BC0DE8 /* CategoryMap.json */,
+				B017E8831DE8600400BC0DE8 /* deviceListJson.json */,
+				B017E8841DE8600400BC0DE8 /* DeviceListResponse.json */,
+				B017E8851DE8600400BC0DE8 /* GenericIndexesData.json */,
+				B017E8861DE8600400BC0DE8 /* helpCenterJson.json */,
+				B017E8871DE8600400BC0DE8 /* responseMain.json */,
+				B017E8881DE8600400BC0DE8 /* scene_names.txt */,
+				B017E8891DE8600400BC0DE8 /* temp_jsonResponse.json */,
+				B017E88A1DE8600400BC0DE8 /* temp.json */,
 			);
 			path = JsonFiles;
 			sourceTree = "<group>";
@@ -2791,6 +2690,8 @@
 				A58DB43B1BB2DA3F00717C02 /* termsofuse.html in Resources */,
 				A58DB4391BB2DA3F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB3C61BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
+				B017E89A1DE8600400BC0DE8 /* temp_jsonResponse.json in Resources */,
+				B017E88C1DE8600400BC0DE8 /* CategoryMap.json in Resources */,
 				A58DB48E1BB3CD6800717C02 /* Scenes_Iphone.strings in Resources */,
 				1C7E7E761A41A8950026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */,
 				A58DB3FE1BB1971300717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
@@ -2803,6 +2704,7 @@
 				A58DB4A31BB3CD7500717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB4371BB2DA3F00717C02 /* Localizable.strings in Resources */,
 				A58DB3DE1BB1960900717C02 /* termsofuse.html in Resources */,
+				B017E8941DE8600400BC0DE8 /* helpCenterJson.json in Resources */,
 				A58DB4351BB2DA3F00717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3F31BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				1C7E7E781A41A89B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */,
@@ -2810,6 +2712,7 @@
 				A58DB3E71BB1960900717C02 /* termsofuse.html in Resources */,
 				A58DB3CB1BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB43A1BB2DA3F00717C02 /* Scenes_Iphone.strings in Resources */,
+				B017E8981DE8600400BC0DE8 /* scene_names.txt in Resources */,
 				F4EA081E1D6AD9F900D6CC28 /* More.storyboard in Resources */,
 				F4D93AE31D390D2300D55BD6 /* Common-Images.xcassets in Resources */,
 				A58DB3F71BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
@@ -2820,6 +2723,7 @@
 				A58DB3F81BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3BE1BB1960900717C02 /* InfoPlist.strings in Resources */,
 				A58DB4361BB2DA3F00717C02 /* InfoPlist.strings in Resources */,
+				B017E8921DE8600400BC0DE8 /* GenericIndexesData.json in Resources */,
 				A58DB4341BB2DA3F00717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3BC1BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3C81BB1960900717C02 /* Localizable.strings in Resources */,
@@ -2827,6 +2731,7 @@
 				A58DB3CA1BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				1C9B1DA31A3EEA1200097D8F /* MainStoryboard_iPhone.strings in Resources */,
 				F4D93AE61D3912FA00D55BD6 /* Changeling NeoBold.otf in Resources */,
+				B017E8961DE8600400BC0DE8 /* responseMain.json in Resources */,
 				A58DB3CE1BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3E21BB1960900717C02 /* InfoPlist.strings in Resources */,
 				A58DB3D11BB1960900717C02 /* Localizable.strings in Resources */,
@@ -2842,13 +2747,13 @@
 				A58DB3CF1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3E01BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB4881BB3CD6800717C02 /* Homescreen-Localizable.strings in Resources */,
+				B017E8811DE85FB500BC0DE8 /* DescriptionView.xib in Resources */,
 				F4D93ADE1D390B4B00D55BD6 /* HelpScreenStoryboard.storyboard in Resources */,
 				A58DB4891BB3CD6800717C02 /* Homescreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB4001BB1971300717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3DD1BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3C01BB1960900717C02 /* Login_iPhone.strings in Resources */,
 				A58DB48F1BB3CD6800717C02 /* termsofuse.html in Resources */,
-				F4D93AF41D3F629B00D55BD6 /* helpCenterJson.json in Resources */,
 				A58DB3C91BB1960900717C02 /* Login_iPhone.strings in Resources */,
 				A58DB3D81BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				F417B2A21DA25B7C0073C440 /* Router.storyboard in Resources */,
@@ -2856,6 +2761,7 @@
 				A58DB4A61BB3CD7500717C02 /* InfoPlist.strings in Resources */,
 				A58DB3D71BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3C21BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
+				B017E89C1DE8600400BC0DE8 /* temp.json in Resources */,
 				A58DB4AA1BB3CD7500717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3E51BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB3D21BB1960900717C02 /* Login_iPhone.strings in Resources */,
@@ -2863,10 +2769,10 @@
 				A58DB3BB1BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3EF1BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
 				F4D93AD21D38DDFE00D55BD6 /* HelpScreen.xib in Resources */,
+				B017E88E1DE8600400BC0DE8 /* deviceListJson.json in Resources */,
 				A58DB3E81BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB4A71BB3CD7500717C02 /* Localizable.strings in Resources */,
 				1C9B1DA41A3EEA1200097D8F /* termsofuse.html in Resources */,
-				A5C68C9D1C9303D300110B74 /* DeviceListResponse.json in Resources */,
 				F4B876731D54653500DCF76F /* DeviceHeaderView.xib in Resources */,
 				A58DB3D41BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3BF1BB1960900717C02 /* Localizable.strings in Resources */,
@@ -2875,13 +2781,12 @@
 				A58DB3E11BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3DC1BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB3F01BB1960900717C02 /* termsofuse.html in Resources */,
-				CEF6F50B1C92CD3D00C68975 /* deviceListJson.json in Resources */,
+				B017E8901DE8600400BC0DE8 /* DeviceListResponse.json in Resources */,
 				A58DB4871BB3CD6800717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				F4B875721D53886700DCF76F /* Scenes_Iphone.storyboard in Resources */,
 				A58DB3E91BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3CD1BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3E41BB1960900717C02 /* Login_iPhone.strings in Resources */,
-				A5C68C9A1C92D93000110B74 /* GenericIndexesData.json in Resources */,
 				F4B8755C1D5383B500DCF76F /* Mesh.storyboard in Resources */,
 				A58DB4A51BB3CD7500717C02 /* Homescreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB4A91BB3CD7500717C02 /* MainStoryboard_iPhone.strings in Resources */,
@@ -2902,17 +2807,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4D93AE51D3912FA00D55BD6 /* Changeling NeoBold.otf in Resources */,
-				CE40BF1C1D22867B007C2148 /* temp.json in Resources */,
 				F4D633F81DC217EE000BF076 /* h_peanut_plug_image_2.pdf in Resources */,
 				1C7E7E711A41A73B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */,
 				A58DB41A1BB2CD7D00717C02 /* InfoPlist.strings in Resources */,
 				A58DB2E51BB16B9F00717C02 /* InfoPlist.strings in Resources */,
-				CE3EDAF71D47754A00C153A6 /* responseMain.json in Resources */,
 				A58DB41D1BB2CD7D00717C02 /* MainStoryboard_iPhone.strings in Resources */,
+				B017E8911DE8600400BC0DE8 /* GenericIndexesData.json in Resources */,
 				A58DB4511BB3CD3F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				F4D633F21DC217EE000BF076 /* key_fob.pdf in Resources */,
 				A58DB2641BB168C400717C02 /* InfoPlist.strings in Resources */,
-				CE7E8A3E1DC368D100B0C3C6 /* DSLCalendarDaySelection-left@2x.png in Resources */,
 				A58DB2FA1BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2F21BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB2E21BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
@@ -2923,23 +2826,25 @@
 				F4D633FA1DC217EE000BF076 /* h_rules_engine.pdf in Resources */,
 				846414E11B736B80008AB07F /* AvenirLTStd-Light.otf in Resources */,
 				A58DB4171BB2CD7D00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
+				B017E89B1DE8600400BC0DE8 /* temp.json in Resources */,
 				F4D633FB1DC217EE000BF076 /* h_scenes_action_button.pdf in Resources */,
 				846414E41B736B80008AB07F /* AvenirLTStd-MediumOblique.otf in Resources */,
 				A58DB4531BB3CD3F00717C02 /* Localizable.strings in Resources */,
 				A58DB3061BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3301BB16EAF00717C02 /* Localizable.strings in Resources */,
 				A58DB46B1BB3CD5200717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
+				B017E8931DE8600400BC0DE8 /* helpCenterJson.json in Resources */,
 				F4B8756F1D53886700DCF76F /* Rules.storyboard in Resources */,
 				F4B8754F1D5382FF00DCF76F /* mesh.xib in Resources */,
 				CE57E5321D1BBCC400493460 /* HistoryCell.xib in Resources */,
 				F4D633F01DC217EE000BF076 /* h_hue_bulbs_webui.pdf in Resources */,
 				A58DB32F1BB16EAF00717C02 /* InfoPlist.strings in Resources */,
-				CE7E8A421DC368D100B0C3C6 /* DSLCalendarDaySelection-right@2x.png in Resources */,
 				A58DB4731BB3CD5200717C02 /* termsofuse.html in Resources */,
 				A58DB2E61BB16B9F00717C02 /* Localizable.strings in Resources */,
 				F4D633EA1DC217EE000BF076 /* h_dashboard_selectals.pdf in Resources */,
 				A58DB3131BB16B9F00717C02 /* Localizable.strings in Resources */,
 				A58DB3121BB16B9F00717C02 /* InfoPlist.strings in Resources */,
+				B017E8951DE8600400BC0DE8 /* responseMain.json in Resources */,
 				F4D93ADD1D390B4B00D55BD6 /* HelpScreenStoryboard.storyboard in Resources */,
 				A58DB46F1BB3CD5200717C02 /* Localizable.strings in Resources */,
 				A58DB2F61BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
@@ -2950,7 +2855,6 @@
 				CEABC6611D6F14CD00C2DCD4 /* categoryTab.xib in Resources */,
 				F4EA081D1D6AD9F900D6CC28 /* More.storyboard in Resources */,
 				F4D633F31DC217EE000BF076 /* h_keyfob_image.pdf in Resources */,
-				A5C68C991C92D93000110B74 /* GenericIndexesData.json in Resources */,
 				A58DB4711BB3CD5200717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				F4D633FD1DC217EE000BF076 /* h_scenes.pdf in Resources */,
 				A58DB32C1BB16EAF00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
@@ -2959,22 +2863,19 @@
 				A54EB0351C45004B00CF2837 /* Common-Images.xcassets in Resources */,
 				F4D633E11DC217EE000BF076 /* add_sensor_screenshot.pdf in Resources */,
 				A58DB2681BB168C400717C02 /* Scenes_Iphone.strings in Resources */,
-				F4D93AF31D3F629B00D55BD6 /* helpCenterJson.json in Resources */,
 				A58DB30F1BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				F417B2A11DA25B7B0073C440 /* Router.storyboard in Resources */,
 				A58DB2F31BB16B9F00717C02 /* termsofuse.html in Resources */,
 				846414E21B736B80008AB07F /* AvenirLTStd-LightOblique.otf in Resources */,
+				B017E8991DE8600400BC0DE8 /* temp_jsonResponse.json in Resources */,
 				A58DB3031BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2671BB168C400717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2F91BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
-				CEABC6581D6F147B00C2DCD4 /* CategoryMap.json in Resources */,
 				F4D633E21DC217EE000BF076 /* add_sensor_zigbee_tab.pdf in Resources */,
 				A58DB3041BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
-				CEF6F50A1C92CD3D00C68975 /* deviceListJson.json in Resources */,
 				1C7E7E751A41A7470026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */,
 				846414E31B736B80008AB07F /* AvenirLTStd-Medium.otf in Resources */,
 				A58DB2691BB168C400717C02 /* termsofuse.html in Resources */,
-				CE7E89CC1DC357DE00B0C3C6 /* DSLCalendarMonthSelectorView.xib in Resources */,
 				A58DB2651BB168C400717C02 /* Localizable.strings in Resources */,
 				F4B876721D54653500DCF76F /* DeviceHeaderView.xib in Resources */,
 				A58DB3071BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
@@ -2986,14 +2887,12 @@
 				A58DB2EE1BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB3351BB16EAF00717C02 /* termsofuse.html in Resources */,
 				A58DB3151BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
-				CE7E8A3F1DC368D100B0C3C6 /* DSLCalendarDaySelection-middle.png in Resources */,
 				846414E61B736B80008AB07F /* AvenirLTStd-Roman.otf in Resources */,
 				A58DB41E1BB2CD7D00717C02 /* Scenes_Iphone.strings in Resources */,
-				A545372B1C8ED35C00DC3EC8 /* scene_names.txt in Resources */,
-				A5C68C9C1C9303D300110B74 /* DeviceListResponse.json in Resources */,
 				F4D633EE1DC217EE000BF076 /* home_screen.pdf in Resources */,
 				F4D634001DC217EE000BF076 /* h_water_detector.pdf in Resources */,
 				A58DB41C1BB2CD7D00717C02 /* Login_iPhone.strings in Resources */,
+				B017E88B1DE8600400BC0DE8 /* CategoryMap.json in Resources */,
 				A58DB32E1BB16EAF00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				F4D633FE1DC217EE000BF076 /* h_doorsensor_image.pdf in Resources */,
 				F4D93AD11D38DDFE00D55BD6 /* HelpScreen.xib in Resources */,
@@ -3004,12 +2903,12 @@
 				A58DB4541BB3CD3F00717C02 /* Login_iPhone.strings in Resources */,
 				846414DE1B736B80008AB07F /* AvenirLTStd-BookOblique.otf in Resources */,
 				A58DB2F81BB16B9F00717C02 /* Localizable.strings in Resources */,
+				B017E88F1DE8600400BC0DE8 /* DeviceListResponse.json in Resources */,
 				F4D633FC1DC217EE000BF076 /* h_scenes_alexa.pdf in Resources */,
 				A58DB4191BB2CD7D00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				F4D633EC1DC217EE000BF076 /* ethernet_cable.pdf in Resources */,
 				A58DB3171BB16B9F00717C02 /* termsofuse.html in Resources */,
 				A58DB2EC1BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
-				CE7E8A381DC368D100B0C3C6 /* DSLCalendar-nextMonth@2x.png in Resources */,
 				F4D633E51DC217EE000BF076 /* h_adding_a_zigbee.pdf in Resources */,
 				F4D633E91DC217EE000BF076 /* h_huebridges_list.pdf in Resources */,
 				A58DB2E91BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
@@ -3026,23 +2925,17 @@
 				A58DB3011BB16B9F00717C02 /* Localizable.strings in Resources */,
 				F4D633F61DC217EE000BF076 /* h_nest_webpage.pdf in Resources */,
 				A58DB2E31BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
-				CEFFBD221D87D1EF00B0A7A9 /* DeviceListResponse.json in Resources */,
 				A58DB4571BB3CD3F00717C02 /* termsofuse.html in Resources */,
 				A58DB2621BB168C400717C02 /* Almond-Localizable.strings in Resources */,
 				F4D633E41DC217EE000BF076 /* h_adding_a_nest_account.pdf in Resources */,
-				CE7E8A371DC368D100B0C3C6 /* DSLCalendar-nextMonth.png in Resources */,
-				CE7E8A3B1DC368D100B0C3C6 /* DSLCalendarDayCallout.png in Resources */,
 				A58DB2F11BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
-				CE7E8A3C1DC368D100B0C3C6 /* DSLCalendarDayCallout@2x.png in Resources */,
 				A58DB41B1BB2CD7D00717C02 /* Localizable.strings in Resources */,
-				CE7E8A3A1DC368D100B0C3C6 /* DSLCalendar-previousMonth@2x.png in Resources */,
 				A58DB2631BB168C400717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB41F1BB2CD7D00717C02 /* termsofuse.html in Resources */,
 				A58DB3091BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB30E1BB16B9F00717C02 /* termsofuse.html in Resources */,
 				A58DB3051BB16B9F00717C02 /* termsofuse.html in Resources */,
 				A58DB2FB1BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
-				CE7E8A431DC368D100B0C3C6 /* DSLCalendarDaySelection.png in Resources */,
 				A58DB46D1BB3CD5200717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2F41BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				F4B8755B1D5383B500DCF76F /* Mesh.storyboard in Resources */,
@@ -3051,7 +2944,6 @@
 				F4D633F71DC217EE000BF076 /* h_peanut_plug_image_1.pdf in Resources */,
 				F4D633F91DC217EE000BF076 /* h_rules_automation.pdf in Resources */,
 				A58DB30A1BB16B9F00717C02 /* Localizable.strings in Resources */,
-				CEB788E41D361FE1005F75F2 /* temp_jsonResponse.json in Resources */,
 				F4D633ED1DC217EE000BF076 /* h_build_own_scenarios.pdf in Resources */,
 				F4D633F11DC217EE000BF076 /* hue_tab.pdf in Resources */,
 				A58DB3001BB16B9F00717C02 /* InfoPlist.strings in Resources */,
@@ -3059,17 +2951,18 @@
 				A58DB30C1BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2ED1BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				F4D633E31DC217EE000BF076 /* add_sensor_zigbee_tab_pairing_mode.pdf in Resources */,
-				CEFFBD231D87D1EF00B0A7A9 /* GenericIndexesData.json in Resources */,
 				A58DB2E81BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
+				B017E8971DE8600400BC0DE8 /* scene_names.txt in Resources */,
+				B017E8801DE85FB500BC0DE8 /* DescriptionView.xib in Resources */,
 				F4D633E01DC217EE000BF076 /* hue_bridge.pdf in Resources */,
 				A58DB2FC1BB16B9F00717C02 /* termsofuse.html in Resources */,
 				A58DB46C1BB3CD5200717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB4561BB3CD3F00717C02 /* Scenes_Iphone.strings in Resources */,
 				F4D633EB1DC217EE000BF076 /* h_dashboard.pdf in Resources */,
 				A58DB2F51BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
-				CE7E8A3D1DC368D100B0C3C6 /* DSLCalendarDaySelection-left.png in Resources */,
 				B0E41DF31DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf in Resources */,
 				A58DB32D1BB16EAF00717C02 /* Almond-Localizable.strings in Resources */,
+				B017E88D1DE8600400BC0DE8 /* deviceListJson.json in Resources */,
 				A58DB3101BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB4551BB3CD3F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB30B1BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
@@ -3083,17 +2976,12 @@
 				F4B8756D1D53886700DCF76F /* MainDashboard.storyboard in Resources */,
 				A58DB4501BB3CD3F00717C02 /* Almond-Localizable.strings in Resources */,
 				CE57E52F1D1BB82800493460 /* SiteMapStoryBoard.storyboard in Resources */,
-				CE7E8A391DC368D100B0C3C6 /* DSLCalendar-previousMonth.png in Resources */,
 				F4B875711D53886700DCF76F /* Scenes_Iphone.storyboard in Resources */,
 				A58DB30D1BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
 				846414DC1B736B80008AB07F /* AvenirLTStd-BlackOblique.otf in Resources */,
 				A58DB2FE1BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
-				CE7E8A401DC368D100B0C3C6 /* DSLCalendarDaySelection-middle@2x.png in Resources */,
-				CE7E8A411DC368D100B0C3C6 /* DSLCalendarDaySelection-right.png in Resources */,
 				F4D633E71DC217EE000BF076 /* h_adding_hue_bulb_webui.pdf in Resources */,
-				CE7E8A441DC368D100B0C3C6 /* DSLCalendarDaySelection@2x.png in Resources */,
 				A58DB4181BB2CD7D00717C02 /* Almond-Localizable.strings in Resources */,
-				CE7E89C91DC357DE00B0C3C6 /* DSLCalendarDayCalloutView.xib in Resources */,
 				1C7E7DFD1A41A0B30026F0BA /* cert.der in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3267,7 +3155,6 @@
 				1C9B1D901A3EE9EF00097D8F /* main.m in Sources */,
 				1C7E7DAE1A41A0990026F0BA /* SFISignupViewController.m in Sources */,
 				1C7E7D921A41A0990026F0BA /* SFIRouterRebootTableViewCell.m in Sources */,
-				F41240AB1D7EC1480067A94C /* AlmondSelectionTableView.m in Sources */,
 				1C7E7DA61A41A0990026F0BA /* SFIAccountsTableViewController.m in Sources */,
 				1C7E7DBC1A41A0990026F0BA /* SFICardView.m in Sources */,
 				1C7E7D881A41A0990026F0BA /* SFINotificationsViewController.m in Sources */,
@@ -3279,7 +3166,6 @@
 				1C7E7DD21A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				1C7E7D941A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
 				1C7E7D9C1A41A0990026F0BA /* ScoreboardEventViewController.m in Sources */,
-				F41240AF1D7EC6030067A94C /* AlmondSelectionCell.m in Sources */,
 				1C7E7D8A1A41A0990026F0BA /* SFINotificationTableViewCell.m in Sources */,
 				1C7E7D841A41A0990026F0BA /* SFILoginViewController.m in Sources */,
 				1C7E7DC61A41A0990026F0BA /* SFIHighlightedButton.m in Sources */,
@@ -3316,6 +3202,7 @@
 				1DF03C76A181214483FB8F70 /* SFICardViewSummaryCell.m in Sources */,
 				1DF030400DB881AFAEF263C4 /* UIImage+Securifi.m in Sources */,
 				CEF6F5071C92CD2400C68975 /* GenericIndexUtil.m in Sources */,
+				B017E87E1DE85EF800BC0DE8 /* AlmondSelectionTableView.m in Sources */,
 				F4B876851D54653500DCF76F /* DevicePayload.m in Sources */,
 				2A4C243C1D0FC412001191E8 /* SettingsViewController.m in Sources */,
 				F4B875581D53837B00DCF76F /* UIImageView+Securifi.m in Sources */,
@@ -3384,6 +3271,7 @@
 				1DF038DE3C385FEC394F6D20 /* SFIRouterSettingsTableViewController.m in Sources */,
 				F4B876751D54653500DCF76F /* GridView.m in Sources */,
 				1DF03908300C35FF0720CB13 /* SFITabBarController.m in Sources */,
+				B017E87C1DE85EF800BC0DE8 /* AlmondSelectionCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3400,9 +3288,7 @@
 				F400B6C11D65ECCD00DDEE50 /* SupportViewController.m in Sources */,
 				1C7E7DD11A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				CEF6F4FE1C92CAD600C68975 /* RuleTextField.m in Sources */,
-				F41240AE1D7EC6030067A94C /* AlmondSelectionCell.m in Sources */,
 				A5AC1E841CC7BA01009F362B /* RuleSceneUtil.m in Sources */,
-				CE7E89CA1DC357DE00B0C3C6 /* DSLCalendarDayView.m in Sources */,
 				CE40BF151D225791007C2148 /* HistoryCell.m in Sources */,
 				1C7E7DC11A41A0990026F0BA /* SFIConstants.m in Sources */,
 				CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */,
@@ -3423,11 +3309,9 @@
 				CEF6F4F61C92CAD600C68975 /* labelAndCheckButtonView.m in Sources */,
 				CEF6F5001C92CAD600C68975 /* SwitchButton.m in Sources */,
 				2A4C243B1D0FC412001191E8 /* SettingsViewController.m in Sources */,
-				CE7E89CE1DC357DE00B0C3C6 /* DSLCalendarRange.m in Sources */,
 				1C7E7DC51A41A0990026F0BA /* SFIHighlightedButton.m in Sources */,
 				1C7E7D831A41A0990026F0BA /* SFILoginViewController.m in Sources */,
 				1C7E7DC71A41A0990026F0BA /* SFIMainViewController.m in Sources */,
-				CE7E89CF1DC357DE00B0C3C6 /* DSLCalendarView.m in Sources */,
 				CEABC65B1D6F14A000C2DCD4 /* CategoryView.m in Sources */,
 				CEF6F4DE1C92CAD600C68975 /* CustomCellTableViewCell.m in Sources */,
 				CE7E89B61DC356CB00B0C3C6 /* DetailsPeriodViewController.m in Sources */,
@@ -3435,7 +3319,6 @@
 				1C7E7DA71A41A0990026F0BA /* SFIPasswordChangeViewController.m in Sources */,
 				CEF6F4F81C92CAD600C68975 /* PreDelayRuleButton.m in Sources */,
 				1C7E7DCD1A41A0990026F0BA /* SFISlider.m in Sources */,
-				CE7E89CB1DC357DE00B0C3C6 /* DSLCalendarMonthSelectorView.m in Sources */,
 				CEF6F4FA1C92CAD600C68975 /* RulesConstants.m in Sources */,
 				1C7E7D911A41A0990026F0BA /* SFIRouterRebootTableViewCell.m in Sources */,
 				F4B875571D53837B00DCF76F /* UIImageView+Securifi.m in Sources */,
@@ -3453,19 +3336,19 @@
 				1C7E7D9D1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
 				F4B8754B1D5382D500DCF76F /* MeshView.m in Sources */,
 				F4B876701D54653500DCF76F /* DeviceHeaderView.m in Sources */,
+				B017E87D1DE85EF800BC0DE8 /* AlmondSelectionTableView.m in Sources */,
 				1C7E7DA51A41A0990026F0BA /* SFIAccountsTableViewController.m in Sources */,
 				F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */,
 				846414CC1B736B36008AB07F /* ILView.m in Sources */,
 				1C7E7DC31A41A0990026F0BA /* SFICopyLabel.m in Sources */,
+				B017E87B1DE85EF800BC0DE8 /* AlmondSelectionCell.m in Sources */,
 				CEF6F4EC1C92CAD600C68975 /* RulesTableViewController.m in Sources */,
 				1C7E7D951A41A0990026F0BA /* SFIRouterTableViewController.m in Sources */,
 				1C7E7E061A41A0B30026F0BA /* main.m in Sources */,
-				CE7E89D21DC357E500B0C3C6 /* NSDate+DSLCalendarView.m in Sources */,
 				F417B2A51DA25CBD0073C440 /* AdvanceRouterSettingsController.m in Sources */,
 				F4B8766E1D54653500DCF76F /* BlinkLedView.m in Sources */,
 				CEF6F4FC1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */,
 				846414C91B736B36008AB07F /* ILHuePickerView.m in Sources */,
-				CE7E89C81DC357DD00B0C3C6 /* DSLCalendarDayCalloutView.m in Sources */,
 				1C7E7D991A41A0990026F0BA /* Analytics.m in Sources */,
 				A5F03F6C1C76E412006CB309 /* NewAddSceneViewController.m in Sources */,
 				1C7E7DAD1A41A0990026F0BA /* SFISignupViewController.m in Sources */,
@@ -3505,9 +3388,7 @@
 				CE3EDAF31D4742EC00C153A6 /* SearchTableViewController.m in Sources */,
 				CEF6F4EE1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */,
 				1DF034DCCD17E1C36BA3BF00 /* SensorSupport.m in Sources */,
-				CE7E89CD1DC357DE00B0C3C6 /* DSLCalendarMonthView.m in Sources */,
 				F4B8767C1D54653500DCF76F /* MultiButtonView.m in Sources */,
-				CE65C4911D1A67B200C2E1C0 /* UILabel+ActionSheet.m in Sources */,
 				B095F99A1DCF7CBF00CBCCDF /* NetworkStatusIcon.m in Sources */,
 				F401B0731D2D241200F64CE2 /* ColorComponentView.m in Sources */,
 				CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */,
@@ -3554,7 +3435,6 @@
 				F4B8767A1D54653500DCF76F /* ListButtonView.m in Sources */,
 				F4D93AF71D3F882300D55BD6 /* HelpItemsTableViewController.m in Sources */,
 				F48CF1781DD0859500B44257 /* HelpSearchTableViewController.m in Sources */,
-				F41240AA1D7EC1480067A94C /* AlmondSelectionTableView.m in Sources */,
 				F4EA08261D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */,
 				1DF031024A2F8810074C455A /* TemperatureView.m in Sources */,
 				1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */,

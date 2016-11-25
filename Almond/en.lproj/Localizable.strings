@@ -754,10 +754,31 @@ Follow it, then login below.";
 "led_off" = "LED OFF";
 "led_on" = "LED ON";
 
-/******** After localization *********/
-/* help screens */
+"web_history" = "Web History";
+
+
+/************ help screens *************/
+//More
+"more" = "More";
+"rate_app" = "Rate Our App";
+"log_out" = "Log Out";
+"update_fimware" = "The Almond firmware needs to be updated to remain compatible with this version of the app.";
+"logout_hud" = "Logging out. Please wait!";
+"almond_share_control" = "Please add an Almond to share its control.";
+"almond_share_invite" = "Share control of %@ by sending an invitation over email.";
+
+
+//Quick Tips
+"Quick_Tips"="Quick Tips";
+"rules" = "Rules";
+"wifi"="WiFi";
+"Wi_Fi_Triggers"="Wi-Fi Triggers";
+"Help_Topics"="Help Topics";
+"Dashboard"="Dashboard";
+"Support"="Support";
 "Welcome" = "Welcome";
 "The_Dashboard" = "The Dashboard";
+
 "Theres_More" = "There's More!";
 "Almond_Notifications" = "Notifications";
 "loginSuccess" = "You've successfully logged into your Almond account!\nThis guide will help you make the most of your Almond. Read on to learn about Almond features and how they can turn your home into a smart home.";
@@ -814,11 +835,21 @@ Follow it, then login below.";
 "Notification_Preferences" = "Notification Preferences";
 "Notification_Preferences_Desc" = "Managing the notifications you recieve from smart devices is easy. Simply select a device, and choose the desired setting under Notify Me.";
 "Take_a_pick_Desc"="Almond is compatible with more than 100 smart home devices including products from  Nest and Philips Hue.\n\nView the complete compatibility list here.";
+"Notifications_Settings"="Notifications & Settings";
+"Notifications_Settings_Desc"="Tap the icon on the right to manage a device’s settings, set notifications, and change its name. To set notifications, tap on \"Notify me\" in settings.";
 
 "Quick_Actions" = "Quick Actions";
 "Quick_Actions_Desc"="The quick action button allows you to control some of your smart home devices with a quick tap. For example, you can turn a smart lightbulb on or off by tapping the button.";
 
 "Nothing"="";
+
+//Help Topics
+"Managing_Your_Scenes"="Managing Your Scenes";
+"Tips_on_Home_Security"="Tips on Home Security";
+
+"wifi_t_detecting"="Detecting Your Presence";
+"wifi_t_presence"="Using Presence in Rules";
+"wifi_t_rules"="Tap More to use Rules";
 
 "help_topics_dashboard"="
 
@@ -899,7 +930,7 @@ For example, you could create rules like “If Matt’s iPhone, Dana’s iPhone 
 </p>
 <center><img src=h_rules_automation.pdf/></center>
 <p>
-You can then add another rule to make sure the alarm is sounded. For example, \“If Almond mode is Away, and motion is detected, sound alarm.\”
+You can then add another rule to make sure the alarm is sounded. For example, \“If Almond mode is Away, and a door is opened, sound alarm.\”
 </p><p>
 Experiment with Rules to build your own scenarios. Our Rules engine is versatile and offers a large number of options  with which you can build rules including but not limited to: time, weather, Almond modes, and sensors.
 </p>
@@ -911,137 +942,6 @@ Sensors may not be automatically configured to send notifications; therefore, yo
 </p>
 </body>
 </html>";
-
-
-
-
-"Quick_Tips"="Quick Tips";
-
-"Notifications_Settings"="Notifications & Settings";
-"Notifications_Settings_Desc"="Tap the icon on the right to manage a device’s settings, set notifications, and change its name. To set notifications, tap on \"Notify me\" in settings.";
-
-"Wifihelp_txt"="Know when your kids come home using our WiFi presence sensing. It's pretty close to magic.";
-
-
-"rules" = "Rules";
-"wifi"="WiFi";
-"Wi_Fi_Triggers"="Wi-Fi Triggers";
-"Help_Topics"="Help Topics";
-"Dashboard"="Dashboard";
-"Managing_Your_Scenes"="Managing Your Scenes";
-"Tips_on_Home_Security"="Tips on Home Security";
-"Support"="Support";
-
-"wifi_t_detecting"="Detecting Your Presence";
-"wifi_t_presence"="Using Presence in Rules";
-"wifi_t_rules"="Tap More to use Rules";
-
-/****** advanced router help contene *******/
-"vpn_title" = "VPN";
-"vpn_description" = "A Virtual Private Network helps you connect your network device to another device on the Internet in a way that lets them behave as if they were connected to each other directly. A VPN can be used to connect to secure corporate networks, access your Netflix account from another country, or simply for added privacy.<br><br>By connecting your Almond to a VPN, you can connect all your network devices that use the Almond’s WiFi to another network over the internet securely and directly.";
-"vpn_title_2" = "Using VPN on an Almond, Almond 2015 or Almond 3";
-"vpn_description_2" = "VPN client is currently not available on Almond, Almond 2015 or Almond 3.
-";
-"vpn_title_3" = "Using VPN on an Almond+";
-"vpn_sub_description_1" = "To use VPN on your Almond+, go to the Advanced tab in the local web UI, and click on the OpenWRT tile. This will open a new window.";
-"vpn_sub_description_2" = "In the new window, hover your mouse over the Network menu item in the menu bar at the top, and click on OpenVPN Client. Note that your Almond+ has to be in router mode to use the VPN Client functionality.";
-"vpn_sub_description_3" = "Enter the VPN server details and click on Save. Contact your VPN service provider for the VPN settings.";
-
-//port forwarding
-"port_title" = "Port Forwarding";
-"port_description" = "When you need to accept incoming connections for gaming, or for running a server on a network device connected to your Almond, you can use Port Forwarding to redirect incoming IP traffic at your Almond to the network device.";
-"port_title_2" = "Using Port Forwarding on an Almond, Almond 2015 or Almond 3";
-"port_sub_description_1" = "To use port forwarding on an Almond, Almond 2015 or Almond 3, go to the Advanced tab in the local web UI, and click on the \"Forwarding\" tile.";
-"port_sub_description_2" = "In the section named “Port Forwarding”, enter the following settings:";
-"port_sub_step_1" = "Port Forwarding: Set Port Forwarding to Enable.";
-"port_sub_step_2" = "Application Name: Type an application name and pick one from the list to automatically populate the port numbers for that application. If you cannot find your application in the list, you can manually enter the port numbers. Refer to your product’s documentation to find out which port numbers it uses.";
-"port_sub_step_3" = "IP Address: Enter the IP address of the device for which you need to use port forwarding.";
-"port_sub_step_4" = "Port Range: If it is not automatically populated, you can enter it manually.";
-"port_sub_step_5" = "Protocol: Select the protocols for which the IP packets have to be forwarded.";
-"port_sub_description_3" = "Click on the Apply button to save the port forwarding entry.";
-"port_plus_title" = "Using Port Forwarding on an Almond+";
-"port_plus_sub_description_1" = "To use port forwarding on an Almond+, go to the Advanced tab in the local web UI, and click on the \"Forwarding\" tile.";
-"port_plus_sub_description_2" = "In the section named “Port Forwarding”, enter the following settings:";
-"port_plus_sub_step_1" = "Rule Name: Enter a name for your port forwarding rule.";
-"port_plus_sub_step_2" = "Protocol: Select the protocols for which the IP packets have to be forwarded.";
-"port_plus_sub_step_3" = "External Port: Enter the port number being used by incoming connections. Enter a range by separating port numbers with a ‘-’, for example ‘8080-8090’.";
-"port_plus_sub_step_4" = "Internal IP Address: Enter the IP address of the device for which you need to use port forwarding.";
-"port_plus_sub_step_5" = "Internal Port: Enter the internal port number to which the IP packets have to be forwarded. Enter a range by separating port numbers with a ‘-’, for example ‘8080-8090’.";
-
-//dns
-"dns_title" = "DNS";
-"dns_description" = "Domain Name System is the hierarchical system of servers on the Internet that lets you access websites using names like <a href=\"www.securifi.com\">www.securifi.com</a> instead of IP addresses. If you are facing problems with websites opening very slowly, it might be because of an unresponsive DNS server, and you might be able to fix it by connecting to a different DNS server.\n\nGoogle provides public DNS servers at the addresses 8.8.8.8 and 8.8.4.4";
-"dns_title_2" = "Using DNS on an Almond, Almond 2015 or Almond 3";
-"dns_sub_descr_1" = "To configure DNS on your Almond, Almond 2015 or Almond 3, go to the Router tab in the local web UI and click on the Network tile.";
-"dns_sub_descr_2" = "In the section named Settings, you can enter the IP address of the primary DNS server in DHCP Primary DNS and the secondary DNS server in DHCP Secondary DNS.";
-"dns_sub_descr_3" = "Click on Apply to save the changes.";
-
-"dns_title_3" = "Using DNS on an Almond+";
-"dns_plus_sub_descr_1" = "To configure DNS on your Almond+, go to the Advanced tab in the local web UI, and click on the OpenWRT tile. This will open a new window.";
-"dns_plus_sub_descr_2" = "In the new window, hover your mouse over the Network menu item in the menu bar at the top, and click on DHCP and DNS.";
-"dns_plus_sub_descr_3" = "In the General Settings tab, enter the IP address of your preferred DNS server in DNS Forwardings. Use the + icon to add more entries.";
-"dns_plus_sub_descr_4" = "Click on Save when you are done.";
-
-//Static IP
-"static_title" = "Static IP";
-"static_title_2" = "Assigning Static IP on an Almond, Almond 2015 or Almond 3";
-"static_sub_descr_1" = "To configure Static IP for connected network devices on your Almond, Almond 2015 or Almond 3, go to the Router tab in the local web UI and click on the Network tile.";
-"static_sub_descr_2" = "In the section named Settings, enter the MAC address of the network device in Statically Assigned MAC and enter the IP address you want to reserve in IP.";
-"static_sub_descr_3" = "Click on Apply to save the changes.";
-
-"static_title_plus" = "Assigning Static IP on an Almond+";
-"static_sub_descr_plus_1" = "To configure Static IP for connected network devices on your Almond+, go to the Router tab in the local web UI, and click on the Network tile.";
-"static_sub_descr_plus_2" = "In the section named Add Static Lease, enter the hostname in Hostname, MAC address in MAC-Address and the IP address to reserve for the device in IPv4-Address.";
-"static_sub_descr_plus_3" = "Click on Add Entry to save the entry. Add more entries in the same way.";
-"static_sub_descr_plus_4" = "Click on Save to save your settings before exiting.";
-
-//upnp
-"upnp_title" = "UPnP";
-"upnp_descr" = "UPnP allows your devices to discover each other on your network and determine what services are being offered by each device. If you turn on UPnP on your Almond, other devices can automatically configure it to set up rules for network access.";
-"upnp_title_2" = "Using UPnP on an Almond, Almond 2015 or Almond 3";
-"upnp_descr_2" = "UPnP is coming soon to Almond, Almond 2015 and Almond 3.";
-"upnp_title_3" = "Using UPnP on an Almond+";
-"upnp_sub_descr_1" = "To use UPnP on your Almond+, go to the Advanced tab in the local web UI, and click on the OpenWRT tile. This will open a new window.";
-"upnp_sub_descr_2" = "In the new window, hover your mouse over the Services menu item in the menu bar at the top, and click on UPnP.";
-"upnp_sub_descr_3" = "Click on the “Enable UPnP Service” tick box to enable UPnP.";
-
-/***** mesh strings ********/
-"wiring_primary" = "Wiring your Primary Almond ";
-"wiring_primary_desc" = "For your network to function properly, it's important to place it in the correct order.";
-"wiring_primary_desc2" = "Make sure that your primary Almond is directly connected to your ISP mdem via the internet port.";
-
-"connecting_newAl" = "Connecting your New Almond";
-"connecting_newAl_desc" = "You can connect your new Almond to the primary one directly using an Internet cable.";
-"connecting_newAl_desc2" = "Plug the additional Internet Cable into the Internet port of the new Almond, and the other end into any of the available LAN ports on the primary Almond.";
-
-"using_network_switch" = "Using a Network Switch";
-"using_network_switch_desc" = "If your home network as a switch, you can use it as well to connect your new Almond.";
-"using_network_switch_desc2" = "If you are using a network switch, connect its Internet port to the primary Almnd, and the new Almond to the switch";
-
-"place_almond" = "Place your Almond";
-"place_almond_desc" = "Walls, furniture and electrical appliances such as microwaves are archenemies of Wifi.";
-"place_almond_desc1" = "Try to minimize such obstructions between your Almonds.";
-
-"optimal_distance" = "Optimal Distance";
-"optimal_distance_desc" = "Below are some recommendations based on the layout of houses.";
-"optimal_distance_desc1" = "Follow these guide approximate guidelines in order to place your new Almond at an optimal distance from other Almonds.";
-
-"wired_or_wireless" = "Wired or Wireless?";
-"wired_or_wireless_desc" = "The Almond Wi-Fi system is highly flexible.The primary Almond has to be directly connected to your ISP modem. The additional Almonds can be connected via Wired interface or Wirelessly.";
-
-"wired_interface" = "Wired Interface";
-"wireless_interface" = "Wireless Interface";
-"wireless_interface_desc" = "If your house doesn't have internet cabling across rooms, you can simply choose \"Wireless\" mode for your additional Almonds.";
-"wired_interface_desc" = "Wi-Fi quality is best when your additional Almonds are connected via wired interace. If you have Internet cabling across rooms in your house, you can choose this mode.";
-
-"welcome_desc"="You've successfully logged into your Almond account. Here are a few quick tips to get the most out of your Almond.";
-"theDashboard_desc"="The dashboard puts the status of your home at your fingertips. Get an overview of your recent smart home and network device notifications.";
-"almond_modes_desc"="Home and Away modes – or arm and disarm - are a key part of any home security or automation system. They are necessary because when you are home, you don’t need your sensors to trigger an alarm. Go to Rules to personalize how your system responds in these modes.";
-"more_desc"="Tap \"More\" to create rules and visit our Help Center. The Help Center lets you revisit this guide and other help topics, and contact technical support.";
-
-
-"web_history" = "Web History";
-
 
 //help topics html strings topic 4-11
 "AddingDev_alScreen" = "Adding Devices Through The Almond Touch Screen";
@@ -1313,6 +1213,141 @@ Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add
 </p>
 </body>
 </html>";
+
+/***** mesh strings ********/
+"connected_via" = "Connected Via";
+"interface" = "Interface";
+"connection_stat" = "Connection Status";
+"connection_str" = "Connection Strength";
+"internet_stat" = "Internet Status";
+
+"excellent" = "Excellent";
+"good" = "Good";
+"poor" = "Poor";
+"extremely_poor" = "Extremely Poor";
+
+"no_internet_alert" = "Make sure your almond 3 has working internet connection to continue setup.";
+"weak_signal_strength" = "Wireless signal seems to be weak.";
+"remove_almond" = "Remove Almond";
+"remove_almond_alert" = "Are you sure, you want to remove %@?";
+"force_remove_almond" = "Failed to remove \"%@\" Almond. Do you want to forcefully remove it?";
+"manual_force_remove" = "If you choose to force remove an Almond, you will have to manually reset that Almond to complete the process.";
+"sorry_could_not_remove" = "Sorry! Could not remove. Try removing from Almond";
+"removing_wait" = "Removing...Please wait!";
+
+
+"wiring_primary" = "Wiring your Primary Almond ";
+"wiring_primary_desc" = "For your network to function properly, it's important to place it in the correct order.";
+"wiring_primary_desc2" = "Make sure that your primary Almond is directly connected to your ISP mdem via the internet port.";
+
+"connecting_newAl" = "Connecting your New Almond";
+"connecting_newAl_desc" = "You can connect your new Almond to the primary one directly using an Internet cable.";
+"connecting_newAl_desc2" = "Plug the additional Internet Cable into the Internet port of the new Almond, and the other end into any of the available LAN ports on the primary Almond.";
+
+"using_network_switch" = "Using a Network Switch";
+"using_network_switch_desc" = "If your home network as a switch, you can use it as well to connect your new Almond.";
+"using_network_switch_desc2" = "If you are using a network switch, connect its Internet port to the primary Almnd, and the new Almond to the switch";
+
+"place_almond" = "Place your Almond";
+"place_almond_desc" = "Walls, furniture and electrical appliances such as microwaves are archenemies of Wifi.";
+"place_almond_desc1" = "Try to minimize such obstructions between your Almonds.";
+
+"optimal_distance" = "Optimal Distance";
+"optimal_distance_desc" = "Below are some recommendations based on the layout of houses.";
+"optimal_distance_desc1" = "Follow these guide approximate guidelines in order to place your new Almond at an optimal distance from other Almonds.";
+
+"wired_or_wireless" = "Wired or Wireless?";
+"wired_or_wireless_desc" = "The Almond Wi-Fi system is highly flexible.The primary Almond has to be directly connected to your ISP modem. The additional Almonds can be connected via Wired interface or Wirelessly.";
+
+"wired_interface" = "Wired Interface";
+"wireless_interface" = "Wireless Interface";
+"wireless_interface_desc" = "If your house doesn't have internet cabling across rooms, you can simply choose \"Wireless\" mode for your additional Almonds.";
+"wired_interface_desc" = "Wi-Fi quality is best when your additional Almonds are connected via wired interace. If you have Internet cabling across rooms in your house, you can choose this mode.";
+
+"welcome_desc"="You've successfully logged into your Almond account. Here are a few quick tips to get the most out of your Almond.";
+"theDashboard_desc"="The dashboard puts the status of your home at your fingertips. Get an overview of your recent smart home and network device notifications.";
+"almond_modes_desc"="Home and Away modes – or arm and disarm - are a key part of any home security or automation system. They are necessary because when you are home, you don’t need your sensors to trigger an alarm. Go to Rules to personalize how your system responds in these modes.";
+"more_desc"="Tap \"More\" to create rules and visit our Help Center. The Help Center lets you revisit this guide and other help topics, and contact technical support.";
+
+
+/****** advanced router help contene *******/
+"adv_feature_alert" = "At this time these advanced features are only available via Almond's local Web UI.\n\n You can find the credentials to access this web UI in the Web Admin section of the Status app on the Almond LCD.";
+"learn_more" = "Learn More";
+
+//router page
+"learn_adv_features" = "Learn about advanced features available in your Almond.";
+"adv_router_features" = "Advanced Router Features";
+
+"vpn_title" = "VPN";
+"vpn_description" = "A Virtual Private Network helps you connect your network device to another device on the Internet in a way that lets them behave as if they were connected to each other directly. A VPN can be used to connect to secure corporate networks, access your Netflix account from another country, or simply for added privacy.<br><br>By connecting your Almond to a VPN, you can connect all your network devices that use the Almond’s WiFi to another network over the internet securely and directly.";
+"vpn_title_2" = "Using VPN on an Almond, Almond 2015 or Almond 3";
+"vpn_description_2" = "VPN client is currently not available on Almond, Almond 2015 or Almond 3.
+";
+"vpn_title_3" = "Using VPN on an Almond+";
+"vpn_sub_description_1" = "To use VPN on your Almond+, go to the Advanced tab in the local web UI, and click on the OpenWRT tile. This will open a new window.";
+"vpn_sub_description_2" = "In the new window, hover your mouse over the Network menu item in the menu bar at the top, and click on OpenVPN Client. Note that your Almond+ has to be in router mode to use the VPN Client functionality.";
+"vpn_sub_description_3" = "Enter the VPN server details and click on Save. Contact your VPN service provider for the VPN settings.";
+
+//port forwarding
+"port_title" = "Port Forwarding";
+"port_description" = "When you need to accept incoming connections for gaming, or for running a server on a network device connected to your Almond, you can use Port Forwarding to redirect incoming IP traffic at your Almond to the network device.";
+"port_title_2" = "Using Port Forwarding on an Almond, Almond 2015 or Almond 3";
+"port_sub_description_1" = "To use port forwarding on an Almond, Almond 2015 or Almond 3, go to the Advanced tab in the local web UI, and click on the \"Forwarding\" tile.";
+"port_sub_description_2" = "In the section named “Port Forwarding”, enter the following settings:";
+"port_sub_step_1" = "Port Forwarding: Set Port Forwarding to Enable.";
+"port_sub_step_2" = "Application Name: Type an application name and pick one from the list to automatically populate the port numbers for that application. If you cannot find your application in the list, you can manually enter the port numbers. Refer to your product’s documentation to find out which port numbers it uses.";
+"port_sub_step_3" = "IP Address: Enter the IP address of the device for which you need to use port forwarding.";
+"port_sub_step_4" = "Port Range: If it is not automatically populated, you can enter it manually.";
+"port_sub_step_5" = "Protocol: Select the protocols for which the IP packets have to be forwarded.";
+"port_sub_description_3" = "Click on the Apply button to save the port forwarding entry.";
+"port_plus_title" = "Using Port Forwarding on an Almond+";
+"port_plus_sub_description_1" = "To use port forwarding on an Almond+, go to the Advanced tab in the local web UI, and click on the \"Forwarding\" tile.";
+"port_plus_sub_description_2" = "In the section named “Port Forwarding”, enter the following settings:";
+"port_plus_sub_step_1" = "Rule Name: Enter a name for your port forwarding rule.";
+"port_plus_sub_step_2" = "Protocol: Select the protocols for which the IP packets have to be forwarded.";
+"port_plus_sub_step_3" = "External Port: Enter the port number being used by incoming connections. Enter a range by separating port numbers with a ‘-’, for example ‘8080-8090’.";
+"port_plus_sub_step_4" = "Internal IP Address: Enter the IP address of the device for which you need to use port forwarding.";
+"port_plus_sub_step_5" = "Internal Port: Enter the internal port number to which the IP packets have to be forwarded. Enter a range by separating port numbers with a ‘-’, for example ‘8080-8090’.";
+
+//dns
+"dns_title" = "DNS";
+"dns_description" = "Domain Name System is the hierarchical system of servers on the Internet that lets you access websites using names like <a href=\"www.securifi.com\">www.securifi.com</a> instead of IP addresses. If you are facing problems with websites opening very slowly, it might be because of an unresponsive DNS server, and you might be able to fix it by connecting to a different DNS server.\n\nGoogle provides public DNS servers at the addresses 8.8.8.8 and 8.8.4.4";
+"dns_title_2" = "Using DNS on an Almond, Almond 2015 or Almond 3";
+"dns_sub_descr_1" = "To configure DNS on your Almond, Almond 2015 or Almond 3, go to the Router tab in the local web UI and click on the Network tile.";
+"dns_sub_descr_2" = "In the section named Settings, you can enter the IP address of the primary DNS server in DHCP Primary DNS and the secondary DNS server in DHCP Secondary DNS.";
+"dns_sub_descr_3" = "Click on Apply to save the changes.";
+
+"dns_title_3" = "Using DNS on an Almond+";
+"dns_plus_sub_descr_1" = "To configure DNS on your Almond+, go to the Advanced tab in the local web UI, and click on the OpenWRT tile. This will open a new window.";
+"dns_plus_sub_descr_2" = "In the new window, hover your mouse over the Network menu item in the menu bar at the top, and click on DHCP and DNS.";
+"dns_plus_sub_descr_3" = "In the General Settings tab, enter the IP address of your preferred DNS server in DNS Forwardings. Use the + icon to add more entries.";
+"dns_plus_sub_descr_4" = "Click on Save when you are done.";
+
+//Static IP
+"static_title" = "Static IP";
+"static_title_2" = "Assigning Static IP on an Almond, Almond 2015 or Almond 3";
+"static_sub_descr_1" = "To configure Static IP for connected network devices on your Almond, Almond 2015 or Almond 3, go to the Router tab in the local web UI and click on the Network tile.";
+"static_sub_descr_2" = "In the section named Settings, enter the MAC address of the network device in Statically Assigned MAC and enter the IP address you want to reserve in IP.";
+"static_sub_descr_3" = "Click on Apply to save the changes.";
+
+"static_title_plus" = "Assigning Static IP on an Almond+";
+"static_sub_descr_plus_1" = "To configure Static IP for connected network devices on your Almond+, go to the Router tab in the local web UI, and click on the Network tile.";
+"static_sub_descr_plus_2" = "In the section named Add Static Lease, enter the hostname in Hostname, MAC address in MAC-Address and the IP address to reserve for the device in IPv4-Address.";
+"static_sub_descr_plus_3" = "Click on Add Entry to save the entry. Add more entries in the same way.";
+"static_sub_descr_plus_4" = "Click on Save to save your settings before exiting.";
+
+//upnp
+"upnp_title" = "UPnP";
+"upnp_descr" = "UPnP allows your devices to discover each other on your network and determine what services are being offered by each device. If you turn on UPnP on your Almond, other devices can automatically configure it to set up rules for network access.";
+"upnp_title_2" = "Using UPnP on an Almond, Almond 2015 or Almond 3";
+"upnp_descr_2" = "UPnP is coming soon to Almond, Almond 2015 and Almond 3.";
+"upnp_title_3" = "Using UPnP on an Almond+";
+"upnp_sub_descr_1" = "To use UPnP on your Almond+, go to the Advanced tab in the local web UI, and click on the OpenWRT tile. This will open a new window.";
+"upnp_sub_descr_2" = "In the new window, hover your mouse over the Services menu item in the menu bar at the top, and click on UPnP.";
+"upnp_sub_descr_3" = "Click on the “Enable UPnP Service” tick box to enable UPnP.";
+
+
+
 
 /* ==================================================================== */
 

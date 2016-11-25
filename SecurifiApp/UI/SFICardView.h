@@ -13,6 +13,7 @@
 typedef NS_ENUM(int, SFICardView_right_offset) {
     SFICardView_right_offset_normal = 0,
     SFICardView_right_offset_inset = 1,
+    SFICardView_right_offset_share = 2
 };
 
 
@@ -98,5 +99,7 @@ typedef NS_ENUM(int, SFICardView_right_offset) {
 - (void)addEditIconTarget:(id)target action:(SEL)action editing:(BOOL)editing;
 
 + (NSInteger)getLineCount:(NSArray*)msgs;
+
+- (void)addTitleAndShare:(NSString *)title target:(id)target shareAction:(SEL)shareAction on:(BOOL)isSwitchOn;
 
 @end

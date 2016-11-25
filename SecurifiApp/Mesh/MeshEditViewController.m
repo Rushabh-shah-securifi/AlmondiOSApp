@@ -61,7 +61,16 @@
                selector:@selector(almondNameChangeResponseCallback:)
                    name:kSFIDidChangeAlmondName
                  object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onDynamicAlmondLocationChange:)
+                   name:DYNAMIC_ALMOND_LOCATION_CHANIGE_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self selector:@selector(onAlmondLocationChange:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
 }
+
+
 
 - (void)setupMeshNamingView{
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -126,12 +135,10 @@
         return;
     }
     if(self.isMaster){
-        SFIAlmondConnectionMode connectionMode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
-        if(connectionMode == SFIAlmondConnectionMode_cloud)
-            [[SecurifiToolkit sharedInstance] asyncRequestChangeAlmondName:newName almondMAC:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
-        else
-            [self localAlmondNameChange:_mii name:newName];
+        [[SecurifiToolkit sharedInstance] asyncSendToNetwork:[GenericCommand requestAlmondLocationChange:_mii location:newName]];
+            ;
     }else{
+        //this will actually change location
         [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.uniqueName newName:newName];
     }
 
@@ -139,6 +146,7 @@
     [self showHudWithTimeoutMsgDelegate:@"Loading..." time:10];
 }
 
+/*
 -(void)localAlmondNameChange:(int)mii name:(NSString*)name{
     NSDictionary *payload = @{
                               @"CommandType":@"SetAlmondName",
@@ -148,7 +156,31 @@
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ALMOND_NAME_CHANGE_REQUEST];
     [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
 }
-
+*/
+- (void)onAlmondLocationChange:(id)sender{
+    NSDictionary *payload;
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    
+    if (dataInfo==nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    
+    if([SecurifiToolkit sharedInstance].currentConnectionMode == SFIAlmondConnectionMode_local){
+        payload = dataInfo[@"data"];
+    }else{
+        payload = [dataInfo[@"data"] objectFromJSONData];
+    }
+    
+    BOOL isSuccessful = [payload[@"Success"] boolValue];
+    if(isSuccessful == NO){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showToast:NSLocalizedString(@"sorry_could_not_update", @"")];
+        });
+    }
+    
+}
 
 -(void)onMeshCommandResponse:(id)sender{
     NSLog(@"mesh edit onmeshcommandresponse");
@@ -184,6 +216,35 @@
     [self dismissControllerDelegate];
 }
 
+- (void)onDynamicAlmondLocationChange:(id)sender{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    SFIAlmondConnectionMode connectionMode = [toolkit currentConnectionMode];
+    
+    NSDictionary *payload = [dataInfo valueForKey:@"data"];
+    NSString *almondMAC = payload[ALMONDMAC];
+    //{"CommandType":"DynamicAlmondLocationChange","AlmondLocation":"Den","AlmondMAC":"251176216952836"}
+    if(connectionMode == SFIAlmondConnectionMode_cloud && ![almondMAC isEqualToString:toolkit.currentAlmond.almondplusMAC]){
+        return;
+    }
+    
+    if (almondMAC.length != 0) {
+        //Change Owned Almond Name
+        [self.delegate slaveNameDidChangeDelegate:payload[@"AlmondLocation"]];
+        [self showToast:@"Successfully updated!"];
+    }
+    else {
+        NSLog(@"almondNameChangeResponseCallback ");
+        [self showToast:@"Sorry! We were unable to change Almond's Location"];
+    }
+    [self hideHUDDelegate];
+    [self dismissControllerDelegate];
+}
+
 - (void)almondNameChangeResponseCallback:(id)sender {
     NSLog(@"almondNameChangeResponseCallback");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -200,7 +261,7 @@
     }
 
     if (obj.almondplusMAC.length != 0) {
-            //Change Owned Almond Name
+        //Change Owned Almond Name
         [self.delegate slaveNameDidChangeDelegate:_name];
         [self showToast:@"Successfully updated!"];
     }
@@ -211,6 +272,7 @@
     [self hideHUDDelegate];
     [self dismissControllerDelegate];
 }
+
 - (void)onKeyboardDidShow:(id)notification {
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     

@@ -19,7 +19,7 @@
 
 #import "BrowsingHistoryDataBase.h"
 
-@interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,NSURLConnectionDelegate,DetailsPeriodViewControllerDelegate,UIAlertViewDelegate>
+@interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,NSURLConnectionDelegate,DetailsPeriodViewControllerDelegate,UIAlertViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (nonatomic) NSMutableArray *parentsControlArr;
 @property (nonatomic) CategoryView *cat_view_more;
 @property (weak, nonatomic) IBOutlet UIView *dataLogView;
@@ -53,6 +53,7 @@
 @property (nonatomic) NSString *cmac;
 @property (nonatomic) NSString *amac;
 
+@property (nonatomic) NSString *resetBWDate;
 
 @end
 
@@ -62,7 +63,7 @@
     [super viewDidLoad];
     [[Analytics sharedInstance] markParentalPage];
     self.parentsControlArr = [[NSMutableArray alloc]init];
-    self.cat_view_more = [[CategoryView alloc]initParentalControlMoreClickView];
+    self.cat_view_more = [[CategoryView alloc]initParentalControlMoreClickView:CGRectMake(0, self.view.frame.size.height - 180, 188 , 320)];
     self.cat_view_more.delegate = self;
     int deviceID = _genericParams.headerGenericIndexValue.deviceID;
     self.client = [Client findClientByID:@(deviceID).stringValue];//dont put in viewDid load
@@ -122,9 +123,8 @@
     
     
     for (GenericIndexValue *genericIndexValue in arr) {
-        NSLog(@"genericIndexValue.genericIndex.ID %@ value %@",genericIndexValue.genericIndex.ID ,genericIndexValue.genericValue.value);
         
-        if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"] && ![genericIndexValue.genericValue.value isEqualToString:@"wireless"]){
+        if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"]){
             connection = genericIndexValue.genericValue.value;
             
             //self.dataLogView.hidden = YES;
@@ -137,8 +137,8 @@
             NSLog(@"blocked ");
             
             self.switchView3.on = NO;
-            self.switchView3.userInteractionEnabled = NO;
-            self.switchView1.userInteractionEnabled = NO;
+            self.switchView3.hidden = YES;
+            self.switchView1.hidden = YES;
             self.blockClientTxt.hidden = NO;
             self.blockClientTxt.text = @"Web history and Data usage are disabled for blocked devices. You can still see records from when the device was last active.";
             self.dataLogView.hidden = YES;
@@ -168,11 +168,19 @@
     if([self.routerMode isEqualToString:@"ap"] || [self.routerMode isEqualToString:@"re"] ||[self.routerMode isEqualToString:@"WirelessSlave"] || [self.routerMode isEqualToString:@"WiredSlave"]){
         if([connection isEqualToString:@"wireless"]){
             self.switchView3.on = NO;
+            self.dataLogView.hidden = YES;
+            self.blockClientTxt.hidden = NO;
             self.blockClientTxt.text = @"For checking Data usage, Almond must be in Router Mode.";
+             self.view3.hidden = YES;
         }
         else{
             self.switchView3.on = NO;
             self.switchView1.on = NO;
+            self.view3.hidden = YES;
+            self.view2.hidden = YES;
+            self.view1.hidden = YES;
+            self.dataLogView.hidden = YES;
+            self.blockClientTxt.hidden = NO;
             self.blockClientTxt.text = @"This device is in wired connection. Web history requires wireless connection in RE/AP Mode. For checking Data usage, Almond must be in Router Mode.";
         }
     }
@@ -297,16 +305,20 @@
     UISwitch *actionSwitch = (UISwitch *)sender;
         BOOL state = [actionSwitch isOn];
         if(state == NO){
-            
-            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                             message:@"Disabling Web history will delete all your previous history records. Are you sure,you want to disable web history?"
-                                                            delegate:self
-                                                   cancelButtonTitle:@"Cancel"
-                                                   otherButtonTitles:@"Done",nil];
-            [alert setDelegate:self];
-            alert.tag = 1;
-            alert.alertViewStyle = UIAlertViewStyleDefault;
-            [alert show];
+            self.view2.hidden = YES;
+            self.clrHis.hidden = YES;
+            self.viewTwoTop.constant = -40;
+            self.client.webHistoryEnable = NO;
+            [self saveNewValue:@"NO" forIndex:-23];
+//            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
+//                                                             message:@"Disabling Web history will delete all your previous history records. Are you sure,you want to disable web history?"
+//                                                            delegate:self
+//                                                   cancelButtonTitle:@"Cancel"
+//                                                   otherButtonTitles:@"Done",nil];
+//            [alert setDelegate:self];
+//            alert.tag = 1;
+//            alert.alertViewStyle = UIAlertViewStyleDefault;
+//            [alert show];
             
           
             
@@ -327,23 +339,32 @@
     UISwitch *actionSwitch = (UISwitch *)sender;
         BOOL state = [actionSwitch isOn];
         if(state == NO){
-            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                             message:@"Disabling Web history will delete all your previous history records. Are you sure,you want to disable web history?"
-                                                            delegate:self
-                                                   cancelButtonTitle:@"Cancel"
-                                                   otherButtonTitles:@"Done",nil];
-            [alert setDelegate:self];
-            alert.tag = 2;
-            alert.alertViewStyle = UIAlertViewStyleDefault;
-            [alert show];
+            self.dataLogView.hidden = YES;
+            self.clrBW.hidden = YES;
+            self.client.bW_Enable = NO;
+            [self saveNewValue:@"NO" forIndex:-25];
+//            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
+//                                                             message:@"Disabling Web history will delete all your previous history records. Are you sure,you want to disable web history?"
+//                                                            delegate:self
+//                                                   cancelButtonTitle:@"Cancel"
+//                                                   otherButtonTitles:@"Done",nil];
+//            [alert setDelegate:self];
+//            alert.tag = 2;
+//            alert.alertViewStyle = UIAlertViewStyleDefault;
+//            [alert show];
             }
         else{
-            self.dataLogView.hidden = NO;
-            self.clrBW.hidden = NO;
-            self.client.bW_Enable = YES;
-            [self saveNewValue:@"YES" forIndex:-25];
-            [[Analytics sharedInstance] markALogDataUsage];
-        }
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Usage cycle reset date" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+            alert.tag = 3;
+            UIPickerView *picker = [[UIPickerView alloc] initWithFrame:CGRectMake(10, 0, 320, 216)];
+            picker.delegate = self;
+            picker.dataSource = self;
+            picker.showsSelectionIndicator = YES;
+            [alert addSubview:picker];
+            alert.bounds = CGRectMake(0, 0, 320 + 20, alert.bounds.size.height + 216 + 20);
+            [alert setValue:picker forKey:@"accessoryView"];
+            [alert show];
+            }
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == [alertView cancelButtonIndex]){
@@ -353,6 +374,17 @@
          else if(alertView.tag == 2){
              self.switchView3.on = YES;
          }
+         else if(alertView.tag == 3){
+             self.switchView3.on = NO;
+             self.dataLogView.hidden = YES;
+         }
+         else if (alertView.tag == 5){
+             
+         }
+         else if (alertView.tag == 6){
+             
+         }
+
     }
     else{
         if(alertView.tag == 1){
@@ -370,6 +402,22 @@
             self.client.bW_Enable = NO;
             [self saveNewValue:@"NO" forIndex:-25];
             [self createRequest:@"ClearBandwidth" value:@"ClearBandwidth" date:[CommonMethods getTodayDate]];
+        }
+        else if(alertView.tag == 3){
+            
+            self.dataLogView.hidden = NO;
+            self.clrBW.hidden = NO;
+            self.client.bW_Enable = YES;
+            [self saveNewValue:@"YES" forIndex:-25];
+            [self createRequest:@"DataUsageReset" value:self.resetBWDate date:[CommonMethods getTodayDate]];
+            [[Analytics sharedInstance] markALogDataUsage];
+        }
+        else if(alertView.tag == 5){
+            [self createRequest:@"ClearBandwidth" value:@"ClearBandwidth" date:[CommonMethods getTodayDate]];
+           
+        }
+        else if(alertView.tag == 6){
+             [self createRequest:@"ClearHistory" value:@"ClearHistory" date:[CommonMethods getTodayDate]];
         }
         }
 }
@@ -462,6 +510,7 @@
             
         }
         else{
+
             self.dataLogView.hidden = NO;
             self.client.bW_Enable = YES;
             self.clrBW.hidden = NO;
@@ -469,14 +518,38 @@
         
     });
 }
+-(void)onPreciselyDatePickerValueChanged:(id)sender{
+    UIDatePicker *datePicker = (UIDatePicker *)sender;
+    NSLog(@"date picker date %@",datePicker.date);
+}
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return 31;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return [NSString stringWithFormat:@"%ld",row+1];
+}
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    self.resetBWDate = [NSString stringWithFormat:@"%ld",row+1];
+    NSLog(@"self.resetBWDate %@",self.resetBWDate);
+    return ;
+}
 - (IBAction)iconOutletClicked:(id)sender {
-    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 180, self.navigationController.view.frame.size.width, 320);
+    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 180, self.navigationController.view.bounds.size.width , 320);
+//    [self.cat_view_more setTranslatesAutoresizingMaskIntoConstraints:YES];
+   // [self activateConstraintsForView:self.cat_view_more respectToParentView:self.view];
     self.cat_view_more.backgroundColor = [UIColor whiteColor];
+//    [self stretchToSuperView:self.cat_view_more];
     [self.view addSubview:self.cat_view_more];
     self.backGrayButton.hidden = NO;
     
     
 }
+
 -(void)closeMoreView{
     [self.cat_view_more removeFromSuperview];
     self.backGrayButton.hidden = YES;
@@ -612,5 +685,27 @@
     [self createRequest:@"Bandwidth" value:value date:date];
     self.NosDayLabel.text = labelText;
 
+}
+- (IBAction)deleteDataUsage:(id)sender {
+    UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                                                        message:@"Are you sure,you want to delete data usage?"
+                                                                                       delegate:self
+                                                                              cancelButtonTitle:@"Cancel"
+                                                                              otherButtonTitles:@"Done",nil];
+                                       [alert setDelegate:self];
+                                       alert.tag = 5;
+                                       alert.alertViewStyle = UIAlertViewStyleDefault;
+                                       [alert show];
+}
+- (IBAction)deleteHistory:(id)sender {
+                UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                                 message:@"Are you sure,you want to delete web history?"
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Cancel"
+                                                       otherButtonTitles:@"Done",nil];
+                [alert setDelegate:self];
+                alert.tag = 6;
+                alert.alertViewStyle = UIAlertViewStyleDefault;
+                [alert show];
 }
 @end

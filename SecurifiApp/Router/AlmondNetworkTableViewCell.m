@@ -29,22 +29,20 @@
 }
 
 - (void)layoutSubviews{
-    NSLog(@"almond n/w layout subviews");
     [super layoutSubviews];
-    
+
     CGRect rect = self.bounds;
     rect = CGRectInset(rect, 10, 0);
     self.almondView.frame = rect;
-    
     self.almondView.backgroundColor = [UIColor securifiRouterTileGreenColor];
+
+    [self createAlmondNetworkView];
     [self.contentView addSubview:self.almondView];
 }
 
 - (void)markReuse {
     UIView *oldView = self.almondView;
-    
     UIView *newView = [[UIView alloc] initWithFrame:self.frame];
-    
     [oldView removeFromSuperview];
     self.almondView = newView;
 }
@@ -84,7 +82,7 @@
 }
 
 - (UIView *)makeAddAlmondView:(NSArray*)titles{
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, self.yCoordinate, CGRectGetWidth(self.almondView.frame) - 30, 115)];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, self.yCoordinate, CGRectGetWidth(self.almondView.frame)-10, 115)];
 //    scrollView.backgroundColor = [UIColor lightGrayColor];
     
     CGFloat xOffset = 0;
@@ -112,6 +110,7 @@
     [CommonMethods setLableProperties:label text:title textColor:[UIColor whiteColor] fontName:@"Avenir-Heavy" fontSize:14 alignment:NSTextAlignmentCenter];
     [scrlView addSubview:label];
 }
+
 - (void)setHorizantalScrolling:(UIScrollView *)scrollView{
     CGRect contentRect = CGRectZero;
     for (UIView *view in scrollView.subviews) {
@@ -120,7 +119,6 @@
     scrollView.contentSize = contentRect.size;
     scrollView.showsVerticalScrollIndicator = NO;
     scrollView.contentSize = CGSizeMake(scrollView.contentSize.width + 10,scrollView.frame.size.height);
-
 }
 
 - (UIButton *)makeAlmondButton:(NSString *)imageName xOffset:(CGFloat)xOffset selector:(SEL)selector{

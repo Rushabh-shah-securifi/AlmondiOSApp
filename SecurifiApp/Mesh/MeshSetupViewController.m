@@ -102,14 +102,18 @@ int mii;
 
 -(void)createKeyVals:(AlmondStatus *)stat{
     NSMutableArray *keyVals = [NSMutableArray new];
-    [keyVals addObject:@{@"Location":stat.location?:@""}];
-    [keyVals addObject:@{@"Connected Via":stat.connecteVia?:@""}];
-    [keyVals addObject:@{@"Interface":stat.interface?:@""}];
-    [keyVals addObject:@{@"Connection Status":(stat.isActive? @"Active": @"Inactive")}];
-    if(!stat.isMaster && [stat.interface isEqualToString:@"Wireless"])
-        [keyVals addObject:@{@"Connection Strength":[self getSignalStrength:stat.signalStrength.integerValue]}];
+    NSString *location = self.hasLocationTag?stat.location:stat.name;
+    [keyVals addObject:@{NSLocalizedString(@"location", @""):location?:@""}];
+    [keyVals addObject:@{NSLocalizedString(@"connected_via", @""):stat.connecteVia?:@""}];
+    [keyVals addObject:@{NSLocalizedString(@"interface", @""):stat.interface?:@""}];
     
-    [keyVals addObject:@{@"Internet Status":(stat.internetStat? @"Online": @"Offline")}];
+    NSString *internetStatText = stat.isActive? NSLocalizedString(@"active", @""):NSLocalizedString(@"inactive", @"");
+    [keyVals addObject:@{NSLocalizedString(@"connection_stat", @""):internetStatText.capitalizedString}];
+    if(!stat.isMaster && [stat.interface isEqualToString:@"Wireless"])
+        [keyVals addObject:@{NSLocalizedString(@"connection_str", @""):[self getSignalStrength:stat.signalStrength.integerValue]}];
+    
+    NSString *connectionStatText = stat.internetStat? NSLocalizedString(@"online", @""):NSLocalizedString(@"offline", @"");
+    [keyVals addObject:@{NSLocalizedString(@"internet_stat", @""):connectionStatText.capitalizedString}];
     if(stat.ssid2)
         [keyVals addObject:@{@"5 GHz SSID":stat.ssid2?:@""}];
     [keyVals addObject:@{@"2.4 GHz SSID":stat.ssid1?:@""}];
@@ -125,13 +129,13 @@ int mii;
     else if(sig == 0)
         return @"N/A";
     else if(sig >= -50)
-        return @"Excellent";
+        return NSLocalizedString(@"excellent", @"");
     else if(sig < -50 && sig >=-65)
-        return @"Good";
+        return NSLocalizedString(@"good", @"");
     else if(sig < -65 && sig >= -80)
-        return @"Poor";
+        return NSLocalizedString(@"poor", @"");
     else
-        return @"Extremely Poor";
+        return NSLocalizedString(@"extremely_poor", @"");
 }
 
 #define network events
@@ -148,7 +152,7 @@ int mii;
         [self.removeAlmondTimer invalidate];
         [self hideHUDDelegate];
         
-        [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
+        [self showAlert:@"" msg:NSLocalizedString(@"no_internet_alert", @"") cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
     }
      else if(statusIntValue == (int)(ConnectionStatusType*)AUTHENTICATED){
          if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
@@ -159,14 +163,16 @@ int mii;
 
 -(void)setUpAlmondStatus{
     [self initializeNotification];
-    self.almondName.text = self.almondStatObj.name;
+    self.almondName.text =  self.hasLocationTag?self.almondStatObj.location:self.almondStatObj.name;
     if(self.almondStatObj.isMaster){//check if master or slave
         //more to be done depending upon connection status images need to be updated
         //will put set of images in a view and hide/unhide the view.
         self.removeBtn.hidden = YES;
         self.tableBottomContraint.constant = 0; //to hide remove button.
         self.cloudToMasterAlm.image = [self getConnectionImage];
-        [self toggleImages:NO weakImg:YES text:self.almondStatObj.internetStat? @"Online":@"Offline"];
+        NSString *statText = self.almondStatObj.internetStat? NSLocalizedString(@"online", @""):NSLocalizedString(@"offline", @"");
+        
+        [self toggleImages:NO weakImg:YES text:statText.capitalizedString];
     }else{
         self.cloudToMstrAlmSlv.image = [self getConnectionImage];
         self.MstrAlmToSlv.image = [self getMsterToSlaveImg];
@@ -197,11 +203,11 @@ int mii;
 -(NSString *)getSignalStrengthText{
     NSInteger sig = self.almondStatObj.signalStrength.integerValue;
     if(self.almondStatObj.internetStat == NO)
-        return @"Offline";
+        return NSLocalizedString(@"offline", @"").capitalizedString;
     else if(sig < -80){
-        return @"Wireless signal seems to be weak.";
+        return NSLocalizedString(@"weak_signal_strength", @"");
     }else{
-        return @"Online";
+        return NSLocalizedString(@"online", @"").capitalizedString;
     }
 }
 
@@ -294,8 +300,13 @@ int mii;
     MeshStatusCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER forIndexPath:indexPath];
     //    cell.delegate = self;
     UITableViewCellAccessoryType accType;
-    if(indexPath.row == 0)
-        accType = UITableViewCellAccessoryDisclosureIndicator;
+    if(indexPath.row == 0 ){
+        if(self.almondStatObj.isMaster && !self.hasLocationTag){
+            accType = UITableViewCellAccessoryNone;
+        }else{
+            accType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+    }
     else
         accType = UITableViewCellAccessoryNone;
     
@@ -306,13 +317,21 @@ int mii;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(indexPath.row == 0){
-        MeshEditViewController *ctrl = [MeshEditViewController new];
-        ctrl.delegate = self;
-        ctrl.uniqueName = self.almondStatObj.slaveUniqueName;
-        ctrl.isMaster = self.almondStatObj.isMaster;
-        [self presentViewController:ctrl animated:YES completion:nil];
+    if(indexPath.row == 0 ){
+        if(self.almondStatObj.isMaster && !self.hasLocationTag){
+            
+        }else{
+            [self presentMeshController];
+        }
     }
+}
+
+- (void)presentMeshController{
+    MeshEditViewController *ctrl = [MeshEditViewController new];
+    ctrl.delegate = self;
+    ctrl.uniqueName = self.almondStatObj.slaveUniqueName;
+    ctrl.isMaster = self.almondStatObj.isMaster;
+    [self presentViewController:ctrl animated:YES completion:nil];
 }
 
 #pragma mark mesh edit delegate
@@ -361,8 +380,8 @@ int mii;
 }
 #pragma mark button tap
 - (IBAction)onRemoveThisAlmondTap:(id)sender { //this button is only enabled for slave
-    NSString *msg = [NSString stringWithFormat:@"Are you sure, you want to remove %@?", self.almondStatObj.name];
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Remove Almond" message:msg delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"remove_almond_alert", @""), self.almondStatObj.name];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"remove_almond", @"") message:msg delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
     alert.tag = REMOVE;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [alert show];
@@ -406,15 +425,15 @@ int mii;
             [self showForceRemoveAlert];
         }
         else if([cmdType isEqualToString:@"ForceRemoveSlaveMobile"]){
-            [self showToast:@"Sorry! Could not remove. Try removing from Almond"];
+            [self showToast:NSLocalizedString(@"sorry_could_not_remove", @"")];
             [self dismissControllerDelegate];
         }
     }
 }
 
 -(void)showForceRemoveAlert{
-    NSString *title = [NSString stringWithFormat:@"Failed to remove \"%@\" Almond. Do you want to forcefully remove it?", self.almondStatObj.name];
-    NSString *desc = @"If you choose to force remove an Almond, you will have to manually reset that Almond to complete the process.";
+    NSString *title = [NSString stringWithFormat:NSLocalizedString(@"force_remove_almond", @""), self.almondStatObj.name];
+    NSString *desc = NSLocalizedString(@"manual_force_remove", @"");
     //not using showalert because this has other button title.
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:title message:desc delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
     alert.tag = FORCE_REMOVE;
@@ -444,12 +463,12 @@ int mii;
         }
     }else{
         if(alertView.tag == REMOVE){
-            [self showHudWithTimeoutMsgDelegate:@"Removing...Please wait!" time:30];
+            [self showHudWithTimeoutMsgDelegate:NSLocalizedString(@"removing_wait", @"") time:30];
             self.removeAlmondTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(onRemoveAlmTimeout:) userInfo:nil repeats:NO];
             [MeshPayload requestRemoveSlave:mii uniqueName:self.almondStatObj.slaveUniqueName];
         }
         else if(alertView.tag == FORCE_REMOVE){
-            [self showHudWithTimeoutMsgDelegate:@"Removing...Please wait!" time:5];
+            [self showHudWithTimeoutMsgDelegate:NSLocalizedString(@"removing_wait", @"") time:5];
             [MeshPayload requestForceRemoveSlave:mii uniqueName:self.almondStatObj.slaveUniqueName];
         }
     }
@@ -483,12 +502,12 @@ int mii;
     if(tag == NETWORK_OFFLINE){
         if([self isDisconnected]){
             NSLog(@"ok 1");
-            [self showAlert:@"" msg:@"Make sure your almond 3 has working internet connection to continue setup." cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
+            [self showAlert:@"" msg:NSLocalizedString(@"no_internet_alert", @"") cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
         }else{
             
         }
     }
-    [self.nonRepeatingTimer invalidate];
+    self.nonRepeatingTimer = nil;
 }
 
 -(BOOL)isDisconnected{

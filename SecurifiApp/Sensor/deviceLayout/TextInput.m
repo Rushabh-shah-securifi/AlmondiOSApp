@@ -34,7 +34,9 @@
     
     if(self.isSensor){
         int type = [Device getTypeForID:self.genericIndexValue.deviceID];
-        if(type == SFIDeviceType_NestThermostat_57 || type == SFIDeviceType_NestSmokeDetector_58){
+        BOOL isNameLocationField = [self.genericIndexValue.genericIndex.ID isEqualToString:@"-1"] || [self.genericIndexValue.genericIndex.ID isEqualToString:@"-2"];
+        
+        if(isNameLocationField && (type == SFIDeviceType_NestThermostat_57 || type == SFIDeviceType_NestSmokeDetector_58 || type == SFIDeviceType_AlmondBlink_64 || type == SFIDeviceType_AlmondSiren_63)){
             [self.deviceNameField setEnabled:NO];
             self.deviceNameField.alpha = 0.7;
         }

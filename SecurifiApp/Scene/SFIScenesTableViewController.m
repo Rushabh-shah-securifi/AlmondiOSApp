@@ -39,7 +39,6 @@
 @implementation SFIScenesTableViewController
 
 - (void)viewDidLoad {
-    self.needAddButton = YES;
     [super viewDidLoad];
     self.toolkit = [SecurifiToolkit sharedInstance];
     
@@ -52,6 +51,7 @@
     [super viewWillAppear:animated];
     randomMobileInternalIndex = arc4random() % 10000;
     
+    [self setUpNavBar];
     [self markAlmondTitleAndMac];
     [self initializeNotifications];
     
@@ -60,6 +60,18 @@
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
+    });
+}
+
+-(void)setUpNavBar{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(toolkit.currentAlmond){
+            UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add_almond_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddBtnTap:)];
+            self.navigationItem.rightBarButtonItem = addButton;
+        }else{
+            self.navigationItem.rightBarButtonItem = nil;
+        }
     });
 }
 
@@ -95,12 +107,10 @@
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
                  object:nil];
     
-    
     [center addObserver:self
                selector:@selector(updateSceneTableView:)
                    name:NOTIFICATION_UPDATE_SCENE_TABLEVIEW
                  object:nil];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -367,6 +377,8 @@
         [self.tableView reloadData];
     });
 }
+
+
 
 - (void)gotResponseFor1064:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;

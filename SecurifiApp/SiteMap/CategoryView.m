@@ -12,7 +12,7 @@
 @property (strong, nonatomic) IBOutlet UIView *cat_view;
 @property (weak, nonatomic) IBOutlet UILabel *moreViewHeader;
 @property (weak, nonatomic) IBOutlet UILabel *moreViewDetail;
-@property (strong, nonatomic) IBOutlet UIView *parentalControlMoreVie;
+@property (weak, nonatomic) IBOutlet UIView *parentalControlMoreVie;
 
 @end
 @implementation CategoryView
@@ -25,20 +25,22 @@
     }
     return self;
 }
-- (id)initMoreClickView{
-    self = [super init];
+- (id)initMoreClickView:(CGRect)frame{
+    self = [super initWithFrame:(CGRect)frame];
     if(self){
         NSLog(@"frame initialized");
         [[NSBundle mainBundle] loadNibNamed:@"categoryTab" owner:self options:nil];
+//        self.moreClickView.frame = frame;
         [self addSubview:self.moreClickView];
     }
     return self;
 }
-- (id)initParentalControlMoreClickView{
-    self = [super init];
+- (id)initParentalControlMoreClickView:(CGRect)frame{
+    self = [super initWithFrame:frame];
     if(self){
         NSLog(@"frame initialized");
         [[NSBundle mainBundle] loadNibNamed:@"categoryTab" owner:self options:nil];
+//        self.parentalControlMoreVie.frame = frame;
         [self addSubview:self.parentalControlMoreVie];
     }
     return self;

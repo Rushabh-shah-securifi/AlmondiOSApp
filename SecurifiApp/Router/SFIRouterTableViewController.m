@@ -48,7 +48,7 @@
 #define REBOOT_TAG 1
 #define FIRMWARE_UPDATE_TAG 2
 
-static const int networkingHeight = 100;
+static const int networkingHeight = 110;
 static const int almondNtwkHeight = 200;
 static const int advanceRtrHeight = 100;
 static const int settingsHeight = 70;
@@ -92,7 +92,8 @@ int mii;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    NSLog(@"router viewDidLoad");
+    [self displayWebView:@""];
     if([[SecurifiToolkit sharedInstance] isScreenShown:@"wifi"] == NO)
         [self initializeHelpScreensfirst:@"wifi"];
     
@@ -103,8 +104,19 @@ int mii;
     
     [self addRefreshControl];
     [self initializeRouterSummaryAndSettings];
-    self.enableAdvRouter = NO;
+    self.enableAdvRouter = YES;
     
+}
+
+- (void)displayWebView:(NSString *)strForWebView{
+    NSLog(@"display web view main");
+    //this might slow down the app, perhaps you can think of better
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+        webView.backgroundColor = [UIColor clearColor];
+        [webView loadHTMLString:strForWebView baseURL:nil];
+        [self.view addSubview:webView];
+    });
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -316,11 +328,6 @@ int mii;
     return [_routerSummary.firmwareVersion hasPrefix:@"AL3-"] && isRouterOrMaster;
 }
 
--(BOOL)isInREMode{
-    NSString *mode = _routerSummary.routerMode.lowercaseString;
-    return [mode isEqualToString:@"re"];
-}
-
 -(BOOL)isDisconnected{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     ConnectionStatusType connectionStat = [ConnectionStatus getConnectionStatus];
@@ -331,7 +338,7 @@ int mii;
     NSArray *msgs = [self getWirelessSettingsSummary];
     int lines = (int)[SFICardView getLineCount:msgs];
     NSLog(@"lines: %d", lines);
-    return settingsHeight + (lines * 12);
+    return settingsHeight + (lines * 14);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -364,8 +371,9 @@ int mii;
             }
             case DEF_ADVANCED_ROUTER_SECTION:{
                 if(_enableAdvRouter){
-                    NSArray *summary = @[@"Learn about advanced features available in your Almond."];
-                    return [self createSummaryCell:tableView summaries:summary title:@"Advanced Router Features" selector:@selector(onAdvancdFeatures:) cardColor:[SFIColors ruleBlueColor]];
+                    
+                    NSArray *summary = @[NSLocalizedString(@"learn_adv_features", @"")];
+                    return [self createSummaryCell:tableView summaries:summary title:NSLocalizedString(@"adv_router_features", @"") selector:@selector(onAdvancdFeatures:) cardColor:[SFIColors ruleBlueColor]];
                 }
                 else{
                     return [self createZeroCell:tableView];
@@ -437,14 +445,15 @@ int mii;
     [cell setHeading:@"Almond Network" titles:almonds almCount:almonds.count];
     //    [cell setHeading:@"Almond Network" titles:@[@"almond 1"] almCount:1];
     
-    [cell createAlmondNetworkView];
+//    [cell createAlmondNetworkView]; //moved inside layout subviews
     return cell;
 }
 
 -(NSArray *)getAlmondTitles{
     NSMutableArray *titles = [NSMutableArray new];
     for(NSDictionary *dict in self.routerSummary.almondsList){
-        [titles addObject:dict[NAME]];
+        NSString *title = dict[LOCATION]?:dict[NAME];
+        [titles addObject:title?:@"***"];
     }
     return titles;
 }
@@ -764,7 +773,8 @@ int mii;
                             enableSwitch = NO;
                     }
                     ctrl.enableRouterWirelessControl = enableSwitch;
-                    ctrl.isREMode = [self isInREMode];
+                    ctrl.mode = _routerSummary.routerMode;
+                    ctrl.firmware = self.routerSummary.firmwareVersion;
                     ctrl.hidesBottomBarWhenPushed = YES;
                     UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
                                                    initWithTitle:NSLocalizedString(@"Router Back", @"Back")
@@ -845,7 +855,7 @@ int mii;
         self.newAlmondFirmwareVersionAvailable = newVersionAvailable;
         self.latestAlmondVersionAvailable = latestAlmondVersion;
         
-        if (newVersionAvailable) {
+        if (newVersionAvailable && [SecurifiToolkit sharedInstance].currentConnectionMode == SFIAlmondConnectionMode_cloud) {
             TableHeaderView *view = [TableHeaderView newAlmondVersionMessage];
             view.frame = CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), 100);
             view.backgroundColor = [UIColor whiteColor];
@@ -998,6 +1008,7 @@ int mii;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Mesh" bundle:nil];
     MeshSetupViewController *meshController = [storyboard instantiateViewControllerWithIdentifier:identifier];
     meshController.isStatusView = isStatView;
+    meshController.hasLocationTag = self.routerSummary.location? YES: NO;
     return meshController;
 }
 

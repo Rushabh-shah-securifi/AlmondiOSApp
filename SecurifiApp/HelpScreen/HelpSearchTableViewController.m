@@ -107,10 +107,18 @@ static const int headerHeight = 40;
     NSArray *itemsArray = searchItem[ITEMS_ARRAY];
     
     ctrl.startScreen = [itemsArray objectAtIndex:indexPath.row];
-    ctrl.isHelpTopic = indexPath.section == 0? NO: YES;
+    ctrl.isHelpTopic = [self isHelpTopic:NSLocalizedString(searchItem[HEADER_TITLE], @"")];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self presentViewController:ctrl animated:YES completion:nil];
     });
+}
+
+- (BOOL)isHelpTopic:(NSString *)title{
+    NSLog(@"title: %@", title);
+    if([title isEqualToString:@"Help Topics"]){
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark search delegate methods
@@ -159,7 +167,7 @@ static const int headerHeight = 40;
     for(NSDictionary *helpItem in self.helpItems){
         NSMutableArray *itemsArray = [NSMutableArray new];
         NSString *helpItemName = NSLocalizedString(helpItem[S_NAME], @"");
-        if([helpItemName isEqualToString:@"Support"]){
+        if([helpItemName isEqualToString:NSLocalizedString(@"Support", @"")]){
             continue;
         }
         for(NSDictionary *item in helpItem[ITEMS]){

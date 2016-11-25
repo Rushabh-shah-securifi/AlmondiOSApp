@@ -109,6 +109,10 @@ CGPoint tablePoint;
                    name:CONNECTION_STATUS_CHANGE_NOTIFIER
                  object:nil];
     
+    [center addObserver:self
+               selector:@selector(onAlmondNameDidChange:)
+                   name:kSFIDidChangeAlmondName
+                 object:nil];
 }
 
 -(void)markAlmondTitle{
@@ -130,10 +134,13 @@ CGPoint tablePoint;
 }
 
 -(void)setUpNavBar{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.navigationController.navigationBar.translucent = NO;
     
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add_almond_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddBtnTap:)];
-    self.navigationItem.rightBarButtonItem = addButton;
+    if(toolkit.currentAlmond){
+        UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add_almond_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddBtnTap:)];
+        self.navigationItem.rightBarButtonItem = addButton;
+    }
 }
 
 #pragma mark - Table view data source
@@ -356,6 +363,37 @@ CGPoint tablePoint;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
+}
+
+- (void)onAlmondNameDidChange:(id)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
+        SFIAlmondPlus *obj = (SFIAlmondPlus *) [data valueForKey:@"data"];
+        if ([self isSameAsCurrentMAC:obj.almondplusMAC]) {
+            [self markAlmondTitle];
+        }
+    });
+}
+
+- (BOOL)isSameAsCurrentMAC:(NSString *)aMac {
+    if (aMac == nil) {
+        return NO;
+    }
+    
+    NSString *current = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
+    if (current == nil) {
+        return NO;
+    }
+    
+    return [current isEqualToString:aMac];
 }
 
 

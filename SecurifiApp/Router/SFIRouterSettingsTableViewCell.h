@@ -17,6 +17,6 @@
 @property(weak) id <SFIRouterTableViewActions> delegate;
 @property(nonatomic) SFIWirelessSetting *wirelessSetting;
 @property(nonatomic) BOOL enableRouterWirelessControl;
-@property(nonatomic)BOOL isREMode;
+@property(nonatomic) NSString *mode;
 
 @end

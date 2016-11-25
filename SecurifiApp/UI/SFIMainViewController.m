@@ -42,18 +42,6 @@ NetworkStatusIcon *statusIcon;
 }
 
 
-- (void)displayWebView:(NSString *)strForWebView{
-    NSLog(@"display web view main");
-    //this might slow down the app, perhaps you can think of better
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero];
-        webView.backgroundColor = [UIColor clearColor];
-        [webView loadHTMLString:strForWebView baseURL:nil];
-        [self.view addSubview:webView];
-    });
-}
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -107,7 +95,6 @@ NetworkStatusIcon *statusIcon;
         });
     }
     //adding this so that loading webviews for help screens does not cause any problem.
-    [self displayWebView:@""];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

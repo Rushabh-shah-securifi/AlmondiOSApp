@@ -18,7 +18,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self showHelp];
 //    [self testWebView];
     // Do any additional setup after loading the view.
@@ -129,14 +128,14 @@
                                "<h4>%@</h4>"
                                "<ol type=\"1\"><li>%@</li><li>%@</li><li>%@</li></ol>"
                                "<h4>%@</h4>"
-                               "<ol type=\"1\"><li>%@</li><li>%@</li><li>%@</li></ol>"
+                               "<ol type=\"1\"><li>%@</li><li>%@</li><li>%@</li><li>%@</li></ol>"
                                "</body>"
                                "</html>", @"Avenir-Roman", [NSNumber numberWithInt:16], NSLocalizedString(@"dns_title",@""),
                                NSLocalizedString(@"dns_description",@""),
                                NSLocalizedString(@"dns_title_2",@""),
-                               NSLocalizedString(@"vpn_sub_description_1",@""),
-                               NSLocalizedString(@"vpn_sub_description_2",@""),
-                               NSLocalizedString(@"vpn_sub_description_3",@""),
+                               NSLocalizedString(@"dns_sub_descr_1",@""),
+                               NSLocalizedString(@"dns_sub_descr_2",@""),
+                               NSLocalizedString(@"dns_sub_descr_3",@""),
                                NSLocalizedString(@"dns_title_3",@""),
                                NSLocalizedString(@"dns_plus_sub_descr_1",@""),
                                NSLocalizedString(@"dns_plus_sub_descr_2",@""),
@@ -195,7 +194,7 @@
 
 - (void)displayWebView:(NSString *)strForWebView{
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-60)];
+        UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
         webView.backgroundColor = [UIColor clearColor];
         
         NSString *path = [[NSBundle mainBundle] bundlePath];

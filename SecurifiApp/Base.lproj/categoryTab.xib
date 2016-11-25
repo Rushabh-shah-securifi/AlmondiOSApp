@@ -26,7 +26,7 @@
                 <outlet property="moreClickView" destination="238-Ai-OW8" id="ZMe-91-E3v"/>
                 <outlet property="moreViewDetail" destination="WfX-4G-tX9" id="tcg-B8-y1D"/>
                 <outlet property="moreViewHeader" destination="KsZ-Ds-aeW" id="lHq-NC-p7r"/>
-                <outlet property="parentalControlMoreVie" destination="Cbd-eE-QpO" id="AFp-yI-bEA"/>
+                <outlet property="parentalControlMoreVie" destination="Cbd-eE-QpO" id="ozZ-BT-PSt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -299,7 +299,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="lds-Bd-aGo" firstAttribute="top" secondItem="238-Ai-OW8" secondAttribute="top" constant="12" id="CoZ-xe-R57"/>
                 <constraint firstAttribute="trailing" secondItem="KsZ-Ds-aeW" secondAttribute="trailing" constant="-17" id="ECR-cm-4NU"/>
@@ -362,7 +362,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Abn-WF-bOK" secondAttribute="trailing" constant="30" id="3yf-Um-UcA"/>
                 <constraint firstItem="McK-oA-6Dz" firstAttribute="top" secondItem="Cbd-eE-QpO" secondAttribute="top" constant="12" id="49H-wL-how"/>

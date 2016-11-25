@@ -19,7 +19,6 @@
 #import "Colours.h"
 #import "SFINotificationStatusBarButtonItem.h"
 #import "CommonMethods.h"
-#import "UILabel+ActionSheet.h"
 #import "UIFont+Securifi.h"
 #import "SWRevealViewController.h"
 #import "HelpScreens.h"
@@ -146,6 +145,7 @@
 
 -(void)tryShowLoadingData{
     if([self isDeviceListEmpty] && [self isClientListEmpty] && self.toolkit.currentAlmond != nil && ![self isDisconnected] && [self isFirmwareCompatible]){
+        NSLog(@"tryShowLoadingDevice");
         [self showHudWithTimeoutMsg:@"Loading Data..." delay:8];
     }
 }

@@ -16,7 +16,7 @@
 #define TITLE @"title"
 #define IS_EXPANDED @"is_expanded"
 
-static const int headerHeight = 80;
+static const int headerHeight = 180;
 
 @interface AdvanceRouterSettingsController ()
 @property (nonatomic) NSMutableArray *advRouterFeatuesArray;
@@ -26,7 +26,7 @@ static const int headerHeight = 80;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"Advanced Features";
+    self.navigationItem.title = NSLocalizedString(@"Advanced_Features", @"");
     [self initializeAdvRouterFeaturesArray];
     NSLog(@"router array: %@", self.advRouterFeatuesArray);
  
@@ -76,8 +76,8 @@ static const int headerHeight = 80;
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, headerHeight)];
         headerView.backgroundColor = [UIColor whiteColor];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, headerHeight-1)];
+        [CommonMethods setLableProperties:label text:NSLocalizedString(@"adv_feature_alert", @"") textColor:[UIColor blackColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentCenter];
 
-        [CommonMethods setLableProperties:label text:@"At this time these advanced features are only available via Almond's local Web UI.\n\n You can find the credentials to access this web UI in the Web Admin section of the Status app on the Almond LCD." textColor:[UIColor blackColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentCenter];
         [headerView addSubview:label];
         [CommonMethods addLineSeperator:headerView yPos:headerView.frame.size.height-1];
         return headerView;
@@ -101,9 +101,9 @@ static const int headerHeight = 80;
     
     if([routerFeature[IS_EXPANDED] boolValue]){
         if(indexPath.row == 1)
-            [cell setFeatureSubTitle:@"Open"];
+            [cell setFeatureSubTitle:NSLocalizedString(@"open", @"")];
         else
-            [cell setFeatureSubTitle:@"Learn More"];
+            [cell setFeatureSubTitle:NSLocalizedString(@"learn_more", @"")];
     }
     return cell;
 }
@@ -111,6 +111,7 @@ static const int headerHeight = 80;
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     AdvRouterHelpController *ctrl = [AdvRouterHelpController new];
     ctrl.helpType = indexPath.section;
+    self.navigationController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:ctrl animated:YES];
     return;
     
