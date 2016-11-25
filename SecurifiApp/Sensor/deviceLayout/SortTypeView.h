@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@protocol SortTypeViewDelegate <NSObject>
+-(void)onTypeSelection:(id)sender;
+@end
 @interface SortTypeView : UIView
-
+@property (nonatomic) NSDictionary *sortTypeDict;
+@property (nonatomic)id<SortTypeViewDelegate> delegate;
+-(id)initWithFrame:(CGRect)frame sortType:(NSDictionary *)sortTypeDict buttonTag:(NSInteger)buttonTag;
 @end

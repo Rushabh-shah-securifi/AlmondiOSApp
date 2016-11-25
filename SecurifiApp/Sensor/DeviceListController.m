@@ -327,25 +327,39 @@ int mii;
     
     if(btn.tag == 0){
         filterList = [NSArray arrayWithObjects:@"All",@"Visible",@"Hidden", nil];
-        sortType = @{@"Name":@"filter_list_black",
-                     @"Type":@"filter_list_black",
-                     @"Location":@"filter_list_black",
-                     @"Emergency" : @"filter_list_black"};
-        
-    }
+        sortType = @{@"1":@{@"image":@"sort_by_alpha_icon",
+                            @"name" : @"Name"},
+                     @"2":@{@"image":@"fan_icon_64px",
+                            @"name" : @"Type"},
+                     @"3":@{@"image":@"loation_icon",
+                            @"name" : @"Location"},
+                     @"4":@{@"image":@"emergency_icon",
+                            @"name" : @"Emergency"}
+                     };
+            }
     else{
         filterList = [NSArray arrayWithObjects:@"All",@"Visible",@"Hidden",@"Active",@"Inactive",@"Blocked", nil];
-        sortType = @{@"Name":@"filter_list_black",
-                     @"Type":@"filter_list_black",
-                     @"Activity":@"filter_list_black",
-                     @"Data Usage" : @"filter_list_black"};
+        sortType = @{@"1":@{@"image":@"sort_by_alpha_icon",
+                            @"name" : @"Name"},
+                     @"2":@{@"image":@"fan_icon_64px",
+                            @"name" : @"Type"},
+                     @"3":@{@"image":@"activity_icon_64px",
+                            @"name" : @"Activity"},
+                     @"4":@{@"image":@"data_usage_icon",
+                            @"name" : @"Data Usage"}
+                     };
+        
     }
     SortView *view = [SortView new];
     view.methodsDelegate = self;
-    [view initializeView:self.buttonMaskView.frame:filterList SortType:sortType];
+
+    [view initializeView:self.buttonMaskView.frame filterList:filterList SortType:sortType titletext:(btn.tag == 0)?@"Smart Home Devices":@"Network Devices" selectedFilter:@"Visible"];
     [self.buttonMaskView addSubview:view];
     [self slideAnimation];
 
+}
+-(void)onAlmondSelectedDelegate:(NSString *)filter andPattnNum:(NSInteger)number{
+    NSLog(@"filter %@ and NumberPos %ld",filter,number);
 }
 -(void)slideAnimation{
     CATransition *transition = [CATransition animation];

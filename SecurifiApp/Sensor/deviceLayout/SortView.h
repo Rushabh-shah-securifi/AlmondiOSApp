@@ -11,9 +11,9 @@
 @protocol SortViewDelegate <NSObject>
 - (void)onCloseBtnTapDelegate;
 - (void)onAddAlmondTapDelegate;
-- (void)onAlmondSelectedDelegate:(SFIAlmondPlus *)almond;
+- (void)onAlmondSelectedDelegate:(NSString *)filter andPattnNum:(NSInteger)number;
 @end
 @interface SortView : UITableView
 @property (nonatomic, weak)id<SortViewDelegate> methodsDelegate;
-- (void)initializeView:(CGRect)maskFrame:(NSArray *)filterList SortType:(NSDictionary *)dict;
+- (void)initializeView:(CGRect)maskFrame filterList:(NSArray *)filterList SortType:(NSDictionary *)dict titletext:(NSString *)title selectedFilter:(NSString *)selectedFilter;
 @end

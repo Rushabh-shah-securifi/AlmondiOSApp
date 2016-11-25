@@ -10,6 +10,7 @@
 #import "AlmondSelectionCell.h"
 #import "CommonMethods.h"
 #import "SFIColors.h"
+#import "Colours.h"
 #import "SortTypeView.h"
 #import "UIFont+Securifi.h"
 
@@ -17,10 +18,12 @@
 static const int rowHeight = 40;
 static const int headerHt = 100;
 static const int footerHt = 130;
-@interface SortView()<UITableViewDelegate, UITableViewDataSource>
+@interface SortView()<UITableViewDelegate, UITableViewDataSource,SortTypeViewDelegate>
 @property (nonatomic)NSArray *almondList;
 @property (nonatomic)NSArray *filterList;
 @property (nonatomic)NSDictionary *sortDict;
+@property (nonatomic) NSString *titletext;
+@property (nonatomic) NSString *selectedFilter;
 @end
 
 
@@ -32,11 +35,13 @@ static const int footerHt = 130;
  // Drawing code
  }
  */
-- (void)initializeView:(CGRect)maskFrame:(NSArray *)filterList SortType:(NSDictionary *)dict{
+- (void)initializeView:(CGRect)maskFrame filterList:(NSArray *)filterList SortType:(NSDictionary *)dict titletext:(NSString *)title selectedFilter:(NSString *)selectedFilter{
     self.dataSource = self;
     self.delegate = self;
     self.sortDict = dict;
     self.filterList = filterList;
+    self.titletext = title;
+    self.selectedFilter = selectedFilter;
     
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.bounces = NO;
@@ -51,11 +56,11 @@ static const int footerHt = 130;
     if([self hasNoAlmond])
         return headerHt+footerHt+40+10;
     
-    if(self.almondList.count >= 4)
+    if(self.filterList.count >= 4)
         return 400;
     
     int baseHt = headerHt + footerHt;
-    int rowsHt = self.almondList.count *rowHeight;
+    int rowsHt = self.filterList.count *rowHeight;
     return baseHt +rowsHt + 10;
 }
 
@@ -85,7 +90,7 @@ static const int footerHt = 130;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self hasNoAlmond]? 1: self.almondList.count;
+    return [self hasNoAlmond]? 1: self.filterList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -101,8 +106,8 @@ static const int footerHt = 130;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    SFIAlmondPlus *almond = self.almondList[indexPath.row];
-    [cell setUpCell:almond.almondplusName isCurrent:[self isCurrentAlmond:almond.almondplusMAC]];
+    NSString *almond = self.filterList[indexPath.row];
+    [cell setUpCell:almond isCurrent:[self.selectedFilter isEqualToString:almond]];
     return cell;
 }
 
@@ -124,11 +129,12 @@ static const int footerHt = 130;
         return;
     
     //if the selected almond is same don't do anything.
-    SFIAlmondPlus *almond = self.almondList[indexPath.row];
+    NSString *filter = self.filterList[indexPath.row];
     //if([self isCurrentAlmond:almond.almondplusMAC])
     //  return;
-    
-    [self.methodsDelegate onAlmondSelectedDelegate:self.almondList[indexPath.row]];
+    [self.methodsDelegate onAlmondSelectedDelegate:self.filterList[indexPath.row] andPattnNum:indexPath.row];
+    self.selectedFilter = self.filterList[indexPath.row];
+    [tableView reloadData];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -157,13 +163,13 @@ static const int footerHt = 130;
     
     UILabel *selectAlmond = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 150, 40)];
     selectAlmond.center = CGPointMake(headerView.bounds.size.width/2, selectAlmond.center.y);
-    [CommonMethods setLableProperties:selectAlmond text:@"Select Almond" textColor:[UIColor blackColor] fontName:@"Avenir-Heavy" fontSize:18 alignment:NSTextAlignmentCenter];
+    [CommonMethods setLableProperties:selectAlmond text:self.titletext textColor:[UIColor blackColor] fontName:@"Avenir-Heavy" fontSize:18 alignment:NSTextAlignmentCenter];
     [headerView addSubview:selectAlmond];
     
     [CommonMethods addLineSeperator:headerBgView yPos:49];
     
     UILabel *quickFilterLbl = [[UILabel alloc]initWithFrame:CGRectMake(0, 50, self.frame.size.width, 40)];
-    [CommonMethods setLabelProperties:quickFilterLbl title:@"Quick Filters" titleColor:[UIColor grayColor] bgColor:[UIColor lightGrayColor] font:[UIFont securifiFont:15]];
+    [CommonMethods setLabelProperties:quickFilterLbl title:@"  Quick Filters" titleColor:[UIColor grayColor] bgColor:[UIColor colorFromHexString:@"eeeeee"] font:[UIFont securifiFont:15]];
     
     [headerBgView addSubview:quickFilterLbl];
     
@@ -183,14 +189,16 @@ static const int footerHt = 130;
     
     [CommonMethods addLineSeperator:footerView yPos:0];
     UILabel *quickFilterLbl = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, 40)];
-    [CommonMethods setLabelProperties:quickFilterLbl title:@"Sort By" titleColor:[UIColor grayColor] bgColor:[UIColor lightGrayColor] font:[UIFont securifiFont:15]];
+    [CommonMethods setLabelProperties:quickFilterLbl title:@"  Sort By" titleColor:[UIColor grayColor] bgColor:[UIColor colorFromHexString:@"eeeeee"] font:[UIFont securifiFont:15]];
     
     [footerView addSubview:quickFilterLbl];
-    NSLog(@"footer view height  = %f",footerView.frame.size.height);
+    
     [CommonMethods addLineSeperator:footerView yPos:40];
     for (int i = 0; i<4; i++) {
-        SortTypeView *view = [[SortTypeView alloc]initWithFrame:CGRectMake(0 + (i * (int)(self.frame.size.width/4)), 40, self.frame.size.width /4 , 90)];
+        SortTypeView *view = [[SortTypeView alloc]initWithFrame:CGRectMake(0 + (i * (int)(self.frame.size.width/4)), 40, self.frame.size.width /4 , 90) sortType:[self.sortDict valueForKey:@(i+1).stringValue] buttonTag:i];
+        view.delegate = self;
         [footerView addSubview:view];
+        
         NSLog(@"view i = %d added",i * (int)self.frame.size.width/4);
     }
     

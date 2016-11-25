@@ -7,27 +7,41 @@
 //
 
 #import "SortTypeView.h"
+#import "CommonMethods.h"
+#import "Colours.h"
+#import "UIFont+Securifi.h"
 
 @implementation SortTypeView
 
--(id)initWithFrame:(CGRect)frame{
+-(id)initWithFrame:(CGRect)frame sortType:(NSDictionary *)sortTypeDict buttonTag:(NSInteger)buttonTag {
     self = [super initWithFrame:frame];
     if(self){
-        [self imageButtonViews];
+        self.sortTypeDict = sortTypeDict;
+        [self imageButtonViews:buttonTag];
     }
     return self;
 }
--(void)imageButtonViews{
+-(void)imageButtonViews:(NSInteger )buttonTag{
     UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    button.tag = buttonTag;
+    [button addTarget:self action:@selector(onButtonTap:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button];
-    button.backgroundColor = [UIColor greenColor];
-    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 10, 60, 60)];
+    
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 12, 45, 45)];
 //    imageView.center = self.center;
     imageView.center = CGPointMake(CGRectGetMidX(self.bounds), imageView.center.y);
-    imageView.image = [UIImage imageNamed:@"filter_list_black"];
+    NSLog(@"self.sortTypeDict %@",self.sortTypeDict);
+    imageView.image = [CommonMethods imageNamed:[self.sortTypeDict valueForKey:@"image"] withColor:[UIColor colorFromHexString:@"929292"]];
+    
     [self addSubview:imageView];
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, self.frame.size.height - 20, self.frame.size.width, 20)];
-    label.backgroundColor = [UIColor redColor];
+    label.textColor = [UIColor colorFromHexString:@"929292"];
+    label.text = [self.sortTypeDict valueForKey:@"name"];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.font = [UIFont securifiFont:14];
     [self addSubview:label];
+}
+-(void)onButtonTap:(id)sender{
+    [self.delegate onTypeSelection:sender];
 }
 @end
