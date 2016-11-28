@@ -936,11 +936,15 @@ int mii;
          }
          else if([commandType  isEqualToString:@"Rai2UpMobile"]){
              if(self.isAlmDetailView){
-                 NSDictionary *slaveDict = self.routerSummary.almondsList[_almCount];
-                 [MeshPayload requestSlaveDetails:mii
-                                  slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]
-                                        almondMac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
-
+                 if(self.almCount == 0){
+                     MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupViewController" isStatView:YES];
+                     [self presentController:[AlmondStatus getMasterAlmondStatus:self.routerSummary] ctrl:ctrl];
+                 }else{
+                     NSDictionary *slaveDict = self.routerSummary.almondsList[_almCount];
+                     [MeshPayload requestSlaveDetails:mii
+                                      slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]
+                                            almondMac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
+                 }
              }else{
                  MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupAdding" isStatView:NO];
                  dispatch_async(dispatch_get_main_queue(), ^{
@@ -982,27 +986,27 @@ int mii;
  -(void)onAlmondTapDelegate:(int)almondCount{
      NSLog(@"onAlmondTapDelegate");
      //master - straight forward assemble data and send
-     if(almondCount == 0){
-         MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupViewController" isStatView:YES];
-         [self presentController:[AlmondStatus getMasterAlmondStatus:self.routerSummary] ctrl:ctrl];
-     }else{
-         self.isAlmDetailView = YES;
-         self.almCount = almondCount;
-         
-         
-         if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local)
-             [[SecurifiToolkit sharedInstance] connectMesh];
-         else{
+     self.isAlmDetailView = YES;
+     self.almCount = almondCount;
+     
+     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local)
+         [[SecurifiToolkit sharedInstance] connectMesh];
+     else{
+         if(almondCount == 0){
+             MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupViewController" isStatView:YES];
+             [self presentController:[AlmondStatus getMasterAlmondStatus:self.routerSummary] ctrl:ctrl];
+         }else{
              NSDictionary *slaveDict = self.routerSummary.almondsList[almondCount];
              [MeshPayload requestSlaveDetails:mii
                               slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]
                                     almondMac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
+             
          }
-         
-         dispatch_async(dispatch_get_main_queue(), ^{
-             [self showHudWithTimeout:@"Requesting...Please Wait!"];
-         });
      }
+     
+     dispatch_async(dispatch_get_main_queue(), ^{
+         [self showHudWithTimeout:@"Requesting...Please Wait!"];
+     });
  }
 
 -(MeshSetupViewController *)getMeshController:(NSString *)identifier isStatView:(BOOL)isStatView{
