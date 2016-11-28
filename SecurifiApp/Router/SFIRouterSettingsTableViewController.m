@@ -134,7 +134,7 @@ int mii;
 
     cell.cardView.backgroundColor = setting.enabled ? [[SFIColors blueColor] color] : [UIColor lightGrayColor];
     cell.wirelessSetting = setting;
-    cell.enableRouterWirelessControl = self.enableRouterWirelessControl;
+    cell.hasSlaves = self.hasSlaves;
     cell.mode = self.mode;
     cell.delegate = self;
 

@@ -613,7 +613,9 @@ int mii;
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     NSString *failureReason;
-    if ([[data valueForKey:@"success"] boolValue] == NO) {
+    NSLog(@"validate payload: %@", data);
+    BOOL isSuccessful = [data[@"success"] boolValue];
+    if (isSuccessful == NO) {
         failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
         [self showToast:failureReason];
     }

@@ -767,12 +767,12 @@ int mii;
                     //                    ctrl.title = self.navigationItem.title;
                     ctrl.wirelessSettings = settings;
                     ctrl.almondMac = self.almondMac;
-                    BOOL enableSwitch = YES;
+                    BOOL hasSlaves = NO;
                     if([self isAL3]){
                         if(self.routerSummary.almondsList.count > 1)//has slaves
-                            enableSwitch = NO;
+                            hasSlaves = YES;
                     }
-                    ctrl.enableRouterWirelessControl = enableSwitch;
+                    ctrl.hasSlaves = hasSlaves;
                     ctrl.mode = _routerSummary.routerMode;
                     ctrl.firmware = self.routerSummary.firmwareVersion;
                     ctrl.hidesBottomBarWhenPushed = YES;

@@ -40,7 +40,7 @@
 
     [cardView addTopBorder:self.backgroundColor];
     NSLog(@"ssid: %@, mode: %@", setting.ssid, self.mode);
-    if([self isInREMode] || [self isGuestAndAP] || !self.enableRouterWirelessControl){
+    if([self isInREMode] || [self isGuestAndAP] || [self hasSlavesAndNotGuest]){
         [cardView addTitleAndShare:setting.ssid target:self shareAction:@selector(onShareBtnTap:) on:setting.enabled];
     }
     else{
@@ -55,24 +55,7 @@
         [cardView addNameLabel:NSLocalizedString(@"router.settings.label.SSID", @"SSID") valueTextField:setting.ssid delegate:self tag:0];
     }
     [cardView addShortLine];
-    
-    
-    
-    /*
-     if (self.enableRouterWirelessControl && ![self isInREMode]) {
-        [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactivate:) shareAction:@selector(onShareBtnTap:) on:setting.enabled];
-    }
-    else {
-        [cardView addTitleAndShare:setting.ssid target:self shareAction:@selector(onShareBtnTap:)];
-    }
-    [cardView addLine];
-    NSLog(@"ssid: %@, mode: %@", setting.ssid, self.mode);
-    if(setting.enabled && ![self isInREMode])
-        [cardView addNameLabel:NSLocalizedString(@"router.settings.label.SSID", @"SSID") valueTextField:setting.ssid delegate:self tag:0];
-    else
-        [cardView addNameLabel:NSLocalizedString(@"router.settings.label.SSID", @"SSID") valueLabel:setting.ssid];
-    [cardView addShortLine];
-    */
+
     [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Channel", @"Channel") valueLabel:[NSString stringWithFormat:@"%d", setting.channel]];
     [cardView addShortLine];
     [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Wireless Mode", @"Wireless Mode") valueLabel:setting.wirelessMode];
@@ -97,6 +80,10 @@
 
 -(BOOL)isGuestAndAP{
     return [self.wirelessSetting.type.lowercaseString hasPrefix:@"guest"] && [self isInAPMode];
+}
+
+-(BOOL)hasSlavesAndNotGuest{
+    return self.hasSlaves && ![self.wirelessSetting.type.lowercaseString hasPrefix:@"guest"];
 }
 
 #pragma mark - UISwitch actions
