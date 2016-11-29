@@ -250,6 +250,36 @@ UIAlertView *alert;
     }
 }
 
+- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView{//other button  -> save
+    if(alertView.tag == kAlertViewSave)
+        return ([[[alertView textFieldAtIndex:0] text] length]>0)?YES:NO;
+    return YES;
+}
+
+#pragma mark uitextfield delegate methods
+-(BOOL) textFieldShouldReturn:(UITextField *)textField{
+    self.isDone = NO;
+    [textField resignFirstResponder];
+    [alert dismissWithClickedButtonIndex:nil animated:YES];
+    return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    
+    if(range.location == 0 && [string isEqualToString:@" "]){
+        // Returning no here to restrict whitespace as first char
+        return NO;
+    }
+    
+    if (textField.text.length >= 32 && range.length == 0){
+        return NO; // return NO to not change text
+    }
+    else{
+        return YES;
+    }
+}
+
+#pragma mark action methods
 - (void)onTabBarDidChange:(id)sender{
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
@@ -259,23 +289,10 @@ UIAlertView *alert;
     
 }
 
-
 - (IBAction)btnBackTap:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(BOOL) textFieldShouldReturn:(UITextField *)textField{
-    self.isDone = NO;
-    [textField resignFirstResponder];
-    [alert dismissWithClickedButtonIndex:nil animated:YES];
-    return YES;
-}
-
-- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView{//other button  -> save
-    if(alertView.tag == kAlertViewSave)
-        return ([[[alertView textFieldAtIndex:0] text] length]>0)?YES:NO;
-    return YES;
-}
 
 -(void)sendAddSceneCommand{
     //HUd methods.....
