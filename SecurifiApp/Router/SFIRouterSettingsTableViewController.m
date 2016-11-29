@@ -77,7 +77,7 @@ int mii;
     [super viewWillDisappear:animated];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self];
-    [self hideHUD];
+//    [self hideHUD];
 }
 
 - (void)initializeNotifications {

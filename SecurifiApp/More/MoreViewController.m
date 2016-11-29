@@ -83,6 +83,8 @@
                selector:@selector(onAlmondListDidChange:)
                    name:kSFIDidUpdateAlmondList
                  object:nil];
+    
+    [center addObserver:self selector:@selector(onLogoutResponse:) name:kSFIDidLogoutNotification object:nil];
 }
 
 - (void)sendUserProfileRequest {
@@ -271,6 +273,7 @@
     }
 }
 
+#pragma mark action methods
 - (void)gotoReviews{
     NSLog(@"gotoReviews");
     NSString *str;
@@ -351,6 +354,13 @@
     NSLog(@"onLogoutTapDelegate");
     //disabled button touch in storyboard
     //moved code to did select row
+}
+
+- (void)onLogoutResponse:(id)sender {
+    //dismissing controller code is in mainviewcontroller
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 -(void)onLogoutAllTapDelegate{
