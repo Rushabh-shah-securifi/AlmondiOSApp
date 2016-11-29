@@ -186,6 +186,10 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if(self.emailID == textField && range.location == 0 && [string isEqualToString:@" "]){
+        // Returning no here to restrict whitespace as first char
+        return NO;
+    }
     NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
 
     UITextField *other;

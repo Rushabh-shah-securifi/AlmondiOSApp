@@ -265,7 +265,7 @@ UIAlertView *alert;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    
+    NSLog(@"rlocation: %d, length: %d", range.location, range.length);
     if(range.location == 0 && [string isEqualToString:@" "]){
         // Returning no here to restrict whitespace as first char
         return NO;
