@@ -707,7 +707,7 @@
         case SFICloudStatusStateAlmondOffline: {
             Title = NSLocalizedString(@"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection.", @"Cloud connection to your Almond failed. Tap retry or switch to local connection.");
             subTitle1 = NSLocalizedString(@"switch_local", @"Switch to Local Connection");
-            subTitle2 = NSLocalizedString(@"switch_cloud", @"Switch to Cloud Connection");
+            subTitle2 = NSLocalizedString(@"Alert view title-Retry Cloud Connection", @"");
             [self onConnection2:Title subTitle1:subTitle1 subTitle2:subTitle2 stmt1:SFIAlmondConnectionMode_local stmt2:SFIAlmondConnectionMode_cloud];
             break;
         };
