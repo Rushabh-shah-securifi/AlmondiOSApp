@@ -663,9 +663,9 @@
         }
         else if([reason.lowercaseString hasPrefix:@"unable to"]){
             if(self.wirelessBtn.selected)
-                msg = [NSString stringWithFormat:@"Unable to reach %@. Check for loose wired connections between your Almonds and try again!", self.almondNormalName];
-            else
                 msg = [NSString stringWithFormat:@"Unable to reach %@. Bring it closer to your primary Almond and try again!", self.almondNormalName];
+            else
+                msg = [NSString stringWithFormat:@"Unable to reach %@. Check for loose wired connections between your Almonds and try again!", self.almondNormalName];
             
             [self showAlert:self.almondNormalName msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
         }
