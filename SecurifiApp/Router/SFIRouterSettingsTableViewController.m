@@ -198,7 +198,9 @@ int mii;
             if(((NSArray *)genericRouterCommand.command).count == 0)//only for al3, when slave is offline
                 [self showToast:@"Sorry! Please try after some time."];
             else{
-                [self shareWiFi:self.currentSetting.ssid password:[self getPassword:genericRouterCommand]];
+                NSString *password = [self getPassword:genericRouterCommand];
+                if(password.length != 0 && password != nil)
+                    [self shareWiFi:self.currentSetting.ssid password:[self getPassword:genericRouterCommand]];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
@@ -248,7 +250,8 @@ int mii;
             encryptedPass = setting.password;
         }
     }
-    
+    if(encryptedPass == nil || encryptedPass.length == 0)
+        return @"";
     NSData *payload = [[NSData alloc] initWithBase64EncodedString:encryptedPass options:NSDataBase64DecodingIgnoreUnknownCharacters];
     return [payload securifiDecryptPasswordForAlmond:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC almondUptime:genericCmd.uptime];
 }
