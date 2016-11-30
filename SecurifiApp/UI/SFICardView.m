@@ -370,7 +370,7 @@
 
 - (UIButton *)makeShareLinkButton:(id)target action:(SEL)action{
     CGFloat width = CGRectGetWidth(self.frame);
-    CGRect frame = CGRectMake(width - 160, self.baseYCoordinate, 80, 31);
+    CGRect frame = CGRectMake(width - 110, self.baseYCoordinate, 40, 31);
     
     //button
     UIButton *btn = [[UIButton alloc] initWithFrame:frame];
@@ -381,22 +381,23 @@
     //image
     UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 0, 20, 20)];
     imgView.contentMode = UIViewContentModeScaleAspectFit;
+//    imgView.backgroundColor = [UIColor yellowColor];
     
     UIImage *image = [UIImage imageNamed:@"share"];
     imgView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [imgView setTintColor:[UIColor whiteColor]];
     
-    imgView.center = CGPointMake(CGRectGetMidX(imgView.bounds), CGRectGetMidY(btn.bounds));
+    imgView.center = CGPointMake(CGRectGetMidX(btn.bounds), CGRectGetMidY(btn.bounds));
     [btn addSubview:imgView];
     
     //label
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, 50, 25)];
-    [CommonMethods setLableProperties:label text:@"Share" textColor:[UIColor whiteColor] fontName:@"AvenirLTStd-Bold" fontSize:20 alignment:NSTextAlignmentCenter];
-    label.center = CGPointMake(CGRectGetMidX(label.frame), CGRectGetMidY(btn.bounds));
+//    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, 50, 25)];
+//    [CommonMethods setLableProperties:label text:@"Share" textColor:[UIColor whiteColor] fontName:@"AvenirLTStd-Bold" fontSize:20 alignment:NSTextAlignmentCenter];
+//    label.center = CGPointMake(CGRectGetMidX(label.frame), CGRectGetMidY(btn.bounds));
 //    label.backgroundColor = [UIColor orangeColor];
     
     [btn addSubview:imgView];
-    [btn addSubview:label];
+//    [btn addSubview:label];
     
     return btn;
 }
@@ -443,7 +444,7 @@
     label.text = title;
     label.textAlignment = alignment;
     label.numberOfLines = lineCount;
-
+//    label.backgroundColor = [UIColor orangeColor];
     return label;
 }
 
@@ -469,7 +470,7 @@
     else if(rightOffset == SFICardView_right_offset_inset)
         return 75;
     else
-        return 75 + 100;
+        return 75 + 50;
 }
 
 /*

@@ -35,7 +35,7 @@ static const int headerHeight = 180;
 
 - (void)initializeAdvRouterFeaturesArray{
     //This was coded for expansion of sections on tap. Now with new changes it is not needed, but anyways I am keeping the code for possible changes in future.
-    NSArray *titles = @[@"VPN", @"Port Forwarding", @"DNS", @"Static IP Settings", @"UPnP"];
+    NSArray *titles = @[@"Port Forwarding", @"DNS", @"Static IP Settings", @"UPnP"];
     self.advRouterFeatuesArray = [NSMutableArray new];
     for(NSString *title in titles){
         NSMutableDictionary *muDict = [NSMutableDictionary new];

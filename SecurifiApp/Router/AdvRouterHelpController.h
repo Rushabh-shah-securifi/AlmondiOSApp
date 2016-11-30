@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 typedef NS_ENUM(NSInteger, Feature){
-    Feature_Vpn = 0,
+//    Feature_Vpn = 0,
     Feature_Port_Forwarding,
     Feature_DNS,
     Feature_Static_IP_Settings,
