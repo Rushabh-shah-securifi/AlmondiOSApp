@@ -179,6 +179,12 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    
+    if(range.location == 0 && [string isEqualToString:@" "]){
+        // Returning no here to restrict whitespace as first char
+        return NO;
+    }
+    
     if (textField.text.length >= 32 && range.length == 0){
         return NO; // return NO to not change text
     }

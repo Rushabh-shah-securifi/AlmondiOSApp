@@ -34,6 +34,8 @@
 
 @implementation SFIMainViewController
 NetworkStatusIcon *statusIcon;
+
+
 #pragma mark - View Lifecycle
 
 - (void)dealloc {
@@ -44,12 +46,7 @@ NetworkStatusIcon *statusIcon;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
     self.view.backgroundColor = [UIColor whiteColor];
-    [self displaySplashImage];
-    
-    //    [self.imgSplash removeFromSuperview];
-    //    self.imgSplash = nil;
     
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     _HUD.dimBackground = YES;
@@ -60,22 +57,11 @@ NetworkStatusIcon *statusIcon;
     tabCtrl.tabBar.tintColor = [UIColor blackColor];
     tabCtrl.delegate = self;
     
-    //    DrawerViewController *drawer = [DrawerViewController new];
-    
-    //    SWRevealViewController *ctrl = [[SWRevealViewController alloc] initWithRearViewController:drawer frontViewController:tabCtrl];
-    //    ctrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    //
+   
     [tabCtrl willMoveToParentViewController:self];
     [self addChildViewController:tabCtrl];
     [self.view addSubview:tabCtrl.view];
-    //    [self.view bringSubviewToFront:ctrl.view];
     [tabCtrl didMoveToParentViewController:self];
-    
-    // Activate gestures in Reveal; must be done after it has been set up
-    //    [ctrl panGestureRecognizer];
-    //    [ctrl tapGestureRecognizer];
-    //
-    //    ctrl.panGestureRecognizer.delegate = self;
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onConnectionStatusChanged:) name:CONNECTION_STATUS_CHANGE_NOTIFIER object:nil];
@@ -87,14 +73,7 @@ NetworkStatusIcon *statusIcon;
     [center addObserver:self selector:@selector(onPresentAccounts) name:UI_ON_PRESENT_ACCOUNTS object:nil];
     [center addObserver:self selector:@selector(onDidFailToRegisterForNotifications) name:kSFIDidFailToRegisterForNotifications object:nil];
     [center addObserver:self selector:@selector(onDidFailToDeregisterForNotifications) name:kSFIDidFailToDeregisterForNotifications object:nil];
-    
-    // At app startup, be sure to show logon when the app is in Cloud connection mode and has no logon credentials
-    if (![KeyChainAccess hasLoginCredentials]) {
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self tryPresentLogonScreen];
-        });
-    }
-    //adding this so that loading webviews for help screens does not cause any problem.
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -106,57 +85,33 @@ NetworkStatusIcon *statusIcon;
         return;
     }
 
-    [self conditionalTryConnectOrLogon:YES];
+    [self conditionalTryConnectOrLogon];
 }
 
 #pragma mark - Connection Management
 
-- (void)conditionalTryConnectOrLogon:(BOOL)onViewAppearing {
+- (void)conditionalTryConnectOrLogon {
+    
     NSLog(@"conditionalTryConnectOrLogon");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    
-    NSLog(@"i am called");
-    // for apps not using local connection support: we preserve the old behavior of showing a splash screen until the
-    // cloud connection is established.
-    const BOOL supportsLocalConnections = toolkit.configuration.enableLocalNetworking;
-    
-    if (!supportsLocalConnections && [toolkit isNetworkOnline]) {
-        // Already connected. Nothing to do.
-        NSLog(@"Cloud is on-line. returning");
-        return;
-    }
     
     // Try to connect iff we are the top-level presenting view and network is down
     if (self.presentedViewController != nil) {
         NSLog(@"presented view controller. returning");
         return;
     }
-    
-    if (!supportsLocalConnections && ![toolkit isCloudReachable]) {
-        // No network route to cloud. Nothing to do.
-        if (!onViewAppearing) {
-            // only show after first attempt fails
-            [self showToast:NSLocalizedString(@"Sorry! Unable to establish Internet route to cloud service.", @"Sorry! Unable to establish Internet route to cloud service.")];
-        }
-        
-        return;
-    }
-    
-    if (toolkit.currentAlmond==nil && ![KeyChainAccess hasLoginCredentials]) {
+  
+    if (![KeyChainAccess hasLoginCredentials]) {
         // If no logon credentials we just put up the screen and then handle connection from there.
         [self tryPresentLogonScreen];
         return;
     }
     
-    [self displaySplashImage];
-    
     // Else try to connect
-    if (onViewAppearing) {
-        self.HUD.labelText = NSLocalizedString(@"mainviewcontroller_Connecting. Please wait!", @"Connecting. Please wait!");
-        dispatch_async(dispatch_get_main_queue(), ^(){
-            [self.HUD show:YES];
-        });
-    }
+    self.HUD.labelText = NSLocalizedString(@"mainviewcontroller_Connecting. Please wait!", @"Connecting. Please wait!");
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self.HUD show:YES];
+    });
     
     [toolkit asyncInitNetwork];
 }
@@ -173,12 +128,6 @@ NetworkStatusIcon *statusIcon;
             });
         }
     }
-}
-
-- (void)displaySplashImage {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        self.imgSplash.image = nil;//[UIImage assetImageNamed:@"splash_image"];
-    });
 }
 
 

@@ -2229,6 +2229,21 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     return YES;
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    NSLog(@"rlocation: %d, length: %d", range.location, range.length);
+    if(range.location == 0 && [string isEqualToString:@" "]){
+        // Returning no here to restrict whitespace as first char
+        return NO;
+    }
+    
+    if (textField.text.length >= 32 && range.length == 0){
+        return NO; // return NO to not change text
+    }
+    else{
+        return YES;
+    }
+}
+
 - (void)firstNameTextFieldFinished:(UITextField *)tfName {
     DLog(@"tfName: %@", tfName.text);
     self.changedFirstName = tfName.text;

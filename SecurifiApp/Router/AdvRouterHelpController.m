@@ -35,9 +35,9 @@
 
 - (void)showHelp{
     switch (self.helpType) {
-        case Feature_Vpn:
-            [self showVpnHelp];
-            break;
+//        case Feature_Vpn:
+//            [self showVpnHelp];
+//            break;
         case Feature_Port_Forwarding:
             [self showPortForwardingHelp];
             break;
