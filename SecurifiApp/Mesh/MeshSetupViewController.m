@@ -380,7 +380,7 @@ int mii;
 }
 #pragma mark button tap
 - (IBAction)onRemoveThisAlmondTap:(id)sender { //this button is only enabled for slave
-    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"remove_almond_alert", @""), self.almondStatObj.name];
+    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"remove_almond_alert", @""), self.hasLocationTag?self.almondStatObj.location:self.almondStatObj.name];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"remove_almond", @"") message:msg delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
     alert.tag = REMOVE;
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -432,7 +432,7 @@ int mii;
 }
 
 -(void)showForceRemoveAlert{
-    NSString *title = [NSString stringWithFormat:NSLocalizedString(@"force_remove_almond", @""), self.almondStatObj.name];
+    NSString *title = [NSString stringWithFormat:NSLocalizedString(@"force_remove_almond", @""), self.hasLocationTag?self.almondStatObj.location:self.almondStatObj.name];
     NSString *desc = NSLocalizedString(@"manual_force_remove", @"");
     //not using showalert because this has other button title.
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:title message:desc delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
