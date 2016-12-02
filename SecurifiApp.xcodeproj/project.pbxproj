@@ -523,6 +523,16 @@
 		F46129F61DB76BC500EAD7F0 /* SliderComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */; };
 		F48CF1781DD0859500B44257 /* HelpSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48CF1771DD0859500B44257 /* HelpSearchTableViewController.m */; };
 		F48CF17F1DD0B75D00B44257 /* NSString+securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = F48CF17E1DD0B75D00B44257 /* NSString+securifi.m */; };
+		F492EA3B1DF009EC00FB3B76 /* ShippingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA301DF009EC00FB3B76 /* ShippingManager.m */; };
+		F492EA3C1DF009EC00FB3B76 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA321DF009EC00FB3B76 /* Constants.m */; };
+		F492EA3D1DF009EC00FB3B76 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA341DF009EC00FB3B76 /* AppDelegate.m */; };
+		F492EA3E1DF009EC00FB3B76 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA361DF009EC00FB3B76 /* ViewController.m */; };
+		F492EA3F1DF009EC00FB3B76 /* PaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA381DF009EC00FB3B76 /* PaymentViewController.m */; };
+		F492EA401DF009EC00FB3B76 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F492EA391DF009EC00FB3B76 /* Main.storyboard */; };
+		F492EA411DF009EC00FB3B76 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F492EA3A1DF009EC00FB3B76 /* Images.xcassets */; };
+		F492EA4B1DF0386E00FB3B76 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F492EA4A1DF0386E00FB3B76 /* PassKit.framework */; };
+		F492EA4E1DF158EA00FB3B76 /* SubscriptionPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA4D1DF158EA00FB3B76 /* SubscriptionPlansViewController.m */; };
+		F492EA4F1DF158EA00FB3B76 /* SubscriptionPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA4D1DF158EA00FB3B76 /* SubscriptionPlansViewController.m */; };
 		F4981E961DABCDB4003A53E6 /* MeshEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */; };
 		F4981E971DABCDB4003A53E6 /* MeshEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */; };
 		F4B875431D5382D500DCF76F /* AlmondStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B8753A1D5382D500DCF76F /* AlmondStatus.m */; };
@@ -1201,6 +1211,22 @@
 		F48CF1771DD0859500B44257 /* HelpSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpSearchTableViewController.m; sourceTree = "<group>"; };
 		F48CF17D1DD0B75D00B44257 /* NSString+securifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+securifi.h"; sourceTree = "<group>"; };
 		F48CF17E1DD0B75D00B44257 /* NSString+securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+securifi.m"; sourceTree = "<group>"; };
+		F492EA2F1DF009EC00FB3B76 /* ShippingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShippingManager.h; sourceTree = "<group>"; };
+		F492EA301DF009EC00FB3B76 /* ShippingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShippingManager.m; sourceTree = "<group>"; };
+		F492EA311DF009EC00FB3B76 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		F492EA321DF009EC00FB3B76 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		F492EA331DF009EC00FB3B76 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		F492EA341DF009EC00FB3B76 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		F492EA351DF009EC00FB3B76 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		F492EA361DF009EC00FB3B76 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		F492EA371DF009EC00FB3B76 /* PaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentViewController.h; sourceTree = "<group>"; };
+		F492EA381DF009EC00FB3B76 /* PaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentViewController.m; sourceTree = "<group>"; };
+		F492EA391DF009EC00FB3B76 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		F492EA3A1DF009EC00FB3B76 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		F492EA421DF00C6100FB3B76 /* libStripe.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libStripe.a; path = "../../../Library/Developer/Xcode/DerivedData/SecurifiApp-cpfewyvskyudqiadpcxujhevqunl/Build/Products/Debug-iphonesimulator/Stripe/libStripe.a"; sourceTree = "<group>"; };
+		F492EA4A1DF0386E00FB3B76 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
+		F492EA4C1DF158EA00FB3B76 /* SubscriptionPlansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubscriptionPlansViewController.h; sourceTree = "<group>"; };
+		F492EA4D1DF158EA00FB3B76 /* SubscriptionPlansViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscriptionPlansViewController.m; sourceTree = "<group>"; };
 		F4981E941DABCDB4003A53E6 /* MeshEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshEditViewController.h; sourceTree = "<group>"; };
 		F4981E951DABCDB4003A53E6 /* MeshEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeshEditViewController.m; sourceTree = "<group>"; };
 		F4B875391D5382D500DCF76F /* AlmondStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondStatus.h; sourceTree = "<group>"; };
@@ -1400,6 +1426,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F492EA4B1DF0386E00FB3B76 /* PassKit.framework in Frameworks */,
 				A569B8E71DBE41FF00FBD429 /* libicucore.tbd in Frameworks */,
 				1C996C781AB94E2800CB2C23 /* MessageUI.framework in Frameworks */,
 				1CA80E4C1BAFA4B1002EB836 /* libz.dylib in Frameworks */,
@@ -1847,6 +1874,8 @@
 		1CED5EF319AC82FD0023512F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F492EA4A1DF0386E00FB3B76 /* PassKit.framework */,
+				F492EA421DF00C6100FB3B76 /* libStripe.a */,
 				A569B8E51DBE416400FBD429 /* libicucore.tbd */,
 				1C0317291BB28EB6002E0405 /* libxml2.2.dylib */,
 				1C0317261BB28E8D002E0405 /* libSystem.B.dylib */,
@@ -2291,6 +2320,7 @@
 		CE40BF081D225791007C2148 /* SiteMap */ = {
 			isa = PBXGroup;
 			children = (
+				F492EA2E1DF009DB00FB3B76 /* StripeExample */,
 				CE7E89B41DC356CB00B0C3C6 /* DetailsPeriodViewController.h */,
 				CE7E89B51DC356CB00B0C3C6 /* DetailsPeriodViewController.m */,
 				CEABC65C1D6F14A900C2DCD4 /* ChangeCategoryViewController.h */,
@@ -2312,6 +2342,8 @@
 				CE57A3481D70591A00F14B25 /* ParentalControlsViewController.m */,
 				CE57A34A1D705B5300F14B25 /* ParentControlCell.h */,
 				CE57A34B1D705B5300F14B25 /* ParentControlCell.m */,
+				F492EA4C1DF158EA00FB3B76 /* SubscriptionPlansViewController.h */,
+				F492EA4D1DF158EA00FB3B76 /* SubscriptionPlansViewController.m */,
 			);
 			path = SiteMap;
 			sourceTree = "<group>";
@@ -2388,6 +2420,25 @@
 				F48CF17E1DD0B75D00B44257 /* NSString+securifi.m */,
 			);
 			path = Categories;
+			sourceTree = "<group>";
+		};
+		F492EA2E1DF009DB00FB3B76 /* StripeExample */ = {
+			isa = PBXGroup;
+			children = (
+				F492EA2F1DF009EC00FB3B76 /* ShippingManager.h */,
+				F492EA301DF009EC00FB3B76 /* ShippingManager.m */,
+				F492EA311DF009EC00FB3B76 /* Constants.h */,
+				F492EA321DF009EC00FB3B76 /* Constants.m */,
+				F492EA331DF009EC00FB3B76 /* AppDelegate.h */,
+				F492EA341DF009EC00FB3B76 /* AppDelegate.m */,
+				F492EA351DF009EC00FB3B76 /* ViewController.h */,
+				F492EA361DF009EC00FB3B76 /* ViewController.m */,
+				F492EA371DF009EC00FB3B76 /* PaymentViewController.h */,
+				F492EA381DF009EC00FB3B76 /* PaymentViewController.m */,
+				F492EA391DF009EC00FB3B76 /* Main.storyboard */,
+				F492EA3A1DF009EC00FB3B76 /* Images.xcassets */,
+			);
+			path = StripeExample;
 			sourceTree = "<group>";
 		};
 		F4B875381D5382D500DCF76F /* Mesh */ = {
@@ -2618,6 +2669,9 @@
 						DevelopmentTeam = R336EY8885;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.ApplePay = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
@@ -2628,6 +2682,9 @@
 								enabled = 0;
 							};
 							com.apple.InAppPurchase = {
+								enabled = 0;
+							};
+							com.apple.InterAppAudio = {
 								enabled = 0;
 							};
 							com.apple.Keychain = {
@@ -2841,6 +2898,7 @@
 				A58DB32F1BB16EAF00717C02 /* InfoPlist.strings in Resources */,
 				A58DB4731BB3CD5200717C02 /* termsofuse.html in Resources */,
 				A58DB2E61BB16B9F00717C02 /* Localizable.strings in Resources */,
+				F492EA411DF009EC00FB3B76 /* Images.xcassets in Resources */,
 				F4D633EA1DC217EE000BF076 /* h_dashboard_selectals.pdf in Resources */,
 				A58DB3131BB16B9F00717C02 /* Localizable.strings in Resources */,
 				A58DB3121BB16B9F00717C02 /* InfoPlist.strings in Resources */,
@@ -2949,6 +3007,7 @@
 				A58DB3001BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB2F71BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB30C1BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
+				F492EA401DF009EC00FB3B76 /* Main.storyboard in Resources */,
 				A58DB2ED1BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				F4D633E31DC217EE000BF076 /* add_sensor_zigbee_tab_pairing_mode.pdf in Resources */,
 				A58DB2E81BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
@@ -3219,6 +3278,7 @@
 				1DF0347975CABF8F74C4905D /* IndexValueSupport.m in Sources */,
 				F4B875481D5382D500DCF76F /* MeshSetupViewController.m in Sources */,
 				CEF6F4DF1C92CAD600C68975 /* CustomCellTableViewCell.m in Sources */,
+				F492EA4F1DF158EA00FB3B76 /* SubscriptionPlansViewController.m in Sources */,
 				F417B2AA1DA25D540073C440 /* AdvRouterTableViewCell.m in Sources */,
 				1DF03A2A9BFA55B20A1D2609 /* SensorIndexSupport.m in Sources */,
 				F4D93AF81D3F882300D55BD6 /* HelpItemsTableViewController.m in Sources */,
@@ -3298,6 +3358,7 @@
 				F4B876861D54653500DCF76F /* DeviceTableViewCell.m in Sources */,
 				1C7E7DBF1A41A0990026F0BA /* SFIColors.m in Sources */,
 				CE4DB3F61CEF340F00CBD6DE /* TriDimBtn.m in Sources */,
+				F492EA3C1DF009EC00FB3B76 /* Constants.m in Sources */,
 				8443277C1B763AD700BF2355 /* SFIScenesTableViewController.m in Sources */,
 				F4D93AF01D3F5C2500D55BD6 /* HelpCenterTableViewCell.m in Sources */,
 				1C7E7D891A41A0990026F0BA /* SFINotificationTableViewCell.m in Sources */,
@@ -3308,6 +3369,7 @@
 				F4B876881D54653500DCF76F /* GenericIndexValue.m in Sources */,
 				CEF6F4F61C92CAD600C68975 /* labelAndCheckButtonView.m in Sources */,
 				CEF6F5001C92CAD600C68975 /* SwitchButton.m in Sources */,
+				F492EA3E1DF009EC00FB3B76 /* ViewController.m in Sources */,
 				2A4C243B1D0FC412001191E8 /* SettingsViewController.m in Sources */,
 				1C7E7DC51A41A0990026F0BA /* SFIHighlightedButton.m in Sources */,
 				1C7E7D831A41A0990026F0BA /* SFILoginViewController.m in Sources */,
@@ -3338,12 +3400,14 @@
 				F4B876701D54653500DCF76F /* DeviceHeaderView.m in Sources */,
 				B017E87D1DE85EF800BC0DE8 /* AlmondSelectionTableView.m in Sources */,
 				1C7E7DA51A41A0990026F0BA /* SFIAccountsTableViewController.m in Sources */,
+				F492EA3D1DF009EC00FB3B76 /* AppDelegate.m in Sources */,
 				F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */,
 				846414CC1B736B36008AB07F /* ILView.m in Sources */,
 				1C7E7DC31A41A0990026F0BA /* SFICopyLabel.m in Sources */,
 				B017E87B1DE85EF800BC0DE8 /* AlmondSelectionCell.m in Sources */,
 				CEF6F4EC1C92CAD600C68975 /* RulesTableViewController.m in Sources */,
 				1C7E7D951A41A0990026F0BA /* SFIRouterTableViewController.m in Sources */,
+				F492EA3F1DF009EC00FB3B76 /* PaymentViewController.m in Sources */,
 				1C7E7E061A41A0B30026F0BA /* main.m in Sources */,
 				F417B2A51DA25CBD0073C440 /* AdvanceRouterSettingsController.m in Sources */,
 				F4B8766E1D54653500DCF76F /* BlinkLedView.m in Sources */,
@@ -3362,6 +3426,7 @@
 				F4B8767E1D54653500DCF76F /* Slider.m in Sources */,
 				1C7E7D851A41A0990026F0BA /* SFILogoutAllViewController.m in Sources */,
 				1C7E7D8F1A41A0990026F0BA /* SFIRouterReboot.m in Sources */,
+				F492EA3B1DF009EC00FB3B76 /* ShippingManager.m in Sources */,
 				CEABC65E1D6F14A900C2DCD4 /* ChangeCategoryViewController.m in Sources */,
 				846414CA1B736B36008AB07F /* ILColorPickerView.m in Sources */,
 				1DF031661E380BA4D0E0EB07 /* SFIPreferences.m in Sources */,
@@ -3412,6 +3477,7 @@
 				1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */,
 				F4EA082A1D6C551F00D6CC28 /* HelpViewController.m in Sources */,
 				1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */,
+				F492EA4E1DF158EA00FB3B76 /* SubscriptionPlansViewController.m in Sources */,
 				1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */,
 				CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */,
 				1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */,
@@ -5392,7 +5458,7 @@
 				CODE_SIGN_ENTITLEMENTS = Almond/Almond.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = R336EY8885;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PODS_ROOT)/CrashlyticsFramework\"",
@@ -5410,6 +5476,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.securifi.almond;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iostoolkit\"/** \"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iosapp/Pods\"/**";
 				WRAPPER_EXTENSION = app;
@@ -5425,7 +5492,7 @@
 				CODE_SIGN_ENTITLEMENTS = Almond/Almond.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = R336EY8885;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PODS_ROOT)/CrashlyticsFramework\"",
@@ -5443,6 +5510,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.securifi.almond;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iostoolkit\"/** \"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iosapp/Pods\"/**";
 				WRAPPER_EXTENSION = app;

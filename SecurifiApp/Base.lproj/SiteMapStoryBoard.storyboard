@@ -1052,6 +1052,20 @@
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Azt-zw-Qpi">
+                                <rect key="frame" x="100" y="530" width="174" height="30"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="174" id="14b-b8-Zd6"/>
+                                    <constraint firstAttribute="height" constant="30" id="SCH-ch-VKK"/>
+                                </constraints>
+                                <state key="normal" title="Launch payment">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="onLaunchPayment:" destination="UZa-lx-WzC" eventType="touchUpInside" id="snm-GZ-AqK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -1060,6 +1074,7 @@
                             <constraint firstItem="v2p-ao-Iay" firstAttribute="top" secondItem="8Jr-at-hHc" secondAttribute="bottom" constant="-1" id="CqI-xi-Sos"/>
                             <constraint firstItem="BE2-LU-neB" firstAttribute="top" secondItem="aOu-c1-KKi" secondAttribute="bottom" id="JZ2-wG-I0L"/>
                             <constraint firstItem="aOu-c1-KKi" firstAttribute="leading" secondItem="J7v-Za-zkb" secondAttribute="leading" id="JZz-Fk-Gw2"/>
+                            <constraint firstItem="8Jr-at-hHc" firstAttribute="top" secondItem="Azt-zw-Qpi" secondAttribute="bottom" constant="17" id="NgO-k2-LoP"/>
                             <constraint firstAttribute="trailing" secondItem="zfw-c8-Iej" secondAttribute="trailing" id="PYO-BD-Epo"/>
                             <constraint firstItem="zfw-c8-Iej" firstAttribute="top" secondItem="BE2-LU-neB" secondAttribute="bottom" constant="1" id="Rj1-sf-ULn"/>
                             <constraint firstItem="Z9o-Q6-obK" firstAttribute="leading" secondItem="J7v-Za-zkb" secondAttribute="leading" id="S56-7y-W0i"/>
@@ -1074,6 +1089,7 @@
                             <constraint firstAttribute="trailing" secondItem="Z9o-Q6-obK" secondAttribute="trailing" id="lGd-1U-koX"/>
                             <constraint firstItem="8Jr-at-hHc" firstAttribute="top" secondItem="sBr-FQ-b4o" secondAttribute="bottom" constant="-2" id="mqI-bJ-RnR"/>
                             <constraint firstAttribute="trailing" secondItem="8Jr-at-hHc" secondAttribute="trailing" id="njY-oi-nZm"/>
+                            <constraint firstItem="Azt-zw-Qpi" firstAttribute="centerX" secondItem="J7v-Za-zkb" secondAttribute="centerX" id="xxy-wN-Rwv"/>
                             <constraint firstItem="aOu-c1-KKi" firstAttribute="top" secondItem="J7v-Za-zkb" secondAttribute="top" id="z6f-UE-1Oj"/>
                         </constraints>
                     </view>

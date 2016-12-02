@@ -13,6 +13,9 @@
 #import "UIApplication+SecurifiNotifications.h"
 #import "NotificationAccessAndRefreshCommands.h"
 
+#import "Constants.h"
+#import <Stripe/Stripe.h>
+
 #define DEFAULT_GA_ID @"UA-52832244-2"
 #define DEFAULT_ASSETS_PREFIX_ID @"Almond"
 
@@ -169,6 +172,11 @@
     if (local) {
         [application securifiApplicationHandleUserDidTapNotification];
     }
+
+    if (StripePublishableKey) {
+        [Stripe setDefaultPublishableKey:StripePublishableKey];
+    }
+    [[STPPaymentConfiguration sharedConfiguration] setAppleMerchantIdentifier:@"merchant.com.almond.securifidev"];
 
     return YES;
 }

@@ -21,6 +21,7 @@ def shared_pods
 	pod 'V8HorizontalPickerView', '~> 1.0'
 	pod 'ActionSheetPicker-3.0'
     pod "GLCalendarView", "~> 1.0.0"
+	pod 'Stripe’
 end
 
 xcodeproj 'SecurifiApp.xcodeproj'

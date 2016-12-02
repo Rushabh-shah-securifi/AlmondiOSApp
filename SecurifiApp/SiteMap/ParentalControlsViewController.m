@@ -16,8 +16,8 @@
 #import "Analytics.h"
 #import "CommonMethods.h"
 #import "DetailsPeriodViewController.h"
-
 #import "BrowsingHistoryDataBase.h"
+#import "ViewController.h"
 
 @interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,NSURLConnectionDelegate,DetailsPeriodViewControllerDelegate,UIAlertViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (nonatomic) NSMutableArray *parentsControlArr;
@@ -191,9 +191,8 @@
     [dateformate setDateFormat:@"EEEE dd MMMM HH:mm"]; // Date formater
     NSString *str = [dateformate stringFromDate:date];
     self.lastSeen.text = [NSString stringWithFormat:@"last activated time %@",str];
-    
-    
 }
+
 //-(void) viewWillDisappear:(BOOL) animated
 //{
 //    [super viewWillDisappear:animated];
@@ -211,6 +210,15 @@
     self.blockClientTxt.hidden = YES;
     [self.navigationController setNavigationBarHidden:NO];
 }
+
+- (IBAction)onLaunchPayment:(id)sender {
+    NSLog(@"onLaunchPayment");
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+//    [self.navigationController pushViewController:viewController animated:YES];
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
