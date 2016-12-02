@@ -16,6 +16,8 @@
 #import "RulesTableViewController.h"
 #import "MBProgressHUD.h"
 #import "UIViewController+Securifi.h"
+#import "KeyChainAccess.h"
+#import "NotificationDeleteRegistrationRequest.h"
 
 #define USER_INVITE_ALERT               0
 
@@ -268,9 +270,55 @@
             //main view will catch the response.
             [self addHud:NSLocalizedString(@"logout_hud", @"")];
             [self showHudWithTimeout];
-            [[SecurifiToolkit sharedInstance] asyncSendLogout];
+            [self asyncSendLogout];
         }
     }
+}
+
+- (void)asyncSendLogout {
+    SecurifiToolkit* toolkit  = [SecurifiToolkit sharedInstance];
+    if (toolkit.isShutdown) {
+        DLog(@"SDK is shutdown. Returning.");
+        return;
+    }
+    
+    if (toolkit.isNetworkOnline) {
+        [self asyncRequestDeregisterForNotification];
+        
+        GenericCommand *cmd = [GenericCommand new];
+        cmd.commandType = CommandType_LOGOUT_COMMAND;
+        cmd.command = nil;
+        
+        [toolkit asyncSendToNetwork:cmd];
+    }
+    else {
+        // Not connected, so just purge on-device credentials and cache
+        [toolkit onLogoutResponse];
+    }
+}
+
+- (void)asyncRequestDeregisterForNotification {
+    SecurifiToolkit* toolkit = [SecurifiToolkit sharedInstance];
+    if (![KeyChainAccess isSecApnTokenRegistered]) {
+        NSLog(@"asyncRequestRegisterForNotification : no device token to deregister");
+        return;
+    }
+    
+    NSString *deviceToken = [KeyChainAccess secRegisteredApnToken];
+    if (deviceToken == nil) {
+        NSLog(@"asyncRequestRegisterForNotification : device toke is nil");
+        return;
+    }
+    
+    NotificationDeleteRegistrationRequest *req = [NotificationDeleteRegistrationRequest new];
+    req.regID = deviceToken;
+    req.platform = @"iOS";
+    
+    GenericCommand *cmd = [GenericCommand new];
+    cmd.commandType = CommandType_NOTIFICATION_DEREGISTRATION;
+    cmd.command = req;
+    
+    [toolkit asyncSendToNetwork:cmd];
 }
 
 #pragma mark action methods

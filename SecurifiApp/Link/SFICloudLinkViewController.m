@@ -12,6 +12,7 @@
 #import "UIFont+Securifi.h"
 #import "Analytics.h"
 #import "RouterNetworkSettingsEditor.h"
+#import "AffiliationUserRequest.h"
 
 #define AFFILIATION_CODE_MAX_LENGTH 6
 #define BUTTON_LINK_TAG 1
@@ -422,8 +423,31 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 }
 
 - (void)sendAffiliationRequest:(NSString *)linkCode {
-    [[SecurifiToolkit sharedInstance] asyncSendAlmondAffiliationRequest:linkCode];
+    [self asyncSendAlmondAffiliationRequest:linkCode];
 }
+
+- (sfi_id)asyncSendAlmondAffiliationRequest:(NSString *)linkCode {
+    if (!linkCode) {
+        return 0;
+    }
+    NSLog(@"i am called");
+    // ensure we are in the correct connection mode
+    //[self setConnectionMode:SFIAlmondConnectionMode_cloud forAlmond:self.currentAlmond];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setInteger:SFIAlmondConnectionMode_cloud forKey:kPREF_DEFAULT_CONNECTION_MODE];
+    
+    AffiliationUserRequest *request = [[AffiliationUserRequest alloc] init];
+    request.Code = linkCode;
+    
+    GenericCommand *cmd = [GenericCommand new];
+    cmd.commandType = CommandType_AFFILIATION_CODE_REQUEST;
+    cmd.command = request;
+    
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cmd];
+    
+    return request.correlationId;
+}
+
 
 #pragma mark - RouterNetworkSettingsEditorDelegate methods
 

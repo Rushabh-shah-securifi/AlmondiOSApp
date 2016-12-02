@@ -252,6 +252,13 @@
     });
 }
 
+- (sfi_id)asyncUpdateAlmondWirelessSettings:(NSString *)almondMAC wirelessSettings:(SFIWirelessSetting *)settings {
+    GenericCommand *cmd = [GenericCommand cloudUpdateWirelessSettings:settings almondMac:almondMAC];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cmd];
+    return cmd.correlationId;
+}
+
+
 - (void)showUpdatingSettingsHUD {
     [self showHUD:NSLocalizedString(@"hud.Updating settings...", @"Updating settings...")];
 }

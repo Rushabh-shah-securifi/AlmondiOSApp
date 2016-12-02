@@ -12,7 +12,6 @@
 #import "SFILoginViewController.h"
 #import "SFILogoutAllViewController.h"
 #import "SWRevealViewController.h"
-#import "DrawerViewController.h"
 #import "SFIAccountsTableViewController.h"
 #import "UIViewController+Securifi.h"
 #import "Analytics.h"

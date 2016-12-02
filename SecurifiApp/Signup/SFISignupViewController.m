@@ -481,8 +481,13 @@
 }
 
 - (void)sendReactivationRequest {
-    [[SecurifiToolkit sharedInstance] asyncSendValidateCloudAccount:self.emailID.text];
-}
+    NSString *email = self.emailID;
+    if (email.length == 0) {
+        return;
+    }
+    
+    HTTPRequest *request = [HTTPRequest new];
+    [request sendAsyncHTTPRequestResendActivationLink:email];}
 
 - (void)onValidateResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;

@@ -11,6 +11,7 @@
 #import "iToast.h"
 #import "UIFont+Securifi.h"
 #import "Analytics.h"
+#import "DeleteAccountRequest.h"
 
 static NSString *simpleTableIdentifier = @"AccountCell";
 
@@ -1583,7 +1584,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
     [[SecurifiToolkit sharedInstance] asyncRequestDeleteCloudAccount:password];
 }
-
 
 - (void)delAccountResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;

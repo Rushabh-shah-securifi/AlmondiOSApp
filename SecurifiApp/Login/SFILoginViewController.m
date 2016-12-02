@@ -475,31 +475,9 @@
     NSString *email = self.emailID.text;
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [self asyncRequestResetCloudPassword:email];
+    [[SecurifiToolkit sharedInstance] asyncRequestResetCloudPassword:email];
 }
 
-- (void)asyncRequestResetCloudPassword:(NSString *)email {
-    if (email.length == 0) {
-        return;
-    }
-    
-    ResetPasswordRequest *req = [ResetPasswordRequest new];
-    req.email = email;
-    
-    GenericCommand *cmd = [[GenericCommand alloc] init];
-    cmd.commandType = CommandType_RESET_PASSWORD_REQUEST;
-    cmd.command = req;
-    
-    // make sure cloud connection is set up
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    NSLog(@"i am called");
-    [toolkit tearDownLoginSession];
-    [KeyChainAccess setSecEmail:email];
-    
-    HTTPRequest *request = [HTTPRequest new];
-    [request sendAsyncHTTPResetPasswordRequest:email];
-    
-}
 
 - (void)onResetPasswordResponse:(id)sender {
     [self hideHud];
@@ -551,7 +529,12 @@
     [self showHudWithTimeout:10];
 
     NSString *email = self.emailID.text;
-    [[SecurifiToolkit sharedInstance] asyncSendValidateCloudAccount:email];
+    if (email.length == 0) {
+        return;
+    }
+    
+    HTTPRequest *request = [HTTPRequest new];
+    [request sendAsyncHTTPRequestResendActivationLink:email];
 }
 
 - (void)onValidateResponseCallback:(id)sender {

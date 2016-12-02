@@ -8,6 +8,7 @@
 
 #import "SFIPasswordChangeViewController.h"
 #import "MBProgressHUD.h"
+#import "ChangePasswordRequest.h"
 
 @interface SFIPasswordChangeViewController ()
 @property(nonatomic) UITextField *activeTextField;
@@ -154,6 +155,7 @@
     NSString *newPwd = self.changedPassword.text;
     [[SecurifiToolkit sharedInstance] asyncRequestChangeCloudPassword:oldPwd changedPwd:newPwd];
 }
+
 
 - (void)userPasswordChangeResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;

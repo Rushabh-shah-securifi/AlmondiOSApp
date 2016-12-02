@@ -31,6 +31,8 @@
 #import "LocalNetworkManagement.h"
 #import "NotificationAccessAndRefreshCommands.h"
 #import "NetworkStatusIcon.h"
+#import "Network.h"
+#import "NetworkState.h"
 
 
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate, NetworkStatusIconDelegate>{
@@ -431,7 +433,7 @@
         return;
     if(self.toolkit.currentAlmond != nil){
         [self showHudWithTimeoutMsg:NSLocalizedString(@"mode_home_progress", @"Setting Almond to home mode.") delay:5];
-        [_toolkit asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:SFIAlmondMode_home];
+        [self asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:SFIAlmondMode_home];
     }
 }
 
@@ -440,8 +442,33 @@
         return;
     if(self.toolkit.currentAlmond != nil){
         [self showHudWithTimeoutMsg:NSLocalizedString(@"mode_away_progress", @"Setting Almond to away mode.") delay:5];
-        [_toolkit asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:SFIAlmondMode_away];
+        [self asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:SFIAlmondMode_away];
     }
+}
+
+- (sfi_id)asyncRequestAlmondModeChange:(NSString *)almondMac mode:(SFIAlmondMode)newMode {
+    
+    SecurifiToolkit* toolkit = [SecurifiToolkit sharedInstance];
+    if (almondMac == nil) {
+        NSLog(@"asyncRequestAlmondModeChange : almond MAC is nil");
+        return 0;
+    }
+    
+    NSString *userId = [toolkit loginEmail];
+    // A closure that will be invoked whne the command is submitted for processing and that
+    // will store the requested almond mode for future reference. When a positive response is
+    // received, the new mode will be confirmed and locked in.
+    NetworkPrecondition precondition = ^BOOL(Network *aNetwork, GenericCommand *aCmd) {
+        [aNetwork.networkState markPendingModeForAlmond:almondMac mode:newMode];
+        return YES;
+    };
+    
+    GenericCommand *cmd = [GenericCommand changeAlmondMode:newMode userId:userId almondMac:almondMac];
+    cmd.networkPrecondition = precondition;
+    
+    [toolkit asyncSendToNetwork:cmd ];
+    
+    return cmd.correlationId;
 }
 
 - (void)notificationAction:(id)sender {

@@ -31,6 +31,7 @@
 #import "ParentalControlsViewController.h"
 #import "RecentSearchDB.h"
 #import "ConnectionStatus.h"
+#import "HTTPRequest.h"
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -607,7 +608,12 @@ int mii;
 
 - (void)sendReactivationRequest {
     NSString *email = [[SecurifiToolkit sharedInstance] loginEmail];
-    [[SecurifiToolkit sharedInstance] asyncSendValidateCloudAccount:email];
+    if (email.length == 0) {
+        return;
+    }
+    
+    HTTPRequest *request = [HTTPRequest new];
+    [request sendAsyncHTTPRequestResendActivationLink:email];
 }
 
 - (void)validateResponseCallback:(id)sender {

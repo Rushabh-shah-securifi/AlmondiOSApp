@@ -59,8 +59,6 @@
 		1C7E7DAC1A41A0990026F0BA /* SFIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D291A41A0990026F0BA /* SFIAppDelegate.m */; };
 		1C7E7DAD1A41A0990026F0BA /* SFISignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D2C1A41A0990026F0BA /* SFISignupViewController.m */; };
 		1C7E7DAE1A41A0990026F0BA /* SFISignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D2C1A41A0990026F0BA /* SFISignupViewController.m */; };
-		1C7E7DAF1A41A0990026F0BA /* DrawerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D2F1A41A0990026F0BA /* DrawerViewController.m */; };
-		1C7E7DB01A41A0990026F0BA /* DrawerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D2F1A41A0990026F0BA /* DrawerViewController.m */; };
 		1C7E7DB91A41A0990026F0BA /* SFICardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D351A41A0990026F0BA /* SFICardTableViewCell.m */; };
 		1C7E7DBA1A41A0990026F0BA /* SFICardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D351A41A0990026F0BA /* SFICardTableViewCell.m */; };
 		1C7E7DBB1A41A0990026F0BA /* SFICardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D371A41A0990026F0BA /* SFICardView.m */; };
@@ -723,8 +721,6 @@
 		1C7E7D291A41A0990026F0BA /* SFIAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIAppDelegate.m; sourceTree = "<group>"; };
 		1C7E7D2B1A41A0990026F0BA /* SFISignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISignupViewController.h; sourceTree = "<group>"; };
 		1C7E7D2C1A41A0990026F0BA /* SFISignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISignupViewController.m; sourceTree = "<group>"; };
-		1C7E7D2E1A41A0990026F0BA /* DrawerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawerViewController.h; sourceTree = "<group>"; };
-		1C7E7D2F1A41A0990026F0BA /* DrawerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawerViewController.m; sourceTree = "<group>"; };
 		1C7E7D341A41A0990026F0BA /* SFICardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICardTableViewCell.h; sourceTree = "<group>"; };
 		1C7E7D351A41A0990026F0BA /* SFICardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICardTableViewCell.m; sourceTree = "<group>"; };
 		1C7E7D361A41A0990026F0BA /* SFICardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICardView.h; sourceTree = "<group>"; };
@@ -1649,10 +1645,8 @@
 				F401B0721D2D241200F64CE2 /* ColorComponentView.m */,
 				F46129F31DB76BC500EAD7F0 /* SliderComponentView.h */,
 				F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */,
-				1C7E7D2E1A41A0990026F0BA /* DrawerViewController.h */,
 				CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */,
 				CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */,
-				1C7E7D2F1A41A0990026F0BA /* DrawerViewController.m */,
 				1C7E7D341A41A0990026F0BA /* SFICardTableViewCell.h */,
 				1C7E7D351A41A0990026F0BA /* SFICardTableViewCell.m */,
 				1C7E7D361A41A0990026F0BA /* SFICardView.h */,
@@ -3231,7 +3225,6 @@
 				1C7E7D8E1A41A0990026F0BA /* SFIRouterDevicesTableViewCell.m in Sources */,
 				F4B8767D1D54653500DCF76F /* MultiButtonView.m in Sources */,
 				1C7E7DC01A41A0990026F0BA /* SFIColors.m in Sources */,
-				1C7E7DB01A41A0990026F0BA /* DrawerViewController.m in Sources */,
 				F4B8768B1D54653500DCF76F /* GenericParams.m in Sources */,
 				1C7E7DC21A41A0990026F0BA /* SFIConstants.m in Sources */,
 				1C7E7D901A41A0990026F0BA /* SFIRouterReboot.m in Sources */,
@@ -3363,7 +3356,6 @@
 				F4D93AF01D3F5C2500D55BD6 /* HelpCenterTableViewCell.m in Sources */,
 				1C7E7D891A41A0990026F0BA /* SFINotificationTableViewCell.m in Sources */,
 				CE3EDAF21D4742EC00C153A6 /* BrowsingHistoryViewController.m in Sources */,
-				1C7E7DAF1A41A0990026F0BA /* DrawerViewController.m in Sources */,
 				1C7E7D871A41A0990026F0BA /* SFINotificationsViewController.m in Sources */,
 				846414CB1B736B36008AB07F /* ILSaturationBrightnessPickerView.m in Sources */,
 				F4B876881D54653500DCF76F /* GenericIndexValue.m in Sources */,

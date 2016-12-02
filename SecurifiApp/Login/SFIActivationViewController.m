@@ -7,6 +7,7 @@
 //
 
 #import "SFIActivationViewController.h"
+#import "HTTPRequest.h"
 
 
 @implementation SFIActivationViewController
@@ -45,7 +46,13 @@
 #pragma mark - Cloud command and handlers
 
 - (void)sendReactivationRequest {
-    [[SecurifiToolkit sharedInstance] asyncSendValidateCloudAccount:self.emailID];
+    NSString *email = self.emailID;
+    if (email.length == 0) {
+        return;
+    }
+    
+    HTTPRequest *request = [HTTPRequest new];
+    [request sendAsyncHTTPRequestResendActivationLink:email];
 }
 
 - (void)validateResponseCallback:(id)sender {

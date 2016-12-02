@@ -23,6 +23,7 @@ PODS:
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
+  - Stripe (8.0.7)
   - SWRevealViewController (2.3.0)
   - UIImage-ResizeMagick (0.0.1)
   - V8HorizontalPickerView (1.0.0)
@@ -40,6 +41,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 0.9)
   - PureLayout
   - SDWebImage
+  - Stripe
   - SWRevealViewController (~> 2.3)
   - UIImage-ResizeMagick
   - V8HorizontalPickerView (~> 1.0)
@@ -57,10 +59,11 @@ SPEC CHECKSUMS:
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  Stripe: 2bb9646115745d0ee8c7799e6872c57ba5dc6cc5
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   UIImage-ResizeMagick: f08c2d14d1e8a5f0b402185408785540562f2fe7
   V8HorizontalPickerView: 6451e226ea7939c3499cefbbc0dcab85c941c28c
 
-PODFILE CHECKSUM: 5a8480ce714297f805ef07e147e3af81671f773a
+PODFILE CHECKSUM: b885fbc7c59512da701328ce70e2804f52322bb3
 
 COCOAPODS: 1.1.1
