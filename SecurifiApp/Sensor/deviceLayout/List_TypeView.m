@@ -38,12 +38,23 @@
     return self;
 }
 -(void)addSearchTextField{
-    self.searchtextField = [[UITextField alloc]initWithFrame:CGRectMake(5, 5, self.frame.size.width, 20)];
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 5, 20, 20)];
+    imageView.image  = [UIImage imageNamed:@"search_icon_white"];
+    [self addSubview:imageView];
+    imageView.alpha = 0.5;
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(20, 30, self.frame.size.width -30, 1)];
+    view.alpha = 0.5;
+    view.backgroundColor = [UIColor whiteColor];
+    [self addSubview:view];
+    self.searchtextField = [[UITextField alloc]initWithFrame:CGRectMake(50, 5, self.frame.size.width - 40, 25)];
     self.searchtextField.delegate = self;
     self.searchtextField.backgroundColor = self.color;
     self.searchtextField.textColor = [UIColor whiteColor];
+    
     self.searchtextField.font = [UIFont securifiFont:14];
-    self.searchtextField.placeholder = @"Search from here...";
+    self.searchtextField.placeholder = @" Search from here...";
+    UIColor *color = [UIColor whiteColor];
+    self.searchtextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Search from here..." attributes:@{NSForegroundColorAttributeName: color}];
     [self.searchtextField addTarget:self
                             action:@selector(editingChanged:)
                   forControlEvents:UIControlEventEditingChanged];
@@ -69,7 +80,7 @@
     NSLog(@"types %@",self.displayArray);
     self.selectedType = self.genericIndexValue.genericValue.value;
     NSLog(@" self.genericIndexValue.genericValue.value %@",self.genericIndexValue.genericValue.value);
-    self.tableType = [[UITableView alloc]initWithFrame:CGRectMake(0, 25, self.frame.size.width, self.frame.size.height - 150)];
+    self.tableType = [[UITableView alloc]initWithFrame:CGRectMake(0, 36, self.frame.size.width, self.frame.size.height - 160)];
     [self.tableType setDataSource:self];
     [self.tableType setDelegate:self];
     self.tableType.separatorStyle = UITableViewCellSeparatorStyleNone;
