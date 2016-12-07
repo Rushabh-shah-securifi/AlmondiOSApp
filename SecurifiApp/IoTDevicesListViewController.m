@@ -7,6 +7,7 @@
 //
 
 #import "IoTDevicesListViewController.h"
+#import "IoTDeviceViewController.h"
 #import "CommonMethods.h"
 #import "SFIColors.h"
 
@@ -92,7 +93,7 @@
     NSLog(@"view for header: %ld", (long)section);
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 25)];
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, tableView.frame.size.width, 18)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, tableView.frame.size.width, 18)];
     [label setFont:[UIFont boldSystemFontOfSize:14]];
     if (section >0) {
         UITableViewHeaderFooterView *foot = (UITableViewHeaderFooterView *)view;
@@ -109,6 +110,12 @@
     view.backgroundColor = [UIColor whiteColor];
     return view;
 }
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
+    NSLog(@"IoTDevicesListViewController IF");
+    [self.navigationController pushViewController:newWindow animated:YES];
+}
 - (IBAction)backButtonClicked:(id)sender {
+  [self.navigationController popViewControllerAnimated:YES];
 }
 @end
