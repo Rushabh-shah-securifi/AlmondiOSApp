@@ -36,6 +36,7 @@
 #import "AdvanceRouterSettingsController.h"
 #import "LocalNetworkManagement.h"
 #import "ConnectionStatus.h"
+#import "AlmondManagement.h"
 
 #define DEF_NETWORKING_SECTION          0
 #define DEF_MESH_SECTION                1
@@ -90,6 +91,7 @@ int mii;
     return self;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"router viewDidLoad");
@@ -108,6 +110,7 @@ int mii;
     
 }
 
+
 - (void)displayWebView:(NSString *)strForWebView{
     NSLog(@"display web view main");
     //this might slow down the app, perhaps you can think of better
@@ -118,6 +121,7 @@ int mii;
         [self.view addSubview:webView];
     });
 }
+
 
 - (void)viewWillAppear:(BOOL)animated {
     NSLog(@"router view will appear");
@@ -143,6 +147,7 @@ int mii;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     
@@ -165,7 +170,6 @@ int mii;
 }
 
 - (void)initializeAlmondData {
-    
     [self markAlmondTitleAndMac];
     // Reset New Version checking state and view
     self.newAlmondFirmwareVersionAvailable = NO;
@@ -184,7 +188,7 @@ int mii;
 
 -(void)markAlmondTitleAndMac{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    SFIAlmondPlus *plus = [AlmondManagement currentAlmond];
     
     self.currentAlmond = plus;
     if (plus == nil) {
@@ -206,8 +210,8 @@ int mii;
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark HUD mgt
 
+#pragma mark HUD mgt
 - (void)showHudWithTimeoutFirmwareMsg:(NSString*)hudMsg {
     //NSLog(@"showHudWithTimeoutMsg");
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -215,6 +219,7 @@ int mii;
         [self.HUD hide:YES afterDelay:120];
     });
 }
+
 
 - (void)showHudWithTimeout:(NSString*)hudMsg {
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -225,7 +230,6 @@ int mii;
 
 
 #pragma mark - External Event handlers
-
 - (void)onCurrentAlmondChanged:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.shownHudOnce = NO;
@@ -241,7 +245,7 @@ int mii;
     NSLog(@"on almond list did change router");
     dispatch_async(dispatch_get_main_queue(), ^() {
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        SFIAlmondPlus *plus = [toolkit currentAlmond];
+        SFIAlmondPlus *plus = [AlmondManagement currentAlmond];
         NSLog(@"plus: %@", plus);
         
         [self markAlmondTitleAndMac];
@@ -250,8 +254,8 @@ int mii;
     });
 }
 
-#pragma mark - Refresh control methods
 
+#pragma mark - Refresh control methods
 // Pull down to refresh device values
 - (void)addRefreshControl {
     UIRefreshControl *refresh = [UIRefreshControl new];
@@ -260,6 +264,7 @@ int mii;
     [refresh addTarget:self action:@selector(onRefreshRouter:) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresh;
 }
+
 
 - (void)onRefreshRouter:(id)sender {
     if ([self isNoAlmondLoaded]) {
@@ -274,8 +279,8 @@ int mii;
     });
 }
 
-#pragma mark - Table view data source
 
+#pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if ([self isNotConnectedToCloud] || ![self isFirmwareCompatible]) {
         //NSLog(@"numberOfRowsInSection isNotConnectedToCloud");
@@ -294,11 +299,11 @@ int mii;
     return 1;
 }
 
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath; {
     if ([self isNotConnectedToCloud] || ![self isFirmwareCompatible]) {
         return 400;
     }
-    
     switch (indexPath.section) {
         case DEF_NETWORKING_SECTION:
             return networkingHeight;
@@ -502,7 +507,7 @@ int mii;
 -(NSArray*)getNetworkSummary{
     //NSLog(@"self.routersummery.url: %@", self.routerSummary.url);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC];
+    SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:[AlmondManagement currentAlmond].almondplusMAC];
     NSString *host;
     NSString *login;
     if(self.currentConnectionMode == SFIAlmondConnectionMode_local){
@@ -745,7 +750,7 @@ int mii;
                 
                 if(self.currentConnectionMode == SFIAlmondConnectionMode_cloud){ //Do only in Cloud
                     NSLog(@"updating local network settings");
-                    [LocalNetworkManagement tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:self.routerSummary];
+                    [LocalNetworkManagement tryUpdateLocalNetworkSettingsForAlmond:[AlmondManagement currentAlmond].almondplusMAC withRouterSummary:self.routerSummary];
                     NSString *currentVersion = self.routerSummary.firmwareVersion;
                     [self tryCheckAlmondVersion:currentVersion];
                 }
@@ -942,7 +947,7 @@ int mii;
                      NSDictionary *slaveDict = self.routerSummary.almondsList[_almCount];
                      [MeshPayload requestSlaveDetails:mii
                                       slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]
-                                            almondMac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
+                                            almondMac:[AlmondManagement currentAlmond].almondplusMAC];
                  }
              }else{
                  MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupAdding" isStatView:NO];
@@ -998,7 +1003,7 @@ int mii;
              NSDictionary *slaveDict = self.routerSummary.almondsList[almondCount];
              [MeshPayload requestSlaveDetails:mii
                               slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]
-                                    almondMac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC];
+                                    almondMac:[AlmondManagement currentAlmond].almondplusMAC];
              
          }
      }
@@ -1032,7 +1037,7 @@ int mii;
     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local)
         [[SecurifiToolkit sharedInstance] connectMesh]; //this will at end point on connection estb. sends rai2up
     else
-        [[SecurifiToolkit sharedInstance] asyncSendToNetwork:[GenericCommand requestRai2UpMobile:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC]];
+        [[SecurifiToolkit sharedInstance] asyncSendToNetwork:[GenericCommand requestRai2UpMobile:[AlmondManagement currentAlmond].almondplusMAC]];
     
 }
 

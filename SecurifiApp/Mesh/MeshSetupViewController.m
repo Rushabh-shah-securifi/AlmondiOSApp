@@ -19,6 +19,7 @@
 #import "Analytics.h"
 #import "MeshEditViewController.h"
 #import "ConnectionStatus.h"
+#import "AlmondManagement.h"
 
 #define REMOVE 1
 #define FORCE_REMOVE 2
@@ -346,7 +347,7 @@ int mii;
 #pragma mark meshview delegates
 -(void)dismissControllerDelegate{
     if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_cloud)
-        [[SecurifiToolkit sharedInstance] asyncSendToNetwork:[GenericCommand requestRai2DownMobile:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC]];
+        [[SecurifiToolkit sharedInstance] asyncSendToNetwork:[GenericCommand requestRai2DownMobile:[AlmondManagement currentAlmond].almondplusMAC]];
     else
         [[SecurifiToolkit sharedInstance] shutDownMesh];
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -398,7 +399,7 @@ int mii;
     if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
         return;
     }
-    BOOL local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
+    BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
     NSDictionary *payload;
     if(local){
         payload = [dataInfo valueForKey:@"data"];

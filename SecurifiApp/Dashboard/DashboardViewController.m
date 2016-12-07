@@ -33,6 +33,7 @@
 #import "NetworkStatusIcon.h"
 #import "Network.h"
 #import "NetworkState.h"
+#import "AlmondManagement.h"
 
 
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate, NetworkStatusIconDelegate>{
@@ -54,6 +55,7 @@
 @property(nonatomic) UIButton *buttonMaskView;
 @property(nonatomic) NetworkStatusIcon *statusIcon;
 @end
+
 
 @implementation DashboardViewController
 - (void)viewDidLoad {
@@ -146,14 +148,14 @@
 }
 
 -(void)tryShowLoadingData{
-    if([self isDeviceListEmpty] && [self isClientListEmpty] && self.toolkit.currentAlmond != nil && ![self isDisconnected] && [self isFirmwareCompatible]){
+    if([self isDeviceListEmpty] && [self isClientListEmpty] && [AlmondManagement currentAlmond] != nil && ![self isDisconnected] && [self isFirmwareCompatible]){
         NSLog(@"tryShowLoadingDevice");
         [self showHudWithTimeoutMsg:@"Loading Data..." delay:8];
     }
 }
 
 -(BOOL)isFirmwareCompatible{
-    return [SFIAlmondPlus checkIfFirmwareIsCompatible:[SecurifiToolkit sharedInstance].currentAlmond];
+    return [SFIAlmondPlus checkIfFirmwareIsCompatible:[AlmondManagement currentAlmond]];
 }
 
 -(BOOL)isDisconnected{
@@ -208,6 +210,7 @@
     [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"away_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
     [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
     
+
     _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES isDashBoard:YES];
     
     _notificationButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(notificationAction:)];
@@ -238,6 +241,7 @@
     _HUD.delegate = self;
     [self.navigationController.view addSubview:_HUD];
 }
+
 
 -(void)updateMode:(int )mode{
     if (mode == 2) {
@@ -270,12 +274,12 @@
 
 -(void)updateDeviceClientListCountAndCurrentAlmond{
     NSLog(@"updateDeviceClientListCountAndCurrentAlmond");
-    if(self.toolkit.currentAlmond != nil)
+    if([AlmondManagement currentAlmond] != nil)
     {
         dispatch_async(dispatch_get_main_queue(), ^() {
-            //_labelAlmond.text = self.toolkit.currentAlmond.almondplusName ;
-            [self SelectAlmond:self.toolkit.currentAlmond.almondplusName];
-            [self.AddAlmond setTitle:self.toolkit.currentAlmond.almondplusName forState:UIControlStateNormal];
+            //_labelAlmond.text = [AlmondManagement currentAlmond].almondplusName ;
+            [self SelectAlmond:[AlmondManagement currentAlmond].almondplusName];
+            [self.AddAlmond setTitle:[AlmondManagement currentAlmond].almondplusName forState:UIControlStateNormal];
             self.smartHomeDevices.text = [NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.devices.count ];
             self.activeNetworkDevices.text =[NSString stringWithFormat:@"%d ",[Client activeClientCount] ];
             self.inactiveNetworkDevices.text = [NSString stringWithFormat: @"%lu", (unsigned long)[Client inactiveClientCount]];
@@ -312,7 +316,7 @@
             return;
         }
         SFIAlmondPlus *obj = (SFIAlmondPlus *) [data valueForKey:@"data"];
-        if ([self.toolkit.currentAlmond.almondplusMAC isEqualToString:obj.almondplusMAC]) {
+        if ([[AlmondManagement currentAlmond].almondplusMAC isEqualToString:obj.almondplusMAC]) {
             [self updateDeviceClientListCountAndCurrentAlmond];
         }
     });
@@ -320,10 +324,6 @@
 
 - (void)onCurrentAlmondChanged:(id)sender {
     NSLog(@"on Current almond changed");
-//    if(self.toolkit.devices!=nil)
-//        [self.toolkit.devices removeAllObjects];
-//    if(self.toolkit.clients!=nil)
-//        [self.toolkit.clients removeAllObjects];
     [self initializeUI];
     [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
     // getrecentnotification to instantly show onclick
@@ -402,7 +402,7 @@
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    BOOL local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
+    BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
     NSDictionary *payload;
     if(local)
         payload = [dataInfo valueForKey:@"data"];
@@ -431,18 +431,18 @@
 - (IBAction)homeMode:(id)sender {
     if(self.toolkit.mode_src == SFIAlmondMode_home)
         return;
-    if(self.toolkit.currentAlmond != nil){
+    if([AlmondManagement currentAlmond] != nil){
         [self showHudWithTimeoutMsg:NSLocalizedString(@"mode_home_progress", @"Setting Almond to home mode.") delay:5];
-        [self asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:SFIAlmondMode_home];
+        [self asyncRequestAlmondModeChange:[AlmondManagement currentAlmond].almondplusMAC mode:SFIAlmondMode_home];
     }
 }
 
 - (IBAction)homeawayMode:(id)sender {
     if(self.toolkit.mode_src == SFIAlmondMode_away)
         return;
-    if(self.toolkit.currentAlmond != nil){
+    if([AlmondManagement currentAlmond] != nil){
         [self showHudWithTimeoutMsg:NSLocalizedString(@"mode_away_progress", @"Setting Almond to away mode.") delay:5];
-        [self asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:SFIAlmondMode_away];
+        [self asyncRequestAlmondModeChange:[AlmondManagement currentAlmond].almondplusMAC mode:SFIAlmondMode_away];
     }
 }
 
@@ -487,8 +487,8 @@
 
 -(void )getRecentNotification{
     NSLog(@"getDeviceClientNotification");
-    self.deviceNotificationArr = [self.store fetchRecentNotifications:self.toolkit.currentAlmond.almondplusMAC isSensor:YES];
-    self.clientNotificationArr = [self.store fetchRecentNotifications:self.toolkit.currentAlmond.almondplusMAC isSensor:NO];
+    self.deviceNotificationArr = [self.store fetchRecentNotifications:[AlmondManagement currentAlmond].almondplusMAC isSensor:YES];
+    self.clientNotificationArr = [self.store fetchRecentNotifications:[AlmondManagement currentAlmond].almondplusMAC isSensor:NO];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.dashboardTable reloadData];
@@ -875,7 +875,7 @@
 -(void)onAlmondSelectedDelegate:(SFIAlmondPlus *)selectedAlmond{
     [self removeAlmondSelectionView];
     NSLog(@"i am called");
-    [[SecurifiToolkit sharedInstance] setCurrentAlmond:selectedAlmond];
+    [AlmondManagement setCurrentAlmond:selectedAlmond];
 }
 
 -(void)removeAlmondSelectionView{

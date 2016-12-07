@@ -21,6 +21,7 @@
 #import "HTTPRequest.h"
 #import "ConnectionStatus.h"
 #import "UIViewController+Securifi.h"
+#import "AlmondManagement.h"
 
 @interface SFILoginViewController () <UITextFieldDelegate, RouterNetworkSettingsEditorDelegate, SFISignupViewControllerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -60,17 +61,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSLog(@"login view will appear");
-    //[[SecurifiToolkit sharedInstance] initializeHelpScreenUserDefaults];
-    
     self.emailID.delegate = self;
     self.password.delegate = self;
-
     [self tryEnableLostPwdButton];
     [self tryEnableLoginButton];
-
     [self setStandardLoginMsg];
-
+    
     switch (self.mode) {
         case SFILoginViewControllerMode_localLinkOption:
             break;
@@ -88,20 +84,17 @@
 
             self.localActionLabel.text = NSLocalizedString(@"LoginViewController Did not receive any email?",@"Did not receive any email?");
             [self.localActionButton setTitle:NSLocalizedString(@"LoginViewController Resend Activation Link",@"Resend Activation Link") forState:UIControlStateNormal];
-
             break;
         }
     }
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-
     [center addObserver:self selector:@selector(onConnectionStatusChanged:) name:CONNECTION_STATUS_CHANGE_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onResetPasswordResponse:) name:RESET_PWD_RESPONSE_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onValidateResponseCallback:) name:VALIDATE_RESPONSE_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onLoginResponse:) name:kSFIDidCompleteLoginNotification object:nil];
     [center addObserver:self selector:@selector(onKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [center addObserver:self selector:@selector(onKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-
     [center postNotificationName:LOGIN_PAGE_NOTIFIER object:nil];
     [[Analytics sharedInstance] markLoginForm];
 }
@@ -254,6 +247,7 @@
     [self presentViewController:navCtrl animated:YES completion:nil];
 }
 
+
 - (IBAction)onAddLocalAlmond:(id)sender {
     enum SFILoginViewControllerMode mode = self.mode;
     switch (mode) {
@@ -269,9 +263,8 @@
             break;
         }
         case SFILoginViewControllerMode_switchToLocalConnection: {
-            NSLog(@"i am called");
             SecurifiToolkit* toolkit = [SecurifiToolkit sharedInstance];
-            toolkit.currentAlmond = toolkit.localLinkedAlmondList[0];
+            [AlmondManagement writeCurrentAlmond :[AlmondManagement currentAlmond]];
             [toolkit setConnectionMode:SFIAlmondConnectionMode_local];
             [self.delegate loginControllerDidCompleteLogin:self];
             break;

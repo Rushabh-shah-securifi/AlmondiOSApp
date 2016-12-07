@@ -13,6 +13,7 @@
 #import "MeshPayload.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "ConnectionStatus.h"
+#import "AlmondManagement.h"
 
 #define NETWORK_OFFLINE -1
 
@@ -191,7 +192,7 @@
     if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
         return;
     }
-    BOOL local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
+    BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
     NSDictionary *payload;
     if(local){
         payload = [dataInfo valueForKey:@"data"];
@@ -228,7 +229,7 @@
     NSDictionary *payload = [dataInfo valueForKey:@"data"];
     NSString *almondMAC = payload[ALMONDMAC];
     //{"CommandType":"DynamicAlmondLocationChange","AlmondLocation":"Den","AlmondMAC":"251176216952836"}
-    if(connectionMode == SFIAlmondConnectionMode_cloud && ![almondMAC isEqualToString:toolkit.currentAlmond.almondplusMAC]){
+    if(connectionMode == SFIAlmondConnectionMode_cloud && ![almondMAC isEqualToString:[AlmondManagement currentAlmond].almondplusMAC]){
         return;
     }
     
@@ -256,7 +257,7 @@
     SFIAlmondConnectionMode connectionMode = [toolkit currentConnectionMode];
     
     DynamicAlmondNameChangeResponse *obj = [dataInfo valueForKey:@"data"];
-    if(connectionMode == SFIAlmondConnectionMode_cloud && ![obj.almondplusMAC isEqualToString:toolkit.currentAlmond.almondplusMAC]){
+    if(connectionMode == SFIAlmondConnectionMode_cloud && ![obj.almondplusMAC isEqualToString:[AlmondManagement currentAlmond].almondplusMAC]){
         return;
     }
 

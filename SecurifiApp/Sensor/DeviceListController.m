@@ -32,6 +32,7 @@
 #import "RecentSearchDB.h"
 #import "ConnectionStatus.h"
 #import "HTTPRequest.h"
+#import "AlmondManagement.h"
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -76,7 +77,7 @@ int mii;
     [super viewWillAppear:YES];
     mii = arc4random() % 10000;
     [self markAlmondTitleAndMac];
-    SFIAlmondPlus *almond = [self.toolkit currentAlmond];
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
       self.isLocal = [self.toolkit useLocalNetwork:almond.almondplusMAC];
     
     NSLog(@"View will appear is called in DeviceListController");
@@ -101,25 +102,25 @@ int mii;
 }
 
 -(void)markAlmondTitleAndMac{
-    NSLog(@"%s, self.toolkit.currentAlmond: %@", __PRETTY_FUNCTION__, self.toolkit.currentAlmond);
-    _isSiteMapSupport = [self.toolkit.currentAlmond siteMapSupportFirmware:self.toolkit.currentAlmond.firmware] && self.toolkit.configuration.siteMapEnable;
+    NSLog(@"%s, self.toolkit.currentAlmond: %@", __PRETTY_FUNCTION__, [AlmondManagement currentAlmond]);
+    _isSiteMapSupport = [[AlmondManagement currentAlmond] siteMapSupportFirmware:[AlmondManagement currentAlmond].firmware] && self.toolkit.configuration.siteMapEnable;
    
-    if (self.toolkit.currentAlmond == nil) {
+    if ([AlmondManagement currentAlmond] == nil) {
         NSLog(@"no almond");
         [self markNewTitle:NSLocalizedString(@"router.nav-title.Get Started", @"Get Started")];
         [self markAlmondMac:NO_ALMOND];
     }
     else {
         NSLog(@"got almond");
-        [self markNewTitle:self.toolkit.currentAlmond.almondplusName];
-        [self markAlmondMac:self.toolkit.currentAlmond.almondplusMAC];
+        [self markNewTitle:[AlmondManagement currentAlmond].almondplusName];
+        [self markAlmondMac:[AlmondManagement currentAlmond].almondplusMAC];
     }
 }
 
 -(void)initializeAlmondData{
     NSLog(@"initialize almond data");
     [self markAlmondTitleAndMac];
-    [self initializeColors:[self.toolkit currentAlmond]];
+    [self initializeColors:[AlmondManagement currentAlmond]];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self tryInstallRefreshControl];
         if([self isDeviceListEmpty] && [self isClientListEmpty] && ![self isNoAlmondMAC] && ![self isDisconnected]){
@@ -213,7 +214,7 @@ int mii;
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    SFIAlmondPlus *almond = [self.toolkit currentAlmond];
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
     self.isLocal = [self.toolkit useLocalNetwork:almond.almondplusMAC];
     if ([self isNoAlmondMAC] || ![self isFirmwareCompatible] || [self isDisconnected])
         return 1;
@@ -527,7 +528,7 @@ int mii;
     if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
         return;
     }
-    SFIAlmondPlus *almond = [self.toolkit currentAlmond];
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
     BOOL local = [self.toolkit useLocalNetwork:almond.almondplusMAC];
     NSDictionary *payload;
     if(local){

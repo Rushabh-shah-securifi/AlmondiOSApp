@@ -11,12 +11,13 @@
 #import "NotificationPreferences.h"
 #import "Network.h"
 #import "NetworkState.h"
+#import "AlmondManagement.h"
 
 @implementation DevicePayload
 
 + (void)deviceListCommand{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    GenericCommand *genericCmd = [GenericCommand requestSensorDeviceList:toolkit.currentAlmond.almondplusMAC];
+    GenericCommand *genericCmd = [GenericCommand requestSensorDeviceList:[AlmondManagement currentAlmond].almondplusMAC];
     [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
 }
 
@@ -29,7 +30,7 @@
     [payload setValue:@(genericIndexValue.deviceID).stringValue forKey:D_ID];
     [payload setValue:@(genericIndexValue.index).stringValue forKey:INDEX];
     [payload setValue:genericIndexValue.genericValue.toggleValue forKey:VALUE];
-    [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:ALMONDMAC];
+    [payload setValue:[AlmondManagement currentAlmond].almondplusMAC forKey:ALMONDMAC];
     
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
     [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
@@ -46,7 +47,7 @@
     [payload setValue:@(genericIndexValue.index).stringValue forKey:INDEX];
     [payload setValue:value forKey:VALUE];
     
-    [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:ALMONDMAC];
+    [payload setValue:[AlmondManagement currentAlmond].almondplusMAC forKey:ALMONDMAC];
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
     [toolkit asyncSendToNetwork:genericCmd];
 }
@@ -69,7 +70,7 @@
         [payload setValue:value forKey:LOCATION];
     }
     
-    [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:ALMONDMAC];
+    [payload setValue:[AlmondManagement currentAlmond].almondplusMAC forKey:ALMONDMAC];
     
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
     [toolkit asyncSendToNetwork:genericCmd];
@@ -84,7 +85,7 @@
     
     NSString *action = (newMode == SFINotificationMode_off) ? kSFINotificationPreferenceChangeActionDelete : kSFINotificationPreferenceChangeActionAdd;
     
-    [self asyncRequestNotificationPreferenceChange:toolkit.currentAlmond.almondplusMAC deviceList:notificationDeviceSettings forAction:action mii:mii];
+    [self asyncRequestNotificationPreferenceChange:[AlmondManagement currentAlmond].almondplusMAC deviceList:notificationDeviceSettings forAction:action mii:mii];
 }
 
 + (void)asyncRequestNotificationPreferenceChange:(NSString *)almondMAC deviceList:(NSArray *)deviceList forAction:(NSString *)action mii:(int)mii{

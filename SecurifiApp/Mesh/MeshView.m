@@ -15,6 +15,7 @@
 #import "Analytics.h"
 #import "RouterPayload.h"
 #import "ConnectionStatus.h"
+#import "AlmondManagement.h"
 
 
 #define ADD_FAIL -2
@@ -281,7 +282,7 @@
 
 -(void)onBlinkTimeout:(id)sender{
     NSLog(@"blink time out");
-    [RouterPayload routerSummary:self.mii mac:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
+    [RouterPayload routerSummary:self.mii mac:[AlmondManagement currentAlmond].almondplusMAC];
     [self.blinkTimer invalidate];
     self.blinkTimer = nil;
 }
@@ -684,7 +685,7 @@
     if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
         return nil;
     }
-    BOOL local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
+    BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
     NSDictionary *payload;
     if(local){
         payload = [dataInfo valueForKey:@"data"];
@@ -961,7 +962,7 @@
                 [self requestAddableSlave:INTERFACE_SCR];
             }
             else if(self.currentView.tag == BLINK_CHECK){
-                [RouterPayload routerSummary:_mii mac:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
+                [RouterPayload routerSummary:_mii mac:[AlmondManagement currentAlmond].almondplusMAC];
             }
         }
     }

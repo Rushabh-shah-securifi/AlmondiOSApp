@@ -89,7 +89,7 @@
         if([toolKit currentConnectionMode] == SFIAlmondConnectionMode_cloud){
             Title = NSLocalizedString(@"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection.", @"Cloud connection to your Almond failed. Tap retry or switch to local connection.");
             subTitle1 = NSLocalizedString(@"switch_local", @"Switch to Local Connection");
-            subTitle2 = NSLocalizedString(@"switch_cloud", @"Switch to Cloud Connection");
+            subTitle2 = @"Retry Cloud Connection";//NSLocalizedString(@"switch_cloud", @"Switch to Cloud Connection");
             mode1 = SFIAlmondConnectionMode_local;
             mode2 = SFIAlmondConnectionMode_cloud;
         }else{

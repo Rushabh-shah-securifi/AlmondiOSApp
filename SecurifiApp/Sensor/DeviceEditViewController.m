@@ -34,6 +34,7 @@
 #import "NotificationPreferenceResponse.h"
 #import "BlinkLedView.h"
 #import "GenericIndexClass.h"
+#import "AlmondManagement.h"
 
 #define ITEM_SPACING  2.0
 #define LABELSPACING 20.0
@@ -105,7 +106,7 @@ static const int xIndent = 10;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self drawIndexes];
     });
-    self.isLocal = [self.toolkit useLocalNetwork:[self.toolkit currentAlmond].almondplusMAC];
+    self.isLocal = [self.toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -310,7 +311,7 @@ static const int xIndent = 10;
     ctrl.enableDeleteNotification = NO;
     ctrl.markAllViewedOnDismiss = NO;
     ctrl.deviceID = self.genericParams.headerGenericIndexValue.deviceID;
-    ctrl.almondMac = _toolkit.currentAlmond.almondplusMAC;
+    ctrl.almondMac = [AlmondManagement currentAlmond].almondplusMAC;
     
     UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
     [self presentViewController:nav_ctrl animated:YES completion:nil];
@@ -496,7 +497,7 @@ static const int xIndent = 10;
 #pragma mark command responses
 -(void)onCommandResponse:(id)sender{ //mobile command sensor and client 1064
     NSLog(@"device edit - onUpdateDeviceIndexResponse");
-    SFIAlmondPlus *almond = [self.toolkit currentAlmond];
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
     BOOL local = [self.toolkit useLocalNetwork:almond.almondplusMAC];
     NSDictionary *payload;
     

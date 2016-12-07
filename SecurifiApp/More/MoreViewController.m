@@ -18,6 +18,7 @@
 #import "UIViewController+Securifi.h"
 #import "KeyChainAccess.h"
 #import "NotificationDeleteRegistrationRequest.h"
+#import "AlmondManagement.h"
 
 #define USER_INVITE_ALERT               0
 
@@ -131,7 +132,7 @@
 
 #pragma mark check methods
 -(BOOL)isFirmwareCompatible{
-    return [SFIAlmondPlus checkIfFirmwareIsCompatible:[SecurifiToolkit sharedInstance].currentAlmond];
+    return [SFIAlmondPlus checkIfFirmwareIsCompatible:[AlmondManagement currentAlmond]];
 }
 
 #pragma mark tableView delegate methods
@@ -453,13 +454,13 @@
 
 #pragma mark almond sharing
 - (void)shareAlmondTapped{
-    if([[SecurifiToolkit sharedInstance] currentAlmond] == nil){
+    if([AlmondManagement currentAlmond] == nil){
         [self showToast:NSLocalizedString(@"almond_share_control", @"")];
         return;
     }
     
     //Invitation Email Input Box
-    NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"almond_share_invite", @""), [SecurifiToolkit sharedInstance].currentAlmond.almondplusName];
+    NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"almond_share_invite", @""), [AlmondManagement currentAlmond].almondplusName];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.title", @"Invite By Email") message:alertMessage delegate:self cancelButtonTitle:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.Invite", @"Invite"), nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     alert.tag = USER_INVITE_ALERT;
@@ -487,7 +488,7 @@
             UITextField *emailID = [alertView textFieldAtIndex:0];
             NSLog(@"emailID: %@", emailID.text);
             //Send request to delete
-            [self sendUserInviteRequest:emailID.text almondMAC:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC];
+            [self sendUserInviteRequest:emailID.text almondMAC:[AlmondManagement currentAlmond].almondplusMAC];
         }
     }
 }

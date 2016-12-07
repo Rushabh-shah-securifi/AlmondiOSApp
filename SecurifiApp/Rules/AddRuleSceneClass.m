@@ -47,6 +47,7 @@
     [SFISubPropertyBuilder createEntryForView:self.triggersActionsScrollView indexScrollView:self.deviceIndexScrollView parentView:self.parentView parentClass:self triggers:self.triggers actions:self.actions isCrossButtonHidden:NO isRuleActive:YES isScene:self.isScene];
 }
 
+
 -(void)updateInfoLabel{
     self.informationLabel.textColor = [SFIColors testGrayColor];
     if(self.isScene){

@@ -26,12 +26,14 @@
 #import "SFICloudLinkViewController.h"
 #import "LocalNetworkManagement.h"
 #import "ConnectionStatus.h"
+#import "AlmondManagement.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
 @interface RulesTableViewController ()<CustomCellTableViewCellDelegate,MBProgressHUDDelegate, HelpScreensDelegate,MessageViewDelegate, RouterNetworkSettingsEditorDelegate>{
     NSInteger randomMobileInternalIndex;
 }
+
 
 @property UIButton *buttonAdd;
 @property(nonatomic) SecurifiToolkit *toolkit;
@@ -41,6 +43,7 @@
 @end
 
 @implementation RulesTableViewController
+
 CGPoint tablePoint;
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -57,7 +60,6 @@ CGPoint tablePoint;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    //    [self.rules removeAllObjects];
     [super viewWillAppear:animated];
     randomMobileInternalIndex = arc4random() % 10000;
     
@@ -69,6 +71,7 @@ CGPoint tablePoint;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
+    
     [[Analytics sharedInstance] markRuleScreen];
 }
 
@@ -84,6 +87,7 @@ CGPoint tablePoint;
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 -(void)initializeNotifications{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -115,9 +119,10 @@ CGPoint tablePoint;
                  object:nil];
 }
 
+
 -(void)markAlmondTitle{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *currentAlmond = [toolkit currentAlmond];
+    SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
                                  NSFontAttributeName : [UIFont standardNavigationTitleFont]
@@ -128,20 +133,21 @@ CGPoint tablePoint;
         self.navigationItem.title = NSLocalizedString(@"scene.title.Get Started", @"Get Started");
     }
     else {
-        
         self.navigationItem.title = [CommonMethods getTitleShortName:currentAlmond.almondplusName];
     }
 }
+
 
 -(void)setUpNavBar{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.navigationController.navigationBar.translucent = NO;
     
-    if(toolkit.currentAlmond){
+    if([AlmondManagement currentAlmond]){
         UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add_almond_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddBtnTap:)];
         self.navigationItem.rightBarButtonItem = addButton;
     }
 }
+
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -213,7 +219,7 @@ CGPoint tablePoint;
 
 #pragma mark helper methods
 - (BOOL)isNoAlmondMAC {
-    return [SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC == nil;
+    return [AlmondManagement currentAlmond].almondplusMAC == nil;
 }
 
 - (BOOL)isRuleArrayEmpty {
@@ -289,7 +295,7 @@ CGPoint tablePoint;
 
 -(NSDictionary *)getDeleteRulePayload:(NSInteger)row{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    SFIAlmondPlus *plus = [AlmondManagement currentAlmond];
     if (!plus.almondplusMAC) {
         return nil;
     }
@@ -305,14 +311,17 @@ CGPoint tablePoint;
     [rulePayload setValue:[self getRuleID:currentRule.ID] forKey:@"Rules"]; //Get From Rule instance
     
     return rulePayload;
-    
 }
+
+
 -(NSDictionary *)getRuleID:(NSString *)ruleid{
     NSDictionary *dict = @{
                            @"ID" : ruleid
                            };
     return dict;
 }
+
+
 - (void)editRule:(CustomCellTableViewCell *)cell{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Rules" bundle:nil];
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
@@ -349,7 +358,7 @@ CGPoint tablePoint;
 
 #pragma mark events
 - (void)onCurrentAlmondChanged:(id)sender {
-    NSLog(@"on current almond change: %@", [SecurifiToolkit sharedInstance].currentAlmond);
+    NSLog(@"on current almond change: %@", [AlmondManagement currentAlmond]);
     [self.toolkit.ruleList removeAllObjects];
     [self markAlmondTitle];
     [self showHudWithTimeoutMsg:NSLocalizedString(@"RulesViewController Loading Rules...",@"Loading Rules...")];
@@ -372,6 +381,7 @@ CGPoint tablePoint;
     if (data == nil) {
         return;
     }
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
@@ -388,7 +398,7 @@ CGPoint tablePoint;
         return NO;
     }
     
-    NSString *current = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
+    NSString *current = [AlmondManagement currentAlmond].almondplusMAC;
     if (current == nil) {
         return NO;
     }
@@ -425,7 +435,7 @@ CGPoint tablePoint;
     if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
         return;
     }
-    SFIAlmondPlus *almond = [self.toolkit currentAlmond];
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
     BOOL local = [self.toolkit useLocalNetwork:almond.almondplusMAC];
     NSDictionary *payload;
     if(local){
@@ -444,6 +454,7 @@ CGPoint tablePoint;
         }
     });
 }
+
 #pragma mark - MessageViewDelegate methods
 
 - (void)messageViewDidPressButton:(MessageView *)msgView {
@@ -536,6 +547,7 @@ CGPoint tablePoint;
     
     [self.maskView addSubview:self.helpScreensObj];
 }
+
 
 #pragma mark - RouterNetworkSettingsEditorDelegate methods
 

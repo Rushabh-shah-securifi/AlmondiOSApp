@@ -20,6 +20,7 @@
 #import "CompleteDB.h"
 #import "MBProgressHUD.h"
 #import "Analytics.h"
+#import "AlmondManagement.h"
 
 @interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource,BrowsingHistoryDelegate,NSURLConnectionDelegate,MBProgressHUDDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *browsingTable;
@@ -68,7 +69,7 @@
     self.incompleteDB = [[NSDictionary alloc]init];
     self.clientName.text = self.client.name;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.amac = toolkit.currentAlmond.almondplusMAC;
+    self.amac = [AlmondManagement currentAlmond].almondplusMAC;
     [self setUpHUD];
     _responseData = [[NSMutableData alloc] init];
     self.sendReq = YES;

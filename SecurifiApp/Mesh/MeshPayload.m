@@ -7,11 +7,12 @@
 //
 
 #import "MeshPayload.h"
+#import "AlmondManagement.h"
 
 @implementation MeshPayload
 
 +(void)requestCheckForAddableWiredSlave:(int)mii{
-    NSString *almondMac = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
+    NSString *almondMac = [AlmondManagement currentAlmond].almondplusMAC;
     NSDictionary *payload = @{
                                   @"CommandMode":@"Request",
                                   @"CommandType":@"CheckForAddableWiredSlaveMobile",
@@ -22,7 +23,7 @@
 }
 
 +(void)requestCheckForAddableWirelessSlave:(int)mii{
-    NSString *almondMac = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
+    NSString *almondMac = [AlmondManagement currentAlmond].almondplusMAC;
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
                               @"CommandType":@"CheckForAddableWirelessSlaveMobile",
@@ -33,7 +34,7 @@
 }
 
 +(void)requestAddWiredSlave:(int)mii slaveName:(NSString *)slaveName{
-    NSString *almondMac = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
+    NSString *almondMac = [AlmondManagement currentAlmond].almondplusMAC;
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
                               @"CommandType":@"AddWiredSlaveMobile",
@@ -45,7 +46,7 @@
 }
 
 +(void)requestAddWireLessSlave:(int)mii slaveName:(NSString *)slaveName{
-    NSString *almondMac = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
+    NSString *almondMac = [AlmondManagement currentAlmond].almondplusMAC;
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
                               @"CommandType":@"AddWirelessSlaveMobile",
@@ -57,7 +58,7 @@
 }
 
 +(void)requestBlinkLed:(int)mii slaveName:(NSString *)slaveName{
-    NSString *almondMac = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
+    NSString *almondMac = [AlmondManagement currentAlmond].almondplusMAC;
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
                               @"CommandType":@"BlinkLedMobile",
@@ -71,7 +72,7 @@
 
 
 +(void)requestSetSlaveName:(int)mii uniqueSlaveName:(NSString *)uniqueSlaveName newName:(NSString *)newName{
-    NSString *almondMac = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
+    NSString *almondMac = [AlmondManagement currentAlmond].almondplusMAC;
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
                               @"CommandType":@"SetSlaveNameMobile",
@@ -85,7 +86,7 @@
 }
 
 +(void)requestRemoveSlave:(int)mii uniqueName:(NSString*)uniqueName{
-    NSString *almondMac = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
+    NSString *almondMac = [AlmondManagement currentAlmond].almondplusMAC;
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
                               @"CommandType":@"RemoveSlaveMobile",
@@ -98,7 +99,7 @@
 }
 
 +(void)requestForceRemoveSlave:(int)mii uniqueName:(NSString*)uniqueName{
-    NSString *almondMac = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
+    NSString *almondMac = [AlmondManagement currentAlmond].almondplusMAC;
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
                               @"CommandType":@"ForceRemoveSlaveMobile",
@@ -122,7 +123,7 @@
 }
 
 +(void)stopBlinkLed:(int)mii{
-    NSString *almondMac = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
+    NSString *almondMac = [AlmondManagement currentAlmond].almondplusMAC;
     NSDictionary *payload = @{
                               @"CommandMode":@"Request",
                               @"CommandType":@"StopBlinkLedMobile",

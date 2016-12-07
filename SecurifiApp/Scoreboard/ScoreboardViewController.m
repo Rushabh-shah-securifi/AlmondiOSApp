@@ -18,6 +18,7 @@
 #import "ScoreboardNetworkSettingsViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "NotificationAccessAndRefreshCommands.h"
+#import "AlmondManagement.h"
 
 @import MessageUI;
 
@@ -46,6 +47,7 @@
     return self;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -60,7 +62,7 @@
 - (void)loadScoreboard {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.scoreboard = [toolkit scoreboardSnapshot];
-    self.almonds = [toolkit almondList];
+    self.almonds = [AlmondManagement almondList];
 }
 
 #pragma mark - Event handlers

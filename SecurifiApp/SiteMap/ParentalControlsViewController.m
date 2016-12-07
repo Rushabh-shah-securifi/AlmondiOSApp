@@ -18,6 +18,7 @@
 #import "DetailsPeriodViewController.h"
 #import "BrowsingHistoryDataBase.h"
 #import "ViewController.h"
+#import "AlmondManagement.h"
 
 @interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,NSURLConnectionDelegate,DetailsPeriodViewControllerDelegate,UIAlertViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (nonatomic) NSMutableArray *parentsControlArr;
@@ -68,7 +69,7 @@
     int deviceID = _genericParams.headerGenericIndexValue.deviceID;
     self.client = [Client findClientByID:@(deviceID).stringValue];//dont put in viewDid load
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
     self.amac = almond.almondplusMAC;
     self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
     NSString *todayDate = [CommonMethods getTodayDate];

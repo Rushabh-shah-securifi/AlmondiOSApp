@@ -15,6 +15,7 @@
 #import "HelpCenter.h"
 #import "MoreViewController.h"
 #import "AlmondUpdateViewController.h"
+#import "AlmondManagement.h"
 
 #define TAB_BAR_DEVICES @"Devices"
 #define TAB_BAR_ROUTER @"WiFi"
@@ -28,7 +29,6 @@
 typedef NS_ENUM(int, TabBarMode) {
     TabBarMode_cloud = 1,
     TabBarMode_local,
-    TabBarMode_noAlmond,
     TabBarMode_updateAvailable
 };
 
@@ -43,7 +43,6 @@ typedef NS_ENUM(int, TabBarMode) {
 @property(nonatomic) UIViewController *helpTab;
 @property(nonatomic) UIViewController *moreTab;
 @property(nonatomic) UIViewController *updateTab;
-
 @property(nonatomic) UIViewController *scoreboardTab;
 @property(nonatomic) BOOL isDismissed;
 @end
@@ -55,28 +54,25 @@ typedef NS_ENUM(int, TabBarMode) {
     [center removeObserver:self];
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.view.backgroundColor = [UIColor whiteColor];
-    
     // set up the tabs
     [self onTryChangeTabs:nil];
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    
     [center addObserver:self selector:@selector(onTryChangeTabs:) name:kSFIDidChangeAlmondConnectionMode object:nil];
     [center addObserver:self selector:@selector(onTryChangeTabs:) name:kSFIDidChangeCurrentAlmond object:nil];
     [center addObserver:self selector:@selector(onTryChangeTabs:) name:kSFIDidUpdateAlmondList object:nil];
     [center addObserver:self selector:@selector(onUpdateAvailableCrossTap:) name:kSFIDidTapUpdateAvailCrossBtn object:nil];
-    
     [center addObserver:self selector:@selector(onLoginPage:) name:LOGIN_PAGE_NOTIFIER object:nil];
 }
+
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     NSLog(@"tabbar view will appear");
-//    self.selectedIndex = 0;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -92,37 +88,18 @@ typedef NS_ENUM(int, TabBarMode) {
     self.selectedIndex = 0;
 }
 
+
 //have a look at it.
 - (void)onUpdateAvailableCrossTap:(NSNotification *)sender{
     [self setTabBar:TabBarMode_cloud];//because local will never show update screen.
 }
+
 
 - (void)onTryChangeTabs:(NSNotification *)sender {
     enum TabBarMode mode = [self pickTabMode];
     [self setTabBar:mode];
 }
 
-
-- (void)setTabBar:(TabBarMode)mode{
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.isDismissed) {
-            return;
-        }
-        if (self.currentTabs == mode) {
-            return;
-        }
-        
-        NSArray *list = [self pickTabList:mode];
-        self.currentTabs = mode;
-        
-        UIViewController *selected = self.selectedViewController;
-        self.viewControllers = list;
-        
-        if (selected && [list containsObject:selected]) {
-            self.selectedViewController = selected;
-        }
-    });
-}
 
 - (enum TabBarMode)pickTabMode {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -132,17 +109,6 @@ typedef NS_ENUM(int, TabBarMode) {
     if(isFirmwareCompatible == NO){
         return TabBarMode_updateAvailable;
     }
-    
-    NSArray *list = [toolkit almondList];
-    if (list.count == 0) {
-        list = [toolkit localLinkedAlmondList];
-    }
-    
-    if (list.count == 0) {
-//        return TabBarMode_noAlmond; //showing all the tabs all the time now
-    }
-    
-    SFIAlmondPlus *plus = toolkit.currentAlmond;
     
     enum SFIAlmondConnectionMode mode = [toolkit currentConnectionMode];
     switch (mode) {
@@ -156,8 +122,26 @@ typedef NS_ENUM(int, TabBarMode) {
 }
 
 
+- (void)setTabBar:(TabBarMode)mode{
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.isDismissed) {
+            return;
+        }
+        
+        if (self.currentTabs == mode) {
+            return;
+        }
+        
+        NSArray *list = [self pickTabList:mode];
+        self.currentTabs = mode;
+        
+        self.viewControllers = list;
+    });
+}
+
+
 -(BOOL)checkIfFirmwareIsCompatible{
-    SFIAlmondPlus *currentAlmond = [[SecurifiToolkit sharedInstance] currentAlmond];
+    SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
     BOOL local = [[SecurifiToolkit sharedInstance] useLocalNetwork:currentAlmond.almondplusMAC];
     NSLog(@"current almond tab bar: %@", currentAlmond);
     //Ignoring the screen in local connection and when firmware is nil
@@ -167,14 +151,13 @@ typedef NS_ENUM(int, TabBarMode) {
     return [currentAlmond supportsGenericIndexes:currentAlmond.firmware];
 }
 
+
 - (NSArray *)pickTabList:(TabBarMode)mode {
     switch (mode) {
         case TabBarMode_cloud:
             return [self tryAddScoreboardTab:[self cloudTabs]];
         case TabBarMode_local:
             return [self tryAddScoreboardTab:[self localTabs]];
-        case TabBarMode_noAlmond:
-            return [self tryAddScoreboardTab:[self noAlmondsTab]];
         case TabBarMode_updateAvailable:
             return [self tryAddScoreboardTab:[self updateFirmwareTab]];
         default:
@@ -233,12 +216,6 @@ typedef NS_ENUM(int, TabBarMode) {
              ];
 }
 
-// tabs to be show when no Almonds are affiliated with the account
-- (NSArray *)noAlmondsTab {
-    return @[
-             self.messageTab
-             ];
-}
 
 // tab to show when your almond firmware is old (not json compatible).
 -(NSArray *)updateFirmwareTab{

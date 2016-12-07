@@ -10,6 +10,7 @@
 #import "UIFont+Securifi.h"
 #import "MBProgressHUD.h"
 #import "ScenePayload.h"
+#import "AlmondManagement.h"
 
 @interface SceneNameViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *suggestionTable;
@@ -215,7 +216,7 @@ static const int sceneNameFont = 15;
     NSDictionary *data = [notifier userInfo];
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
     BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
     NSDictionary * mainDict;
     if(local){

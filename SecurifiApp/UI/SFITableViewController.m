@@ -27,6 +27,7 @@
 #import "LocalNetworkManagement.h"
 #import "NotificationAccessAndRefreshCommands.h"
 #import "NetworkStatusIcon.h"
+#import "AlmondManagement.h"
 
 
 @interface SFITableViewController () <MBProgressHUDDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate, HelpScreensDelegate, MessageViewDelegate, NetworkStatusIconDelegate>
@@ -285,7 +286,7 @@
     NSDictionary *dataInfo = [notifier userInfo];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSLog(@"payload mode %@",dataInfo);
-    BOOL local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
+    BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
     NSDictionary *payload;
     
     if(local){
@@ -441,7 +442,7 @@
 }
 
 -(BOOL)isFirmwareCompatible{
-    return [SFIAlmondPlus checkIfFirmwareIsCompatible:[SecurifiToolkit sharedInstance].currentAlmond];
+    return [SFIAlmondPlus checkIfFirmwareIsCompatible:[AlmondManagement currentAlmond]];
 }
 
 
@@ -610,7 +611,7 @@
     RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
     editor.delegate = self;
     editor.settings = settings;
-    editor.enableUnlinkActionButton = ![toolkit almondExists:mac]; // only allowed to unlink local almonds that are not affiliated with the cloud
+    editor.enableUnlinkActionButton = ![AlmondManagement almondExists:mac]; // only allowed to unlink local almonds that are not affiliated with the cloud
     
     UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
     [self presentViewController:ctrl animated:YES completion:nil];

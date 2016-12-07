@@ -21,6 +21,7 @@
 #import "KeyChainAccess.h"
 #import "ConnectionStatus.h"
 #import "NetworkStatusIcon.h"
+#import "AlmondManagement.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
@@ -33,7 +34,6 @@
 
 @implementation SFIMainViewController
 NetworkStatusIcon *statusIcon;
-
 
 #pragma mark - View Lifecycle
 
@@ -226,7 +226,7 @@ NetworkStatusIcon *statusIcon;
     const BOOL supportsLocalConnections = toolkit.configuration.enableLocalNetworking;
     if (supportsLocalConnections) {
         NSLog(@"i am called");
-        if (toolkit.currentConnectionMode == SFIAlmondConnectionMode_local && toolkit.currentAlmond!=nil) {
+        if (toolkit.currentConnectionMode == SFIAlmondConnectionMode_local && [AlmondManagement currentAlmond]!=nil) {
             return;
         }
     }
@@ -249,7 +249,8 @@ NetworkStatusIcon *statusIcon;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login_iPhone" bundle:nil];
     SFILoginViewController *ctrl = (SFILoginViewController *) [storyboard instantiateViewControllerWithIdentifier:@"SFILoginViewController"];
     ctrl.delegate = self;
-    ctrl.mode = [SecurifiToolkit sharedInstance].localLinkedAlmondList.count == 0 ? SFILoginViewControllerMode_localLinkOption : SFILoginViewControllerMode_switchToLocalConnection;
+    
+    ctrl.mode = [AlmondManagement localLinkedAlmondList].count == 0 ? SFILoginViewControllerMode_localLinkOption : SFILoginViewControllerMode_switchToLocalConnection;
     
     if (self.presentedViewController) {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{

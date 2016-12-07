@@ -378,22 +378,9 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
                     [self markErrorOnLink:NSLocalizedString(@"almond_already_linked", @"This Almond is already linked.")];
                     return;
                 }
-
-                // store the new/updated settings and update UI state; inform the delegate
+                
                 [LocalNetworkManagement storeLocalNetworkSettings:settings];
-                //NSLog(@"storing local network %@",settings);
-            
-                if (self.makeLinkedAlmondCurrentOne) {
-                    
-//                    SFIAlmondPlus *almond = settings.asLocalLinkAlmondPlus;
-//                    [SecurifiToolkit sharedInstance].currentAlmond = almond;
-//
-//                    NSLog(@"i am called mac: %@", almond.almondplusMAC);
-//                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//                    [defaults setInteger:SFIAlmondConnectionMode_local forKey:kPREF_DEFAULT_CONNECTION_MODE];
-                    //[[SecurifiToolkit sharedInstance] postNotification:kSFIDidChangeAlmondConnectionMode data:nil];
-                }
-        
+                
                 [self markSuccessOnLink];
                 [self.delegate networkSettingsEditorDidLinkAlmond:self settings:settings];
 

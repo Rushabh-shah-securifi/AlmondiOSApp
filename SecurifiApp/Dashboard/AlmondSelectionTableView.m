@@ -11,6 +11,7 @@
 #import "CommonMethods.h"
 #import "SFIColors.h"
 #import "UIFont+Securifi.h"
+#import "AlmondManagement.h"
 
 static const int rowHeight = 40;
 static const int headerHt = 70;
@@ -57,13 +58,13 @@ static const int footerHt = 60;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     switch (mode5) {
         case SFIAlmondConnectionMode_cloud: {
-            NSArray *cloud = [toolkit almondList];
+            NSArray *cloud = [AlmondManagement almondList];
             if (!cloud)
                 cloud = @[];
             return cloud;
         }
         case SFIAlmondConnectionMode_local: {
-            NSArray *local = [toolkit localLinkedAlmondList];
+            NSArray *local = [AlmondManagement localLinkedAlmondList];
             if (!local)
                 local = @[];
             return local;
@@ -117,28 +118,23 @@ static const int footerHt = 60;
     if(self.almondList.count == 0)
         return;
     
-    //if the selected almond is same don't do anything.
-    SFIAlmondPlus *almond = self.almondList[indexPath.row];
-    //if([self isCurrentAlmond:almond.almondplusMAC])
-      //  return;
-    
     [self.methodsDelegate onAlmondSelectedDelegate:self.almondList[indexPath.row]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return rowHeight;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return headerHt;
 }
+
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *headerBgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, headerHt)];
     headerBgView.backgroundColor = [UIColor whiteColor];
     
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(5, 5, self.frame.size.width-10, 40)];
-//    headerView.backgroundColor = [UIColor yellowColor];
-    
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(5, 5, self.frame.size.width-10, 40)];    
     UIButton *closeButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, 40)];
     [CommonMethods setButtonProperties:closeButton title:@"Close" titleColor:[SFIColors lightBlueColor] bgColor:[UIColor whiteColor] font:[UIFont securifiFont:16]];
     [closeButton addTarget:self action:@selector(onCloseBtnTap:) forControlEvents:UIControlEventTouchUpInside];
@@ -156,9 +152,11 @@ static const int footerHt = 60;
     return headerBgView;
 }
 
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return footerHt;
 }
+
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, footerHt)];
@@ -175,7 +173,6 @@ static const int footerHt = 60;
 }
 
 
-
 #pragma mark button tap methods
 - (void)onCloseBtnTap:(id)sender{
     [self.methodsDelegate onCloseBtnTapDelegate];
@@ -187,11 +184,11 @@ static const int footerHt = 60;
 
 #pragma mark helper methods
 -(BOOL)isCurrentAlmond:(NSString *)mac{
-    return [[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC isEqualToString:mac];
+    return [[AlmondManagement currentAlmond].almondplusMAC isEqualToString:mac];
 }
 
 -(BOOL)hasNoAlmond{
-    return [SecurifiToolkit sharedInstance].currentAlmond == nil;
+    return [AlmondManagement currentAlmond] == nil;
 }
 
 @end

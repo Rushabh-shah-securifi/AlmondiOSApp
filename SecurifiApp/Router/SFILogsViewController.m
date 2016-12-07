@@ -13,6 +13,7 @@
 #import "RouterPayload.h"
 #import "MBProgressHUD.h"
 #import "UIViewController+Securifi.h"
+#import "AlmondManagement.h"
 
 @interface SFILogsViewController ()<MBProgressHUDDelegate, UITextFieldDelegate>
 @property (nonatomic) UITextField *textField;
@@ -135,7 +136,7 @@ int mii;
         [self showHudWithTimeout:NSLocalizedString(@"sendingLogs",@"Sending logs")];
         [self.textField resignFirstResponder];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        [RouterPayload sendLogs:self.textField.text mii:mii mac:toolkit.currentAlmond.almondplusMAC];
+        [RouterPayload sendLogs:self.textField.text mii:mii mac:[AlmondManagement currentAlmond].almondplusMAC];
     }
 }
 

@@ -9,6 +9,7 @@
 #import "ClientPayload.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "KeyChainWrapper.h"
+#import "AlmondManagement.h"
 
 #define SEC_SERVICE_NAME                                    @"securifiy.login_service"
 #define SEC_EMAIL                                           @"com.securifi.email"
@@ -17,7 +18,7 @@
 + (void)clientListCommand{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     //forboth cloud and local
-    GenericCommand *genericCmd = [GenericCommand requestAlmondClients:toolkit.currentAlmond.almondplusMAC];
+    GenericCommand *genericCmd = [GenericCommand requestAlmondClients:[AlmondManagement currentAlmond].almondplusMAC];
     [toolkit asyncSendToNetwork:genericCmd];
 }
 
@@ -27,7 +28,7 @@
     
     [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];
     [payload setValue:UPDATE_CLIENT forKey:@"CommandType"];
-    [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:@"AlmondMAC"];
+    [payload setValue:[AlmondManagement currentAlmond].almondplusMAC forKey:@"AlmondMAC"];
     
     if(![self hasCompleteData:client])
         return;
@@ -68,7 +69,7 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];
     [payload setValue:@"RemoveClient" forKey:@"CommandType"];
-    [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:@"AlmondMAC"];
+    [payload setValue:[AlmondManagement currentAlmond].almondplusMAC forKey:@"AlmondMAC"];
     NSDictionary *RemoveClient = @{
                                    MAC : mac,
                                    C_ID : clientID
@@ -90,7 +91,7 @@
     [updateClientInfo setValue:userID forKey:@"UserID"];
     
     
-    [updateClientInfo setValue:toolkit.currentAlmond.almondplusMAC forKey:@"AlmondMAC"];
+    [updateClientInfo setValue:[AlmondManagement currentAlmond].almondplusMAC forKey:@"AlmondMAC"];
     [updateClientInfo setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
     
     GenericCommand *cloudCommand = [GenericCommand jsonStringPayloadCommand:updateClientInfo commandType:CommandType_WIFI_CLIENT_UPDATE_PREFERENCE_REQUEST];

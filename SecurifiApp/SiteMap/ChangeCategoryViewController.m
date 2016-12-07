@@ -17,6 +17,7 @@
 #import "Analytics.h"
 #import "HistoryCell.h"
 #import "CommonMethods.h"
+#import "AlmondManagement.h"
 
 @interface ChangeCategoryViewController ()<CategoryViewDelegate,UITableViewDelegate,UITableViewDelegate,NSURLConnectionDelegate>
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
@@ -299,9 +300,10 @@
     }
     return cell;
 }
+
 #pragma mark sendReq methods
 -(void)createRequest:(NSString *)search value:(NSString*)value suggestValue:(NSString *)suggestValue{
-    NSString *amac = [SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC;
+    NSString *amac = [AlmondManagement currentAlmond].almondplusMAC;
     NSString *cmac = [CommonMethods hexToString:self.client.deviceMAC];
 
     NSString *Date = self.uriDict[@"date"];

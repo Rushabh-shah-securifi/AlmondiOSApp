@@ -8,11 +8,12 @@
 
 #import "AlmondStatus.h"
 #import "AlmondJsonCommandKeyConstants.h"
+#import "AlmondManagement.h"
 
 @implementation AlmondStatus
 
 +(AlmondStatus *)getMasterAlmondStatus:(SFIRouterSummary*)routerSummary{
-    NSString *name = [SecurifiToolkit sharedInstance].currentAlmond.almondplusName;
+    NSString *name = [AlmondManagement currentAlmond].almondplusName;
     NSDictionary *ssid = [self getSSIDs:routerSummary];
     AlmondStatus *almondStat = [AlmondStatus new];
     NSString *location = routerSummary.location?:name;

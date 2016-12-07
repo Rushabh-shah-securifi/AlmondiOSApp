@@ -15,6 +15,7 @@
 #import "Analytics.h"
 #import "NotificationAccessAndRefreshCommands.h"
 #import "DeviceLogsProcessing.h"
+#import "AlmondManagement.h"
 
 @interface SFINotificationsViewController ()
 //@property(nonatomic, readonly) id <SFINotificationStore> store;
@@ -89,7 +90,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
             almondMac = self.almondMac;
         }
         else {
-            almondMac = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
+            almondMac = [AlmondManagement currentAlmond].almondplusMAC;
         }
 
         store.almondMac = almondMac;

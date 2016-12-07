@@ -8,12 +8,13 @@
 #import "ScenePayload.h"
 #import "Analytics.h"
 #import "SFIButtonSubProperties.h"
+#import "AlmondManagement.h"
 
 
 @implementation ScenePayload
 +(NSMutableDictionary*)getScenePayload:(Rule*)scene mobileInternalIndex:(int)mii isEdit:(BOOL)isEdit isSceneNameCompatibleWithAlexa:(BOOL)isCompatible{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    SFIAlmondPlus *plus = [AlmondManagement currentAlmond];
     
     NSMutableDictionary *newSceneInfo = [NSMutableDictionary new];
     NSMutableDictionary *payloadDict = [NSMutableDictionary new];
@@ -39,6 +40,8 @@
     
     return payloadDict;
 }
+
+
 + (void)removeInValidEntries:(NSMutableArray *)array deviceList:(NSArray *)devices{
     
     NSMutableArray *invalidEntries=[NSMutableArray new];
@@ -50,9 +53,7 @@
     }
     if(invalidEntries.count>0)
         [array removeObjectsInArray:invalidEntries ];
-
 }
-
 
 +(NSMutableArray *)createSceneEntriesPayload:(NSArray*)sceneEntries{
     NSMutableArray * triggersArray = [[NSMutableArray alloc]init];
@@ -84,9 +85,7 @@
 }
 
 + (NSMutableDictionary*)getDeleteScenePayload:(Rule*)scene mobileInternalIndex:(int)mii {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    
+    SFIAlmondPlus *plus = [AlmondManagement currentAlmond];
     NSMutableDictionary *payloadDict = [NSMutableDictionary new];
     [payloadDict setValue:@"RemoveScene" forKey:@"CommandType"];
     [payloadDict setValue:@{@"ID":scene.ID} forKey:@"Scenes"];

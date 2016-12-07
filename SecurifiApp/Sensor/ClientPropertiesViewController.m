@@ -26,6 +26,7 @@
 #import "DataBaseManager.h"
 #import "BrowsingHistoryDataBase.h"
 #import "ParentalControlsViewController.h"
+#import "AlmondManagement.h"
 
 
 #define CELLFRAME CGRectMake(8, 8, self.view.frame.size.width -16, 85)
@@ -76,7 +77,7 @@ int randomMobileInternalIndex;
     randomMobileInternalIndex = arc4random() % 10000;
     [self initializeNotifications];
     _toolkit=[SecurifiToolkit sharedInstance];
-    self.isLocal = [_toolkit useLocalNetwork:[_toolkit currentAlmond].almondplusMAC];
+    self.isLocal = [_toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
     
     if(!_isInitialized){ //to avoid call it first time
         NSLog(@"isInitialized");
@@ -122,7 +123,7 @@ int randomMobileInternalIndex;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     SecurifiToolkit *toolkit=[SecurifiToolkit sharedInstance];
-    self.isLocal = [toolkit useLocalNetwork:[toolkit currentAlmond].almondplusMAC];
+    self.isLocal = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
     if(self.isLocal){
         return self.genericParams.indexValueList.count -2;
     }
@@ -236,7 +237,7 @@ int randomMobileInternalIndex;
     ctrl.markAllViewedOnDismiss = NO;
     ctrl.isForWifiClients = YES;
     ctrl.deviceID = self.genericParams.headerGenericIndexValue.deviceID;
-    ctrl.almondMac = _toolkit.currentAlmond.almondplusMAC;
+    ctrl.almondMac = [AlmondManagement currentAlmond].almondplusMAC;
     
     UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
     [self presentViewController:nav_ctrl animated:YES completion:nil];

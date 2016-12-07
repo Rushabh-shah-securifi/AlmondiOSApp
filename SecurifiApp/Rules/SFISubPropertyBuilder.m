@@ -45,6 +45,8 @@
 
 #import "WeatherRuleButton.h"
 
+#import "AlmondManagement.h"
+
 @interface SFISubPropertyBuilder()
 
 @end
@@ -70,11 +72,9 @@ int xVal = 20;
 UILabel *topLabel;
 
 + (void)createEntryForView:(UIScrollView *)topScrollView indexScrollView:(UIScrollView*)indexScrollView parentView:(UIView*)view parentClass:(AddRuleSceneClass*)parentClass triggers:(NSMutableArray *)triggersList actions:(NSMutableArray *)actionsList isCrossButtonHidden:(BOOL)isHidden isRuleActive:(BOOL)isRuleActive isScene:(BOOL)isSceneFlag{
-    NSLog(@"createEntryForView");
     delayPicker = [DelayPicker new];
     toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    deviceArray=[toolkit deviceList:plus.almondplusMAC];
+    SFIAlmondPlus *plus = [AlmondManagement currentAlmond];
     xVal = 20;
     isCrossHidden = isHidden;
     isActive = isRuleActive;

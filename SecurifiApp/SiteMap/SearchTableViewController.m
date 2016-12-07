@@ -20,6 +20,7 @@
 #import "ChangeCategoryViewController.h"
 #import "MBProgressHUD.h"
 #import "BrowsingHistoryUtil.h"
+#import "AlmondManagement.h"
 
 
 
@@ -91,7 +92,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
     self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.amac = toolkit.currentAlmond.almondplusMAC;
+    self.amac = [AlmondManagement currentAlmond].almondplusMAC;
     self.dayArr = [[NSMutableArray alloc]init];
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
     self.navigationController.navigationBar.clipsToBounds = YES;

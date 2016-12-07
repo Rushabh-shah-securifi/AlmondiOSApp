@@ -20,6 +20,7 @@
 #import "UIViewController+Securifi.h"
 #import "CommonMethods.h"
 #import "NSData+Securifi.h"
+#import "AlmondManagement.h"
 
 #define SLAVE_OFFLINE_TAG   1
 #define ENABLE_TYPE_TAG     2
@@ -54,7 +55,7 @@ int mii;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
     
-    self.navigationItem.title = [CommonMethods getShortAlmondName:toolkit.currentAlmond.almondplusName];
+    self.navigationItem.title = [CommonMethods getShortAlmondName:[AlmondManagement currentAlmond].almondplusName];
     
 //    UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
 //    self.navigationItem.rightBarButtonItem = done;
@@ -253,8 +254,9 @@ int mii;
     if(encryptedPass == nil || encryptedPass.length == 0)
         return @"";
     NSData *payload = [[NSData alloc] initWithBase64EncodedString:encryptedPass options:NSDataBase64DecodingIgnoreUnknownCharacters];
-    return [payload securifiDecryptPasswordForAlmond:[SecurifiToolkit sharedInstance].currentAlmond.almondplusMAC almondUptime:genericCmd.uptime];
+    return [payload securifiDecryptPasswordForAlmond:[AlmondManagement currentAlmond].almondplusMAC almondUptime:genericCmd.uptime];
 }
+
 
 - (void)shareWiFi:(NSString *)ssid password:(NSString *)password{
     NSLog(@"ssid: %@, password: %@", ssid, password);
@@ -314,7 +316,7 @@ int mii;
     if([self isGuestNw:setting.type] && ![self isAlmondPlus]){
         self.currentSetting = setting;
         self.isEnabled = isEnabled;
-        [self showAlert:[SecurifiToolkit sharedInstance].currentAlmond.almondplusName msg:@"Your Almond will reboot. Do you want to proceed?" cancel:@"No" other:@"Yes" tag:ENABLE_TYPE_TAG];
+        [self showAlert:[AlmondManagement currentAlmond].almondplusName msg:@"Your Almond will reboot. Do you want to proceed?" cancel:@"No" other:@"Yes" tag:ENABLE_TYPE_TAG];
     }
     else{
         SFIWirelessSetting *copy = [setting copy];
@@ -356,7 +358,7 @@ int mii;
         }
         [self showUpdatingSettingsHUD];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        [RouterPayload setWirelessSettings:mii wirelessSettings:copy mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:isTypeEnable forceUpdate:@"false"];
+        [RouterPayload setWirelessSettings:mii wirelessSettings:copy mac:[AlmondManagement currentAlmond].almondplusMAC isTypeEnable:isTypeEnable forceUpdate:@"false"];
         [self.HUD hide:YES afterDelay:15];
     });
 }

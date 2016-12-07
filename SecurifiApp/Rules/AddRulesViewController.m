@@ -33,6 +33,8 @@
 #import "AddRuleSceneClass.h"
 #import "Analytics.h"
 #import "CommonMethods.h"
+#import "AlmondManagement.h"
+
 
 @interface AddRulesViewController()<UIAlertViewDelegate, UITextFieldDelegate>{
     sfi_id dc_id;
@@ -139,7 +141,7 @@ UIAlertView *alert;
     
     NSDictionary * mainDict = [data valueForKey:@"data"];
     SecurifiToolkit *toolkit=[SecurifiToolkit sharedInstance];
-    BOOL local = [toolkit useLocalNetwork:[toolkit currentAlmond].almondplusMAC];
+    BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
     
     if(!local)
         mainDict = [[data valueForKey:@"data"] objectFromJSONData];

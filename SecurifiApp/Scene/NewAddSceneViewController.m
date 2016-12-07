@@ -29,6 +29,7 @@
 #import "AddRuleSceneClass.h"
 #import "SceneNameViewController.h"
 #import "Analytics.h"
+#import "AlmondManagement.h"
 
 #define kAlertViewSave 1
 #define kAlertViewDelete 2
@@ -205,7 +206,7 @@ UIAlertView *alert;
     NSDictionary *data = [notifier userInfo];
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
     BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
     NSDictionary * mainDict;
     if(local){

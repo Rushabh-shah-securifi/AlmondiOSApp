@@ -24,6 +24,7 @@
 #import "SFIButtonSubProperties.h"
 #import "AlertView.h"
 #import "UIViewController+Securifi.h"
+#import "AlmondManagement.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
@@ -66,7 +67,7 @@
 -(void)setUpNavBar{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(toolkit.currentAlmond){
+        if([AlmondManagement currentAlmond]){
             UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add_almond_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddBtnTap:)];
             self.navigationItem.rightBarButtonItem = addButton;
         }else{
@@ -77,7 +78,7 @@
 
 -(void)markAlmondTitleAndMac{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.currentAlmond = [toolkit currentAlmond];
+    self.currentAlmond = [AlmondManagement currentAlmond];
     if (self.currentAlmond == nil) {
         [self markNewTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
         [self markAlmondMac:NO_ALMOND];
@@ -315,7 +316,7 @@
         return;
     }
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    SFIAlmondPlus *plus = [AlmondManagement currentAlmond];
     NSLog(@"cell info: %@", cellInfo);
     NSMutableDictionary *activateScenePayload = [NSMutableDictionary new];
     
@@ -354,7 +355,7 @@
 
 -(BOOL)isLocal{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
     BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
     return local;
 }
@@ -385,7 +386,7 @@
     NSDictionary *data = [notifier userInfo];
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
     BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
     NSDictionary * mainDict;
     if(local){

@@ -9,6 +9,7 @@
 #import "RulePayload.h"
 #import "SFIButtonSubProperties.h"
 #import "Device.h"
+#import "AlmondManagement.h"
 
 @implementation RulePayload
 
@@ -16,10 +17,11 @@
 
 - (NSDictionary*)validateRule:(NSInteger)randomMobileInternalIndex valid:(NSString *)valid{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    SFIAlmondPlus *plus = [AlmondManagement currentAlmond];
     if (!plus.almondplusMAC) {
         return nil;
     }
+    
     NSMutableDictionary *rulePayload = [[NSMutableDictionary alloc]init];
     
     [rulePayload setValue:self.rule.ID forKey:@"ID"];
@@ -35,7 +37,7 @@
 
 - (NSDictionary*)createRulePayload:(NSInteger)randomMobileInternalIndex with:(BOOL)isInitilized valid:(NSString *)valid{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    SFIAlmondPlus *plus = [AlmondManagement currentAlmond];
     if (!plus.almondplusMAC) {
         return nil;
     }
