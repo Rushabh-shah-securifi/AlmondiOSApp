@@ -29,6 +29,7 @@
 #import "Client.h"
 #import "ConnectionStatus.h"
 #import "LocalNetworkManagement.h"
+#import "IoTDevicesListViewController.h"
 
 
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate>{
@@ -1054,6 +1055,12 @@
     [HelpScreens initializeGotItView:self.helpScreensObj navView:self.navigationController.view];
 
     [self.maskView addSubview:self.helpScreensObj];
+}
+- (IBAction)launchIOtDevicelit:(id)sender {
+    IoTDevicesListViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDevicesListViewController"];
+    NSLog(@"IoTDevicesListViewController IF");
+    [self.navigationController pushViewController:newWindow animated:YES];
+    //        }
 }
 
 

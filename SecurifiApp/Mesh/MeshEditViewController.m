@@ -225,7 +225,11 @@
     }
     SFIAlmondConnectionMode connectionMode = [toolkit currentConnectionMode];
     
-    NSDictionary *payload = [dataInfo valueForKey:@"data"];
+    NSDictionary *payload;
+    if(connectionMode == SFIAlmondConnectionMode_local)
+        payload = dataInfo[@"data"];
+    else
+        payload = [dataInfo[@"data"] objectFromJSONData];
     NSString *almondMAC = payload[ALMONDMAC];
     //{"CommandType":"DynamicAlmondLocationChange","AlmondLocation":"Den","AlmondMAC":"251176216952836"}
     if(connectionMode == SFIAlmondConnectionMode_cloud && ![almondMAC isEqualToString:toolkit.currentAlmond.almondplusMAC]){

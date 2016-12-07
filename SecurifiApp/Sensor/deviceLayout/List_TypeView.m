@@ -9,6 +9,7 @@
 #import "List_TypeView.h"
 #import "clientTypeCell.h"
 #import "SFIColors.h"
+#import "Colours.h"
 #import "UIFont+Securifi.h"
 @interface List_TypeView()<UITableViewDataSource,UITableViewDelegate,clientTypeCellDelegate,UITextFieldDelegate>
 @property (nonatomic)UITableView *tableType;
@@ -38,7 +39,7 @@
     return self;
 }
 -(void)addSearchTextField{
-    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 5, 20, 20)];
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 5, 18, 18)];
     imageView.image  = [UIImage imageNamed:@"search_icon_white"];
     [self addSubview:imageView];
     imageView.alpha = 0.5;
@@ -53,7 +54,7 @@
     
     self.searchtextField.font = [UIFont securifiFont:14];
     self.searchtextField.placeholder = @" Search from here...";
-    UIColor *color = [UIColor whiteColor];
+    UIColor *color = [UIColor colorFromHexString:@"F4F2F7"];
     self.searchtextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Search from here..." attributes:@{NSForegroundColorAttributeName: color}];
     [self.searchtextField addTarget:self
                             action:@selector(editingChanged:)
