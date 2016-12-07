@@ -47,6 +47,9 @@
 @property(nonatomic) UIImageView *navigationImg;
 @property(nonatomic) HelpScreens *helpScreensObj;
 @property(nonatomic) UIView *maskView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableYconstrain1;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableYconstrain2;
+@property (weak, nonatomic) IBOutlet UIView *imageIOTSecurity;
 @property(nonatomic) UIButton *buttonMaskView;
 @end
 
@@ -121,6 +124,8 @@
     [self.toolkit tryRefreshNotifications];
     [self initializeUI];
     [self markNetworkStatusIcon];
+//    self.tableYconstrain1.constant = self.tableYconstrain1.constant+90;
+//    self.tableYconstrain2.constant = self.tableYconstrain2.constant+90;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
