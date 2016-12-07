@@ -19,6 +19,8 @@
 #import "BrowsingHistoryDataBase.h"
 #import "ViewController.h"
 #import "AlmondManagement.h"
+#import "SubscriptionPlansViewController.h"
+
 
 @interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,NSURLConnectionDelegate,DetailsPeriodViewControllerDelegate,UIAlertViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (nonatomic) NSMutableArray *parentsControlArr;
@@ -207,17 +209,25 @@
 //    }
 //}
 -(void)viewWillDisappear:(BOOL)animated{
+    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
+        // Navigation back button was pressed. Do some stuff
+        [self.navigationController setNavigationBarHidden:NO];
+    }
     [super viewWillDisappear:YES];
     self.blockClientTxt.hidden = YES;
-    [self.navigationController setNavigationBarHidden:NO];
+    
 }
 
 - (IBAction)onLaunchPayment:(id)sender {
     NSLog(@"onLaunchPayment");
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    ViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
-//    [self.navigationController pushViewController:viewController animated:YES];
-    [self presentViewController:viewController animated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        ViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
+//        nav.navigationBarHidden = YES;
+        [self presentViewController:viewController animated:YES completion:nil];
+    });
+    
 }
 
 - (void)didReceiveMemoryWarning {

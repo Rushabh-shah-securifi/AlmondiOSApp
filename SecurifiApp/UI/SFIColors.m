@@ -170,6 +170,10 @@
     return [UIColor colorFromHexString:@"E5E5E5"];
 }
 
++ (UIColor *)paymentColor{
+    return [UIColor colorFromHexString:@"9575CD"];
+}
+
 + (UIColor *)getHelpCenterColor:(NSString*)color{
     if([color isEqualToString:@"homemode"])
         return [self lightBlueColor];

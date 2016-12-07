@@ -766,7 +766,11 @@ Follow it, then login below.";
 "logout_hud" = "Logging out. Please wait!";
 "almond_share_control" = "Please add an Almond to share its control.";
 "almond_share_invite" = "Share control of %@ by sending an invitation over email.";
-
+"my_subscriptions" = "My Subscriptions";
+"add_almond" = "Add Almond";
+"link_almond_account" = "Link Almond to Account";
+"help_center" = "Help Center";
+"almond_sharing" = "Almond Sharing";
 
 //Quick Tips
 "Quick_Tips"="Quick Tips";
