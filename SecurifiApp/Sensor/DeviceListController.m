@@ -309,11 +309,11 @@ int mii;
     //    }
     vHeader.textLabel.textColor = [UIColor lightGrayColor];
     vHeader.textLabel.attributedText = aAttrString;
-    UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 40, 2, 25, 25)];
-    button.tag = (section == 0)?0:1;
-    [button addTarget:self action:@selector(sortButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [button setImage:[UIImage imageNamed:@"filter_list_black"] forState:UIControlStateNormal];
-    [vHeader.contentView addSubview:button];
+//    UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 40, 2, 25, 25)];
+//    button.tag = (section == 0)?0:1;
+//    [button addTarget:self action:@selector(sortButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+//    [button setImage:[UIImage imageNamed:@"filter_list_black"] forState:UIControlStateNormal];
+//    [vHeader.contentView addSubview:button];
     return vHeader;
 }
 

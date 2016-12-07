@@ -211,7 +211,17 @@ static const int footerHt = 130;
     return footerView;
 }
 
-
+-(void)onTypeSelection:(id)sender{
+    UIButton *button = (UIButton *)sender;
+    for (SortTypeView *view in self.subviews) {
+        if([view isKindOfClass:[SortTypeView class]]){
+            if(view.tag == button.tag){
+                
+            }
+        }
+    }
+    //update to enum on close of UI update to devic list view controller.
+}
 
 #pragma mark button tap methods
 - (void)onCloseBtnTap:(id)sender{
