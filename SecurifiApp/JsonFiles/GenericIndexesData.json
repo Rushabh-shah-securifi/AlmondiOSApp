@@ -143,113 +143,89 @@
                 "Icon": "help_icon",
                 "AppLabel": "other"
             },
-            "nest_thermostat": {
-                "Icon": "hubrouter_icon",
-                "AppLabel": "nest_thermostat"
-            },
             "philips_hue": {
-                "Icon": "hubrouter_icon",
+                "Icon": "philips_hue_icon",
                 "AppLabel": "philips_hue"
             },
             "scout_home_security": {
-                "Icon": "hubrouter_icon",
+                "Icon": "scout_hub_icon",
                 "AppLabel": "scoutt_hss"
             },
             "skybell_wifi": {
-                "Icon": "hubrouter_icon",
+                "Icon": "skybell_icon",
                 "AppLabel": "skybell_video"
             },
-            "nest_cam": {
-                "Icon": "hubrouter_icon",
-                "AppLabel": "nest_cam"
-            },
-            "kuna_toucan": {
-                "Icon": "hubrouter_icon",
-                "AppLabel": "kuna_toucan"
-            },
-            "nest_protect": {
-                "Icon": "hubrouter_icon",
-                "AppLabel": "nest_protect"
-            },
             "august_connect": {
-                "Icon": "hubrouter_icon",
+                "Icon": "august_connect_icon",
                 "AppLabel": "august_connect"
             },
             "canary": {
-                "Icon": "hubrouter_icon",
+                "Icon": "canary_icon",
                 "AppLabel": "canary"
             },
             "piper": {
-                "Icon": "hubrouter_icon",
+                "Icon": "piper_icon",
                 "AppLabel": "piper"
             },
             "ring_doorbell": {
-                "Icon": "hubrouter_icon",
+                "Icon": "skybell_icon",
                 "AppLabel": "ring_doorbell"
             },
-            "samsung_smarthings": {
-                "Icon": "hubrouter_icon",
+            "samsung_smartthings": {
+                "Icon": "smartthings_icon",
                 "AppLabel": "samsung_smarthings"
             },
             "belkin_wemo": {
-                "Icon": "hubrouter_icon",
+                "Icon": "wemo_icon",
                 "AppLabel": "belkin_wemo"
             },
             "sonos": {
-                "Icon": "hubrouter_icon",
+                "Icon": "speaker_icon",
                 "AppLabel": "sonos"
             },
             "airplay_speakers": {
-                "Icon": "hubrouter_icon",
+                "Icon": "speaker_icon",
                 "AppLabel": "airplay_speakers"
             },
             "wink": {
-                "Icon": "hubrouter_icon",
+                "Icon": "wink_icon",
                 "AppLabel": "wink"
             },
             "ge_appliances": {
-                "Icon": "hubrouter_icon",
+                "Icon": "ge_appliances_icon",
                 "AppLabel": "ge_appliances"
             },
             "honeywell_appliances": {
-                "Icon": "hubrouter_icon",
+                "Icon": "ge_appliances_icon",
                 "AppLabel": "honeywell_product"
             },
             "osram_lightify": {
-                "Icon": "hubrouter_icon",
+                "Icon": "osram_lightify",
                 "AppLabel": "osram_lightify"
             },
             "ibaby_monitor": {
-                "Icon": "hubrouter_icon",
+                "Icon": "videocam_icon",
                 "AppLabel": "ibaby_monitor"
             },
             "motorola_connect": {
-                "Icon": "hubrouter_icon",
+                "Icon": "videocam_icon",
                 "AppLabel": "motorola_connect"
             },
             "foscam": {
-                "Icon": "hubrouter_icon",
+                "Icon": "videocam_icon",
                 "AppLabel": "foscam"
             },
             "hikvision": {
-                "Icon": "hubrouter_icon",
+                "Icon": "videocam_icon",
                 "AppLabel": "hikvision"
             },
             "dlink_cameras": {
-                "Icon": "hubrouter_icon",
+                "Icon": "videocam_icon",
                 "AppLabel": "dlink_camera"
             },
-            "firetv": {
-                "Icon": "hubrouter_icon",
-                "AppLabel": "fire_tv"
-            },
             "withings": {
-                "Icon": "hubrouter_icon",
+                "Icon": "videocam_icon",
                 "AppLabel": "withings"
-            },
-            "roku": {
-                "Icon": "hubrouter_icon",
-                "AppLabel": "roku"
             }
         }
     },

@@ -9,6 +9,7 @@
 #import "IoTDeviceViewController.h"
 
 @interface IoTDeviceViewController ()
+@property (weak, nonatomic) IBOutlet UISwitch *iotSwitch;
 
 @end
 
@@ -16,6 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
     // Do any additional setup after loading the view.
 }
 

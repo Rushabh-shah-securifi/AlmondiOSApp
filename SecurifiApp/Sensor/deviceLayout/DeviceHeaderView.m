@@ -148,6 +148,18 @@
             NSLog(@"icon_history_on");
             self.deviceValue.text = @"Web History On";
         }
+//        if(client.is_IoTDeviceType == YES){
+//            if(client.iot_serviceEnable == YES){
+//                self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_security_black"];
+//                NSLog(@"ic_security_black");
+//                self.deviceValue.text = @"IoT service on";
+//            }
+//            else{
+//                self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_insecure_black"];
+//                NSLog(@"ic_insecure_black");
+//                self.deviceValue.text = @"IoT service off";
+//            }
+//        }
     }
     
     
