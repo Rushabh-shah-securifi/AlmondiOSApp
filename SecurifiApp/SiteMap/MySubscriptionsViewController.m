@@ -11,6 +11,7 @@
 #import "SubscriptionPlansViewController.h"
 #import "AlmondSelectionTableView.h"
 #import "SFIColors.h"
+#import "AlmondManagement.h"
 
 #define MY_SUBSCIRIPTION_1 @"my_subscriptions_cell_1"
 #define MY_SUBSCIRIPTION_2 @"my_subscriptions_cell_2"
@@ -28,7 +29,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.almondLabel.text = [SecurifiToolkit sharedInstance].currentAlmond.almondplusName;
+    self.almondLabel.text = [AlmondManagement currentAlmond].almondplusName;
     [self initializeMySubscriptionsArray];
     // Do any additional setup after loading the view.
 }
@@ -187,7 +188,7 @@
     [self removeAlmondSelectionView];
     NSLog(@"onAlmondSelectedDelegate i am called");
     self.almondLabel.text = selectedAlmond.almondplusName;
-    [[SecurifiToolkit sharedInstance] setCurrentAlmond:selectedAlmond];
+    [AlmondManagement setCurrentAlmond:selectedAlmond];
 }
 
 -(void)removeAlmondSelectionView{
