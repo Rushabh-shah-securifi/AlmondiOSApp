@@ -6,11 +6,9 @@
 //  Copyright © 2016 Securifi Ltd. All rights reserved.
 //
 
+#import "SecurifiToolkit.h"
 #import "NetworkStatusIcon.h"
 #import "ConnectionStatus.h"
-#import "LocalNetworkManagement.h"
-#import "SFIAlmondLocalNetworkSettings.h"
-#import "AlmondManagement.h"
 
 @implementation NetworkStatusIcon
 
@@ -52,56 +50,14 @@
     }
 }
 
+
 -(void) onConnectionStatusButtonPressed {
-    NSString *Title;
-    NSString *subTitle1, *subTitle2;
-    SFIAlmondConnectionMode mode1, mode2;
-    BOOL presentLocalNetworkSettings;
-    SecurifiToolkit* toolKit = [SecurifiToolkit sharedInstance];
     
-    if([ConnectionStatus getConnectionStatus]==AUTHENTICATED){
-        if([toolKit currentConnectionMode] == SFIAlmondConnectionMode_cloud){
-            SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement getCurrentLocalAlmondSettings];
-            NSArray* localAlmonds = [AlmondManagement localLinkedAlmondList];
-            NSLog(@"%@ is the local almond mac name",settings.almondplusMAC);
-            if (settings){
-                for(SFIAlmondPlus* localAlmond in localAlmonds){
-                    if([settings.almondplusMAC isEqualToString:localAlmond.almondplusMAC]){
-                        [AlmondManagement writeCurrentAlmond:localAlmond];
-                        break;
-                    }
-                }
-                Title = NSLocalizedString(@"alert.message-Connected to your Almond via cloud.", @"Connected to your Almond via cloud.");
-                subTitle1 = NSLocalizedString(@"switch_local", @"Switch to Local Connection");
-                mode1 = SFIAlmondConnectionMode_local;
-            }else{
-                Title = NSLocalizedString(@"alert msg offline Local connection not supported.", @"Local connection settings are missing.");
-                subTitle1 = NSLocalizedString(@"Add Local Connection Settings", @"Add Local Connection Settings");
-                presentLocalNetworkSettings = YES;
-                mode1 = SFIAlmondConnectionMode_local;
-            }
-        }else{
-            Title = NSLocalizedString(@"alert.message-Connected to your Almond via local.", @"Connected to your Almond via local.");
-            subTitle1 = NSLocalizedString(@"switch_cloud", @"Switch to Cloud Connection");
-            mode1 = SFIAlmondConnectionMode_cloud;
-        }
-    }else if([ConnectionStatus getConnectionStatus]==NO_NETWORK_CONNECTION || [ConnectionStatus getConnectionStatus] == IS_CONNECTING_TO_NETWORK){
-        if([toolKit currentConnectionMode] == SFIAlmondConnectionMode_cloud){
-            Title = NSLocalizedString(@"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection.", @"Cloud connection to your Almond failed. Tap retry or switch to local connection.");
-            subTitle1 = NSLocalizedString(@"switch_local", @"Switch to Local Connection");
-            subTitle2 = @"Retry Cloud Connection";//NSLocalizedString(@"switch_cloud", @"Switch to Cloud Connection");
-            mode1 = SFIAlmondConnectionMode_local;
-            mode2 = SFIAlmondConnectionMode_cloud;
-        }else{
-            Title = NSLocalizedString(@"local_conn_failed_retry", "Local connection to your Almond failed. Tap retry or switch to cloud connection.");
-            subTitle1 = NSLocalizedString(@"alert title offline Local Retry Local Connection", @"Retry Local Connection");
-            subTitle2 = NSLocalizedString(@"switch_cloud", @"Switch to Cloud Connection");
-            mode1 = SFIAlmondConnectionMode_local;
-            mode2 = SFIAlmondConnectionMode_cloud;
-        }
-    }
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     
-    [_networkStatusIconDelegate showNetworkTogglePopUp:Title withSubTitle1:subTitle1 withSubTitle2:subTitle2 withMode1:mode1 withMode2:mode2 presentLocalNetworkSettingsEditor:presentLocalNetworkSettings];
+    struct PopUpSuggestions data = [toolkit suggestionsFromNetworkStateAndConnectiontype];
+    
+    [_networkStatusIconDelegate showNetworkTogglePopUp:data.title withSubTitle1:data.subTitle1 withSubTitle2:data.subTitle2 withMode1:data.mode1 withMode2:data.mode2 presentLocalNetworkSettingsEditor:data.presentLocalNetworkSettings];
 }
 
 @end
