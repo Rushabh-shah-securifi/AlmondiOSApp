@@ -5289,7 +5289,7 @@
 		1CED5F1B19AC82FE0023512F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -5332,7 +5332,7 @@
 		1CED5F1C19AC82FE0023512F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -5368,7 +5368,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F65023B0DECE8F15E5353C48 /* Pods-Almond.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Almond-AppIcon";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-launch_image";
 				CODE_SIGN_ENTITLEMENTS = Almond/Almond.entitlements;
@@ -5402,6 +5402,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A856E5412099C069FEB9493D /* Pods-Almond.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Almond-AppIcon";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-launch_image";
 				CODE_SIGN_ENTITLEMENTS = Almond/Almond.entitlements;

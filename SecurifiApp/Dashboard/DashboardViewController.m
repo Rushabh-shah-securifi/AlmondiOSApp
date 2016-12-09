@@ -73,6 +73,8 @@
     
     [self markNetworkStatusIcon];
     [self initializeHUD];
+    self.tableYconstrain1.constant = self.tableYconstrain1.constant+90;
+    self.tableYconstrain2.constant = self.tableYconstrain2.constant+90;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -125,8 +127,7 @@
     [self.toolkit tryRefreshNotifications];
     [self initializeUI];
     [self markNetworkStatusIcon];
-//    self.tableYconstrain1.constant = self.tableYconstrain1.constant+90;
-//    self.tableYconstrain2.constant = self.tableYconstrain2.constant+90;
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -453,17 +454,23 @@
 #pragma mark tableviewDelegate
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 3;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger deviceRowCount = [self isSensorNotificationEmpty]? 1: self.deviceNotificationArr.count;
     NSInteger clientRowCount = [self isClientNotificationEmpty]? 1: self.clientNotificationArr.count;
-    
-    return (section ==0)? deviceRowCount: clientRowCount;
+    if(section == 0)
+        return 2;
+    else if(section == 1)
+        return deviceRowCount;
+    else if(section == 2)
+        return clientRowCount;
+   
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     if(indexPath.section == 0 && [self isSensorNotificationEmpty]){
         return [self createEmptyCell:tableView isSensor:YES];
     }else if(indexPath.section == 1 && [self isClientNotificationEmpty]){

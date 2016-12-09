@@ -450,6 +450,7 @@
         //        if (!controller)
         //        {
         BrowsingHistoryViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
+        newWindow.is_IotType = YES;
         NSLog(@"instantiateViewControllerWithIdentifier IF");
         newWindow.client = self.client;
         [self.navigationController pushViewController:newWindow animated:YES];

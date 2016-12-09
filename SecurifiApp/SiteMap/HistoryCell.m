@@ -119,6 +119,11 @@
     //    if([uri[@"checked"] isEqualToString:@"yes"]){
     //        [self changeIconColor];
     //    }
+    if(self.is_IotType){
+        self.categoryImg.hidden = YES;
+        self.siteNameXconstrain.constant = -29;
+        self.accessoryType = UITableViewCellAccessoryNone;
+    }
     
 }
 

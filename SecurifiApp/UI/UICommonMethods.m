@@ -54,6 +54,7 @@
     [CommonMethods setLableProperties:detail text:text textColor:[SFIColors ruleGraycolor] fontName:@"AvenirLTStd-Roman" fontSize:16 alignment:NSTextAlignmentCenter];
     [CommonMethods setLineSpacing:detail text:text spacing:3];
     [detail sizeToFit];
+
     [detailView addSubview:detail];
 }
 
