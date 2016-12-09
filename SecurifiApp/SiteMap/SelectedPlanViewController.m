@@ -8,6 +8,7 @@
 
 #import "SelectedPlanViewController.h"
 #import "PaymentCompleteViewController.h"
+#import "PaymentTypesViewController.h"
 
 @interface SelectedPlanViewController ()
 
@@ -32,9 +33,20 @@
 }
 
 - (IBAction)onProceedToPaymentTap:(id)sender {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        PaymentTypesViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"PaymentTypesViewController"];
+        //UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
+        //self.navigationController.navigationBarHidden = YES;
+        [self.navigationController pushViewController:viewController animated:YES];
+        //[self presentViewController:nav animated:YES completion:nil];
+    });
+    
+    /*
+     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
     PaymentCompleteViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"PaymentCompleteViewController"];
     [self.navigationController pushViewController:viewController animated:YES];
+     */
 }
 
 

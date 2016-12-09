@@ -1,11 +1,13 @@
 //
-//  ViewController.m
-//  StripeExample
+//  PaymentTypesViewController.m
+//  SecurifiApp
 //
-//  Created by Jack Flintermann on 8/21/14.
-//  Copyright (c) 2014 Stripe. All rights reserved.
+//  Created by Masood on 12/7/16.
+//  Copyright © 2016 Securifi Ltd. All rights reserved.
 //
-/*
+
+#import "PaymentTypesViewController.h"
+
 #import <Stripe/Stripe.h>
 
 #import "ViewController.h"
@@ -14,23 +16,20 @@
 #import "ShippingManager.h"
 #import "SFIBackendAPIClient.h"
 
-@interface ViewController () <PaymentViewControllerDelegate, PKPaymentAuthorizationViewControllerDelegate, STPPaymentContextDelegate>
+@interface PaymentTypesViewController () <PaymentViewControllerDelegate, PKPaymentAuthorizationViewControllerDelegate>
 @property (nonatomic) BOOL applePaySucceeded;
 @property (nonatomic) NSError *applePayError;
 @property (nonatomic) ShippingManager *shippingManager;
 @property (weak, nonatomic) IBOutlet UIButton *applePayButton;
 
-@property (nonatomic)STPPaymentContext *payContext;
 @end
 
-@implementation ViewController
+@implementation PaymentTypesViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.shippingManager = [[ShippingManager alloc] init];
     self.applePayButton.enabled = [self applePayEnabled];
-    
-    self.payContext = [self getPaymentContext];
 }
 
 - (void)presentError:(NSError *)error {
@@ -62,33 +61,10 @@
     }
     return NO;
 }
-- (IBAction)onDismissTap:(id)sender {
+- (IBAction)onCrossTap:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self.navigationController popViewControllerAnimated:YES];
     });
-}
-
-- (IBAction)beginApplePay:(id)sender {
-    NSLog(@"begin apple pay");
-    self.applePaySucceeded = NO;
-    self.applePayError = nil;
-
-    NSString *merchantId = AppleMerchantId;
-
-    PKPaymentRequest *paymentRequest = [Stripe paymentRequestWithMerchantIdentifier:merchantId];
-    [paymentRequest setRequiredShippingAddressFields:PKAddressFieldNone];
-//    [paymentRequest setRequiredBillingAddressFields:PKAddressFieldPostalAddress];
-//    paymentRequest.shippingMethods = [self.shippingManager defaultShippingMethods];
-    paymentRequest.paymentSummaryItems = [self summaryItemsForShippingMethod:paymentRequest.shippingMethods.firstObject];
-    if ([Stripe canSubmitPaymentRequest:paymentRequest]) {
-        PKPaymentAuthorizationViewController *auth = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
-        auth.delegate = self;
-        if (auth) {
-            [self presentViewController:auth animated:YES completion:nil];
-        } else {
-            NSLog(@"Apple Pay returned a nil PKPaymentAuthorizationViewController - make sure you've configured Apple Pay correctly, as outlined at https://stripe.com/docs/mobile/apple-pay");
-        }
-    }
 }
 
 - (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller didSelectShippingAddress:(ABRecordRef)address completion:(void (^)(PKPaymentAuthorizationStatus, NSArray<PKShippingMethod *> * _Nonnull, NSArray<PKPaymentSummaryItem *> * _Nonnull))completion {
@@ -114,7 +90,7 @@
 - (NSArray *)summaryItemsForShippingMethod:(PKShippingMethod *)shippingMethod {
     NSLog(@"summaryItemsForShippingMethod");
     PKPaymentSummaryItem *shirtItem = [PKPaymentSummaryItem summaryItemWithLabel:@"Cool Subscription" amount:[NSDecimalNumber decimalNumberWithString:@"10.00"]];
-//    NSDecimalNumber *total = [shirtItem.amount decimalNumberByAdding:shippingMethod.amount];
+    //    NSDecimalNumber *total = [shirtItem.amount decimalNumberByAdding:shippingMethod.amount];
     PKPaymentSummaryItem *totalItem = [PKPaymentSummaryItem summaryItemWithLabel:@"Stripe Shirt Shop" amount:shirtItem.amount];
     return @[shirtItem, totalItem];
 }
@@ -156,15 +132,10 @@
 
 - (IBAction)beginCustomPayment:(id)sender {
     NSLog(@"beginCustomPayment");
-    [self.payContext presentPaymentMethodsViewController];
-    return;
+    /*[self.payContext presentPaymentMethodsViewController];
+     return;*/
     
-    PaymentViewController *paymentViewController = [[PaymentViewController alloc] initWithNibName:nil bundle:nil];
-    paymentViewController.amount = [NSDecimalNumber decimalNumberWithString:@"20.00"];
-    paymentViewController.backendCharger = self;
-    paymentViewController.delegate = self;
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:paymentViewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    
 }
 
 
@@ -185,18 +156,18 @@
     NSLog(@"vc createBackendChargeWithToken");
     if (!BackendChargeURLString) {
         NSError *error = [NSError
-            errorWithDomain:StripeDomain
-                       code:STPInvalidRequestError
-                   userInfo:@{
-                       NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Good news! Stripe turned your credit card into a token: %@ \nYou can follow the "
-                                                                             @"instructions in the README to set up an example backend, or use this "
-                                                                             @"token to manually create charges at dashboard.stripe.com .",
-                                                                             token.tokenId]
-                   }];
+                          errorWithDomain:StripeDomain
+                          code:STPInvalidRequestError
+                          userInfo:@{
+                                     NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Good news! Stripe turned your credit card into a token: %@ \nYou can follow the "
+                                                                 @"instructions in the README to set up an example backend, or use this "
+                                                                 @"token to manually create charges at dashboard.stripe.com .",
+                                                                 token.tokenId]
+                                     }];
         completion(STPBackendChargeResultFailure, error);
         return;
     }
-
+    
     // This passes the token off to our payment backend, which will then actually complete charging the card using your Stripe account's secret key
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
@@ -204,7 +175,7 @@
     NSString *urlString = [BackendChargeURLString stringByAppendingPathComponent:@"charge_card"];
     
     
-//    urlString = @"https://status.securifi.com:443/payment";
+    //    urlString = @"https://status.securifi.com:443/payment";
     NSLog(@"urlstring: %@", urlString);
     
     NSURL *url = [NSURL URLWithString:urlString];
@@ -216,67 +187,53 @@
     NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
                                                                fromData:data
                                                       completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                                   NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+                                                          NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
                                                           NSLog(@"status code: %ld", (long)httpResponse.statusCode);
-                                                                   if (!error && httpResponse.statusCode != 200) {
-                                                                       error = [NSError errorWithDomain:StripeDomain
-                                                                                                   code:STPInvalidRequestError
-                                                                                               userInfo:@{NSLocalizedDescriptionKey: @"There was an error connecting to your payment backend."}];
-                                                                   }
-                                                                   if (error) {
-                                                                       completion(STPBackendChargeResultFailure, error);
-                                                                   } else {
-                                                                       completion(STPBackendChargeResultSuccess, nil);
-                                                                   }
-                                                               }];
+                                                          if (!error && httpResponse.statusCode != 200) {
+                                                              error = [NSError errorWithDomain:StripeDomain
+                                                                                          code:STPInvalidRequestError
+                                                                                      userInfo:@{NSLocalizedDescriptionKey: @"There was an error connecting to your payment backend."}];
+                                                          }
+                                                          if (error) {
+                                                              completion(STPBackendChargeResultFailure, error);
+                                                          } else {
+                                                              completion(STPBackendChargeResultSuccess, nil);
+                                                          }
+                                                      }];
     
     [uploadTask resume];
 }
 
-
-- (STPPaymentContext *)getPaymentContext{
-    STPPaymentConfiguration *config = [STPPaymentConfiguration sharedConfiguration];
-    config.publishableKey = StripePublishableKey;
-    config.appleMerchantIdentifier = AppleMerchantId;
-    config.companyName = @"Almond";
-    config.requiredBillingAddressFields = STPBillingAddressFieldsNone;
-    config.additionalPaymentMethods = STPPaymentMethodTypeApplePay;
-    config.smsAutofillDisabled = NO;
-    
-    [SFIBackendAPIClient sharedInstance].baseURLString = BackendChargeURLString;
-    
-    STPPaymentContext *paymentContext = [[STPPaymentContext alloc]initWithAPIAdapter:[SFIBackendAPIClient sharedInstance] configuration:config theme:[STPTheme defaultTheme]];
-    STPUserInformation *userInfo = [[STPUserInformation alloc]init];
-    //userInfo.email = @"masood.alikhan15@gmail.com";
-    paymentContext.prefilledInformation = userInfo;
-    paymentContext.paymentAmount = 10;
-    paymentContext.paymentCurrency = @"usd";
-    paymentContext.delegate = self;
-    paymentContext.hostViewController = self;
-    
-    
-    return paymentContext;
+#pragma button tap methods
+- (IBAction)onCardTap:(id)sender {
+    PaymentViewController *paymentViewController = [[PaymentViewController alloc] initWithNibName:nil bundle:nil];
+    paymentViewController.amount = [NSDecimalNumber decimalNumberWithString:@"20.00"];
+    paymentViewController.backendCharger = self;
+    paymentViewController.delegate = self;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:paymentViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
-
-#pragma mark payment context delegate
--(void)paymentContext:(STPPaymentContext *)paymentContext didCreatePaymentResult:(STPPaymentResult *)paymentResult completion:(STPErrorBlock)completion{
-    NSLog(@"didCreatePaymentResult");
+- (IBAction)onApplePayTap:(id)sender {
+    self.applePaySucceeded = NO;
+    self.applePayError = nil;
     
-}
-
--(void)paymentContextDidChange:(STPPaymentContext *)paymentContext{
-    NSLog(@"paymentContextDidChange - paymentcontext: %@", paymentContext);
-}
-
--(void)paymentContext:(STPPaymentContext *)paymentContext didFinishWithStatus:(STPPaymentStatus)status error:(NSError *)error{
-    NSLog(@"didFinishWithStatus");
+    NSString *merchantId = AppleMerchantId;
     
+    PKPaymentRequest *paymentRequest = [Stripe paymentRequestWithMerchantIdentifier:merchantId];
+    [paymentRequest setRequiredShippingAddressFields:PKAddressFieldNone];
+    //    [paymentRequest setRequiredBillingAddressFields:PKAddressFieldPostalAddress];
+    //    paymentRequest.shippingMethods = [self.shippingManager defaultShippingMethods];
+    paymentRequest.paymentSummaryItems = [self summaryItemsForShippingMethod:paymentRequest.shippingMethods.firstObject];
+    if ([Stripe canSubmitPaymentRequest:paymentRequest]) {
+        PKPaymentAuthorizationViewController *auth = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
+        auth.delegate = self;
+        if (auth) {
+            [self presentViewController:auth animated:YES completion:nil];
+        } else {
+            NSLog(@"Apple Pay returned a nil PKPaymentAuthorizationViewController - make sure you've configured Apple Pay correctly, as outlined at https://stripe.com/docs/mobile/apple-pay");
+        }
+    }
 }
 
--(void)paymentContext:(STPPaymentContext *)paymentContext didFailToLoadWithError:(NSError *)error{
-    NSLog(@"didFailToLoadWithError");
-    
-}
 @end
-*/

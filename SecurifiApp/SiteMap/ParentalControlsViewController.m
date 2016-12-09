@@ -17,9 +17,7 @@
 #import "CommonMethods.h"
 #import "DetailsPeriodViewController.h"
 #import "BrowsingHistoryDataBase.h"
-#import "ViewController.h"
 #import "AlmondManagement.h"
-#import "SubscriptionPlansViewController.h"
 
 
 @interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,NSURLConnectionDelegate,DetailsPeriodViewControllerDelegate,UIAlertViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
@@ -215,18 +213,6 @@
     }
     [super viewWillDisappear:YES];
     self.blockClientTxt.hidden = YES;
-    
-}
-
-- (IBAction)onLaunchPayment:(id)sender {
-    NSLog(@"onLaunchPayment");
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        ViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
-//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-//        nav.navigationBarHidden = YES;
-        [self presentViewController:viewController animated:YES completion:nil];
-    });
     
 }
 

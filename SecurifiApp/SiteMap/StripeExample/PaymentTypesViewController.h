@@ -1,12 +1,13 @@
 //
-//  ViewController.h
-//  StripeExample
+//  PaymentTypesViewController.h
+//  SecurifiApp
 //
-//  Created by Jack Flintermann on 8/21/14.
-//  Copyright (c) 2014 Stripe. All rights reserved.
+//  Created by Masood on 12/7/16.
+//  Copyright © 2016 Securifi Ltd. All rights reserved.
 //
-/*
+
 #import <UIKit/UIKit.h>
+
 #import "STPToken.h"
 
 typedef NS_ENUM(NSInteger, STPBackendChargeResult) {
@@ -22,7 +23,7 @@ typedef void (^STPTokenSubmissionHandler)(STPBackendChargeResult status, NSError
 
 @end
 
-@interface ViewController : UIViewController<STPBackendCharging>
+@interface PaymentTypesViewController : UIViewController<STPBackendCharging>
 
 @end
-*/
+

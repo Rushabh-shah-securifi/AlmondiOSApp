@@ -828,6 +828,7 @@
     
     AlmondSelectionTableView *view = [AlmondSelectionTableView new];
     view.methodsDelegate = self;
+    view.needsAddAlmond = YES;
     [view initializeView:self.buttonMaskView.frame];
     [self.buttonMaskView addSubview:view];
 

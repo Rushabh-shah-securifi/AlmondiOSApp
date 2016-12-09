@@ -13,6 +13,10 @@
 #import "SFIColors.h"
 #import "SelectedPlanViewController.h"
 
+#define TOP_LABEL @"toplabel"
+#define MID_LABEL @"midlabel"
+#define BOTTOM_LABEL @"bottomlabel"
+
 @interface SubscriptionPlansViewController ()<UIGestureRecognizerDelegate>
 @property (nonatomic) NSInteger prevCount;
 @property (weak, nonatomic) IBOutlet UIView *centerView;
@@ -30,7 +34,8 @@
     [self addSwipeToView:self.centerView];
     [self setupScrollView];
 //    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    // Do any additional setup after loading the view.
+    
+    self.isFreeSubsExpired = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -109,12 +114,12 @@
 }
 
 - (void)setupScrollView{
-    NSArray *plans = @[@"", @"", @"", @"", @""];
     //    scrollView.backgroundColor = [UIColor lightGrayColor];
     CGFloat xOffset = 2;
     int counter = 0;
-    for(NSString *plan in plans){
-        UIButton *planBtn = [self makePlanButton:@"almond_icon" xOffset:xOffset selector:@selector(onPlanBtnTap:)];
+    NSArray *plans = [self getPlans];
+    for(NSDictionary *plan in plans){
+        UIButton *planBtn = [self makePlanButton:@"almond_icon" xOffset:xOffset selector:@selector(onPlanBtnTap:) plan:plan];
         planBtn.tag = counter;
         [self.scrollView addSubview:planBtn];
         //        label.backgroundColor = [UIColor yellowColor];
@@ -125,31 +130,55 @@
     [self setHorizantalScrolling:self.scrollView];
 }
 
-- (UIButton *)makePlanButton:(NSString *)imageName xOffset:(CGFloat)xOffset selector:(SEL)selector{
+- (NSArray *)getPlans{
+    NSMutableArray *plans = [NSMutableArray new];
+    
+    NSString *text1 = self.isFreeSubsExpired? @"Expired": @"Trial";
+    [plans addObject:[self getPlanDict:@"1 Month" midLabel:@"FREE" btmLabel:text1]];
+
+    [plans addObject:[self getPlanDict:@"1 Month" midLabel:@"5 $" btmLabel:@"PLAN"]];
+    
+    [plans addObject:[self getPlanDict:@"3 Month" midLabel:@"12 $" btmLabel:@"PLAN"]];
+    
+    [plans addObject:[self getPlanDict:@"6 Month" midLabel:@"20 $" btmLabel:@"PLAN"]];
+    
+    [plans addObject:[self getPlanDict:@"1 Year" midLabel:@"30 $" btmLabel:@"PLAN"]];
+    
+    return plans;
+}
+
+- (NSDictionary *)getPlanDict:(NSString *)topLabel midLabel:(NSString *)midLabel btmLabel:(NSString *)btmLabel{
+    NSMutableDictionary *muDict = [NSMutableDictionary new];
+    [muDict setObject:topLabel forKey:TOP_LABEL];
+    [muDict setObject:midLabel forKey:MID_LABEL];
+    [muDict setObject:btmLabel forKey:BOTTOM_LABEL];
+    return muDict;
+}
+
+- (UIButton *)makePlanButton:(NSString *)imageName xOffset:(CGFloat)xOffset selector:(SEL)selector plan:(NSDictionary *)plan{
     UIButton *planBtn = [[UIButton alloc]initWithFrame:CGRectMake(xOffset, 20, 100, 100)];
     [planBtn addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
 //    planBtn.backgroundColor = [UIColor colorFromHexString:@"02a8f3"];
     
-    [self addLables:planBtn];
+    [self addLables:planBtn plan:plan];
     [self setBorder:planBtn];
     return planBtn;
 }
 
-- (void)addLables:(UIButton *)btn{
+- (void)addLables:(UIButton *)btn plan:(NSDictionary *)plan{
     UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, CGRectGetWidth(btn.frame), 20)];
-    [self addLable:@"1 MONTH" btn:btn label:label1];
+    [self addLable:plan[TOP_LABEL] btn:btn label:label1 fntName:@"Avenir-Heavy" fntSze:14];
     
     UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, CGRectGetWidth(btn.frame), 30)];
     label2.center = CGPointMake(CGRectGetMidX(btn.bounds), CGRectGetMidY(btn.bounds));
-    [self addLable:@"FREE" btn:btn label:label2];
+    [self addLable:plan[MID_LABEL] btn:btn label:label2 fntName:@"Avenir-Roman" fntSze:24];
     
     UILabel *label3 = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetHeight(btn.frame)-30, CGRectGetWidth(btn.frame), 20)];
-    
-    [self addLable:@"TRIAL" btn:btn label:label3];
+    [self addLable:plan[BOTTOM_LABEL] btn:btn label:label3 fntName:@"Avenir-Roman" fntSze:14];
 }
 
--(void)addLable:(NSString *)title btn:(UIButton *)btn label:(UILabel*)label{
-    [CommonMethods setLableProperties:label text:title textColor:label.textColor = [SFIColors paymentColor] fontName:@"Avenir-Heavy" fontSize:14 alignment:NSTextAlignmentCenter];
+-(void)addLable:(NSString *)title btn:(UIButton *)btn label:(UILabel*)label fntName:(NSString *)fntName fntSze:(int)fntSze{
+    [CommonMethods setLableProperties:label text:title textColor:label.textColor = [SFIColors paymentColor] fontName:fntName fontSize:fntSze alignment:NSTextAlignmentCenter];
     [btn addSubview:label];
 }
 
@@ -178,23 +207,23 @@
 
 -(void)onPlanBtnTap:(UIButton *)currentBtn{
     NSLog(@"onPlanBtnTap tag: %d", currentBtn.tag);
+    if(currentBtn.selected)
+        return;
     for(UIButton *button in [self.scrollView subviews]){
         if([button isKindOfClass:[UIImageView class]]){
             continue;
         }
-        if(button.tag == currentBtn.tag)
-            currentBtn.selected = !currentBtn.selected;
+        if(button.tag == currentBtn.tag){
+            currentBtn.selected = YES;
+            [self plainBtn:currentBtn];
+        }
+        
         else{
-            if(button.selected)
-                [self dottenBtn:button];//optimisation
+            if(button.selected)//optimisation
+                [self dottenBtn:button];
             button.selected = NO;
         }
     }
-    
-    if(currentBtn.selected)
-        [self plainBtn:currentBtn];
-    else
-        [self dottenBtn:currentBtn];
 }
 
 

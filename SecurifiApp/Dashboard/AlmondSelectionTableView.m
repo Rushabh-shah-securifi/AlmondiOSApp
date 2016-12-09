@@ -49,8 +49,9 @@ static const int footerHt = 60;
     if(self.almondList.count >= 4)
         return 300;
     
-    int baseHt = headerHt + footerHt;
-    int rowsHt = self.almondList.count *rowHeight;
+    int footerHeight = self.needsAddAlmond?footerHt:0;
+    int baseHt = headerHt + footerHeight;
+    NSInteger rowsHt = self.almondList.count * rowHeight;
     return baseHt +rowsHt + 10;
 }
 
@@ -61,6 +62,10 @@ static const int footerHt = 60;
             NSArray *cloud = [AlmondManagement almondList];
             if (!cloud)
                 cloud = @[];
+            
+            if(!self.needsAddAlmond)
+                cloud = [self getAL3s:cloud];
+            
             return cloud;
         }
         case SFIAlmondConnectionMode_local: {
@@ -72,6 +77,15 @@ static const int footerHt = 60;
         default:
             return @[];
     }
+}
+
+- (NSArray *)getAL3s:(NSArray *)cloud{
+    NSMutableArray *al3Array = [NSMutableArray new];
+    for(SFIAlmondPlus *alm in cloud){
+        if([alm.firmware.lowercaseString hasPrefix:@"al3-"])
+            [al3Array addObject:alm];
+    }
+    return al3Array;
 }
 
 #pragma mark tableView delegate methods
@@ -154,11 +168,14 @@ static const int footerHt = 60;
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return footerHt;
+    return self.needsAddAlmond? footerHt: 0;
 }
 
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    if(self.needsAddAlmond == NO)
+        return [[UIView alloc]initWithFrame:CGRectZero];
+    
     UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, footerHt)];
     footerView.backgroundColor = [UIColor whiteColor];
     [CommonMethods addLineSeperator:footerView yPos:0];

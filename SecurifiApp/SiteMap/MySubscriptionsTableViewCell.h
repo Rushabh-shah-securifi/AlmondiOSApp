@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol MySubscriptionsTableViewCellDelegate
+- (void)onChangePlanDelegate;
+- (void)onRenewPlanDelegate;
+@end
 
 @interface MySubscriptionsTableViewCell : UITableViewCell
-
+@property (nonatomic, weak) id<MySubscriptionsTableViewCellDelegate> delegate;
+- (void)setSubscriptionTitle:(NSString *)title;
 @end

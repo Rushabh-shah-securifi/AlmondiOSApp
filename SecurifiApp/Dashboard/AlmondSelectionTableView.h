@@ -15,5 +15,6 @@
 
 @interface AlmondSelectionTableView : UITableView
 @property (nonatomic, weak)id<AlmondSelectionTableViewDelegate> methodsDelegate;
+@property (nonatomic) BOOL needsAddAlmond;
 -(void)initializeView:(CGRect)maskFrame;
 @end

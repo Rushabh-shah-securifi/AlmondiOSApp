@@ -667,6 +667,8 @@
 		F4EA08271D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EA08251D6ADBFF00D6CC28 /* MoreCellTableViewCell.m */; };
 		F4EA082A1D6C551F00D6CC28 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EA08291D6C551F00D6CC28 /* HelpViewController.m */; };
 		F4EA082B1D6C551F00D6CC28 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EA08291D6C551F00D6CC28 /* HelpViewController.m */; };
+		F4F981C81DFA7F8600FB0676 /* PaymentTypesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F981C51DFA7F8600FB0676 /* PaymentTypesViewController.m */; };
+		F4F981C91DFA7F8600FB0676 /* SFIBackendAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F981C71DFA7F8600FB0676 /* SFIBackendAPIClient.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1409,6 +1411,10 @@
 		F4EA08251D6ADBFF00D6CC28 /* MoreCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreCellTableViewCell.m; sourceTree = "<group>"; };
 		F4EA08281D6C551F00D6CC28 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		F4EA08291D6C551F00D6CC28 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
+		F4F981C41DFA7F8600FB0676 /* PaymentTypesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentTypesViewController.h; sourceTree = "<group>"; };
+		F4F981C51DFA7F8600FB0676 /* PaymentTypesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentTypesViewController.m; sourceTree = "<group>"; };
+		F4F981C61DFA7F8600FB0676 /* SFIBackendAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIBackendAPIClient.h; sourceTree = "<group>"; };
+		F4F981C71DFA7F8600FB0676 /* SFIBackendAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIBackendAPIClient.m; sourceTree = "<group>"; };
 		F65023B0DECE8F15E5353C48 /* Pods-Almond.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Almond.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Almond/Pods-Almond.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2453,6 +2459,10 @@
 				F492EA361DF009EC00FB3B76 /* ViewController.m */,
 				F492EA371DF009EC00FB3B76 /* PaymentViewController.h */,
 				F492EA381DF009EC00FB3B76 /* PaymentViewController.m */,
+				F4F981C41DFA7F8600FB0676 /* PaymentTypesViewController.h */,
+				F4F981C51DFA7F8600FB0676 /* PaymentTypesViewController.m */,
+				F4F981C61DFA7F8600FB0676 /* SFIBackendAPIClient.h */,
+				F4F981C71DFA7F8600FB0676 /* SFIBackendAPIClient.m */,
 				F492EA391DF009EC00FB3B76 /* Main.storyboard */,
 				F492EA3A1DF009EC00FB3B76 /* Images.xcassets */,
 			);
@@ -3526,6 +3536,7 @@
 				F4D93AF71D3F882300D55BD6 /* HelpItemsTableViewController.m in Sources */,
 				F48CF1781DD0859500B44257 /* HelpSearchTableViewController.m in Sources */,
 				F4EA08261D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */,
+				F4F981C91DFA7F8600FB0676 /* SFIBackendAPIClient.m in Sources */,
 				1DF031024A2F8810074C455A /* TemperatureView.m in Sources */,
 				1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */,
 				1DF0333217E77760651C98F7 /* ScoreboardNetworkSettingsViewController.m in Sources */,
@@ -3537,6 +3548,7 @@
 				1DF0372FD63ED4053F07FFAD /* SFIDeviceIndex.m in Sources */,
 				1DF0389E9743D1F55E76AC11 /* SFIRouterClientsTableViewController.m in Sources */,
 				F4B8768A1D54653500DCF76F /* GenericParams.m in Sources */,
+				F4F981C81DFA7F8600FB0676 /* PaymentTypesViewController.m in Sources */,
 				1DF0391AFBAB20EA1FB28F60 /* SFIRouterSettingsTableViewController.m in Sources */,
 				1DF03C3105B3DC1477346284 /* SFITabBarController.m in Sources */,
 			);
