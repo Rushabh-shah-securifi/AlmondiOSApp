@@ -66,19 +66,13 @@
     self.NoresultFound.hidden = YES;
     
     self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
-    self.incompleteDB = [[NSDictionary alloc]init];
+    
     self.clientName.text = self.client.name;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.amac = [AlmondManagement currentAlmond].almondplusMAC;
     [self setUpHUD];
-    _responseData = [[NSMutableData alloc] init];
-    self.sendReq = YES;
-    self.reload = YES;
+   
     self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
-
-    [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac] showHudFirstTime:YES];
-    
-    
     [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
     
     [super viewDidLoad];
@@ -88,6 +82,11 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
     self.NoresultFound.hidden = YES;
+    self.incompleteDB = [[NSDictionary alloc]init];
+    _responseData = [[NSMutableData alloc] init];
+    self.sendReq = YES;
+    self.reload = YES;
+    [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac] showHudFirstTime:YES];
     if([[SecurifiToolkit sharedInstance]isCloudReachable]){
         self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:500 amac:self.amac cmac:self.cmac];
         //[self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
@@ -207,16 +206,18 @@
         return;
     
     NSArray *allObj = dict[@"Data"];
-    NSLog(@"response obj count %ld",(unsigned long)allObj.count);
+    NSLog(@"response obj count list %@",allObj);
     if(allObj == NULL)
         return;
     NSDictionary *last_uriDict = [allObj lastObject];
     NSString *last_date = last_uriDict[@"Date"];
-    if(last_date != NULL)
+    NSLog(@"last_date in response Dict %@",last_date);
+    if(last_date != NULL){
         self.incompleteDB = @{
                               @"lastDate" : last_date,
                               @"PS" : dict[@"pageState"]? : [NSNull null]
                               };
+    }
     NSLog(@"incomplete db %@",self.incompleteDB);
     int recordCount =0;
     if(self.reload){
@@ -348,8 +349,8 @@
         BOOL isTodayDate = [str isEqualToString:[BrowsingHistoryDataBase getTodayDate]];
         BOOL isPresentInCompleteDB = [CompleteDB searchDatePresentOrNot:self.amac clientMac:self.cmac andDate:str];
         
-        NSLog(@"Is Today Date %d %@",isTodayDate,self.incompleteDB[@"PS"]);
-        NSLog(@"Is Present In Complete DB %d",isPresentInCompleteDB);
+//        NSLog(@"Is Today Date %d %@",isTodayDate,self.incompleteDB[@"PS"]);
+//        NSLog(@"Is Present In Complete DB %d",isPresentInCompleteDB);
         
         //        if(isTodayDate && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
         //            NSLog(@"Sending Request in first IF");
@@ -361,10 +362,10 @@
             NSString *ps= self.incompleteDB[@"PS"] ;
             NSLog(@"self.oldDate = %@ == str = %@",self.oldDate,str);
             if((self.oldDate != nil && [self.oldDate isEqualToString:str]) && ![ps isKindOfClass:[NSNull class]])
-                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&FromThisDate=%@&pageState=%@",_amac,_cmac,str,ps] showHudFirstTime:YES];
+                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&search=FromThisDate&value=%@&pageState=%@",_amac,_cmac,str,ps] showHudFirstTime:YES];
             else
             {   if(![ps isKindOfClass:[NSNull class]])
-                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&dateyear=%@",_amac,_cmac,str] showHudFirstTime:YES];
+                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&search=FromThisDate&value=%@",_amac,_cmac,str] showHudFirstTime:YES];
             }
             
             self.oldDate = str;
@@ -374,6 +375,10 @@
             self.count+=100;
             //[self.dayArr removeAllObjects];
             self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:self.count amac:self.amac cmac:self.cmac];
+            NSLog(@"self.dayArr count %ld",self.dayArr.count);
+            if(self.dayArr.count == 0){
+                
+            }
             //[self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
             [self reloadTable];
         }

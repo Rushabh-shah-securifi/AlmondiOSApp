@@ -669,6 +669,9 @@
 		F4EA082B1D6C551F00D6CC28 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EA08291D6C551F00D6CC28 /* HelpViewController.m */; };
 		F4F981C81DFA7F8600FB0676 /* PaymentTypesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F981C51DFA7F8600FB0676 /* PaymentTypesViewController.m */; };
 		F4F981C91DFA7F8600FB0676 /* SFIBackendAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F981C71DFA7F8600FB0676 /* SFIBackendAPIClient.m */; };
+		F4F981CE1DFA880A00FB0676 /* IoTDevicesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F981CB1DFA880A00FB0676 /* IoTDevicesListViewController.m */; };
+		F4F981CF1DFA880A00FB0676 /* IoTDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F981CD1DFA880A00FB0676 /* IoTDeviceViewController.m */; };
+		F4F981D21DFA899B00FB0676 /* List_TypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F981D11DFA899B00FB0676 /* List_TypeView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1415,6 +1418,12 @@
 		F4F981C51DFA7F8600FB0676 /* PaymentTypesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentTypesViewController.m; sourceTree = "<group>"; };
 		F4F981C61DFA7F8600FB0676 /* SFIBackendAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIBackendAPIClient.h; sourceTree = "<group>"; };
 		F4F981C71DFA7F8600FB0676 /* SFIBackendAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIBackendAPIClient.m; sourceTree = "<group>"; };
+		F4F981CA1DFA880A00FB0676 /* IoTDevicesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IoTDevicesListViewController.h; path = Dashboard/IoTDevicesListViewController.h; sourceTree = "<group>"; };
+		F4F981CB1DFA880A00FB0676 /* IoTDevicesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IoTDevicesListViewController.m; path = Dashboard/IoTDevicesListViewController.m; sourceTree = "<group>"; };
+		F4F981CC1DFA880A00FB0676 /* IoTDeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IoTDeviceViewController.h; path = Dashboard/IoTDeviceViewController.h; sourceTree = "<group>"; };
+		F4F981CD1DFA880A00FB0676 /* IoTDeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IoTDeviceViewController.m; path = Dashboard/IoTDeviceViewController.m; sourceTree = "<group>"; };
+		F4F981D01DFA899B00FB0676 /* List_TypeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = List_TypeView.h; sourceTree = "<group>"; };
+		F4F981D11DFA899B00FB0676 /* List_TypeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = List_TypeView.m; sourceTree = "<group>"; };
 		F65023B0DECE8F15E5353C48 /* Pods-Almond.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Almond.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Almond/Pods-Almond.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1953,6 +1962,10 @@
 				2A4C24391D0FC403001191E8 /* SettingsViewController.h */,
 				2A4C24361D0FC3FA001191E8 /* DashboardViewController.m */,
 				2A4C24351D0FC3EB001191E8 /* DashboardViewController.h */,
+				F4F981CA1DFA880A00FB0676 /* IoTDevicesListViewController.h */,
+				F4F981CB1DFA880A00FB0676 /* IoTDevicesListViewController.m */,
+				F4F981CC1DFA880A00FB0676 /* IoTDeviceViewController.h */,
+				F4F981CD1DFA880A00FB0676 /* IoTDeviceViewController.m */,
 			);
 			name = Dashboard;
 			sourceTree = "<group>";
@@ -2555,6 +2568,8 @@
 				F4B876551D54653500DCF76F /* Slider.m */,
 				F4B876561D54653500DCF76F /* TextInput.h */,
 				F4B876571D54653500DCF76F /* TextInput.m */,
+				F4F981D01DFA899B00FB0676 /* List_TypeView.h */,
+				F4F981D11DFA899B00FB0676 /* List_TypeView.m */,
 			);
 			path = deviceLayout;
 			sourceTree = "<group>";
@@ -3493,6 +3508,7 @@
 				CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */,
 				CEF6F5061C92CD2400C68975 /* GenericIndexUtil.m in Sources */,
 				F48CF17F1DD0B75D00B44257 /* NSString+securifi.m in Sources */,
+				F4F981CE1DFA880A00FB0676 /* IoTDevicesListViewController.m in Sources */,
 				F4981E961DABCDB4003A53E6 /* MeshEditViewController.m in Sources */,
 				1DF0383EBD135988AEA6DF73 /* ValueFormatter.m in Sources */,
 				1DF03A1D3210B9478AF1DAC3 /* IndexValueSupport.m in Sources */,
@@ -3507,6 +3523,7 @@
 				F4B876761D54653500DCF76F /* HorizontalPicker.m in Sources */,
 				CEF6F4E81C92CAD600C68975 /* RulesHue.m in Sources */,
 				F4B876841D54653500DCF76F /* DevicePayload.m in Sources */,
+				F4F981D21DFA899B00FB0676 /* List_TypeView.m in Sources */,
 				1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */,
 				1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */,
 				F4EA082A1D6C551F00D6CC28 /* HelpViewController.m in Sources */,
@@ -3551,6 +3568,7 @@
 				F4F981C81DFA7F8600FB0676 /* PaymentTypesViewController.m in Sources */,
 				1DF0391AFBAB20EA1FB28F60 /* SFIRouterSettingsTableViewController.m in Sources */,
 				1DF03C3105B3DC1477346284 /* SFITabBarController.m in Sources */,
+				F4F981CF1DFA880A00FB0676 /* IoTDeviceViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

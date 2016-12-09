@@ -35,6 +35,7 @@
 #import "BlinkLedView.h"
 #import "GenericIndexClass.h"
 #import "AlmondManagement.h"
+#import "List_TypeView.h"
 
 #define ITEM_SPACING  2.0
 #define LABELSPACING 20.0
@@ -48,7 +49,7 @@
 #define BUTTON_FRAME CGRectMake(0, LABELHEIGHT + LABELVALUESPACING,view.frame.size.width-10,  35)
 static const int xIndent = 10;
 
-@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,MultiButtonViewDelegate,GridViewDelegate,ListButtonDelegate,UIGestureRecognizerDelegate,BlinkLedViewDelegate
+@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,MultiButtonViewDelegate,GridViewDelegate,ListButtonDelegate,UIGestureRecognizerDelegate,BlinkLedViewDelegate,List_TypeViewDelegate
 >
 //can be removed
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
@@ -272,6 +273,7 @@ static const int xIndent = 10;
             else if ([genericIndexObj.layoutType isEqualToString:LIST]){
                  NSLog(@"before update view frame %@ ",NSStringFromCGRect(view.frame));
                 float height = genericIndexValue.genericIndex.values.allKeys.count *45;
+                
                 view.frame = CGRectMake(5, yPos, self.indexesScroll.frame.size.width, height);
                 ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0,LABELHEIGHT, view.frame.size.width , self.view.frame.size.height- 5)
                                                                                 color:self.genericParams.color
@@ -280,6 +282,19 @@ static const int xIndent = 10;
                 typeTableView.delegate = self;
                 [view addSubview:typeTableView];
             }
+            else if ([genericIndexObj.layoutType isEqualToString:@"LIST_TYPE"]){
+                NSLog(@"before update view frame %@ ",NSStringFromCGRect(view.frame));
+                float height = genericIndexValue.genericIndex.values.allKeys.count *45;
+                
+                view.frame = CGRectMake(5, yPos, self.indexesScroll.frame.size.width, height);
+                List_TypeView * typeTableView = [[List_TypeView alloc]initWithFrame:CGRectMake(0,LABELHEIGHT, view.frame.size.width , self.view.frame.size.height- 5)
+                                                                                color:self.genericParams.color
+                                                                    genericIndexValue:genericIndexValue];
+                NSLog(@"after update typeTableView frame %@ ",NSStringFromCGRect(typeTableView.frame));
+                typeTableView.delegate = self;
+                [view addSubview:typeTableView];
+            }
+
             
             [self.indexesScroll addSubview:view];
            

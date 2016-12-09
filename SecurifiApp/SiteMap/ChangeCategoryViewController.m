@@ -153,7 +153,8 @@
 - (IBAction)changedCatogeryButtonPrssed:(id)sender {
     NSLog(@"changedCatogeryButtonPrssed");
     
-
+        self.cat_view = [[CategoryView alloc]init];
+        self.cat_view.delegate = self;
         self.cat_view.frame = CGRectMake(0, self.view.frame.size.height - 250, self.view.frame.size.width, 250);
         [self.view addSubview:self.cat_view];
     

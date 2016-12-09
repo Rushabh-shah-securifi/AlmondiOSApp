@@ -18,9 +18,9 @@
 #import "DetailsPeriodViewController.h"
 #import "BrowsingHistoryDataBase.h"
 #import "AlmondManagement.h"
+#import "MBProgressHUD.h"
 
-
-@interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,NSURLConnectionDelegate,DetailsPeriodViewControllerDelegate,UIAlertViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
+@interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,NSURLConnectionDelegate,DetailsPeriodViewControllerDelegate,UIAlertViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,MBProgressHUDDelegate>
 @property (nonatomic) NSMutableArray *parentsControlArr;
 @property (nonatomic) CategoryView *cat_view_more;
 @property (weak, nonatomic) IBOutlet UIView *dataLogView;
@@ -55,7 +55,7 @@
 @property (nonatomic) NSString *amac;
 
 @property (nonatomic) NSString *resetBWDate;
-
+@property(nonatomic, readonly) MBProgressHUD *HUD;
 @end
 
 @implementation ParentalControlsViewController
@@ -67,7 +67,24 @@
     self.cat_view_more = [[CategoryView alloc]initParentalControlMoreClickView:CGRectMake(0, self.view.frame.size.height - 180, 188 , 320)];
     self.cat_view_more.delegate = self;
     int deviceID = _genericParams.headerGenericIndexValue.deviceID;
+    [self setUpHUD];
     self.client = [Client findClientByID:@(deviceID).stringValue];//dont put in viewDid load
+    
+    NSLog(@"viewDidLoad ParentalControlsViewController");
+    //    [self createArr];
+    
+    // Do any additional setup after loading the view.
+}
+-(void)setUpHUD{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.dimBackground = YES;
+    _HUD.delegate = self;
+    [self.navigationController.view addSubview:_HUD];
+}
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"viewWillAppear ParentalControlsViewController");
+    [self.navigationController setNavigationBarHidden:YES];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
     self.amac = almond.almondplusMAC;
@@ -77,16 +94,6 @@
     self.routerMode = toolkit.routerMode;
     
     self.isLocal = [toolkit useLocalNetwork:almond.almondplusMAC];
-    
-    NSLog(@"viewDidLoad ParentalControlsViewController");
-    //    [self createArr];
-    
-    // Do any additional setup after loading the view.
-}
--(void)viewWillAppear:(BOOL)animated{
-    NSLog(@"viewWillAppear ParentalControlsViewController");
-    [self.navigationController setNavigationBarHidden:YES];
-    
     [super viewWillAppear:YES];
     self.isPressed = YES;
     [self initializeNotifications];
@@ -141,6 +148,7 @@
             self.switchView3.hidden = YES;
             self.switchView1.hidden = YES;
             self.blockClientTxt.hidden = NO;
+            self.view3.hidden = YES;
             self.blockClientTxt.text = @"Web history and Data usage are disabled for blocked devices. You can still see records from when the device was last active.";
             self.dataLogView.hidden = YES;
             self.clrBW.hidden = YES;
@@ -359,7 +367,7 @@
 //            [alert show];
             }
         else{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Usage cycle reset date" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Usage cycle reset date" message:@"set date of the month" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
             alert.tag = 3;
             UIPickerView *picker = [[UIPickerView alloc] initWithFrame:CGRectMake(10, 0, 320, 216)];
             picker.delegate = self;
@@ -566,7 +574,7 @@
 -(void)createRequest:(NSString *)search value:(NSString*)value date:(NSString *)date{
     NSString *req ;
     req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@",search,value,date,_amac,_cmac];
-    
+    [self showHudWithTimeoutMsg:@"Loading..." withDelay:1];
     [self sendHttpRequest:req];
     
 }
@@ -712,5 +720,16 @@
                 alert.tag = 6;
                 alert.alertViewStyle = UIAlertViewStyleDefault;
                 [alert show];
+}
+- (void)showHUD:(NSString *)text {
+    self.HUD.labelText = text;
+    [self.HUD show:YES];
+}
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg withDelay:(int)second {
+    NSLog(@"showHudWithTimeoutMsg");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:hudMsg];
+        [self.HUD hide:YES afterDelay:second];
+    });
 }
 @end

@@ -34,6 +34,7 @@
 #import "Network.h"
 #import "NetworkState.h"
 #import "AlmondManagement.h"
+#import "IoTDevicesListViewController.h"
 
 
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate, NetworkStatusIconDelegate>{
@@ -52,6 +53,9 @@
 @property(nonatomic) UIImageView *navigationImg;
 @property(nonatomic) HelpScreens *helpScreensObj;
 @property(nonatomic) UIView *maskView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableYconstrain1;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableYconstrain2;
+@property (weak, nonatomic) IBOutlet UIView *imageIOTSecurity;
 @property(nonatomic) UIButton *buttonMaskView;
 @property(nonatomic) NetworkStatusIcon *statusIcon;
 @end
@@ -133,6 +137,8 @@
     _statusIcon.networkStatusIconDelegate = self;
     NSLog(@"View will appear is called in DashBoardViewController");
     [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
+//    self.tableYconstrain1.constant = self.tableYconstrain1.constant+90;
+//    self.tableYconstrain2.constant = self.tableYconstrain2.constant+90;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -931,6 +937,12 @@
     [HelpScreens initializeGotItView:self.helpScreensObj navView:self.navigationController.view];
 
     [self.maskView addSubview:self.helpScreensObj];
+}
+- (IBAction)launchIOtDevicelit:(id)sender {
+    IoTDevicesListViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDevicesListViewController"];
+    NSLog(@"IoTDevicesListViewController IF");
+    [self.navigationController pushViewController:newWindow animated:YES];
+    //        }
 }
 
 
