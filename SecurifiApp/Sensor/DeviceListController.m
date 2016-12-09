@@ -33,6 +33,7 @@
 #import "ConnectionStatus.h"
 #import "HTTPRequest.h"
 #import "AlmondManagement.h"
+#import "IoTDeviceViewController.h"
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -701,6 +702,12 @@ int mii;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
     ParentalControlsViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ParentalControlsViewController"];
     viewController.genericParams = genericParams;
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+-(void)onIoTControllClickedDelegate:(GenericParams *)genericParams{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainDashboard" bundle:nil];
+    IoTDeviceViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
+//    viewController.genericParams = genericParams;
     [self.navigationController pushViewController:viewController animated:YES];
 }
 @end

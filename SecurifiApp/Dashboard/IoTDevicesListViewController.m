@@ -14,6 +14,7 @@
 @interface IoTDevicesListViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *ioTdevicetable;
 @property (weak, nonatomic) IBOutlet UIImageView *backArrIcon;
+@property (nonatomic) NSMutableArray *scannedDeviceList;
 
 @end
 
@@ -21,6 +22,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.scannedDeviceList = [[NSMutableArray alloc]init];
+    
+    NSDictionary *iotDevice1 = @{@"name":@"Fascom",
+                                 @"case":@"1",
+                                 @"Type":@"1"};
+    NSDictionary *iotDevice2 = @{@"name":@"HikVision",
+                                 @"case":@"2",
+                                 @"Type":@"2"};
+    NSDictionary *iotDevice3 = @{@"name":@"SkyBell",
+                                 @"case":@"1",
+                                 @"Type":@"3"};
+    [self.scannedDeviceList addObject:iotDevice1];
+    [self.scannedDeviceList addObject:iotDevice2];
+    [self.scannedDeviceList addObject:iotDevice3];
+    
+    
     // Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -63,13 +80,14 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
     }
+    NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
     cell.textLabel.numberOfLines = 2;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    cell.textLabel.text = @"Foscam is vulnerable";
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",iotDevice[@"name"],[CommonMethods isVulnerable:iotDevice[@"case"]]];
     NSString *iconName = @"default_device";
    
     cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[SFIColors ruleBlueColor]];
-    cell.detailTextLabel.text = @"Default username and password";
+    cell.detailTextLabel.text = [CommonMethods type:iotDevice[@"Type"]];
     cell.textLabel.numberOfLines = 2;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     cell.textLabel.font = [UIFont systemFontOfSize:12];
@@ -111,11 +129,17 @@
     return view;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+     NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
+    
     IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
+    newWindow.iotDevice = iotDevice;
+    
     NSLog(@"IoTDevicesListViewController IF");
     [self.navigationController pushViewController:newWindow animated:YES];
 }
 - (IBAction)backButtonClicked:(id)sender {
   [self.navigationController popViewControllerAnimated:YES];
 }
+
+
 @end

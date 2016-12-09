@@ -814,4 +814,23 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     
     return epocSArr;
 }
++(NSString *)isVulnerable:(NSString *)caseStr{
+    if([caseStr isEqualToString:@"1"])
+        return @"is vulnerable";
+    else
+        return @"may be vulnerable";
+}
++(NSString *)type:(NSString *)type{
+    if([type isEqualToString:@"1"])
+        return @"Open telnet port with weak username and password";
+    else if([type isEqualToString:@"2"])
+        return @"Several open ports found in device ";
+    else if([type isEqualToString:@"3"])
+        return @"Local web page uses weak username and  password";
+    else if([type isEqualToString:@"4"])
+        return @"Port forwarding enabled for this device";
+    else
+        return @"Device using Universal Plug and Play(UPnP) service";
+}
+
 @end

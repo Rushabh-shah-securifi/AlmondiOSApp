@@ -79,6 +79,8 @@
     //add almond button
     [self initializeAddButtonView];
     [self initializeHUD];
+    self.tableYconstrain1.constant = self.tableYconstrain1.constant+90;
+    self.tableYconstrain2.constant = self.tableYconstrain2.constant+90;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -137,8 +139,8 @@
     _statusIcon.networkStatusIconDelegate = self;
     NSLog(@"View will appear is called in DashBoardViewController");
     [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
-//    self.tableYconstrain1.constant = self.tableYconstrain1.constant+90;
-//    self.tableYconstrain2.constant = self.tableYconstrain2.constant+90;
+    
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -504,20 +506,26 @@
 #pragma mark tableviewDelegate
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 3;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger deviceRowCount = [self isSensorNotificationEmpty]? 1: self.deviceNotificationArr.count;
     NSInteger clientRowCount = [self isClientNotificationEmpty]? 1: self.clientNotificationArr.count;
-    
-    return (section ==0)? deviceRowCount: clientRowCount;
+    if(section == 0)
+        return 2;
+    else if(section == 1)
+        return deviceRowCount;
+    else
+        return clientRowCount;
+   
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.section == 0 && [self isSensorNotificationEmpty]){
+    
+    if(indexPath.section == 1 && [self isSensorNotificationEmpty]){
         return [self createEmptyCell:tableView isSensor:YES];
-    }else if(indexPath.section == 1 && [self isClientNotificationEmpty]){
+    }else if(indexPath.section == 2 && [self isClientNotificationEmpty]){
         return [self createEmptyCell:tableView isSensor:NO];
     }
     
@@ -528,6 +536,14 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
     }
     if (indexPath.section == 0) {
+        cell.textLabel.numberOfLines = 2;
+        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        cell.textLabel.text = @"Suspicious activity on amazon echo";
+        NSString *iconName = @"default_device";
+        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[UIColor redColor]];
+        cell.detailTextLabel.text = @"5 min ago";
+    }
+    else if (indexPath.section == 1) {
         if(indexPath.row > (int)self.deviceNotificationArr.count-1)
             return cell;
         //        NSLog(@"indexpathrow: %ld, arraycount: %d", (long)indexPath.row, self.deviceNotificationArr.count-1);
@@ -542,7 +558,7 @@
         cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[SFIColors ruleBlueColor]];
         cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
     }
-    else{
+    else if(indexPath.section == 2){
         if(indexPath.row > (int)self.clientNotificationArr.count-1)
             return cell;
         
@@ -595,9 +611,13 @@
     NSString *string;
     switch (section) {
         case 0:
+            string = @"IOT SERVICES";
+            break;
+
+        case 1:
             string = NSLocalizedString(@"smart_device_noti_title", @"");
             break;
-        case 1:
+        case 2:
             string = NSLocalizedString(@"client_noti_title", @"");
             break;
     }

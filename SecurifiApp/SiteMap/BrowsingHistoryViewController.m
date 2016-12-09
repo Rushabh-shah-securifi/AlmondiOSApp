@@ -98,14 +98,13 @@
     }
     self.isTapped = NO;
     
-    
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
     [self.navigationController setNavigationBarHidden:NO];
     self.NoresultFound.hidden = YES;
+    [self.NoresultFound removeFromSuperview];
     
     [BrowsingHistoryDataBase closeDB];
     //[BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
@@ -319,8 +318,10 @@
     if(self.dayArr.count > indexPath.section){
         NSArray *browsHist = self.dayArr[indexPath.section];
         if(browsHist.count > indexPath.row){
-            if(browsHist[indexPath.row] != NULL)
+            if(browsHist[indexPath.row] != NULL){
+                cell.is_IotType = self.is_IotType;
                 [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO showTime:YES count:indexPath.row+1 hideCheckMarkIMg:YES];
+            }
         }
     }
     

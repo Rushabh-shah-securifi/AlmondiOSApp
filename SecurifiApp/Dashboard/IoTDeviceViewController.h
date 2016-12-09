@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface IoTDeviceViewController : UIViewController
-
+@property (nonatomic) NSDictionary *iotDevice;
 @end

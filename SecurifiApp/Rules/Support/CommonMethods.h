@@ -94,4 +94,10 @@
 + (NSString *)getYestardayDate;
 
 +(NSArray *)domainEpocArr:(NSArray *)arr;
+
+
++(NSString *)isVulnerable:(NSString *)caseStr;
+
++(NSString *)type:(NSString *)type;
+
 @end
