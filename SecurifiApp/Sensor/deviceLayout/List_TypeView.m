@@ -63,6 +63,8 @@
 
 }
 -(void)drawTypeTable{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    BOOL isAL3 = [toolkit.currentAlmond siteMapSupportFirmware:toolkit.currentAlmond.firmware];
     NSArray *devicePosKeys = self.genericIndexValue.genericIndex.values.allKeys;
     NSArray *sortedKeys = [devicePosKeys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         return [(NSString *)obj1 compare:(NSString *)obj2 options:NSNumericSearch];
@@ -70,10 +72,16 @@
     for(NSString *key in sortedKeys){
         if([key isEqualToString:@"identifying"])
             continue;
+        NSLog(@"key = %@",key);
+        if(!isAL3)
+        if([self isIoTdevice:key])
+            continue;
+         NSLog(@"not continue key = %@",key);
         
         GenericValue *gVal = [self.genericIndexValue.genericIndex.values valueForKey:key];
         [self.displayArray addObject:gVal.displayText];
         [self.valueArr addObject:gVal.value];
+        
         [self.displayArray_copy addObject:gVal.displayText];
         [self.valueArr_copy addObject:gVal.value];
     }
@@ -189,5 +197,11 @@
     NSLog(@"self.valueArr_copy count %ld",self.displayArray_copy.count);
     
     [self.tableType reloadData];
+}
+-(BOOL)isIoTdevice:(NSString *)clientType{
+    NSArray *iotTypes = @[@"withings",@"dlink_cameras",@"hikvision",@"foscam",@"motorola_connect",@"ibaby_monitor",@"osram_lightify",@"honeywell_appliances",@"ge_appliances",@"wink",@"airplay_speakers",@"sonos",@"belkin_wemo",@"samsung_smartthings",@"ring_doorbell",@"piper",@"canary",@"august_connect",@"nest_cam",@"skybell_wifi",@"scout_home_system",@"philips_hue",@"nest_protect",@"nest_thermostat",@"scout_home_security"];
+    if([iotTypes containsObject: clientType] )
+        return YES;
+    else return  NO;
 }
 @end

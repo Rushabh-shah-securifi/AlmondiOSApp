@@ -73,8 +73,8 @@
     
     [self markNetworkStatusIcon];
     [self initializeHUD];
-    self.tableYconstrain1.constant = self.tableYconstrain1.constant+90;
-    self.tableYconstrain2.constant = self.tableYconstrain2.constant+90;
+//    self.tableYconstrain1.constant = self.tableYconstrain1.constant+90;
+//    self.tableYconstrain2.constant = self.tableYconstrain2.constant+90;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -454,17 +454,16 @@
 #pragma mark tableviewDelegate
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return 2;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger deviceRowCount = [self isSensorNotificationEmpty]? 1: self.deviceNotificationArr.count;
     NSInteger clientRowCount = [self isClientNotificationEmpty]? 1: self.clientNotificationArr.count;
+    
     if(section == 0)
-        return 2;
-    else if(section == 1)
         return deviceRowCount;
-    else if(section == 2)
+    else
         return clientRowCount;
    
 }

@@ -151,21 +151,21 @@
             [self.parentrolBtn addTarget:self action:@selector(onParentalControllClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
         
-        if(client.is_IoTDeviceType == YES){
-            [self.parentrolBtn addTarget:self action:@selector(onIoTControllClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-            if(client.iot_serviceEnable == YES){
-                self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_security_black"];
-                
-                NSLog(@"ic_security_black");
-                self.deviceValue.text = @"IoT service on";
-            }
-            else{
-                self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_insecure_black"];
-                NSLog(@"ic_insecure_black");
-                self.deviceValue.text = @"IoT service off";
-            }
-        }
+//        if(client.is_IoTDeviceType == YES){
+//            [self.parentrolBtn addTarget:self action:@selector(onIoTControllClicked:) forControlEvents:UIControlEventTouchUpInside];
+//            
+//            if(client.iot_serviceEnable == YES){
+//                self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_security_black"];
+//                
+//                NSLog(@"ic_security_black");
+//                self.deviceValue.text = @"IoT service on";
+//            }
+//            else{
+//                self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_insecure_black"];
+//                NSLog(@"ic_insecure_black");
+//                self.deviceValue.text = @"IoT service off";
+//            }
+//        }
     }
     
     

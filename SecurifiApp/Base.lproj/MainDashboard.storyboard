@@ -336,7 +336,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ip6-FM-eOk">
                                                 <rect key="frame" x="250" y="1" width="124" height="100"/>
                                                 <subviews>
-                                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="van-2Y-GZf">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="van-2Y-GZf">
                                                         <rect key="frame" x="8" y="8" width="108" height="51"/>
                                                         <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="46"/>
                                                         <color key="textColor" red="0.47613146901130676" green="0.47613146901130676" blue="0.47613146901130676" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -348,7 +348,7 @@
                                                         <color key="textColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1LJ-z9-9T9">
+                                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1LJ-z9-9T9">
                                                         <rect key="frame" x="0.0" y="8" width="116" height="40"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="40" id="yqz-sk-5Qn"/>
@@ -358,7 +358,7 @@
                                                             <action selector="launchIOtDevicelit:" destination="R9I-V5-k50" eventType="touchUpInside" id="NgL-Gw-CY7"/>
                                                         </connections>
                                                     </button>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_security_gray" translatesAutoresizingMaskIntoConstraints="NO" id="TBN-Du-NzM">
+                                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_security_gray" translatesAutoresizingMaskIntoConstraints="NO" id="TBN-Du-NzM">
                                                         <rect key="frame" x="35" y="8" width="42" height="42"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="42" id="dZs-4k-3VY"/>
@@ -402,7 +402,7 @@
                                             <constraint firstItem="0Bt-RZ-zWg" firstAttribute="top" secondItem="WYV-NT-HnS" secondAttribute="top" constant="1" id="zCt-pZ-S4k"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gh4-i5-ivb">
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gh4-i5-ivb">
                                         <rect key="frame" x="0.0" y="310" width="375" height="100"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_scan_gray" translatesAutoresizingMaskIntoConstraints="NO" id="j2Z-7B-2xt">
