@@ -15,6 +15,7 @@
 #import "Analytics.h"
 #import "RouterPayload.h"
 #import "ConnectionStatus.h"
+#import "UIFont+Securifi.h"
 
 
 #define ADD_FAIL -2
@@ -54,6 +55,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *notRtNowBtn;
 @property (weak, nonatomic) IBOutlet UIButton *namingBtn;
 @property (weak, nonatomic) IBOutlet UILabel *namingTitle;
+@property (weak, nonatomic) IBOutlet UILabel *noteLbl;
 
 
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
@@ -500,6 +502,14 @@
         [self.timer invalidate];
         self.slavesDictArray = nil;
         self.currentSlaves = nil;
+        if(self.maxHopCount >= 3){
+            self.noteLbl.hidden = NO;
+            NSString *text = [NSString stringWithFormat:@"NOTE : You already have %ld Wi-Fi hops in your Home Wi-Fi system. We recommend wired connection or power-line adapters to further extend the network.", (long)self.maxHopCount];
+            self.noteLbl.attributedText = [self getAttributedText:text subText:@"We recommend wired connection or power-line adapters" fontSize:self.noteLbl.font.pointSize];
+        }else{
+            self.noteLbl.hidden = YES;
+        }
+        
     }
     else if(view.tag == 2){//almond list
         [self.almondPicker reloadAllComponents];
@@ -523,6 +533,12 @@
     });
 }
 
+- (NSAttributedString *)getAttributedText:(NSString *)text subText:(NSString *)subText fontSize:(int)fontSize{
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text];
+    NSRange boldRange = [text rangeOfString:subText];
+    [attributedString addAttribute: NSFontAttributeName value:[UIFont securifiBoldFont:fontSize] range:boldRange];
+    return attributedString;
+}
 - (void)setPairingAlmondsScreen2{
     if(self.wiredBtn.selected){
         self.pairingAlmondRstInfo.text = @"Having trouble pairing your Almond 3 ?\n\n1. Check for loose wired connection between your Almonds.\n2. Press and hold the factory reset button on it for 5 secs.";

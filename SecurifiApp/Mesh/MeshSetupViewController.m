@@ -231,6 +231,7 @@ int mii;
         self.meshView = [[MeshView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20)];
         NSLog(@"nav viewheight: %f", CGRectGetHeight(self.view.frame));
         self.meshView.delegate = self;
+        self.meshView.maxHopCount = self.maxHopCount;
         
         [self.meshView initializeFirstScreen:[CommonMethods getMeshDict:@"Interface"]];
         [self.meshView addInfoScreen:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-20)];

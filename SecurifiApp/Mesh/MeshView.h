@@ -22,6 +22,8 @@
 @interface MeshView : UIView
 @property (nonatomic) BOOL isMeshEditView;
 @property (nonatomic) id<MeshViewDelegate> delegate;
+@property (nonatomic) NSInteger maxHopCount;
+
 - (void)addInterfaceView:(CGRect)frame;
 - (void)removeNotificationObserver;
 - (void)addNamingScreen:(CGRect)frame;

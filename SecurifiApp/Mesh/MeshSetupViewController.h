@@ -14,4 +14,5 @@
 @property (nonatomic) AlmondStatus *almondStatObj;
 @property (nonatomic) BOOL isStatusView;
 @property (nonatomic) BOOL hasLocationTag;
+@property (nonatomic) NSInteger maxHopCount;
 @end
