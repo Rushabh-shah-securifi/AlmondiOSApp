@@ -632,7 +632,7 @@
 }
 - (NSArray *)readableValueWithBytes:(id)bytes{
     
-    NSString *readable;
+    NSString *readable = @"0 KB";
     if (([bytes longLongValue] == 0)){
         
         readable = [NSString stringWithFormat:@"0 KB"];

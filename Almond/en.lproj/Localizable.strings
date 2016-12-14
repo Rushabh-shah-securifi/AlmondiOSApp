@@ -1825,3 +1825,18 @@ Contact us at support@securifi.com";
 "nest_protect" = "Nest Protect";
 "nest_thermostat" = "Nest Thermostat";
 
+/* IOT services */
+"is_vulnerable"= " is vulnerable";
+"device_suspicious" = "The device is behaving suspiciously. We suggest you reboot the device or block it in case the suspicious activity continues. Contact your device vendor for more details.";
+"upnp_iot_desc" = "UPnP is a protocol that applications use to automatically set up port forwarding in the router. Viruses and Malwares can use UPnP in devices to gain remote access of your network. You can disable UPnP on your Almond from the Wifi tab.";
+"port_forward_iot_desc" = "Your device is being used for port forwarding. Port forwarding is usually enabled manually for gaming applications and for remote access of cameras and DVRs. If you are not aware of port forwarding for this device, we suggest you block this device or contact your device vendor.";
+"local_wc_desc" = "The local web interface for this device uses a weak username and password. We suggest you block the device or change the password. Typically, settings can be accessed by entering the ip address of the device in your web browser. Contact your device vendor for more assistance.";
+"open_ports_iot_desc" = "Your device has open ports. These ports may be used by some applications for allowing remote access of your system. If you do not use this device for such applications,it may be vulnerable. We suggest you block this device or contact your device vendor.";
+"open_port_wc_desc" = "Your device has open ports. These ports may be used by some applications for allowing remote access of your system. If you do not use this device for such applications,it may be vulnerable. We suggest you block this device or contact your device vendor.";
+"open_port_wc_title" = "Open telnet port with weak username and password";
+"open_ports_title" = "Several open ports found in your device";
+"local_wc_title" = "Local web page uses weak username and password";
+"port_forward_title" = "Port forwarding enabled for this device";
+"upnp_iot_title" = "Device using Universal Plug and Play(UPnP) service";
+
+

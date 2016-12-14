@@ -74,18 +74,20 @@
     [self loadNotification];
     self.clientNotificationArr = [[NSMutableArray alloc]init];
     self.deviceNotificationArr = [[NSMutableArray alloc]init];
-    [self navigationBarStyle];
+    
     
     //add almond button
     [self initializeAddButtonView];
     [self initializeHUD];
     self.tableYconstrain1.constant = self.tableYconstrain1.constant+90;
     self.tableYconstrain2.constant = self.tableYconstrain2.constant+90;
+    CGSize scrollableSize = CGSizeMake(Scroller.frame.size.width,Scroller.frame.size.height+ 130);
+       [Scroller setContentSize:scrollableSize];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    
+    [self navigationBarStyle];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
                selector:@selector(onAlmondModeDidChange:)
