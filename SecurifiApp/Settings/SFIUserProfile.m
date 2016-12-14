@@ -7,8 +7,20 @@
 //
 
 #import "SFIUserProfile.h"
+#import <Foundation/Foundation.h>
 
 @implementation SFIUserProfile
-@synthesize userEmail, firstName, lastName, addressLine1, addressLine2, addressLine3, country, zipCode;
-@synthesize isExpanded;
+@synthesize label;
+@synthesize keyValue;
+@synthesize data;
+
+- (id)init
+{
+    self = [super init];
+    if (self)
+    {
+        data = [NSMutableArray new];
+    }
+    return self;
+}
 @end

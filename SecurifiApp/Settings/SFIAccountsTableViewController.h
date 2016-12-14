@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SFIUserProfile.h"
+#import "SFIAccountCellView.h"
 
 @class SFIAccountsTableViewController;
 
@@ -18,7 +19,7 @@
 
 @end
 
-@interface SFIAccountsTableViewController : UITableViewController <UITextFieldDelegate>
+@interface SFIAccountsTableViewController : UITableViewController <UITextFieldDelegate, onButtonsClickedFromAccountCell ,onButtonsClickedFromAccountCell>
 @property(weak, nonatomic) id <SFIAccountDeleteDelegate> delegate;
 
 - (IBAction)doneButtonHandler:(id)sender;

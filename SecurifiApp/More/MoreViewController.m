@@ -44,7 +44,9 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     NSLog(@"i am called");
-    self.isLocal = [[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local;
+    
+    if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local)
+        self.isLocal = true;
     self.moreFeatures= [self getFeaturesArray];
     [self initializeNotification];
     
@@ -91,14 +93,10 @@
     [center addObserver:self selector:@selector(onLogoutResponse:) name:kSFIDidLogoutNotification object:nil];
 }
 
+
 - (void)sendUserProfileRequest {
-    UserProfileRequest *userProfileRequest = [[UserProfileRequest alloc] init];
-    
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_USER_PROFILE_REQUEST;
-    cloudCommand.command = userProfileRequest;
-    
-    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cloudCommand];
+    NSMutableDictionary * data = [NSMutableDictionary new];
+    [[SecurifiToolkit sharedInstance] asyncSendRequest:(CommandType*)CommandType_USER_PROFILE_REQUEST commandString:@"UserProfileRequest" payloadData:data];
 }
 
 - (void)userProfileResponseCallback:(id)sender {
@@ -175,7 +173,6 @@
         else if(section == 2){//app rating
             cell = [self getMorecell:tableView identifier:@"morecell4" indexPath:indexPath accessory:NO];
             [cell setUpMoreCell4:[SFIColors ruleBlueColor] title:NSLocalizedString(@"rate_app", @"")];
-
         }
         else if(section == 3){//logout
             cell = [self getMorecell:tableView identifier:@"morecell4" indexPath:indexPath accessory:NO];
@@ -193,6 +190,7 @@
     }
     return cell;
 }
+
 
 - (MoreCellTableViewCell *)getMorecell:(UITableView *)tableView identifier:(NSString *)identifier indexPath:(NSIndexPath *)indexPath accessory:(BOOL)accessory{
     MoreCellTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
@@ -278,6 +276,7 @@
         }
     }
 }
+
 
 - (void)asyncSendLogout {
     SecurifiToolkit* toolkit  = [SecurifiToolkit sharedInstance];

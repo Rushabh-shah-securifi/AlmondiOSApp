@@ -411,6 +411,9 @@
 		A5AC1E841CC7BA01009F362B /* RuleSceneUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AC1E831CC7BA01009F362B /* RuleSceneUtil.m */; };
 		A5F03F6C1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		A5F03F6D1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
+		B0053EA51DFFC96B002F2F20 /* SFIAccountCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = B0053EA41DFFC96B002F2F20 /* SFIAccountCellView.m */; };
+		B0053EA91DFFC9EE002F2F20 /* SFIAlmondCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B0053EA81DFFC9EE002F2F20 /* SFIAlmondCell.m */; };
+		B0053EAC1DFFCA67002F2F20 /* SFIUserProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B0053EAB1DFFCA67002F2F20 /* SFIUserProfileCell.m */; };
 		B017E87B1DE85EF800BC0DE8 /* AlmondSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B017E8781DE85EF800BC0DE8 /* AlmondSelectionCell.m */; };
 		B017E87C1DE85EF800BC0DE8 /* AlmondSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B017E8781DE85EF800BC0DE8 /* AlmondSelectionCell.m */; };
 		B017E87D1DE85EF800BC0DE8 /* AlmondSelectionTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B017E87A1DE85EF800BC0DE8 /* AlmondSelectionTableView.m */; };
@@ -1101,6 +1104,13 @@
 		A856E5412099C069FEB9493D /* Pods-Almond.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Almond.release.xcconfig"; path = "Pods/Target Support Files/Pods-Almond/Pods-Almond.release.xcconfig"; sourceTree = "<group>"; };
 		AE77F320DE8F128358BBAFE7 /* Pods-HomeScreen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HomeScreen.release.xcconfig"; path = "Pods/Target Support Files/Pods-HomeScreen/Pods-HomeScreen.release.xcconfig"; sourceTree = "<group>"; };
 		AEB56C2FEAC393F7D8DE45B3 /* libPods-Almond.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Almond.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0053EA31DFFC920002F2F20 /* SFIAccountCellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFIAccountCellView.h; sourceTree = "<group>"; };
+		B0053EA41DFFC96B002F2F20 /* SFIAccountCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIAccountCellView.m; sourceTree = "<group>"; };
+		B0053EA71DFFC9D4002F2F20 /* SFIAlmondCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFIAlmondCell.h; sourceTree = "<group>"; };
+		B0053EA81DFFC9EE002F2F20 /* SFIAlmondCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIAlmondCell.m; sourceTree = "<group>"; };
+		B0053EAA1DFFCA35002F2F20 /* SFIUserProfileCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFIUserProfileCell.h; sourceTree = "<group>"; };
+		B0053EAB1DFFCA67002F2F20 /* SFIUserProfileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIUserProfileCell.m; sourceTree = "<group>"; };
+		B0053EAD1DFFCB6E002F2F20 /* SFIAccountMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFIAccountMacros.h; sourceTree = "<group>"; };
 		B017E8771DE85EF800BC0DE8 /* AlmondSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlmondSelectionCell.h; path = Dashboard/AlmondSelectionCell.h; sourceTree = "<group>"; };
 		B017E8781DE85EF800BC0DE8 /* AlmondSelectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlmondSelectionCell.m; path = Dashboard/AlmondSelectionCell.m; sourceTree = "<group>"; };
 		B017E8791DE85EF800BC0DE8 /* AlmondSelectionTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlmondSelectionTableView.h; path = Dashboard/AlmondSelectionTableView.h; sourceTree = "<group>"; };
@@ -1656,6 +1666,13 @@
 				1C7E7D251A41A0990026F0BA /* SFIPasswordChangeViewController.m */,
 				1C7E7D261A41A0990026F0BA /* SFIUserProfile.h */,
 				1C7E7D271A41A0990026F0BA /* SFIUserProfile.m */,
+				B0053EA31DFFC920002F2F20 /* SFIAccountCellView.h */,
+				B0053EA41DFFC96B002F2F20 /* SFIAccountCellView.m */,
+				B0053EAD1DFFCB6E002F2F20 /* SFIAccountMacros.h */,
+				B0053EA71DFFC9D4002F2F20 /* SFIAlmondCell.h */,
+				B0053EA81DFFC9EE002F2F20 /* SFIAlmondCell.m */,
+				B0053EAA1DFFCA35002F2F20 /* SFIUserProfileCell.h */,
+				B0053EAB1DFFCA67002F2F20 /* SFIUserProfileCell.m */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -3418,6 +3435,7 @@
 				2A4C243B1D0FC412001191E8 /* SettingsViewController.m in Sources */,
 				1C7E7DC51A41A0990026F0BA /* SFIHighlightedButton.m in Sources */,
 				1C7E7D831A41A0990026F0BA /* SFILoginViewController.m in Sources */,
+				B0053EAC1DFFCA67002F2F20 /* SFIUserProfileCell.m in Sources */,
 				F492EA5E1DF5952900FB3B76 /* MySubscriptionsTableViewCell.m in Sources */,
 				1C7E7DC71A41A0990026F0BA /* SFIMainViewController.m in Sources */,
 				CEABC65B1D6F14A000C2DCD4 /* CategoryView.m in Sources */,
@@ -3456,6 +3474,7 @@
 				F492EA3F1DF009EC00FB3B76 /* PaymentViewController.m in Sources */,
 				1C7E7E061A41A0B30026F0BA /* main.m in Sources */,
 				F417B2A51DA25CBD0073C440 /* AdvanceRouterSettingsController.m in Sources */,
+				B0053EA91DFFC9EE002F2F20 /* SFIAlmondCell.m in Sources */,
 				F4B8766E1D54653500DCF76F /* BlinkLedView.m in Sources */,
 				CEF6F4FC1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */,
 				846414C91B736B36008AB07F /* ILHuePickerView.m in Sources */,
@@ -3548,6 +3567,7 @@
 				1DF030E39A245683EABC61AE /* SFIRouterVersionTableViewCell.m in Sources */,
 				F417B2A91DA25D540073C440 /* AdvRouterTableViewCell.m in Sources */,
 				CE57A3461D7008C800F14B25 /* UrlImgDict.m in Sources */,
+				B0053EA51DFFC96B002F2F20 /* SFIAccountCellView.m in Sources */,
 				F4B875471D5382D500DCF76F /* MeshSetupViewController.m in Sources */,
 				F4B8767A1D54653500DCF76F /* ListButtonView.m in Sources */,
 				F4D93AF71D3F882300D55BD6 /* HelpItemsTableViewController.m in Sources */,

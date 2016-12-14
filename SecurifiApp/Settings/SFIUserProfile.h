@@ -6,16 +6,9 @@
 //  Copyright (c) 2014 Securifi Ltd. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 
 @interface SFIUserProfile : NSObject
-@property (nonatomic, retain) NSString* userEmail;
-@property (nonatomic, retain) NSString *firstName;
-@property (nonatomic, retain) NSString *lastName;
-@property (nonatomic, retain) NSString *addressLine1;
-@property (nonatomic, retain) NSString *addressLine2;
-@property (nonatomic, retain) NSString *addressLine3;
-@property (nonatomic, retain) NSString *country;
-@property (nonatomic, retain) NSString *zipCode;
-@property BOOL isExpanded;
+@property (nonatomic, retain) NSString* label;
+@property (nonatomic, retain) NSString *keyValue;
+@property (nonatomic) NSMutableArray *data;
 @end
