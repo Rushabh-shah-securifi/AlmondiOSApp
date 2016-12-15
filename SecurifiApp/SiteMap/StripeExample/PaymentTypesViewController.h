@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
 #import "STPToken.h"
+#import "AlmondPlan.h"
 
 typedef NS_ENUM(NSInteger, STPBackendChargeResult) {
     STPBackendChargeResultSuccess,
@@ -24,6 +24,6 @@ typedef void (^STPTokenSubmissionHandler)(STPBackendChargeResult status, NSError
 @end
 
 @interface PaymentTypesViewController : UIViewController<STPBackendCharging>
-
+@property (nonatomic) PlanType selectedPlan;
 @end
 

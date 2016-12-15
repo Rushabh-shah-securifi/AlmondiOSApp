@@ -87,6 +87,26 @@
     NSMutableAttributedString *aAttrString = [[NSMutableAttributedString alloc] initWithString:header attributes: arialDict];
     return aAttrString;
 }
+
++ (NSAttributedString *)getAttributedString:(NSString *)text subText:(NSString *)subText fontSize:(int)fontSize{
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:text];
+    NSRange boldRange = [text rangeOfString:subText];
+    [attrString addAttribute:NSFontAttributeName value:[UIFont securifiBoldFont:fontSize] range:boldRange];
+    return attrString;
+}
+
++ (NSAttributedString *)getAttributedString:(NSString *)text1 subText:(NSString *)subText text:(NSString *)text2 fontSize:(int)fontSize{
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:text1];
+    NSAttributedString *attrString2 = [[NSAttributedString alloc] initWithString:text2];
+    
+    NSDictionary *attrDict = [NSDictionary dictionaryWithObject:[UIFont securifiBoldFont:fontSize] forKey:NSFontAttributeName];
+    NSAttributedString *boldString = [[NSAttributedString alloc]initWithString:subText attributes:attrDict];
+    
+    [attrString appendAttributedString:boldString];
+    [attrString appendAttributedString:attrString2];
+    return attrString;
+}
+
 + (NSString *)getColorHex:(NSString*)value {
     return [self getHex:value factor:65535];
 }

@@ -12,10 +12,14 @@
 #import "CommonMethods.h"
 #import "SFIColors.h"
 #import "SelectedPlanViewController.h"
+#import "AlmondPlan.h"
+#import "AlmondManagement.h"
+#import "UIViewController+Securifi.h"
 
 #define TOP_LABEL @"toplabel"
 #define MID_LABEL @"midlabel"
 #define BOTTOM_LABEL @"bottomlabel"
+#define PLAN_TYPE @"plantype"
 
 @interface SubscriptionPlansViewController ()<UIGestureRecognizerDelegate>
 @property (nonatomic) NSInteger prevCount;
@@ -23,7 +27,10 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UILabel *planDesc;
 
+@property (nonatomic)AlmondPlan *almondPlan;
+@property (nonatomic)PlanType newSelectedPlan;
 @end
 
 @implementation SubscriptionPlansViewController
@@ -31,11 +38,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.prevCount = 0;
+    self.almondPlan = [AlmondPlan getAlmondPlan];
+    self.planDesc.text = @"Please select a plan from the plans listed above.";
+    self.newSelectedPlan = PlanTypeNone;
+    
     [self addSwipeToView:self.centerView];
     [self setupScrollView];
 //    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    
-    self.isFreeSubsExpired = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -105,22 +114,24 @@
 }
 
 #pragma mark bottom view
-- (IBAction)onContinueTap:(id)sender {
-    NSLog(@"onContinueTap");
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
-    SelectedPlanViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SelectedPlanViewController"];
-    [self.navigationController pushViewController:viewController animated:YES];
-//    [self presentViewController:viewController animated:YES completion:nil];
-}
-
 - (void)setupScrollView{
     //    scrollView.backgroundColor = [UIColor lightGrayColor];
     CGFloat xOffset = 2;
     int counter = 0;
     NSArray *plans = [self getPlans];
+    UIButton *planBtn;
     for(NSDictionary *plan in plans){
-        UIButton *planBtn = [self makePlanButton:@"almond_icon" xOffset:xOffset selector:@selector(onPlanBtnTap:) plan:plan];
-        planBtn.tag = counter;
+        PlanType planType = [plan[PLAN_TYPE] integerValue];
+        if(planType == PlanTypeCancel){
+            planBtn = [self makeCancelButton:xOffset selector:@selector(onPlanBtnTap:) plan:plan];
+        }else{
+            planBtn = [self makePlanButton:xOffset selector:@selector(onPlanBtnTap:) plan:plan];
+        }
+        planBtn.tag = planType;
+        if(planType == PlanTypeFreeExpired){
+            planBtn.alpha = 0.6;
+            planBtn.enabled = NO;
+        }
         [self.scrollView addSubview:planBtn];
         //        label.backgroundColor = [UIColor yellowColor];
         xOffset += 120;
@@ -133,29 +144,33 @@
 - (NSArray *)getPlans{
     NSMutableArray *plans = [NSMutableArray new];
     
-    NSString *text1 = self.isFreeSubsExpired? @"Expired": @"Trial";
-    [plans addObject:[self getPlanDict:@"1 Month" midLabel:@"FREE" btmLabel:text1]];
+    //if(self.almondPlan.planType != PlanTypeNone)
+      //  [plans addObject:[self getPlanDict:@"" midLabel:@"Cancel Subscription" btmLabel:@"" planType:PlanTypeCancel]];
+    
+    NSString *text1 = self.almondPlan.planType != PlanTypeNone? @"EXPIRED": @"TRIAL";
+    PlanType freePlanType = self.almondPlan.planType != PlanTypeNone? PlanTypeFreeExpired: PlanTypeFree;
+    [plans addObject:[self getPlanDict:@"1 Month" midLabel:@"Free" btmLabel:text1 planType:freePlanType]];
 
-    [plans addObject:[self getPlanDict:@"1 Month" midLabel:@"5 $" btmLabel:@"PLAN"]];
+    [plans addObject:[self getPlanDict:@"1 Month" midLabel:@"$5" btmLabel:@"PLAN" planType:PlanTypeOneMonth]];
     
-    [plans addObject:[self getPlanDict:@"3 Month" midLabel:@"12 $" btmLabel:@"PLAN"]];
+    [plans addObject:[self getPlanDict:@"3 Month" midLabel:@"$12" btmLabel:@"PLAN" planType:PlanTypeThreeMonths]];
     
-    [plans addObject:[self getPlanDict:@"6 Month" midLabel:@"20 $" btmLabel:@"PLAN"]];
-    
-    [plans addObject:[self getPlanDict:@"1 Year" midLabel:@"30 $" btmLabel:@"PLAN"]];
+    [plans addObject:[self getPlanDict:@"6 Month" midLabel:@"$20" btmLabel:@"PLAN" planType:PlanTypeSixMonths]];
     
     return plans;
 }
 
-- (NSDictionary *)getPlanDict:(NSString *)topLabel midLabel:(NSString *)midLabel btmLabel:(NSString *)btmLabel{
+- (NSDictionary *)getPlanDict:(NSString *)topLabel midLabel:(NSString *)midLabel btmLabel:(NSString *)btmLabel planType:(PlanType)planType{
     NSMutableDictionary *muDict = [NSMutableDictionary new];
     [muDict setObject:topLabel forKey:TOP_LABEL];
     [muDict setObject:midLabel forKey:MID_LABEL];
     [muDict setObject:btmLabel forKey:BOTTOM_LABEL];
+    [muDict setObject:[NSNumber numberWithInt:planType] forKey:PLAN_TYPE];
+    
     return muDict;
 }
 
-- (UIButton *)makePlanButton:(NSString *)imageName xOffset:(CGFloat)xOffset selector:(SEL)selector plan:(NSDictionary *)plan{
+- (UIButton *)makePlanButton:(CGFloat)xOffset selector:(SEL)selector plan:(NSDictionary *)plan{
     UIButton *planBtn = [[UIButton alloc]initWithFrame:CGRectMake(xOffset, 20, 100, 100)];
     [planBtn addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
 //    planBtn.backgroundColor = [UIColor colorFromHexString:@"02a8f3"];
@@ -163,6 +178,22 @@
     [self addLables:planBtn plan:plan];
     [self setBorder:planBtn];
     return planBtn;
+}
+
+- (UIButton *)makeCancelButton:(CGFloat)xOffset selector:(SEL)selector plan:(NSDictionary *)plan{
+    UIButton *planBtn = [[UIButton alloc]initWithFrame:CGRectMake(xOffset, 20, 100, 100)];
+    [planBtn addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+    //    planBtn.backgroundColor = [UIColor colorFromHexString:@"02a8f3"];
+    
+    [self addCancelLable:planBtn plan:plan];
+    [self setBorder:planBtn];
+    return planBtn;
+}
+
+- (void)addCancelLable:(UIButton *)btn plan:(NSDictionary *)plan{
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, CGRectGetWidth(btn.frame), 60)];
+    label.center = CGPointMake(CGRectGetMidX(btn.bounds), CGRectGetMidY(btn.bounds));
+    [self addLable:plan[MID_LABEL] btn:btn label:label fntName:@"Avenir-Roman" fntSze:14];
 }
 
 - (void)addLables:(UIButton *)btn plan:(NSDictionary *)plan{
@@ -209,6 +240,7 @@
     NSLog(@"onPlanBtnTap tag: %d", currentBtn.tag);
     if(currentBtn.selected)
         return;
+    
     for(UIButton *button in [self.scrollView subviews]){
         if([button isKindOfClass:[UIImageView class]]){
             continue;
@@ -224,6 +256,26 @@
             button.selected = NO;
         }
     }
+    //write a methods, pass it text to make bold and the entire text, it should return you the attributed string.
+    NSString *text1 = @"You have selected ";
+    NSString *text2 = [NSString stringWithFormat:@"for Internet Security on %@", [AlmondManagement currentAlmond].almondplusName];
+    switch (currentBtn.tag) {
+        case PlanTypeFree:
+            self.planDesc.attributedText = [CommonMethods getAttributedString:text1 subText:@"1 Month Free Trial " text:text2 fontSize:self.planDesc.font.pointSize];
+            break;
+        case PlanTypeOneMonth:
+            self.planDesc.attributedText = [CommonMethods getAttributedString:text1 subText:@"1 Month $5 Plan " text:text2 fontSize:self.planDesc.font.pointSize];
+            break;
+        case PlanTypeThreeMonths:
+            self.planDesc.attributedText = [CommonMethods getAttributedString:text1 subText:@"3 Months $12 Plan " text:text2 fontSize:self.planDesc.font.pointSize];
+            break;
+        case PlanTypeSixMonths:
+            self.planDesc.attributedText = [CommonMethods getAttributedString:text1 subText:@"6 Months $20 Plan " text:text2 fontSize:self.planDesc.font.pointSize];
+            break;
+        default:
+            break;
+    }
+    self.newSelectedPlan = currentBtn.tag;
 }
 
 
@@ -251,4 +303,19 @@
             layer.hidden = hide;
     }
 }
+
+#pragma action events
+- (IBAction)onContinueTap:(id)sender {
+    NSLog(@"onContinueTap");
+    if(self.newSelectedPlan == PlanTypeNone){
+        [self showToast:@"Please select a plan."];
+        return;
+    }
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+    SelectedPlanViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SelectedPlanViewController"];
+    viewController.selectedPlan = self.newSelectedPlan;
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 @end

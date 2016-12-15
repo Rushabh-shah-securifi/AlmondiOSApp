@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "PaymentTypesViewController.h"
+#import "AlmondPlan.h"
 
 @class PaymentViewController;
 
@@ -22,5 +23,5 @@
 @property (nonatomic) NSDecimalNumber *amount;
 @property (nonatomic, weak) id<STPBackendCharging> backendCharger;
 @property (nonatomic, weak) id<PaymentViewControllerDelegate> delegate;
-
+@property (nonatomic) PlanType selectedPlan;
 @end

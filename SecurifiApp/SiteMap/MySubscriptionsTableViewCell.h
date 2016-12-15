@@ -7,12 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AlmondPlan.h"
+
+
+#define TITLE @"title"
+#define IS_EXPANDED @"is_expanded"
+#define CHANGE_PLAN @"CHANGE PLAN"
+#define CHOOSE_PLAN @"CHOOSE PLAN"
+#define FREE_TRAIL @"FREE TRAIL"
+#define CANCEL_SUBSCRIPTION @"CANCEL SUBSCRIPTION"
+
+
 @protocol MySubscriptionsTableViewCellDelegate
-- (void)onChangePlanDelegate;
-- (void)onRenewPlanDelegate;
+- (void)onLeftBtnTapDelegate:(NSString *)btnTitle;
+- (void)onRightBtnTapDelegate:(NSString *)btnTitle;
 @end
 
 @interface MySubscriptionsTableViewCell : UITableViewCell
 @property (nonatomic, weak) id<MySubscriptionsTableViewCellDelegate> delegate;
-- (void)setSubscriptionTitle:(NSString *)title;
+
+-(void)setUpCell:(NSDictionary *)featureDict almondPlan:(AlmondPlan *)plan;
 @end

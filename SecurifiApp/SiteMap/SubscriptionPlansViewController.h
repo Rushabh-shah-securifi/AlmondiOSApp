@@ -9,5 +9,4 @@
 #import <UIKit/UIKit.h>
 
 @interface SubscriptionPlansViewController : UIViewController
-@property (nonatomic) BOOL isFreeSubsExpired;
 @end

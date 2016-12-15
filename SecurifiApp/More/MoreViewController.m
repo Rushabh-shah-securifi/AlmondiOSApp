@@ -125,6 +125,7 @@
     [moreFeatures addObject:@{@"rule_forward_icon":NSLocalizedString(@"rules", @"")}];
     if(!self.isLocal)
         [moreFeatures addObject:@{@"subscriptions_icon":NSLocalizedString(@"my_subscriptions", @"")}];
+    
     NSString *addAlmondText = self.isLocal? NSLocalizedString(@"add_almond", @""): NSLocalizedString(@"link_almond_account", @"");
     [moreFeatures addObject:@{@"link_almond_icon":addAlmondText}];
     if(!self.isLocal)

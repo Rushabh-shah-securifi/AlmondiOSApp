@@ -11,7 +11,6 @@
 #import "CommonMethods.h"
 #import "SFIColors.h"
 #import "Client.h"
-#import "IOTDeviceObj.h"
 
 @interface IoTDevicesListViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *ioTdevicetable;
@@ -82,7 +81,6 @@
  
 }
 -(NSDictionary *)iotDeviceObj:(NSDictionary *)deviceDict{
-    IOTDeviceObj *iotDevice = [IOTDeviceObj new];
     NSArray *ports = deviceDict[@"Ports"];
     NSString *telnet = deviceDict[@"Telnet"];
     NSString *Http = deviceDict[@"Http"];

@@ -11,18 +11,25 @@
 #import "SubscriptionPlansViewController.h"
 #import "AlmondSelectionTableView.h"
 #import "SFIColors.h"
+#import "CommonMethods.h"
 #import "AlmondManagement.h"
+#import "AlmondJsonCommandKeyConstants.h"
+#import "UIViewController+Securifi.h"
 
 #define MY_SUBSCIRIPTION_1 @"my_subscriptions_cell_1"
 #define MY_SUBSCIRIPTION_2 @"my_subscriptions_cell_2"
-#define TITLE @"title"
-#define IS_EXPANDED @"is_expanded"
 
-@interface MySubscriptionsViewController ()<MySubscriptionsTableViewCellDelegate, AlmondSelectionTableViewDelegate>
-@property (weak, nonatomic) IBOutlet UILabel *almondLabel;
+#define INTERNET_SECURITY 1
+
+@interface MySubscriptionsViewController ()<MySubscriptionsTableViewCellDelegate, AlmondSelectionTableViewDelegate, UIAlertViewDelegate>
+@property (nonatomic) UILabel *almondLabel;
+@property (nonatomic) UIImageView *imgView;
+@property (weak, nonatomic) IBOutlet UIButton *almSelectionBtn;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic) NSMutableArray *mySubscriptionsArray;
-@property(nonatomic) UIButton *buttonMaskView;
+@property (nonatomic) UIButton *buttonMaskView;
+@property (nonatomic)AlmondPlan *almondPlan;
 @end
 
 @implementation MySubscriptionsViewController
@@ -30,13 +37,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.almondLabel.text = [AlmondManagement currentAlmond].almondplusName;
+    self.almondPlan = [AlmondPlan getAlmondPlan];
+    NSLog(@"almond plan %d", self.almondPlan.planType);
     [self initializeMySubscriptionsArray];
     // Do any additional setup after loading the view.
+}
+
+- (void)viewDidLayoutSubviews{
+    [self makeAlmondSelectionBtn];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [self initializeNotification];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -45,10 +59,18 @@
         [self.navigationController setNavigationBarHidden:NO];
     }
     [super viewWillDisappear:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)initializeNotification{
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    
+    [center addObserver:self selector:@selector(onSubscribeMeCommandResponse:) name:SUBSCRIBE_ME_NOTIFIER object:nil];
 }
 
 - (void)initializeMySubscriptionsArray{
@@ -61,6 +83,40 @@
         [muDict setObject:[NSNumber numberWithBool:NO] forKey:IS_EXPANDED];
         [self.mySubscriptionsArray addObject:muDict];
     }
+}
+
+#pragma mark ui mehtods
+- (void)makeAlmondSelectionBtn{
+    NSString *currentAlmName = [AlmondManagement currentAlmond].almondplusName;
+    _almondLabel = [[UILabel alloc]init];
+    _imgView = [[UIImageView alloc]init];
+    [self setFrames:currentAlmName];
+    
+    //almond name label
+    [CommonMethods setLableProperties:_almondLabel text:currentAlmName textColor:[SFIColors paymentColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentCenter];
+    _almondLabel.center = CGPointMake(CGRectGetWidth(_almSelectionBtn.bounds)/2-10, CGRectGetHeight(_almSelectionBtn.bounds)/2);
+    [self.almSelectionBtn addSubview:_almondLabel];
+    
+    //drop arrow image
+    _imgView.contentMode = UIViewContentModeScaleAspectFit;
+    _imgView.image = [[UIImage imageNamed:@"arrow_drop_down_black"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [_imgView setTintColor:[SFIColors paymentColor]];
+    [self.almSelectionBtn addSubview:_imgView];
+}
+
+- (void)setFrames:(NSString *)currentAlmName{
+    CGFloat titleWidth;
+    CGSize textSize;
+    textSize = [currentAlmName sizeWithAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"Avenir-Roman" size:18]}];
+    titleWidth = textSize.width + 10;
+    if(titleWidth > 150){
+        titleWidth = 150;
+    }
+    
+    _almondLabel.frame = CGRectMake(0, 0, titleWidth, 30);
+    _almondLabel.center = CGPointMake(CGRectGetWidth(_almSelectionBtn.bounds)/2-10, CGRectGetHeight(_almSelectionBtn.bounds)/2);
+    
+    _imgView.frame = CGRectMake(CGRectGetMaxX(_almondLabel.frame)+1, CGRectGetMinY(_almondLabel.frame), 30, 30);
 }
 
 #pragma mark button tap methods
@@ -113,7 +169,7 @@
     cell.delegate = self;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     NSDictionary *routerFeature  = self.mySubscriptionsArray[indexPath.section];
-    [cell setSubscriptionTitle:routerFeature[TITLE]];
+    [cell setUpCell:routerFeature almondPlan:self.almondPlan];
     
     return cell;
 }
@@ -130,21 +186,6 @@
             [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
         });
     }
-    
-}
-
-#pragma mark cell delegate methods
-- (void)onChangePlanDelegate{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
-        SubscriptionPlansViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SubscriptionPlansViewController"];
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-        nav.navigationBarHidden = YES;
-        [self presentViewController:nav animated:YES completion:nil];
-    });
-}
-
-- (void)onRenewPlanDelegate{
     
 }
 
@@ -187,8 +228,14 @@
 -(void)onAlmondSelectedDelegate:(SFIAlmondPlus *)selectedAlmond{
     [self removeAlmondSelectionView];
     NSLog(@"onAlmondSelectedDelegate i am called");
-    self.almondLabel.text = selectedAlmond.almondplusName;
+    [self setFrames:selectedAlmond.almondplusName];
+    _almondLabel.text = selectedAlmond.almondplusName;
     [AlmondManagement setCurrentAlmond:selectedAlmond];
+    
+    self.almondPlan = [AlmondPlan getAlmondPlan];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 -(void)removeAlmondSelectionView{
@@ -203,4 +250,92 @@
     self.buttonMaskView = nil;
 }
 
+#pragma mark alert methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == [alertView cancelButtonIndex]){
+        //cancel clicked ...do your action
+        if(alertView.tag == INTERNET_SECURITY){
+            [self sendDeleteSubscriptionCommand];
+        }
+    }else{
+    }
+}
+
+- (void)showAlert:(NSString *)title msg:(NSString *)msg cancel:(NSString*)cncl other:(NSString *)other tag:(int)tag{
+    NSLog(@"controller show alert tag: %d", tag);
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:other, nil];
+    alert.tag = tag;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [alert show];
+    });
+}
+#pragma mark cell delegate methods
+- (void)onLeftBtnTapDelegate:(NSString *)btnTitle{
+    [self LaunchSubscriptionsPlanController];
+}
+
+- (void)onRightBtnTapDelegate:(NSString *)btnTitle{
+    if([btnTitle isEqualToString:CANCEL_SUBSCRIPTION]){
+        NSString *msg = [NSString stringWithFormat:@"By cancelling your subscription you will no longer have access to Internet Security on %@.", [AlmondManagement currentAlmond].almondplusName];
+        [self showAlert:@"" msg:msg cancel:@"Cancel Subscription" other:@"Nevermind" tag:INTERNET_SECURITY];
+    }
+    else{
+        [self LaunchSubscriptionsPlanController];
+    }
+}
+
+- (void)LaunchSubscriptionsPlanController{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+        SubscriptionPlansViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SubscriptionPlansViewController"];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
+        nav.navigationBarHidden = YES;
+        [self presentViewController:nav animated:YES completion:nil];
+    });
+}
+
+#pragma mark payload/command
+- (void)sendDeleteSubscriptionCommand{
+    NSLog(@"sendDeleteSubscriptionCommand");
+    NSString *almondMac = [AlmondManagement currentAlmond].almondplusMAC;
+    NSDictionary *payload;
+    payload = @{
+                @"CommandType": @"DeleteSubscription",
+                @"AlmondMAC": almondMac?: @"",
+                @"AlmondName": [AlmondManagement currentAlmond].almondplusName
+                };
+    GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_SUBSCRIBE_ME];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
+}
+
+- (void)onSubscribeMeCommandResponse:(id)sender{
+    NSLog(@"onSubscribeMeCommandResponse");
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
+    NSDictionary *payload;
+    if(local){
+        payload = [dataInfo valueForKey:@"data"];
+    }else{
+        payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
+    }
+    NSLog(@"meshcontroller mesh payload: %@", payload);
+    
+    BOOL isSuccessful = [payload[@"Success"] boolValue];
+    NSString *cmdType = payload[COMMAND_TYPE];
+    if(isSuccessful){
+        [self showToast:@"Your subscription has been successfully cancelled."];
+        //need to check on this if/else
+        [AlmondPlan updateAlmondPlan:PlanTypeFreeExpired];    
+    }else{
+        [self showToast:@"Sorry! Unable to cancel subscription. Please try later."];
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
 @end

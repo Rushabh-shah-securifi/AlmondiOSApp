@@ -100,4 +100,8 @@
 
 +(NSString *)type:(NSString *)type;
 
++ (NSAttributedString *)getAttributedString:(NSString *)text subText:(NSString *)subText fontSize:(int)fontSize;
+
++ (NSAttributedString *)getAttributedString:(NSString *)text1 subText:(NSString *)subText text:(NSString *)text2 fontSize:(int)fontSize;
+
 @end
