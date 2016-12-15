@@ -9,6 +9,8 @@
 #import "IoTDeviceViewController.h"
 #import "BrowsingHistoryViewController.h"
 #import "CommonMethods.h"
+#import "Client.h"
+#import "UIColor+Securifi.h"
 
 @interface IoTDeviceViewController ()
 @property (weak, nonatomic) IBOutlet UISwitch *iotSwitch;
@@ -17,6 +19,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *explanationLable;
 @property (weak, nonatomic) IBOutlet UIView *middleView;
 
+@property (weak, nonatomic) IBOutlet UIImageView *clientImg;
+@property (weak, nonatomic) IBOutlet UILabel *clientName;
+@property (weak, nonatomic) IBOutlet UILabel *blockLabel;
 
 
 @end
@@ -27,7 +32,25 @@
     [super viewDidLoad];
     self.middleView.hidden = YES;
     self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
-       self.topView.backgroundColor = [self getolor:self.iotDevice];
+    Client *client = [Client getClientByMAC:self.iotDevice[@"MAC"]];
+    NSString *TypeImg = [client iconName];
+    self.clientImg.image = [UIImage imageNamed:TypeImg];
+    self.clientName.text = client.name;
+    if(client.deviceAllowedType == 0){
+        self.blockLabel.text = @"Blocked";
+        
+         [self.blockButton setTitle:@"Allow Device" forState:UIControlStateNormal];
+        self.topView.backgroundColor = [UIColor lightGrayColor];
+        self.blockButton.backgroundColor = [UIColor securifiScreenGreen];
+    }
+    else{
+        self.blockLabel.text = @"Active";
+        [self.blockButton setTitle:@"Block Device" forState:UIControlStateNormal];
+        self.topView.backgroundColor = [UIColor securifiScreenGreen];
+        self.blockButton.backgroundColor = [UIColor lightGrayColor];
+    }
+   
+//       self.topView.backgroundColor = [self getolor:self.iotDevice];
     self.explanationLable.text = [self getDescripTionText:self.iotDevice];
     NSString *displayText = [self getDescripTionText:self.iotDevice];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",displayText,@"Learn More"] attributes:nil];

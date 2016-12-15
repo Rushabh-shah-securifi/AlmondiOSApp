@@ -239,13 +239,13 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HOME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wmQ-Wm-9ba">
-                                                <rect key="frame" x="44" y="145" width="36" height="14"/>
+                                                <rect key="frame" x="44" y="145" width="37.5" height="12"/>
                                                 <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="12"/>
                                                 <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AWAY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wMA-qN-Fdi">
-                                                <rect key="frame" x="119" y="145" width="33" height="14"/>
+                                                <rect key="frame" x="120.5" y="145" width="35.5" height="12"/>
                                                 <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="12"/>
                                                 <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -611,13 +611,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pkj-eu-YlS">
-                                        <rect key="frame" x="110" y="91" width="167" height="27"/>
+                                        <rect key="frame" x="110" y="91" width="167" height="25"/>
                                         <color key="backgroundColor" red="0.58431372550000005" green="0.45882352939999999" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="27" id="9DE-7g-bIp"/>
+                                            <constraint firstAttribute="height" constant="25" id="9DE-7g-bIp"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="13"/>
-                                        <state key="normal" title="SCANN NOW"/>
+                                        <state key="normal" title="Scan Now"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                 <integer key="value" value="15"/>
@@ -1011,7 +1011,7 @@
                                     <constraint firstAttribute="width" constant="113" id="v2Y-Qo-2x4"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="14"/>
-                                <state key="normal" title="Block Device">
+                                <state key="normal">
                                     <color key="titleColor" red="0.91973137729999999" green="0.91973137729999999" blue="0.91973137729999999" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -1046,6 +1046,9 @@
                     </view>
                     <connections>
                         <outlet property="blockButton" destination="k9l-Jf-9sT" id="Nwg-eO-81k"/>
+                        <outlet property="blockLabel" destination="ebb-TG-Daq" id="Hha-9Z-ceF"/>
+                        <outlet property="clientImg" destination="dKs-DZ-2pr" id="dpe-Zg-oSj"/>
+                        <outlet property="clientName" destination="dGQ-Ah-RlG" id="vdQ-AN-lDQ"/>
                         <outlet property="explanationLable" destination="LAp-Ck-9V4" id="yif-St-GCQ"/>
                         <outlet property="iotSwitch" destination="iMD-A4-vxM" id="RpS-UQ-NUi"/>
                         <outlet property="middleView" destination="dGC-gO-UYu" id="FcT-GZ-Ko9"/>
