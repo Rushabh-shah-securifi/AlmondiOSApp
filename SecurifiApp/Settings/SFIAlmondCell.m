@@ -12,8 +12,8 @@
 @interface SFIAlmondCell()
 
 @property BOOL isOwnedAlmond;
-@property NSMutableArray* ownedAlmondList;
-@property NSMutableArray* sharedAlmondList;
+@property NSArray* ownedAlmondList;
+@property NSArray* sharedAlmondList;
 @property CGRect frameValue;
 @property float baseYCoordinate;
 @property UIImageView *imgArrow;
@@ -95,6 +95,7 @@
     currentAlmond.isExpanded = !currentAlmond.isExpanded;
     [self.delegate reloadTable: (int)index];
 }
+
 
 -(void) isExapanded{
     if(self.isOwnedAlmond){

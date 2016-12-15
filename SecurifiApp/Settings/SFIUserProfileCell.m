@@ -42,20 +42,18 @@ NSArray *fieldNumbersForEachCategory;
 }
 
 - (void)sendUpdateUserProfileRequest {
-    
     NSMutableDictionary *data = [NSMutableDictionary new];
     [data setObject:UPDATE_USERPROFILE_REQUEST forKey:COMMAND_TYPE];
-    
     if([_keyvalue isEqualToString:@"Address"]){
-        [data setObject:_userProfileData[0] forKey:@"Address1"];
-        [data setObject:_userProfileData[1] forKey:@"Address2"];
-        [data setObject:_userProfileData[2] forKey:@"Address3"];
+        [data setObject:_changedValue[0] forKey:@"AddressLine1"];
+        [data setObject:_changedValue[1] forKey:@"AddressLine2"];
+        [data setObject:_changedValue[2] forKey:@"AddressLine3"];
     }else{
-        [data setObject:_userProfileData[0] forKey:_keyvalue];
+        [data setObject:_changedValue[0] forKey:_keyvalue];
     }
     
     NSArray *localizesStrings =@[ACCOUNTS_HUD_UPDATINGDETAILS, UPDATING_ACCOUNT_DETAILS];
-    [self.delegate sendRequest:(CommandType*)CommandType_UPDATE_USER_PROFILE_REQUEST withCommandString:UPDATE_USERPROFILE_REQUEST withDictionaryData:data withLocalizedStrings:localizesStrings ];
+    [self.delegate sendRequest:(CommandType*)CommandType_ACCOUNTS_USER_RELATED withCommandString:UPDATE_USERPROFILE_REQUEST withDictionaryData:data withLocalizedStrings:localizesStrings ];
 }
 
 

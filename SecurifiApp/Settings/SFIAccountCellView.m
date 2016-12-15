@@ -42,7 +42,7 @@
     
     [center addObserver:self
                selector:@selector(updateProfileResponseCallback:)
-                   name:UPDATE_USER_PROFILE_NOTIFIER
+                   name:DYNAMIC_ACCOUNT_RESPONSE
                  object:nil];
     
     NSLocalizedStringForUserProfileLabels = @{
@@ -54,7 +54,6 @@
                                               };
     
     [self drawAccountCell:frame];
-    
 }
 
 NSDictionary  *NSLocalizedStringForUserProfileLabels;
@@ -269,24 +268,26 @@ NSArray *fieldNumbersForEachCategory;
         [zipCode.data addObject:[dictionary valueForKey:@"ZipCode"]];
         [_userProfileData addObject:zipCode];
         
-        NSLog(@"log1 in userprofile response");
         [self.delegate loadAlmondList];
-        
-        NSLog(@"log2 in userprofile response");
     }
 }
 
 
 
 - (void)updateProfileResponseCallback:(id)sender {
+    
+    
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
     NSError* error = nil;
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[data valueForKey:@"data"] options:kNilOptions error:&error];
+    
+    
     BOOL success = false;
     NSString *keyToUpdate;
     NSMutableArray* dataToUpdate = [NSMutableArray new];
+    
     for (NSString* key in dictionary) {
         if([key isEqualToString:COMMAND_TYPE]);
         else if([key isEqualToString:SUCCESS]){
