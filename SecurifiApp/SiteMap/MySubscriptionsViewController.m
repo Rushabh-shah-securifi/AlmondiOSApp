@@ -51,6 +51,9 @@
     [super viewWillAppear:YES];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [self initializeNotification];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -330,7 +333,7 @@
     if(isSuccessful){
         [self showToast:@"Your subscription has been successfully cancelled."];
         //need to check on this if/else
-        [AlmondPlan updateAlmondPlan:PlanTypeFreeExpired];    
+        [AlmondPlan updateAlmondPlan:PlanTypeFreeExpired epoch:nil];
     }else{
         [self showToast:@"Sorry! Unable to cancel subscription. Please try later."];
     }

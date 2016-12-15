@@ -1234,8 +1234,7 @@ Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add
 "weak_signal_strength" = "Wireless signal seems to be weak.";
 "remove_almond" = "Remove Almond";
 "remove_almond_alert" = "Are you sure, you want to remove %@?";
-"force_remove_almond" = "Failed to remove \"%@\" Almond. Do you want to forcefully remove it?";
-"manual_force_remove" = "If you choose to force remove an Almond, you will have to manually reset that Almond to complete the process.";
+"force_remove_almond" = "Unable to remove the Almond. Try again after rebooting the additional Almond.\n\Or\nForce Remove";
 "sorry_could_not_remove" = "Sorry! Could not remove. Try removing from Almond";
 "removing_wait" = "Removing...Please wait!";
 
@@ -1275,7 +1274,7 @@ Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add
 
 
 /****** advanced router help contene *******/
-"adv_feature_alert" = "At this time these advanced features are only available via Almond's local Web UI.\n\n You can find the credentials to access this web UI in the Web Admin section of the Status app on the Almond LCD.";
+"adv_feature_alert" = "At this time these advanced features are only available via Almond's local Web UI.";
 "learn_more" = "Learn More";
 
 //router page

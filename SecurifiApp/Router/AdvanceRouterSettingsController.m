@@ -16,7 +16,7 @@
 #define TITLE @"title"
 #define IS_EXPANDED @"is_expanded"
 
-static const int headerHeight = 180;
+static const int headerHeight = 90;
 
 @interface AdvanceRouterSettingsController ()
 @property (nonatomic) NSMutableArray *advRouterFeatuesArray;

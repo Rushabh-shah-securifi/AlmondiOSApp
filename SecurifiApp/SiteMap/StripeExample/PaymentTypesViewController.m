@@ -239,7 +239,7 @@ typedef void (^STPPaymentAuthorizationStatusCallback)(PKPaymentAuthorizationStat
     //[self hideHUDDelegate];
     
     if(isSuccessful){
-        [AlmondPlan updateAlmondPlan:self.selectedPlan];
+        [AlmondPlan updateAlmondPlan:self.selectedPlan epoch:payload[RENEWAL_EPOCH]];
         self.applePaySucceeded = YES;
         self.completionCB(PKPaymentAuthorizationStatusSuccess);
     }else{

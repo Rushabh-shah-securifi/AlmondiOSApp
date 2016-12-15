@@ -423,6 +423,7 @@ int mii;
         [self dismissControllerDelegate];
     }else{
         if([cmdType isEqualToString:@"RemoveSlaveMobile"]){
+            NSLog(@"force remove 1");
             [self showForceRemoveAlert];
         }
         else if([cmdType isEqualToString:@"ForceRemoveSlaveMobile"]){
@@ -433,10 +434,9 @@ int mii;
 }
 
 -(void)showForceRemoveAlert{
-    NSString *title = [NSString stringWithFormat:NSLocalizedString(@"force_remove_almond", @""), self.hasLocationTag?self.almondStatObj.location:self.almondStatObj.name];
-    NSString *desc = NSLocalizedString(@"manual_force_remove", @"");
+    NSString *desc = NSLocalizedString(@"force_remove_almond", @"");
     //not using showalert because this has other button title.
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:title message:desc delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:desc delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
     alert.tag = FORCE_REMOVE;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [alert show];
@@ -464,8 +464,8 @@ int mii;
         }
     }else{
         if(alertView.tag == REMOVE){
-            [self showHudWithTimeoutMsgDelegate:NSLocalizedString(@"removing_wait", @"") time:30];
-            self.removeAlmondTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(onRemoveAlmTimeout:) userInfo:nil repeats:NO];
+            [self showHudWithTimeoutMsgDelegate:NSLocalizedString(@"removing_wait", @"") time:40];
+            self.removeAlmondTimer = [NSTimer scheduledTimerWithTimeInterval:40 target:self selector:@selector(onRemoveAlmTimeout:) userInfo:nil repeats:NO];
             [MeshPayload requestRemoveSlave:mii uniqueName:self.almondStatObj.slaveUniqueName];
         }
         else if(alertView.tag == FORCE_REMOVE){
@@ -492,7 +492,9 @@ int mii;
     
     [self.removeAlmondTimer invalidate];
     self.removeAlmondTimer = nil;
+    NSLog(@"force remove 2");
     [self showForceRemoveAlert];
+    
 }
 
 -(void)onNonRepeatingTimeout:(id)sender{

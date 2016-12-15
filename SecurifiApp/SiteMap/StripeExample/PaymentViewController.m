@@ -174,7 +174,7 @@
     //[self hideHUDDelegate];
     
     if(isSuccessful){
-        [AlmondPlan updateAlmondPlan:self.selectedPlan];
+        [AlmondPlan updateAlmondPlan:self.selectedPlan epoch:payload[RENEWAL_EPOCH]];
         [self pushPaymentCompleteController:SubscriptionResponse_Success];
     }else{
         [self pushPaymentCompleteController:SubscriptionResponse_Failed];

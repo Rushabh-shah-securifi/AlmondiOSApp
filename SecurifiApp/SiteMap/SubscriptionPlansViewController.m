@@ -151,6 +151,8 @@
     PlanType freePlanType = self.almondPlan.planType != PlanTypeNone? PlanTypeFreeExpired: PlanTypeFree;
     [plans addObject:[self getPlanDict:@"1 Month" midLabel:@"Free" btmLabel:text1 planType:freePlanType]];
 
+    [plans addObject:[self getPlanDict:@"1 Day" midLabel:@"Test" btmLabel:@"PLAN" planType:PlanTypeOneDay]];
+    
     [plans addObject:[self getPlanDict:@"1 Month" midLabel:@"$5" btmLabel:@"PLAN" planType:PlanTypeOneMonth]];
     
     [plans addObject:[self getPlanDict:@"3 Month" midLabel:@"$12" btmLabel:@"PLAN" planType:PlanTypeThreeMonths]];
@@ -262,6 +264,9 @@
     switch (currentBtn.tag) {
         case PlanTypeFree:
             self.planDesc.attributedText = [CommonMethods getAttributedString:text1 subText:@"1 Month Free Trial " text:text2 fontSize:self.planDesc.font.pointSize];
+            break;
+        case PlanTypeOneDay:
+            self.planDesc.attributedText = [CommonMethods getAttributedString:text1 subText:@"1 Day Test Plan " text:text2 fontSize:self.planDesc.font.pointSize];
             break;
         case PlanTypeOneMonth:
             self.planDesc.attributedText = [CommonMethods getAttributedString:text1 subText:@"1 Month $5 Plan " text:text2 fontSize:self.planDesc.font.pointSize];
