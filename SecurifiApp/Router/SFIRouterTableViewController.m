@@ -244,7 +244,7 @@ int mii;
 - (void)onAlmondListDidChange:(id)sender {
     NSLog(@"on almond list did change router");
     dispatch_async(dispatch_get_main_queue(), ^() {
-        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        
         SFIAlmondPlus *plus = [AlmondManagement currentAlmond];
         NSLog(@"plus: %@", plus);
         

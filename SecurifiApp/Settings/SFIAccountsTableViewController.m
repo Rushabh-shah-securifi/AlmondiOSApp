@@ -54,7 +54,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
                                                                     NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
                                                                     NSFontAttributeName : [UIFont standardNavigationTitleFont]
                                                                     };
-
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
     self.tableView.separatorColor = [UIColor clearColor];
@@ -67,7 +66,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
                                              @3:NSLocalizedString(ACCOUNTS_UNLINKALMOND_FAILURE_REASONCODE3, YOU_NEED_TO_ACTIVATE_YOUR_ACCOUNT),
                                              @4:NSLocalizedString(ACCOUNTS_UNLINKALMOND_FAILURE_REASONCODE4, YOU_NEED_TO_ACTIVATE_YOUR_ACCOUNT),
                                              @5:NSLocalizedString(ACCOUNTS_UNLINKALMOND_FAILURE_REASONCODE5, THE_CURRENT_PASSWORD_WAS_INCORRECT),
-                                             @6:NSLocalizedString(ACCOUNTS_UNLINKALMOND_FAILURE_REASONCODE6, THERE_WAS_SOME_ERROR_ON_CLOUD_PLEASE_TRY_LATER)};
+                                             @6:NSLocalizedString(ACCOUNTS_UNLINKALMOND_FAILURE_REASONCODE6, THERE_WAS_SOME_ERROR_ON_CLOUD_PLEASE_TRY_LATER),
+                                             @26:@"Please try again",
+                                             @27:@"User was already removed"};
 }
 
 
@@ -94,12 +95,26 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     NSMutableDictionary *data = [NSMutableDictionary new];
     NSArray *localizedStrings = @[ACCOUNTS_HUD_LOADINGDETAILS, LOADING_ACCOUNT_DETAILS];
     
-    [self sendRequest:(CommandType*)CommandType_ACCOUNTS_USER_RELATED withCommandString:@"UserProfileRequest" withDictionaryData:data withLocalizedStrings:localizedStrings];
+    [self sendRequest:(CommandType*)CommandType_ACCOUNTS_RELATED withCommandString:@"UserProfileRequest" withDictionaryData:data withLocalizedStrings:localizedStrings];
     
     [[Analytics sharedInstance] markAccountsScreen];
     
-    ownedAlmondList = [AlmondManagement getOwnedAlmondList];
-    sharedAlmondList = [AlmondManagement getSharedAlmondList];
+    [self loadAlmondList];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button addTarget:self
+               action:@selector(aMethod:)
+     forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:@"postDynamicNotification" forState:UIControlStateNormal];
+    button.frame = CGRectMake(100.0, 400.0, 160.0, 40.0);
+    [button setBackgroundColor:[UIColor blueColor]];
+    [self.view addSubview:button];
+}
+
+
+-(void) aMethod:(id)sender {
+    NSString* payload = @"{ \"CommandType\" :\"DynamicAlmondDelete\",\"Success\":\"true\",\"AlmondMAC\":\"251176217114456\" }";
+    NSData* data = [payload dataUsingEncoding:NSUTF8StringEncoding];
+    [[SecurifiToolkit sharedInstance] postNotification:ACCOUNTS_RELATED data:data];
 }
 
 
@@ -138,20 +153,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 }
 
 
--(void)loadAlmondList:(id)sender {
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    NSError *error = nil;
-    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[data valueForKey:@"data"] options:kNilOptions error:&error];
-    ownedAlmondList = [dictionary objectForKey:@"owned"];
-    sharedAlmondList = [dictionary objectForKey:@"shared"];
-
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-    });
-}
-
-
 #pragma mark - Button Handlers
 - (IBAction)doneButtonHandler:(id)sender {
     //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
@@ -169,7 +170,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 }
 
 - (SFIAlmondPlus *)sharedAlmondAtIndexPathRow:(NSInteger)row {
-    NSUInteger index = (NSUInteger) (row - 1);
+    NSLog(@"%ld is the row value",(long)row);
+    NSUInteger index = (NSUInteger) (row - 1 - ownedAlmondList.count);
     if (index >= sharedAlmondList.count) {
         return nil;
     }
@@ -203,6 +205,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     // Return the number of sections.
     return 1;
 }
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
@@ -251,7 +254,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 }
 
 #pragma mark - FromAlmondCell
-
 -(void) reloadTable :(int) index {
     NSIndexPath *rowToReload = [NSIndexPath indexPathForRow:index inSection:0];
     [self.tableView reloadRowsAtIndexPaths:@[rowToReload] withRowAnimation:UITableViewRowAnimationFade];
@@ -295,7 +297,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 #pragma mark - Class methods
 
-
 - (void)onProfileClicked:(id)sender {
     NSIndexPath *rowToReload = [NSIndexPath indexPathForRow:0 inSection:0];
     NSArray *rowsToReload = @[rowToReload];
@@ -312,7 +313,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 
 - (void)onDeleteAccountClicked:(id)sender {
-    
     //Confirmation Box
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(ACCOUNTS_ALERT_ONDELETEACCOUNT_TITLE, DELETE_ACCOUNT) message:NSLocalizedString(ACCOUNTS_ALERT_ONDELETEACCOUNT_MESSAGE, DELETING_THE_ACCOUNT_WILL_UNLINK_YOUR_ALMONDS_AND_DELETE_USER_PREFERENCES_TO_CONFIRM_ACCOUNT_DELETION_ENTER_YOUR_PASSWORD_BELOW) delegate:self cancelButtonTitle:NSLocalizedString(ACCOUNTS_ALERT_ONDELETEACCOUNT_CANCEL, CANCEL) otherButtonTitles:NSLocalizedString(ACCOUNTS_ALERT_ONDELETE_DELETE, DELETE), nil];
     alert.alertViewStyle = UIAlertViewStyleSecureTextInput;
@@ -329,7 +329,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     SFIAlmondPlus *currentAlmond = [self ownedAlmondAtIndexPathRow:index];
     DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
-    
     currentAlmondMAC = currentAlmond.almondplusMAC;
     
     //Confirmation Box
@@ -387,24 +386,21 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     NSMutableDictionary* dictionary = [NSMutableDictionary new];
     [dictionary setObject:currentAlmondMAC forKey:ALMOND_MAC];
     [dictionary setObject:currentAlmond.accessEmailIDs[index] forKey:EMAIL_ID];
-    [self sendRequest:(CommandType*)CommandType_DELETE_SECONDARY_USER_REQUEST withCommandString:DELETE_SECONDARY_USER_REQUEST withDictionaryData:dictionary withLocalizedStrings:localizedStrings];
+    [self sendRequest:(CommandType*)CommandType_ACCOUNTS_RELATED withCommandString:DELETE_SECONDARY_USER_REQUEST withDictionaryData:dictionary withLocalizedStrings:localizedStrings];
 }
 
 
 - (void)onRemoveSharedAlmondClicked:(id)sender {
-    DLog(@"onRemoveSharedAlmondClicked");
+    NSLog(@"onRemoveSharedAlmondClicked");
     UIButton *btn = (UIButton *) sender;
     NSUInteger index = (NSUInteger) btn.tag;
-    
     SFIAlmondPlus *currentAlmond = [self sharedAlmondAtIndexPathRow:index];
-    DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
+    NSLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
     currentAlmondMAC = currentAlmond.almondplusMAC;
-    
     NSArray *localizedStrings = @[ACCOUNTS_HUD_REMOVESHAREDALMOND, REMOVE_SHARED_ALMOND];
-    
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
     [dictionary setObject:currentAlmond.almondplusMAC forKey:ALMOND_MAC];
-    [self sendRequest:(CommandType*)CommandType_DELETE_ME_AS_SECONDARY_USER_REQUEST withCommandString:DELETE_ME_AS_SECONDARY_USER_REQUEST withDictionaryData:dictionary withLocalizedStrings:localizedStrings];
+    [self sendRequest:(CommandType*)CommandType_ACCOUNTS_RELATED withCommandString:DELETE_ME_AS_SECONDARY_USER_REQUEST withDictionaryData:dictionary withLocalizedStrings:localizedStrings];
 }
 
 
@@ -430,7 +426,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
             NSMutableDictionary* dictionary = [NSMutableDictionary new];
             [dictionary setObject:[[SecurifiToolkit sharedInstance] loginEmail] forKey:EMAIL_ID];
             [dictionary setObject:password.text forKey:Password];
-            [self sendRequest:(CommandType*)CommandType_ACCOUNTS_USER_RELATED withCommandString:DELETE_ACCOUNT_REQUEST withDictionaryData:dictionary withLocalizedStrings:localizedStrings];
+            [self sendRequest:(CommandType*)CommandType_ACCOUNTS_RELATED withCommandString:DELETE_ACCOUNT_REQUEST withDictionaryData:dictionary withLocalizedStrings:localizedStrings];
         }
     }
     else if (alertView.tag == UNLINK_ALMOND_CONFIRMATION) {
@@ -443,7 +439,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
             [dictionary setObject:currentAlmondMAC forKey:ALMOND_MAC];
             [dictionary setObject:[[SecurifiToolkit sharedInstance] loginEmail] forKey:EMAIL_ID];
             [dictionary setObject:password.text forKey:Password];
-            [self sendRequest:(CommandType*)CommandType_ACCOUNTS_USER_RELATED withCommandString:UNLINK_ALMOND_REQUEST withDictionaryData:dictionary withLocalizedStrings:localizedStrings];
+            [self sendRequest:(CommandType*)CommandType_ACCOUNTS_RELATED withCommandString:UNLINK_ALMOND_REQUEST withDictionaryData:dictionary withLocalizedStrings:localizedStrings];
         }
     }
     else if (alertView.tag == USER_INVITE_ALERT) {
@@ -457,7 +453,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
             NSMutableDictionary *dictionary = [NSMutableDictionary new];
             [dictionary setObject:currentAlmondMAC forKey:ALMOND_MAC];
             [dictionary setObject:changedEmailID forKey:EMAIL_ID];
-            [self sendRequest:(CommandType*)CommandType_ACCOUNTS_USER_RELATED withCommandString:USER_INVITE_REQUEST withDictionaryData:dictionary withLocalizedStrings:localizedStrings];
+            [self sendRequest:(CommandType*)CommandType_ACCOUNTS_RELATED withCommandString:USER_INVITE_REQUEST withDictionaryData:dictionary withLocalizedStrings:localizedStrings];
         }
     }
 }
@@ -465,7 +461,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 #pragma - delegates from AccountCell
 -(void) loadAlmondList {
-    NSLog(@"%lu %lu are the lengths",(unsigned long)ownedAlmondList.count, (unsigned long)sharedAlmondList.count);
+    ownedAlmondList = [AlmondManagement getOwnedAlmondList];
+    sharedAlmondList = [AlmondManagement getSharedAlmondList];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
         [self.tableView reloadData];
@@ -509,6 +506,21 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [almondList removeObject:[self findAlmond:almondList]];
 }
 
+- (void) addAlmond:(SFIAlmondPlus*) almond toList:(NSArray*)almondList {
+    NSLog(@"dynamic almond add is called");
+    NSArray* list = almondList;
+    NSMutableArray* newOwnedList = [NSMutableArray new];
+    for(SFIAlmondPlus* almond in list){
+        [newOwnedList addObject:almond];
+    }
+    
+    NSLog(@"%lu dynamic ownedalmond add is called",(unsigned long)ownedAlmondList.count);
+    NSLog(@"%lu dynamic almondlist add is called",(unsigned long)almondList.count);
+    [newOwnedList addObject:almond];
+    almondList = newOwnedList;
+    NSLog(@"%lu dynamic ownedalmond add is called",(unsigned long)ownedAlmondList.count);
+    NSLog(@"%lu dynamic almondlist add is called",(unsigned long)almondList.count);
+}
 
 -(SFIAlmondPlus *)findAlmond:(NSMutableArray*)almondList{
     for (SFIAlmondPlus *current in almondList) {
@@ -521,8 +533,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 -(void) modifyUserAdd: (BOOL)add{
     SFIAlmondPlus*  almond =[self findAlmond:ownedAlmondList];
-    
-    //Remove access email id
     NSMutableArray *currentAccessEmailList = almond.accessEmailIDs;
     NSMutableArray *newAccessEmailList = [NSMutableArray array];
     if(!add){
@@ -541,6 +551,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 
 - (void)accountResponseCallback:(id)sender {
+    
+    NSLog(@"accountresponsecallbackiscalled")
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     NSError *error = nil;
@@ -549,36 +561,38 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     NSString *success = [dictionary valueForKey:SUCCESS];
     NSString *failureReason;
     if ([success isEqualToString:@"true"]) {
-        if([commandType  isEqualToString:UNLINK_ALMOND_RESPONSE]);
-            //[self removeAlmond:ownedAlmondList];
-        else if([commandType isEqualToString:DELETE_ME_SECONDARY_USER_DEFAULT_RESPONSE])
+        if([commandType  isEqualToString:DYNAMIC_ALMOND_DELETE]){
+            ownedAlmondList = [AlmondManagement getOwnedAlmondList];
+            sharedAlmondList = [AlmondManagement getSharedAlmondList];
+        }else if([commandType  isEqualToString:DYNAMIC_ALMOND_ADD]){
+            ownedAlmondList = [AlmondManagement getOwnedAlmondList];
+            sharedAlmondList = [AlmondManagement getSharedAlmondList];
+        }else if([commandType isEqualToString:DELETE_ME_SECONDARY_USER_DEFAULT_RESPONSE])
             [self removeAlmond:sharedAlmondList];
         else if([commandType isEqualToString:USER_INVITE_RESPONSE])
             [self modifyUserAdd:true];
-        else if([commandType isEqualToString:DELETE_SECONDARY_USER_DEFAULT_RESPONSE])
+        else if([commandType isEqualToString:DELETE_SECONDARY_USER_RESPONSE])
             [self modifyUserAdd:false];
         else if([commandType isEqualToString:DELETE_ACCOUNT_RESPONSE])
             [self.delegate userAccountDidDelete:self];
-        else if([commandType isEqualToString:ALMOND_LIST_RESPONSE]||
-                [commandType isEqualToString:ALMOND_AFFILIATION_DATA])
-            [self almondDataResponse:dictionary];
         else if([commandType isEqualToString:ALMOND_NAME_CHANGE_RESPONSE])
             [self almondNameChangeResponse:dictionary];
     }
     else {
         DLog(@"Reason %@", [dictionary valueForKey:@"Reason"]);
         NSLog(@"Reason %@", [dictionary valueForKey:@"Reason"]);
-        failureReason = [failureReasonForAccountsPageResponse valueForKey:[dictionary valueForKey:@"Reason"]];
+        failureReason = [failureReasonForAccountsPageResponse objectForKey:[dictionary valueForKey:@"Reason"]];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
-        if([success isEqualToString:@"true"])
+        if([success isEqualToString:@"true"]){
+            NSLog(@"i am reloading");
             [self.tableView reloadData];
+        }
         else
             [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     });
-    
 }
 
 -(void) almondNameChangeResponse:(NSDictionary*) dictionary {
@@ -621,57 +635,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [self.HUD hide:YES];
     });
 }
-
-
--(void) almondDataResponse :(NSDictionary*) dictionary {
-//    NSDictionary* almonds = [dictionary valueForKeyPath:@"Almond"];
-//    int almondCount = (int)almonds.count;
-//    NSLog(@"%d is the almond count",almondCount);
-//    
-//    for(NSDictionary *almondDictionary in almonds){
-//        SFIAlmondPlus *currentAlmond = [SFIAlmondPlus new];
-//        
-//        currentAlmond.almondplusMAC = [almondDictionary valueForKey:@"AlmondMAC"];
-//        currentAlmond.almondplusName = [almondDictionary valueForKey:@"AlmondName"];
-//        currentAlmond.firmware = [almondDictionary valueForKey:@"FirmwareVersion"];
-//        if([[dictionary valueForKey:COMMAND_TYPE] isEqualToString:AFFILIATION_DATA] ){
-//            currentAlmond.ownerEmailID = [almondDictionary valueForKey:@"OwnerEmailID"];
-//        }else if([[dictionary valueForKey:COMMAND_TYPE] isEqualToString:ALMOND_LIST_RESPONSE]){
-////            NSMutableArray* accessableEmails = [NSMutableArray new];
-////            NSDictionary* emailDictionary = [currentAlmondDictionary valueForKey:@"EmailID"];
-////            currentAlmond.userCount = (int)emailDictionary.count;
-////            int emailCount = 0;
-////            for( NSDictionary* currentEmailDictionary in emailDictionary ){
-////                NSString* email = [currentEmailDictionary valueForKey:[NSString stringWithFormat:@"%i",emailCount]];
-////                [accessableEmails addObject:email];
-////                emailCount++;
-////            }
-////            currentAlmond.accessEmailIDs = accessableEmails;
-//            if([[almondDictionary valueForKey:@"Ownership"] isEqualToString:@"P"]){
-//                [ownedAlmondList addObject:currentAlmond];
-//            }else{
-//                [sharedAlmondList addObject:currentAlmond];
-//            }
-//        }
-//    }
-//    if([[dictionary valueForKey:COMMAND_TYPE] isEqualToString:ME_AS_SECONDARY_USER_RESPONSE] ){
-//        sharedAlmondList = almondList;
-//    }else{
-//        ownedAlmondList = almondList;
-//    }
-//    if([[dictionary valueForKey:COMMAND_TYPE] isEqualToString:ME_AS_SECONDARY_USER_RESPONSE] ){
-//        GenericCommand *cmd = [[SecurifiToolkit sharedInstance] makeAlmondListCommand];
-//        [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cmd];
-//        
-//        dispatch_async(dispatch_get_main_queue(), ^() {
-//            [self.HUD hide:YES];
-//        });
-//    }else{
-//        NSMutableDictionary* dictionary = [NSMutableDictionary new];
-//        [self sendRequest:(CommandType*)CommandType_ME_AS_SECONDARY_USER_REQUEST withCommandString:ME_AS_SECONDARY_USER_REQUEST withDictionaryData:dictionary withLocalizedStrings:nil];
-//    }
-}
-
 
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cloudCommand];

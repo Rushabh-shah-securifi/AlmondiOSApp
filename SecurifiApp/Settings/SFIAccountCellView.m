@@ -75,6 +75,7 @@ NSArray *fieldNumbersForEachCategory;
     [self.delegate onProfileButtonClicked:sender];
 }
 
+
 -(void) onChangePasswordClicked:(id)sender {
     [self.delegate onChangePasswordButtonClicked:sender];
 }
@@ -276,13 +277,11 @@ NSArray *fieldNumbersForEachCategory;
 
 - (void)updateProfileResponseCallback:(id)sender {
     
-    
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
     NSError* error = nil;
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[data valueForKey:@"data"] options:kNilOptions error:&error];
-    
     
     BOOL success = false;
     NSString *keyToUpdate;
@@ -302,16 +301,15 @@ NSArray *fieldNumbersForEachCategory;
     if(success){
         for(int index = 0; index < [_userProfileData count]; index++){
             NSString* keyValue = ((SFIUserProfile*)_userProfileData[index]).keyValue;
-            
             if([keyValue isEqualToString:keyToUpdate]){
-                ((SFIUserProfile*)_userProfileData[index]).data =   dataToUpdate;
+                ((SFIUserProfile*)_userProfileData[index]).data =  dataToUpdate;
             }
         }
     }else{
         NSLog(@"%@",dictionary);
         [self.delegate showToastonTableViewController:dictionary];
     }
-    
+    NSLog(@"update profile response is called");
 }
 
 

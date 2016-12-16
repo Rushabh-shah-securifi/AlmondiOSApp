@@ -162,7 +162,7 @@
     
     NSString* payload = [CreateJSON getJSONStringFromDictionary: payloadDictionary];
     GenericCommand* cmd = [GenericCommand new];
-    cmd.commandType = CommandType_ACCOUNTS_USER_RELATED;
+    cmd.commandType = CommandType_ACCOUNTS_RELATED;
     cmd.command = payload;
     [[SecurifiToolkit sharedInstance] asyncSendToNetwork:cmd];
 }

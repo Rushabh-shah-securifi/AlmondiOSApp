@@ -75,8 +75,6 @@
     self.clientNotificationArr = [[NSMutableArray alloc]init];
     self.deviceNotificationArr = [[NSMutableArray alloc]init];
     [self navigationBarStyle];
-    
-    //add almond button
     [self initializeAddButtonView];
     [self initializeHUD];
 }
@@ -99,6 +97,7 @@
                selector:@selector(onAlmondNameDidChange:)
                    name:kSFIDidChangeAlmondName
                  object:nil];
+    
     [center addObserver:self
                selector:@selector(onCurrentAlmondChanged:)
                    name:kSFIDidChangeCurrentAlmond
@@ -131,19 +130,18 @@
                    name:kSFINotificationDidMarkViewed
                  object:nil];
     
+    //add almond button
+    
     [self getRecentNotification];
     [NotificationAccessAndRefreshCommands tryRefreshNotifications];
     [self initializeUI];
     _statusIcon.networkStatusIconDelegate = self;
     NSLog(@"View will appear is called in DashBoardViewController");
     [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
-//    self.tableYconstrain1.constant = self.tableYconstrain1.constant+90;
-//    self.tableYconstrain2.constant = self.tableYconstrain2.constant+90;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -182,7 +180,6 @@
     [btnArrow addTarget:self action:@selector(AlmondSelection:) forControlEvents:UIControlEventTouchUpInside];
     [Scroller addSubview:button];
     [Scroller addSubview:btnArrow];
-    
     [self SelectAlmond:NSLocalizedString(@"dashBoard AddAlmond", @"Add Almond")];
 }
 
@@ -203,6 +200,7 @@
 
 #pragma mark Navigation UI
 -(void)navigationBarStyle{
+    
     self.navigationImg = [[UIImageView alloc] initWithImage:[CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]]];
     self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
     self.navigationController.view.backgroundColor = [SFIColors lightOrangeDashColor];
@@ -216,7 +214,6 @@
     [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"away_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
     [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
     
-
     _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES isDashBoard:YES];
     
     _notificationButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(notificationAction:)];
@@ -332,12 +329,12 @@
     NSLog(@"on Current almond changed");
     [self initializeUI];
     [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
-    // getrecentnotification to instantly show onclick
     [self getRecentNotification];
     [NotificationAccessAndRefreshCommands tryRefreshNotifications];
 }
 
 - (void)onAlmondListDidChange:(id)sender {
+    
     [self onCurrentAlmondChanged:nil];
 }
 

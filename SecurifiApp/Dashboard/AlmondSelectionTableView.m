@@ -56,10 +56,11 @@ static const int footerHt = 60;
 }
 
 - (NSArray *)buildAlmondList:(enum SFIAlmondConnectionMode)mode5 {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    
     switch (mode5) {
         case SFIAlmondConnectionMode_cloud: {
             NSArray *cloud = [AlmondManagement almondList];
+            NSLog(@"%lu is the length of dashboardalmondlist",(unsigned long)cloud.count);
             if (!cloud)
                 cloud = @[];
             

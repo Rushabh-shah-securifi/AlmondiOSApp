@@ -53,7 +53,7 @@ NSArray *fieldNumbersForEachCategory;
     }
     
     NSArray *localizesStrings =@[ACCOUNTS_HUD_UPDATINGDETAILS, UPDATING_ACCOUNT_DETAILS];
-    [self.delegate sendRequest:(CommandType*)CommandType_ACCOUNTS_USER_RELATED withCommandString:UPDATE_USERPROFILE_REQUEST withDictionaryData:data withLocalizedStrings:localizesStrings ];
+    [self.delegate sendRequest:(CommandType*)CommandType_ACCOUNTS_RELATED withCommandString:UPDATE_USERPROFILE_REQUEST withDictionaryData:data withLocalizedStrings:localizesStrings ];
 }
 
 
@@ -84,10 +84,13 @@ NSArray *fieldNumbersForEachCategory;
 
 -(void) initWith :(CGRect)frame withUserProfileData: (SFIUserProfile*) userProfile{
     
+    _changedValue = [NSMutableArray new];
+    for(int count=0; count<userProfile.data.count; count++){
+        _changedValue[count] = [userProfile.data objectAtIndex:count];
+    }
     _userProfile = userProfile;
     _userProfileData = ((SFIUserProfile*)userProfile).data;
     _baseYCordinate = 0;
-    _changedValue = [NSMutableArray new];
     _keyvalue = ((SFIUserProfile*)userProfile).keyValue;
     _NSLocalizedStringForUserProfileLabels = @{@0:NSLocalizedString(ACCOUNTS_USERPROFILE_LABEL_PRIMARYEMAIL, PRIMARY_EMAIL),
                                                @1:NSLocalizedString(ACCOUNTS_USERPROFILE_BUTTON_CHANGEPASSWORD, CHANGE_PASSWORD),
