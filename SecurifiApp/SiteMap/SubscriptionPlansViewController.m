@@ -38,7 +38,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.prevCount = 0;
-    self.almondPlan = [AlmondPlan getAlmondPlan];
+    self.almondPlan = [AlmondPlan getAlmondPlan:self.currentMAC];
     self.planDesc.text = @"Please select a plan from the plans listed above.";
     self.newSelectedPlan = PlanTypeNone;
     
@@ -155,9 +155,9 @@
     
     [plans addObject:[self getPlanDict:@"1 Month" midLabel:@"$5" btmLabel:@"PLAN" planType:PlanTypeOneMonth]];
     
-    [plans addObject:[self getPlanDict:@"3 Month" midLabel:@"$12" btmLabel:@"PLAN" planType:PlanTypeThreeMonths]];
+    [plans addObject:[self getPlanDict:@"3 Months" midLabel:@"$12" btmLabel:@"PLAN" planType:PlanTypeThreeMonths]];
     
-    [plans addObject:[self getPlanDict:@"6 Month" midLabel:@"$20" btmLabel:@"PLAN" planType:PlanTypeSixMonths]];
+    [plans addObject:[self getPlanDict:@"6 Months" midLabel:@"$20" btmLabel:@"PLAN" planType:PlanTypeSixMonths]];
     
     return plans;
 }
@@ -260,7 +260,7 @@
     }
     //write a methods, pass it text to make bold and the entire text, it should return you the attributed string.
     NSString *text1 = @"You have selected ";
-    NSString *text2 = [NSString stringWithFormat:@"for Internet Security on %@", [AlmondManagement currentAlmond].almondplusName];
+    NSString *text2 = [NSString stringWithFormat:@"for Internet Security on %@", [AlmondManagement cloudAlmond:self.currentMAC].almondplusName];
     switch (currentBtn.tag) {
         case PlanTypeFree:
             self.planDesc.attributedText = [CommonMethods getAttributedString:text1 subText:@"1 Month Free Trial " text:text2 fontSize:self.planDesc.font.pointSize];
@@ -320,6 +320,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
     SelectedPlanViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SelectedPlanViewController"];
     viewController.selectedPlan = self.newSelectedPlan;
+    viewController.currentMAC = self.currentMAC;
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

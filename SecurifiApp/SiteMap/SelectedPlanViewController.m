@@ -85,6 +85,7 @@ int mii;
             PaymentTypesViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"PaymentTypesViewController"];
             NSLog(@"self.seletedplan %d", self.selectedPlan);
             viewController.selectedPlan = self.selectedPlan;
+            viewController.currentMAC = self.currentMAC;
             [self.navigationController pushViewController:viewController animated:YES];
         });
     }
@@ -96,7 +97,7 @@ int mii;
 #pragma mark commands
 - (void)sendSubscribeMeCommand{
     NSLog(@"sendSubscribeMeCommand");
-    NSString *almondMac = [AlmondManagement currentAlmond].almondplusMAC;
+    NSString *almondMac = _currentMAC;
     NSDictionary *payload;
     if(self.selectedPlan == PlanTypeFree){
         payload = @{
@@ -127,9 +128,9 @@ int mii;
     if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
         return;
     }
-    BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
+    
     NSDictionary *payload;
-    if(local){
+    if([toolkit currentConnectionMode] == SFIAlmondConnectionMode_local){
         payload = [dataInfo valueForKey:@"data"];
     }else{
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
@@ -143,7 +144,7 @@ int mii;
     if(isSuccessful){
         [self showToast:@"Payment Successful!"];
         
-        [AlmondPlan updateAlmondPlan:self.selectedPlan epoch:payload[RENEWAL_EPOCH]];
+        [AlmondPlan updateAlmondPlan:self.selectedPlan epoch:payload[RENEWAL_EPOCH] mac:self.currentMAC];
         [self pushPaymentCompleteController:SubscriptionResponse_Success];
     }else{
         [self showToast:@"Sorry! proceedings failed."];

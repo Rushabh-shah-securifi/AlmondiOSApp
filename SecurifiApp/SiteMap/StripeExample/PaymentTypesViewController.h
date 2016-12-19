@@ -25,5 +25,6 @@ typedef void (^STPTokenSubmissionHandler)(STPBackendChargeResult status, NSError
 
 @interface PaymentTypesViewController : UIViewController<STPBackendCharging>
 @property (nonatomic) PlanType selectedPlan;
+@property (nonatomic) NSString *currentMAC;
 @end
 

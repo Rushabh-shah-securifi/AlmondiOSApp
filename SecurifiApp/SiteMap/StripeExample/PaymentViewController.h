@@ -24,4 +24,5 @@
 @property (nonatomic, weak) id<STPBackendCharging> backendCharger;
 @property (nonatomic, weak) id<PaymentViewControllerDelegate> delegate;
 @property (nonatomic) PlanType selectedPlan;
+@property (nonatomic) NSString *currentMAC;
 @end

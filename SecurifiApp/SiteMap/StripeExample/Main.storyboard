@@ -191,50 +191,82 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IfV-DG-zC3" userLabel="topview">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IfV-DG-zC3" userLabel="topview">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="66"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pGH-Cx-fNa">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pGH-Cx-fNa">
                                         <rect key="frame" x="0.0" y="18" width="69" height="48"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="69" id="TBl-tG-zNU"/>
+                                            <constraint firstAttribute="height" constant="48" id="gnS-Qy-kDd"/>
+                                        </constraints>
                                         <connections>
                                             <action selector="onCrossTap:" destination="S3b-eZ-G5O" eventType="touchUpInside" id="Wmy-53-wmf"/>
                                         </connections>
                                     </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="back_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Llj-sz-JQA">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="back_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Llj-sz-JQA">
                                         <rect key="frame" x="8" y="27" width="25" height="25"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="25" id="X7U-TC-dun"/>
+                                            <constraint firstAttribute="height" constant="25" id="jaR-qW-h9w"/>
+                                        </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="imageRenderingMode">
                                                 <integer key="value" value="2"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fx0-Df-JgZ" userLabel="lineView">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fx0-Df-JgZ" userLabel="lineView">
                                         <rect key="frame" x="0.0" y="65" width="375" height="1"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="qDA-Pn-Ae3"/>
+                                        </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Payment" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1vj-1H-pr9">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Payment" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1vj-1H-pr9">
                                         <rect key="frame" x="77" y="21" width="220" height="37"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="220" id="Q6W-RP-A70"/>
+                                            <constraint firstAttribute="height" constant="37" id="UT2-qU-ENC"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="18"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="Llj-sz-JQA" firstAttribute="top" secondItem="IfV-DG-zC3" secondAttribute="top" constant="27" id="7FB-ne-beM"/>
+                                    <constraint firstItem="Llj-sz-JQA" firstAttribute="leading" secondItem="IfV-DG-zC3" secondAttribute="leading" constant="8" id="GD1-iW-jUQ"/>
+                                    <constraint firstItem="Fx0-Df-JgZ" firstAttribute="leading" secondItem="IfV-DG-zC3" secondAttribute="leading" id="Nke-NP-Wdh"/>
+                                    <constraint firstItem="pGH-Cx-fNa" firstAttribute="top" secondItem="IfV-DG-zC3" secondAttribute="top" constant="18" id="SEt-24-hX5"/>
+                                    <constraint firstItem="1vj-1H-pr9" firstAttribute="centerX" secondItem="IfV-DG-zC3" secondAttribute="centerX" id="U1W-qi-kiX"/>
+                                    <constraint firstAttribute="trailing" secondItem="Fx0-Df-JgZ" secondAttribute="trailing" id="ZmW-a8-Ijl"/>
+                                    <constraint firstAttribute="height" constant="66" id="ber-V7-jZU"/>
+                                    <constraint firstItem="1vj-1H-pr9" firstAttribute="top" secondItem="IfV-DG-zC3" secondAttribute="top" constant="21" id="gIA-hc-VZI"/>
+                                    <constraint firstItem="pGH-Cx-fNa" firstAttribute="leading" secondItem="IfV-DG-zC3" secondAttribute="leading" id="lnu-HB-63z"/>
+                                    <constraint firstItem="Fx0-Df-JgZ" firstAttribute="top" secondItem="1vj-1H-pr9" secondAttribute="bottom" constant="7" id="t0Y-Mk-bTO"/>
+                                </constraints>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b1m-91-bHh">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b1m-91-bHh">
                                 <rect key="frame" x="0.0" y="74" width="375" height="70"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="ThG-j7-s0a"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="IfV-DG-zC3" secondAttribute="trailing" id="97a-Mk-ri8"/>
+                            <constraint firstItem="IfV-DG-zC3" firstAttribute="leading" secondItem="a31-5U-BoA" secondAttribute="leading" id="Egc-09-kMh"/>
+                            <constraint firstAttribute="trailing" secondItem="b1m-91-bHh" secondAttribute="trailing" id="fwe-tX-jdV"/>
+                            <constraint firstItem="IfV-DG-zC3" firstAttribute="top" secondItem="a31-5U-BoA" secondAttribute="top" id="hIw-Aa-ehY"/>
+                            <constraint firstItem="b1m-91-bHh" firstAttribute="leading" secondItem="a31-5U-BoA" secondAttribute="leading" id="kcC-8H-fIh"/>
+                            <constraint firstItem="b1m-91-bHh" firstAttribute="top" secondItem="IfV-DG-zC3" secondAttribute="bottom" constant="8" id="vAW-5m-FgL"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="paymentView" destination="b1m-91-bHh" id="ySo-Bk-EPA"/>

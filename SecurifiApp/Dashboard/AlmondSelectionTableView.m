@@ -64,7 +64,7 @@ static const int footerHt = 60;
                 cloud = @[];
             
             if(!self.needsAddAlmond)
-                cloud = [self getAL3s:cloud];
+                cloud = [AlmondManagement getAL3s:cloud];
             
             return cloud;
         }
@@ -79,14 +79,7 @@ static const int footerHt = 60;
     }
 }
 
-- (NSArray *)getAL3s:(NSArray *)cloud{
-    NSMutableArray *al3Array = [NSMutableArray new];
-    for(SFIAlmondPlus *alm in cloud){
-        if([alm.firmware.lowercaseString hasPrefix:@"al3-"])
-            [al3Array addObject:alm];
-    }
-    return al3Array;
-}
+
 
 #pragma mark tableView delegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

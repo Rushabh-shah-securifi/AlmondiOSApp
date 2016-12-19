@@ -9,4 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface SubscriptionPlansViewController : UIViewController
+@property (nonatomic) NSString *currentMAC;
 @end

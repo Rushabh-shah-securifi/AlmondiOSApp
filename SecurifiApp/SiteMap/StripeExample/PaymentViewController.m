@@ -136,7 +136,7 @@
 #pragma mark subscription payload
 - (void)sendSubscribeMeCommand:(NSString *)tokenID{
     NSLog(@"sendSubscribeMeCommand");
-    NSString *almondMac = [AlmondManagement currentAlmond].almondplusMAC;
+    NSString *almondMac = self.currentMAC;
     
     NSDictionary *payload = @{
                               @"CommandType": @"SubscribeMe",
@@ -158,9 +158,8 @@
     if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
         return;
     }
-    BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
     NSDictionary *payload;
-    if(local){
+    if([toolkit currentConnectionMode]==SFIAlmondConnectionMode_local){
         payload = [dataInfo valueForKey:@"data"];
     }else{
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
@@ -172,7 +171,7 @@
     //[self hideHUDDelegate];
     
     if(isSuccessful){
-        [AlmondPlan updateAlmondPlan:self.selectedPlan epoch:payload[RENEWAL_EPOCH]];
+        [AlmondPlan updateAlmondPlan:self.selectedPlan epoch:payload[RENEWAL_EPOCH] mac:self.currentMAC];
         [self pushPaymentCompleteController:SubscriptionResponse_Success];
     }else{
         [self pushPaymentCompleteController:SubscriptionResponse_Failed];

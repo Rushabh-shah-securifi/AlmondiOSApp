@@ -30,13 +30,16 @@
 @property (nonatomic) NSMutableArray *mySubscriptionsArray;
 @property (nonatomic) UIButton *buttonMaskView;
 @property (nonatomic)AlmondPlan *almondPlan;
+@property (nonatomic) NSString *currentMAC;
 @end
 
 @implementation MySubscriptionsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.almondLabel.text = [AlmondManagement currentAlmond].almondplusName;
+    SFIAlmondPlus *firstAl3 = [[AlmondManagement getAL3s:[AlmondManagement almondList]] objectAtIndex:0];
+    self.currentMAC = firstAl3.almondplusMAC;
+    self.almondLabel.text = [AlmondManagement cloudAlmond:self.currentMAC].almondplusName;
     NSLog(@"almond plan %d", self.almondPlan.planType);
     [self initializeMySubscriptionsArray];
     // Do any additional setup after loading the view.
@@ -48,11 +51,12 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    NSLog(@"subscriptions: %@, almondplan: %@", [SecurifiToolkit sharedInstance].subscription, [AlmondPlan getAlmondPlan]);
+    NSLog(@"subscriptions: %@, almondplan: %@", [SecurifiToolkit sharedInstance].subscription, [AlmondPlan getAlmondPlan:self.currentMAC]);
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [self initializeNotification];
     
-    self.almondPlan = [AlmondPlan getAlmondPlan];
+    self.almondPlan = [AlmondPlan getAlmondPlan:self.currentMAC];
+    NSLog(@"almond plan %@", self.almondPlan);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
@@ -76,6 +80,8 @@
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     
     [center addObserver:self selector:@selector(onSubscribeMeCommandResponse:) name:SUBSCRIBE_ME_NOTIFIER object:nil];
+    
+    [center addObserver:self selector:@selector(onDynamicSubscribeMeResponse:) name:NOTIFICATION_SUBSCRIPTION_PARSED object:nil];
 }
 
 - (void)initializeMySubscriptionsArray{
@@ -92,7 +98,7 @@
 
 #pragma mark ui mehtods
 - (void)makeAlmondSelectionBtn{
-    NSString *currentAlmName = [AlmondManagement currentAlmond].almondplusName;
+    NSString *currentAlmName = [AlmondManagement cloudAlmond:self.currentMAC].almondplusName;
     _almondLabel = [[UILabel alloc]init];
     _imgView = [[UIImageView alloc]init];
     [self setFrames:currentAlmName];
@@ -234,10 +240,11 @@
     [self removeAlmondSelectionView];
     NSLog(@"onAlmondSelectedDelegate i am called");
     [self setFrames:selectedAlmond.almondplusName];
-    _almondLabel.text = selectedAlmond.almondplusName;
-    [AlmondManagement setCurrentAlmond:selectedAlmond];
+    self.currentMAC = selectedAlmond.almondplusMAC;
     
-    self.almondPlan = [AlmondPlan getAlmondPlan];
+    _almondLabel.text = selectedAlmond.almondplusName;
+    //[AlmondManagement setCurrentAlmond:selectedAlmond];
+    self.almondPlan = [AlmondPlan getAlmondPlan:selectedAlmond.almondplusMAC];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
@@ -281,7 +288,7 @@
 
 - (void)onRightBtnTapDelegate:(NSString *)btnTitle{
     if([btnTitle isEqualToString:CANCEL_SUBSCRIPTION]){
-        NSString *msg = [NSString stringWithFormat:@"By cancelling your subscription you will no longer have access to Internet Security on %@.", [AlmondManagement currentAlmond].almondplusName];
+        NSString *msg = [NSString stringWithFormat:@"By cancelling your subscription you will no longer have access to Internet Security on %@.", [AlmondManagement cloudAlmond:self.currentMAC].almondplusName];
         [self showAlert:@"" msg:msg cancel:@"Cancel Subscription" other:@"Nevermind" tag:INTERNET_SECURITY];
     }
     else{
@@ -293,6 +300,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
         SubscriptionPlansViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SubscriptionPlansViewController"];
+        viewController.currentMAC = self.currentMAC;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
         nav.navigationBarHidden = YES;
         [self presentViewController:nav animated:YES completion:nil];
@@ -302,12 +310,11 @@
 #pragma mark payload/command
 - (void)sendDeleteSubscriptionCommand{
     NSLog(@"sendDeleteSubscriptionCommand");
-    NSString *almondMac = [AlmondManagement currentAlmond].almondplusMAC;
+    NSString *almondMac = self.currentMAC;
     NSDictionary *payload;
     payload = @{
                 @"CommandType": @"DeleteSubscription",
-                @"AlmondMAC": almondMac?: @"",
-                @"AlmondName": [AlmondManagement currentAlmond].almondplusName
+                @"AlmondMAC": almondMac?: @""
                 };
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_SUBSCRIBE_ME];
     [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
@@ -321,9 +328,8 @@
     if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
         return;
     }
-    BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
     NSDictionary *payload;
-    if(local){
+    if([toolkit currentConnectionMode]==SFIAlmondConnectionMode_local){
         payload = [dataInfo valueForKey:@"data"];
     }else{
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
@@ -335,10 +341,17 @@
     if(isSuccessful){
         [self showToast:@"Your subscription has been successfully cancelled."];
         //need to check on this if/else
-        [AlmondPlan updateAlmondPlan:PlanTypeFreeExpired epoch:nil];
+        [AlmondPlan updateAlmondPlan:PlanTypeFreeExpired epoch:nil mac:self.currentMAC];
     }else{
         [self showToast:@"Sorry! Unable to cancel subscription. Please try later."];
     }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
+
+- (void)onDynamicSubscribeMeResponse:(id)sender{
+    self.almondPlan = [AlmondPlan getAlmondPlan:self.currentMAC];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });

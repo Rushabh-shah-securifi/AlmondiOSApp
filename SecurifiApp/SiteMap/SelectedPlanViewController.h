@@ -11,4 +11,5 @@
 
 @interface SelectedPlanViewController : UIViewController
 @property (nonatomic)PlanType selectedPlan;
+@property (nonatomic)NSString *currentMAC;
 @end

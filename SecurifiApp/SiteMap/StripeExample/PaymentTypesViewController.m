@@ -196,13 +196,14 @@ typedef void (^STPPaymentAuthorizationStatusCallback)(PKPaymentAuthorizationStat
     paymentViewController.backendCharger = self;
     paymentViewController.delegate = self;
     paymentViewController.selectedPlan = self.selectedPlan;
+    paymentViewController.currentMAC = self.currentMAC;
     [self.navigationController pushViewController:paymentViewController animated:YES];
 }
 
 #pragma mark subscription payload
 - (void)sendSubscribeMeCommand:(NSString *)tokenID{
     NSLog(@"sendSubscribeMeCommand");
-    NSString *almondMac = [AlmondManagement currentAlmond].almondplusMAC;
+    NSString *almondMac = self.currentMAC;
     
     NSDictionary *payload = @{
                         @"CommandType": @"SubscribeMe",
@@ -226,9 +227,8 @@ typedef void (^STPPaymentAuthorizationStatusCallback)(PKPaymentAuthorizationStat
     if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
         return;
     }
-    BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
     NSDictionary *payload;
-    if(local){
+    if([toolkit currentConnectionMode]==SFIAlmondConnectionMode_local){
         payload = [dataInfo valueForKey:@"data"];
     }else{
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
@@ -240,7 +240,7 @@ typedef void (^STPPaymentAuthorizationStatusCallback)(PKPaymentAuthorizationStat
     //[self hideHUDDelegate];
     
     if(isSuccessful){
-        [AlmondPlan updateAlmondPlan:self.selectedPlan epoch:payload[RENEWAL_EPOCH]];
+        [AlmondPlan updateAlmondPlan:self.selectedPlan epoch:payload[RENEWAL_EPOCH] mac:self.currentMAC];
         self.applePaySucceeded = YES;
         self.completionCB(PKPaymentAuthorizationStatusSuccess);
     }else{

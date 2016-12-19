@@ -123,7 +123,7 @@
 -(NSArray *)getFeaturesArray{
     NSMutableArray *moreFeatures = [NSMutableArray new];
     [moreFeatures addObject:@{@"rule_forward_icon":NSLocalizedString(@"rules", @"")}];
-    if(!self.isLocal)
+    if(!self.isLocal && [AlmondManagement hasAtleaseOneAL3])
         [moreFeatures addObject:@{@"subscriptions_icon":NSLocalizedString(@"my_subscriptions", @"")}];
     
     NSString *addAlmondText = self.isLocal? NSLocalizedString(@"add_almond", @""): NSLocalizedString(@"link_almond_account", @"");
@@ -146,9 +146,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(self.isLocal){
-        return section == 0? 3: 1;
+        return section == 0? self.moreFeatures.count: 1;
     }else{
-        return section == 1? 5: 1;
+        return section == 1? self.moreFeatures.count: 1;
     }
 }
 
@@ -346,12 +346,20 @@
 
 //need to bind with enums
 -(void)callControllersOnRowSelection:(NSInteger)row{
-    if(row == 0){//rules
+    NSDictionary *feature = self.moreFeatures[row];
+    NSString *rowVal = feature.allValues.firstObject;
+    
+    if([rowVal isEqualToString:NSLocalizedString(@"rules", @"")]){
         RulesTableViewController *controller = (RulesTableViewController *)[self getStoryBoardController:@"Rules" ctrlID:@"RulesTableViewController"];
         [self setMoreBackButton];
         [self pushViewController:controller];
     }
-    else if(row == 1){//my subscriptions
+    else if([rowVal isEqualToString:NSLocalizedString(@"my_subscriptions", @"")]){
+        MySubscriptionsViewController *ctrl = [self getStoryBoardController:@"SiteMapStoryBoard" ctrlID:@"MySubscriptionsViewController"];
+        [self pushViewController:ctrl];
+        
+    }
+    else if([rowVal isEqualToString:NSLocalizedString(@"add_almond", @"")] || [rowVal isEqualToString:NSLocalizedString(@"link_almond_account", @"")]){
         if(self.isLocal){
             RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
             editor.delegate = self;
@@ -359,30 +367,18 @@
             UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
             [self presentViewCtrl:ctrl];
         }else{
-            MySubscriptionsViewController *ctrl = [self getStoryBoardController:@"SiteMapStoryBoard" ctrlID:@"MySubscriptionsViewController"];
-            [self pushViewController:ctrl];
-        }
-    }
-    else if(row == 2){
-        if(self.isLocal){
-            HelpCenter *helpCenter = (HelpCenter *)[self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"HelpCenter"];
-            [self pushViewController:helpCenter];
-        }else{
             UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
             [self presentViewCtrl:ctrl];
         }
     }
-    
-    else if(row == 3){
+    else if([rowVal isEqualToString:NSLocalizedString(@"almond_sharing", @"")]){
         if(!self.isLocal){
             [self shareAlmondTapped];
         }
     }
-    
-    else if(row == 4){
+    else if([rowVal isEqualToString:NSLocalizedString(@"help_center", @"")]){
         HelpCenter *helpCenter = (HelpCenter *)[self getStoryBoardController:@"HelpScreenStoryboard" ctrlID:@"HelpCenter"];
-        [self.navigationController pushViewController:helpCenter animated:YES];
-        //[self pushViewController:helpCenter];
+        [self pushViewController:helpCenter];
     }
 }
 
