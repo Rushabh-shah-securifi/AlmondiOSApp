@@ -731,7 +731,7 @@ int mii;
         }
         if (!genericRouterCommand.commandSuccess) {
             //todo push this string comparison logic into the generic router command
-            self.isAlmondUnavailable = [genericRouterCommand.responseMessage.lowercaseString hasSuffix:NSLocalizedString(@"router.offline-msg. is offline", @" is offline")]; // almond is offline, homescreen is offline
+            self.isAlmondUnavailable = [genericRouterCommand.responseMessage.lowercaseString hasSuffix:@"offline"]; // almond is offline, homescreen is offline
             //NSLog(@"self.isalmondunavailable: %d", self.isAlmondUnavailable);
             if(genericRouterCommand.commandType == SFIGenericRouterCommandType_UPDATE_FIRMWARE_RESPONSE){
                 [self showToast:NSLocalizedString(@"Router Sorry!, Unable to update.", @" Sorry!, Unable to update.")];

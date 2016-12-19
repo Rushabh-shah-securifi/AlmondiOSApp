@@ -188,14 +188,15 @@ typedef void (^STPPaymentAuthorizationStatusCallback)(PKPaymentAuthorizationStat
 
 #pragma mark - Custom Credit Card Form
 - (IBAction)onCardTap:(id)sender {
-    PaymentViewController *paymentViewController = [[PaymentViewController alloc] initWithNibName:nil bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    PaymentViewController *paymentViewController = [storyboard instantiateViewControllerWithIdentifier:@"PaymentViewController"];
+    
     NSString *amountStr = [NSString stringWithFormat:@"%zd", [AlmondPlan getPlanAmount:self.selectedPlan]];
     paymentViewController.amount = [NSDecimalNumber decimalNumberWithString:amountStr];
     paymentViewController.backendCharger = self;
     paymentViewController.delegate = self;
     paymentViewController.selectedPlan = self.selectedPlan;
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:paymentViewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    [self.navigationController pushViewController:paymentViewController animated:YES];
 }
 
 #pragma mark subscription payload
@@ -232,7 +233,7 @@ typedef void (^STPPaymentAuthorizationStatusCallback)(PKPaymentAuthorizationStat
     }else{
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
     }
-    NSLog(@"meshcontroller mesh payload: %@", payload);
+    NSLog(@"payload: %@", payload);
     
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     NSString *cmdType = payload[COMMAND_TYPE];

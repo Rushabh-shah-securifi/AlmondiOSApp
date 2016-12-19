@@ -19,6 +19,7 @@
 @property (weak, nonatomic) STPPaymentCardTextField *paymentTextField;
 @property (weak, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic) UIButton *payBtn;
+@property (weak, nonatomic) IBOutlet UIView *paymentView;
 @end
 
 @implementation PaymentViewController
@@ -30,17 +31,14 @@
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    
-    // Setup save button
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
-    self.navigationItem.leftBarButtonItem = cancelButton;
+
     
     // Setup payment view
     STPPaymentCardTextField *paymentTextField = [[STPPaymentCardTextField alloc] init];
     paymentTextField.delegate = self;
     paymentTextField.cursorColor = [UIColor purpleColor];
     self.paymentTextField = paymentTextField;
-    [self.view addSubview:paymentTextField];
+    [self.paymentView addSubview:paymentTextField];
     
     //add pay button
     NSString *title = [NSString stringWithFormat:@"Pay $%@", self.amount];
@@ -68,7 +66,7 @@
     
     self.activityIndicator.center = CGPointMake(self.view.center.x, self.view.center.y-50);
     
-    self.payBtn.frame = CGRectMake(0, CGRectGetMaxY(_paymentTextField.frame) + 20, 120, 40);
+    self.payBtn.frame = CGRectMake(0, CGRectGetMaxY(_paymentView.frame) + 10, 120, 40);
     self.payBtn.center = CGPointMake(CGRectGetWidth(self.view.bounds)/2, self.payBtn.center.y);
     self.payBtn.layer.cornerRadius = 20;
 }
@@ -167,7 +165,7 @@
     }else{
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
     }
-    NSLog(@"meshcontroller mesh payload: %@", payload);
+    NSLog(@"subscription payload: %@", payload);
     
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     NSString *cmdType = payload[COMMAND_TYPE];

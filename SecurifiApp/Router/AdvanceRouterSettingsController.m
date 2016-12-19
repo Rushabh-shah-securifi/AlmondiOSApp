@@ -11,15 +11,15 @@
 #import "AdvRouterHelpController.h"
 #import "CommonMethods.h"
 
+#define ADVANCED_SETTINGS @"advance_settings"
 #define ADVANCE_ROUTER @"advance_router"
-#define SUB_ADVANCE_ROUTER @"sub_advance_router"
-#define TITLE @"title"
-#define IS_EXPANDED @"is_expanded"
+
 
 static const int headerHeight = 90;
+static const int footerHeight = 10;
 
 @interface AdvanceRouterSettingsController ()
-@property (nonatomic) NSMutableArray *advRouterFeatuesArray;
+@property (nonatomic) NSMutableArray *sectionsArray;
 @end
 
 @implementation AdvanceRouterSettingsController
@@ -27,24 +27,14 @@ static const int headerHeight = 90;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = NSLocalizedString(@"Advanced_Features", @"");
-    [self initializeAdvRouterFeaturesArray];
-    NSLog(@"router array: %@", self.advRouterFeatuesArray);
+    [self initializeSectionsArray];
+    NSLog(@"router array: %@", self.sectionsArray);
  
     // Do any additional setup after loading the view.
 }
 
-- (void)initializeAdvRouterFeaturesArray{
-    //This was coded for expansion of sections on tap. Now with new changes it is not needed, but anyways I am keeping the code for possible changes in future.
-    NSArray *titles = @[@"Port Forwarding", @"DNS", @"Static IP Settings", @"UPnP"];
-    self.advRouterFeatuesArray = [NSMutableArray new];
-    for(NSString *title in titles){
-        NSMutableDictionary *muDict = [NSMutableDictionary new];
-        [muDict setObject:title forKey:TITLE];
-        [muDict setObject:[NSNumber numberWithBool:NO] forKey:IS_EXPANDED];
-        [self.advRouterFeatuesArray addObject:muDict];
-    }
-}
-                    
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -52,28 +42,50 @@ static const int headerHeight = 90;
 
 #pragma mark tableView delegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.advRouterFeatuesArray.count;
+    return self.sectionsArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSDictionary *routerFeature  = self.advRouterFeatuesArray[section];
-    return [routerFeature[IS_EXPANDED] boolValue]? 3: 1;
+    NSDictionary *sectionDict  = self.sectionsArray[section];
+    return [sectionDict[CELLS] count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return indexPath.row == 0? 50: 45;
+    return 44;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if(section == 0)
-        return headerHeight;
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    NSDictionary *sectionDict  = self.sectionsArray[section];
+    AdvCellType type = [sectionDict[CELL_TYPE] integerValue];
+    if(type == Adv_Help)
+        return footerHeight;
     else
         return 0;
 }
 
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    NSDictionary *sectionDict  = self.sectionsArray[section];
+    AdvCellType type = [sectionDict[CELL_TYPE] integerValue];
+    if(type == Adv_Help)
+        return [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), footerHeight)];
+    else
+        return [[UIView alloc]initWithFrame:CGRectZero];
+    
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    NSDictionary *sectionDict  = self.sectionsArray[section];
+    AdvCellType type = [sectionDict[CELL_TYPE] integerValue];
+    if(type == Adv_Help)
+        return headerHeight;
+    else
+        return 5;
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    if(section == 0){
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, headerHeight)];
+    NSDictionary *sectionDict  = self.sectionsArray[section];
+    AdvCellType type = [sectionDict[CELL_TYPE] integerValue];
+    if(type == Adv_Help){
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 5, self.view.frame.size.width-10, headerHeight)];
         headerView.backgroundColor = [UIColor whiteColor];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, headerHeight-1)];
         [CommonMethods setLableProperties:label text:NSLocalizedString(@"adv_feature_alert", @"") textColor:[UIColor blackColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentCenter];
@@ -82,55 +94,121 @@ static const int headerHeight = 90;
         [CommonMethods addLineSeperator:headerView yPos:headerView.frame.size.height-1];
         return headerView;
     }
-    return [[UIView alloc]initWithFrame:CGRectZero];
+    return [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 5)];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *identifier;
-    if(indexPath.row == 0){
-        identifier = ADVANCE_ROUTER;
-    }else{
-        identifier = SUB_ADVANCE_ROUTER;
-    }
+    NSString *identifier= ADVANCED_SETTINGS;
+
     AdvRouterTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     if (cell == nil) {
         cell = [[AdvRouterTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    NSDictionary *routerFeature  = self.advRouterFeatuesArray[indexPath.section];
-    [cell setFeatureTitle:routerFeature[TITLE]];
+    NSDictionary *sectionDict  = self.sectionsArray[indexPath.section];
+    [cell setUpSection:sectionDict indexPath:indexPath];
     
-    if([routerFeature[IS_EXPANDED] boolValue]){
-        if(indexPath.row == 1)
-            [cell setFeatureSubTitle:NSLocalizedString(@"open", @"")];
-        else
-            [cell setFeatureSubTitle:NSLocalizedString(@"learn_more", @"")];
-    }
     return cell;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    AdvRouterHelpController *ctrl = [AdvRouterHelpController new];
-    ctrl.helpType = indexPath.section;
-    self.navigationController.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:ctrl animated:YES];
-    return;
-    
-    NSMutableDictionary *routerFeature  = self.advRouterFeatuesArray[indexPath.section];
-    if(indexPath.row == 0){
-        NSNumber *isExpandedInvert = [NSNumber numberWithBool:![routerFeature[IS_EXPANDED] boolValue]];
-        NSLog(@"invert: %@, did select router array: %@", isExpandedInvert, self.advRouterFeatuesArray);
-        
-        [routerFeature setObject:isExpandedInvert forKey:IS_EXPANDED];
-        [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }else if(indexPath.row == 1){
-        
-    }else{
+    NSDictionary *sectionDict  = self.sectionsArray[indexPath.section];
+    AdvCellType type = [sectionDict[CELL_TYPE] integerValue];
+    if(type == Adv_Help){
         AdvRouterHelpController *ctrl = [AdvRouterHelpController new];
-        ctrl.helpType = indexPath.section;
+        ctrl.helpType = indexPath.row;
+        self.navigationController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:ctrl animated:YES];
     }
+}
+
+
+#pragma mark Initialization
+- (void)initializeSectionsArray{
+    //example dictionar struct
+    /*
+     [{
+     "CellType":"abcd",
+     "Cells":[
+     {
+     "label":"",
+     "value":""
+     },
+     {
+     "label":"",
+     "value":""
+     }
+     ]
+     },
+     
+     {
+     "CellType":"abcd",
+     "Cells":[
+     {
+     "label":"",
+     "value":""
+     },
+     {
+     "label":"",
+     "value":""
+     }
+     ]
+     }]*/
+    //web interface
+    self.sectionsArray = [NSMutableArray new];
+    
+    NSMutableArray *cellsArray = [NSMutableArray new];
+    [cellsArray addObject:[self getCellDict:@"Local Web Interface" value:@"true"]];
+    [cellsArray addObject:[self getCellDict:@"Login" value:@"admin"]];
+    [cellsArray addObject:[self getCellDict:@"Password" value:@"password"]];
+    [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_LocalWebInterface]];
+    
+    
+    //upnp
+    cellsArray = [NSMutableArray new];
+    [cellsArray addObject:[self getCellDict:@"UPnP" value:@"true"]];
+    [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_UPnP]];
+    
+    //screen lock
+    cellsArray = [NSMutableArray new];
+    [cellsArray addObject:[self getCellDict:@"Almond Screen Lock" value:@"false"]];
+    [cellsArray addObject:[self getCellDict:@"Pin" value:@"1234"]];
+    [cellsArray addObject:[self getCellDict:@"Sleep After" value:@"20"]];
+    [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_AlmondScreenLock]];
+    
+    //diagnostics
+    cellsArray = [NSMutableArray new];
+    [cellsArray addObject:[self getCellDict:@"Diagnostic Settings" value:@""]];
+    [cellsArray addObject:[self getCellDict:@"Ping IP" value:@"10.10.10.10"]];
+    [cellsArray addObject:[self getCellDict:@"Fall Back URL" value:@"www.fallback.com"]];
+    [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_DiagnosticSettings]];
+    
+    //language
+    cellsArray = [NSMutableArray new];
+    [cellsArray addObject:[self getCellDict:@"Language" value:@"English"]];
+    [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_Language]];
+    
+    //help sections
+    cellsArray = [NSMutableArray new];
+    [cellsArray addObject:[self getCellDict:@"Port Forwarding" value:@""]];
+    [cellsArray addObject:[self getCellDict:@"DNS" value:@""]];
+    [cellsArray addObject:[self getCellDict: @"Static IP Settings" value:@""]];
+    [cellsArray addObject:[self getCellDict: @"UPnP" value:@""]];
+    [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_Help]];
     
 }
 
+- (NSDictionary *)getCellDict:(NSString *)label value:(NSString *)value{
+    NSMutableDictionary *muDict = [NSMutableDictionary new];
+    [muDict setObject:label forKey:LABEL];
+    [muDict setObject:value forKey:VALUE];
+    return muDict;
+}
+
+- (NSDictionary *)getAdvFeatures:(NSArray *)cells cellType:(AdvCellType)cellType{
+    NSMutableDictionary *muDict = [NSMutableDictionary new];
+    [muDict setObject:cells forKey:CELLS];
+    [muDict setObject:[NSNumber numberWithInt:cellType] forKey:CELL_TYPE];
+    return muDict;
+}
 
 @end

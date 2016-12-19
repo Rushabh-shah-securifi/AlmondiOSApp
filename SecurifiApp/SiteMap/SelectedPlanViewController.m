@@ -103,16 +103,14 @@ int mii;
                     @"CommandType": @"SubscribeMe",
                     @"PlanID": @"Free",
                     @"Time": @"30(days)",
-                    @"AlmondMAC": almondMac?: @"",
-                    @"AlmondName": [AlmondManagement currentAlmond].almondplusName
+                    @"AlmondMAC": almondMac?: @""
                     };
     }
     else{
         payload = @{
                     @"CommandType": @"SubscribeMe",
                     @"PlanID": [AlmondPlan getPlanID:self.selectedPlan],
-                    @"AlmondMAC": almondMac?: @"",
-                    @"AlmondName": [AlmondManagement currentAlmond].almondplusName
+                    @"AlmondMAC": almondMac?: @""
                     };
     }
     
@@ -136,7 +134,7 @@ int mii;
     }else{
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
     }
-    NSLog(@"meshcontroller mesh payload: %@", payload);
+    NSLog(@"subscribe me payload: %@", payload);
     
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     NSString *cmdType = payload[COMMAND_TYPE];

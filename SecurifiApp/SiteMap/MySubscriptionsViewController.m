@@ -37,7 +37,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.almondLabel.text = [AlmondManagement currentAlmond].almondplusName;
-    self.almondPlan = [AlmondPlan getAlmondPlan];
     NSLog(@"almond plan %d", self.almondPlan.planType);
     [self initializeMySubscriptionsArray];
     // Do any additional setup after loading the view.
@@ -49,8 +48,11 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    NSLog(@"subscriptions: %@, almondplan: %@", [SecurifiToolkit sharedInstance].subscription, [AlmondPlan getAlmondPlan]);
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [self initializeNotification];
+    
+    self.almondPlan = [AlmondPlan getAlmondPlan];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
@@ -326,7 +328,7 @@
     }else{
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
     }
-    NSLog(@"meshcontroller mesh payload: %@", payload);
+    NSLog(@"onsubscribe me payload: %@", payload);
     
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     NSString *cmdType = payload[COMMAND_TYPE];
