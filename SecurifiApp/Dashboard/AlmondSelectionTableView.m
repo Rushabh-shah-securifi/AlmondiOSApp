@@ -194,7 +194,7 @@ static const int footerHt = 60;
 
 #pragma mark helper methods
 -(BOOL)isCurrentAlmond:(NSString *)mac{
-    return [[AlmondManagement currentAlmond].almondplusMAC isEqualToString:mac];
+    return [self.currentMAC isEqualToString:mac];
 }
 
 -(BOOL)hasNoAlmond{
