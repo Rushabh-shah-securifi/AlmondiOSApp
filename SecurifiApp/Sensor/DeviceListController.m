@@ -706,8 +706,20 @@ int mii;
 }
 -(void)onIoTControllClickedDelegate:(GenericParams *)genericParams{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainDashboard" bundle:nil];
-    IoTDeviceViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
-//    viewController.genericParams = genericParams;
-    [self.navigationController pushViewController:viewController animated:YES];
+    IoTDeviceViewController *newWindow = [storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
+    NSString *deviceID = @(genericParams.headerGenericIndexValue. deviceID).stringValue;
+    NSString *mac ;
+    for(Client *client in self.toolkit.clients){
+        if([deviceID isEqualToString:client.deviceID]){
+            mac = client.deviceMAC;
+        }
+    }
+    NSDictionary *iotDevice = @{@"MAC" :mac};
+    newWindow.iotDevice = iotDevice;
+    newWindow.hideTable = YES;
+    newWindow.hideMiddleView = NO;
+    
+    NSLog(@"IoTDevicesListViewController IF");
+    [self.navigationController pushViewController:newWindow animated:YES];
 }
 @end

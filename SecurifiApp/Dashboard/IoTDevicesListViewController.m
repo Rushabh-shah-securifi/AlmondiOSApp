@@ -231,6 +231,8 @@
     
     IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
     newWindow.iotDevice = iotDevice;
+     newWindow.hideTable = NO;
+    newWindow.hideMiddleView = YES;
     
     NSLog(@"IoTDevicesListViewController IF");
     [self.navigationController pushViewController:newWindow animated:YES];

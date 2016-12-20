@@ -354,9 +354,6 @@
                                                             <constraint firstAttribute="height" constant="40" id="yqz-sk-5Qn"/>
                                                         </constraints>
                                                         <state key="normal" title="Button"/>
-                                                        <connections>
-                                                            <action selector="launchIOtDevicelit:" destination="R9I-V5-k50" eventType="touchUpInside" id="NgL-Gw-CY7"/>
-                                                        </connections>
                                                     </button>
                                                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_security_gray" translatesAutoresizingMaskIntoConstraints="NO" id="TBN-Du-NzM">
                                                         <rect key="frame" x="39" y="8" width="42" height="42"/>
@@ -508,6 +505,8 @@
                         <outlet property="dashboardTable" destination="BSm-N8-ckF" id="RSA-sM-ADk"/>
                         <outlet property="imageIOTSecurity" destination="Ip6-FM-eOk" id="pw3-Ns-2nW"/>
                         <outlet property="inactiveNetworkDevices" destination="van-2Y-GZf" id="uXr-fX-FWf"/>
+                        <outlet property="iotSecurityButton" destination="1LJ-z9-9T9" id="Jl7-Ll-7Ua"/>
+                        <outlet property="iotSecurityImg" destination="TBN-Du-NzM" id="yyu-0P-gao"/>
                         <outlet property="labelAlmondStatus" destination="GMh-sX-mwO" id="Cid-wx-wFz"/>
                         <outlet property="labelHome" destination="wmQ-Wm-9ba" id="ccZ-5Q-uU9"/>
                         <outlet property="labelHomeAway" destination="wMA-qN-Fdi" id="AJN-uG-nwY"/>
@@ -732,7 +731,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="VIEW MY SUBSCRIPTIONS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89a-gS-5OO">
-                                        <rect key="frame" x="124" y="60" width="133.5" height="21"/>
+                                        <rect key="frame" x="124" y="60" width="134" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="4sf-yM-BUe"/>
                                             <constraint firstAttribute="width" constant="133.5" id="mgu-TG-gXE"/>
@@ -916,7 +915,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="VIEW MY SUBSCRIPTIONS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KUe-zg-fIL">
-                                        <rect key="frame" x="134.5" y="60" width="121" height="21"/>
+                                        <rect key="frame" x="135" y="60" width="121" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="121" id="P6g-nG-ifz"/>
                                             <constraint firstAttribute="height" constant="21" id="W2J-Cy-jkB"/>
@@ -964,7 +963,7 @@
                                         <rect key="frame" x="55" y="0.0" width="312" height="45"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <action selector="viewActivityClicked:" destination="Hx6-sF-eKd" eventType="touchUpInside" id="p69-n6-MdV"/>
+                                            <action selector="viewHistoryButtonClicked:" destination="Hx6-sF-eKd" eventType="touchUpInside" id="Obf-ff-LxA"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Viiew Activity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ng-Xh-Y6B">

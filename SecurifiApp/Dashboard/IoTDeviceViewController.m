@@ -36,7 +36,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.middleView.hidden = YES;
+    self.middleView.hidden = _hideMiddleView;
+    self.tableView.hidden = _hideTable;
+    self.learnMore.hidden = _hideTable;
     self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
     self.client = [Client getClientByMAC:self.iotDevice[@"MAC"]];
     NSString *TypeImg = [self.client iconName];
@@ -158,14 +160,7 @@
 - (IBAction)backButtonClicked:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
-- (IBAction)viewActivityClicked:(id)sender {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
-    BrowsingHistoryViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
-    viewController.is_IotType = YES;
-    
-//    viewController.client = self.client;
-    [self.navigationController pushViewController:viewController animated:YES];
-}
+
 -(NSString *)setExplanationText:(NSString *)type{
     if([type isEqualToString:@"1"])
         return @"Your device  has an open telnet (port:80) and uses a weak username and password. Telnet enabled devices are highly vulnerable to Mirai Botnet attacks. We suggest you block this device or create a strong username and password if you can access the telnet. Contact your device vendor for more assistance.Learn More ";
@@ -343,6 +338,15 @@
     payload = [dataInfo[@"data"] objectFromJSONData];
    
     NSLog(@"onCommandResponse %@",payload);
+}
+- (IBAction)viewHistoryButtonClicked:(id)sender {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+    BrowsingHistoryViewController *newWindow = [storyboard   instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
+    newWindow.is_IotType = YES;
+    NSLog(@"instantiateViewControllerWithIdentifier IF");
+    newWindow.client = self.client;
+    [self.navigationController pushViewController:newWindow animated:YES];
+    
 }
 
 @end

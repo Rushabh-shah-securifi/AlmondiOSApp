@@ -59,6 +59,10 @@
 @property(nonatomic) UIButton *buttonMaskView;
 @property(nonatomic) NetworkStatusIcon *statusIcon;
 @property (weak, nonatomic) IBOutlet UILabel *vulnableDevices;
+@property (weak, nonatomic) IBOutlet UIButton *iotSecurityButton;
+@property (weak, nonatomic) IBOutlet UIImageView *iotSecurityImg;
+@property CGFloat constatnt1;
+@property CGFloat constatnt2;
 
 @end
 
@@ -66,6 +70,9 @@
 @implementation DashboardViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.constatnt1 =self.tableYconstrain1.constant;
+    
+    self.constatnt2 =self.tableYconstrain2.constant;
     
     _statusIcon = [NetworkStatusIcon new];
     self.toolkit = [SecurifiToolkit sharedInstance];
@@ -81,11 +88,7 @@
     //add almond button
     [self initializeAddButtonView];
     [self initializeHUD];
-    if(self.toolkit.config.isPaymentDone){
-        self.tableYconstrain1.constant = self.tableYconstrain1.constant+90;
-        self.tableYconstrain2.constant = self.tableYconstrain2.constant+90;
-        self.vulnableDevices.text = @"VULNERABLE DEVICES";
-    }
+   
     
     CGSize scrollableSize = CGSizeMake(Scroller.frame.size.width,Scroller.frame.size.height+ 130);
     [Scroller setContentSize:scrollableSize];
@@ -94,6 +97,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     [self navigationBarStyle];
+    [self iotUIUpdate];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
                selector:@selector(onAlmondModeDidChange:)
@@ -161,6 +165,42 @@
     [self updateMode:self.toolkit.mode_src];
     [self updateDeviceClientListCountAndCurrentAlmond];
     [self tryShowLoadingData];
+}
+-(void)iotUIUpdate{
+    SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
+    
+    if(self.toolkit.config.isPaymentDone && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware]){
+        self.tableYconstrain1.constant = self.constatnt1+90;
+        self.tableYconstrain2.constant = self.constatnt2+90;
+        self.vulnableDevices.text = @"VULNERABLE DEVICES";
+        [self.iotSecurityButton removeTarget:nil
+                                      action:NULL
+                            forControlEvents:UIControlEventTouchUpInside];
+        [self.iotSecurityButton addTarget:self action:@selector(launchIOtDevicelit:) forControlEvents:UIControlEventTouchUpInside];
+       
+        
+    }
+    else if(!self.toolkit.config.isPaymentDone && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware]){
+        // call my scbscription
+        //change icon name
+        self.vulnableDevices.text = @"View MY Subscription";
+        self.tableYconstrain1.constant = self.constatnt1-90;
+        self.tableYconstrain2.constant = self.constatnt2-90;
+        [self.iotSecurityButton removeTarget:nil
+                                      action:NULL
+                            forControlEvents:UIControlEventTouchUpInside];
+        [self.iotSecurityButton addTarget:self action:@selector(launchIOtDevicelit:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    else if(![currentAlmond siteMapSupportFirmware:currentAlmond.firmware]){
+        // call my scbscription
+        self.activeNetworkDevices.hidden = NO;
+        self.vulnableDevices.text = @"INACTIVE CLIENTS";
+        self.tableYconstrain1.constant = self.constatnt1-90;
+        self.tableYconstrain2.constant = self.constatnt2-90;
+        self.iotSecurityImg.hidden = YES;
+        self.iotSecurityButton.hidden = YES;
+    }
+    
 }
 
 -(void)tryShowLoadingData{
@@ -911,6 +951,7 @@
     [self removeAlmondSelectionView];
     NSLog(@"i am called");
     [AlmondManagement setCurrentAlmond:selectedAlmond];
+    [self iotUIUpdate];
 }
 
 -(void)removeAlmondSelectionView{
@@ -966,7 +1007,7 @@
     
     [self.maskView addSubview:self.helpScreensObj];
 }
-- (IBAction)launchIOtDevicelit:(id)sender {
+- (void)launchIOtDevicelit:(id)sender {
     IoTDevicesListViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDevicesListViewController"];
     NSLog(@"IoTDevicesListViewController IF");
     [self.navigationController pushViewController:newWindow animated:YES];
