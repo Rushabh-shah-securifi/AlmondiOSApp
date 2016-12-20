@@ -107,6 +107,7 @@
 }
 -(void)setAllowAndBlock{
     NSLog(@"client.deviceAllowedType %d",self.client.deviceAllowedType);
+    dispatch_async(dispatch_get_main_queue(), ^() {
     if(self.client.deviceAllowedType == 0){
         self.blockLabel.text = @"Blocked";
         
@@ -120,6 +121,7 @@
         self.topView.backgroundColor = [self getColor:self.iotDevice];
         self.blockButton.backgroundColor = [UIColor lightGrayColor];
     }
+    });
 
 }
 -(void)getDescriptionLables:(NSDictionary*)returnDict{
@@ -232,17 +234,15 @@
 }
 - (IBAction)blockClientRequest:(id)sender {
      mii = arc4random()%10000;
-    Client *client = [self.client copy];
-    NSString *newValue;
     if(self.client.deviceAllowedType == 0){
-        newValue = @"ffffff,ffffff,ffffff,ffffff,ffffff,ffffff,ffffff";
+        self.client.deviceAllowedType = 1;
         
     }
     else {
-        newValue = @"000000,000000,000000,000000,000000,00000,00000";
+        self.client.deviceAllowedType = 0;
     }
-    [Client getOrSetValueForClient:client genericIndex:-19 newValue:newValue ifGet:NO];
-    [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
+    
+    [ClientPayload getUpdateClientPayloadForClient:self.client mobileInternalIndex:mii];
 }
 
 
@@ -291,19 +291,17 @@
                 if([clientID isEqualToString:client.deviceID]){
                     // need to work on Block property
                     NSString *newValue ;
-                    if([clientDict[BLOCK] isEqualToString:@"1"])
-                        newValue = @"ffffff,ffffff,ffffff,ffffff,ffffff,ffffff,ffffff";
-                    else
-                         newValue = @"000000,000000,000000,000000,000000,00000,00000";
-                    [Client getOrSetValueForClient:client genericIndex:-19 newValue:newValue ifGet:NO];
-                                             
-                    if([clientDict[BLOCK] isEqualToString:@"1"])
+                    if([clientDict[BLOCK] isEqualToString:@"1"]){
+                        client.deviceAllowedType = 1;
                         self.client.deviceAllowedType = 1;
-                    else
-                        newValue = self.client.deviceAllowedType = 0;
-                                             [self setAllowAndBlock];
-                      
-                                             
+                    }
+                    else{
+                         client.deviceAllowedType = 0;
+                    self.client.deviceAllowedType = 0;
+                    }
+                    
+                    [self setAllowAndBlock];
+                    
                 }
                 
                 
