@@ -129,9 +129,7 @@
                                           }];
 }
 
-- (void)cancel:(id)sender {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-}
+
 
 #pragma mark subscription payload
 - (void)sendSubscribeMeCommand:(NSString *)tokenID{
@@ -190,4 +188,12 @@
         [self.navigationController pushViewController:viewController animated:YES];
     });
 }
+#pragma mark action
+- (IBAction)onBackBtnTap:(id)sender
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.navigationController popViewControllerAnimated:YES];
+        });
+}
+
 @end

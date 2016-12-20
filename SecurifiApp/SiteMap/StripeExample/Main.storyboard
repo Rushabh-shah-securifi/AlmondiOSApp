@@ -32,15 +32,21 @@
                                             <constraint firstAttribute="height" constant="48" id="cTl-jX-KFJ"/>
                                         </constraints>
                                         <connections>
-                                            <action selector="onCrossTap:" destination="S3b-eZ-G5O" eventType="touchUpInside" id="Trg-P9-bv9"/>
+                                            <action selector="onBackBtnTap:" destination="S3b-eZ-G5O" eventType="touchUpInside" id="4en-os-buo"/>
                                         </connections>
                                     </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_cross_gray" translatesAutoresizingMaskIntoConstraints="NO" id="QjW-fn-xfP">
-                                        <rect key="frame" x="10" y="33" width="17" height="17"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="back_icon" translatesAutoresizingMaskIntoConstraints="NO" id="3st-xZ-X1M">
+                                        <rect key="frame" x="10" y="28" width="25" height="25"/>
+                                        <color key="tintColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="17" id="3Oj-hm-3Xj"/>
-                                            <constraint firstAttribute="width" constant="17" id="cv4-yR-tOF"/>
+                                            <constraint firstAttribute="width" constant="25" id="Cqw-Xo-zSA"/>
+                                            <constraint firstAttribute="height" constant="25" id="o63-bH-eVh"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="imageRenderingMode">
+                                                <integer key="value" value="2"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gWU-fY-Et3" userLabel="lineView">
                                         <rect key="frame" x="0.0" y="65" width="375" height="1"/>
@@ -60,12 +66,12 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="3st-xZ-X1M" firstAttribute="top" secondItem="sdq-19-cat" secondAttribute="top" constant="28" id="3lz-iy-vaN"/>
                                     <constraint firstItem="PzF-Oa-iaZ" firstAttribute="leading" secondItem="sgj-KV-ZWt" secondAttribute="trailing" constant="8" id="Aff-af-fhu"/>
                                     <constraint firstAttribute="height" constant="66" id="Dzi-D9-pBN"/>
                                     <constraint firstAttribute="trailing" secondItem="PzF-Oa-iaZ" secondAttribute="trailing" constant="78" id="IpV-nR-Cpu"/>
                                     <constraint firstItem="sgj-KV-ZWt" firstAttribute="top" secondItem="sdq-19-cat" secondAttribute="top" constant="18" id="MqX-cE-6lT"/>
-                                    <constraint firstItem="QjW-fn-xfP" firstAttribute="leading" secondItem="sdq-19-cat" secondAttribute="leading" constant="10" id="dSe-5C-jLt"/>
-                                    <constraint firstItem="QjW-fn-xfP" firstAttribute="top" secondItem="sdq-19-cat" secondAttribute="top" constant="33" id="ik2-Au-UZN"/>
+                                    <constraint firstItem="3st-xZ-X1M" firstAttribute="leading" secondItem="sdq-19-cat" secondAttribute="leading" constant="10" id="fXY-9q-mkE"/>
                                     <constraint firstItem="PzF-Oa-iaZ" firstAttribute="top" secondItem="sdq-19-cat" secondAttribute="top" constant="21" id="n8R-NB-tQW"/>
                                     <constraint firstItem="sgj-KV-ZWt" firstAttribute="leading" secondItem="sdq-19-cat" secondAttribute="leading" id="yD5-hE-cxJ"/>
                                 </constraints>
@@ -201,7 +207,7 @@
                                             <constraint firstAttribute="height" constant="48" id="gnS-Qy-kDd"/>
                                         </constraints>
                                         <connections>
-                                            <action selector="onCrossTap:" destination="S3b-eZ-G5O" eventType="touchUpInside" id="Wmy-53-wmf"/>
+                                            <action selector="onBackBtnTap:" destination="H8n-yA-S4r" eventType="touchUpInside" id="dh8-QC-X4M"/>
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="back_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Llj-sz-JQA">
@@ -371,7 +377,6 @@
     </scenes>
     <resources>
         <image name="back_icon" width="64" height="64"/>
-        <image name="icon_cross_gray" width="30" height="30"/>
         <image name="llamas" width="640" height="426"/>
         <image name="stp_card_applepay" width="52" height="36"/>
         <image name="stp_card_placeholder" width="96" height="60"/>
