@@ -115,9 +115,12 @@ int mii;
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 300;
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath; {
+    if(indexPath.row == 1)
+        return 340;
     return 300;
 }
 
@@ -134,6 +137,8 @@ int mii;
     SFIWirelessSetting *setting = [self tryGetWirelessSettingsForTableRow:indexPath.row];
 
     cell.cardView.backgroundColor = setting.enabled ? [[SFIColors blueColor] color] : [UIColor lightGrayColor];
+    cell.cardView.backgroundColor = [UIColor lightGrayColor];
+    NSLog(@"setting type = %@",setting.type);
     cell.wirelessSetting = setting;
     cell.hasSlaves = self.hasSlaves;
     cell.mode = self.mode;

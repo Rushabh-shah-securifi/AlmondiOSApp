@@ -146,7 +146,7 @@
             
             self.switchView3.on = NO;
             self.switchView3.hidden = YES;
-            self.switchView1.hidden = YES;
+            self.clrHis.hidden = YES;
             self.blockClientTxt.hidden = NO;
             self.view3.hidden = YES;
             self.blockClientTxt.text = @"Web history and Data usage are disabled for blocked devices. You can still see records from when the device was last active.";
@@ -454,7 +454,7 @@
         //        if (!controller)
         //        {
         BrowsingHistoryViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
-        newWindow.is_IotType = YES;
+        newWindow.is_IotType = NO;
         NSLog(@"instantiateViewControllerWithIdentifier IF");
         newWindow.client = self.client;
         [self.navigationController pushViewController:newWindow animated:YES];

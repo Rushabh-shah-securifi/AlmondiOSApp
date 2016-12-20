@@ -460,7 +460,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         return;
     NSInteger changedHourTag = dict[@"ChangeHour"]!=NULL?[dict[@"ChangeHour"] integerValue]:0;
     if(changedHourTag == 1)
-        [self createRequest:@"lastHour" value:self.value];
+        [self createRequest:@"LastHour" value:self.value];
     
     NSMutableDictionary *clientBrowsingHistory = [[NSMutableDictionary alloc]init];
     
@@ -585,7 +585,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         [self.recentSearchDictObj setObject:self.recentSearchDict forKey:[NSString stringWithFormat:@"%@%@",self.amac,self.cmac]];
     NSLog(@"self.recentSearchDictObj insert %@",self.recentSearchDictObj);
     [[NSUserDefaults standardUserDefaults] setObject:self.recentSearchDictObj forKey:@"recentSearch"];
-    //    [self addSuggestionSearchObj];
+        [self addSuggestionSearchObj];
     
 }
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController{

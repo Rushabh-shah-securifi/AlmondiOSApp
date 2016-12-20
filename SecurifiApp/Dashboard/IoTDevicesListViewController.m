@@ -11,6 +11,7 @@
 #import "CommonMethods.h"
 #import "SFIColors.h"
 #import "Client.h"
+#import "UIFont+Securifi.h"
 
 @interface IoTDevicesListViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *ioTdevicetable;
@@ -30,47 +31,47 @@
                                 @"ScanTime": @"1481196280",
                                 @"ExcludedDevices":@[@"14:30:c6:46:b7:15", @"d4:0b:1a:3a:ed:74"],
                                 @"Devices": @[@{
-                                    @"Ports": @[],
-                                    @"MAC": @"a0:86:c6:4d:96:59",
-                                    @"Telnet": @"0",
-                                    @"Http": @"0",
-                                    @"ForwardRules": @[@{
-                                        @"IP": @"10.10.1.100",
-                                        @"Ports": @"12112:50000",
-                                        @"Protocol": @"udp",
-                                        @"Target": @"DNAT"
-                                    }],
-                                    @"UpnpRules": @[@{
-                                        @"IP": @"10.10.1.100",
-                                        @"Ports": @"61555",
-                                        @"Protocol": @"udp",
-                                        @"Target": @"DNAT"
-                                    }]
-                                }, @{
-                                    @"Ports": @[],
-                                    @"MAC": @"1c:87:2c:9d:21:65",
-                                    @"Telnet": @"0",
-                                    @"Http": @"0",
-                                    @"ForwardRules": @[@{
-                                        @"IP": @"10.10.1.101",
-                                        @"Ports": @"2222",
-                                        @"Protocol": @"tcp",
-                                        @"Target": @"DNAT"
-                                    }, @{
-                                        @"IP": @"10.10.1.101",
-                                        @"Ports": @"2222",
-                                        @"Protocol": @"udp",
-                                        @"Target": @"DNAT"
-                                    }],
-                                    @"UpnpRules": @[]
-                                }, @{
-                                    @"Ports": @[@80, @111, @45187],
-                                    @"MAC": @"ac:ee:9e:90:f3:37",
-                                    @"Telnet": @"1",
-                                    @"Http": @"0",
-                                    @"ForwardRules": @[],
-                                    @" ": @[]
-                                }]
+                                                  @"Ports": @[],
+                                                  @"MAC": @"a0:86:c6:4d:96:59",
+                                                  @"Telnet": @"0",
+                                                  @"Http": @"0",
+                                                  @"ForwardRules": @[@{
+                                                                         @"IP": @"10.10.1.100",
+                                                                         @"Ports": @"12112:50000",
+                                                                         @"Protocol": @"udp",
+                                                                         @"Target": @"DNAT"
+                                                                         }],
+                                                  @"UpnpRules": @[@{
+                                                                      @"IP": @"10.10.1.100",
+                                                                      @"Ports": @"61555",
+                                                                      @"Protocol": @"udp",
+                                                                      @"Target": @"DNAT"
+                                                                      }]
+                                                  }, @{
+                                                  @"Ports": @[],
+                                                  @"MAC": @"1c:87:2c:9d:21:65",
+                                                  @"Telnet": @"0",
+                                                  @"Http": @"0",
+                                                  @"ForwardRules": @[@{
+                                                                         @"IP": @"10.10.1.101",
+                                                                         @"Ports": @"2222",
+                                                                         @"Protocol": @"tcp",
+                                                                         @"Target": @"DNAT"
+                                                                         }, @{
+                                                                         @"IP": @"10.10.1.101",
+                                                                         @"Ports": @"2222",
+                                                                         @"Protocol": @"udp",
+                                                                         @"Target": @"DNAT"
+                                                                         }],
+                                                  @"UpnpRules": @[]
+                                                  }, @{
+                                                  @"Ports": @[@80, @111, @45187],
+                                                  @"MAC": @"ac:ee:9e:90:f3:37",
+                                                  @"Telnet": @"1",
+                                                  @"Http": @"0",
+                                                  @"ForwardRules": @[],
+                                                  @" ": @[]
+                                                  }]
                                 };
     for (NSDictionary *dict in response[@"Devices"]) {
         NSDictionary *iotDeviceObj = [self iotDeviceObj:dict];
@@ -78,7 +79,7 @@
     }
     self.excludedDevices = response[@"ExcludedDevices"];
     
- 
+    
 }
 -(NSDictionary *)iotDeviceObj:(NSDictionary *)deviceDict{
     NSArray *ports = deviceDict[@"Ports"];
@@ -91,16 +92,16 @@
                                  @"Ports":@{@"P":ports.count?@"0":@"1",
                                             @"Tag":@"2"},
                                  @"Http":@{@"P":[Http isEqualToString:@"0"]?@"0":@"1",
-                                            @"Tag":@"3"},
-                                 @"ForwardRules":@{@"P":ports.count?@"0":@"1",
-                                            @"Tag":@"4"},
+                                           @"Tag":@"3"},
+                                 @"ForwardRules":@{@"P":ForwardRules.count?@"0":@"1",
+                                                   @"Tag":@"4"},
                                  @"UpnpRules":@{@"P":UpnpRules.count?@"0":@"1",
                                                 @"Tag":@"5"},
                                  @"MAC":deviceDict[@"MAC"]
                                  };
-   
-   
-      return  returnDict;
+    
+    
+    return  returnDict;
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -118,14 +119,14 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 #pragma mark tableviewDelegate
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -134,7 +135,11 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(section == 0)
+    {   if(self.scannedDeviceList.count == 0)
+        return 1;
+        
         return self.scannedDeviceList.count;
+    }
     else
         return self.excludedDevices.count;
 }
@@ -146,14 +151,18 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
     }
     if(indexPath.section == 0){
-    NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
-    cell.textLabel.numberOfLines = 2;
-    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[self getClientName:iotDevice[@"MAC"]],[self getIsVulnableText:iotDevice]];
-    NSString *iconName = [self getIcon:iotDevice[@"MAC"]];
-    
-    cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[SFIColors ruleBlueColor]];
-    cell.detailTextLabel.text = [self getLabelText:iotDevice];
+        if(self.scannedDeviceList.count == 0){
+            cell = [self everyThingsFineLabel:cell];
+            return cell;
+        }
+        NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
+        cell.textLabel.numberOfLines = 2;
+        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[self getClientName:iotDevice[@"MAC"]],[self getIsVulnableText:iotDevice]];
+        NSString *iconName = [self getIcon:iotDevice[@"MAC"]];
+        UIColor *color = [self getColor:iotDevice];
+        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:color];
+        cell.detailTextLabel.text = [self getLabelText:iotDevice];
     }
     else{
         NSString *iotDeviceMAC = [self.excludedDevices objectAtIndex:indexPath.row];
@@ -162,15 +171,15 @@
         cell.textLabel.text = [NSString stringWithFormat:@"%@",[self getClientName:iotDeviceMAC]];
         NSString *iconName = [self getIcon:iotDeviceMAC];
         
-        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[SFIColors ruleBlueColor]];
-       // cell.detailTextLabel.text = [self getLabelText:iotDevice];
-        }
-        
+        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[SFIColors ruleGraycolor]];
+        // cell.detailTextLabel.text = [self getLabelText:iotDevice];
+    }
+    
     cell.textLabel.numberOfLines = 2;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    cell.textLabel.font = [UIFont systemFontOfSize:12];
+    cell.textLabel.font = [UIFont securifiFont:14];
     cell.detailTextLabel.textColor = [SFIColors ruleGraycolor];
-    cell.detailTextLabel.font = [UIFont systemFontOfSize:10];
+    cell.detailTextLabel.font = [UIFont securifiFont:12];
     CGSize itemSize = CGSizeMake(30,30);
     UIGraphicsBeginImageContext(itemSize);
     CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
@@ -178,17 +187,17 @@
     
     cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 25;
+    return 30;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     NSLog(@"view for header: %ld", (long)section);
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 25)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, tableView.frame.size.width, 18)];
     [label setFont:[UIFont boldSystemFontOfSize:14]];
@@ -215,7 +224,10 @@
     return view;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-     NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
+    
+    if(self.scannedDeviceList.count == 0)
+        return;
+    NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
     
     IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
     newWindow.iotDevice = iotDevice;
@@ -224,20 +236,11 @@
     [self.navigationController pushViewController:newWindow animated:YES];
 }
 - (IBAction)backButtonClicked:(id)sender {
-  [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 -(NSString *)getLabelText:(NSDictionary *)returnDict{
     int flags = 0;
-    //    if(![telnet isEqualToString:@"0"])
-    //        flags++;
-    //    else if(ports.count!= 0)
-    //       flags++;
-    //    else if(![telnet isEqualToString:@"0"])
-    //        flags++;
-    //    else if(ForwardRules.count!= 0)
-    //        flags++;
-    //    else if(UpnpRules.count!= 0)
-    //        flags++;
+    
     NSString *displayText;
     
     for(NSString *key in returnDict.allKeys){
@@ -259,7 +262,9 @@
             if([dict[@"P"]isEqualToString:@"1"])
                 displayText = [CommonMethods type:dict[@"Tag"]];
         }
+        displayText = @"Your device is at risk";
     }
+    
     
     return displayText;
 }
@@ -272,6 +277,25 @@
     Client *client = [Client getClientByMAC:mac];
     NSLog(@"[client iconName] %@",[client iconName]);
     return [client iconName];
+}
+-(UIColor *)getColor:(NSDictionary *)returnDict{
+    UIColor *color;
+    for(NSString *key in returnDict.allKeys){
+        if([key isEqualToString:@"MAC"])
+            continue;
+        
+        NSDictionary *dict = returnDict[key];
+        if([dict[@"P"]isEqualToString:@"1"]){
+            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"]){
+                color = [UIColor redColor];
+                break;
+            }
+            else
+                color = [UIColor orangeColor];
+            continue;
+        }
+    }
+    return color;
 }
 -(NSString*)getIsVulnableText:(NSDictionary*)returnDict{
     for(NSString *key in returnDict.allKeys){
@@ -288,54 +312,29 @@
     }
     return @"";
 }
-/*
- {
-	"AlmondMAC": "e4:71:85:60:0b:e4",
-	"ScanTime": "1481196280",
-	"Devices": [{
-                "Ports": [],
-                "MAC": "10:60:4b:d9:60:84",
-                "Telnet": "0",
-                "Http": "0",
-                "ForwardRules": [{
-                "IP": "10.10.1.100",
-                "Ports": "12112:50000",
-                "Protocol": "udp",
-                "Target": "DNAT"
-                }],
-    "UpnpRules": [{
-                "IP": "10.10.1.100",
-                "Ports": "61555",
-                "Protocol": "udp",
-                "Target": "DNAT"
-                }]
- }, 
- {
- "Ports": [],
- "MAC": "c0:ee:fb:31:59:7a",
- "Telnet": "0",
- "Http": "0",
- "ForwardRules": [{
- "IP": "10.10.1.101",
- "Ports": "2222",
- "Protocol": "tcp",
- "Target": "DNAT"
- }, {
- "IP": "10.10.1.101",
- "Ports": "2222",
- "Protocol": "udp",
- "Target": "DNAT"
- }],
- "UpnpRules": []
-	}, {
- "Ports": [80, 111, 45187],
- "MAC": "08:00:27:86:4b:e7",
- "Telnet": "0",
- "Http": "-1",
- "ForwardRules": [],
- "UpnpRules": []
-	}]
- }
- */
+-(UITableViewCell *)everyThingsFineLabel:(UITableViewCell *)cell{
+    cell.imageView.image = [UIImage imageNamed:@"ic_check_circle_green"];
+    cell.textLabel.text = @"Everything looks good";
+    cell.textLabel.numberOfLines = 2;
+    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    cell.textLabel.font = [UIFont securifiFont:12];
+    CGSize itemSize = CGSizeMake(30,30);
+    UIGraphicsBeginImageContext(itemSize);
+    CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
+    [cell.imageView.image drawInRect:imageRect];
+    
+    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return cell;
+}
+- (IBAction)scanNowRequest:(id)sender {
+    NSDictionary *commandInfo = @{@"CommandType":@"IOT Scan Results",
+                                  @"AlmondMAC":@"23232323"                        };
+    GenericCommand *cloudCommand = [GenericCommand jsonStringPayloadCommand:commandInfo commandType:CommandType_WIFI_CLIENT_GET_PREFERENCE_REQUEST];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit asyncSendToNetwork:cloudCommand];
+}
+
 
 @end

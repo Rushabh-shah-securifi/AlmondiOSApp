@@ -58,6 +58,8 @@
 @property (weak, nonatomic) IBOutlet UIView *imageIOTSecurity;
 @property(nonatomic) UIButton *buttonMaskView;
 @property(nonatomic) NetworkStatusIcon *statusIcon;
+@property (weak, nonatomic) IBOutlet UILabel *vulnableDevices;
+
 @end
 
 
@@ -69,7 +71,7 @@
     self.toolkit = [SecurifiToolkit sharedInstance];
     if([self.toolkit isScreenShown:@"dashboard"] == NO)
         [self initializeHelpScreens];
-
+    
     self.navigationController.navigationBar.clipsToBounds = YES;
     [self loadNotification];
     self.clientNotificationArr = [[NSMutableArray alloc]init];
@@ -79,10 +81,14 @@
     //add almond button
     [self initializeAddButtonView];
     [self initializeHUD];
-    self.tableYconstrain1.constant = self.tableYconstrain1.constant+90;
-    self.tableYconstrain2.constant = self.tableYconstrain2.constant+90;
+    if(self.toolkit.config.isPaymentDone){
+        self.tableYconstrain1.constant = self.tableYconstrain1.constant+90;
+        self.tableYconstrain2.constant = self.tableYconstrain2.constant+90;
+        self.vulnableDevices.text = @"VULNERABLE DEVICES";
+    }
+    
     CGSize scrollableSize = CGSizeMake(Scroller.frame.size.width,Scroller.frame.size.height+ 130);
-       [Scroller setContentSize:scrollableSize];
+    [Scroller setContentSize:scrollableSize];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -147,7 +153,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -220,7 +226,7 @@
     [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"away_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
     [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
     
-
+    
     _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES isDashBoard:YES];
     
     _notificationButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(notificationAction:)];
@@ -229,7 +235,7 @@
     [_notificationButton markNotificationCount:(NSUInteger) count];
     _notificationButton.isDashBoard = YES;
     UIBarButtonItem *interSpace = [self getBarButton:20];
-
+    
     self.navigationItem.leftBarButtonItems = @[_leftButton, interSpace,_notificationButton];
 }
 
@@ -407,7 +413,7 @@
 
 
 - (void)onAlmondModeDidChange:(id)sender {
-        NSLog(@"Almond mode is changing %d",self.toolkit.mode_src);
+    NSLog(@"Almond mode is changing %d",self.toolkit.mode_src);
     [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
@@ -520,7 +526,7 @@
         return deviceRowCount;
     else
         return clientRowCount;
-   
+    
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -613,9 +619,9 @@
     NSString *string;
     switch (section) {
         case 0:
-            string = @"IOT SERVICES";
+            string = @"IOT SECURITY";
             break;
-
+            
         case 1:
             string = NSLocalizedString(@"smart_device_noti_title", @"");
             break;
@@ -752,7 +758,7 @@
              NSFontAttributeName : bold_font,
              NSForegroundColorAttributeName : [UIColor blackColor],
              };
-
+    
     NSString *deviceName = notification.deviceName;
     if (notification.deviceType==SFIDeviceType_WIFIClient) {
         NSArray * properties = [notification.deviceName componentsSeparatedByString:@"|"];
@@ -857,10 +863,9 @@
     AlmondSelectionTableView *view = [AlmondSelectionTableView new];
     view.methodsDelegate = self;
     view.needsAddAlmond = YES;
-    view.currentMAC = [AlmondManagement currentAlmond].almondplusMAC;
     [view initializeView:self.buttonMaskView.frame];
     [self.buttonMaskView addSubview:view];
-
+    
     [self slideAnimation];
 }
 
@@ -931,7 +936,7 @@
     self.helpScreensObj.delegate = self;
     
     [self.tabBarController.view addSubview:self.helpScreensObj];
-//    [self.tabBarController.tabBar setHidden:YES];
+    //    [self.tabBarController.tabBar setHidden:YES];
 }
 
 #pragma mark helpscreen delegate methods
@@ -939,13 +944,13 @@
     NSLog(@"dashboard reset view");
     [self.helpScreensObj removeFromSuperview];
     [self.maskView removeFromSuperview];
-//    [self.tabBarController.tabBar setHidden:NO];
+    //    [self.tabBarController.tabBar setHidden:NO];
     
 }
 
 - (void)onSkipTapDelegate{
     NSLog(@"dashboard skip delegate");
-//    [self.tabBarController.tabBar setHidden:YES];
+    //    [self.tabBarController.tabBar setHidden:YES];
     [self showOkGotItView];
 }
 
@@ -958,7 +963,7 @@
     [self.tabBarController.view addSubview:self.maskView];
     
     [HelpScreens initializeGotItView:self.helpScreensObj navView:self.navigationController.view];
-
+    
     [self.maskView addSubview:self.helpScreensObj];
 }
 - (IBAction)launchIOtDevicelit:(id)sender {

@@ -32,7 +32,8 @@
     
     if(![self hasCompleteData:client])
         return;
-    NSLog(@"client BW_enable %d and webEnable %d",client.bW_Enable,client.webHistoryEnable);
+    
+    NSLog(@"client BW_enable %d and @(client.deviceAllowedType).stringValue %@",client.bW_Enable,@(client.deviceAllowedType).stringValue);
     NSDictionary * clients = @{
                                C_ID:client.deviceID,
                                CLIENT_NAME:client.name,
@@ -55,6 +56,7 @@
     NSLog(@"sending client payload: %@", payload);
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
     [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
+    
 }
 
 +(BOOL)hasCompleteData:(Client*)client{

@@ -346,9 +346,32 @@
 
     return button;
 }
-
 - (void)addTitleAndOnOffSwitch:(NSString *)title target:(id)target action:(SEL)action shareAction:(SEL)shareAction on:(BOOL)isSwitchOn {
     UILabel *label;
+    
+    if(isSwitchOn)
+        label = [self makeSettingTitle:title];
+    else
+        label = [self makeTitleLabel:title];
+    
+    [self addSubview:label];
+    
+    if(isSwitchOn){
+        UIButton *button = [self makeShareLinkButton:target action:shareAction];
+        [self addSubview:button];
+    }
+    UISwitch *ctrl = [self makeOnOffSwitch:target action:action on:isSwitchOn];
+    [self addSubview:ctrl];
+    [self addManagedControl:ctrl];
+    
+    [self markYOffsetUsingRect:label.frame addAdditional:15];
+}
+
+
+
+- (void)addTitleAndCopySwitch:(NSString *)title target:(id)target action:(SEL)action shareAction:(SEL)shareAction on:(BOOL)isSwitchOn {
+    UILabel *label;
+    
     if(isSwitchOn)
         label = [self makeSettingTitle:title];
     else
@@ -356,10 +379,7 @@
     
     [self addSubview:label];
 
-    if(isSwitchOn){
-        UIButton *button = [self makeShareLinkButton:target action:shareAction];
-        [self addSubview:button];
-    }
+    
     UISwitch *ctrl = [self makeOnOffSwitch:target action:action on:isSwitchOn];
     [self addSubview:ctrl];
     [self addManagedControl:ctrl];

@@ -142,16 +142,25 @@
             self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_off"];
             NSLog(@"icon_history_off");
             self.deviceValue.text = @"Web History Off";
+            [self.parentrolBtn removeTarget:nil
+                                     action:NULL
+                           forControlEvents:UIControlEventTouchUpInside];
             [self.parentrolBtn addTarget:self action:@selector(onParentalControllClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
         else{
             self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_on"];
             NSLog(@"icon_history_on");
             self.deviceValue.text = @"Web History On";
+            [self.parentrolBtn removeTarget:nil
+                                     action:NULL
+                           forControlEvents:UIControlEventTouchUpInside];
             [self.parentrolBtn addTarget:self action:@selector(onParentalControllClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
         
         if(client.is_IoTDeviceType == YES){
+            [self.parentrolBtn removeTarget:nil
+                               action:NULL
+                     forControlEvents:UIControlEventTouchUpInside];
             [self.parentrolBtn addTarget:self action:@selector(onIoTControllClicked:) forControlEvents:UIControlEventTouchUpInside];
             
             if(client.iot_serviceEnable == YES){
