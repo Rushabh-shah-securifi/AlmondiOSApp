@@ -47,6 +47,9 @@
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NbG-Mq-n99">
                                                     <rect key="frame" x="308" y="8" width="51" height="31"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <connections>
+                                                        <action selector="onSwitchTap:" destination="0jU-mW-Ijv" eventType="valueChanged" id="ooy-Kr-RHT"/>
+                                                    </connections>
                                                 </switch>
                                                 <view tag="1" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ve8-cz-cRp">
                                                     <rect key="frame" x="191" y="4" width="168" height="39"/>
@@ -55,14 +58,14 @@
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="text field" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jVW-PK-9Dk">
                                                             <rect key="frame" x="0.0" y="6" width="163" height="26"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <nil key="textColor"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="16"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                         </textField>
                                                         <view alpha="0.40000000000000002" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ORU-cO-aiE" userLabel="lineView">
-                                                            <rect key="frame" x="27" y="30" width="136" height="1"/>
+                                                            <rect key="frame" x="13" y="30" width="150" height="1"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         </view>
                                                     </subviews>
                                                 </view>
@@ -71,17 +74,25 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Secure Text" textAlignment="right" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="M5r-6r-TWt">
-                                                            <rect key="frame" x="0.0" y="6" width="163" height="26"/>
+                                                            <rect key="frame" x="0.0" y="6" width="130" height="26"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <nil key="textColor"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="16"/>
                                                             <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                         </textField>
                                                         <view alpha="0.40000000596046448" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hSD-zA-2LL" userLabel="lineView">
-                                                            <rect key="frame" x="27" y="30" width="136" height="1"/>
+                                                            <rect key="frame" x="8" y="30" width="155" height="1"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         </view>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="eye_icon" translatesAutoresizingMaskIntoConstraints="NO" id="rkE-HM-Ggv">
+                                                            <rect key="frame" x="142" y="10" width="18" height="18"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        </imageView>
+                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOW-Mp-Rsc">
+                                                            <rect key="frame" x="133" y="0.0" width="35" height="30"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        </button>
                                                     </subviews>
                                                 </view>
                                                 <view alpha="0.40000000000000002" tag="4" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EYI-x9-jqX" userLabel="lineView">
@@ -95,6 +106,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="eyeBtn" destination="DOW-Mp-Rsc" id="6Wa-We-9Ne"/>
                                     <outlet property="label" destination="VH5-4f-cFa" id="dXD-hs-hUZ"/>
                                     <outlet property="lineView" destination="EYI-x9-jqX" id="xAA-PD-g8R"/>
                                     <outlet property="secureField" destination="M5r-6r-TWt" id="Kiy-w1-XCS"/>
@@ -171,6 +183,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="eye_icon" width="64" height="64"/>
         <image name="rightarrow-icon" width="64" height="64"/>
     </resources>
 </document>

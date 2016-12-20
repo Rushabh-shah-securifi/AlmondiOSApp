@@ -137,5 +137,17 @@
     
 }
 
+//{"CommandType":"ChangeAlmondProperties","WebAdminPassword":"<Encrypted Pass>","Uptime":"105", "MobileInternalIndex":"78"}
++(void)requestAlmondPropertyChange:(int)mii action:(NSString*)action value:(NSString *)value uptime:(NSString *)uptime{
+    NSMutableDictionary *payload = [NSMutableDictionary new];
+    [payload setObject:@"ChangeAlmondProperties" forKey:@"CommandType"];
+    [payload setObject:value forKey:action];
+    [payload setObject:@(mii).stringValue forKey:@"MobileInternalIndex"];
+    if(uptime)
+        [payload setObject:uptime forKey:@"Uptime"];
+    
+    GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
+    [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
+}
 
 @end

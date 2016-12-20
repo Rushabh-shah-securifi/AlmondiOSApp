@@ -107,7 +107,7 @@
     if(plan.planType == PlanTypeNone){
         return @"FREE TRAIL AVAILABLE";
     }else if(plan.planType == PlanTypeFreeExpired){
-        return @"SUBSCRIBE TO PLAN";
+        return @"EXPIRED";
     }else if(plan.planType == PlanTypeFree){
         return [NSString stringWithFormat:@"Free Trail Expires On %@", plan.renewalDate];
     }else{

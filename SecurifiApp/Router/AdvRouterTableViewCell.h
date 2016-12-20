@@ -22,6 +22,13 @@ typedef NS_ENUM(NSInteger, AdvCellType){
     Adv_Help
 };
 
+@protocol  AdvRouterTableViewCellDelegate
+- (void)onSwitchTapDelegate:(AdvCellType)type value:(BOOL)value;
+- (void)onDoneTapDelegate:(AdvCellType)type value:(NSString *)values;
+@end
+
 @interface AdvRouterTableViewCell : UITableViewCell
+@property (nonatomic, weak) id<AdvRouterTableViewCellDelegate> delegate;
+
 - (void)setUpSection:(NSDictionary *)sectionDict  indexPath:(NSIndexPath *)indexPath;
 @end
