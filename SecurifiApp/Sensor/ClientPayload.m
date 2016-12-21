@@ -48,6 +48,7 @@
                                SCHEDULE:client.deviceSchedule,
                                SM_ENABLE:client.webHistoryEnable?@"true":@"false",
                                BW_ENABLE:client.bW_Enable?@"true":@"false",
+                               IOTEnable : client.iot_serviceEnable?@"true":@"false",
                                CATEGORY:client.category
                                //deliberaly left out few keys, I think all readonly keys should be ommitted
                                };

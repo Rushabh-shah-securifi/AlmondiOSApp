@@ -12,7 +12,9 @@
 #import "Client.h"
 #import "ClientPayload.h"
 #import "UIColor+Securifi.h"
+#import "UIFont+Securifi.h"
 #import "AlmondJsonCommandKeyConstants.h"
+#import "MySubscriptionsViewController.h"
 
 @interface IoTDeviceViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UISwitch *iotSwitch;
@@ -41,6 +43,13 @@
     self.learnMore.hidden = _hideTable;
     self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
     self.client = [Client getClientByMAC:self.iotDevice[@"MAC"]];
+    
+    if(!self.client.iot_serviceEnable){
+        self.middleView.hidden = YES;
+        self.tableView.hidden = YES;
+        self.learnMore.hidden = YES;
+    }
+    
     NSString *TypeImg = [self.client iconName];
     self.clientImg.image = [UIImage imageNamed:TypeImg];
     self.clientName.text = self.client.name;
@@ -110,6 +119,7 @@
 -(void)setAllowAndBlock{
     NSLog(@"client.deviceAllowedType %d",self.client.deviceAllowedType);
     dispatch_async(dispatch_get_main_queue(), ^() {
+        self.iotSwitch.on = self.client.iot_serviceEnable;
     if(self.client.deviceAllowedType == 0){
         self.blockLabel.text = @"Blocked";
         
@@ -126,6 +136,7 @@
     });
 
 }
+
 -(void)getDescriptionLables:(NSDictionary*)returnDict{
     self.warningLables = [[NSMutableArray alloc]init];
     for(NSString *key in returnDict.allKeys){
@@ -210,8 +221,7 @@
     cell.textLabel.textColor = [UIColor blackColor];
     cell.textLabel.numberOfLines = 2;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    cell.textLabel.font = [UIFont systemFontOfSize:12];
-    cell.detailTextLabel.font = [UIFont systemFontOfSize:10];
+    cell.textLabel.font = [UIFont securifiFont:14];
     CGSize itemSize = CGSizeMake(30,30);
     UIGraphicsBeginImageContext(itemSize);
     CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
@@ -294,6 +304,14 @@
                          client.deviceAllowedType = 0;
                     self.client.deviceAllowedType = 0;
                     }
+                    if([clientDict[IOTEnable] isEqualToString:@"true"]){
+                        client.iot_serviceEnable = YES;
+                        self.client.iot_serviceEnable = YES;
+                    }
+                    else{
+                        client.iot_serviceEnable = NO;
+                        self.client.iot_serviceEnable = NO;
+                    }
                     
                     [self setAllowAndBlock];
                     
@@ -348,5 +366,40 @@
     [self.navigationController pushViewController:newWindow animated:YES];
     
 }
+- (IBAction)iotServiceEnableDisable:(id)sender {
+    UISwitch *actionSwitch = (UISwitch *)sender;
+    BOOL state = [actionSwitch isOn];
+    mii = arc4random()%10000;
+    
+    NSLog(@"state %d",state);
+    
+    if(state == NO){
+        self.client.iot_serviceEnable = NO;
+    }
+    if(state == YES){
+        self.client.iot_serviceEnable = YES;
+    }
+    NSLog(@"self.client.iot_serviceEnable %d",self.client.iot_serviceEnable);
+    [ClientPayload getUpdateClientPayloadForClient:self.client mobileInternalIndex:mii];
+
+}
+- (IBAction)launchMySubscription:(id)sender {
+    MySubscriptionsViewController *ctrl = [self getStoryBoardController:@"SiteMapStoryBoard" ctrlID:@"MySubscriptionsViewController"];
+    [self pushViewController:ctrl];
+}
+-(id)getStoryBoardController:(NSString *)storyBoardName ctrlID:(NSString*)ctrlID{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyBoardName bundle:nil];
+    id controller = [storyboard instantiateViewControllerWithIdentifier:ctrlID];
+    return controller;
+}
+
+
+
+-(void)pushViewController:(UIViewController *)viewCtrl{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController pushViewController:viewCtrl animated:YES];
+    });
+}
+
 
 @end

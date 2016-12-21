@@ -35,6 +35,8 @@
 #import "NetworkState.h"
 #import "AlmondManagement.h"
 #import "IoTDevicesListViewController.h"
+#import "MySubscriptionsViewController.h"
+
 
 
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate, NetworkStatusIconDelegate>{
@@ -170,6 +172,8 @@
     SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
     
     if(self.toolkit.config.isPaymentDone && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware]){
+        self.inactiveNetworkDevices.hidden = NO;
+        self.iotSecurityImg.hidden = YES;
         self.tableYconstrain1.constant = self.constatnt1+90;
         self.tableYconstrain2.constant = self.constatnt2+90;
         self.vulnableDevices.text = @"VULNERABLE DEVICES";
@@ -184,19 +188,25 @@
         // call my scbscription
         //change icon name
         self.vulnableDevices.text = @"View MY Subscription";
-        self.tableYconstrain1.constant = self.constatnt1-90;
-        self.tableYconstrain2.constant = self.constatnt2-90;
+        self.tableYconstrain1.constant = self.constatnt1;
+        self.tableYconstrain2.constant = self.constatnt2;
+        self.inactiveNetworkDevices.hidden = YES;
+        self.iotSecurityImg.hidden = NO;
+        self.iotSecurityButton.hidden = NO;
+        self.iotSecurityImg.image = [UIImage imageNamed:@"ic_insecure_gray"];
         [self.iotSecurityButton removeTarget:nil
                                       action:NULL
                             forControlEvents:UIControlEventTouchUpInside];
-        [self.iotSecurityButton addTarget:self action:@selector(launchIOtDevicelit:) forControlEvents:UIControlEventTouchUpInside];
+        [self.iotSecurityButton addTarget:self action:@selector(launchMySubscription:) forControlEvents:UIControlEventTouchUpInside];
     }
     else if(![currentAlmond siteMapSupportFirmware:currentAlmond.firmware]){
         // call my scbscription
         self.activeNetworkDevices.hidden = NO;
+        self.inactiveNetworkDevices.hidden = NO;
+        self.iotSecurityImg.hidden = YES;
         self.vulnableDevices.text = @"INACTIVE CLIENTS";
-        self.tableYconstrain1.constant = self.constatnt1-90;
-        self.tableYconstrain2.constant = self.constatnt2-90;
+        self.tableYconstrain1.constant = self.constatnt1;
+        self.tableYconstrain2.constant = self.constatnt2;
         self.iotSecurityImg.hidden = YES;
         self.iotSecurityButton.hidden = YES;
     }
@@ -1013,6 +1023,22 @@
     [self.navigationController pushViewController:newWindow animated:YES];
     //        }
 }
+-(void)launchMySubscription:(id)sender{
+    MySubscriptionsViewController *ctrl = [self getStoryBoardController:@"SiteMapStoryBoard" ctrlID:@"MySubscriptionsViewController"];
+    [self pushViewController:ctrl];
+}
+-(id)getStoryBoardController:(NSString *)storyBoardName ctrlID:(NSString*)ctrlID{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyBoardName bundle:nil];
+    id controller = [storyboard instantiateViewControllerWithIdentifier:ctrlID];
+    return controller;
+}
 
+
+
+-(void)pushViewController:(UIViewController *)viewCtrl{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController pushViewController:viewCtrl animated:YES];
+    });
+}
 
 @end

@@ -12,6 +12,7 @@
 #import "SFIColors.h"
 #import "Client.h"
 #import "UIFont+Securifi.h"
+#import "MySubscriptionsViewController.h"
 
 @interface IoTDevicesListViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *ioTdevicetable;
@@ -47,7 +48,25 @@
                                                                       @"Protocol": @"udp",
                                                                       @"Target": @"DNAT"
                                                                       }]
-                                                  }, @{
+                                                  },
+                                              @{
+                                                  @"Ports": @[@80, @111, @45187],
+                                                  @"MAC": @"a0:86:c6:4d:96:59",
+                                                  @"Telnet": @"-1",
+                                                  @"Http": @"1",
+                                                  @"ForwardRules": @[@{
+                                                                         @"IP": @"10.10.1.100",
+                                                                         @"Ports": @"12112:50000",
+                                                                         @"Protocol": @"udp",
+                                                                         @"Target": @"DNAT"
+                                                                         }],
+                                                  @"UpnpRules": @[@{
+                                                                      @"IP": @"10.10.1.100",
+                                                                      @"Ports": @"61555",
+                                                                      @"Protocol": @"udp",
+                                                                      @"Target": @"DNAT"
+                                                                      }]
+                                                  },@{
                                                   @"Ports": @[],
                                                   @"MAC": @"1c:87:2c:9d:21:65",
                                                   @"Telnet": @"0",
@@ -69,19 +88,32 @@
                                                   @"MAC": @"ac:ee:9e:90:f3:37",
                                                   @"Telnet": @"1",
                                                   @"Http": @"0",
-                                                  @"ForwardRules": @[],
-                                                  @" ": @[]
+                                                  @"ForwardRules": @[]
                                                   }]
                                 };
-    for (NSDictionary *dict in response[@"Devices"]) {
-        NSDictionary *iotDeviceObj = [self iotDeviceObj:dict];
-        [self.scannedDeviceList addObject:iotDeviceObj];
+    NSArray *deviceRespArr = response[@"Devices"];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    
+    for(int i = 0;i<deviceRespArr.count;i++){
+        NSDictionary *dict = [deviceRespArr objectAtIndex:i];
+        NSLog(@"dict response %@",dict);
+        Client *client;
+        NSLog(@"toolkit.clients.count %ld",toolkit.clients.count);
+        if(toolkit.clients.count>=deviceRespArr.count)
+            client = [toolkit.clients objectAtIndex:i];
+        dict = [self iotDeviceObj:dict mac:client.deviceMAC?client.deviceMAC:@"ac:ee:9e:90:f3:37"];
+        [self.scannedDeviceList addObject:dict];
     }
-    self.excludedDevices = response[@"ExcludedDevices"];
+//    for (NSDictionary *dict in response[@"Devices"]) {
+//        NSDictionary *iotDeviceObj = [self iotDeviceObj:dict mac:dict[@"MAC"]];
+//        [self.scannedDeviceList addObject:iotDeviceObj];
+//    }
+    Client *client = [toolkit.clients objectAtIndex:0];
+    self.excludedDevices =  [[NSArray alloc] initWithObjects:client.deviceMAC,nil];
     
     
 }
--(NSDictionary *)iotDeviceObj:(NSDictionary *)deviceDict{
+-(NSDictionary *)iotDeviceObj:(NSDictionary *)deviceDict mac:(NSString*)mac{
     NSArray *ports = deviceDict[@"Ports"];
     NSString *telnet = deviceDict[@"Telnet"];
     NSString *Http = deviceDict[@"Http"];
@@ -97,7 +129,7 @@
                                                    @"Tag":@"4"},
                                  @"UpnpRules":@{@"P":UpnpRules.count?@"0":@"1",
                                                 @"Tag":@"5"},
-                                 @"MAC":deviceDict[@"MAC"]
+                                 @"MAC":mac
                                  };
     
     
@@ -195,6 +227,10 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 30;
 }
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
+    return 45;
+}
+
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     NSLog(@"view for header: %ld", (long)section);
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
@@ -227,15 +263,23 @@
     
     if(self.scannedDeviceList.count == 0)
         return;
-    NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
+    if (indexPath.section == 0) {
+        NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
+        
+        IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
+        newWindow.iotDevice = iotDevice;
+        newWindow.hideTable = NO;
+        newWindow.hideMiddleView = YES;
+        
+        NSLog(@"IoTDevicesListViewController IF");
+        [self.navigationController pushViewController:newWindow animated:YES];
+    }
+    else{
+        NSString *iotDeviceMAc = [self.excludedDevices objectAtIndex:indexPath.row];
+        
+        NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
+    }
     
-    IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
-    newWindow.iotDevice = iotDevice;
-     newWindow.hideTable = NO;
-    newWindow.hideMiddleView = YES;
-    
-    NSLog(@"IoTDevicesListViewController IF");
-    [self.navigationController pushViewController:newWindow animated:YES];
 }
 - (IBAction)backButtonClicked:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
@@ -304,6 +348,7 @@
         if([key isEqualToString:@"MAC"])
             continue;
         NSDictionary *dict = returnDict[key];
+        NSLog(@"returnDict %@",returnDict);
         if([dict[@"P"]isEqualToString:@"1"]){
             if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"]){
                 return @"is vulnerable";
@@ -337,6 +382,22 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncSendToNetwork:cloudCommand];
 }
+- (IBAction)launchMySubscription:(id)sender {
+    MySubscriptionsViewController *ctrl = [self getStoryBoardController:@"SiteMapStoryBoard" ctrlID:@"MySubscriptionsViewController"];
+    [self pushViewController:ctrl];
+}
+-(id)getStoryBoardController:(NSString *)storyBoardName ctrlID:(NSString*)ctrlID{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyBoardName bundle:nil];
+    id controller = [storyboard instantiateViewControllerWithIdentifier:ctrlID];
+    return controller;
+}
 
+
+
+-(void)pushViewController:(UIViewController *)viewCtrl{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController pushViewController:viewCtrl animated:YES];
+    });
+}
 
 @end

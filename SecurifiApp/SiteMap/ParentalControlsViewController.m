@@ -56,12 +56,23 @@
 
 @property (nonatomic) NSString *resetBWDate;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
+
+@property (nonatomic) NSString *DaysValuenew;
+@property (nonatomic) NSString *Datenew;
+@property (nonatomic) NSString *label;
+
+@property BOOL isSendBWReq;
 @end
 
 @implementation ParentalControlsViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.DaysValuenew = @"7";
+    self.label = @"Past week";
+    self.Datenew = [CommonMethods getTodayDate];
+    self.isSendBWReq = YES;
     [[Analytics sharedInstance] markParentalPage];
     self.parentsControlArr = [[NSMutableArray alloc]init];
     self.cat_view_more = [[CategoryView alloc]initParentalControlMoreClickView:CGRectMake(0, self.view.frame.size.height - 180, 188 , 320)];
@@ -90,7 +101,11 @@
     self.amac = almond.almondplusMAC;
     self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
     NSString *todayDate = [CommonMethods getTodayDate];
-    [self createRequest:@"Bandwidth" value:@"7" date:todayDate];
+    
+    if(self.isSendBWReq){
+        [self createRequest:@"Bandwidth" value:self.DaysValuenew date:self.Datenew];
+        self.NosDayLabel.text = self.label;
+    }
     self.routerMode = toolkit.routerMode;
     
     self.isLocal = [toolkit useLocalNetwork:almond.almondplusMAC];
@@ -457,6 +472,7 @@
         newWindow.is_IotType = NO;
         NSLog(@"instantiateViewControllerWithIdentifier IF");
         newWindow.client = self.client;
+        self.isSendBWReq = YES;
         [self.navigationController pushViewController:newWindow animated:YES];
         //        }
         //        else
@@ -602,10 +618,12 @@
         NSLog(@"dict BW respose %@",dict);
         if([dict[@"search"] isEqualToString:@"ClearHistory"]){
             NSLog(@"clear history success");
-            [BrowsingHistoryDataBase deleteDB:self.amac clientMac:self.cmac];
+            
+            [BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
             return;
         }
         if([dict[@"search"] isEqualToString:@"ClearBandwidth"]){
+            [self createRequest:@"Bandwidth" value:self.DaysValuenew date:self.Datenew];
             return;
         }
         
@@ -691,12 +709,16 @@
     
     newWindow.delegate = self;
     NSLog(@"instantiateViewControllerWithIdentifier IF");
+    self.isSendBWReq = NO;
     [self.navigationController pushViewController:newWindow animated:YES];
 }
 
 -(void)updateDetailPeriod:(NSString *)value date:(NSString*)date lavelText:(NSString*)labelText{
     NSLog(@"updateDetailPeriod");
-    [self createRequest:@"Bandwidth" value:value date:date];
+    self.DaysValuenew = value;
+    self.Datenew = date;
+    [self createRequest:@"Bandwidth" value:self.DaysValuenew   date:self.Datenew];
+    self.label = labelText;
     self.NosDayLabel.text = labelText;
 
 }

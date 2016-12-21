@@ -151,6 +151,7 @@
             self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_on"];
             NSLog(@"icon_history_on");
             self.deviceValue.text = @"Web History On";
+            
             [self.parentrolBtn removeTarget:nil
                                      action:NULL
                            forControlEvents:UIControlEventTouchUpInside];
