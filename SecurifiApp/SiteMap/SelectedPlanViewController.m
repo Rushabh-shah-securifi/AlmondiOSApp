@@ -40,6 +40,7 @@ int mii;
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     mii = arc4random() % 10000;
+    self.paymentBtn.enabled = YES;
     [self initializeNotification];
 }
 
@@ -101,6 +102,7 @@ int mii;
 }
 
 - (IBAction)onProceedToPaymentTap:(id)sender {
+    self.paymentBtn.enabled = NO;
     if([AlmondPlan hasPaidSubscription] || self.selectedPlan == PlanTypeFree){
         //will have to pay from this controller it self
         [self showHudWithTimeoutMsg:@"Please Wait!" time:10];
