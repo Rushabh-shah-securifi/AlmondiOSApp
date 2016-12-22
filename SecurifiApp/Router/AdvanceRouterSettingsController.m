@@ -95,17 +95,14 @@ int mii;
     NSLog(@"payload: %@", payload);
     
     BOOL isSuccessful = [payload[@"Success"] boolValue];
-
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.HUD hide:YES];
-    });
     
     if(isSuccessful){
-        [self showToast:@"Successfully Updated!"];
+//        [self showToast:@"Successfully Updated!"];
     }else{
         [self showToast:@"Sorry! Could not update"];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
+            [self.HUD hide:YES];
         });
     }
 }
@@ -113,10 +110,16 @@ int mii;
 -(void)onDynamicAlmondPropertyResponse:(id)sender{
     NSLog(@"onDynamicAlmondPropertyResponse");
     //don't reload the dictionary will have old values
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
     
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [self.tableView reloadData];
-//    });
+    [self showToast:@"Successfully Updated!"];
+    [self initializeSectionsArray];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 
@@ -204,7 +207,7 @@ int mii;
 }
 #pragma mark delegate methods
 - (void)onSwitchTapDelegate:(AdvCellType)type value:(BOOL)value{
-    [self showHudWithTimeoutMsg:@"Please Wait!" time:10];
+    [self showHudWithTimeoutMsg:@"Please Wait!" time:15];
     NSString *strValue = value? @"true": @"false";
     switch (type) {
         case Adv_LocalWebInterface:{
@@ -227,12 +230,12 @@ int mii;
 }
 
 - (void)onDoneTapDelegate:(AdvCellType)type value:(NSString *)value isSecureFld:(BOOL)isSecureFld row:(NSInteger)row{
-    [self showHudWithTimeoutMsg:@"Please Wait!" time:10];
+    [self showHudWithTimeoutMsg:@"Please Wait!" time:15];
     AlmondProperties *almondProperty = [SecurifiToolkit sharedInstance].almondProperty;
     switch (type) {
         case Adv_LocalWebInterface:{
             NSLog(@"local web interface");
-            if(!isSecureFld){
+            if(isSecureFld){
                 NSString *encryptedPass = value;
                 [RouterPayload requestAlmondPropertyChange:mii action:@"WebAdminPassword" value:encryptedPass uptime:almondProperty.uptime];
             }else{
@@ -242,7 +245,7 @@ int mii;
             break;
 
         case Adv_AlmondScreenLock:{
-            if(!isSecureFld){
+            if(isSecureFld){
                 NSString *encryptedPass = value;
                 [RouterPayload requestAlmondPropertyChange:mii action:@"ScreenPIN" value:encryptedPass uptime:almondProperty.uptime];
             }else{

@@ -8,6 +8,7 @@
 
 #import "AdvRouterTableViewCell.h"
 #import "SFIColors.h"
+#import "AlmondProperties.h"
 
 #define MAX_LENGTH 32
 #define Hide_All -1
@@ -27,6 +28,8 @@
 @property (weak, nonatomic) IBOutlet UIView *lineView;//4
 @property (weak, nonatomic) IBOutlet UIButton *eyeBtn;
 @property (weak, nonatomic) IBOutlet UIImageView *arrowImg;
+
+@property (weak, nonatomic) IBOutlet UIView *mainView;
 
 @property (nonatomic) AdvCellType type;
 @property (nonatomic) NSString *value;
@@ -58,6 +61,7 @@
 }
 
 - (void)setUpSection:(NSDictionary *)sectionDict indexPath:(NSIndexPath *)indexPath{
+    AlmondProperties *almondProp = [SecurifiToolkit sharedInstance].almondProperty;
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
 
@@ -70,6 +74,10 @@
     
     //leftside
     self.label.text = cell[LABEL];
+    if(row == 0 && type != Adv_Help)
+       [self.label setFont:[UIFont fontWithName:@"Avenir-Heavy" size:self.label.font.pointSize]];
+    else
+        [self.label setFont:[UIFont fontWithName:@"Avenir-Roman" size:self.label.font.pointSize]];
     
     //right side - instead of setting in each method setting for every thng right here
     self.value = cell[VALUE];
@@ -79,9 +87,18 @@
     self.secureField.text = cell[VALUE];
     self.valueLbl.text = cell[VALUE];
     
+    //color
+    self.mainView.backgroundColor = [SFIColors ruleBlueColor];
+    
+    //enabling fields
+    [self tryEnableFields:YES alpha:1.0];
+    
+    //keyboard type
+    [self setKeyboardType:type];
     switch (type) {
         case Adv_LocalWebInterface:{
             NSLog(@"local web interface switch");
+            [self setMainViewColorAndDisable:[almondProp.webAdminEnable boolValue]];
             if(row == 0){
                 [self setConcernedView:self.switchBtn.tag];
                 
@@ -94,12 +111,14 @@
         }
             break;
         case Adv_UPnP:{
+            [self setMainViewColorAndDisable:[almondProp.upnp boolValue]];
             if(row == 0){
                 [self setConcernedView:self.switchBtn.tag];
             }
         }
             break;
         case Adv_AlmondScreenLock:{
+            [self setMainViewColorAndDisable:[almondProp.screenLock boolValue]];
             if(row == 0){
                 [self setConcernedView:self.switchBtn.tag];
             }else if(row == 1){
@@ -136,6 +155,33 @@
     }
 }
 
+- (void)setMainViewColorAndDisable:(BOOL)enabled{
+    if(!enabled){
+        self.mainView.backgroundColor = [SFIColors ruleGraycolor];
+        [self tryEnableFields:NO alpha:0.7];
+    }
+}
+
+- (void)tryEnableFields:(BOOL)enable alpha:(float)alpha{
+    self.textField.enabled = enable;
+    self.secureField.enabled = enable;
+    self.eyeBtn.enabled = enable;
+    
+    self.eyeBtn.alpha = alpha;
+    self.textField.alpha = alpha;
+    self.secureField.alpha = alpha;
+}
+
+- (void)setKeyboardType:(AdvCellType)type{
+    if(type == Adv_AlmondScreenLock){
+        self.textField.keyboardType = UIKeyboardTypeNumberPad;
+        self.secureField.keyboardType = UIKeyboardTypeNumberPad;
+    }else{
+        self.textField.keyboardType = UIKeyboardTypeDefault;
+        self.secureField.keyboardType = UIKeyboardTypeDefault;
+    }
+        
+}
 - (void)setConcernedView:(NSInteger)viewTag{
     _valueLbl.hidden = (viewTag != _valueLbl.tag);
     _switchBtn.hidden = (viewTag != _switchBtn.tag);
@@ -189,8 +235,11 @@
     return [self validateMaxLen:str];
 }*/
 
-- (BOOL)validateMinLen:(NSString *)str {
+- (BOOL)validateMinLen:(NSString *)str{
     // SSID name value must be 1 char or longer
+    if(self.type == Adv_AlmondScreenLock){
+        
+    }
     return str.length >= 1;
 }
 

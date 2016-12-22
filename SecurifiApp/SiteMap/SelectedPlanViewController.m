@@ -15,7 +15,7 @@
 #import "UIViewController+Securifi.h"
 #import "MBProgressHUD.h"
 
-@interface SelectedPlanViewController ()<MBProgressHUDDelegate>
+@interface SelectedPlanViewController ()<MBProgressHUDDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *topPlanLbl;
 @property (weak, nonatomic) IBOutlet UILabel *selectedPlanAmtLbl;
 @property (weak, nonatomic) IBOutlet UITextField *couponTxtFld;
@@ -58,6 +58,10 @@ int mii;
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     
     [center addObserver:self selector:@selector(onSubscribeMeCommandResponse:) name:SUBSCRIBE_ME_NOTIFIER object:nil];
+    
+    [center addObserver:self selector:@selector(onKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    
+    [center addObserver:self selector:@selector(onKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
 
 -(void)setUpHUD{
@@ -83,6 +87,8 @@ int mii;
 
 #pragma mark ui methods
 - (void)initializeUI{
+    self.couponTxtFld.delegate = self;
+    
     self.topPlanLbl.text = [AlmondPlan getPlanString:self.selectedPlan];
     self.selectedPlanAmtLbl.text = [NSString stringWithFormat:@"$%zd.00", [AlmondPlan getPlanAmount:self.selectedPlan]];
     self.totalAmtLbl.text = [NSString stringWithFormat:@"$%zd.00", [AlmondPlan getPlanAmount:self.selectedPlan]];
@@ -192,4 +198,30 @@ int mii;
         [self.navigationController pushViewController:viewController animated:YES];
     });
 }
+
+#pragma mark keyboard methods
+- (void)onKeyboardDidShow:(id)notification {
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect f = self.view.frame;
+        CGFloat y = -keyboardSize.height ;
+        f.origin.y =  y ;
+        self.view.frame = f;
+    }];
+}
+
+-(void)onKeyboardDidHide:(id)notice{
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect f = self.view.frame;
+        f.origin.y = 0;
+        self.view.frame = f;
+    }];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self.couponTxtFld resignFirstResponder];
+    return YES;
+}
+
 @end
