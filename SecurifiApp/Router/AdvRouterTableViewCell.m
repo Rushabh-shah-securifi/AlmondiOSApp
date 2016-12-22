@@ -7,6 +7,7 @@
 //
 
 #import "AdvRouterTableViewCell.h"
+#import "SFIColors.h"
 
 #define MAX_LENGTH 32
 #define Hide_All -1
@@ -21,11 +22,15 @@
 
 @property (weak, nonatomic) IBOutlet UIView *secureFieldView;//2
 @property (weak, nonatomic) IBOutlet UITextField *secureField;
+@property (weak, nonatomic) IBOutlet UILabel *valueLbl;//3
+
 @property (weak, nonatomic) IBOutlet UIView *lineView;//4
 @property (weak, nonatomic) IBOutlet UIButton *eyeBtn;
+@property (weak, nonatomic) IBOutlet UIImageView *arrowImg;
 
 @property (nonatomic) AdvCellType type;
 @property (nonatomic) NSString *value;
+@property (nonatomic) NSInteger row; //to differentiate same fields
 @end
 
 @implementation AdvRouterTableViewCell
@@ -34,7 +39,12 @@
     [super awakeFromNib];
     self.switchBtn.transform = CGAffineTransformMakeScale(0.80, 0.80);
     [self addEventsToBtn:self.eyeBtn];
-    // Initialization code
+    
+    self.textField.delegate = self;
+    self.secureField.delegate = self;
+    
+    self.textField.returnKeyType = UIReturnKeyDone;
+    self.secureField.returnKeyType = UIReturnKeyDone;
 }
 
 - (void)addEventsToBtn:(UIButton *)btn{
@@ -48,26 +58,26 @@
 }
 
 - (void)setUpSection:(NSDictionary *)sectionDict indexPath:(NSIndexPath *)indexPath{
-    AdvCellType type = [sectionDict[CELL_TYPE] integerValue];
-    self.type = type;
-    
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
+
+    AdvCellType type = [sectionDict[CELL_TYPE] integerValue];
+    self.type = type;
+    self.row = row;
     
     NSArray *cells = sectionDict[CELLS];
     NSDictionary *cell = cells[row];
-    if(section == Adv_Help)
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    else
-        self.accessoryType = UITableViewCellAccessoryNone;
     
     //leftside
     self.label.text = cell[LABEL];
+    
     //right side - instead of setting in each method setting for every thng right here
     self.value = cell[VALUE];
+    
     self.textField.text = cell[VALUE];
     self.switchBtn.on = [cell[VALUE] boolValue];
     self.secureField.text = cell[VALUE];
+    self.valueLbl.text = cell[VALUE];
     
     switch (type) {
         case Adv_LocalWebInterface:{
@@ -76,7 +86,7 @@
                 [self setConcernedView:self.switchBtn.tag];
                 
             }else if(row == 1){
-                [self setConcernedView:self.textFieldView.tag];
+                [self setConcernedView:self.valueLbl.tag];
                 
             }else{
                 [self setConcernedView:self.secureFieldView.tag];
@@ -112,26 +122,27 @@
             break;
         case Adv_Language:{
             if(row == 0){
-                [self setConcernedView:self.textFieldView.tag];
+                [self setConcernedView:self.valueLbl.tag];
             }
         }
             break;
         case Adv_Help:{
-            [self setConcernedView:Hide_All];
+            [self setConcernedView:self.arrowImg.tag];
         }
             break;
             
         default:
             break;
     }
-
 }
 
 - (void)setConcernedView:(NSInteger)viewTag{
+    _valueLbl.hidden = (viewTag != _valueLbl.tag);
     _switchBtn.hidden = (viewTag != _switchBtn.tag);
     _textFieldView.hidden = (viewTag != _textFieldView.tag);
     NSLog(@"secure hidden : %zd", (viewTag != _secureFieldView.tag));
     _secureFieldView.hidden = (viewTag != _secureFieldView.tag);
+    _arrowImg.hidden = (viewTag != _arrowImg.tag);
 }
 
 #pragma mark action methods
@@ -149,28 +160,34 @@
 
 #pragma mark text field delegate methods
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    NSLog(@"textFieldShouldReturn");
     [textField resignFirstResponder];
-    if(textField == self.textField){
-        
-    }else if(textField == self.secureField){
-        
-    }
-    NSString *str = textField.text;
-    if([str isEqualToString:self.value])
-        return YES;
-    
-    BOOL valid = [self validateMinLen:str] && [self validateMaxLen:str];
-    if (valid) {
-        //[self.delegate onDoneTapDelegate:<#(AdvCellType)#> value:<#(NSString *)#>]
-    }
-    
     return  YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    NSLog(@"textFieldDidEndEditing");
+    
+    NSString *str = textField.text;
+    if([str isEqualToString:self.value])
+        return;
+    
+    BOOL valid = [self validateMinLen:str] && [self validateMaxLen:str];
+    if (valid) {
+        if(textField == self.textField){
+            [self.delegate onDoneTapDelegate:self.type value:self.textField.text isSecureFld:NO row:self.row];
+        }else if(textField == self.secureField){
+            [self.delegate onDoneTapDelegate:self.type value:self.secureField.text isSecureFld:YES row:self.row];
+        }
+        
+    }
+}
+
+/*
+ - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
     return [self validateMaxLen:str];
-}
+}*/
 
 - (BOOL)validateMinLen:(NSString *)str {
     // SSID name value must be 1 char or longer

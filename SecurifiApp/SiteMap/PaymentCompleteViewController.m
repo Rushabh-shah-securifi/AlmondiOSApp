@@ -34,15 +34,15 @@
 #pragma mark ui methods
 - (void)setupUI{
     NSString *desc;
-    
+    NSString *almondName = [AlmondManagement cloudAlmond:self.currentMAC].almondplusName;
     if(self.type == SubscriptionResponse_Success){
-        desc = [NSString stringWithFormat:@"You now have access to Internet Security on %@ for %zd month", [AlmondManagement currentAlmond].almondplusName, [AlmondPlan getPlanMonths:self.selectedPlanType]];
+        desc = [NSString stringWithFormat:@"You now have access to Internet Security on %@ for %zd month", almondName, [AlmondPlan getPlanMonths:self.selectedPlanType]];
         [self setImage:[UIImage imageNamed:@"payment_check_circle"] title:@"Hooray!" desc:desc topHidden:YES btmHidden:NO topTitle:@"" btmTitle:@"Done"];
     }else if(self.type == SubscriptionResponse_Failed){
         desc = [NSString stringWithFormat:@"We were unable to process your payment for IoT Security for %zd Month $%zd Plan.", [AlmondPlan getPlanMonths:self.selectedPlanType], [AlmondPlan getPlanAmount:self.selectedPlanType]];
         [self setImage:[UIImage imageNamed:@"ic_error_outline"] title:@"Payment Error" desc:desc topHidden:NO btmHidden:NO topTitle:@"Try Again" btmTitle:@"Nevermind"];
     }else if(self.type == SubscriptionResponse_Cancelled){
-        desc = [NSString stringWithFormat:@"You no longer have access to the IoT Security on %@.", [AlmondManagement currentAlmond].almondplusName];
+        desc = [NSString stringWithFormat:@"You no longer have access to the IoT Security on %@.", almondName];
         [self setImage:[UIImage imageNamed:@"ic_error_outline"] title:@"Subscription Cancelled" desc:desc topHidden:NO btmHidden:YES topTitle:@"Done" btmTitle:@""];
     }
 }
@@ -64,7 +64,7 @@
     }else if(self.type == SubscriptionResponse_Failed){
         [self.navigationController popToRootViewControllerAnimated:YES];
     }else if(self.type == SubscriptionResponse_Cancelled){
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 

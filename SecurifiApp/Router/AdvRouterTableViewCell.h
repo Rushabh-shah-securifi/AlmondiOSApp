@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, AdvCellType){
 
 @protocol  AdvRouterTableViewCellDelegate
 - (void)onSwitchTapDelegate:(AdvCellType)type value:(BOOL)value;
-- (void)onDoneTapDelegate:(AdvCellType)type value:(NSString *)values;
+- (void)onDoneTapDelegate:(AdvCellType)type value:(NSString *)value isSecureFld:(BOOL)isSecureFld row:(NSInteger)row;
 @end
 
 @interface AdvRouterTableViewCell : UITableViewCell

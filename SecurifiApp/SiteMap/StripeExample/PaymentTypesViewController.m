@@ -254,6 +254,7 @@ typedef void (^STPPaymentAuthorizationStatusCallback)(PKPaymentAuthorizationStat
         PaymentCompleteViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"PaymentCompleteViewController"];
         viewController.type = type;
         viewController.selectedPlanType = self.selectedPlan;
+        viewController.currentMAC = self.currentMAC;
         //self.navigationController.navigationBarHidden = YES;
         [self.navigationController pushViewController:viewController animated:YES];
     });

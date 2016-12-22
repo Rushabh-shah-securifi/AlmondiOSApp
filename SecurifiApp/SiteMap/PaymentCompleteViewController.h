@@ -18,4 +18,5 @@ typedef NS_ENUM(NSInteger, SubscriptionResponse){
 @interface PaymentCompleteViewController : UIViewController
 @property (nonatomic) SubscriptionResponse type;
 @property (nonatomic) PlanType selectedPlanType;
+@property (nonatomic) NSString *currentMAC;
 @end

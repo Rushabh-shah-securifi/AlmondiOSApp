@@ -15,13 +15,15 @@
 #import "AlmondManagement.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "UIViewController+Securifi.h"
+#import "PaymentCompleteViewController.h"
+#import "MBProgressHUD.h"
 
 #define MY_SUBSCIRIPTION_1 @"my_subscriptions_cell_1"
 #define MY_SUBSCIRIPTION_2 @"my_subscriptions_cell_2"
 
 #define INTERNET_SECURITY 1
 
-@interface MySubscriptionsViewController ()<MySubscriptionsTableViewCellDelegate, AlmondSelectionTableViewDelegate, UIAlertViewDelegate>
+@interface MySubscriptionsViewController ()<MySubscriptionsTableViewCellDelegate, AlmondSelectionTableViewDelegate, UIAlertViewDelegate, MBProgressHUDDelegate>
 @property (nonatomic) UILabel *almondLabel;
 @property (nonatomic) UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UIButton *almSelectionBtn;
@@ -31,6 +33,7 @@
 @property (nonatomic) UIButton *buttonMaskView;
 @property (nonatomic)AlmondPlan *almondPlan;
 @property (nonatomic) NSString *currentMAC;
+@property(nonatomic) MBProgressHUD *HUD;
 @end
 
 @implementation MySubscriptionsViewController
@@ -42,7 +45,7 @@
     self.almondLabel.text = [AlmondManagement cloudAlmond:self.currentMAC].almondplusName;
     NSLog(@"almond plan %d", self.almondPlan.planType);
     [self initializeMySubscriptionsArray];
-    // Do any additional setup after loading the view.
+    [self setUpHUD];
 }
 
 - (void)viewDidLayoutSubviews{
@@ -94,6 +97,27 @@
         [muDict setObject:[NSNumber numberWithBool:NO] forKey:IS_EXPANDED];
         [self.mySubscriptionsArray addObject:muDict];
     }
+}
+
+-(void)setUpHUD{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.dimBackground = NO;
+    _HUD.delegate = self;
+    [self.navigationController.view addSubview:_HUD];
+}
+#pragma mark hud methods
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg time:(NSTimeInterval)sec{
+    NSLog(@"showHudWithTimeoutMsg");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:hudMsg];
+        [self.HUD hide:YES afterDelay:sec];
+    });
+}
+
+- (void)showHUD:(NSString *)text {
+    self.HUD.labelText = text;
+    [self.HUD show:YES];
 }
 
 #pragma mark ui mehtods
@@ -268,6 +292,7 @@
     if (buttonIndex == [alertView cancelButtonIndex]){
         //cancel clicked ...do your action
         if(alertView.tag == INTERNET_SECURITY){
+            [self showHudWithTimeoutMsg:@"Please Wait!" time:10];
             [self sendDeleteSubscriptionCommand];
         }
     }else{
@@ -283,11 +308,11 @@
     });
 }
 #pragma mark cell delegate methods
-- (void)onLeftBtnTapDelegate:(NSString *)btnTitle{
+- (void)onLeftBtnTapDelegate:(NSString *)btnTitle{//
     [self LaunchSubscriptionsPlanController];
 }
 
-- (void)onRightBtnTapDelegate:(NSString *)btnTitle{
+- (void)onRightBtnTapDelegate:(NSString *)btnTitle{//cancel
     if([btnTitle isEqualToString:CANCEL_SUBSCRIPTION]){
         NSString *msg = [NSString stringWithFormat:@"By cancelling your subscription you will no longer have access to Internet Security on %@.", [AlmondManagement cloudAlmond:self.currentMAC].almondplusName];
         [self showAlert:@"" msg:msg cancel:@"Cancel Subscription" other:@"Nevermind" tag:INTERNET_SECURITY];
@@ -336,11 +361,14 @@
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
     }
     NSLog(@"onsubscribe me payload: %@", payload);
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
     
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     NSString *cmdType = payload[COMMAND_TYPE];
     if(isSuccessful){
-        [self showToast:@"Your subscription has been successfully cancelled."];
+        [self pushPaymentCompleteController];
         //need to check on this if/else
         [AlmondPlan updateAlmondPlan:PlanTypeFreeExpired epoch:nil mac:self.currentMAC];
     }else{
@@ -348,6 +376,17 @@
     }
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
+    });
+}
+
+- (void)pushPaymentCompleteController{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+        PaymentCompleteViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"PaymentCompleteViewController"];
+        viewController.type = SubscriptionResponse_Cancelled;
+        viewController.selectedPlanType = PlanTypeFreeExpired;//not needed actually
+        viewController.currentMAC = self.currentMAC;
+        [self.navigationController pushViewController:viewController animated:YES];
     });
 }
 

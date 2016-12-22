@@ -12,6 +12,11 @@
 #import "CommonMethods.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "SFIColors.h"
+#import "RouterPayload.h"
+#import "NSData+Securifi.h"
+#import "AlmondManagement.h"
+#import "UIViewController+Securifi.h"
+#import "MBProgressHUD.h"
 
 #define ADVANCED_SETTINGS @"advance_settings"
 #define ADVANCE_ROUTER @"advance_router"
@@ -20,16 +25,19 @@
 static const int headerHeight = 90;
 static const int footerHeight = 10;
 
-@interface AdvanceRouterSettingsController ()<AdvRouterTableViewCellDelegate>
+@interface AdvanceRouterSettingsController ()<AdvRouterTableViewCellDelegate, MBProgressHUDDelegate>
 @property (nonatomic) NSMutableArray *sectionsArray;
+@property(nonatomic) MBProgressHUD *HUD;
 @end
 
 @implementation AdvanceRouterSettingsController
+int mii;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = NSLocalizedString(@"Advanced_Features", @"");
     [self initializeSectionsArray];
+    [self setUpHUD];
     NSLog(@"router array: %@", self.sectionsArray);
  
     // Do any additional setup after loading the view.
@@ -37,6 +45,8 @@ static const int footerHeight = 10;
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    mii = arc4random() % 10000;
+    
     [self initializeNotification];
 }
 
@@ -59,6 +69,14 @@ static const int footerHeight = 10;
     [center addObserver:self selector:@selector(onDynamicAlmondPropertyResponse:) name:NOTIFICATION_ALMOND_PROPERTIES_PARSED object:nil]; //list and each property change
 }
 
+-(void)setUpHUD{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.dimBackground = NO;
+    _HUD.delegate = self;
+    [self.navigationController.view addSubview:_HUD];
+}
+
 #pragma mark command response
 -(void)onAlmondPropertyResponse:(id)sender{
     NSLog(@"onAlmondPropertyResponse");
@@ -78,21 +96,27 @@ static const int footerHeight = 10;
     
     BOOL isSuccessful = [payload[@"Success"] boolValue];
 
-    //[self hideHUDDelegate];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
     
     if(isSuccessful){
-        
+        [self showToast:@"Successfully Updated!"];
     }else{
-        
+        [self showToast:@"Sorry! Could not update"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
     }
 }
 
 -(void)onDynamicAlmondPropertyResponse:(id)sender{
     NSLog(@"onDynamicAlmondPropertyResponse");
+    //don't reload the dictionary will have old values
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-    });
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self.tableView reloadData];
+//    });
 }
 
 
@@ -179,18 +203,21 @@ static const int footerHeight = 10;
     }
 }
 #pragma mark delegate methods
--(void)onSwitchTapDelegate:(AdvCellType)type value:(BOOL)value{
+- (void)onSwitchTapDelegate:(AdvCellType)type value:(BOOL)value{
+    [self showHudWithTimeoutMsg:@"Please Wait!" time:10];
+    NSString *strValue = value? @"true": @"false";
     switch (type) {
         case Adv_LocalWebInterface:{
-            
+            [RouterPayload requestAlmondPropertyChange:mii action:@"WebAdminEnable" value:strValue uptime:nil];
         }
             break;
         case Adv_UPnP:{
             NSLog(@"upnp");
+            [RouterPayload requestAlmondPropertyChange:mii action:@"Upnp" value:strValue uptime:nil];
         }
             break;
         case Adv_AlmondScreenLock:{
-            
+            [RouterPayload requestAlmondPropertyChange:mii action:@"ScreenLock" value:strValue uptime:nil];
         }
             break;
             
@@ -199,8 +226,64 @@ static const int footerHeight = 10;
     }
 }
 
--(void)onDoneTapDelegate:(AdvCellType)type value:(NSString *)values{
-    
+- (void)onDoneTapDelegate:(AdvCellType)type value:(NSString *)value isSecureFld:(BOOL)isSecureFld row:(NSInteger)row{
+    [self showHudWithTimeoutMsg:@"Please Wait!" time:10];
+    AlmondProperties *almondProperty = [SecurifiToolkit sharedInstance].almondProperty;
+    switch (type) {
+        case Adv_LocalWebInterface:{
+            NSLog(@"local web interface");
+            if(!isSecureFld){
+                NSString *encryptedPass = value;
+                [RouterPayload requestAlmondPropertyChange:mii action:@"WebAdminPassword" value:encryptedPass uptime:almondProperty.uptime];
+            }else{
+                //non editable
+            }
+        }
+            break;
+
+        case Adv_AlmondScreenLock:{
+            if(!isSecureFld){
+                NSString *encryptedPass = value;
+                [RouterPayload requestAlmondPropertyChange:mii action:@"ScreenPIN" value:encryptedPass uptime:almondProperty.uptime];
+            }else{
+                [RouterPayload requestAlmondPropertyChange:mii action:@"ScreenTimeout" value:value uptime:nil];
+            }
+        }
+            break;
+            
+        case Adv_DiagnosticSettings:{
+            NSLog(@"diagnostic");
+            if(row == 1){
+                NSLog(@"row 1");
+                [RouterPayload requestAlmondPropertyChange:mii action:@"CheckInternetIP" value:value uptime:nil];
+            }
+            
+            else if(row == 2)
+                [RouterPayload requestAlmondPropertyChange:mii action:@"CheckInternetURL" value:value uptime:nil];
+        }
+            break;
+        case Adv_Language:{
+            //non editable
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+#pragma mark hud methods
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg time:(NSTimeInterval)sec{
+    NSLog(@"showHudWithTimeoutMsg");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:hudMsg];
+        [self.HUD hide:YES afterDelay:sec];
+    });
+}
+
+- (void)showHUD:(NSString *)text {
+    self.HUD.labelText = text;
+    [self.HUD show:YES];
 }
 
 #pragma mark Initialization
@@ -223,26 +306,33 @@ static const int footerHeight = 10;
          },
      ....]
 */
-    AlmondProperties *almondProperty = [AlmondProperties getTestAlmondProperties];
-    //web interface
+    AlmondProperties *almondProperty = [SecurifiToolkit sharedInstance].almondProperty;
+    if(almondProperty.webAdminPassword == nil)//when you either have no response or response has no data
+        almondProperty = [AlmondProperties getEmptyAlmondProperties];
+        
     self.sectionsArray = [NSMutableArray new];
-    
+    NSString *decrytedPass;
+    //web interface
     NSMutableArray *cellsArray = [NSMutableArray new];
     [cellsArray addObject:[self getCellDict:@"Local Web Interface" value:almondProperty.webAdminEnable]];
     [cellsArray addObject:[self getCellDict:@"Login" value:@"admin"]];
-    [cellsArray addObject:[self getCellDict:@"Password" value:almondProperty.webAdminPassword]];
+    decrytedPass = [self getDecryptedPass:almondProperty.webAdminPassword];
+    [cellsArray addObject:[self getCellDict:@"Password" value:decrytedPass]];
     [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_LocalWebInterface]];
     
     
     //upnp
-    cellsArray = [NSMutableArray new];
-    [cellsArray addObject:[self getCellDict:@"UPnP" value:almondProperty.upnp]];
-    [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_UPnP]];
+    if([self isAL3]){
+        cellsArray = [NSMutableArray new];
+        [cellsArray addObject:[self getCellDict:@"UPnP" value:almondProperty.upnp]];
+        [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_UPnP]];
+    }
     
     //screen lock
     cellsArray = [NSMutableArray new];
     [cellsArray addObject:[self getCellDict:@"Almond Screen Lock" value:almondProperty.screenLock]];
-    [cellsArray addObject:[self getCellDict:@"Pin" value:almondProperty.screenPIN]];
+    decrytedPass = [self getDecryptedPass:almondProperty.screenPIN];
+    [cellsArray addObject:[self getCellDict:@"Pin" value:decrytedPass]];
     [cellsArray addObject:[self getCellDict:@"Sleep After" value:almondProperty.screenTimeout]];
     [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_AlmondScreenLock]];
     
@@ -282,4 +372,16 @@ static const int footerHeight = 10;
     return muDict;
 }
 
+#pragma mark helper methods
+- (NSString *)getDecryptedPass:(NSString *)encryptedPass{
+    if(encryptedPass.length == 0)
+        return @"";
+    AlmondProperties *almondProp = [SecurifiToolkit sharedInstance].almondProperty;
+    NSData *payload = [[NSData alloc] initWithBase64EncodedString:encryptedPass options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    return [payload securifiDecryptPasswordForAlmond:[AlmondManagement currentAlmond].almondplusMAC almondUptime:almondProp.uptime];
+}
+
+-(BOOL)isAL3{
+    return [[AlmondManagement currentAlmond].firmware hasPrefix:@"AL3-"];
+}
 @end

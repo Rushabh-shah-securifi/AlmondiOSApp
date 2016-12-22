@@ -13,8 +13,9 @@
 #import "AlmondManagement.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "UIViewController+Securifi.h"
+#import "MBProgressHUD.h"
 
-@interface SelectedPlanViewController ()
+@interface SelectedPlanViewController ()<MBProgressHUDDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *topPlanLbl;
 @property (weak, nonatomic) IBOutlet UILabel *selectedPlanAmtLbl;
 @property (weak, nonatomic) IBOutlet UITextField *couponTxtFld;
@@ -22,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *totalAmtLbl;
 @property (weak, nonatomic) IBOutlet UIButton *paymentBtn;
 
+@property(nonatomic) MBProgressHUD *HUD;
 @end
 
 @implementation SelectedPlanViewController
@@ -31,6 +33,7 @@ int mii;
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     NSLog(@"selected plan selectedvc: %d, %@", self.selectedPlan, [AlmondPlan getPlanID:self.selectedPlan]);
     [self initializeUI];
+    [self setUpHUD];
     // Do any additional setup after loading the view.
 }
 
@@ -55,6 +58,28 @@ int mii;
     
     [center addObserver:self selector:@selector(onSubscribeMeCommandResponse:) name:SUBSCRIBE_ME_NOTIFIER object:nil];
 }
+
+-(void)setUpHUD{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.dimBackground = NO;
+    _HUD.delegate = self;
+    [self.navigationController.view addSubview:_HUD];
+}
+#pragma mark hud methods
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg time:(NSTimeInterval)sec{
+    NSLog(@"showHudWithTimeoutMsg");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:hudMsg];
+        [self.HUD hide:YES afterDelay:sec];
+    });
+}
+
+- (void)showHUD:(NSString *)text {
+    self.HUD.labelText = text;
+    [self.HUD show:YES];
+}
+
 #pragma mark ui methods
 - (void)initializeUI{
     self.topPlanLbl.text = [AlmondPlan getPlanString:self.selectedPlan];
@@ -78,6 +103,7 @@ int mii;
 - (IBAction)onProceedToPaymentTap:(id)sender {
     if([AlmondPlan hasPaidSubscription] || self.selectedPlan == PlanTypeFree){
         //will have to pay from this controller it self
+        [self showHudWithTimeoutMsg:@"Please Wait!" time:10];
         [self sendSubscribeMeCommand];
     }else{
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -139,8 +165,9 @@ int mii;
     
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     NSString *cmdType = payload[COMMAND_TYPE];
-    //[self hideHUDDelegate];
-    
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
     if(isSuccessful){
         [self showToast:@"Payment Successful!"];
         
@@ -158,6 +185,7 @@ int mii;
         PaymentCompleteViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"PaymentCompleteViewController"];
         viewController.type = type;
         viewController.selectedPlanType = self.selectedPlan;
+        viewController.currentMAC = self.currentMAC;
         //self.navigationController.navigationBarHidden = YES;
         [self.navigationController pushViewController:viewController animated:YES];
     });
