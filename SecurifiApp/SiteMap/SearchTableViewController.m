@@ -459,11 +459,12 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     if(![dict[@"AMAC"] isEqualToString:self.amac] || ![dict[@"CMAC"] isEqualToString:self.cmac])
         return;
     NSInteger changedHourTag = dict[@"ChangeHour"]!=NULL?[dict[@"ChangeHour"] integerValue]:0;
+    NSLog(@"response dict %@",dict);
     if(changedHourTag == 1)
         [self createRequest:@"LastHour" value:self.value];
     
     NSMutableDictionary *clientBrowsingHistory = [[NSMutableDictionary alloc]init];
-    
+    NSString *searchLastHour = dict[@"search"]!=NULL?dict[@"search"]:@"";
     NSArray *allObj = dict[@"Data"];
     NSDictionary *last_uriDict = [allObj lastObject];
     NSString *last_date = last_uriDict[@"Date"];
@@ -482,7 +483,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         [self.allUri addObject:uriDict];
     }
     NSLog(@"self.allUri count = %ld",(unsigned long)self.allUri.count);
-    NSDictionary *dayDict =[CommonMethods createSearchDictObj:self.allUri];
+    NSDictionary *dayDict =[CommonMethods createSearchDictObj:self.allUri search:searchLastHour];
     [clientBrowsingHistory setObject:dayDict forKey:@"Data"];
     NSArray *sortedDate = [self sortedDateArr:[dayDict allKeys]];
         [self.dayArr removeAllObjects];

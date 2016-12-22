@@ -36,6 +36,7 @@
 #import "AlmondManagement.h"
 #import "IoTDevicesListViewController.h"
 #import "MySubscriptionsViewController.h"
+#import "GenericCommand.h"
 
 
 
@@ -66,6 +67,10 @@
 @property CGFloat constatnt1;
 @property CGFloat constatnt2;
 
+@property (weak, nonatomic) IBOutlet UILabel *lastScanIot_label;
+@property (weak, nonatomic) IBOutlet UILabel *noIot_label;
+
+
 @end
 
 
@@ -91,7 +96,7 @@
     [self initializeAddButtonView];
     [self initializeHUD];
    
-    
+    [self sendScanNowReq];
     CGSize scrollableSize = CGSizeMake(Scroller.frame.size.width,Scroller.frame.size.height+ 130);
     [Scroller setContentSize:scrollableSize];
 }
@@ -147,6 +152,11 @@
                    name:kSFINotificationDidMarkViewed
                  object:nil];
     
+    [center addObserver:self
+               selector:@selector(iotScanresultsCallBackDashBoard:)
+                   name:NOTIFICATION_IOT_SCAN_RESULT_CONTROLLER_NOTIFIER
+                 object:nil];
+    
     [self getRecentNotification];
     [NotificationAccessAndRefreshCommands tryRefreshNotifications];
     [self initializeUI];
@@ -171,11 +181,12 @@
 -(void)iotUIUpdate{
     SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
     
-    if(self.toolkit.config.isPaymentDone && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware]){
+    if(self.toolkit.config.isPaymentDone && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
         self.inactiveNetworkDevices.hidden = NO;
         self.iotSecurityImg.hidden = YES;
         self.tableYconstrain1.constant = self.constatnt1+90;
         self.tableYconstrain2.constant = self.constatnt2+90;
+        self.iotSecurityButton.hidden = NO;
         self.vulnableDevices.text = @"VULNERABLE DEVICES";
         [self.iotSecurityButton removeTarget:nil
                                       action:NULL
@@ -184,7 +195,7 @@
        
         
     }
-    else if(!self.toolkit.config.isPaymentDone && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware]){
+    else if(!self.toolkit.config.isPaymentDone && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
         // call my scbscription
         //change icon name
         self.vulnableDevices.text = @"View MY Subscription";
@@ -669,7 +680,7 @@
     NSString *string;
     switch (section) {
         case 0:
-            string = @"IOT SECURITY";
+            string = @"INTERNET SECURITY";
             break;
             
         case 1:
@@ -961,7 +972,15 @@
     [self removeAlmondSelectionView];
     NSLog(@"i am called");
     [AlmondManagement setCurrentAlmond:selectedAlmond];
+    GenericCommand *cmd  = [GenericCommand requestScanNow:selectedAlmond.almondplusMAC];
+    [self.toolkit asyncSendToNetwork:cmd];
     [self iotUIUpdate];
+}
+-(void)sendScanNowReq{
+    SFIAlmondPlus *alm = [AlmondManagement currentAlmond];
+    GenericCommand *cmd  = [GenericCommand requestScanNow:alm.almondplusMAC];
+    NSLog(@"cmd === %@",cmd);
+    [self.toolkit asyncSendToNetwork:cmd];
 }
 
 -(void)removeAlmondSelectionView{
@@ -1040,5 +1059,29 @@
         [self.navigationController pushViewController:viewCtrl animated:YES];
     });
 }
+#pragma mark IOtScan
+-(void)iotScanresultsCallBackDashBoard:(id)sender{
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSArray *scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
+    NSArray *excludedDevices = toolkit.iotScanResults[@"scanExclude"];
+    NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] intValue]];
+    NSString *lastScanYtime = [dat stringFromDateAMPM];
+    NSString *noSiotScanned = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.noIot_label.text = [NSString stringWithFormat:@"%ld Iot Devices scanned",scannedDeviceList.count];
+        self.lastScanIot_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
+        self.inactiveNetworkDevices.text = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
+        if(scannedDeviceList.count == 0){
+            self.noIot_label.text = @"No Iot Device scanned";
+            self.lastScanIot_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
+        }
+    });
+
+   
+}
+
+
+
 
 @end

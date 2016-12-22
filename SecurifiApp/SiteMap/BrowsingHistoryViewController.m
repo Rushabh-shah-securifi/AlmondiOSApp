@@ -191,22 +191,30 @@
     if(_responseData == nil)
         return;
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
+     NSLog(@"response obj  %@",dict);
     [_responseData setLength:0];
     _responseData = nil;
     /*note get endidentifier from db */
     //dispatch_async(self.sendReqQueue,^(){
     if(dict == NULL)
         return;
-    if(dict[@"Data"] == NULL)
-        return;
+    
     if(dict[@"AMAC"] == NULL || dict[@"CMAC"] == NULL)
         return;
     if(![dict[@"AMAC"] isEqualToString:self.amac] || ![dict[@"CMAC"] isEqualToString:self.cmac])
         return;
     
     NSArray *allObj = dict[@"Data"];
-    NSLog(@"response obj count list %@",allObj);
-    if(allObj == NULL)
+    NSLog(@"response obj count list %@,pg = %@",allObj,dict[@"pageState"]);
+    NSLog(@"count db %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+    if(allObj.count==0 && (dict[@"pageState"] == NULL || dict[@"pageState"] == [NSNull null])){// deleting entries from db if no object in res and pg in null
+         [BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
+        self.dayArr = @[];
+            [self reloadTable];
+        return;
+
+    }
+    if(dict[@"Data"] == NULL)
         return;
     NSDictionary *last_uriDict = [allObj lastObject];
     NSString *last_date = last_uriDict[@"Date"];
@@ -378,10 +386,10 @@
             self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:self.count amac:self.amac cmac:self.cmac];
             NSLog(@"self.dayArr count %ld",self.dayArr.count);
             if(self.dayArr.count == 0){
-                
+               [self reloadTable];
             }
             //[self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
-            [self reloadTable];
+            
         }
         
     }

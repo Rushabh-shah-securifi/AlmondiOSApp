@@ -15,6 +15,8 @@
 #import "UIFont+Securifi.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "MySubscriptionsViewController.h"
+#import "GenericIndexUtil.h"
+#import "AlmondManagement.h"
 
 @interface IoTDeviceViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UISwitch *iotSwitch;
@@ -30,6 +32,7 @@
 @property (nonatomic )NSMutableArray *warningLables;
 @property (nonatomic) Client *client;
 
+@property (weak, nonatomic) IBOutlet UILabel *iotSecurity_label;
 
 @end
 
@@ -39,18 +42,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.middleView.hidden = _hideMiddleView;
+    if(_hideMiddleView == NO)
+        self.iotSecurity_label.text = @"IoT Scan";
+    else
+        self.iotSecurity_label.text = @"IoT Security";
     self.tableView.hidden = _hideTable;
     self.learnMore.hidden = _hideTable;
     self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
+    NSLog(@"iot device mac %@",self.iotDevice[@"MAC"]);
     self.client = [Client getClientByMAC:self.iotDevice[@"MAC"]];
+     NSLog(@"iot device mac %@",self.client.deviceMAC);
     
-    if(!self.client.iot_serviceEnable){
-        self.middleView.hidden = YES;
-        self.tableView.hidden = YES;
-        self.learnMore.hidden = YES;
-    }
+//    if(!self.client.iot_serviceEnable){
+//        self.middleView.hidden = YES;
+//        self.tableView.hidden = YES;
+//        self.learnMore.hidden = YES;
+//    }
     
     NSString *TypeImg = [self.client iconName];
+    NSLog(@"Type Img %@",TypeImg);
     self.clientImg.image = [UIImage imageNamed:TypeImg];
     self.clientName.text = self.client.name;
     [self getDescriptionLables:self.iotDevice];
@@ -73,8 +83,37 @@
 -(void)viewWillAppear:(BOOL)animated{
     [self initializeNotifications];
     [super viewWillAppear:YES];
-    
+    [self forRouterModetest];
     [self.navigationController setNavigationBarHidden:YES];
+    
+}
+-(void)forRouterModetest{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSString *routerMode = toolkit.routerMode;
+//    NSLog(@"client connection = %@ & router mode  = %@ ",routerMode);
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
+    BOOL isLocal = [toolkit useLocalNetwork:almond.almondplusMAC];
+    NSArray  *arr = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:self.client.deviceID];
+    NSString *connection;
+    
+    for (GenericIndexValue *genericIndexValue in arr) {
+        
+        if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"]){
+            connection = genericIndexValue.genericValue.value;
+        }
+    }
+    
+    if(isLocal){
+        self.iotSwitch.hidden = YES;
+    }
+    if([routerMode isEqualToString:@"ap"] || [routerMode isEqualToString:@"re"] ||[routerMode isEqualToString:@"WirelessSlave"] || [routerMode isEqualToString:@"WiredSlave"]){
+        if(![connection isEqualToString:@"wireless"]){
+            self.iotSwitch.hidden = YES;
+        }
+        else{
+            self.iotSwitch.hidden = NO;
+        }
+    }
 }
 -(void)initializeNotifications{
     NSLog(@"initialize notifications sensor table");
@@ -120,19 +159,27 @@
     NSLog(@"client.deviceAllowedType %d",self.client.deviceAllowedType);
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.iotSwitch.on = self.client.iot_serviceEnable;
-    if(self.client.deviceAllowedType == 0){
-        self.blockLabel.text = @"Blocked";
         
-        [self.blockButton setTitle:@"Allow Device" forState:UIControlStateNormal];
+    if(!self.client.isActive){
+        self.blockLabel.text = @"InActive";
+        
+        [self.blockButton setTitle:@"Block Device" forState:UIControlStateNormal];
         self.topView.backgroundColor = [UIColor lightGrayColor];
-        self.blockButton.backgroundColor = [UIColor securifiScreenGreen];
+        self.blockButton.backgroundColor = [UIColor darkGrayColor];
     }
     else{
         self.blockLabel.text = @"Active";
         [self.blockButton setTitle:@"Block Device" forState:UIControlStateNormal];
         self.topView.backgroundColor = [self getColor:self.iotDevice];
-        self.blockButton.backgroundColor = [UIColor lightGrayColor];
+        self.blockButton.backgroundColor = [UIColor darkGrayColor];
     }
+        if(self.client.deviceAllowedType == 1){
+            self.blockLabel.text = @"Blocked";
+            
+            [self.blockButton setTitle:@"Allow Device" forState:UIControlStateNormal];
+            self.topView.backgroundColor = [UIColor darkGrayColor];
+            self.blockButton.backgroundColor = [UIColor securifiScreenGreen];
+        }
     });
 
 }

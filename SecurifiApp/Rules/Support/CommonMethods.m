@@ -735,7 +735,7 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     return [[NSMutableArray alloc]initWithArray:arrTem];
 }
 #pragma mark searchPage methods
-+(NSDictionary *)createSearchDictObj:(NSArray*)allObj{
++(NSDictionary *)createSearchDictObj:(NSArray*)allObj search:(NSString *)search{
     NSDictionary *catogeryDict = [self parseJson:@"CategoryMap"];
         allObj = [self getOrderedArr:allObj];
     
@@ -744,6 +744,16 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     {
         NSString *ID = uriDict[@"subCategory"];
         NSDictionary *categoryName = catogeryDict[ID];
+        if([search isEqualToString:@"LastHour"])
+        {
+            NSInteger lastHour = [uriDict[@"LastVisitedEpoch"] integerValue];
+            NSInteger systemLastHour = round([[NSDate date] timeIntervalSince1970]) - 3600;
+            
+            if(lastHour < systemLastHour){
+                NSLog(@"lastHour %ld systemLastHour %ld",lastHour,systemLastHour);
+            }
+                continue;
+        }
         NSDictionary *categoryObj = @{@"ID":ID,
                                       @"categoty":categoryName[@"category"],
                                       @"subCategory":categoryName[@"categoryName"]};

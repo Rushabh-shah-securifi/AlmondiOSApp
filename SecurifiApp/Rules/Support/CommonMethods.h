@@ -83,7 +83,7 @@
 
 +(BOOL)isContainCategory:(NSString*)search;
 
-+(NSDictionary *)createSearchDictObj:(NSArray*)allObj;
++(NSDictionary *)createSearchDictObj:(NSArray*)allObj search:(NSString *)search;
 
 + (NSString *)getTodayDate;
 

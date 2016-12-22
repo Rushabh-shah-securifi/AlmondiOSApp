@@ -353,7 +353,6 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="40" id="yqz-sk-5Qn"/>
                                                         </constraints>
-                                                        <state key="normal" title="Button"/>
                                                     </button>
                                                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_security_gray" translatesAutoresizingMaskIntoConstraints="NO" id="TBN-Du-NzM">
                                                         <rect key="frame" x="39" y="8" width="42" height="42"/>
@@ -510,6 +509,8 @@
                         <outlet property="labelAlmondStatus" destination="GMh-sX-mwO" id="Cid-wx-wFz"/>
                         <outlet property="labelHome" destination="wmQ-Wm-9ba" id="ccZ-5Q-uU9"/>
                         <outlet property="labelHomeAway" destination="wMA-qN-Fdi" id="AJN-uG-nwY"/>
+                        <outlet property="lastScanIot_label" destination="QrP-Ve-EXb" id="HrT-i2-Zec"/>
+                        <outlet property="noIot_label" destination="nsb-Oz-R6e" id="69d-Nb-KGb"/>
                         <outlet property="smartHomeDevices" destination="Rz9-Pa-fTV" id="Jrx-bI-PGP"/>
                         <outlet property="tableYconstrain1" destination="93c-WQ-8sv" id="tQ8-kx-Jsh"/>
                         <outlet property="tableYconstrain2" destination="eB6-RL-kGD" id="bH0-pw-gcK"/>
@@ -740,6 +741,8 @@
                     <connections>
                         <outlet property="backArrIcon" destination="vfo-Xr-HJV" id="jjD-2n-LHB"/>
                         <outlet property="ioTdevicetable" destination="BdI-Rj-Dia" id="LK1-Wn-XeD"/>
+                        <outlet property="lastScan_label" destination="Cbk-WQ-odI" id="zIs-1O-x39"/>
+                        <outlet property="no_scanDevice_label" destination="h93-AJ-YUt" id="8c8-4G-blQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cng-qR-5tW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -749,7 +752,7 @@
         <!--IoT Device View Controller-->
         <scene sceneID="ogS-c5-ykv">
             <objects>
-                <viewController storyboardIdentifier="IoTDeviceViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Hx6-sF-eKd" customClass="IoTDeviceViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="IoTDeviceViewController" extendedLayoutIncludesOpaqueBars="YES" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Hx6-sF-eKd" customClass="IoTDeviceViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Jpf-Ox-sWl"/>
                         <viewControllerLayoutGuide type="bottom" id="ZD5-ef-YhE"/>
@@ -942,7 +945,7 @@
                                             <action selector="viewHistoryButtonClicked:" destination="Hx6-sF-eKd" eventType="touchUpInside" id="Obf-ff-LxA"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Viiew Activity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ng-Xh-Y6B">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View Activity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ng-Xh-Y6B">
                                         <rect key="frame" x="55" y="11" width="206" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="ocl-uQ-sbF"/>
@@ -1001,7 +1004,7 @@
                                     <outlet property="delegate" destination="Hx6-sF-eKd" id="aja-e2-lmA"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JRV-0i-B4M">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JRV-0i-B4M">
                                 <rect key="frame" x="207" y="543" width="152" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="E08-Nj-jZc"/>
@@ -1050,6 +1053,7 @@
                         <outlet property="blockLabel" destination="ebb-TG-Daq" id="Hha-9Z-ceF"/>
                         <outlet property="clientImg" destination="dKs-DZ-2pr" id="dpe-Zg-oSj"/>
                         <outlet property="clientName" destination="dGQ-Ah-RlG" id="vdQ-AN-lDQ"/>
+                        <outlet property="iotSecurity_label" destination="KA3-HR-o7x" id="n1i-UU-cBi"/>
                         <outlet property="iotSwitch" destination="iMD-A4-vxM" id="RpS-UQ-NUi"/>
                         <outlet property="learnMore" destination="JRV-0i-B4M" id="a8G-vn-A3e"/>
                         <outlet property="middleView" destination="dGC-gO-UYu" id="FcT-GZ-Ko9"/>
@@ -1071,7 +1075,7 @@
         <image name="ic_scan_gray" width="64" height="64"/>
         <image name="ic_security_gray" width="64" height="64"/>
         <image name="rightarrow-icon" width="64" height="64"/>
-        <image name="scan_g" width="64" height="64"/>
+        <image name="scan_g" width="140" height="140"/>
         <image name="smartphone_icon" width="50" height="50"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

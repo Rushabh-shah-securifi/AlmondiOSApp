@@ -13,12 +13,16 @@
 #import "Client.h"
 #import "UIFont+Securifi.h"
 #import "MySubscriptionsViewController.h"
+#import "AlmondManagement.h"
 
 @interface IoTDevicesListViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *ioTdevicetable;
 @property (weak, nonatomic) IBOutlet UIImageView *backArrIcon;
 @property (nonatomic) NSMutableArray *scannedDeviceList;
 @property (nonatomic) NSArray *excludedDevices;
+@property (weak, nonatomic) IBOutlet UILabel *no_scanDevice_label;
+@property (weak, nonatomic) IBOutlet UILabel *lastScan_label;
+
 
 @end
 
@@ -110,6 +114,7 @@
 //    }
     Client *client = [toolkit.clients objectAtIndex:0];
     self.excludedDevices =  [[NSArray alloc] initWithObjects:client.deviceMAC,nil];
+    [self iotScanresultsCallBackController:nil];
     
     
 }
@@ -138,6 +143,13 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.backArrIcon.image = [CommonMethods imageNamed:@"back_icon" withColor:[UIColor lightGrayColor]];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    
+    [center addObserver:self
+               selector:@selector(iotScanresultsCallBackController:)
+                   name:NOTIFICATION_IOT_SCAN_RESULT_CONTROLLER_NOTIFIER
+                 object:nil];
+
     [self.navigationController setNavigationBarHidden:YES];
 }
 -(void)viewWillDisappear:(BOOL)animated{
@@ -376,9 +388,13 @@
     return cell;
 }
 - (IBAction)scanNowRequest:(id)sender {
-    NSDictionary *commandInfo = @{@"CommandType":@"IOT Scan Results",
-                                  @"AlmondMAC":@"23232323"                        };
-    GenericCommand *cloudCommand = [GenericCommand jsonStringPayloadCommand:commandInfo commandType:CommandType_WIFI_CLIENT_GET_PREFERENCE_REQUEST];
+    SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
+    NSString* amac = currentAlmond.almondplusMAC;
+    NSDictionary *commandInfo = @{@"CommandType":@"ScanNow",
+                                  @"AlmondMAC":amac
+                                  };
+    
+    GenericCommand *cloudCommand = [GenericCommand jsonStringPayloadCommand:commandInfo commandType:CommandType_UPDATE_REQUEST];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncSendToNetwork:cloudCommand];
 }
@@ -398,6 +414,23 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.navigationController pushViewController:viewCtrl animated:YES];
     });
+}
+-(void)iotScanresultsCallBackController:(id)sender{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    self.scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
+    self.excludedDevices = toolkit.iotScanResults[@"scanExclude"];
+    NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] intValue]];
+    NSString *lastScanYtime = [dat stringFromDateAMPM];
+    
+    self.no_scanDevice_label.text = [NSString stringWithFormat:@"%ld Iot Devices scanned",self.scannedDeviceList.count];
+    
+    self.lastScan_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
+    if(self.scannedDeviceList.count == 0){
+        self.no_scanDevice_label.text = @"No Iot Device scanned";
+        self.lastScan_label.hidden = YES;
+        self.ioTdevicetable.hidden = YES;
+    }
+    [self.ioTdevicetable reloadData];
 }
 
 @end
