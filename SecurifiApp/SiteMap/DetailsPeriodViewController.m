@@ -273,7 +273,7 @@ NSDate *_dateSelected;
         [formatter setDateFormat:@"YYYY-MM-dd"];
         _lastDate = [formatter stringFromDate:self.rangeUnderEdit.endDate];
         self.value = [NSString stringWithFormat:@"%ld",[self daysBetweenDate:self.rangeUnderEdit.beginDate andDate:self.rangeUnderEdit.endDate] + 1];
-        [formatter setDateFormat:@"dd MMM YYYY"];
+        [formatter setDateFormat:@"dd MMM yy"];
         if([self.rangeUnderEdit.beginDate compare:self.rangeUnderEdit.endDate] == NSOrderedSame )
             self.labelTxt = [NSString stringWithFormat:@"%@",[formatter stringFromDate:self.rangeUnderEdit.beginDate]];
         else
