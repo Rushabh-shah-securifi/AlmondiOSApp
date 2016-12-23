@@ -12,6 +12,7 @@
 #import "Client.h"
 #import "ClientPayload.h"
 #import "UIColor+Securifi.h"
+#import "Colours.h"
 #import "UIFont+Securifi.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "MySubscriptionsViewController.h"
@@ -31,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *learnMore;
 @property (nonatomic )NSMutableArray *warningLables;
 @property (nonatomic) Client *client;
+@property BOOL isDNSScan;
 
 @property (weak, nonatomic) IBOutlet UILabel *iotSecurity_label;
 
@@ -50,10 +52,13 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     self.middleView.hidden = _hideMiddleView;
+    self.isDNSScan = !_hideMiddleView;
+    
     if(_hideMiddleView == NO)
         self.iotSecurity_label.text = @"IoT Scan";
     else
         self.iotSecurity_label.text = @"IoT Security";
+    
     self.tableView.hidden = _hideTable;
     self.learnMore.hidden = _hideTable;
     self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
@@ -160,7 +165,10 @@
 -(void)setAllowAndBlock{
     NSLog(@"client.deviceAllowedType %d",self.client.deviceAllowedType);
     dispatch_async(dispatch_get_main_queue(), ^() {
-        self.iotSwitch.on = self.client.iot_serviceEnable;
+        if(!self.isDNSScan)
+            self.iotSwitch.on = self.client.iot_serviceEnable;
+        else
+            self.iotSwitch.on = self.client.iot_dnsEnable;
         
     if(!self.client.isActive){
         self.blockLabel.text = @"InActive";
@@ -172,7 +180,10 @@
     else{
         self.blockLabel.text = @"Active";
         [self.blockButton setTitle:@"Block Device" forState:UIControlStateNormal];
-        self.topView.backgroundColor = [self getColor:self.iotDevice];
+        if(_isDNSScan)
+            self.topView.backgroundColor = [UIColor securifiScreenGreen];
+        else
+            self.topView.backgroundColor = [self getColor:self.iotDevice];
         self.blockButton.backgroundColor = [UIColor darkGrayColor];
     }
         if(self.client.deviceAllowedType == 1){
@@ -181,6 +192,24 @@
             [self.blockButton setTitle:@"Allow Device" forState:UIControlStateNormal];
             self.topView.backgroundColor = [UIColor darkGrayColor];
             self.blockButton.backgroundColor = [UIColor securifiScreenGreen];
+        }
+        else{
+            if(!self.client.isActive){
+                self.blockLabel.text = @"InActive";
+                
+                [self.blockButton setTitle:@"Block Device" forState:UIControlStateNormal];
+                self.topView.backgroundColor = [UIColor lightGrayColor];
+                self.blockButton.backgroundColor = [UIColor darkGrayColor];
+            }
+            else{
+                self.blockLabel.text = @"Active";
+                [self.blockButton setTitle:@"Block Device" forState:UIControlStateNormal];
+                if(_isDNSScan)
+                    self.topView.backgroundColor = [UIColor securifiScreenGreen];
+                else
+                    self.topView.backgroundColor = [self getColor:self.iotDevice];
+                self.blockButton.backgroundColor = [UIColor darkGrayColor];
+            }
         }
     });
 
@@ -361,6 +390,14 @@
                         client.iot_serviceEnable = NO;
                         self.client.iot_serviceEnable = NO;
                     }
+                    if([clientDict[DNSEnable] isEqualToString:@"true"]){
+                        client.iot_dnsEnable = YES;
+                        self.client.iot_dnsEnable = YES;
+                    }
+                    else{
+                        client.iot_dnsEnable = NO;
+                        self.client.iot_dnsEnable = NO;
+                    }
                     
                     [self setAllowAndBlock];
                     
@@ -421,12 +458,21 @@
     mii = arc4random()%10000;
     
     NSLog(@"state %d",state);
-    
-    if(state == NO){
-        self.client.iot_serviceEnable = NO;
+    if(!self.isDNSScan){
+        if(state == NO){
+            self.client.iot_serviceEnable = NO;
+        }
+        if(state == YES){
+            self.client.iot_serviceEnable = YES;
+        }
     }
-    if(state == YES){
-        self.client.iot_serviceEnable = YES;
+    else{
+        if(state == NO){
+            self.client.iot_dnsEnable = NO;
+        }
+        if(state == YES){
+            self.client.iot_dnsEnable = YES;
+        }
     }
     NSLog(@"self.client.iot_serviceEnable %d",self.client.iot_serviceEnable);
     [ClientPayload getUpdateClientPayloadForClient:self.client mobileInternalIndex:mii];

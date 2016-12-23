@@ -164,7 +164,7 @@
                      forControlEvents:UIControlEventTouchUpInside];
             [self.parentrolBtn addTarget:self action:@selector(onIoTControllClicked:) forControlEvents:UIControlEventTouchUpInside];
             
-            if(client.iot_serviceEnable == YES){
+            if(client.iot_dnsEnable == YES){
                 self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_security_black"];
                 
                 NSLog(@"ic_security_black");
