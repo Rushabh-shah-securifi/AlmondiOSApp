@@ -69,6 +69,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *lastScanIot_label;
 @property (weak, nonatomic) IBOutlet UILabel *noIot_label;
+@property (weak, nonatomic) IBOutlet UILabel *no_scanObjLabel;
 
 
 @end
@@ -163,6 +164,7 @@
     _statusIcon.networkStatusIconDelegate = self;
     NSLog(@"View will appear is called in DashBoardViewController");
     [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
+    [self iotScanresultsCallBackDashBoard:nil];
     
     
 }
@@ -182,7 +184,8 @@
     SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
     
     if(self.toolkit.config.isPaymentDone && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
-        self.inactiveNetworkDevices.hidden = NO;
+        self.inactiveNetworkDevices.hidden = YES;
+        self.no_scanObjLabel.hidden = NO;
         self.iotSecurityImg.hidden = YES;
         self.tableYconstrain1.constant = self.constatnt1+90;
         self.tableYconstrain2.constant = self.constatnt2+90;
@@ -202,6 +205,7 @@
         self.tableYconstrain1.constant = self.constatnt1;
         self.tableYconstrain2.constant = self.constatnt2;
         self.inactiveNetworkDevices.hidden = YES;
+        self.no_scanObjLabel.hidden = YES;
         self.iotSecurityImg.hidden = NO;
         self.iotSecurityButton.hidden = NO;
         self.iotSecurityImg.image = [UIImage imageNamed:@"ic_insecure_gray"];
@@ -214,6 +218,7 @@
         // call my scbscription
         self.activeNetworkDevices.hidden = NO;
         self.inactiveNetworkDevices.hidden = NO;
+        self.no_scanObjLabel.hidden = YES;
         self.iotSecurityImg.hidden = YES;
         self.vulnableDevices.text = @"INACTIVE CLIENTS";
         self.tableYconstrain1.constant = self.constatnt1;
@@ -575,15 +580,15 @@
 #pragma mark tableviewDelegate
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return 2;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger deviceRowCount = [self isSensorNotificationEmpty]? 1: self.deviceNotificationArr.count;
     NSInteger clientRowCount = [self isClientNotificationEmpty]? 1: self.clientNotificationArr.count;
-    if(section == 0)
-        return 2;
-    else if(section == 1)
+//    if(section == 0)
+//        return 2;
+     if(section == 0)
         return deviceRowCount;
     else
         return clientRowCount;
@@ -592,9 +597,9 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if(indexPath.section == 1 && [self isSensorNotificationEmpty]){
+    if(indexPath.section == 0 && [self isSensorNotificationEmpty]){
         return [self createEmptyCell:tableView isSensor:YES];
-    }else if(indexPath.section == 2 && [self isClientNotificationEmpty]){
+    }else if(indexPath.section == 1 && [self isClientNotificationEmpty]){
         return [self createEmptyCell:tableView isSensor:NO];
     }
     
@@ -604,15 +609,15 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
     }
-    if (indexPath.section == 0) {
-        cell.textLabel.numberOfLines = 2;
-        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        cell.textLabel.text = @"Suspicious activity on amazon echo";
-        NSString *iconName = @"default_device";
-        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[UIColor redColor]];
-        cell.detailTextLabel.text = @"5 min ago";
-    }
-    else if (indexPath.section == 1) {
+//    if (indexPath.section == 0) {
+//        cell.textLabel.numberOfLines = 2;
+//        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//        cell.textLabel.text = @"Suspicious activity on amazon echo";
+//        NSString *iconName = @"default_device";
+//        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[UIColor redColor]];
+//        cell.detailTextLabel.text = @"5 min ago";
+//    }
+     if (indexPath.section == 0) {
         if(indexPath.row > (int)self.deviceNotificationArr.count-1)
             return cell;
         //        NSLog(@"indexpathrow: %ld, arraycount: %d", (long)indexPath.row, self.deviceNotificationArr.count-1);
@@ -627,7 +632,7 @@
         cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[SFIColors ruleBlueColor]];
         cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
     }
-    else if(indexPath.section == 2){
+    else if(indexPath.section == 1){
         if(indexPath.row > (int)self.clientNotificationArr.count-1)
             return cell;
         
@@ -679,14 +684,14 @@
     }
     NSString *string;
     switch (section) {
+//        case 0:
+//            string = @"INTERNET SECURITY";
+//            break;
+//            
         case 0:
-            string = @"INTERNET SECURITY";
-            break;
-            
-        case 1:
             string = NSLocalizedString(@"smart_device_noti_title", @"");
             break;
-        case 2:
+        case 1:
             string = NSLocalizedString(@"client_noti_title", @"");
             break;
     }
@@ -973,8 +978,7 @@
     [self removeAlmondSelectionView];
     NSLog(@"i am called");
     [AlmondManagement setCurrentAlmond:selectedAlmond];
-    GenericCommand *cmd  = [GenericCommand requestScanNow:selectedAlmond.almondplusMAC];
-    [self.toolkit asyncSendToNetwork:cmd];
+    [self sendScanNowReq];
     [self iotUIUpdate];
 }
 -(void)sendScanNowReq{
@@ -1072,11 +1076,10 @@
         NSLog(@"noSiotScanned %@",noSiotScanned);
         self.noIot_label.text = [NSString stringWithFormat:@"%ld Iot Devices scanned",scannedDeviceList.count];
         self.lastScanIot_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
-        self.inactiveNetworkDevices.text = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
+        self.no_scanObjLabel.text = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
         if(scannedDeviceList.count == 0){
             self.noIot_label.text = @"No Iot Device scanned";
-            self.lastScanIot_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
-            NSLog(@"No Iot Device scanned");
+            self.lastScanIot_label.hidden = YES;
         }
     });
 

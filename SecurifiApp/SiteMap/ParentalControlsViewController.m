@@ -161,6 +161,7 @@
             
             self.switchView3.on = NO;
             self.switchView3.hidden = YES;
+             self.switchView1.hidden = YES;
             self.clrHis.hidden = YES;
             self.blockClientTxt.hidden = NO;
             self.view3.hidden = YES;
