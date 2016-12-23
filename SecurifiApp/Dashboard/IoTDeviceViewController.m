@@ -54,7 +54,7 @@
     self.middleView.hidden = _hideMiddleView;
     self.isDNSScan = !_hideMiddleView;
     
-    if(_hideMiddleView == NO)
+    if(_hideMiddleView == YES)
         self.iotSecurity_label.text = @"IoT Scan";
     else
         self.iotSecurity_label.text = @"IoT Security";

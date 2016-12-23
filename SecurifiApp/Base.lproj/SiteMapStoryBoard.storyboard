@@ -155,6 +155,8 @@
                     <connections>
                         <outlet property="browsingTable" destination="rj2-Du-dFq" id="dJk-b2-6k1"/>
                         <outlet property="clientName" destination="abp-vI-Nhp" id="Vmp-A5-vAz"/>
+                        <outlet property="searchButton" destination="bHJ-2S-S9W" id="JDF-j7-uhD"/>
+                        <outlet property="searchIcon" destination="a1z-2Q-ASt" id="MMS-ap-Kv0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tlV-G2-rLe" userLabel="First Responder" sceneMemberID="firstResponder"/>

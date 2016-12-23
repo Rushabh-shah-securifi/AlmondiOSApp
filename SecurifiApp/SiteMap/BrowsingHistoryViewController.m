@@ -44,6 +44,8 @@
 @property (nonatomic) NSURLConnection *conn;
 
 @property BOOL isTapped;
+@property (weak, nonatomic) IBOutlet UIImageView *searchIcon;
+@property (weak, nonatomic) IBOutlet UIButton *searchButton;
 
 
 @end
@@ -52,7 +54,10 @@
 - (void)viewDidLoad {
     NSLog(@" client name %@",self.client.name);
     self.count = 0;
-    
+    if(self.is_IotType){
+        self.searchIcon.hidden = YES;
+        self.searchButton.hidden = YES;
+    }
     
     [[Analytics sharedInstance]markWebHistoryPage];
     self.NoresultFound = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 140, 15)];

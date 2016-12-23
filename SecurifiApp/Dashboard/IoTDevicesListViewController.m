@@ -22,6 +22,7 @@
 @property (nonatomic) NSArray *excludedDevices;
 @property (weak, nonatomic) IBOutlet UILabel *no_scanDevice_label;
 @property (weak, nonatomic) IBOutlet UILabel *lastScan_label;
+@property (weak, nonatomic) IBOutlet UILabel *blinking_lbl;
 
 
 @end
@@ -284,15 +285,22 @@
     return cell;
 }
 - (IBAction)scanNowRequest:(id)sender {
+    NSInteger mii = arc4random()%10000;
     SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
     NSString* amac = currentAlmond.almondplusMAC;
     NSDictionary *commandInfo = @{@"CommandType":@"ScanNow",
-                                  @"AlmondMAC":amac
+                                  @"AlmondMAC":amac,
+                                  @"MobileInternalIndex":@(mii).stringValue
                                   };
     
     GenericCommand *cloudCommand = [GenericCommand jsonStringPayloadCommand:commandInfo commandType:CommandType_UPDATE_REQUEST];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncSendToNetwork:cloudCommand];
+    self.blinking_lbl.hidden = NO;
+    self.blinking_lbl.alpha = 0;
+    [UIView animateWithDuration:1.0 delay:0.2 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
+        self.blinking_lbl.alpha = 1;
+    } completion:nil];
 }
 - (IBAction)launchMySubscription:(id)sender {
     MySubscriptionsViewController *ctrl = [self getStoryBoardController:@"SiteMapStoryBoard" ctrlID:@"MySubscriptionsViewController"];
@@ -313,6 +321,7 @@
 }
 -(void)iotScanresultsCallBackController:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
+        self.blinking_lbl.hidden = YES;
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         self.scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
         self.excludedDevices = toolkit.iotScanResults[@"scanExclude"];

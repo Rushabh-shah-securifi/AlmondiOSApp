@@ -52,7 +52,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Almond Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="He5-pq-OVf">
-                                <rect key="frame" x="137" y="28" width="148" height="36"/>
+                                <rect key="frame" x="137" y="28" width="151" height="36"/>
                                 <fontDescription key="fontDescription" name="AvenirLTStd-Medium" family="Avenir LT Std" pointSize="20"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -239,13 +239,13 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HOME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wmQ-Wm-9ba">
-                                                <rect key="frame" x="44" y="145" width="36" height="14"/>
+                                                <rect key="frame" x="44" y="145" width="37.5" height="12"/>
                                                 <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="12"/>
                                                 <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AWAY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wMA-qN-Fdi">
-                                                <rect key="frame" x="119" y="145" width="33" height="14"/>
+                                                <rect key="frame" x="120.5" y="145" width="35.5" height="12"/>
                                                 <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="12"/>
                                                 <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -567,7 +567,7 @@
                                             <action selector="backButtonClicked:" destination="VtO-ix-k6T" eventType="touchUpInside" id="FZu-Wo-VTM"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IoT Security" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PFQ-x0-V2x">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Internet Security" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PFQ-x0-V2x">
                                         <rect key="frame" x="109" y="26" width="157" height="19"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -613,7 +613,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last scan 12h ago" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cbk-WQ-odI">
-                                        <rect key="frame" x="78" y="62" width="219" height="21"/>
+                                        <rect key="frame" x="78" y="59" width="219" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="MNC-9U-WmQ"/>
                                             <constraint firstAttribute="width" constant="219" id="Xti-t9-abV"/>
@@ -623,7 +623,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pkj-eu-YlS">
-                                        <rect key="frame" x="110" y="91" width="167" height="25"/>
+                                        <rect key="frame" x="110" y="82" width="167" height="25"/>
                                         <color key="backgroundColor" red="0.58431372550000005" green="0.45882352939999999" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="9DE-7g-bIp"/>
@@ -641,7 +641,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 IoT Devices scanned" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h93-AJ-YUt">
-                                        <rect key="frame" x="90" y="44" width="200" height="15"/>
+                                        <rect key="frame" x="90" y="42" width="200" height="15"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="nEW-ec-jCX"/>
                                             <constraint firstAttribute="height" constant="15" id="vOE-Wp-w62"/>
@@ -649,21 +649,33 @@
                                         <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scanning all active devices. This may take few minutes." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYB-1R-zfP">
+                                        <rect key="frame" x="0.0" y="113" width="375" height="24"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="Pzd-v6-eq9"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="13"/>
+                                        <color key="textColor" red="0.47450980390000003" green="0.47450980390000003" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="fYB-1R-zfP" firstAttribute="top" secondItem="Pkj-eu-YlS" secondAttribute="bottom" constant="6" id="5mk-KK-UjM"/>
                                     <constraint firstItem="uFj-PS-bQO" firstAttribute="leading" secondItem="2eL-xI-Dof" secondAttribute="leading" id="6zO-ie-dFb"/>
-                                    <constraint firstItem="Cbk-WQ-odI" firstAttribute="top" secondItem="h93-AJ-YUt" secondAttribute="bottom" constant="3" id="CQW-97-4PW"/>
+                                    <constraint firstItem="Cbk-WQ-odI" firstAttribute="top" secondItem="h93-AJ-YUt" secondAttribute="bottom" constant="2" id="CQW-97-4PW"/>
                                     <constraint firstItem="Pkj-eu-YlS" firstAttribute="centerX" secondItem="2eL-xI-Dof" secondAttribute="centerX" constant="5.5" id="Kh7-Lr-g15"/>
                                     <constraint firstItem="Pkj-eu-YlS" firstAttribute="leading" secondItem="2eL-xI-Dof" secondAttribute="leading" constant="110" id="LG7-xk-ck7"/>
-                                    <constraint firstItem="Pkj-eu-YlS" firstAttribute="top" secondItem="Cbk-WQ-odI" secondAttribute="bottom" constant="8" id="Taa-Yf-fP9"/>
+                                    <constraint firstItem="Pkj-eu-YlS" firstAttribute="top" secondItem="Cbk-WQ-odI" secondAttribute="bottom" constant="2" id="Taa-Yf-fP9"/>
+                                    <constraint firstAttribute="trailing" secondItem="fYB-1R-zfP" secondAttribute="trailing" id="Umt-Yk-fGZ"/>
                                     <constraint firstItem="h93-AJ-YUt" firstAttribute="centerX" secondItem="2eL-xI-Dof" secondAttribute="centerX" constant="2.5" id="VBa-Uc-IAb"/>
                                     <constraint firstItem="q3s-1m-Gom" firstAttribute="top" secondItem="2eL-xI-Dof" secondAttribute="top" id="WlS-Dw-c1L"/>
                                     <constraint firstItem="Cbk-WQ-odI" firstAttribute="centerX" secondItem="2eL-xI-Dof" secondAttribute="centerX" id="bcL-qT-q1J"/>
                                     <constraint firstAttribute="height" constant="131" id="cbP-PC-4jM"/>
                                     <constraint firstAttribute="trailing" secondItem="uFj-PS-bQO" secondAttribute="trailing" id="hlz-9t-j4W"/>
-                                    <constraint firstItem="h93-AJ-YUt" firstAttribute="top" secondItem="q3s-1m-Gom" secondAttribute="bottom" constant="4" id="iQA-fI-TdT"/>
+                                    <constraint firstItem="h93-AJ-YUt" firstAttribute="top" secondItem="q3s-1m-Gom" secondAttribute="bottom" constant="2" id="iQA-fI-TdT"/>
                                     <constraint firstItem="q3s-1m-Gom" firstAttribute="centerX" secondItem="2eL-xI-Dof" secondAttribute="centerX" constant="2.5" id="oPa-TD-gAb"/>
+                                    <constraint firstItem="fYB-1R-zfP" firstAttribute="leading" secondItem="2eL-xI-Dof" secondAttribute="leading" id="q14-Jk-a1Y"/>
                                     <constraint firstAttribute="bottom" secondItem="uFj-PS-bQO" secondAttribute="bottom" constant="-21" id="zPM-56-kcB"/>
                                 </constraints>
                             </view>
@@ -751,6 +763,7 @@
                     </view>
                     <connections>
                         <outlet property="backArrIcon" destination="vfo-Xr-HJV" id="jjD-2n-LHB"/>
+                        <outlet property="blinking_lbl" destination="fYB-1R-zfP" id="hqp-Zr-Ni3"/>
                         <outlet property="ioTdevicetable" destination="BdI-Rj-Dia" id="LK1-Wn-XeD"/>
                         <outlet property="lastScan_label" destination="Cbk-WQ-odI" id="zIs-1O-x39"/>
                         <outlet property="no_scanDevice_label" destination="h93-AJ-YUt" id="8c8-4G-blQ"/>

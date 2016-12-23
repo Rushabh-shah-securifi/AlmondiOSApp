@@ -41,11 +41,11 @@
     [cardView addTopBorder:self.backgroundColor];
     NSLog(@"ssid: %@, mode: %@", setting.ssid, self.mode);
     NSLog(@"self wirelessSetting type %@",self.wirelessSetting.type);
-    if([self.wirelessSetting.type isEqualToString:@"5G"]){
-        [cardView addTitleAndCopySwitch:@"Copy 2G setting" target:self action:nil shareAction:nil on:setting.enabled];
-        
-        [cardView addLine];
-    }
+//    if([self.wirelessSetting.type isEqualToString:@"5G"]){
+//        [cardView addTitleAndCopySwitch:@"Copy 2G setting" target:self action:nil shareAction:nil on:setting.enabled];
+//        
+//        [cardView addLine];
+//    }
     
     if([self isInREMode] || [self isGuestAndAP] || [self hasSlavesAndNotGuest]){
         [cardView addTitleAndShare:setting.ssid target:self shareAction:@selector(onShareBtnTap:) on:setting.enabled];
