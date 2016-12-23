@@ -275,6 +275,12 @@ int mii;
     }
 }
 
+- (void)showMidToastDelegate:(NSString *)msg{
+    [self showMidToast:msg];
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self.tableView reloadData];
+//    });
+}
 #pragma mark hud methods
 - (void)showHudWithTimeoutMsg:(NSString*)hudMsg time:(NSTimeInterval)sec{
     NSLog(@"showHudWithTimeoutMsg");

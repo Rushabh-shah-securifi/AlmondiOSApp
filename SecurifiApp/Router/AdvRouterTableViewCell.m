@@ -50,6 +50,32 @@
     self.secureField.returnKeyType = UIReturnKeyDone;
 }
 
+- (void)setupNumberPad{
+    UIToolbar* numberToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 50)];
+    numberToolbar.barStyle = UIBarStyleBlackTranslucent;
+    numberToolbar.items = @[[[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelNumberPad)],
+                            [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+                            [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(doneWithNumberPad)]];
+    [numberToolbar sizeToFit];
+    self.textField.inputAccessoryView = numberToolbar;
+    self.secureField.inputAccessoryView = numberToolbar;
+}
+
+-(void)cancelNumberPad{
+    [self.textField resignFirstResponder];
+    [self.secureField resignFirstResponder];
+}
+
+-(void)doneWithNumberPad{
+    if(self.type == Adv_AlmondScreenLock){
+        if(self.row == 1){
+            [self textFieldShouldReturn:self.secureField];
+        }
+        else if(self.row == 2)
+            [self textFieldShouldReturn:self.textField];
+    }
+}
+
 - (void)addEventsToBtn:(UIButton *)btn{
     [btn addTarget:self action:@selector(showPassword:) forControlEvents:UIControlEventTouchDown];
     [btn addTarget:self action:@selector(hidePassword:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside|UIControlEventTouchCancel];
@@ -86,6 +112,8 @@
     self.switchBtn.on = [cell[VALUE] boolValue];
     self.secureField.text = cell[VALUE];
     self.valueLbl.text = cell[VALUE];
+    self.textField.placeholder = @"";
+    self.secureField.placeholder = @"";
     
     //color
     self.mainView.backgroundColor = [SFIColors ruleBlueColor];
@@ -125,6 +153,7 @@
                 [self setConcernedView:self.secureFieldView.tag];
             }else{
                 [self setConcernedView:self.textFieldView.tag];
+                self.textField.placeholder = @"100-999999 Sec";
             }
         }
             break;
@@ -176,6 +205,8 @@
     if(type == Adv_AlmondScreenLock){
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
         self.secureField.keyboardType = UIKeyboardTypeNumberPad;
+        [self setupNumberPad];
+        
     }else{
         self.textField.keyboardType = UIKeyboardTypeDefault;
         self.secureField.keyboardType = UIKeyboardTypeDefault;
@@ -207,26 +238,33 @@
 #pragma mark text field delegate methods
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     NSLog(@"textFieldShouldReturn");
-    [textField resignFirstResponder];
-    return  YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    NSLog(@"textFieldDidEndEditing");
-    
     NSString *str = textField.text;
-    if([str isEqualToString:self.value])
-        return;
+    if([str isEqualToString:self.value]){
+        [textField resignFirstResponder];
+        return YES;
+    }
+    
     
     BOOL valid = [self validateMinLen:str] && [self validateMaxLen:str];
     if (valid) {
+        [textField resignFirstResponder];
+        
+        
         if(textField == self.textField){
             [self.delegate onDoneTapDelegate:self.type value:self.textField.text isSecureFld:NO row:self.row];
         }else if(textField == self.secureField){
             [self.delegate onDoneTapDelegate:self.type value:self.secureField.text isSecureFld:YES row:self.row];
         }
         
+        return  YES;
+    }else{
+        return NO;
     }
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    NSLog(@"textFieldDidEndEditing");
+    
 }
 
 /*
@@ -237,14 +275,68 @@
 
 - (BOOL)validateMinLen:(NSString *)str{
     // SSID name value must be 1 char or longer
-    if(self.type == Adv_AlmondScreenLock){
-        
+    if(self.type == Adv_LocalWebInterface){
+        if(self.row == 2){//secure
+            return [self minLengthHelper:str length:4 msg:@"Min Length should be 4 Chars"];
+        }
     }
-    return str.length >= 1;
+    else if(self.type == Adv_AlmondScreenLock){
+        if(self.row == 1){
+            return [self minLengthHelper:str length:4 msg:@"Min Length should be 4 Digits"];
+        }else if(self.row == 2){
+            return [self minValueHelper:str value:100 msg:@"Min Value should be 100 and Max 999999"];
+        }
+    }
+    
+    //any other case
+    return [self minLengthHelper:str length:1 msg:@"Min Length should be 1"];
 }
 
 - (BOOL)validateMaxLen:(NSString *)str {
     // SSID name value must be 180 chars or fewer
-    return str.length <= MAX_LENGTH;
+    if(self.type == Adv_LocalWebInterface) {
+        if(self.row == 1){//screen time
+            return [self maxLengthHelper:str length:32 msg:@"Max Length should be 32 Chars"];
+        }
+    }
+    else if(self.type == Adv_AlmondScreenLock){
+        if(self.row == 1){//screen time
+            return [self maxLengthHelper:str length:8 msg:@"Max Length should be 8 Digits"];
+        }else if(self.row == 2){//pin
+            return [self maxLengthHelper:str length:999999 msg:@"Min Value should be 100 and Max 999999"];
+        }
+    }
+    
+    //for any other case
+    return [self maxLengthHelper:str length:MAX_LENGTH msg:@"Max Length should be 32 Digits"];
 }
+
+//helper methods
+- (BOOL)minLengthHelper:(NSString *)str length:(NSInteger)length msg:(NSString *)msg{
+    if(str.length >= length)
+        return YES;
+    else{
+        [self.delegate showMidToastDelegate:msg];
+        return NO;
+    }
+}
+
+- (BOOL)minValueHelper:(NSString *)str value:(NSInteger)value msg:(NSString *)msg{
+    if(str.integerValue >= value)
+        return YES;
+    else{
+        [self.delegate showMidToastDelegate:msg];
+        return NO;
+    }
+}
+
+- (BOOL)maxLengthHelper:(NSString *)str length:(NSInteger)length msg:(NSString *)msg{
+    if(str.length <= length)
+        return YES;
+    else{
+        [self.delegate showMidToastDelegate:msg];
+        return NO;
+    }
+}
+
 @end
