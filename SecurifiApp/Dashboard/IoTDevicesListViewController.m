@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *no_scanDevice_label;
 @property (weak, nonatomic) IBOutlet UILabel *lastScan_label;
 @property (weak, nonatomic) IBOutlet UILabel *blinking_lbl;
+@property (weak, nonatomic) IBOutlet UIButton *scannowBtn;
 
 
 @end
@@ -286,6 +287,7 @@
 }
 - (IBAction)scanNowRequest:(id)sender {
     NSInteger mii = arc4random()%10000;
+    [self.scannowBtn setTitle:@"scanning" forState:UIControlStateNormal];
     SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
     NSString* amac = currentAlmond.almondplusMAC;
     NSDictionary *commandInfo = @{@"CommandType":@"ScanNow",
@@ -328,11 +330,11 @@
         NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] intValue]];
         NSString *lastScanYtime = [dat stringFromDateAMPM];
         
-        self.no_scanDevice_label.text = [NSString stringWithFormat:@"%ld Iot Devices scanned",self.scannedDeviceList.count];
+        self.no_scanDevice_label.text = [NSString stringWithFormat:@"%ld  Devices scanned",self.scannedDeviceList.count];
         
         self.lastScan_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
         if(self.scannedDeviceList.count == 0){
-            self.no_scanDevice_label.text = @"No Iot Device scanned";
+            self.no_scanDevice_label.text = @"No Device scanned";
             self.lastScan_label.hidden = YES;
             self.ioTdevicetable.hidden = YES;
         }

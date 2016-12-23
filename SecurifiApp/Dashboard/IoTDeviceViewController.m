@@ -12,14 +12,17 @@
 #import "Client.h"
 #import "ClientPayload.h"
 #import "UIColor+Securifi.h"
+
 #import "Colours.h"
 #import "UIFont+Securifi.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "MySubscriptionsViewController.h"
 #import "GenericIndexUtil.h"
 #import "AlmondManagement.h"
+#import "MBProgressHUD.h"
 
-@interface IoTDeviceViewController ()<UITableViewDelegate,UITableViewDataSource>
+
+@interface IoTDeviceViewController ()<UITableViewDelegate,UITableViewDataSource,MBProgressHUDDelegate>
 @property (weak, nonatomic) IBOutlet UISwitch *iotSwitch;
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UIButton *blockButton;
@@ -33,8 +36,10 @@
 @property (nonatomic )NSMutableArray *warningLables;
 @property (nonatomic) Client *client;
 @property BOOL isDNSScan;
+@property(nonatomic, readonly) MBProgressHUD *HUD;
 
 @property (weak, nonatomic) IBOutlet UILabel *iotSecurity_label;
+@property (weak, nonatomic) IBOutlet UILabel *infoLabel;
 
 @end
 
@@ -43,7 +48,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self setUpHUD];
 //    self.explanationLable.userInteractionEnabled = YES;
 //    [self.explanationLable addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapOnLabel:)]];
 //    // Assign attributedText to UILabel
@@ -116,9 +121,12 @@
     if([routerMode isEqualToString:@"ap"] || [routerMode isEqualToString:@"re"] ||[routerMode isEqualToString:@"WirelessSlave"] || [routerMode isEqualToString:@"WiredSlave"]){
         if(![connection isEqualToString:@"wireless"]){
             self.iotSwitch.hidden = YES;
+            self.infoLabel.hidden = NO;
+            self.infoLabel.text = NSLocalizedString(@"ap_re_wired_iot", @"Add Almond");
         }
         else{
             self.iotSwitch.hidden = NO;
+            //self.infoLabel.text = NSLocalizedString(@"dashBoard AddAlmond", @"Add Almond");
         }
     }
 }
@@ -163,6 +171,7 @@
     return displayText;
 }
 -(void)setAllowAndBlock{
+    self.infoLabel.hidden= YES;
     NSLog(@"client.deviceAllowedType %d",self.client.deviceAllowedType);
     dispatch_async(dispatch_get_main_queue(), ^() {
         if(!self.isDNSScan)
@@ -192,6 +201,8 @@
             [self.blockButton setTitle:@"Allow Device" forState:UIControlStateNormal];
             self.topView.backgroundColor = [UIColor darkGrayColor];
             self.blockButton.backgroundColor = [UIColor securifiScreenGreen];
+            self.infoLabel.hidden= NO;
+            self.infoLabel.text = NSLocalizedString(@"blocked_client_iot", @"");
         }
         else{
             if(!self.client.isActive){
@@ -317,6 +328,7 @@
 }
 - (IBAction)blockClientRequest:(id)sender {
      mii = arc4random()%10000;
+     [self showHudWithTimeoutMsg:@"Loading..." withDelay:1];
     if(self.client.deviceAllowedType == 0){
         self.client.deviceAllowedType = 1;
         
@@ -352,7 +364,7 @@
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");
     
-
+    [self hideHude];
         NSNotification *notifier = (NSNotification *) sender;
         NSDictionary *dataInfo = [notifier userInfo];
         if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
@@ -495,6 +507,29 @@
         [self.navigationController pushViewController:viewCtrl animated:YES];
     });
 }
-
+-(void)setUpHUD{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.dimBackground = YES;
+    _HUD.delegate = self;
+    [self.view addSubview:_HUD];
+}
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg withDelay:(int)second {
+    NSLog(@"showHudWithTimeoutMsg");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:hudMsg];
+        [self.HUD hide:YES afterDelay:second];
+    });
+}
+- (void)showHUD:(NSString *)text {
+    self.HUD.labelText = text;
+    [self.HUD show:YES];
+}
+-(void)hideHude{
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
+    
+}
 
 @end

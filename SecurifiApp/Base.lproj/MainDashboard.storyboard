@@ -637,7 +637,7 @@
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="scanNowRequest:" destination="VtO-ix-k6T" eventType="touchUpInside" id="mhM-Hb-Hlb"/>
+                                            <action selector="scanNowRequest:" destination="VtO-ix-k6T" eventType="touchUpInside" id="jgI-Jq-tEt"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 IoT Devices scanned" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h93-AJ-YUt">
@@ -767,6 +767,7 @@
                         <outlet property="ioTdevicetable" destination="BdI-Rj-Dia" id="LK1-Wn-XeD"/>
                         <outlet property="lastScan_label" destination="Cbk-WQ-odI" id="zIs-1O-x39"/>
                         <outlet property="no_scanDevice_label" destination="h93-AJ-YUt" id="8c8-4G-blQ"/>
+                        <outlet property="scannowBtn" destination="Pkj-eu-YlS" id="hBH-aU-DRN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cng-qR-5tW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -999,6 +1000,13 @@
                                     <constraint firstAttribute="bottom" secondItem="aK6-jF-xBg" secondAttribute="bottom" id="vlC-kc-pR5"/>
                                 </constraints>
                             </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qic-6Y-wcI">
+                                <rect key="frame" x="41" y="311" width="293" height="138"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k9l-Jf-9sT">
                                 <rect key="frame" x="138" y="252" width="113" height="30"/>
                                 <color key="backgroundColor" red="0.29856434464454651" green="0.68521744012832642" blue="0.31426241993904114" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1077,6 +1085,7 @@
                         <outlet property="blockLabel" destination="ebb-TG-Daq" id="Hha-9Z-ceF"/>
                         <outlet property="clientImg" destination="dKs-DZ-2pr" id="dpe-Zg-oSj"/>
                         <outlet property="clientName" destination="dGQ-Ah-RlG" id="vdQ-AN-lDQ"/>
+                        <outlet property="infoLabel" destination="qic-6Y-wcI" id="wwW-Kh-mbh"/>
                         <outlet property="iotSecurity_label" destination="KA3-HR-o7x" id="n1i-UU-cBi"/>
                         <outlet property="iotSwitch" destination="iMD-A4-vxM" id="RpS-UQ-NUi"/>
                         <outlet property="learnMore" destination="JRV-0i-B4M" id="a8G-vn-A3e"/>

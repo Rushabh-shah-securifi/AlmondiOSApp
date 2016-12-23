@@ -1839,4 +1839,6 @@ Contact us at support@securifi.com";
 "port_forward_title" = "Port forwarding enabled for this device";
 "upnp_iot_title" = "Device using Universal Plug and Play(UPnP) service";
 "iot_security_camelcase" = "IoT Security";
+"ap_re_wired_iot" = "This device is in wired connection. Web history requires wireless connection in RE\AP Mode.";
+"blocked_client_iot" = "Web history is disabled for blocked devices. You can still see records from when the device was last active.";
 

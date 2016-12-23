@@ -78,9 +78,7 @@
 @implementation DashboardViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.constatnt1 =self.tableYconstrain1.constant;
     
-    self.constatnt2 =self.tableYconstrain2.constant;
     
     _statusIcon = [NetworkStatusIcon new];
     self.toolkit = [SecurifiToolkit sharedInstance];
@@ -96,7 +94,10 @@
     //add almond button
     [self initializeAddButtonView];
     [self initializeHUD];
-    [self sendScanNowReq];
+    self.constatnt1 =self.tableYconstrain1.constant;
+    
+    self.constatnt2 =self.tableYconstrain2.constant;
+
     CGSize scrollableSize = CGSizeMake(Scroller.frame.size.width,Scroller.frame.size.height+ 130);
     [Scroller setContentSize:scrollableSize];
 }
@@ -104,6 +105,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     [self navigationBarStyle];
+     [self sendScanNowReq];
     
     [self iotUIUpdate];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -226,7 +228,23 @@
         self.iotSecurityImg.hidden = YES;
         self.iotSecurityButton.hidden = YES;
     }
+    [self forLocal];
     
+    
+}
+-(void)forLocal{
+    BOOL local = [self.toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
+    if(local){
+        self.activeNetworkDevices.hidden = NO;
+        self.inactiveNetworkDevices.hidden = NO;
+        self.no_scanObjLabel.hidden = YES;
+        self.iotSecurityImg.hidden = YES;
+        self.vulnableDevices.text = @"INACTIVE CLIENTS";
+        self.tableYconstrain1.constant = self.constatnt1;
+        self.tableYconstrain2.constant = self.constatnt2;
+        self.iotSecurityImg.hidden = YES;
+        self.iotSecurityButton.hidden = YES;
+    }
 }
 
 -(void)tryShowLoadingData{
@@ -494,6 +512,7 @@
         NSString *m = payload[@"Mode"];
         [self updateMode:(unsigned)[m integerValue]];
         [self.HUD hide:YES];
+        [self iotUIUpdate];
     });
 }
 
@@ -810,6 +829,7 @@
             [self.buttonHomeAway setBackgroundColor:[SFIColors lightGrayColor] ];
             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
         }
+        [self iotUIUpdate];
     });
 }
 

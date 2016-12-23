@@ -14,6 +14,7 @@
 #import "Colours.h"
 #import "CommonMethods.h"
 #import "UIFont+Securifi.h"
+#import "AlmondManagement.h"
 
 @interface DeviceHeaderView()
 @property (weak, nonatomic) IBOutlet UIButton *parentrolBtn;
@@ -138,6 +139,14 @@
     if(self.cellType == ClientTable_Cell)
     {
         Client *client = [Client findClientByID:@(deviceID).stringValue];
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
+        if(local){
+            self.parentrolBtn.hidden = YES;
+        }
+        else
+            self.parentrolBtn.hidden = NO;
+        
         if(client.webHistoryEnable == NO){
             self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_off"];
             NSLog(@"icon_history_off");
