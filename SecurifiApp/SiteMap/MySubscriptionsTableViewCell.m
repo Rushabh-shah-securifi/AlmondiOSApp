@@ -99,7 +99,8 @@
     }else if(plan.planType == PlanTypeFreeExpired){
         [self setButtonTitle:CHOOSE_PLAN title2:@"" hidded:YES];
     }else{
-        [self setButtonTitle:CHANGE_PLAN title2:CANCEL_SUBSCRIPTION hidded:NO];
+        //[self setButtonTitle:CHANGE_PLAN title2:CANCEL_SUBSCRIPTION hidded:NO];
+        [self setButtonTitle:CANCEL_SUBSCRIPTION title2:@"" hidded:YES];
     }
 }
 

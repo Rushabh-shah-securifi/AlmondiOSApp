@@ -309,11 +309,16 @@
 }
 #pragma mark cell delegate methods
 - (void)onLeftBtnTapDelegate:(NSString *)btnTitle{//
-    [self LaunchSubscriptionsPlanController];
+    if([btnTitle isEqualToString:CANCEL_SUBSCRIPTION]){
+        NSString *msg = [NSString stringWithFormat:@"By cancelling your subscription you will no longer have access to Internet Security on %@.", [AlmondManagement cloudAlmond:self.currentMAC].almondplusName];
+        [self showAlert:@"" msg:msg cancel:@"Cancel Subscription" other:@"Nevermind" tag:INTERNET_SECURITY];
+    }else{
+        [self LaunchSubscriptionsPlanController];
+    }
 }
 
-- (void)onRightBtnTapDelegate:(NSString *)btnTitle{//cancel
-    if([btnTitle isEqualToString:CANCEL_SUBSCRIPTION]){
+- (void)onRightBtnTapDelegate:(NSString *)btnTitle{
+    if([btnTitle isEqualToString:CANCEL_SUBSCRIPTION]){//currently not used
         NSString *msg = [NSString stringWithFormat:@"By cancelling your subscription you will no longer have access to Internet Security on %@.", [AlmondManagement cloudAlmond:self.currentMAC].almondplusName];
         [self showAlert:@"" msg:msg cancel:@"Cancel Subscription" other:@"Nevermind" tag:INTERNET_SECURITY];
     }

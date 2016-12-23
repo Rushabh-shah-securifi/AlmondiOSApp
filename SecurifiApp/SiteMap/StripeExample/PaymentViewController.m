@@ -101,6 +101,8 @@
 
 - (void)onPayBtnTap:(UIButton *)btn{
     NSLog(@"on pay btn tap");
+    _payBtn.enabled = NO;
+    _payBtn.alpha = 0.5;
     if (![self.paymentTextField isValid]) {
         return;
     }
