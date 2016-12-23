@@ -30,118 +30,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.scannedDeviceList = [[NSMutableArray alloc]init];
-    NSDictionary *response  = @{
-                                @"AlmondMAC": @"251176220100108",
-                                @"ScanTime": @"1481196280",
-                                @"ExcludedDevices":@[@"14:30:c6:46:b7:15", @"d4:0b:1a:3a:ed:74"],
-                                @"Devices": @[@{
-                                                  @"Ports": @[],
-                                                  @"MAC": @"a0:86:c6:4d:96:59",
-                                                  @"Telnet": @"0",
-                                                  @"Http": @"0",
-                                                  @"ForwardRules": @[@{
-                                                                         @"IP": @"10.10.1.100",
-                                                                         @"Ports": @"12112:50000",
-                                                                         @"Protocol": @"udp",
-                                                                         @"Target": @"DNAT"
-                                                                         }],
-                                                  @"UpnpRules": @[@{
-                                                                      @"IP": @"10.10.1.100",
-                                                                      @"Ports": @"61555",
-                                                                      @"Protocol": @"udp",
-                                                                      @"Target": @"DNAT"
-                                                                      }]
-                                                  },
-                                              @{
-                                                  @"Ports": @[@80, @111, @45187],
-                                                  @"MAC": @"a0:86:c6:4d:96:59",
-                                                  @"Telnet": @"-1",
-                                                  @"Http": @"1",
-                                                  @"ForwardRules": @[@{
-                                                                         @"IP": @"10.10.1.100",
-                                                                         @"Ports": @"12112:50000",
-                                                                         @"Protocol": @"udp",
-                                                                         @"Target": @"DNAT"
-                                                                         }],
-                                                  @"UpnpRules": @[@{
-                                                                      @"IP": @"10.10.1.100",
-                                                                      @"Ports": @"61555",
-                                                                      @"Protocol": @"udp",
-                                                                      @"Target": @"DNAT"
-                                                                      }]
-                                                  },@{
-                                                  @"Ports": @[],
-                                                  @"MAC": @"1c:87:2c:9d:21:65",
-                                                  @"Telnet": @"0",
-                                                  @"Http": @"0",
-                                                  @"ForwardRules": @[@{
-                                                                         @"IP": @"10.10.1.101",
-                                                                         @"Ports": @"2222",
-                                                                         @"Protocol": @"tcp",
-                                                                         @"Target": @"DNAT"
-                                                                         }, @{
-                                                                         @"IP": @"10.10.1.101",
-                                                                         @"Ports": @"2222",
-                                                                         @"Protocol": @"udp",
-                                                                         @"Target": @"DNAT"
-                                                                         }],
-                                                  @"UpnpRules": @[]
-                                                  }, @{
-                                                  @"Ports": @[@80, @111, @45187],
-                                                  @"MAC": @"ac:ee:9e:90:f3:37",
-                                                  @"Telnet": @"1",
-                                                  @"Http": @"0",
-                                                  @"ForwardRules": @[]
-                                                  }]
-                                };
-    NSArray *deviceRespArr = response[@"Devices"];
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    
-    for(int i = 0;i<deviceRespArr.count;i++){
-        NSDictionary *dict = [deviceRespArr objectAtIndex:i];
-        NSLog(@"dict response %@",dict);
-        Client *client;
-        NSLog(@"toolkit.clients.count %ld",toolkit.clients.count);
-        if(toolkit.clients.count>=deviceRespArr.count)
-            client = [toolkit.clients objectAtIndex:i];
-        dict = [self iotDeviceObj:dict mac:client.deviceMAC?client.deviceMAC:@"ac:ee:9e:90:f3:37"];
-        [self.scannedDeviceList addObject:dict];
-    }
-//    for (NSDictionary *dict in response[@"Devices"]) {
-//        NSDictionary *iotDeviceObj = [self iotDeviceObj:dict mac:dict[@"MAC"]];
-//        [self.scannedDeviceList addObject:iotDeviceObj];
-//    }
-    Client *client = [toolkit.clients objectAtIndex:0];
-    self.excludedDevices =  [[NSArray alloc] initWithObjects:client.deviceMAC,nil];
-    [self iotScanresultsCallBackController:nil];
     
     
-}
--(NSDictionary *)iotDeviceObj:(NSDictionary *)deviceDict mac:(NSString*)mac{
-    NSArray *ports = deviceDict[@"Ports"];
-    NSString *telnet = deviceDict[@"Telnet"];
-    NSString *Http = deviceDict[@"Http"];
-    NSArray *ForwardRules = deviceDict[@"ForwardRules"];
-    NSArray *UpnpRules = deviceDict[@"UpnpRules"];
-    NSDictionary *returnDict = @{@"Telnet":@{@"P":[telnet isEqualToString:@"0"]?@"0":@"1",
-                                             @"Tag":@"1"},
-                                 @"Ports":@{@"P":ports.count?@"0":@"1",
-                                            @"Tag":@"2"},
-                                 @"Http":@{@"P":[Http isEqualToString:@"0"]?@"0":@"1",
-                                           @"Tag":@"3"},
-                                 @"ForwardRules":@{@"P":ForwardRules.count?@"0":@"1",
-                                                   @"Tag":@"4"},
-                                 @"UpnpRules":@{@"P":UpnpRules.count?@"0":@"1",
-                                                @"Tag":@"5"},
-                                 @"MAC":mac
-                                 };
     
-    
-    return  returnDict;
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.scannedDeviceList = [[NSMutableArray alloc]init];
+    [self iotScanresultsCallBackController:nil];
     self.backArrIcon.image = [CommonMethods imageNamed:@"back_icon" withColor:[UIColor lightGrayColor]];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     

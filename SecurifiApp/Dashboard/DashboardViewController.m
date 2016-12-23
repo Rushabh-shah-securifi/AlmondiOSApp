@@ -95,7 +95,6 @@
     //add almond button
     [self initializeAddButtonView];
     [self initializeHUD];
-   
     [self sendScanNowReq];
     CGSize scrollableSize = CGSizeMake(Scroller.frame.size.width,Scroller.frame.size.height+ 130);
     [Scroller setContentSize:scrollableSize];
@@ -104,6 +103,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     [self navigationBarStyle];
+    
     [self iotUIUpdate];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
@@ -1061,20 +1061,21 @@
 }
 #pragma mark IOtScan
 -(void)iotScanresultsCallBackDashBoard:(id)sender{
-    
+    dispatch_async(dispatch_get_main_queue(), ^{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSArray *scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
     NSArray *excludedDevices = toolkit.iotScanResults[@"scanExclude"];
     NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] intValue]];
     NSString *lastScanYtime = [dat stringFromDateAMPM];
     NSString *noSiotScanned = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
-    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"noSiotScanned %@",noSiotScanned);
         self.noIot_label.text = [NSString stringWithFormat:@"%ld Iot Devices scanned",scannedDeviceList.count];
         self.lastScanIot_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
         self.inactiveNetworkDevices.text = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
         if(scannedDeviceList.count == 0){
             self.noIot_label.text = @"No Iot Device scanned";
             self.lastScanIot_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
+            NSLog(@"No Iot Device scanned");
         }
     });
 

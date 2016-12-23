@@ -41,6 +41,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+//    self.explanationLable.userInteractionEnabled = YES;
+//    [self.explanationLable addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapOnLabel:)]];
+//    // Assign attributedText to UILabel
+//    self.explanationLable.attributedText = attributedString;
+    // Do any additional setup after loading the view.
+}
+-(void)viewWillAppear:(BOOL)animated{
     self.middleView.hidden = _hideMiddleView;
     if(_hideMiddleView == NO)
         self.iotSecurity_label.text = @"IoT Scan";
@@ -51,21 +59,22 @@
     self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
     NSLog(@"iot device mac %@",self.iotDevice[@"MAC"]);
     self.client = [Client getClientByMAC:self.iotDevice[@"MAC"]];
-     NSLog(@"iot device mac %@",self.client.deviceMAC);
+    NSLog(@"iot device mac %@",self.client.deviceMAC);
     
-//    if(!self.client.iot_serviceEnable){
-//        self.middleView.hidden = YES;
-//        self.tableView.hidden = YES;
-//        self.learnMore.hidden = YES;
-//    }
+    //    if(!self.client.iot_serviceEnable){
+    //        self.middleView.hidden = YES;
+    //        self.tableView.hidden = YES;
+    //        self.learnMore.hidden = YES;
+    //    }
     
     NSString *TypeImg = [self.client iconName];
     NSLog(@"Type Img %@",TypeImg);
     self.clientImg.image = [UIImage imageNamed:TypeImg];
     self.clientName.text = self.client.name;
+    NSLog(@"self.client.name %@",self.client.name);
     [self getDescriptionLables:self.iotDevice];
     [self setAllowAndBlock];
-//       self.topView.backgroundColor = [self getolor:self.iotDevice];
+    //       self.topView.backgroundColor = [self getolor:self.iotDevice];
     NSString *displayText = [self getDescripTionText:self.iotDevice];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",displayText,@"Learn More"] attributes:nil];
     NSRange linkRange = NSMakeRange(displayText.length, @"Learn More".length); // for the word "link" in the string above
@@ -74,13 +83,6 @@
                                       NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle) };
     [attributedString setAttributes:linkAttributes range:linkRange];
     
-//    self.explanationLable.userInteractionEnabled = YES;
-//    [self.explanationLable addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapOnLabel:)]];
-//    // Assign attributedText to UILabel
-//    self.explanationLable.attributedText = attributedString;
-    // Do any additional setup after loading the view.
-}
--(void)viewWillAppear:(BOOL)animated{
     [self initializeNotifications];
     [super viewWillAppear:YES];
     [self forRouterModetest];
