@@ -1558,6 +1558,7 @@ Contact us at support@securifi.com";
 "alert title offline Local Retry Local Connection" = "Retry Local Connection";
 
 "alert.message-Connected to your Almond via cloud." = "Connected to your Almond via cloud.";
+"alert.message-Connected to your Almond via local." = "Connected to your Almond via local.";
 "alertview-Connected to your Almond via cloud." = "Connected to your Almond via cloud.";
 "Add Local Connection Settings" = "Add Local Connection Settings";
 
