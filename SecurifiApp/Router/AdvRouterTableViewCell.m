@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIView *lineView;//4
 @property (weak, nonatomic) IBOutlet UIButton *eyeBtn;
 @property (weak, nonatomic) IBOutlet UIImageView *arrowImg;
+@property (weak, nonatomic) IBOutlet UIImageView *eyeImgView;
 
 @property (weak, nonatomic) IBOutlet UIView *mainView;
 
@@ -41,7 +42,6 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     self.switchBtn.transform = CGAffineTransformMakeScale(0.80, 0.80);
-    [self addEventsToBtn:self.eyeBtn];
     
     self.textField.delegate = self;
     self.secureField.delegate = self;
@@ -76,10 +76,6 @@
     }
 }
 
-- (void)addEventsToBtn:(UIButton *)btn{
-    [btn addTarget:self action:@selector(showPassword:) forControlEvents:UIControlEventTouchDown];
-    [btn addTarget:self action:@selector(hidePassword:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside|UIControlEventTouchCancel];
-}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
@@ -112,11 +108,9 @@
     self.switchBtn.on = [cell[VALUE] boolValue];
     self.secureField.text = cell[VALUE];
     self.valueLbl.text = cell[VALUE];
-    self.textField.placeholder = @"";
-    self.secureField.placeholder = @"";
     
-    //color
-    self.mainView.backgroundColor = [SFIColors ruleBlueColor];
+    //setting defaults
+    [self setDefaults];
     
     //enabling fields
     [self tryEnableFields:YES alpha:1.0];
@@ -191,6 +185,16 @@
     }
 }
 
+- (void)setDefaults{
+    self.mainView.backgroundColor = [SFIColors ruleBlueColor];
+    
+    self.textField.placeholder = @"";
+    self.secureField.placeholder = @"";
+    
+    self.secureField.secureTextEntry = YES;
+    self.eyeBtn.selected = NO;
+}
+
 - (void)tryEnableFields:(BOOL)enable alpha:(float)alpha{
     self.textField.enabled = enable;
     self.secureField.enabled = enable;
@@ -227,13 +231,21 @@
     [self.delegate onSwitchTapDelegate:self.type value:switchBtn.isOn];
 }
 
-- (void)showPassword:(id)sender {
-    self.secureField.secureTextEntry = NO;
+- (IBAction)onEyeBtnTap:(UIButton *)btn {
+    btn.selected = !btn.selected;
+    if(btn.selected){
+        self.secureField.secureTextEntry = NO;
+        self.eyeImgView.image = [UIImage imageNamed:@"eye_icon"];
+    }
+    
+    else{
+        self.secureField.secureTextEntry = YES;
+        self.eyeImgView.image = [UIImage imageNamed:@"eye_invisible"];
+    }
+    
 }
 
-- (void)hidePassword:(id)sender {
-    self.secureField.secureTextEntry = YES;
-}
+
 
 #pragma mark text field delegate methods
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{

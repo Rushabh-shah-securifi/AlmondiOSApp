@@ -335,14 +335,6 @@ int mii;
     [cellsArray addObject:[self getCellDict:@"Password" value:decrytedPass]];
     [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_LocalWebInterface]];
     
-    
-    //upnp
-    if([self isAL3]){
-        cellsArray = [NSMutableArray new];
-        [cellsArray addObject:[self getCellDict:@"UPnP" value:almondProperty.upnp]];
-        [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_UPnP]];
-    }
-    
     //screen lock
     cellsArray = [NSMutableArray new];
     [cellsArray addObject:[self getCellDict:@"Almond Screen Lock" value:almondProperty.screenLock]];
@@ -357,6 +349,13 @@ int mii;
     [cellsArray addObject:[self getCellDict:@"Ping IP" value:almondProperty.checkInternetIP]];
     [cellsArray addObject:[self getCellDict:@"Fall Back URL" value:almondProperty.URL]];
     [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_DiagnosticSettings]];
+    
+    //upnp
+    if([self isAL3]){
+        cellsArray = [NSMutableArray new];
+        [cellsArray addObject:[self getCellDict:@"Universal Plug and Play" value:almondProperty.upnp]];
+        [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_UPnP]];
+    }
     
     //language
     cellsArray = [NSMutableArray new];
