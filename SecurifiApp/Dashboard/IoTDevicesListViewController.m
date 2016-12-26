@@ -98,6 +98,7 @@
             return cell;
         }
         NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
+        NSLog(@"iotDevice = %@",iotDevice);
         cell.textLabel.numberOfLines = 2;
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[self getClientName:iotDevice[@"MAC"]],[self getIsVulnableText:iotDevice]];

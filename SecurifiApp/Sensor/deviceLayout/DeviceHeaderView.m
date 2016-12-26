@@ -140,6 +140,8 @@
     {
         SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
         BOOL hasSubscribe = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
+        NSLog(@"hasSubscribe %d",hasSubscribe);
+        
         if(hasSubscribe){
 
         Client *client = [Client findClientByID:@(deviceID).stringValue];
@@ -191,6 +193,9 @@
             }
         }
     }
+        else{
+            self.parentrolBtn.hidden = YES;
+        }
     }
     
     

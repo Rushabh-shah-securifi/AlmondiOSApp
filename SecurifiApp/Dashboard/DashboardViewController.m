@@ -186,6 +186,7 @@
 -(void)iotUIUpdate{
     SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
     BOOL hasSubscribe = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
+    NSLog(@"hasSubscribe %d",hasSubscribe);
     if(hasSubscribe && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
         self.inactiveNetworkDevices.hidden = YES;
         self.no_scanObjLabel.hidden = NO;
