@@ -170,7 +170,15 @@
 
 #pragma mark table and search delegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return indexPath.row == 0? 80: 105;
+    PlanType planType = self.almondPlan.planType;
+    if(indexPath.row == 0){
+        return 80;
+    }else{
+        if(planType == PlanTypeNone || planType == PlanTypeFreeExpired)
+            return 85;
+        else
+            return 105;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
