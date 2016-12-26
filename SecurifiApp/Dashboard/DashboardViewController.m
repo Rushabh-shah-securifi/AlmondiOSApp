@@ -1095,9 +1095,12 @@
     NSString *lastScanYtime = [dat stringFromDateAMPM];
     NSString *noSiotScanned = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
         NSLog(@"noSiotScanned %@",noSiotScanned);
-        self.noIot_label.text = [NSString stringWithFormat:@"%ld Devices scanned",scannedDeviceList.count];
+        self.noIot_label.text = [NSString stringWithFormat:@"%@ Devices scanned",toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0"];
         self.lastScanIot_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
-        self.no_scanObjLabel.text = toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0";
+        
+//        toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0"
+        self.no_scanObjLabel.text = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
+        
         self.lastScanIot_label.hidden = NO;
         if(scannedDeviceList.count == 0){
             self.noIot_label.text = @"No Device scanned";
