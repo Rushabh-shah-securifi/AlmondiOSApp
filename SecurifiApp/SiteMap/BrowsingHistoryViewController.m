@@ -164,7 +164,7 @@
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-    [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
+    [request setURL:[NSURL URLWithString:@"https://sitemonitoring.securifi.com:8081"]];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
