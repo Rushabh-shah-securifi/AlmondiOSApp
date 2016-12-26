@@ -106,8 +106,6 @@ int mii;
     
     [self addRefreshControl];
     [self initializeRouterSummaryAndSettings];
-    self.enableAdvRouter = YES;
-    
 }
 
 
@@ -130,6 +128,7 @@ int mii;
     
     [self initializeNotifications];
     self.routerSummary = nil;
+    self.enableAdvRouter = NO;
     self.slaveStatus = [AlmondStatus new];
     
     self.isBUG = NO;
@@ -746,6 +745,7 @@ int mii;
             case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
                 //NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
                 self.routerSummary = (SFIRouterSummary *)genericRouterCommand.command;
+                self.enableAdvRouter = [self isAL3];
                 //NSLog(@"routersummary: %@", self.routerSummary);
                 
                 if(self.currentConnectionMode == SFIAlmondConnectionMode_cloud){ //Do only in Cloud
