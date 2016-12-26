@@ -91,7 +91,7 @@
     _responseData = [[NSMutableData alloc] init];
     self.sendReq = YES;
     self.reload = YES;
-    [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac] showHudFirstTime:YES];
+    [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@&IOT=%d",self.amac,self.cmac,self.is_IotType] showHudFirstTime:YES];
     if([[SecurifiToolkit sharedInstance]isCloudReachable]){
         self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:500 amac:self.amac cmac:self.cmac];
         //[self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
@@ -113,10 +113,6 @@
     
     [BrowsingHistoryDataBase closeDB];
     //[BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
-    
-    
-    
-    
 }
 -(void)updateNavi:(UIColor *)backGroundColor title:(NSString *)title tintColor:(UIColor *)tintColor tintBarColor:(UIColor *)tintBarColor{
     self.navigationController.view.backgroundColor =  backGroundColor;
@@ -244,7 +240,7 @@
     self.sendReq = YES;
     self.reload = NO;
     if([last_date isEqualToString:[CommonMethods getTodayDate]] && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
-        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]] showHudFirstTime:NO];
+        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@&IOT=%d",_amac,_cmac,self.incompleteDB[@"PS"],self.is_IotType] showHudFirstTime:NO];
     }
     
 }
@@ -282,7 +278,7 @@
     self.sendReq = YES;
     self.reload = NO;
     if([last_date isEqualToString:[CommonMethods getTodayDate]] && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
-        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]] showHudFirstTime:NO];
+        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@&IOT=%d",_amac,_cmac,self.incompleteDB[@"PS"],self.is_IotType] showHudFirstTime:NO];
     }
     
 }
@@ -376,10 +372,10 @@
             NSString *ps= self.incompleteDB[@"PS"] ;
             NSLog(@"self.oldDate = %@ == str = %@",self.oldDate,str);
             if((self.oldDate != nil && [self.oldDate isEqualToString:str]) && ![ps isKindOfClass:[NSNull class]])
-                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&search=FromThisDate&value=%@&pageState=%@",_amac,_cmac,str,ps] showHudFirstTime:YES];
+                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&search=FromThisDate&value=%@&pageState=%@&IOT=%d",_amac,_cmac,str,ps,self.is_IotType] showHudFirstTime:YES];
             else
             {   if(![ps isKindOfClass:[NSNull class]])
-                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&search=FromThisDate&value=%@",_amac,_cmac,str] showHudFirstTime:YES];
+                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&search=FromThisDate&value=%@&IOT=%d",_amac,_cmac,str,self.is_IotType] showHudFirstTime:YES];
             }
             
             self.oldDate = str;

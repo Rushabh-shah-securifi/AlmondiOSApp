@@ -15,7 +15,7 @@
 #import "CommonMethods.h"
 #import "UIFont+Securifi.h"
 #import "AlmondManagement.h"
-
+#import "AlmondPlan.h"
 @interface DeviceHeaderView()
 @property (weak, nonatomic) IBOutlet UIButton *parentrolBtn;
 @property (weak, nonatomic) IBOutlet UILabel *label2;
@@ -138,8 +138,13 @@
     
     if(self.cellType == ClientTable_Cell)
     {
+        SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
+        BOOL hasSubscribe = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
+        if(hasSubscribe){
+
         Client *client = [Client findClientByID:@(deviceID).stringValue];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        
         BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
         if(local){
             self.parentrolBtn.hidden = YES;
@@ -185,6 +190,7 @@
                 self.deviceValue.text = @"IoT Security Off";
             }
         }
+    }
     }
     
     

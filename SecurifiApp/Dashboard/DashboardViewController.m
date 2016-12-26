@@ -37,6 +37,7 @@
 #import "IoTDevicesListViewController.h"
 #import "MySubscriptionsViewController.h"
 #import "GenericCommand.h"
+#import "AlmondPlan.h"
 
 
 
@@ -184,8 +185,8 @@
 }
 -(void)iotUIUpdate{
     SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
-    
-    if(self.toolkit.config.isPaymentDone && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
+    BOOL hasSubscribe = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
+    if(hasSubscribe && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
         self.inactiveNetworkDevices.hidden = YES;
         self.no_scanObjLabel.hidden = NO;
         self.iotSecurityImg.hidden = YES;
@@ -200,7 +201,7 @@
        
         
     }
-    else if(!self.toolkit.config.isPaymentDone && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
+    else if(!hasSubscribe && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
         // call my scbscription
         //change icon name
         self.vulnableDevices.text = @"View MY Subscription";
