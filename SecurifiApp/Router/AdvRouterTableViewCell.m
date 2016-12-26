@@ -303,7 +303,7 @@
         if(self.row == 1){//screen time
             return [self maxLengthHelper:str length:8 msg:@"Max Length should be 8 Digits"];
         }else if(self.row == 2){//pin
-            return [self maxLengthHelper:str length:999999 msg:@"Min Value should be 100 and Max 999999"];
+            return [self maxValueHelper:str value:999999 msg:@"Min Value should be 100 and Max 999999"];
         }
     }
     
@@ -339,4 +339,12 @@
     }
 }
 
+- (BOOL)maxValueHelper:(NSString *)str value:(NSInteger)value msg:(NSString *)msg{
+    if(str.integerValue <= value)
+        return YES;
+    else{
+        [self.delegate showMidToastDelegate:msg];
+        return NO;
+    }
+}
 @end

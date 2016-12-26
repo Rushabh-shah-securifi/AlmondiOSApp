@@ -12,6 +12,7 @@
 #import "AlmondSelectionTableView.h"
 #import "SFIColors.h"
 #import "CommonMethods.h"
+#import "UICommonMethods.h"
 #import "AlmondManagement.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "UIViewController+Securifi.h"
@@ -45,11 +46,12 @@
     self.almondLabel.text = [AlmondManagement cloudAlmond:self.currentMAC].almondplusName;
     NSLog(@"almond plan %d", self.almondPlan.planType);
     [self initializeMySubscriptionsArray];
+    [self makeAlmondSelectionBtn];
     [self setUpHUD];
 }
 
 - (void)viewDidLayoutSubviews{
-    [self makeAlmondSelectionBtn];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -122,6 +124,8 @@
 
 #pragma mark ui mehtods
 - (void)makeAlmondSelectionBtn{
+//    [UICommonMethods clearSubView:self.almSelectionBtn];
+    
     NSString *currentAlmName = [AlmondManagement cloudAlmond:self.currentMAC].almondplusName;
     _almondLabel = [[UILabel alloc]init];
     _imgView = [[UIImageView alloc]init];
