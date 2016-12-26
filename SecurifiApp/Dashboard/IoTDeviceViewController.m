@@ -65,7 +65,7 @@
         self.iotSecurity_label.text = @"IoT Security";
     
     self.tableView.hidden = _hideTable;
-    self.learnMore.hidden = _hideTable;
+//    self.learnMore.hidden = _hideTable;
     self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
     NSLog(@"iot device mac %@",self.iotDevice[@"MAC"]);
     self.client = [Client getClientByMAC:self.iotDevice[@"MAC"]];

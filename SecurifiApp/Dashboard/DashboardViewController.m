@@ -204,7 +204,7 @@
     else if(!hasSubscribe && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
         // call my scbscription
         //change icon name
-        self.vulnableDevices.text = @"View MY Subscription";
+        self.vulnableDevices.text = @"IOT SECURITY DISABLED";
         self.tableYconstrain1.constant = self.constatnt1;
         self.tableYconstrain2.constant = self.constatnt2;
         self.inactiveNetworkDevices.hidden = YES;
