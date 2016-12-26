@@ -339,18 +339,7 @@
             self.viewTwoTop.constant = -40;
             self.client.webHistoryEnable = NO;
             [self saveNewValue:@"NO" forIndex:-23];
-//            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
-//                                                             message:@"Disabling Web history will delete all your previous history records. Are you sure,you want to disable web history?"
-//                                                            delegate:self
-//                                                   cancelButtonTitle:@"Cancel"
-//                                                   otherButtonTitles:@"Done",nil];
-//            [alert setDelegate:self];
-//            alert.tag = 1;
-//            alert.alertViewStyle = UIAlertViewStyleDefault;
-//            [alert show];
-            
-          
-            
+    
         }
         else{
             

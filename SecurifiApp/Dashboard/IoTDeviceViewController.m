@@ -473,22 +473,32 @@
     if(!self.isDNSScan){
         if(state == NO){
             self.client.iot_serviceEnable = NO;
+             [self saveNewValue:@"NO" forIndex:-26];
         }
         if(state == YES){
-            self.client.iot_serviceEnable = YES;
+             [self saveNewValue:@"YES" forIndex:-26];
         }
     }
     else{
         if(state == NO){
-            self.client.iot_dnsEnable = NO;
+             [self saveNewValue:@"NO" forIndex:-27];
         }
         if(state == YES){
-            self.client.iot_dnsEnable = YES;
+             [self saveNewValue:@"YES" forIndex:-27];
         }
     }
     NSLog(@"self.client.iot_serviceEnable %d",self.client.iot_serviceEnable);
     [ClientPayload getUpdateClientPayloadForClient:self.client mobileInternalIndex:mii];
 
+}
+-(void)saveNewValue:(NSString *)newValue forIndex:(int)index{
+    
+    // considering only web history
+    int mii = arc4random() % 1000;
+   Client *client = self.client;
+    
+    [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
+    [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
 }
 - (IBAction)launchMySubscription:(id)sender {
     MySubscriptionsViewController *ctrl = [self getStoryBoardController:@"SiteMapStoryBoard" ctrlID:@"MySubscriptionsViewController"];

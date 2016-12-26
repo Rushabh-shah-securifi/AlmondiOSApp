@@ -177,7 +177,7 @@
                 self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_security_black"];
                 
                 NSLog(@"ic_security_black");
-                self.deviceValue.text = @"IoT Security on";
+                self.deviceValue.text = @"IoT Security On";
             }
             else{
                 self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_insecure_black"];

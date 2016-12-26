@@ -431,6 +431,7 @@ static const int xIndent = 10;
             NSLog(@"client update %@,%d,%@,%@",genericIndexValue.genericIndex.ID,genericIndexValue.index,genericIndexValue.currentValue,genericIndexValue.genericIndex.groupLabel);
             int index = genericIndexValue.index;
             NSLog(@"enable / disable %d - %d",client.webHistoryEnable,client.bW_Enable);
+            NSLog(@"enable / disable dns  %d - %d",client.iot_serviceEnable,client.iot_dnsEnable);
             client = [client copy];
             [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
             [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];

@@ -139,6 +139,10 @@
                 "Icon": "amazon_echo",
                 "AppLabel": "amazon_echo"
             },
+            "other": {
+                "Icon": "help_icon",
+                "AppLabel": "other"
+            },
             "philips_hue": {
                 "Icon": "philips_hue_icon",
                 "AppLabel": "philips_hue"
@@ -408,6 +412,23 @@
             "false": {
                 "AppLabel": "off_camelcase",
                 "Label": "Off"
+            }
+        }
+    },
+    "-27": {
+        "Name": "DNS Security",
+        "Type": "Actuator",
+        "Placement": "Functional",
+        "Layout": "HISTORY_LAYOUT",
+        "AppLabel": "iot_security_camelcase",
+        "Values": {
+            "true": {
+            				"AppLabel": "on_camelcase",
+            				"Label": "On"
+            },
+            "false": {
+            				"AppLabel": "off_camelcase",
+            				"Label": "Off"
             }
         }
     },

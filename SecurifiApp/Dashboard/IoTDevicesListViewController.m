@@ -287,7 +287,7 @@
 }
 - (IBAction)scanNowRequest:(id)sender {
     NSInteger mii = arc4random()%10000;
-    [self.scannowBtn setTitle:@"scanning" forState:UIControlStateNormal];
+    [self.scannowBtn setTitle:@"Scanning" forState:UIControlStateNormal];
     SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
     NSString* amac = currentAlmond.almondplusMAC;
     NSDictionary *commandInfo = @{@"CommandType":@"ScanNow",

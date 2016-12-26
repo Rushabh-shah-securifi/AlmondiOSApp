@@ -897,7 +897,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ivi-eO-UYI">
                                 <rect key="frame" x="0.0" y="584" width="375" height="83"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your subscription for Internet Security is enabled." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wpC-Xf-Hlq">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can view Web history for up to seven days." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wpC-Xf-Hlq">
                                         <rect key="frame" x="0.0" y="3" width="375" height="55"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="55" id="pHA-cJ-cwj"/>
@@ -1000,11 +1000,13 @@
                                     <constraint firstAttribute="bottom" secondItem="aK6-jF-xBg" secondAttribute="bottom" id="vlC-kc-pR5"/>
                                 </constraints>
                             </view>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qic-6Y-wcI">
-                                <rect key="frame" x="41" y="311" width="293" height="138"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qic-6Y-wcI">
+                                <rect key="frame" x="30" y="311" width="315" height="138"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="138" id="GXJ-1D-LVH"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="16"/>
+                                <color key="textColor" red="0.47450980390000003" green="0.47450980390000003" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k9l-Jf-9sT">
@@ -1069,9 +1071,12 @@
                             <constraint firstItem="Ivi-eO-UYI" firstAttribute="top" secondItem="JRV-0i-B4M" secondAttribute="bottom" constant="11" id="Hll-gf-wkq"/>
                             <constraint firstItem="dGC-gO-UYu" firstAttribute="top" secondItem="Qee-dP-ROw" secondAttribute="bottom" id="L2S-9w-Zds"/>
                             <constraint firstAttribute="trailing" secondItem="dGC-gO-UYu" secondAttribute="trailing" id="L89-jE-OSp"/>
+                            <constraint firstItem="qic-6Y-wcI" firstAttribute="top" secondItem="k9l-Jf-9sT" secondAttribute="bottom" constant="29" id="LuA-At-fhJ"/>
+                            <constraint firstItem="qic-6Y-wcI" firstAttribute="leading" secondItem="7pJ-Nf-51W" secondAttribute="leadingMargin" constant="14" id="NcR-0i-ILU"/>
                             <constraint firstItem="JRV-0i-B4M" firstAttribute="top" secondItem="JPj-GY-gXh" secondAttribute="bottom" constant="31" id="WJ8-SD-YlW"/>
                             <constraint firstItem="JPj-GY-gXh" firstAttribute="top" secondItem="k9l-Jf-9sT" secondAttribute="bottom" constant="8" id="ePS-GX-04t"/>
                             <constraint firstItem="ZD5-ef-YhE" firstAttribute="top" secondItem="Ivi-eO-UYI" secondAttribute="bottom" id="fT7-1Z-Gic"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="qic-6Y-wcI" secondAttribute="trailing" constant="14" id="nqf-tx-BQd"/>
                             <constraint firstAttribute="trailing" secondItem="Qee-dP-ROw" secondAttribute="trailing" id="pMm-Rt-5HS"/>
                             <constraint firstItem="dGC-gO-UYu" firstAttribute="leading" secondItem="7pJ-Nf-51W" secondAttribute="leading" id="pcZ-ds-5YA"/>
                             <constraint firstItem="k9l-Jf-9sT" firstAttribute="top" secondItem="dGC-gO-UYu" secondAttribute="bottom" constant="5" id="qd0-m2-cwf"/>
