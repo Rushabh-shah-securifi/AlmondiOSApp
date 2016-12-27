@@ -69,6 +69,7 @@
     self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
     NSLog(@"iot device mac %@",self.iotDevice[@"MAC"]);
     self.client = [Client getClientByMAC:self.iotDevice[@"MAC"]];
+    NSLog(@"self.client.name %@",self.client.name);
     NSLog(@"iot device mac %@",self.client.deviceMAC);
     
     //    if(!self.client.iot_serviceEnable){
@@ -343,11 +344,19 @@
 
 -(UIColor *)getColor:(NSDictionary *)returnDict{
     UIColor *color;
+    if(returnDict.allKeys.count == 1){
+         return  [UIColor securifiScreenGreen];
+    }
     for(NSString *key in returnDict.allKeys){
         if([key isEqualToString:@"MAC"])
             continue;
         
         NSDictionary *dict = returnDict[key];
+        NSLog(@"dict   == %@",dict);
+//        if(dict == nil){
+//            
+//            return  [UIColor securifiScreenGreen];
+//        }
         if([dict[@"P"]isEqualToString:@"1"]){
             if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"]){
                 color = [UIColor redColor];
