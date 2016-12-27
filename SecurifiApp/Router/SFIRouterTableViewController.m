@@ -332,6 +332,10 @@ int mii;
     return [_routerSummary.firmwareVersion hasPrefix:@"AL3-"] && isRouterOrMaster;
 }
 
+-(BOOL)isAl3AnyMode{
+    return [_routerSummary.firmwareVersion hasPrefix:@"AL3-"];
+}
+
 -(BOOL)isDisconnected{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     ConnectionStatusType connectionStat = [ConnectionStatus getConnectionStatus];
@@ -745,7 +749,7 @@ int mii;
             case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
                 //NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
                 self.routerSummary = (SFIRouterSummary *)genericRouterCommand.command;
-                self.enableAdvRouter = [self isAL3];
+                self.enableAdvRouter = [self isAl3AnyMode];
                 //NSLog(@"routersummary: %@", self.routerSummary);
                 
                 if(self.currentConnectionMode == SFIAlmondConnectionMode_cloud){ //Do only in Cloud

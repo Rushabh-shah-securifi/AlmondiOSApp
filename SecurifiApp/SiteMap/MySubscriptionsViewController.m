@@ -41,10 +41,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    SFIAlmondPlus *firstAl3 = [[AlmondManagement getAL3s:[AlmondManagement almondList]] objectAtIndex:0];
-    self.currentMAC = firstAl3.almondplusMAC;
+    SFIAlmondPlus *Al3 = [AlmondManagement tryLoadCurrentAL3];
+    self.currentMAC = Al3.almondplusMAC;
     self.almondLabel.text = [AlmondManagement cloudAlmond:self.currentMAC].almondplusName;
-    NSLog(@"almond plan %d", self.almondPlan.planType);
+    
     [self initializeMySubscriptionsArray];
     [self makeAlmondSelectionBtn];
     [self setUpHUD];
@@ -56,7 +56,6 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    NSLog(@"subscriptions: %@, almondplan: %@", [SecurifiToolkit sharedInstance].subscription, [AlmondPlan getAlmondPlan:self.currentMAC]);
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [self initializeNotification];
     
