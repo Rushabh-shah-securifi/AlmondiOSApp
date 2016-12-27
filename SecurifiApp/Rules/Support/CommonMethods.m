@@ -751,8 +751,9 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
             
             if(lastHour < systemLastHour){
                 NSLog(@"lastHour %ld systemLastHour %ld",lastHour,systemLastHour);
-            }
                 continue;
+            }
+            
         }
         NSDictionary *categoryObj = @{@"ID":ID,
                                       @"categoty":categoryName[@"category"],
@@ -764,9 +765,11 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
                                    @"date" : uriDict[@"Date"],
                                    @"categoryObj" : categoryObj
                                    };
+        
         [self addToDictionary:dayDict uriInfo:uriInfo1 rowID:uriDict[@"Date"]];
         
     }
+    NSLog(@"return Day dict %@",dayDict);
     return dayDict;
 }
 + (void)addToDictionary:(NSMutableDictionary *)rowIndexValDict uriInfo:(NSDictionary *)uriInfo rowID:(NSString *)day{
