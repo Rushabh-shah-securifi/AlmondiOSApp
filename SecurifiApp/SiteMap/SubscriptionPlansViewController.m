@@ -157,7 +157,7 @@
     
     [plans addObject:[self getPlanDict:@"3 Months" midLabel:@"$12" btmLabel:@"PLAN" planType:PlanTypeThreeMonths]];
     
-    [plans addObject:[self getPlanDict:@"6 Months" midLabel:@"$20" btmLabel:@"PLAN" planType:PlanTypeSixMonths]];
+//    [plans addObject:[self getPlanDict:@"6 Months" midLabel:@"$20" btmLabel:@"PLAN" planType:PlanTypeSixMonths]];
     
     return plans;
 }
