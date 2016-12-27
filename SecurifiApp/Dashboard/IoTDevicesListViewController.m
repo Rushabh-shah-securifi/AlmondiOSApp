@@ -14,6 +14,7 @@
 #import "UIFont+Securifi.h"
 #import "MySubscriptionsViewController.h"
 #import "AlmondManagement.h"
+#import "AlmondPlan.h"
 
 @interface IoTDevicesListViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *ioTdevicetable;
@@ -24,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lastScan_label;
 @property (weak, nonatomic) IBOutlet UILabel *blinking_lbl;
 @property (weak, nonatomic) IBOutlet UIButton *scannowBtn;
+@property (weak, nonatomic) IBOutlet UIView *bottoMView;
 
 
 @end
@@ -41,6 +43,17 @@
     self.scannedDeviceList = [[NSMutableArray alloc]init];
     [self iotScanresultsCallBackController:nil];
     self.backArrIcon.image = [CommonMethods imageNamed:@"back_icon" withColor:[UIColor lightGrayColor]];
+    SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
+    BOOL hasSubscribe = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
+    
+    if(hasSubscribe){
+        self.bottoMView.hidden = NO;
+        self.scannowBtn.hidden = NO;
+    }
+    else{
+        self.bottoMView.hidden = YES;
+        self.scannowBtn.hidden = YES;
+    }
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     
     [center addObserver:self
@@ -329,6 +342,11 @@
 }
 -(void)iotScanresultsCallBackController:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
+//        if(sender != Nil){
+//            [self.scannowBtn setTitle:@"Scan Now" forState:UIControlStateNormal];
+//            self.blinking_lbl.hidden = YES;
+//        }
+        
         self.blinking_lbl.hidden = YES;
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         self.scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
