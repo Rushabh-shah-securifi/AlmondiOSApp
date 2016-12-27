@@ -1090,6 +1090,9 @@
 -(void)iotScanresultsCallBackDashBoard:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+//    if(toolkit.iotScanResults[@"scanDevice"] == Nil)
+//            return ;
+        
     NSArray *scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
     NSArray *excludedDevices = toolkit.iotScanResults[@"scanExclude"];
     NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] intValue]];

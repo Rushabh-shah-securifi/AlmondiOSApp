@@ -412,6 +412,13 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gh4-i5-ivb">
                                         <rect key="frame" x="0.0" y="310" width="375" height="100"/>
                                         <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="09U-N2-jXz">
+                                                <rect key="frame" x="0.0" y="98" width="375" height="1"/>
+                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="hL9-LD-YGe"/>
+                                                </constraints>
+                                            </view>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_scan_gray" translatesAutoresizingMaskIntoConstraints="NO" id="j2Z-7B-2xt">
                                                 <rect key="frame" x="167" y="0.0" width="40" height="40"/>
                                                 <constraints>
@@ -452,12 +459,15 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" red="0.91973137729999999" green="0.91973137729999999" blue="0.91973137729999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="09U-N2-jXz" secondAttribute="trailing" id="9CQ-Ib-4lx"/>
                                             <constraint firstItem="j2Z-7B-2xt" firstAttribute="top" secondItem="gh4-i5-ivb" secondAttribute="top" id="Anu-xx-Mfk"/>
                                             <constraint firstAttribute="height" constant="100" id="Fad-l4-krt"/>
                                             <constraint firstItem="nsb-Oz-R6e" firstAttribute="top" secondItem="j2Z-7B-2xt" secondAttribute="bottom" constant="8" id="LH9-GY-oAa"/>
                                             <constraint firstItem="9Sk-fS-sTU" firstAttribute="centerX" secondItem="gh4-i5-ivb" secondAttribute="centerX" constant="12.5" id="WZR-75-5MZ"/>
+                                            <constraint firstAttribute="bottom" secondItem="09U-N2-jXz" secondAttribute="bottom" constant="1" id="bdO-0u-vyH"/>
                                             <constraint firstItem="QrP-Ve-EXb" firstAttribute="centerX" secondItem="gh4-i5-ivb" secondAttribute="centerX" constant="4" id="cNj-lR-oeb"/>
                                             <constraint firstItem="QrP-Ve-EXb" firstAttribute="top" secondItem="nsb-Oz-R6e" secondAttribute="bottom" constant="8" id="dPY-4w-KxB"/>
+                                            <constraint firstItem="09U-N2-jXz" firstAttribute="leading" secondItem="gh4-i5-ivb" secondAttribute="leading" id="gZe-HK-6Ot"/>
                                             <constraint firstItem="9Sk-fS-sTU" firstAttribute="top" secondItem="gh4-i5-ivb" secondAttribute="top" constant="3" id="hdb-Kn-04M"/>
                                             <constraint firstItem="j2Z-7B-2xt" firstAttribute="centerX" secondItem="gh4-i5-ivb" secondAttribute="centerX" id="sJf-C7-grr"/>
                                             <constraint firstItem="nsb-Oz-R6e" firstAttribute="centerX" secondItem="gh4-i5-ivb" secondAttribute="centerX" constant="7.5" id="yPD-SN-c3O"/>

@@ -129,7 +129,7 @@
         NSString *iconName = [self getIcon:iotDeviceMAC];
         
         cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[SFIColors ruleGraycolor]];
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         // cell.detailTextLabel.text = [self getLabelText:iotDevice];
     }
     
@@ -187,9 +187,6 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    
-    
     if (indexPath.section == 0) {
         if(self.scannedDeviceList.count == 0){
             return;
@@ -210,14 +207,14 @@
     else{
         if(self.excludedDevices.count < indexPath.row)
             return;
-//        NSString *iotDeviceMAc = [self.excludedDevices objectAtIndex:indexPath.row];
-//        NSDictionary *iotDevice = @{@"MAC":iotDeviceMAc};
-//        IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
-//        newWindow.iotDevice = iotDevice;
-//        newWindow.hideTable = NO;
-//        newWindow.hideMiddleView = YES;
-//        NSLog(@"IoTDevicesListViewController IF");
-//        [self.navigationController pushViewController:newWindow animated:YES];
+        NSString *iotDeviceMAc = [self.excludedDevices objectAtIndex:indexPath.row];
+        NSDictionary *iotDevice = @{@"MAC":iotDeviceMAc};
+        IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
+        newWindow.iotDevice = iotDevice;
+        newWindow.hideTable = NO;
+        newWindow.hideMiddleView = YES;
+        NSLog(@"IoTDevicesListViewController IF");
+        [self.navigationController pushViewController:newWindow animated:YES];
     }
     
 }
@@ -361,6 +358,7 @@
         self.blinking_lbl.hidden = YES;
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         self.scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
+        
         self.excludedDevices = toolkit.iotScanResults[@"scanExclude"];
         NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] intValue]];
         NSString *lastScanYtime = [dat stringFromDateAMPM];
