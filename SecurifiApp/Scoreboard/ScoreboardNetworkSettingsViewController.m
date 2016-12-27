@@ -7,6 +7,7 @@
 #import "SFIAlmondLocalNetworkSettings.h"
 #import "LocalNetworkManagement.h"
 
+
 @interface ScoreboardNetworkSettingsViewController () <UITextFieldDelegate>
 @property(nonatomic, strong) SFIAlmondLocalNetworkSettings *settings;
 @property BOOL dirty;
@@ -17,10 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.bounces = NO;
-
     NSString *almondMac = self.almond.almondplusMAC;
-
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondLocalNetworkSettings *settings = [LocalNetworkManagement localNetworkSettingsForAlmond:almondMac];
 
     if (!settings) {

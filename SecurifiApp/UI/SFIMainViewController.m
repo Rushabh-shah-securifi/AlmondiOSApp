@@ -30,6 +30,7 @@
 @interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, SFIAccountDeleteDelegate, UIGestureRecognizerDelegate, UITabBarControllerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property BOOL presentingLoginController;
+@property SFIAccountsTableViewController *ctrl;
 @end
 
 @implementation SFIMainViewController
@@ -72,7 +73,6 @@ NetworkStatusIcon *statusIcon;
     [center addObserver:self selector:@selector(onPresentAccounts) name:UI_ON_PRESENT_ACCOUNTS object:nil];
     [center addObserver:self selector:@selector(onDidFailToRegisterForNotifications) name:kSFIDidFailToRegisterForNotifications object:nil];
     [center addObserver:self selector:@selector(onDidFailToDeregisterForNotifications) name:kSFIDidFailToDeregisterForNotifications object:nil];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -96,11 +96,10 @@ NetworkStatusIcon *statusIcon;
     
     // Try to connect iff we are the top-level presenting view and network is down
     if (self.presentedViewController != nil) {
-        NSLog(@"presented view controller. returning");
         return;
     }
-  
-    if (![KeyChainAccess hasLoginCredentials]) {
+    
+    if ([toolkit currentConnectionMode] == SFIAlmondConnectionMode_cloud && ![KeyChainAccess hasLoginCredentials]) {
         // If no logon credentials we just put up the screen and then handle connection from there.
         [self tryPresentLogonScreen];
         return;
@@ -184,7 +183,6 @@ NetworkStatusIcon *statusIcon;
 
 // when switching to cloud connection, if no credentials stored, then present login panel
 - (void)onConnectionModeChange:(id)sender {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     if (![KeyChainAccess hasLoginCredentials]) {
         [self tryPresentLogonScreen];
     }
@@ -273,10 +271,14 @@ NetworkStatusIcon *statusIcon;
 
 - (void)presentAccountsView {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"AccountsStoryboard_iPhone" bundle:nil];
-    SFIAccountsTableViewController *ctrl = (SFIAccountsTableViewController *) [storyboard instantiateViewControllerWithIdentifier:@"SFIAccountsTableViewController"];
-    ctrl.delegate = self;
+    if(_ctrl==nil){
+        _ctrl = (SFIAccountsTableViewController *) [storyboard instantiateViewControllerWithIdentifier:@"SFIAccountsTableViewController"];
     
-    UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+        _ctrl.delegate = self;
+    }
+    
+    NSLog(@"%@ is the address of accountViewController",_ctrl);
+    UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:_ctrl];
     [self presentViewController:nctrl animated:YES completion:nil];
 }
 

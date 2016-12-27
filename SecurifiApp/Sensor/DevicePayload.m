@@ -16,13 +16,11 @@
 @implementation DevicePayload
 
 + (void)deviceListCommand{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericCommand *genericCmd = [GenericCommand requestSensorDeviceList:[AlmondManagement currentAlmond].almondplusMAC];
     [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
 }
 
 +(void)getSensorIndexUpdate:(GenericIndexValue*)genericIndexValue mii:(int)mii{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     
     NSMutableDictionary *payload = [NSMutableDictionary new];
     [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];

@@ -357,7 +357,6 @@ int mii;
             return;
         }
         [self showUpdatingSettingsHUD];
-        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         [RouterPayload setWirelessSettings:mii wirelessSettings:copy mac:[AlmondManagement currentAlmond].almondplusMAC isTypeEnable:isTypeEnable forceUpdate:@"false"];
         [self.HUD hide:YES afterDelay:15];
     });

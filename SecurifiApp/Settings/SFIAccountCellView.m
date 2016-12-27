@@ -53,7 +53,7 @@
                                               @4:NSLocalizedString(ACCOUNTS_USERPROFILE_LABEL_ZIPCODE, ZIP_CODE)
                                               };
     
-    [self drawAccountCell:frame];
+    //[self drawAccountCell:frame];
 }
 
 NSDictionary  *NSLocalizedStringForUserProfileLabels;
@@ -192,6 +192,7 @@ NSArray *fieldNumbersForEachCategory;
         
     }
     
+    
     baseYCordinate += 400;
     UIButton *btnDeleteAccount = [[UIButton alloc] init];
     btnDeleteAccount.frame = CGRectMake(frame.size.width / 2 - 80, baseYCordinate, 140, 30);
@@ -217,7 +218,8 @@ NSArray *fieldNumbersForEachCategory;
     NSString *commandType = [dictionary valueForKey:COMMAND_TYPE];
     if(![commandType isEqualToString:@"UserProfileResponse"])
         return;
-
+    
+    NSLog(@"%@ and %@ is the address of the account cell class and moreviewcontroller",self,self.delegate);
     NSString* success = [dictionary valueForKey:SUCCESS];
     _userProfileData = [NSMutableArray new];
     if ([success isEqualToString:@"true"]) {

@@ -113,6 +113,7 @@
     UILabel *lblAlmondTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, _baseYCoordinate, 120, 30)];
     lblAlmondTitle.backgroundColor = [UIColor clearColor];
     lblAlmondTitle.textColor = [UIColor whiteColor];
+    
     if(self.isOwnedAlmond){
         [lblAlmondTitle setFont:[UIFont standardUITextFieldFont]];
         lblAlmondTitle.text = NSLocalizedString(ACCOUNTS_OWNEDALMOND_LABEL_DEVICENAME, DEVICE_NAME);
@@ -167,20 +168,6 @@
     UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
     btnChangeAlmondName.frame = CGRectMake(_frameValue.size.width - 160, _baseYCoordinate, rename_button_width, 30);
     btnChangeAlmondName.backgroundColor = [UIColor clearColor];
-    if(self.isOwnedAlmond){
-        btnChangeAlmondName.titleLabel.font = [UIFont standardUIButtonFont];
-        [btnChangeAlmondName setTitle:NSLocalizedString(ACCOUNTS_OWNEDALMOND_BUTTON_RENAMEDALMOND, RENAME_ALMOND) forState:UIControlStateNormal];
-    }else{
-        [btnChangeAlmondName setTitle:NSLocalizedString(ACCOUNTS_SHAREDALMOND_BUTTON_RENAMEALMOND, RENAME_ALMOND) forState:UIControlStateNormal];
-        [btnChangeAlmondName.titleLabel setFont:[UIFont standardUIButtonFont]];
-    }
-    [btnChangeAlmondName setTitleColor:[UIColor colorWithRed:255.0 / 255.0 green:255.0 / 255.0 blue:255.0 / 255.0 alpha:0.7] forState:UIControlStateNormal];
-    btnChangeAlmondName.tag = _indexPathRow;
-    btnChangeAlmondName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    
-    [btnChangeAlmondName addTarget:self action:@selector(onChangeAlmondNameClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self addSubview:btnChangeAlmondName];
     
     _baseYCoordinate += 30;
     UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, _baseYCoordinate, _frameValue.size.width - 35, 1)];
@@ -203,7 +190,8 @@
             
             for (int index = 0; index < [_currentAlmond.accessEmailIDs count]; index++) {
                 _baseYCoordinate += 25;
-                NSString *currentEmail = _currentAlmond.accessEmailIDs[index];
+                SFISecondaryUser* user = (SFISecondaryUser*)_currentAlmond.accessEmailIDs[index];
+                NSString *currentEmail = user.emailId;
                 UILabel *lblEmail = [[UILabel alloc] initWithFrame:CGRectMake(10, _baseYCoordinate, 220, 30)];
                 lblEmail.backgroundColor = [UIColor clearColor];
                 lblEmail.textColor = [UIColor whiteColor];
@@ -213,7 +201,7 @@
                 [self addSubview:lblEmail];
                 
                 UIButton *btnEmailRemove = [UIButton buttonWithType:UIButtonTypeCustom];
-                btnEmailRemove.frame = CGRectMake(160, _baseYCoordinate, 130, 30);
+                btnEmailRemove.frame = CGRectMake(_frameValue.size.width - 160, _baseYCoordinate, 130, 30);
                 btnEmailRemove.backgroundColor = [UIColor clearColor];
                 [btnEmailRemove setTitle:NSLocalizedString(ACCOUNTS_OWNEDALMOND_BUTTON_REMOVE, REMOVE) forState:UIControlStateNormal];
                 [btnEmailRemove.titleLabel setFont:[UIFont standardUIButtonFont]];
@@ -247,47 +235,6 @@
     }
 }
 
-
--(void) onChangeAlmondNameClicked: (id)sender {
-    BOOL ownedAlmond;
-    UIButton *btn = (UIButton *) sender;
-    NSUInteger index = (NSUInteger) btn.tag;
-    
-    if ([btn.titleLabel.text isEqualToString:NSLocalizedString(ACCOUNTS_USERPROFILE_BUTTON_DONE, DONE)]) {
-        [tfRenameAlmond resignFirstResponder];
-        if(ownedAlmond)
-            [btn setTitle:NSLocalizedString(ACCOUNTS_OWNEDALMOND_BUTTON_RENAMEDALMOND, RENAME_ALMOND) forState:UIControlStateNormal];
-        else
-            [btn setTitle:NSLocalizedString(ACCOUNTS_SHAREDALMOND_BUTTON_RENAMEALMOND, RENAME_ALMOND) forState:UIControlStateNormal];
-        tfRenameAlmond.enabled = FALSE;
-        SFIAlmondPlus *currentAlmond;
-        if(ownedAlmond)
-            currentAlmond = [self ownedAlmondAtIndexPathRow:index];
-        else
-            currentAlmond = [self sharedAlmondAtIndexPathRow:index];
-        
-        if (changedAlmondName.length == 0) {
-            return;
-        }
-        else if (changedAlmondName.length > 32) {
-            [self.delegate showToastForMoreThan32Chars];
-        }
-        if(ownedAlmond)
-            nameChangedForAlmond = NAME_CHANGED_OWNED_ALMOND;
-        else
-            nameChangedForAlmond = NAME_CHANGED_SHARED_ALMOND;
-        
-        NSArray *data = @[@"AlmondNameChange", currentAlmond.almondplusMAC, changedAlmondName];
-        NSArray *localizedStrings = @[ACCOUNTS_HUD_CHANGEALMOND, CHANGE_ALMOND_NAME];
-        [self.delegate sendRequest:(CommandType*)CommandType_ALMOND_NAME_CHANGE_REQUEST withData:data withLocalizedStrings:localizedStrings];
-        [self.delegate onChangeAlmondNameClicked:changedAlmondName nameChangeValue:nameChangedForAlmond];
-    }
-    else {
-        [btn setTitle:NSLocalizedString(ACCOUNTS_USERPROFILE_BUTTON_DONE, DONE) forState:UIControlStateNormal];
-        tfRenameAlmond.enabled = TRUE;
-        [tfRenameAlmond becomeFirstResponder];
-    }
-}
 
 
 -(void) isNotExpanded{

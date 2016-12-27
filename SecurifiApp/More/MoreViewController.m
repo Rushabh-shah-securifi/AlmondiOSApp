@@ -43,10 +43,9 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    NSLog(@"i am called");
     
-    if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local)
-        self.isLocal = true;
+    self.isLocal = [[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local;
+    
     self.moreFeatures= [self getFeaturesArray];
     [self initializeNotification];
     
@@ -90,14 +89,18 @@
                    name:kSFIDidUpdateAlmondList
                  object:nil];
     
-    [center addObserver:self selector:@selector(onLogoutResponse:) name:kSFIDidLogoutNotification object:nil];
+    [center addObserver:self
+               selector:@selector(onLogoutResponse:)
+                   name:kSFIDidLogoutNotification
+                 object:nil];
 }
 
 
 - (void)sendUserProfileRequest {
     NSMutableDictionary * data = [NSMutableDictionary new];
-    [[SecurifiToolkit sharedInstance] asyncSendRequest:(CommandType*)CommandType_USER_PROFILE_REQUEST commandString:@"UserProfileRequest" payloadData:data];
+    [[SecurifiToolkit sharedInstance] asyncSendRequest:(CommandType*)CommandType_ACCOUNTS_RELATED commandString:@"UserProfileRequest" payloadData:data];
 }
+
 
 - (void)userProfileResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
@@ -117,6 +120,7 @@
         DLog(@"Reason Code %d", obj.reasonCode);
     }
 }
+
 
 -(NSArray *)getFeaturesArray{
     NSMutableArray *moreFeatures = [NSMutableArray new];
@@ -148,6 +152,7 @@
         return section == 1? 5: 1;
     }
 }
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MoreCellTableViewCell *cell;

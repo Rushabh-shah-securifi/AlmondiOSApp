@@ -9,6 +9,7 @@
 #import <UIKit/UIkit.h>
 #import "UIFont+Securifi.h"
 #import "SFIAccountMacros.h"
+#import "SFISecondaryUser.h"
 
 @protocol onClickButtonsAlmondCell <NSObject>
 

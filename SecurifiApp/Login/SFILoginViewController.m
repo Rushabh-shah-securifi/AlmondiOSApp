@@ -256,15 +256,14 @@
             editor.delegate = self;
             editor.makeLinkedAlmondCurrentOne = YES;
             editor.fromLoginPage = YES;
-
             UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
-
             [self presentViewController:ctrl animated:YES completion:nil];
             break;
         }
         case SFILoginViewControllerMode_switchToLocalConnection: {
             SecurifiToolkit* toolkit = [SecurifiToolkit sharedInstance];
-            [AlmondManagement writeCurrentAlmond :[AlmondManagement currentAlmond]];
+            NSArray* localAlmonds = [AlmondManagement localLinkedAlmondList];
+            [AlmondManagement writeCurrentAlmond :localAlmonds[0]];
             [toolkit setConnectionMode:SFIAlmondConnectionMode_local];
             [self.delegate loginControllerDidCompleteLogin:self];
             break;
