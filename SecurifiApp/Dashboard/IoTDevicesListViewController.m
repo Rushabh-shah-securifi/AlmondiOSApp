@@ -366,7 +366,7 @@
         self.no_scanDevice_label.text = [NSString stringWithFormat:@"%@  Devices scanned",no_deviceScanned];
         
         self.lastScan_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
-        if(self.scannedDeviceList.count == 0){
+        if([toolkit.iotScanResults[@"scanCount"] isEqualToString:@"0"]){
             self.no_scanDevice_label.text = @"No Device scanned";
             self.lastScan_label.hidden = YES;
 //            self.ioTdevicetable.hidden = YES;

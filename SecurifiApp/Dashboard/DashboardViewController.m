@@ -1090,8 +1090,8 @@
 -(void)iotScanresultsCallBackDashBoard:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-//    if(toolkit.iotScanResults[@"scanDevice"] == Nil)
-//            return ;
+    if(toolkit.iotScanResults[@"scanDevice"] == Nil)
+            return ;
         
     NSArray *scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
     NSArray *excludedDevices = toolkit.iotScanResults[@"scanExclude"];
@@ -1106,7 +1106,7 @@
         self.no_scanObjLabel.text = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
         
         self.lastScanIot_label.hidden = NO;
-        if(scannedDeviceList.count == 0){
+        if([toolkit.iotScanResults[@"scanCount"] isEqualToString:@"0"]){
             self.noIot_label.text = @"No Device scanned";
             self.lastScanIot_label.hidden = YES;
         }
