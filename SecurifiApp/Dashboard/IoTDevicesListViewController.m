@@ -119,6 +119,7 @@
         UIColor *color = [self getColor:iotDevice];
         cell.imageView.image = [CommonMethods imageNamed:iconName withColor:color];
         cell.detailTextLabel.text = [self getLabelText:iotDevice];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     else{
         NSString *iotDeviceMAC = [self.excludedDevices objectAtIndex:indexPath.row];
@@ -128,6 +129,7 @@
         NSString *iconName = [self getIcon:iotDeviceMAC];
         
         cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[SFIColors ruleGraycolor]];
+        cell.accessoryType = UITableViewCellAccessoryNone;
         // cell.detailTextLabel.text = [self getLabelText:iotDevice];
     }
     
@@ -143,7 +145,7 @@
     
     cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
     
     
     return cell;
@@ -189,6 +191,10 @@
     
     
     if (indexPath.section == 0) {
+        if(self.scannedDeviceList.count == 0){
+            return;
+        }
+        
         if(self.scannedDeviceList.count < indexPath.row)
             return;
         NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
@@ -204,9 +210,14 @@
     else{
         if(self.excludedDevices.count < indexPath.row)
             return;
-        NSString *iotDeviceMAc = [self.excludedDevices objectAtIndex:indexPath.row];
-        
-        NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
+//        NSString *iotDeviceMAc = [self.excludedDevices objectAtIndex:indexPath.row];
+//        NSDictionary *iotDevice = @{@"MAC":iotDeviceMAc};
+//        IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
+//        newWindow.iotDevice = iotDevice;
+//        newWindow.hideTable = NO;
+//        newWindow.hideMiddleView = YES;
+//        NSLog(@"IoTDevicesListViewController IF");
+//        [self.navigationController pushViewController:newWindow animated:YES];
     }
     
 }
@@ -360,7 +371,7 @@
         if(self.scannedDeviceList.count == 0){
             self.no_scanDevice_label.text = @"No Device scanned";
             self.lastScan_label.hidden = YES;
-            self.ioTdevicetable.hidden = YES;
+//            self.ioTdevicetable.hidden = YES;
         }
         [self.ioTdevicetable reloadData];
 
