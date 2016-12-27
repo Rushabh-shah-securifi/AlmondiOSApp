@@ -52,7 +52,7 @@ int mii;
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
             NSFontAttributeName : [UIFont standardNavigationTitleFont]
     };
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+   
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
     
     self.navigationItem.title = [CommonMethods getShortAlmondName:[AlmondManagement currentAlmond].almondplusName];
@@ -85,7 +85,8 @@ int mii;
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
     
-//    [center addObserver:self selector:@selector(onGenericNotificationCallback:) name:GENERIC_COMMAND_CLOUD_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onAlmondPropertyResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil]; //1064 response
+    [center addObserver:self selector:@selector(onDynamicAlmondPropertyResponse:) name:NOTIFICATION_ALMOND_PROPERTIES_PARSED object:nil];
 }
 
 - (void)hideHUD{
@@ -110,7 +111,7 @@ int mii;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSLog(@"self.wirelessSettings.count %ld",self.wirelessSettings.count);
-    return self.wirelessSettings.count;
+    return self.wirelessSettings.count; //For copy 2g settings
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -118,9 +119,14 @@ int mii;
     
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath; {
-    
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 300;
+    
+    SFIWirelessSetting *setting = [self tryGetWirelessSettingsForTableRow:indexPath.row];
+    if([setting.type isEqualToString:@"5G"])
+        return 350;
+    else
+        return 300;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -178,6 +184,57 @@ int mii;
 }
 
 #pragma mark - Cloud command senders and handlers
+-(void)onAlmondPropertyResponse:(id)sender{
+    NSLog(@"onAlmondPropertyResponse");
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    NSDictionary *payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
+    
+    BOOL isSuccessful = [payload[@"Success"] boolValue];
+    
+    if(isSuccessful){
+        
+    }else{
+        [self showToast:@"Sorry! Could not update"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            [self.HUD hide:YES];
+        });
+    }
+}
+
+- (void)onDynamicAlmondPropertyResponse:(id)sender{
+    NSLog(@"onDynamicAlmondPropertyResponse");
+    //don't reload the dictionary will have old values
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
+    
+    [self showToast:@"Successfully Updated!"];
+    [self set2GSSIDTo5G];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
+
+- (void)set2GSSIDTo5G{
+//    BOOL isCopyEnabled = [SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue;
+    for(SFIWirelessSetting *setting in self.wirelessSettings){
+        if([setting.type isEqualToString:@"5G"])
+            setting.ssid = [self get2GSSID];
+    }
+}
+
+- (NSString *)get2GSSID{
+    for(SFIWirelessSetting *setting in self.wirelessSettings){
+        if([setting.type isEqualToString:@"2G"])
+            return setting.ssid;
+    }
+    return nil;
+}
 - (void)onAlmondRouterCommandResponse:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
@@ -343,6 +400,12 @@ int mii;
     [self onUpdateWirelessSettings:settings isTypeEnable:NO];
 }
 
+- (void)onCopy2GDelegate:(BOOL)isEnabled{
+    NSString *value = isEnabled? @"true": @"false";
+    [self showHudWithTimeoutMsg:@"Please Wait!" time:15];
+    [RouterPayload requestAlmondPropertyChange:mii action:@"KeepSameSSID" value:value uptime:nil];
+}
+
 - (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString *)ssid {
     SFIWirelessSetting *copy = [setting copy];
     copy.ssid = ssid;
@@ -355,19 +418,17 @@ int mii;
 - (void)onUpdateWirelessSettings:(SFIWirelessSetting *)copy isTypeEnable:(BOOL)isTypeEnable{
     NSLog(@"******onUpdateWirelessSettings*******");
     self.currentSetting = copy;
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.disposed) {
-            return;
-        }
-        [self showUpdatingSettingsHUD];
-        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        [RouterPayload setWirelessSettings:mii wirelessSettings:copy mac:[AlmondManagement currentAlmond].almondplusMAC isTypeEnable:isTypeEnable forceUpdate:@"false"];
-        [self.HUD hide:YES afterDelay:15];
-    });
+    [self showHudWithTimeoutMsg:@"Please Wait!" time:15];
+    
+    [RouterPayload setWirelessSettings:mii wirelessSettings:copy mac:[AlmondManagement currentAlmond].almondplusMAC isTypeEnable:isTypeEnable forceUpdate:@"false"];
 }
 
-- (void)showUpdatingSettingsHUD {
-    [self showHUD:@"Please Wait!"];
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg time:(NSTimeInterval)sec{
+    NSLog(@"showHudWithTimeoutMsg");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:hudMsg];
+        [self.HUD hide:YES afterDelay:sec];
+    });
 }
 
 - (void)showHUD:(NSString *)text {

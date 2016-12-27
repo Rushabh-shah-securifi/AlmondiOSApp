@@ -37,16 +37,16 @@
     }
 
     SFIWirelessSetting *setting = self.wirelessSetting;
-
+//    BOOL isCopy2GEnabled = [SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue;
+    
     [cardView addTopBorder:self.backgroundColor];
-    NSLog(@"ssid: %@, mode: %@", setting.ssid, self.mode);
-    NSLog(@"self wirelessSetting type %@",self.wirelessSetting.type);
-//    if([self.wirelessSetting.type isEqualToString:@"5G"]){
-//        [cardView addTitleAndCopySwitch:@"Copy 2G setting" target:self action:nil shareAction:nil on:setting.enabled];
-//        
+    
+//    if([self is5G]){
+//        [cardView addTitleAndCopySwitch:@"Copy 2G setting" target:self action:@selector(onCopy2g:) on:isCopy2GEnabled];
 //        [cardView addLine];
 //    }
     
+    //if([self isInREMode] || [self isGuestAndAP] || [self hasSlavesAndNotGuest] || [self is5GAndCopyEnabled])
     if([self isInREMode] || [self isGuestAndAP] || [self hasSlavesAndNotGuest]){
         [cardView addTitleAndShare:setting.ssid target:self shareAction:@selector(onShareBtnTap:) on:setting.enabled];
     }
@@ -55,7 +55,7 @@
     }
     [cardView addLine];
     
-    
+    //if([self isInREMode] || [self isGuestAndAP] || [self is5GAndCopyEnabled])
     if([self isInREMode] || [self isGuestAndAP]){
         [cardView addNameLabel:NSLocalizedString(@"router.settings.label.SSID", @"SSID") valueLabel:setting.ssid];
     }
@@ -98,11 +98,24 @@
     return self.hasSlaves && ![self.wirelessSetting.type.lowercaseString hasPrefix:@"guest"];
 }
 
+-(BOOL)is5G{
+    return [self.wirelessSetting.type isEqualToString:@"5G"];
+}
+
+-(BOOL)is5GAndCopyEnabled{
+    BOOL isCopy2GEnabled = [SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue;
+    return isCopy2GEnabled && [self is5G];
+}
+
 #pragma mark - UISwitch actions
 
 - (void)onActivateDeactivate:(id)sender {
     UISwitch *ctrl = sender;
     [self.delegate onEnableDevice:self.wirelessSetting enabled:ctrl.on];
+}
+
+- (void)onCopy2g:(UISwitch *)ctrl{
+    [self.delegate onCopy2GDelegate:ctrl.isOn];
 }
 
 #pragma mark - UIButton actions

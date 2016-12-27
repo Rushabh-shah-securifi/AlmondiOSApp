@@ -101,6 +101,7 @@ typedef NS_ENUM(int, SFICardView_right_offset) {
 + (NSInteger)getLineCount:(NSArray*)msgs;
 
 - (void)addTitleAndShare:(NSString *)title target:(id)target shareAction:(SEL)shareAction on:(BOOL)isSwitchOn;
-- (void)addTitleAndCopySwitch:(NSString *)title target:(id)target action:(SEL)action shareAction:(SEL)shareAction on:(BOOL)isSwitchOn;
+
+- (void)addTitleAndCopySwitch:(NSString *)title target:(id)target action:(SEL)action on:(BOOL)isSwitchOn;
 
 @end

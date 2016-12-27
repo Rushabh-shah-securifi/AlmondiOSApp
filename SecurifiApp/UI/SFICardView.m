@@ -369,22 +369,25 @@
 
 
 
-- (void)addTitleAndCopySwitch:(NSString *)title target:(id)target action:(SEL)action shareAction:(SEL)shareAction on:(BOOL)isSwitchOn {
-    UILabel *label;
+- (void)addTitleAndCopySwitch:(NSString *)title target:(id)target action:(SEL)action on:(BOOL)isSwitchOn {
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 1.5, CGRectGetWidth(self.frame), 50)];
+//    view.backgroundColor = [UIColor lightGrayColor];
     
+    UILabel *label;
     if(isSwitchOn)
         label = [self makeSettingTitle:title];
     else
         label = [self makeTitleLabel:title];
     
-    [self addSubview:label];
+    [view addSubview:label];
 
     
     UISwitch *ctrl = [self makeOnOffSwitch:target action:action on:isSwitchOn];
-    [self addSubview:ctrl];
+    [view addSubview:ctrl];
     [self addManagedControl:ctrl];
 
-    [self markYOffsetUsingRect:label.frame addAdditional:15];
+    [self addSubview:view];
+    [self markYOffsetUsingRect:view.frame addAdditional:0];
 }
 
 - (UIButton *)makeShareLinkButton:(id)target action:(SEL)action{

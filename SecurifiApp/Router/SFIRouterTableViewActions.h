@@ -22,6 +22,8 @@
 
 - (void)onShareBtnTapDelegate:(SFIWirelessSetting *)settings;
 
+- (void)onCopy2GDelegate:(BOOL)isEnabled;
+
 // NO == block device
 - (void)onEnableWirelessAccessForDevice:(NSString*)deviceMAC allow:(BOOL)isAllowed;
 
