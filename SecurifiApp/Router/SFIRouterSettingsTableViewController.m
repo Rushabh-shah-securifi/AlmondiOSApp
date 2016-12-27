@@ -120,7 +120,7 @@ int mii;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 300;
+//    return 300;
     
     SFIWirelessSetting *setting = [self tryGetWirelessSettingsForTableRow:indexPath.row];
     if([setting.type isEqualToString:@"5G"])
@@ -141,7 +141,7 @@ int mii;
 
     SFIWirelessSetting *setting = [self tryGetWirelessSettingsForTableRow:indexPath.row];
 
-    cell.cardView.backgroundColor = setting.enabled ? [[SFIColors blueColor] color] : [UIColor lightGrayColor];
+    cell.cardView.backgroundColor = [self getCellColor:setting];
     NSLog(@"setting type = %@",setting.type);
     cell.wirelessSetting = setting;
     cell.hasSlaves = self.hasSlaves;
@@ -151,6 +151,13 @@ int mii;
     return cell;
 }
 
+-(UIColor *)getCellColor:(SFIWirelessSetting *)setting{
+    if([setting.type isEqualToString:@"5G"]){
+        return [SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue? [UIColor lightGrayColor] :[[SFIColors blueColor] color];
+    }else{
+        return setting.enabled ? [[SFIColors blueColor] color] : [UIColor lightGrayColor];
+    }
+}
 - (SFIWirelessSetting *)tryGetWirelessSettingsForTableRow:(NSInteger)row {
     NSArray *settings = self.wirelessSettings;
 
@@ -214,7 +221,8 @@ int mii;
     });
     
     [self showToast:@"Successfully Updated!"];
-    [self set2GSSIDTo5G];
+    if([SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue)
+        [self set2GSSIDTo5G];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
@@ -235,6 +243,7 @@ int mii;
     }
     return nil;
 }
+
 - (void)onAlmondRouterCommandResponse:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
@@ -287,6 +296,8 @@ int mii;
         switch (genericRouterCommand.commandType) {
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
                 [self processSettings:genericRouterCommand.command];
+                if([SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue)
+                    [self set2GSSIDTo5G];
                 // settings was null, reload in case they are late arriving and the view is waiting for them
                 NSLog(@"processRouterCommandResponse reload");
                 [self showToast:NSLocalizedString(@"successfully_updated", @"")];//

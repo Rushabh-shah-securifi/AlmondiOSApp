@@ -37,17 +37,17 @@
     }
 
     SFIWirelessSetting *setting = self.wirelessSetting;
-//    BOOL isCopy2GEnabled = [SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue;
+    BOOL isCopy2GEnabled = [SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue;
     
     [cardView addTopBorder:self.backgroundColor];
     
-//    if([self is5G]){
-//        [cardView addTitleAndCopySwitch:@"Copy 2G setting" target:self action:@selector(onCopy2g:) on:isCopy2GEnabled];
-//        [cardView addLine];
-//    }
+    if([self is5G]){
+        [cardView addTitleAndCopySwitch:@"Copy 2G setting" target:self action:@selector(onCopy2g:) on:isCopy2GEnabled];
+        [cardView addLine];
+    }
     
     //if([self isInREMode] || [self isGuestAndAP] || [self hasSlavesAndNotGuest] || [self is5GAndCopyEnabled])
-    if([self isInREMode] || [self isGuestAndAP] || [self hasSlavesAndNotGuest]){
+    if([self isInREMode] || [self isGuestAndAP] || [self hasSlavesAndNotGuest] || [self is5GAndCopyEnabled]){
         [cardView addTitleAndShare:setting.ssid target:self shareAction:@selector(onShareBtnTap:) on:setting.enabled];
     }
     else{
@@ -56,7 +56,7 @@
     [cardView addLine];
     
     //if([self isInREMode] || [self isGuestAndAP] || [self is5GAndCopyEnabled])
-    if([self isInREMode] || [self isGuestAndAP]){
+    if([self isInREMode] || [self isGuestAndAP] || [self is5GAndCopyEnabled]){
         [cardView addNameLabel:NSLocalizedString(@"router.settings.label.SSID", @"SSID") valueLabel:setting.ssid];
     }
     else{

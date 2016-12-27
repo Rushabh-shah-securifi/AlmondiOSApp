@@ -529,7 +529,6 @@
 		F492EA3F1DF009EC00FB3B76 /* PaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA381DF009EC00FB3B76 /* PaymentViewController.m */; };
 		F492EA401DF009EC00FB3B76 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F492EA391DF009EC00FB3B76 /* Main.storyboard */; };
 		F492EA411DF009EC00FB3B76 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F492EA3A1DF009EC00FB3B76 /* Images.xcassets */; };
-		F492EA4B1DF0386E00FB3B76 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F492EA4A1DF0386E00FB3B76 /* PassKit.framework */; };
 		F492EA4E1DF158EA00FB3B76 /* SubscriptionPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA4D1DF158EA00FB3B76 /* SubscriptionPlansViewController.m */; };
 		F492EA4F1DF158EA00FB3B76 /* SubscriptionPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA4D1DF158EA00FB3B76 /* SubscriptionPlansViewController.m */; };
 		F492EA521DF54C5500FB3B76 /* SelectedPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA511DF54C5400FB3B76 /* SelectedPlanViewController.m */; };
@@ -1233,7 +1232,6 @@
 		F492EA391DF009EC00FB3B76 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		F492EA3A1DF009EC00FB3B76 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F492EA421DF00C6100FB3B76 /* libStripe.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libStripe.a; path = "../../../Library/Developer/Xcode/DerivedData/SecurifiApp-cpfewyvskyudqiadpcxujhevqunl/Build/Products/Debug-iphonesimulator/Stripe/libStripe.a"; sourceTree = "<group>"; };
-		F492EA4A1DF0386E00FB3B76 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
 		F492EA4C1DF158EA00FB3B76 /* SubscriptionPlansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubscriptionPlansViewController.h; sourceTree = "<group>"; };
 		F492EA4D1DF158EA00FB3B76 /* SubscriptionPlansViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscriptionPlansViewController.m; sourceTree = "<group>"; };
 		F492EA501DF54C5400FB3B76 /* SelectedPlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedPlanViewController.h; sourceTree = "<group>"; };
@@ -1441,7 +1439,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F492EA4B1DF0386E00FB3B76 /* PassKit.framework in Frameworks */,
 				A569B8E71DBE41FF00FBD429 /* libicucore.tbd in Frameworks */,
 				1C996C781AB94E2800CB2C23 /* MessageUI.framework in Frameworks */,
 				1CA80E4C1BAFA4B1002EB836 /* libz.dylib in Frameworks */,
@@ -1887,7 +1884,6 @@
 		1CED5EF319AC82FD0023512F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F492EA4A1DF0386E00FB3B76 /* PassKit.framework */,
 				F492EA421DF00C6100FB3B76 /* libStripe.a */,
 				A569B8E51DBE416400FBD429 /* libicucore.tbd */,
 				1C0317291BB28EB6002E0405 /* libxml2.2.dylib */,
@@ -2723,6 +2719,9 @@
 							};
 							com.apple.Push = {
 								enabled = 1;
+							};
+							com.apple.Wallet = {
+								enabled = 0;
 							};
 						};
 					};
