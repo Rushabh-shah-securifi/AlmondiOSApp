@@ -172,11 +172,12 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if(self.scannedDeviceList.count == 0)
-        return;
-    if(self.excludedDevices.count ==0)
-        return;
+    
+    
+    
     if (indexPath.section == 0) {
+        if(self.scannedDeviceList.count < indexPath.row)
+            return;
         NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
         
         IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
@@ -188,6 +189,8 @@
         [self.navigationController pushViewController:newWindow animated:YES];
     }
     else{
+        if(self.excludedDevices.count < indexPath.row)
+            return;
         NSString *iotDeviceMAc = [self.excludedDevices objectAtIndex:indexPath.row];
         
         NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];

@@ -18,6 +18,9 @@
 #import "GenericIndexValue.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "Client.h"
+#import "SFIAlmondPlus.h"
+#import "AlmondManagement.h"
+#import "AlmondPlan.h"
 
 @implementation GenericIndexUtil
 
@@ -267,6 +270,9 @@
     NSArray *clientGenericIndexes = [self clientGenericIndex:client];
     GenericIndexValue *genericIndexValue;
     GenericIndexClass *genericIndex;
+    SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
+    BOOL hasSubscribe = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
+    NSLog(@"hasSubscribe %d",hasSubscribe);
     for(NSNumber *genericID in clientGenericIndexes){
         
         
@@ -276,12 +282,13 @@
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericID.stringValue
                                                                                forValue:value];
             genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:genericID.intValue deviceID:clientID.intValue];
-            if([genericID.stringValue isEqualToString:@"-26"]){
-                if(client.is_IoTDeviceType)
+            
+            if([genericID.stringValue isEqualToString:@"-26"] ){
+                if(client.is_IoTDeviceType && hasSubscribe)
                 [genericIndexValues addObject:genericIndexValue];
             }
             else if ([genericID.stringValue isEqualToString:@"-23"]){
-                if(!client.is_IoTDeviceType)
+                if(!client.is_IoTDeviceType && hasSubscribe)
                     [genericIndexValues addObject:genericIndexValue];
             }
             else
