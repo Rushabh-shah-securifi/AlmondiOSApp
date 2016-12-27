@@ -174,6 +174,8 @@
     
     if(self.scannedDeviceList.count == 0)
         return;
+    if(self.excludedDevices.count ==0)
+        return;
     if (indexPath.section == 0) {
         NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
         

@@ -72,16 +72,18 @@
         return [(NSString *)obj1 compare:(NSString *)obj2 options:NSNumericSearch];
     }];
     SFIAlmondPlus *alm = [AlmondManagement currentAlmond];
-    BOOL isAl3 = [alm siteMapSupportFirmware:alm.almondplusMAC];
+    BOOL isAl3 = [alm siteMapSupportFirmware:alm.firmware];
+    
+    NSLog(@"isAl3 %d",isAl3);
+    
     for(NSString *key in sortedKeys){
         if([key isEqualToString:@"identifying"])
             continue;
-        
-        
-        
         GenericValue *gVal = [self.genericIndexValue.genericIndex.values valueForKey:key];
-        if(!isAl3 && [self isIoTdevice:gVal.value])
-            continue;
+        if(!isAl3)
+            if([self isIoTdevice:gVal.value])
+                continue;
+        
         [self.displayArray addObject:gVal.displayText];
         [self.valueArr addObject:gVal.value];
         [self.displayArray_copy addObject:gVal.displayText];
