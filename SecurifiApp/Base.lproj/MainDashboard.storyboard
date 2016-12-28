@@ -1049,7 +1049,7 @@
                                     <outlet property="delegate" destination="Hx6-sF-eKd" id="aja-e2-lmA"/>
                                 </connections>
                             </tableView>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JRV-0i-B4M">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JRV-0i-B4M">
                                 <rect key="frame" x="207" y="543" width="152" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="E08-Nj-jZc"/>

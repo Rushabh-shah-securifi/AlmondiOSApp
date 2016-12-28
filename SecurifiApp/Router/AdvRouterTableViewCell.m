@@ -28,7 +28,6 @@
 @property (weak, nonatomic) IBOutlet UIView *lineView;//4
 @property (weak, nonatomic) IBOutlet UIButton *eyeBtn;
 @property (weak, nonatomic) IBOutlet UIImageView *arrowImg;
-@property (weak, nonatomic) IBOutlet UIImageView *eyeImgView;
 
 @property (weak, nonatomic) IBOutlet UIView *mainView;
 
@@ -192,6 +191,8 @@
     self.secureField.placeholder = @"";
     
     self.secureField.secureTextEntry = YES;
+    [self.eyeBtn setTitle:@"SHOW" forState:UIControlStateNormal];
+    
     self.eyeBtn.selected = NO;
 }
 
@@ -235,14 +236,13 @@
     btn.selected = !btn.selected;
     if(btn.selected){
         self.secureField.secureTextEntry = NO;
-        self.eyeImgView.image = [UIImage imageNamed:@"eye_icon"];
+        [self.eyeBtn setTitle:@"HIDE" forState:UIControlStateNormal];
     }
     
     else{
         self.secureField.secureTextEntry = YES;
-        self.eyeImgView.image = [UIImage imageNamed:@"eye_invisible"];
-    }
-    
+        [self.eyeBtn setTitle:@"SHOW" forState:UIControlStateNormal];
+    }    
 }
 
 

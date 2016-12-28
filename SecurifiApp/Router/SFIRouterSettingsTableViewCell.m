@@ -47,7 +47,7 @@
     }
     
     //if([self isInREMode] || [self isGuestAndAP] || [self hasSlavesAndNotGuest] || [self is5GAndCopyEnabled])
-    if([self isInREMode] || [self isGuestAndAP] || [self hasSlavesAndNotGuest] || [self is5GAndCopyEnabled]){
+    if([self isInREMode] || [self isGuestAndAP] || [self hasSlavesAndNotGuest]){
         [cardView addTitleAndShare:setting.ssid target:self shareAction:@selector(onShareBtnTap:) on:setting.enabled];
     }
     else{
