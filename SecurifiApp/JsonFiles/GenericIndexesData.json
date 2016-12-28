@@ -147,7 +147,7 @@
                 "Icon": "philips_hue_icon",
                 "AppLabel": "philips_hue"
             },
-            "scout_home_security": {
+            "scout_home_system": {
                 "Icon": "scout_hub_icon",
                 "AppLabel": "scoutt_hss"
             },
@@ -395,6 +395,40 @@
             "false": {
                 "AppLabel": "off_camelcase",
                 "Label": "Off"
+            }
+        }
+    },
+    "-26": {
+        "Name": "IoTSecurity",
+        "Type": "Actuator",
+        "Placement": "Functional",
+        "Layout": "HISTORY_LAYOUT",
+        "AppLabel": "iot_security_camelcase",
+        "Values": {
+            "true": {
+                "AppLabel": "on_camelcase",
+                "Label": "On"
+            },
+            "false": {
+                "AppLabel": "off_camelcase",
+                "Label": "Off"
+            }
+        }
+    },
+    "-27": {
+        "Name": "DNS Security",
+        "Type": "Actuator",
+        "Placement": "Functional",
+        "Layout": "HISTORY_LAYOUT",
+        "AppLabel": "iot_security_camelcase",
+        "Values": {
+            "true": {
+            				"AppLabel": "on_camelcase",
+            				"Label": "On"
+            },
+            "false": {
+            				"AppLabel": "off_camelcase",
+            				"Label": "Off"
             }
         }
     },
@@ -1033,7 +1067,7 @@
                 "AppLabel": "water_on",
                 "Icon": "water_on",
                 "Label": "FLOODED",
-                "Notification": "notification_water_off"
+                "Notification": "notification_water_on"
             }
         }
     },

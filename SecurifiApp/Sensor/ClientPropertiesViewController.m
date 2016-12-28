@@ -27,6 +27,7 @@
 #import "BrowsingHistoryDataBase.h"
 #import "ParentalControlsViewController.h"
 #import "AlmondManagement.h"
+#import "IoTDeviceViewController.h"
 
 
 #define CELLFRAME CGRectMake(8, 8, self.view.frame.size.width -16, 85)
@@ -175,6 +176,27 @@ int randomMobileInternalIndex;
             
             [self.navigationController pushViewController:ctrl animated:YES];
         });
+        
+        
+    }
+   else if([gIval.genericIndex.ID isEqualToString:@"-26"]){
+       UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainDashboard" bundle:nil];
+       IoTDeviceViewController *newWindow = [storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
+       NSString *deviceID = @(self.genericParams.headerGenericIndexValue. deviceID).stringValue;
+       NSString *mac ;
+       for(Client *client in self.toolkit.clients){
+           if([deviceID isEqualToString:client.deviceID]){
+               mac = client.deviceMAC;
+           }
+       }
+       NSDictionary *iotDevice = @{@"MAC" :mac};
+       newWindow.iotDevice = iotDevice;
+       newWindow.hideTable = YES;
+       newWindow.hideMiddleView = NO;
+       
+       NSLog(@"IoTDevicesListViewController IF");
+       [self.navigationController pushViewController:newWindow animated:YES];
+
         
         
     }

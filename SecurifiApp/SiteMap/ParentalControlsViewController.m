@@ -56,12 +56,23 @@
 
 @property (nonatomic) NSString *resetBWDate;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
+
+@property (nonatomic) NSString *DaysValuenew;
+@property (nonatomic) NSString *Datenew;
+@property (nonatomic) NSString *label;
+
+@property BOOL isSendBWReq;
 @end
 
 @implementation ParentalControlsViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.DaysValuenew = @"7";
+    self.label = @"Past week";
+    self.Datenew = [CommonMethods getTodayDate];
+    self.isSendBWReq = YES;
     [[Analytics sharedInstance] markParentalPage];
     self.parentsControlArr = [[NSMutableArray alloc]init];
     self.cat_view_more = [[CategoryView alloc]initParentalControlMoreClickView:CGRectMake(0, self.view.frame.size.height - 180, 188 , 320)];
@@ -90,7 +101,11 @@
     self.amac = almond.almondplusMAC;
     self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
     NSString *todayDate = [CommonMethods getTodayDate];
-    [self createRequest:@"Bandwidth" value:@"7" date:todayDate];
+    
+    if(self.isSendBWReq){
+        [self createRequest:@"Bandwidth" value:self.DaysValuenew date:self.Datenew];
+        self.NosDayLabel.text = self.label;
+    }
     self.routerMode = toolkit.routerMode;
     
     self.isLocal = [toolkit useLocalNetwork:almond.almondplusMAC];
@@ -146,7 +161,8 @@
             
             self.switchView3.on = NO;
             self.switchView3.hidden = YES;
-            self.switchView1.hidden = YES;
+             self.switchView1.hidden = YES;
+            self.clrHis.hidden = YES;
             self.blockClientTxt.hidden = NO;
             self.view3.hidden = YES;
             self.blockClientTxt.text = @"Web history and Data usage are disabled for blocked devices. You can still see records from when the device was last active.";
@@ -323,18 +339,7 @@
             self.viewTwoTop.constant = -40;
             self.client.webHistoryEnable = NO;
             [self saveNewValue:@"NO" forIndex:-23];
-//            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
-//                                                             message:@"Disabling Web history will delete all your previous history records. Are you sure,you want to disable web history?"
-//                                                            delegate:self
-//                                                   cancelButtonTitle:@"Cancel"
-//                                                   otherButtonTitles:@"Done",nil];
-//            [alert setDelegate:self];
-//            alert.tag = 1;
-//            alert.alertViewStyle = UIAlertViewStyleDefault;
-//            [alert show];
-            
-          
-            
+    
         }
         else{
             
@@ -454,8 +459,10 @@
         //        if (!controller)
         //        {
         BrowsingHistoryViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
+        newWindow.is_IotType = NO;
         NSLog(@"instantiateViewControllerWithIdentifier IF");
         newWindow.client = self.client;
+        self.isSendBWReq = YES;
         [self.navigationController pushViewController:newWindow animated:YES];
         //        }
         //        else
@@ -587,7 +594,7 @@
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-        [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
+        [request setURL:[NSURL URLWithString:@"https://sitemonitoring.securifi.com:8081"]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
@@ -601,10 +608,12 @@
         NSLog(@"dict BW respose %@",dict);
         if([dict[@"search"] isEqualToString:@"ClearHistory"]){
             NSLog(@"clear history success");
-            [BrowsingHistoryDataBase deleteDB:self.amac clientMac:self.cmac];
+            
+            [BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
             return;
         }
         if([dict[@"search"] isEqualToString:@"ClearBandwidth"]){
+            [self createRequest:@"Bandwidth" value:self.DaysValuenew date:self.Datenew];
             return;
         }
         
@@ -631,7 +640,7 @@
 }
 - (NSArray *)readableValueWithBytes:(id)bytes{
     
-    NSString *readable;
+    NSString *readable = @"0 KB";
     if (([bytes longLongValue] == 0)){
         
         readable = [NSString stringWithFormat:@"0 KB"];
@@ -690,12 +699,16 @@
     
     newWindow.delegate = self;
     NSLog(@"instantiateViewControllerWithIdentifier IF");
+    self.isSendBWReq = NO;
     [self.navigationController pushViewController:newWindow animated:YES];
 }
 
 -(void)updateDetailPeriod:(NSString *)value date:(NSString*)date lavelText:(NSString*)labelText{
     NSLog(@"updateDetailPeriod");
-    [self createRequest:@"Bandwidth" value:value date:date];
+    self.DaysValuenew = value;
+    self.Datenew = date;
+    [self createRequest:@"Bandwidth" value:self.DaysValuenew   date:self.Datenew];
+    self.label = labelText;
     self.NosDayLabel.text = labelText;
 
 }

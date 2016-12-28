@@ -106,8 +106,6 @@ int mii;
     
     [self addRefreshControl];
     [self initializeRouterSummaryAndSettings];
-    self.enableAdvRouter = YES;
-    
 }
 
 
@@ -130,6 +128,7 @@ int mii;
     
     [self initializeNotifications];
     self.routerSummary = nil;
+    self.enableAdvRouter = NO;
     self.slaveStatus = [AlmondStatus new];
     
     self.isBUG = NO;
@@ -331,6 +330,10 @@ int mii;
     NSString *mode = _routerSummary.routerMode.lowercaseString;
     BOOL isRouterOrMaster = [mode isEqualToString:@"router" ] || [mode isEqualToString:@"master"];
     return [_routerSummary.firmwareVersion hasPrefix:@"AL3-"] && isRouterOrMaster;
+}
+
+-(BOOL)isAl3AnyMode{
+    return [_routerSummary.firmwareVersion hasPrefix:@"AL3-"];
 }
 
 -(BOOL)isDisconnected{
@@ -731,7 +734,7 @@ int mii;
         }
         if (!genericRouterCommand.commandSuccess) {
             //todo push this string comparison logic into the generic router command
-            self.isAlmondUnavailable = [genericRouterCommand.responseMessage.lowercaseString hasSuffix:NSLocalizedString(@"router.offline-msg. is offline", @" is offline")]; // almond is offline, homescreen is offline
+            self.isAlmondUnavailable = [genericRouterCommand.responseMessage.lowercaseString hasSuffix:@"offline"]; // almond is offline, homescreen is offline
             //NSLog(@"self.isalmondunavailable: %d", self.isAlmondUnavailable);
             if(genericRouterCommand.commandType == SFIGenericRouterCommandType_UPDATE_FIRMWARE_RESPONSE){
                 [self showToast:NSLocalizedString(@"Router Sorry!, Unable to update.", @" Sorry!, Unable to update.")];
@@ -746,6 +749,7 @@ int mii;
             case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
                 //NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
                 self.routerSummary = (SFIRouterSummary *)genericRouterCommand.command;
+                self.enableAdvRouter = [self isAl3AnyMode];
                 //NSLog(@"routersummary: %@", self.routerSummary);
                 
                 if(self.currentConnectionMode == SFIAlmondConnectionMode_cloud){ //Do only in Cloud

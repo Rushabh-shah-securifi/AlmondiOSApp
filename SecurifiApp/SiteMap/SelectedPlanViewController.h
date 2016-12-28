@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AlmondPlan.h"
 
 @interface SelectedPlanViewController : UIViewController
-
+@property (nonatomic)PlanType selectedPlan;
+@property (nonatomic)NSString *currentMAC;
 @end

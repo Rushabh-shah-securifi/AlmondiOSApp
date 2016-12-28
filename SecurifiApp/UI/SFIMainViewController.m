@@ -98,8 +98,7 @@ NetworkStatusIcon *statusIcon;
     if (self.presentedViewController != nil) {
         return;
     }
-    
-    if ([toolkit currentConnectionMode] == SFIAlmondConnectionMode_cloud && ![KeyChainAccess hasLoginCredentials]) {
+    if (toolkit.currentConnectionMode == SFIAlmondConnectionMode_cloud && ![KeyChainAccess hasLoginCredentials]) {
         // If no logon credentials we just put up the screen and then handle connection from there.
         [self tryPresentLogonScreen];
         return;

@@ -20,6 +20,15 @@
     });
 }
 
+- (void)showMidToast:(NSString *)msg{
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        iToast *toast = [iToast makeText:msg];
+        toast = [toast setGravity:iToastGravityCenter];
+        toast = [toast setDuration:2000];
+        [toast show:iToastTypeWarning];
+    }); 
+}
+
 - (void)showSavingToast {
     [self showToast:NSLocalizedString(@"toast.Saving...", @"Saving...")];
 }

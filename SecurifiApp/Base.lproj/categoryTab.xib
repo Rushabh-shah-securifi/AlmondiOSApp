@@ -351,12 +351,11 @@
                         <action selector="closeParentalMoreview:" destination="-1" eventType="touchUpInside" id="QEA-QU-ORl"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Abn-WF-bOK">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" You can view web history for up to seven days and data usage for up to one month." lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Abn-WF-bOK">
                     <rect key="frame" x="15" y="48" width="295" height="134"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="134" id="Iyk-oK-HAe"/>
                     </constraints>
-                    <string key="text">Web history and data usage are subscription service offerings on Almond.  You can view web history for up to seven days and data usage for up to one month. As an introductory offer, enjoy a limited period free access for these services.</string>
                     <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
                     <color key="textColor" red="0.33333333329999998" green="0.33333333329999998" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>

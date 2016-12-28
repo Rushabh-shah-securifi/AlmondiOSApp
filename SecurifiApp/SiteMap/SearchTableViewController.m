@@ -405,7 +405,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-    [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
+    [request setURL:[NSURL URLWithString:@"https://sitemonitoring.securifi.com:8081"]];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
@@ -459,11 +459,12 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     if(![dict[@"AMAC"] isEqualToString:self.amac] || ![dict[@"CMAC"] isEqualToString:self.cmac])
         return;
     NSInteger changedHourTag = dict[@"ChangeHour"]!=NULL?[dict[@"ChangeHour"] integerValue]:0;
+    NSLog(@"response dict %@",dict);
     if(changedHourTag == 1)
-        [self createRequest:@"lastHour" value:self.value];
+        [self createRequest:@"LastHour" value:self.value];
     
     NSMutableDictionary *clientBrowsingHistory = [[NSMutableDictionary alloc]init];
-    
+    NSString *searchLastHour = dict[@"search"]!=NULL?dict[@"search"]:@"";
     NSArray *allObj = dict[@"Data"];
     NSDictionary *last_uriDict = [allObj lastObject];
     NSString *last_date = last_uriDict[@"Date"];
@@ -482,7 +483,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         [self.allUri addObject:uriDict];
     }
     NSLog(@"self.allUri count = %ld",(unsigned long)self.allUri.count);
-    NSDictionary *dayDict =[CommonMethods createSearchDictObj:self.allUri];
+    NSDictionary *dayDict =[CommonMethods createSearchDictObj:self.allUri search:searchLastHour];
     [clientBrowsingHistory setObject:dayDict forKey:@"Data"];
     NSArray *sortedDate = [self sortedDateArr:[dayDict allKeys]];
         [self.dayArr removeAllObjects];
@@ -585,7 +586,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         [self.recentSearchDictObj setObject:self.recentSearchDict forKey:[NSString stringWithFormat:@"%@%@",self.amac,self.cmac]];
     NSLog(@"self.recentSearchDictObj insert %@",self.recentSearchDictObj);
     [[NSUserDefaults standardUserDefaults] setObject:self.recentSearchDictObj forKey:@"recentSearch"];
-    //    [self addSuggestionSearchObj];
+        [self addSuggestionSearchObj];
     
 }
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController{

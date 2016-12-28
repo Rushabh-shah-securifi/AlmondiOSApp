@@ -47,28 +47,16 @@
 }
 - (void)initializeNotification{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(onMeshCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onMobileResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
+
+    [center addObserver:self selector:@selector(onDynamicAlmondLocationChange:) name:NOTIFICATION_ALMOND_PROPERTIES_PARSED object:nil];
+    
+    
+    [center addObserver:self selector:@selector(onConnectionStatusChanged:) name:CONNECTION_STATUS_CHANGE_NOTIFIER object:nil];
     
     [center addObserver:self selector:@selector(onKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     
     [center addObserver:self selector:@selector(onKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-    
-    [center addObserver:self
-               selector:@selector(onConnectionStatusChanged:)
-                   name:CONNECTION_STATUS_CHANGE_NOTIFIER
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(almondNameChangeResponseCallback:)
-                   name:kSFIDidChangeAlmondName
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(onDynamicAlmondLocationChange:)
-                   name:DYNAMIC_ALMOND_LOCATION_CHANIGE_NOTIFIER
-                 object:nil];
-    
-    [center addObserver:self selector:@selector(onAlmondLocationChange:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
 }
 
 
@@ -158,34 +146,12 @@
     [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
 }
 */
-- (void)onAlmondLocationChange:(id)sender{
-    NSDictionary *payload;
-    
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *dataInfo = [notifier userInfo];
-    
-    if (dataInfo==nil || [dataInfo valueForKey:@"data"]==nil ) {
-        return;
-    }
-    
-    if([SecurifiToolkit sharedInstance].currentConnectionMode == SFIAlmondConnectionMode_local){
-        payload = dataInfo[@"data"];
-    }else{
-        payload = [dataInfo[@"data"] objectFromJSONData];
-    }
-    
-    BOOL isSuccessful = [payload[@"Success"] boolValue];
-    if(isSuccessful == NO){
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showToast:NSLocalizedString(@"sorry_could_not_update", @"")];
-        });
-    }
-    
-}
 
--(void)onMeshCommandResponse:(id)sender{
+
+-(void)onMobileResponse:(id)sender{
     NSLog(@"mesh edit onmeshcommandresponse");
-    //load next view
+    //Includes almond location change and set slave name
+
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
@@ -202,14 +168,12 @@
     
     NSLog(@"meshview mesh payload: %@", payload);
     NSString *commandType = payload[COMMAND_TYPE];
-    if(![commandType isEqualToString:@"SetSlaveNameMobile"])
-        return;
+    
     [self hideHUDDelegate];
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     if(isSuccessful){
         [self.delegate slaveNameDidChangeDelegate:_name];
         [self showToast:@"Successfully updated!"];
-        
     }
     else{//failed
         [self showToast:@"Sorry! Could not update."];
@@ -218,65 +182,11 @@
 }
 
 - (void)onDynamicAlmondLocationChange:(id)sender{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *dataInfo = [notifier userInfo];
-    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
-        return;
-    }
-    SFIAlmondConnectionMode connectionMode = [toolkit currentConnectionMode];
+    //currently not needed
+    NSLog(@"onDynamicAlmondLocationChange");
     
-    NSDictionary *payload;
-    if(connectionMode == SFIAlmondConnectionMode_local)
-        payload = dataInfo[@"data"];
-    else
-        payload = [dataInfo[@"data"] objectFromJSONData];
-    NSString *almondMAC = payload[ALMONDMAC];
-    //{"CommandType":"DynamicAlmondLocationChange","AlmondLocation":"Den","AlmondMAC":"251176216952836"}
-    if(connectionMode == SFIAlmondConnectionMode_cloud && ![almondMAC isEqualToString:[AlmondManagement currentAlmond].almondplusMAC]){
-        return;
-    }
-    
-    if (almondMAC.length != 0) {
-        //Change Owned Almond Name
-        [self.delegate slaveNameDidChangeDelegate:payload[@"AlmondLocation"]];
-        [self showToast:@"Successfully updated!"];
-    }
-    else {
-        NSLog(@"almondNameChangeResponseCallback ");
-        [self showToast:@"Sorry! We were unable to change Almond's Location"];
-    }
-    [self hideHUDDelegate];
-    [self dismissControllerDelegate];
 }
 
-- (void)almondNameChangeResponseCallback:(id)sender {
-    NSLog(@"almondNameChangeResponseCallback");
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *dataInfo = [notifier userInfo];
-    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
-        return;
-    }
-    SFIAlmondConnectionMode connectionMode = [toolkit currentConnectionMode];
-    
-    DynamicAlmondNameChangeResponse *obj = [dataInfo valueForKey:@"data"];
-    if(connectionMode == SFIAlmondConnectionMode_cloud && ![obj.almondplusMAC isEqualToString:[AlmondManagement currentAlmond].almondplusMAC]){
-        return;
-    }
-
-    if (obj.almondplusMAC.length != 0) {
-        //Change Owned Almond Name
-        [self.delegate slaveNameDidChangeDelegate:_name];
-        [self showToast:@"Successfully updated!"];
-    }
-    else {
-        NSLog(@"almondNameChangeResponseCallback ");
-        [self showToast:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name2222")];
-    }
-    [self hideHUDDelegate];
-    [self dismissControllerDelegate];
-}
 
 - (void)onKeyboardDidShow:(id)notification {
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;

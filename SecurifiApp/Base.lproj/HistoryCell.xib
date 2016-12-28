@@ -41,7 +41,8 @@
                     </variation>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G1p-89-vOU">
-                    <rect key="frame" x="255" y="10" width="40" height="28"/>
+                    <rect key="frame" x="260" y="10" width="40" height="28"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="40" id="nGp-mA-sEH"/>
                     </constraints>
@@ -50,7 +51,8 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Xz-JC-pZS">
-                    <rect key="frame" x="66" y="9" width="198" height="28"/>
+                    <rect key="frame" x="63" y="9" width="197" height="28"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
@@ -64,9 +66,9 @@
             </subviews>
             <color key="backgroundColor" red="0.66274509800000003" green="0.66274509800000003" blue="0.66274509800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="G1p-89-vOU" firstAttribute="leading" secondItem="5Xz-JC-pZS" secondAttribute="trailing" constant="-9" id="3IB-be-Fwx"/>
+                <constraint firstItem="G1p-89-vOU" firstAttribute="leading" secondItem="5Xz-JC-pZS" secondAttribute="trailing" id="3IB-be-Fwx"/>
                 <constraint firstItem="5Xz-JC-pZS" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="9" id="LcE-V6-kje"/>
-                <constraint firstAttribute="trailing" secondItem="G1p-89-vOU" secondAttribute="trailing" constant="34" id="VcX-h2-0Nt"/>
+                <constraint firstAttribute="trailing" secondItem="G1p-89-vOU" secondAttribute="trailing" constant="29" id="VcX-h2-0Nt"/>
                 <constraint firstItem="nkO-tR-bJ4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="Z9H-PB-z2w"/>
                 <constraint firstItem="oSz-lx-AaM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="13" id="bIT-g6-bEP"/>
                 <constraint firstAttribute="bottom" secondItem="oSz-lx-AaM" secondAttribute="bottom" constant="11" id="eKw-2Y-V10"/>
@@ -74,11 +76,11 @@
                 <constraint firstAttribute="trailing" secondItem="oSz-lx-AaM" secondAttribute="trailing" constant="16" id="hrB-6Q-G6M"/>
                 <constraint firstAttribute="bottom" secondItem="G1p-89-vOU" secondAttribute="bottom" constant="7" id="inc-MB-EHA"/>
                 <constraint firstItem="G1p-89-vOU" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="jIV-lI-fU6"/>
-                <constraint firstItem="5Xz-JC-pZS" firstAttribute="leading" secondItem="lRV-aA-EvW" secondAttribute="trailing" constant="13" id="lOS-wQ-t8i"/>
+                <constraint firstItem="5Xz-JC-pZS" firstAttribute="leading" secondItem="lRV-aA-EvW" secondAttribute="trailing" constant="10" id="lOS-wQ-t8i"/>
                 <constraint firstItem="lRV-aA-EvW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="ptr-xv-Ntz"/>
                 <constraint firstItem="lRV-aA-EvW" firstAttribute="leading" secondItem="nkO-tR-bJ4" secondAttribute="trailing" constant="8" id="qge-VI-J9t"/>
                 <constraint firstItem="nkO-tR-bJ4" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="suf-LK-Hax"/>
-                <constraint firstItem="G1p-89-vOU" firstAttribute="leading" secondItem="5Xz-JC-pZS" secondAttribute="trailing" constant="-9" id="yze-Xe-mUU"/>
+                <constraint firstItem="G1p-89-vOU" firstAttribute="leading" secondItem="5Xz-JC-pZS" secondAttribute="trailing" id="yze-Xe-mUU"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

@@ -37,9 +37,16 @@
     }
 
     SFIWirelessSetting *setting = self.wirelessSetting;
-
+    BOOL isCopy2GEnabled = [SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue;
+    
     [cardView addTopBorder:self.backgroundColor];
-    NSLog(@"ssid: %@, mode: %@", setting.ssid, self.mode);
+    
+    if([self is5G]){
+        [cardView addTitleAndCopySwitch:@"Copy 2G setting" target:self action:@selector(onCopy2g:) on:isCopy2GEnabled];
+        [cardView addLine];
+    }
+    
+    //if([self isInREMode] || [self isGuestAndAP] || [self hasSlavesAndNotGuest] || [self is5GAndCopyEnabled])
     if([self isInREMode] || [self isGuestAndAP] || [self hasSlavesAndNotGuest]){
         [cardView addTitleAndShare:setting.ssid target:self shareAction:@selector(onShareBtnTap:) on:setting.enabled];
     }
@@ -48,14 +55,14 @@
     }
     [cardView addLine];
     
-    if([self isInREMode] || [self isGuestAndAP]){
+    //if([self isInREMode] || [self isGuestAndAP] || [self is5GAndCopyEnabled])
+    if([self isInREMode] || [self isGuestAndAP] || [self is5GAndCopyEnabled]){
         [cardView addNameLabel:NSLocalizedString(@"router.settings.label.SSID", @"SSID") valueLabel:setting.ssid];
     }
     else{
         [cardView addNameLabel:NSLocalizedString(@"router.settings.label.SSID", @"SSID") valueTextField:setting.ssid delegate:self tag:0];
     }
     [cardView addShortLine];
-
     [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Channel", @"Channel") valueLabel:[NSString stringWithFormat:@"%d", setting.channel]];
     [cardView addShortLine];
     [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Wireless Mode", @"Wireless Mode") valueLabel:setting.wirelessMode];
@@ -69,7 +76,12 @@
 
     [cardView freezeLayout];
 }
-
+-(BOOL)siteMapSupportFirmware:(NSString *)almondFiemware{
+    if([almondFiemware hasPrefix:@"AL3-"])
+        return YES;
+    else
+        return NO;
+}
 -(BOOL)isInREMode{
     return [self.mode.lowercaseString isEqualToString:@"re"];
 }
@@ -86,11 +98,24 @@
     return self.hasSlaves && ![self.wirelessSetting.type.lowercaseString hasPrefix:@"guest"];
 }
 
+-(BOOL)is5G{
+    return [self.wirelessSetting.type isEqualToString:@"5G"];
+}
+
+-(BOOL)is5GAndCopyEnabled{
+    BOOL isCopy2GEnabled = [SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue;
+    return isCopy2GEnabled && [self is5G];
+}
+
 #pragma mark - UISwitch actions
 
 - (void)onActivateDeactivate:(id)sender {
     UISwitch *ctrl = sender;
     [self.delegate onEnableDevice:self.wirelessSetting enabled:ctrl.on];
+}
+
+- (void)onCopy2g:(UISwitch *)ctrl{
+    [self.delegate onCopy2GDelegate:ctrl.isOn];
 }
 
 #pragma mark - UIButton actions

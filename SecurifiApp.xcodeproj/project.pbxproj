@@ -454,6 +454,7 @@
 		CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58276B1D10127400843B4C /* WeatherRuleButton.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
 		CE7E89B61DC356CB00B0C3C6 /* DetailsPeriodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7E89B51DC356CB00B0C3C6 /* DetailsPeriodViewController.m */; };
+		CE8251331E08FF9400212E50 /* MainDashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE8251311E08FF9400212E50 /* MainDashboard.storyboard */; };
 		CEABC65B1D6F14A000C2DCD4 /* CategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEABC65A1D6F14A000C2DCD4 /* CategoryView.m */; };
 		CEABC65E1D6F14A900C2DCD4 /* ChangeCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEABC65D1D6F14A900C2DCD4 /* ChangeCategoryViewController.m */; };
 		CEABC6611D6F14CD00C2DCD4 /* categoryTab.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEABC65F1D6F14CD00C2DCD4 /* categoryTab.xib */; };
@@ -520,6 +521,8 @@
 		F417B2AE1DA290030073C440 /* AdvRouterHelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */; };
 		F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F426AE2E1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
+		F44D533D1E138E05005C8F43 /* IoTLearnMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */; };
+		F44D533E1E138E05005C8F43 /* IoTLearnMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */; };
 		F46129F51DB76BC500EAD7F0 /* SliderComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */; };
 		F46129F61DB76BC500EAD7F0 /* SliderComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */; };
 		F48CF1781DD0859500B44257 /* HelpSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48CF1771DD0859500B44257 /* HelpSearchTableViewController.m */; };
@@ -531,7 +534,6 @@
 		F492EA3F1DF009EC00FB3B76 /* PaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA381DF009EC00FB3B76 /* PaymentViewController.m */; };
 		F492EA401DF009EC00FB3B76 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F492EA391DF009EC00FB3B76 /* Main.storyboard */; };
 		F492EA411DF009EC00FB3B76 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F492EA3A1DF009EC00FB3B76 /* Images.xcassets */; };
-		F492EA4B1DF0386E00FB3B76 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F492EA4A1DF0386E00FB3B76 /* PassKit.framework */; };
 		F492EA4E1DF158EA00FB3B76 /* SubscriptionPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA4D1DF158EA00FB3B76 /* SubscriptionPlansViewController.m */; };
 		F492EA4F1DF158EA00FB3B76 /* SubscriptionPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA4D1DF158EA00FB3B76 /* SubscriptionPlansViewController.m */; };
 		F492EA521DF54C5500FB3B76 /* SelectedPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F492EA511DF54C5400FB3B76 /* SelectedPlanViewController.m */; };
@@ -564,8 +566,6 @@
 		F4B8755C1D5383B500DCF76F /* Mesh.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4B875591D5383B500DCF76F /* Mesh.storyboard */; };
 		F4B8756B1D53886700DCF76F /* Login_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4B875611D53886700DCF76F /* Login_iPhone.storyboard */; };
 		F4B8756C1D53886700DCF76F /* Login_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4B875611D53886700DCF76F /* Login_iPhone.storyboard */; };
-		F4B8756D1D53886700DCF76F /* MainDashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4B875631D53886700DCF76F /* MainDashboard.storyboard */; };
-		F4B8756E1D53886700DCF76F /* MainDashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4B875631D53886700DCF76F /* MainDashboard.storyboard */; };
 		F4B8756F1D53886700DCF76F /* Rules.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4B875651D53886700DCF76F /* Rules.storyboard */; };
 		F4B875701D53886700DCF76F /* Rules.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4B875651D53886700DCF76F /* Rules.storyboard */; };
 		F4B875711D53886700DCF76F /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4B875671D53886700DCF76F /* Scenes_Iphone.storyboard */; };
@@ -1153,6 +1153,7 @@
 		CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPickerIndicatorView1.m; sourceTree = "<group>"; };
 		CE7E89B41DC356CB00B0C3C6 /* DetailsPeriodViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsPeriodViewController.h; sourceTree = "<group>"; };
 		CE7E89B51DC356CB00B0C3C6 /* DetailsPeriodViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsPeriodViewController.m; sourceTree = "<group>"; };
+		CE8251321E08FF9400212E50 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MainDashboard.storyboard; sourceTree = "<group>"; };
 		CEABC6591D6F14A000C2DCD4 /* CategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryView.h; sourceTree = "<group>"; };
 		CEABC65A1D6F14A000C2DCD4 /* CategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryView.m; sourceTree = "<group>"; };
 		CEABC65C1D6F14A900C2DCD4 /* ChangeCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeCategoryViewController.h; sourceTree = "<group>"; };
@@ -1224,6 +1225,8 @@
 		F426AE2B1D19515500AE60C8 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		F43814941D993B2800D5C762 /* Almond.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Almond.entitlements; sourceTree = "<group>"; };
+		F44D533B1E138E05005C8F43 /* IoTLearnMoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IoTLearnMoreViewController.h; sourceTree = "<group>"; };
+		F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IoTLearnMoreViewController.m; sourceTree = "<group>"; };
 		F46129F31DB76BC500EAD7F0 /* SliderComponentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderComponentView.h; sourceTree = "<group>"; };
 		F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderComponentView.m; sourceTree = "<group>"; };
 		F48CF1761DD0859500B44257 /* HelpSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpSearchTableViewController.h; sourceTree = "<group>"; };
@@ -1243,7 +1246,6 @@
 		F492EA391DF009EC00FB3B76 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		F492EA3A1DF009EC00FB3B76 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F492EA421DF00C6100FB3B76 /* libStripe.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libStripe.a; path = "../../../Library/Developer/Xcode/DerivedData/SecurifiApp-cpfewyvskyudqiadpcxujhevqunl/Build/Products/Debug-iphonesimulator/Stripe/libStripe.a"; sourceTree = "<group>"; };
-		F492EA4A1DF0386E00FB3B76 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
 		F492EA4C1DF158EA00FB3B76 /* SubscriptionPlansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubscriptionPlansViewController.h; sourceTree = "<group>"; };
 		F492EA4D1DF158EA00FB3B76 /* SubscriptionPlansViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscriptionPlansViewController.m; sourceTree = "<group>"; };
 		F492EA501DF54C5400FB3B76 /* SelectedPlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedPlanViewController.h; sourceTree = "<group>"; };
@@ -1273,7 +1275,6 @@
 		F4B875561D53837B00DCF76F /* UIImageView+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Securifi.m"; sourceTree = "<group>"; };
 		F4B8755A1D5383B500DCF76F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Mesh.storyboard; sourceTree = "<group>"; };
 		F4B875621D53886700DCF76F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Login_iPhone.storyboard; sourceTree = "<group>"; };
-		F4B875641D53886700DCF76F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainDashboard.storyboard; sourceTree = "<group>"; };
 		F4B875661D53886700DCF76F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Rules.storyboard; sourceTree = "<group>"; };
 		F4B875681D53886700DCF76F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Scenes_Iphone.storyboard; sourceTree = "<group>"; };
 		F4B8756A1D53886700DCF76F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SensorStoryBoard.storyboard; sourceTree = "<group>"; };
@@ -1288,17 +1289,6 @@
 		F4B875861D5388F700DCF76F /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Login_iPhone.strings; sourceTree = "<group>"; };
 		F4B875881D53891200DCF76F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Login_iPhone.strings; sourceTree = "<group>"; };
 		F4B8758A1D53891500DCF76F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Login_iPhone.strings"; sourceTree = "<group>"; };
-		F4B8758C1D53891B00DCF76F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainDashboard.strings; sourceTree = "<group>"; };
-		F4B8758E1D53891D00DCF76F /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/MainDashboard.strings; sourceTree = "<group>"; };
-		F4B875901D53891E00DCF76F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MainDashboard.strings; sourceTree = "<group>"; };
-		F4B875921D53892000DCF76F /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/MainDashboard.strings; sourceTree = "<group>"; };
-		F4B875941D53892100DCF76F /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/MainDashboard.strings; sourceTree = "<group>"; };
-		F4B875961D53892300DCF76F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MainDashboard.strings; sourceTree = "<group>"; };
-		F4B875981D53892400DCF76F /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/MainDashboard.strings; sourceTree = "<group>"; };
-		F4B8759A1D53892600DCF76F /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/MainDashboard.strings; sourceTree = "<group>"; };
-		F4B8759C1D53892800DCF76F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MainDashboard.strings; sourceTree = "<group>"; };
-		F4B8759E1D53892A00DCF76F /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/MainDashboard.strings; sourceTree = "<group>"; };
-		F4B875A01D53892C00DCF76F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/MainDashboard.strings"; sourceTree = "<group>"; };
 		F4B875A21D53893100DCF76F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Rules.strings; sourceTree = "<group>"; };
 		F4B875A41D53893200DCF76F /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Rules.strings; sourceTree = "<group>"; };
 		F4B875A61D53893300DCF76F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Rules.strings; sourceTree = "<group>"; };
@@ -1463,7 +1453,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F492EA4B1DF0386E00FB3B76 /* PassKit.framework in Frameworks */,
 				A569B8E71DBE41FF00FBD429 /* libicucore.tbd in Frameworks */,
 				1C996C781AB94E2800CB2C23 /* MessageUI.framework in Frameworks */,
 				1CA80E4C1BAFA4B1002EB836 /* libz.dylib in Frameworks */,
@@ -1837,8 +1826,8 @@
 				F4D93ADB1D390B4B00D55BD6 /* HelpScreenStoryboard.storyboard */,
 				CE57E5301D1BBCC400493460 /* HistoryCell.xib */,
 				F4B875611D53886700DCF76F /* Login_iPhone.storyboard */,
-				F4B875631D53886700DCF76F /* MainDashboard.storyboard */,
 				1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */,
+				CE8251311E08FF9400212E50 /* MainDashboard.storyboard */,
 				F4B875591D5383B500DCF76F /* Mesh.storyboard */,
 				F4B8754D1D5382FF00DCF76F /* mesh.xib */,
 				F4EA081B1D6AD9F900D6CC28 /* More.storyboard */,
@@ -1916,7 +1905,6 @@
 		1CED5EF319AC82FD0023512F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F492EA4A1DF0386E00FB3B76 /* PassKit.framework */,
 				F492EA421DF00C6100FB3B76 /* libStripe.a */,
 				A569B8E51DBE416400FBD429 /* libicucore.tbd */,
 				1C0317291BB28EB6002E0405 /* libxml2.2.dylib */,
@@ -1983,6 +1971,8 @@
 				F4F981CB1DFA880A00FB0676 /* IoTDevicesListViewController.m */,
 				F4F981CC1DFA880A00FB0676 /* IoTDeviceViewController.h */,
 				F4F981CD1DFA880A00FB0676 /* IoTDeviceViewController.m */,
+				F44D533B1E138E05005C8F43 /* IoTLearnMoreViewController.h */,
+				F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */,
 			);
 			name = Dashboard;
 			sourceTree = "<group>";
@@ -2753,6 +2743,9 @@
 							com.apple.Push = {
 								enabled = 1;
 							};
+							com.apple.Wallet = {
+								enabled = 0;
+							};
 						};
 					};
 				};
@@ -2815,7 +2808,6 @@
 				A58DB3DA1BB1960900717C02 /* Localizable.strings in Resources */,
 				A58DB3EA1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3E31BB1960900717C02 /* Localizable.strings in Resources */,
-				F4B8756E1D53886700DCF76F /* MainDashboard.storyboard in Resources */,
 				A58DB3FF1BB1971300717C02 /* Login_iPhone.strings in Resources */,
 				A58DB3C11BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB4A31BB3CD7500717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
@@ -2972,6 +2964,7 @@
 				846414DD1B736B80008AB07F /* AvenirLTStd-Book.otf in Resources */,
 				CEABC6611D6F14CD00C2DCD4 /* categoryTab.xib in Resources */,
 				F4EA081D1D6AD9F900D6CC28 /* More.storyboard in Resources */,
+				CE8251331E08FF9400212E50 /* MainDashboard.storyboard in Resources */,
 				F4D633F31DC217EE000BF076 /* h_keyfob_image.pdf in Resources */,
 				A58DB4711BB3CD5200717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				F4D633FD1DC217EE000BF076 /* h_scenes.pdf in Resources */,
@@ -3092,7 +3085,6 @@
 				A58DB2EB1BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3331BB16EAF00717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3161BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
-				F4B8756D1D53886700DCF76F /* MainDashboard.storyboard in Resources */,
 				A58DB4501BB3CD3F00717C02 /* Almond-Localizable.strings in Resources */,
 				CE57E52F1D1BB82800493460 /* SiteMapStoryBoard.storyboard in Resources */,
 				F4B875711D53886700DCF76F /* Scenes_Iphone.storyboard in Resources */,
@@ -3367,6 +3359,7 @@
 				F4EA08271D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */,
 				F417B2AE1DA290030073C440 /* AdvRouterHelpController.m in Sources */,
 				1C709A0A1B5A3157007D397C /* SFICloudLinkViewController.m in Sources */,
+				F44D533E1E138E05005C8F43 /* IoTLearnMoreViewController.m in Sources */,
 				1DF0385A73D7AE7E9208F510 /* UIColor+Securifi.m in Sources */,
 				CEF6F4F31C92CAD600C68975 /* CrossButton.m in Sources */,
 				CEF6F4F51C92CAD600C68975 /* DimmerButton.m in Sources */,
@@ -3410,6 +3403,7 @@
 				1C7E7DCF1A41A0990026F0BA /* SFITableViewController.m in Sources */,
 				F400B6C11D65ECCD00DDEE50 /* SupportViewController.m in Sources */,
 				1C7E7DD11A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
+				F44D533D1E138E05005C8F43 /* IoTLearnMoreViewController.m in Sources */,
 				CEF6F4FE1C92CAD600C68975 /* RuleTextField.m in Sources */,
 				A5AC1E841CC7BA01009F362B /* RuleSceneUtil.m in Sources */,
 				CE40BF151D225791007C2148 /* HistoryCell.m in Sources */,
@@ -5227,6 +5221,14 @@
 			name = HistoryCell.xib;
 			sourceTree = "<group>";
 		};
+		CE8251311E08FF9400212E50 /* MainDashboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE8251321E08FF9400212E50 /* Base */,
+			);
+			name = MainDashboard.storyboard;
+			sourceTree = "<group>";
+		};
 		CEABC65F1D6F14CD00C2DCD4 /* categoryTab.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -5276,26 +5278,6 @@
 				F4B8758A1D53891500DCF76F /* zh-Hans */,
 			);
 			name = Login_iPhone.storyboard;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		F4B875631D53886700DCF76F /* MainDashboard.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F4B875641D53886700DCF76F /* Base */,
-				F4B8758C1D53891B00DCF76F /* en */,
-				F4B8758E1D53891D00DCF76F /* nl */,
-				F4B875901D53891E00DCF76F /* es */,
-				F4B875921D53892000DCF76F /* pl */,
-				F4B875941D53892100DCF76F /* pt */,
-				F4B875961D53892300DCF76F /* ru */,
-				F4B875981D53892400DCF76F /* sv */,
-				F4B8759A1D53892600DCF76F /* tr */,
-				F4B8759C1D53892800DCF76F /* de */,
-				F4B8759E1D53892A00DCF76F /* ja */,
-				F4B875A01D53892C00DCF76F /* zh-Hans */,
-			);
-			name = MainDashboard.storyboard;
 			path = ..;
 			sourceTree = "<group>";
 		};

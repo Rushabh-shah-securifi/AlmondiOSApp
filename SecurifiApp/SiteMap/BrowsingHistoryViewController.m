@@ -44,6 +44,8 @@
 @property (nonatomic) NSURLConnection *conn;
 
 @property BOOL isTapped;
+@property (weak, nonatomic) IBOutlet UIImageView *searchIcon;
+@property (weak, nonatomic) IBOutlet UIButton *searchButton;
 
 
 @end
@@ -52,7 +54,10 @@
 - (void)viewDidLoad {
     NSLog(@" client name %@",self.client.name);
     self.count = 0;
-    
+    if(self.is_IotType){
+        self.searchIcon.hidden = YES;
+        self.searchButton.hidden = YES;
+    }
     
     [[Analytics sharedInstance]markWebHistoryPage];
     self.NoresultFound = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 140, 15)];
@@ -86,7 +91,7 @@
     _responseData = [[NSMutableData alloc] init];
     self.sendReq = YES;
     self.reload = YES;
-    [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@",self.amac,self.cmac] showHudFirstTime:YES];
+    [self sendHttpRequest:[NSString stringWithFormat:@"AMAC=%@&CMAC=%@&IOT=%d",self.amac,self.cmac,self.is_IotType] showHudFirstTime:YES];
     if([[SecurifiToolkit sharedInstance]isCloudReachable]){
         self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:500 amac:self.amac cmac:self.cmac];
         //[self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
@@ -98,21 +103,16 @@
     }
     self.isTapped = NO;
     
-    
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
     [self.navigationController setNavigationBarHidden:NO];
     self.NoresultFound.hidden = YES;
+    [self.NoresultFound removeFromSuperview];
     
     [BrowsingHistoryDataBase closeDB];
     //[BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
-    
-    
-    
-    
 }
 -(void)updateNavi:(UIColor *)backGroundColor title:(NSString *)title tintColor:(UIColor *)tintColor tintBarColor:(UIColor *)tintBarColor{
     self.navigationController.view.backgroundColor =  backGroundColor;
@@ -164,7 +164,7 @@
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-    [request setURL:[NSURL URLWithString:@"http://sitemonitoring.securifi.com:8081"]];
+    [request setURL:[NSURL URLWithString:@"https://sitemonitoring.securifi.com:8081"]];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
@@ -192,22 +192,30 @@
     if(_responseData == nil)
         return;
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
+     NSLog(@"response obj  %@",dict);
     [_responseData setLength:0];
     _responseData = nil;
     /*note get endidentifier from db */
     //dispatch_async(self.sendReqQueue,^(){
     if(dict == NULL)
         return;
-    if(dict[@"Data"] == NULL)
-        return;
+    
     if(dict[@"AMAC"] == NULL || dict[@"CMAC"] == NULL)
         return;
     if(![dict[@"AMAC"] isEqualToString:self.amac] || ![dict[@"CMAC"] isEqualToString:self.cmac])
         return;
     
     NSArray *allObj = dict[@"Data"];
-    NSLog(@"response obj count list %@",allObj);
-    if(allObj == NULL)
+    NSLog(@"response obj count list %@,pg = %@",allObj,dict[@"pageState"]);
+    NSLog(@"count db %d",[BrowsingHistoryDataBase GetHistoryDatabaseCount:self.amac clientMac:self.cmac]);
+    if(allObj.count==0 && (dict[@"pageState"] == NULL || dict[@"pageState"] == [NSNull null])){// deleting entries from db if no object in res and pg in null
+         [BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
+        self.dayArr = @[];
+            [self reloadTable];
+        return;
+
+    }
+    if(dict[@"Data"] == NULL)
         return;
     NSDictionary *last_uriDict = [allObj lastObject];
     NSString *last_date = last_uriDict[@"Date"];
@@ -232,7 +240,7 @@
     self.sendReq = YES;
     self.reload = NO;
     if([last_date isEqualToString:[CommonMethods getTodayDate]] && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
-        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]] showHudFirstTime:NO];
+        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@&IOT=%d",_amac,_cmac,self.incompleteDB[@"PS"],self.is_IotType] showHudFirstTime:NO];
     }
     
 }
@@ -270,7 +278,7 @@
     self.sendReq = YES;
     self.reload = NO;
     if([last_date isEqualToString:[CommonMethods getTodayDate]] && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
-        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@",_amac,_cmac,self.incompleteDB[@"PS"]] showHudFirstTime:NO];
+        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@&IOT=%d",_amac,_cmac,self.incompleteDB[@"PS"],self.is_IotType] showHudFirstTime:NO];
     }
     
 }
@@ -319,8 +327,10 @@
     if(self.dayArr.count > indexPath.section){
         NSArray *browsHist = self.dayArr[indexPath.section];
         if(browsHist.count > indexPath.row){
-            if(browsHist[indexPath.row] != NULL)
+            if(browsHist[indexPath.row] != NULL){
+                cell.is_IotType = self.is_IotType;
                 [cell setCell:browsHist[indexPath.row] hideItem:NO isCategory:NO showTime:YES count:indexPath.row+1 hideCheckMarkIMg:YES];
+            }
         }
     }
     
@@ -362,10 +372,10 @@
             NSString *ps= self.incompleteDB[@"PS"] ;
             NSLog(@"self.oldDate = %@ == str = %@",self.oldDate,str);
             if((self.oldDate != nil && [self.oldDate isEqualToString:str]) && ![ps isKindOfClass:[NSNull class]])
-                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&search=FromThisDate&value=%@&pageState=%@",_amac,_cmac,str,ps] showHudFirstTime:YES];
+                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&search=FromThisDate&value=%@&pageState=%@&IOT=%d",_amac,_cmac,str,ps,self.is_IotType] showHudFirstTime:YES];
             else
             {   if(![ps isKindOfClass:[NSNull class]])
-                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&search=FromThisDate&value=%@",_amac,_cmac,str] showHudFirstTime:YES];
+                [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&search=FromThisDate&value=%@&IOT=%d",_amac,_cmac,str,self.is_IotType] showHudFirstTime:YES];
             }
             
             self.oldDate = str;
@@ -377,10 +387,10 @@
             self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:nil readlimit:self.count amac:self.amac cmac:self.cmac];
             NSLog(@"self.dayArr count %ld",self.dayArr.count);
             if(self.dayArr.count == 0){
-                
+               [self reloadTable];
             }
             //[self.browsingHistory getBrowserHistoryImages:recordDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
-            [self reloadTable];
+            
         }
         
     }

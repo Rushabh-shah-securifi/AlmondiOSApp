@@ -14,7 +14,8 @@
 #import "Colours.h"
 #import "CommonMethods.h"
 #import "UIFont+Securifi.h"
-
+#import "AlmondManagement.h"
+#import "AlmondPlan.h"
 @interface DeviceHeaderView()
 @property (weak, nonatomic) IBOutlet UIButton *parentrolBtn;
 @property (weak, nonatomic) IBOutlet UILabel *label2;
@@ -137,36 +138,74 @@
     
     if(self.cellType == ClientTable_Cell)
     {
+        SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
+        BOOL hasSubscribe = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
+        NSLog(@"hasSubscribe %d",hasSubscribe);
+        
+        if(hasSubscribe){
+
         Client *client = [Client findClientByID:@(deviceID).stringValue];
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        
+        BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
+        if(local){
+            self.parentrolBtn.hidden = YES;
+        }
+        else
+            self.parentrolBtn.hidden = NO;
+        
         if(client.webHistoryEnable == NO){
             self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_off"];
             NSLog(@"icon_history_off");
             self.deviceValue.text = @"Web History Off";
+            [self.parentrolBtn removeTarget:nil
+                                     action:NULL
+                           forControlEvents:UIControlEventTouchUpInside];
+            [self.parentrolBtn addTarget:self action:@selector(onParentalControllClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
         else{
             self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_on"];
             NSLog(@"icon_history_on");
             self.deviceValue.text = @"Web History On";
+            
+            [self.parentrolBtn removeTarget:nil
+                                     action:NULL
+                           forControlEvents:UIControlEventTouchUpInside];
+            [self.parentrolBtn addTarget:self action:@selector(onParentalControllClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
-//        if(client.is_IoTDeviceType == YES){
-//            if(client.iot_serviceEnable == YES){
-//                self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_security_black"];
-//                NSLog(@"ic_security_black");
-//                self.deviceValue.text = @"IoT service on";
-//            }
-//            else{
-//                self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_insecure_black"];
-//                NSLog(@"ic_insecure_black");
-//                self.deviceValue.text = @"IoT service off";
-//            }
-//        }
+        
+        if(client.is_IoTDeviceType == YES){
+            [self.parentrolBtn removeTarget:nil
+                               action:NULL
+                     forControlEvents:UIControlEventTouchUpInside];
+            [self.parentrolBtn addTarget:self action:@selector(onIoTControllClicked:) forControlEvents:UIControlEventTouchUpInside];
+            
+            if(client.iot_dnsEnable == YES){
+                self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_security_black"];
+                
+                NSLog(@"ic_security_black");
+                self.deviceValue.text = @"IoT Security On";
+            }
+            else{
+                self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_insecure_black"];
+                NSLog(@"ic_insecure_black");
+                self.deviceValue.text = @"IoT Security Off";
+            }
+        }
+    }
+        else{
+            self.parentrolBtn.hidden = YES;
+        }
     }
     
     
 }
 
-- (IBAction)onParentalControllClicked:(id)sender {
+- (void)onParentalControllClicked:(id)sender {
     [self.delegate patenalControlClickDelegate:self.genericParams];
+}
+- (void)onIoTControllClicked:(id)sender {
+    [self.delegate onIoTControllClickedDelegate:self.genericParams];
 }
 
 -(void)resetHeaderView{

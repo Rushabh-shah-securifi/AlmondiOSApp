@@ -82,7 +82,7 @@
     }
     
     
-    self.siteName.text = [NSString stringWithFormat:@"%ld-%@",count,uri[@"hostName"]];
+    self.siteName.text = [NSString stringWithFormat:@"%@",uri[@"hostName"]];
     
     if([[uri[@"categoryObj"]valueForKey:@"categoty"] isEqualToString:@"NC-17"]){
         self.categoryImg.image = [UIImage imageNamed:@"Adults_Only"];
@@ -118,6 +118,11 @@
     //    if([uri[@"checked"] isEqualToString:@"yes"]){
     //        [self changeIconColor];
     //    }
+    if(self.is_IotType){
+        self.categoryImg.hidden = YES;
+        self.siteNameXconstrain.constant = -29;
+        self.accessoryType = UITableViewCellAccessoryNone;
+    }
     
 }
 

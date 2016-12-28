@@ -9,7 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @interface UICommonMethods : NSObject
-+(CGRect)adjustDeviceNameWidth:(NSString*)name fontSize:(int)fontSize maxLength:(int)maxLength;
++ (CGRect)adjustDeviceNameWidth:(NSString*)name fontSize:(int)fontSize maxLength:(int)maxLength;
 
-+(void)setupUpdateAvailableScreen:(UIView *)bgView viewWidth:(CGFloat)viewWidth;
++ (void)setupUpdateAvailableScreen:(UIView *)bgView viewWidth:(CGFloat)viewWidth;
+
++ (void)clearSubView:(UIView *)view;
+
++ (void)clearSubviewsInScrollView:(UIScrollView *)scrollView;
 @end

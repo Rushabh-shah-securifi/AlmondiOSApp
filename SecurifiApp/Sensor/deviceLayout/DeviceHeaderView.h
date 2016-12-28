@@ -27,6 +27,7 @@ typedef NS_ENUM(NSUInteger, CellType) {
 -(void)delegateClientPropertyEditSettingClick;
 -(void)delegateDeviceEditSettingClick;
 -(void)patenalControlClickDelegate:(GenericParams *)genericParams;
+-(void)onIoTControllClickedDelegate:(GenericParams *)genericParams;
 @end
 
 @interface DeviceHeaderView : UIView

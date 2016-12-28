@@ -262,8 +262,7 @@
         }
         case SFILoginViewControllerMode_switchToLocalConnection: {
             SecurifiToolkit* toolkit = [SecurifiToolkit sharedInstance];
-            NSArray* localAlmonds = [AlmondManagement localLinkedAlmondList];
-            [AlmondManagement writeCurrentAlmond :localAlmonds[0]];
+            [AlmondManagement writeCurrentAlmond:[[AlmondManagement localLinkedAlmondList] objectAtIndex:0]];
             [toolkit setConnectionMode:SFIAlmondConnectionMode_local];
             [self.delegate loginControllerDidCompleteLogin:self];
             break;

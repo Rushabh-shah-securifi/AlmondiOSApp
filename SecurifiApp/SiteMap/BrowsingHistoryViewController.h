@@ -13,4 +13,5 @@
 @property (nonatomic) NSArray *browsingHistoryDayWise;
 @property (nonatomic) BrowsingHistory *browsingHistoryObj;
 @property (nonatomic) Client *client;
+@property (nonatomic) BOOL is_IotType;
 @end

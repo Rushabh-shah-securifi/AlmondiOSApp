@@ -35,6 +35,10 @@
 #import "NetworkState.h"
 #import "AlmondManagement.h"
 #import "IoTDevicesListViewController.h"
+#import "MySubscriptionsViewController.h"
+#import "GenericCommand.h"
+#import "AlmondPlan.h"
+
 
 
 @interface DashboardViewController ()<MBProgressHUDDelegate,RouterNetworkSettingsEditorDelegate, HelpScreensDelegate,AlmondSelectionTableViewDelegate, NetworkStatusIconDelegate>{
@@ -58,6 +62,17 @@
 @property (weak, nonatomic) IBOutlet UIView *imageIOTSecurity;
 @property(nonatomic) UIButton *buttonMaskView;
 @property(nonatomic) NetworkStatusIcon *statusIcon;
+@property (weak, nonatomic) IBOutlet UILabel *vulnableDevices;
+@property (weak, nonatomic) IBOutlet UIButton *iotSecurityButton;
+@property (weak, nonatomic) IBOutlet UIImageView *iotSecurityImg;
+@property CGFloat constatnt1;
+@property CGFloat constatnt2;
+
+@property (weak, nonatomic) IBOutlet UILabel *lastScanIot_label;
+@property (weak, nonatomic) IBOutlet UILabel *noIot_label;
+@property (weak, nonatomic) IBOutlet UILabel *no_scanObjLabel;
+
+
 @end
 
 
@@ -65,23 +80,33 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
     _statusIcon = [NetworkStatusIcon new];
     self.toolkit = [SecurifiToolkit sharedInstance];
     if([self.toolkit isScreenShown:@"dashboard"] == NO)
         [self initializeHelpScreens];
-
+    
     self.navigationController.navigationBar.clipsToBounds = YES;
     [self loadNotification];
     self.clientNotificationArr = [[NSMutableArray alloc]init];
     self.deviceNotificationArr = [[NSMutableArray alloc]init];
-    [self navigationBarStyle];
+    
     [self initializeAddButtonView];
     [self initializeHUD];
+    self.constatnt1 =self.tableYconstrain1.constant;
+    
+    self.constatnt2 =self.tableYconstrain2.constant;
+
+    CGSize scrollableSize = CGSizeMake(Scroller.frame.size.width,Scroller.frame.size.height+ 130);
+    [Scroller setContentSize:scrollableSize];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    [self navigationBarStyle];
+     [self sendScanNowReq];
     
+    [self iotUIUpdate];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
                selector:@selector(onAlmondModeDidChange:)
@@ -130,7 +155,10 @@
                    name:kSFINotificationDidMarkViewed
                  object:nil];
     
-    //add almond button
+    [center addObserver:self
+               selector:@selector(iotScanresultsCallBackDashBoard:)
+                   name:NOTIFICATION_IOT_SCAN_RESULT_CONTROLLER_NOTIFIER
+                 object:nil];
     
     [self getRecentNotification];
     [NotificationAccessAndRefreshCommands tryRefreshNotifications];
@@ -138,6 +166,8 @@
     _statusIcon.networkStatusIconDelegate = self;
     NSLog(@"View will appear is called in DashBoardViewController");
     [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
+    [self iotScanresultsCallBackDashBoard:nil];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -149,6 +179,71 @@
     [self updateMode:self.toolkit.mode_src];
     [self updateDeviceClientListCountAndCurrentAlmond];
     [self tryShowLoadingData];
+}
+-(void)iotUIUpdate{
+    SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
+    BOOL hasSubscribe = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
+    NSLog(@"hasSubscribe %d",hasSubscribe);
+    if(hasSubscribe && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
+        self.inactiveNetworkDevices.hidden = YES;
+        self.no_scanObjLabel.hidden = NO;
+        self.iotSecurityImg.hidden = YES;
+        self.tableYconstrain1.constant = self.constatnt1+90;
+        self.tableYconstrain2.constant = self.constatnt2+90;
+        self.iotSecurityButton.hidden = NO;
+        self.vulnableDevices.text = @"VULNERABLE DEVICES";
+        [self.iotSecurityButton removeTarget:nil
+                                      action:NULL
+                            forControlEvents:UIControlEventTouchUpInside];
+        [self.iotSecurityButton addTarget:self action:@selector(launchIOtDevicelit:) forControlEvents:UIControlEventTouchUpInside];
+       
+        
+    }
+    else if(!hasSubscribe && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
+        // call my scbscription
+        //change icon name
+        self.vulnableDevices.text = @"IOT SECURITY DISABLED";
+        self.tableYconstrain1.constant = self.constatnt1;
+        self.tableYconstrain2.constant = self.constatnt2;
+        self.inactiveNetworkDevices.hidden = YES;
+        self.no_scanObjLabel.hidden = YES;
+        self.iotSecurityImg.hidden = NO;
+        self.iotSecurityButton.hidden = NO;
+        self.iotSecurityImg.image = [UIImage imageNamed:@"ic_insecure_gray"];
+        [self.iotSecurityButton removeTarget:nil
+                                      action:NULL
+                            forControlEvents:UIControlEventTouchUpInside];
+        [self.iotSecurityButton addTarget:self action:@selector(launchMySubscription:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    else if(![currentAlmond siteMapSupportFirmware:currentAlmond.firmware]){
+        // call my scbscription
+        self.activeNetworkDevices.hidden = NO;
+        self.inactiveNetworkDevices.hidden = NO;
+        self.no_scanObjLabel.hidden = YES;
+        self.iotSecurityImg.hidden = YES;
+        self.vulnableDevices.text = @"INACTIVE CLIENTS";
+        self.tableYconstrain1.constant = self.constatnt1;
+        self.tableYconstrain2.constant = self.constatnt2;
+        self.iotSecurityImg.hidden = YES;
+        self.iotSecurityButton.hidden = YES;
+    }
+    [self forLocal];
+    
+    
+}
+-(void)forLocal{
+    BOOL local = [self.toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
+    if(local){
+        self.activeNetworkDevices.hidden = NO;
+        self.inactiveNetworkDevices.hidden = NO;
+        self.no_scanObjLabel.hidden = YES;
+        self.iotSecurityImg.hidden = YES;
+        self.vulnableDevices.text = @"INACTIVE CLIENTS";
+        self.tableYconstrain1.constant = self.constatnt1;
+        self.tableYconstrain2.constant = self.constatnt2;
+        self.iotSecurityImg.hidden = YES;
+        self.iotSecurityButton.hidden = YES;
+    }
 }
 
 -(void)tryShowLoadingData{
@@ -214,6 +309,7 @@
     [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"away_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
     [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
     
+
     _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES isDashBoard:YES];
     
     _notificationButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(notificationAction:)];
@@ -222,7 +318,7 @@
     [_notificationButton markNotificationCount:(NSUInteger) count];
     _notificationButton.isDashBoard = YES;
     UIBarButtonItem *interSpace = [self getBarButton:20];
-
+    
     self.navigationItem.leftBarButtonItems = @[_leftButton, interSpace,_notificationButton];
 }
 
@@ -400,7 +496,7 @@
 
 
 - (void)onAlmondModeDidChange:(id)sender {
-        NSLog(@"Almond mode is changing %d",self.toolkit.mode_src);
+    NSLog(@"Almond mode is changing %d",self.toolkit.mode_src);
     [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
@@ -415,6 +511,7 @@
         NSString *m = payload[@"Mode"];
         [self updateMode:(unsigned)[m integerValue]];
         [self.HUD hide:YES];
+        [self iotUIUpdate];
     });
 }
 
@@ -507,11 +604,17 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger deviceRowCount = [self isSensorNotificationEmpty]? 1: self.deviceNotificationArr.count;
     NSInteger clientRowCount = [self isClientNotificationEmpty]? 1: self.clientNotificationArr.count;
+//    if(section == 0)
+//        return 2;
+     if(section == 0)
+        return deviceRowCount;
+    else
+        return clientRowCount;
     
-    return (section ==0)? deviceRowCount: clientRowCount;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     if(indexPath.section == 0 && [self isSensorNotificationEmpty]){
         return [self createEmptyCell:tableView isSensor:YES];
     }else if(indexPath.section == 1 && [self isClientNotificationEmpty]){
@@ -524,7 +627,15 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
     }
-    if (indexPath.section == 0) {
+//    if (indexPath.section == 0) {
+//        cell.textLabel.numberOfLines = 2;
+//        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//        cell.textLabel.text = @"Suspicious activity on amazon echo";
+//        NSString *iconName = @"default_device";
+//        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[UIColor redColor]];
+//        cell.detailTextLabel.text = @"5 min ago";
+//    }
+     if (indexPath.section == 0) {
         if(indexPath.row > (int)self.deviceNotificationArr.count-1)
             return cell;
         //        NSLog(@"indexpathrow: %ld, arraycount: %d", (long)indexPath.row, self.deviceNotificationArr.count-1);
@@ -539,7 +650,7 @@
         cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[SFIColors ruleBlueColor]];
         cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
     }
-    else{
+    else if(indexPath.section == 1){
         if(indexPath.row > (int)self.clientNotificationArr.count-1)
             return cell;
         
@@ -591,6 +702,10 @@
     }
     NSString *string;
     switch (section) {
+//        case 0:
+//            string = @"INTERNET SECURITY";
+//            break;
+//            
         case 0:
             string = NSLocalizedString(@"smart_device_noti_title", @"");
             break;
@@ -713,6 +828,7 @@
             [self.buttonHomeAway setBackgroundColor:[SFIColors lightGrayColor] ];
             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
         }
+        [self iotUIUpdate];
     });
 }
 
@@ -727,7 +843,7 @@
              NSFontAttributeName : bold_font,
              NSForegroundColorAttributeName : [UIColor blackColor],
              };
-
+    
     NSString *deviceName = notification.deviceName;
     if (notification.deviceType==SFIDeviceType_WIFIClient) {
         NSArray * properties = [notification.deviceName componentsSeparatedByString:@"|"];
@@ -832,9 +948,10 @@
     AlmondSelectionTableView *view = [AlmondSelectionTableView new];
     view.methodsDelegate = self;
     view.needsAddAlmond = YES;
+    view.currentMAC = [AlmondManagement currentAlmond].almondplusMAC;
     [view initializeView:self.buttonMaskView.frame];
     [self.buttonMaskView addSubview:view];
-
+    
     [self slideAnimation];
 }
 
@@ -880,6 +997,14 @@
     [self removeAlmondSelectionView];
     NSLog(@"i am called");
     [AlmondManagement setCurrentAlmond:selectedAlmond];
+    [self sendScanNowReq];
+    [self iotUIUpdate];
+}
+-(void)sendScanNowReq{
+    SFIAlmondPlus *alm = [AlmondManagement currentAlmond];
+    GenericCommand *cmd  = [GenericCommand requestScanNow:alm.almondplusMAC];
+    NSLog(@"cmd === %@",cmd);
+    [self.toolkit asyncSendToNetwork:cmd];
 }
 
 -(void)removeAlmondSelectionView{
@@ -905,7 +1030,7 @@
     self.helpScreensObj.delegate = self;
     
     [self.tabBarController.view addSubview:self.helpScreensObj];
-//    [self.tabBarController.tabBar setHidden:YES];
+    //    [self.tabBarController.tabBar setHidden:YES];
 }
 
 #pragma mark helpscreen delegate methods
@@ -913,13 +1038,13 @@
     NSLog(@"dashboard reset view");
     [self.helpScreensObj removeFromSuperview];
     [self.maskView removeFromSuperview];
-//    [self.tabBarController.tabBar setHidden:NO];
+    //    [self.tabBarController.tabBar setHidden:NO];
     
 }
 
 - (void)onSkipTapDelegate{
     NSLog(@"dashboard skip delegate");
-//    [self.tabBarController.tabBar setHidden:YES];
+    //    [self.tabBarController.tabBar setHidden:YES];
     [self showOkGotItView];
 }
 
@@ -932,15 +1057,62 @@
     [self.tabBarController.view addSubview:self.maskView];
     
     [HelpScreens initializeGotItView:self.helpScreensObj navView:self.navigationController.view];
-
+    
     [self.maskView addSubview:self.helpScreensObj];
 }
-- (IBAction)launchIOtDevicelit:(id)sender {
+- (void)launchIOtDevicelit:(id)sender {
     IoTDevicesListViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDevicesListViewController"];
     NSLog(@"IoTDevicesListViewController IF");
     [self.navigationController pushViewController:newWindow animated:YES];
     //        }
 }
+-(void)launchMySubscription:(id)sender{
+    MySubscriptionsViewController *ctrl = [self getStoryBoardController:@"SiteMapStoryBoard" ctrlID:@"MySubscriptionsViewController"];
+    [self pushViewController:ctrl];
+}
+-(id)getStoryBoardController:(NSString *)storyBoardName ctrlID:(NSString*)ctrlID{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyBoardName bundle:nil];
+    id controller = [storyboard instantiateViewControllerWithIdentifier:ctrlID];
+    return controller;
+}
+
+
+
+-(void)pushViewController:(UIViewController *)viewCtrl{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController pushViewController:viewCtrl animated:YES];
+    });
+}
+#pragma mark IOtScan
+-(void)iotScanresultsCallBackDashBoard:(id)sender{
+    dispatch_async(dispatch_get_main_queue(), ^{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    if(toolkit.iotScanResults[@"scanDevice"] == Nil)
+            return ;
+        
+    NSArray *scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
+    NSArray *excludedDevices = toolkit.iotScanResults[@"scanExclude"];
+    NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] intValue]];
+    NSString *lastScanYtime = [dat stringFromDateAMPM];
+    NSString *noSiotScanned = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
+        NSLog(@"noSiotScanned %@",noSiotScanned);
+        self.noIot_label.text = [NSString stringWithFormat:@"%@ Devices scanned",toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0"];
+        self.lastScanIot_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
+        
+//        toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0"
+        self.no_scanObjLabel.text = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
+        
+        self.lastScanIot_label.hidden = NO;
+        if([toolkit.iotScanResults[@"scanCount"] isEqualToString:@"0"]){
+            self.noIot_label.text = @"No Device scanned";
+            self.lastScanIot_label.hidden = YES;
+        }
+    });
+
+   
+}
+
+
 
 
 @end

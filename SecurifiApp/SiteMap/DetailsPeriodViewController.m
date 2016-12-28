@@ -267,12 +267,13 @@ NSDate *_dateSelected;
 }
 
 - (IBAction)doneButtonClicked:(id)sender {
+     [self.navigationController popViewControllerAnimated:YES];
     if(self.rangeUnderEdit != nil)
     {   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"YYYY-MM-dd"];
         _lastDate = [formatter stringFromDate:self.rangeUnderEdit.endDate];
         self.value = [NSString stringWithFormat:@"%ld",[self daysBetweenDate:self.rangeUnderEdit.beginDate andDate:self.rangeUnderEdit.endDate] + 1];
-        [formatter setDateFormat:@"MMM dd"];
+        [formatter setDateFormat:@"dd MMM yy"];
         if([self.rangeUnderEdit.beginDate compare:self.rangeUnderEdit.endDate] == NSOrderedSame )
             self.labelTxt = [NSString stringWithFormat:@"%@",[formatter stringFromDate:self.rangeUnderEdit.beginDate]];
         else
@@ -281,7 +282,7 @@ NSDate *_dateSelected;
     if(![self.value isEqualToString:@""])
         [self.delegate updateDetailPeriod:self.value date:self.lastDate lavelText:self.labelTxt];
     
-    [self.navigationController popViewControllerAnimated:YES];
+   
 }
 - (IBAction)backButtonClicked:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];

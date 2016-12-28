@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AlmondPlan.h"
+
+typedef NS_ENUM(NSInteger, SubscriptionResponse){
+    SubscriptionResponse_Success,
+    SubscriptionResponse_Failed,
+    SubscriptionResponse_Cancelled
+};
 
 @interface PaymentCompleteViewController : UIViewController
-
+@property (nonatomic) SubscriptionResponse type;
+@property (nonatomic) PlanType selectedPlanType;
+@property (nonatomic) NSString *currentMAC;
 @end

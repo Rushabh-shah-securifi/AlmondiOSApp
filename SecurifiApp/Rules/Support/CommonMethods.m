@@ -87,6 +87,26 @@
     NSMutableAttributedString *aAttrString = [[NSMutableAttributedString alloc] initWithString:header attributes: arialDict];
     return aAttrString;
 }
+
++ (NSAttributedString *)getAttributedString:(NSString *)text subText:(NSString *)subText fontSize:(int)fontSize{
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:text];
+    NSRange boldRange = [text rangeOfString:subText];
+    [attrString addAttribute:NSFontAttributeName value:[UIFont securifiBoldFont:fontSize] range:boldRange];
+    return attrString;
+}
+
++ (NSAttributedString *)getAttributedString:(NSString *)text1 subText:(NSString *)subText text:(NSString *)text2 fontSize:(int)fontSize{
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:text1];
+    NSAttributedString *attrString2 = [[NSAttributedString alloc] initWithString:text2];
+    
+    NSDictionary *attrDict = [NSDictionary dictionaryWithObject:[UIFont securifiBoldFont:fontSize] forKey:NSFontAttributeName];
+    NSAttributedString *boldString = [[NSAttributedString alloc]initWithString:subText attributes:attrDict];
+    
+    [attrString appendAttributedString:boldString];
+    [attrString appendAttributedString:attrString2];
+    return attrString;
+}
+
 + (NSString *)getColorHex:(NSString*)value {
     return [self getHex:value factor:65535];
 }
@@ -715,7 +735,7 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     return [[NSMutableArray alloc]initWithArray:arrTem];
 }
 #pragma mark searchPage methods
-+(NSDictionary *)createSearchDictObj:(NSArray*)allObj{
++(NSDictionary *)createSearchDictObj:(NSArray*)allObj search:(NSString *)search{
     NSDictionary *catogeryDict = [self parseJson:@"CategoryMap"];
         allObj = [self getOrderedArr:allObj];
     
@@ -724,6 +744,17 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     {
         NSString *ID = uriDict[@"subCategory"];
         NSDictionary *categoryName = catogeryDict[ID];
+        if([search isEqualToString:@"LastHour"])
+        {
+            NSInteger lastHour = [uriDict[@"LastVisitedEpoch"] integerValue];
+            NSInteger systemLastHour = round([[NSDate date] timeIntervalSince1970]) - 3600;
+            
+            if(lastHour < systemLastHour){
+                NSLog(@"lastHour %ld systemLastHour %ld",lastHour,systemLastHour);
+                continue;
+            }
+            
+        }
         NSDictionary *categoryObj = @{@"ID":ID,
                                       @"categoty":categoryName[@"category"],
                                       @"subCategory":categoryName[@"categoryName"]};
@@ -734,9 +765,11 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
                                    @"date" : uriDict[@"Date"],
                                    @"categoryObj" : categoryObj
                                    };
+        
         [self addToDictionary:dayDict uriInfo:uriInfo1 rowID:uriDict[@"Date"]];
         
     }
+    NSLog(@"return Day dict %@",dayDict);
     return dayDict;
 }
 + (void)addToDictionary:(NSMutableDictionary *)rowIndexValDict uriInfo:(NSDictionary *)uriInfo rowID:(NSString *)day{
@@ -814,4 +847,23 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     
     return epocSArr;
 }
++(NSString *)isVulnerable:(NSString *)caseStr{
+    if([caseStr isEqualToString:@"1"])
+        return @"is vulnerable";
+    else
+        return @"may be vulnerable";
+}
++(NSString *)type:(NSString *)type{
+    if([type isEqualToString:@"1"])
+        return @"Open telnet port with weak username and password";
+    else if([type isEqualToString:@"2"])
+        return @"Several open ports found in device ";
+    else if([type isEqualToString:@"3"])
+        return @"Local web page uses weak username and  password";
+    else if([type isEqualToString:@"4"])
+        return @"Port forwarding enabled for this device";
+    else
+        return @"Device using Universal Plug and Play(UPnP) service";
+}
+
 @end

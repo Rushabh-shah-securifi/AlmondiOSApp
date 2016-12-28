@@ -11,6 +11,8 @@
 #import "SFIColors.h"
 #import "Colours.h"
 #import "UIFont+Securifi.h"
+#import "AlmondManagement.h"
+#import "SFIAlmondPlus.h"
 @interface List_TypeView()<UITableViewDataSource,UITableViewDelegate,clientTypeCellDelegate,UITextFieldDelegate>
 @property (nonatomic)UITableView *tableType;
 @property (nonatomic)UITextField *searchtextField;
@@ -20,6 +22,7 @@
 @property (nonatomic)NSMutableArray *displayArray_copy;
 @property (nonatomic)NSMutableArray *valueArr_copy;
 @property (nonatomic)NSMutableDictionary *displayText_value;
+
 @end
 @implementation List_TypeView
 
@@ -64,14 +67,23 @@
 }
 -(void)drawTypeTable{
     NSArray *devicePosKeys = self.genericIndexValue.genericIndex.values.allKeys;
+    
     NSArray *sortedKeys = [devicePosKeys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         return [(NSString *)obj1 compare:(NSString *)obj2 options:NSNumericSearch];
     }];
+    SFIAlmondPlus *alm = [AlmondManagement currentAlmond];
+    BOOL isAl3 = [alm siteMapSupportFirmware:alm.firmware];
+    
+    NSLog(@"isAl3 %d",isAl3);
+    
     for(NSString *key in sortedKeys){
         if([key isEqualToString:@"identifying"])
             continue;
-        
         GenericValue *gVal = [self.genericIndexValue.genericIndex.values valueForKey:key];
+        if(!isAl3)
+            if([self isIoTdevice:gVal.value])
+                continue;
+        
         [self.displayArray addObject:gVal.displayText];
         [self.valueArr addObject:gVal.value];
         [self.displayArray_copy addObject:gVal.displayText];
@@ -189,5 +201,11 @@
     NSLog(@"self.valueArr_copy count %ld",self.displayArray_copy.count);
     
     [self.tableType reloadData];
+}
+-(BOOL)isIoTdevice:(NSString *)clientType{
+    NSArray *iotTypes = @[@"withings",@"dlink_cameras",@"hikvision",@"foscam",@"motorola_connect",@"ibaby_monitor",@"osram_lightify",@"honeywell_appliances",@"ge_appliances",@"wink",@"airplay_speakers",@"sonos",@"belkin_wemo",@"samsung_smartthings",@"ring_doorbell",@"piper",@"canary",@"august_connect",@"nest_cam",@"skybell_wifi",@"scout_home_system",@"nest_protect",@"nest_thermostat",@"amazon_dash",@"amazon_echo",@"nest",@"philips_hue"];
+    if([iotTypes containsObject: clientType] )
+        return YES;
+    else return  NO;
 }
 @end

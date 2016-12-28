@@ -83,7 +83,7 @@
 
 +(BOOL)isContainCategory:(NSString*)search;
 
-+(NSDictionary *)createSearchDictObj:(NSArray*)allObj;
++(NSDictionary *)createSearchDictObj:(NSArray*)allObj search:(NSString *)search;
 
 + (NSString *)getTodayDate;
 
@@ -94,4 +94,14 @@
 + (NSString *)getYestardayDate;
 
 +(NSArray *)domainEpocArr:(NSArray *)arr;
+
+
++(NSString *)isVulnerable:(NSString *)caseStr;
+
++(NSString *)type:(NSString *)type;
+
++ (NSAttributedString *)getAttributedString:(NSString *)text subText:(NSString *)subText fontSize:(int)fontSize;
+
++ (NSAttributedString *)getAttributedString:(NSString *)text1 subText:(NSString *)subText text:(NSString *)text2 fontSize:(int)fontSize;
+
 @end

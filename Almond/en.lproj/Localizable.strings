@@ -1234,8 +1234,7 @@ Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add
 "weak_signal_strength" = "Wireless signal seems to be weak.";
 "remove_almond" = "Remove Almond";
 "remove_almond_alert" = "Are you sure, you want to remove %@?";
-"force_remove_almond" = "Failed to remove \"%@\" Almond. Do you want to forcefully remove it?";
-"manual_force_remove" = "If you choose to force remove an Almond, you will have to manually reset that Almond to complete the process.";
+"force_remove_almond" = "Unable to remove the Almond. Try again after rebooting the additional Almond.\n\Or\nForce Remove";
 "sorry_could_not_remove" = "Sorry! Could not remove. Try removing from Almond";
 "removing_wait" = "Removing...Please wait!";
 
@@ -1275,7 +1274,7 @@ Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add
 
 
 /****** advanced router help contene *******/
-"adv_feature_alert" = "At this time these advanced features are only available via Almond's local Web UI.\n\n You can find the credentials to access this web UI in the Web Admin section of the Status app on the Almond LCD.";
+"adv_feature_alert" = "At this time these advanced features are only available via Almond's local Web UI.";
 "learn_more" = "Learn More";
 
 //router page
@@ -1559,6 +1558,7 @@ Contact us at support@securifi.com";
 "alert title offline Local Retry Local Connection" = "Retry Local Connection";
 
 "alert.message-Connected to your Almond via cloud." = "Connected to your Almond via cloud.";
+"alert.message-Connected to your Almond via local." = "Connected to your Almond via local.";
 "alertview-Connected to your Almond via cloud." = "Connected to your Almond via cloud.";
 "Add Local Connection Settings" = "Add Local Connection Settings";
 
@@ -1800,28 +1800,45 @@ Contact us at support@securifi.com";
 "roku" = "Roku";
 "withings" = "Withings";
 "fire_tv" = "FireTV";
-"dlink_camera" = "D-Link Cameras";
+"dlink_camera" = "D-Link Camera";
 "hikvision" = "Hikvision";
 "foscam" = "Foscam";
 "motorola_connect" = "Motorola MBP853 connect";
 "ibaby_monitor" = "Ibaby monitor M6T";
 "osram_lightify" = "Osram Lightify";
-"honeywell_product" = "Honeywell Smart house products";
-"ge_appliances" = "GE connected Appliances";
-"wink" = "Wink";
-"airplay_speakers" = "Airplay Speakers";
+"honeywell_product" = "Honeywell Hub";
+"ge_appliances" = "GE Appliance";
+"wink" = "Wink Hub";
+"airplay_speakers" = "Airplay Speaker";
 "sonos" = "Sonos";
 "belkin_wemo" = "Belkin WeMo";
-"samsung_smarthings" = "Samsung Smartthings";
+"samsung_smarthings" = "Smarthings Hub";
 "ring_doorbell" = "Ring Doorbell";
 "piper" = "Piper";
 "canary" = "Canary";
 "august_connect" = "August Connect";
 "kuna_toucan" = "Kuna Toucan";
 "nest_cam" = "Nest Cam";
-"skybell_video" = "Skybell HD Wi-fi Video";
-"scoutt_hss" = "Scout home security system";
+"skybell_video" = "Skybell Camera";
+"scoutt_hss" = "Scout Hub";
 "philips_hue" = "Philips Hue";
 "nest_protect" = "Nest Protect";
 "nest_thermostat" = "Nest Thermostat";
+
+/* IOT services */
+"is_vulnerable"= " is vulnerable";
+"device_suspicious" = "The device is behaving suspiciously. We suggest you reboot the device or block it in case the suspicious activity continues. Contact your device vendor for more details.";
+"upnp_iot_desc" = "UPnP is a protocol that applications use to automatically set up port forwarding in the router. Viruses and Malwares can use UPnP in devices to gain remote access of your network. You can disable UPnP on your Almond from the Wifi tab.";
+"port_forward_iot_desc" = "Your device is being used for port forwarding. Port forwarding is usually enabled manually for gaming applications and for remote access of cameras and DVRs. If you are not aware of port forwarding for this device, we suggest you block this device or contact your device vendor.";
+"local_wc_desc" = "The local web interface for this device uses a weak username and password. We suggest you block the device or change the password. Typically, settings can be accessed by entering the ip address of the device in your web browser. Contact your device vendor for more assistance.";
+"open_ports_iot_desc" = "Your device has open ports. These ports may be used by some applications for allowing remote access of your system. If you do not use this device for such applications,it may be vulnerable. We suggest you block this device or contact your device vendor.";
+"open_port_wc_desc" = "Your device has open ports. These ports may be used by some applications for allowing remote access of your system. If you do not use this device for such applications,it may be vulnerable. We suggest you block this device or contact your device vendor.";
+"open_port_wc_title" = "Open telnet port with weak username and password";
+"open_ports_title" = "Several open ports found in your device";
+"local_wc_title" = "Local web page uses weak username and password";
+"port_forward_title" = "Port forwarding enabled for this device";
+"upnp_iot_title" = "Device using Universal Plug and Play(UPnP) service";
+"iot_security_camelcase" = "IoT Security";
+"ap_re_wired_iot" = "This device is in wired connection. Web history requires wireless connection in RE\u002FAP Mode.";
+"blocked_client_iot" = "Web history is disabled for blocked devices. You can still see records from when the device was last active.";
 

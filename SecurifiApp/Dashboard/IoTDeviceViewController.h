@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface IoTDeviceViewController : UIViewController
-
+@property (nonatomic) NSDictionary *iotDevice;
+@property BOOL hideMiddleView;
+@property BOOL hideTable;
 @end

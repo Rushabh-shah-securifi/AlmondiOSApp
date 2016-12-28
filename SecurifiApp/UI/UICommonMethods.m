@@ -57,4 +57,19 @@
     [detailView addSubview:detail];
 }
 
++ (void)clearSubView:(UIView *)view{
+    NSLog(@"view: %@, subview: %@", view, view.subviews);
+    NSArray *subViews = view.subviews;
+    for(UIView *view in subViews){
+        [view removeFromSuperview];
+    }
+}
+
++ (void)clearSubviewsInScrollView:(UIScrollView *)scrollView{
+    for(UIView *view in scrollView.subviews){
+        if(![view isKindOfClass:[UIImage class]]){
+            [view removeFromSuperview];
+        }
+    }
+}
 @end
