@@ -296,6 +296,9 @@ NSArray *fieldNumbersForEachCategory;
                 success = true;
         }else{
             keyToUpdate = key;
+            if([keyToUpdate isEqualToString:@"AddressLine3"]){
+                keyToUpdate = @"Address";
+            }
             [dataToUpdate addObject:[dictionary valueForKey:key]];
         }
     }
@@ -313,7 +316,5 @@ NSArray *fieldNumbersForEachCategory;
     }
     NSLog(@"update profile response is called");
 }
-
-
 
 @end
