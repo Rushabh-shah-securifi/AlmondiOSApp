@@ -191,38 +191,26 @@
         NSString *failureReason;
         int reasonCode = [[payload objectForKey:@"Reason"] intValue];
         switch (reasonCode) {
-            case 1:
-                failureReason = NSLocalizedString(@"password.label-text.There was some error on cloud. Please try later.", @"There was some error on cloud. Please try later.");
-                break;
-                
-            case 2:
-                failureReason = NSLocalizedString(@"Sorry! You are not registered with us yet.", @"Sorry! You are not registered with us yet.");
-                break;
-                
-            case 3:
-                failureReason = NSLocalizedString(@"You need to activate your account.", @"You need to activate your account.");
-                break;
-                
-            case 4:
-                failureReason = NSLocalizedString(@"You need to fill all the fields.", @"You need to fill all the fields.");
-                break;
-                
-            case 5:
-                failureReason = NSLocalizedString(@"The current password was incorrect.", @"The current password was incorrect.");
-                break;
-                
-            case 6: {
-                NSString *format = NSLocalizedString(@"The password should be %d - %d characters long.", @"The password should be %d - %d characters long.");
+            
+            case 15: {
+                NSString *format = NSLocalizedString(@"Incorrect Password!", @"Incorrect Password");
                 failureReason = [NSString stringWithFormat:format, PWD_MIN_LENGTH, PWD_MAX_LENGTH];
                 break;
             }
-                
-            case 16: {
-                NSString *format = @"Couldnot write to server , Please check internet connection";
+            case 16:
+            case 17:
+            case 18:
+            case 19:{
+                NSString *format = NSLocalizedString(@"Couldnot write to server , Please check internet connection",@"Couldnot write to server , Please check internet connection");
                 failureReason = [NSString stringWithFormat:format, PWD_MIN_LENGTH, PWD_MAX_LENGTH];
                 break;
             }
-                
+             
+            case 20:{
+                NSString *format = NSLocalizedString(@"The email ID is Invalid", @"The email ID is Invalid");
+                failureReason = [NSString stringWithFormat:format, PWD_MIN_LENGTH, PWD_MAX_LENGTH];
+                break;
+            }
             default:
                 failureReason = NSLocalizedString(@"Sorry! Password change was unsuccessful.", @"Sorry! Password change was unsuccessful.");
         }
@@ -236,63 +224,6 @@
         
 
       }
-
-//    ChangePasswordResponse *obj = (ChangePasswordResponse *) [data valueForKey:@"data"];
-//    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-//    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
-//
-//    dispatch_async(dispatch_get_main_queue(), ^() {
-//        [self.HUD hide:YES];
-//    });
-//
-//    if (obj.isSuccessful) {
-//        //Dismiss this view
-//        dispatch_async(dispatch_get_main_queue(), ^() {
-//            [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-//        });
-//    }
-//    else {
-//        ELog(@"Failed to change password, reason:%d", obj.reasonCode);
-//        //Display appropriate reason
-//        NSString *failureReason;
-//        switch (obj.reasonCode) {
-//            case 1:
-//                failureReason = NSLocalizedString(@"password.label-text.There was some error on cloud. Please try later.", @"There was some error on cloud. Please try later.");
-//                break;
-//
-//            case 2:
-//                failureReason = NSLocalizedString(@"Sorry! You are not registered with us yet.", @"Sorry! You are not registered with us yet.");
-//                break;
-//
-//            case 3:
-//                failureReason = NSLocalizedString(@"You need to activate your account.", @"You need to activate your account.");
-//                break;
-//
-//            case 4:
-//                failureReason = NSLocalizedString(@"You need to fill all the fields.", @"You need to fill all the fields.");
-//                break;
-//
-//            case 5:
-//                failureReason = NSLocalizedString(@"The current password was incorrect.", @"The current password was incorrect.");
-//                break;
-//
-//            case 6: {
-//                NSString *format = NSLocalizedString(@"The password should be %d - %d characters long.", @"The password should be %d - %d characters long.");
-//                failureReason = [NSString stringWithFormat:format, PWD_MIN_LENGTH, PWD_MAX_LENGTH];
-//            }
-//                break;
-//
-//            default:
-//                failureReason = NSLocalizedString(@"Sorry! Password change was unsuccessful.", @"Sorry! Password change was unsuccessful.");
-//        }
-//
-//        dispatch_async(dispatch_get_main_queue(), ^() {
-//            self.passwordStrengthIndicator.progress = 0.1;
-//            self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
-//            self.lblPasswordStrength.text = failureReason;
-//            self.navigationItem.rightBarButtonItem.enabled = NO;
-//        });
-//    }
 }
 
 @end

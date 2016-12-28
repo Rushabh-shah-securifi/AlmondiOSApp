@@ -115,10 +115,8 @@
     
     if ([success isEqualToString:@"true"]) {
         self.userName = [[dictionary objectForKey:@"FirstName"] stringByAppendingString:[dictionary objectForKey:@"LastName"]];
-        NSRange range = NSMakeRange(0,1);
-        NSIndexSet *section = [NSIndexSet indexSetWithIndexesInRange:range];
         dispatch_sync(dispatch_get_main_queue(), ^{
-            [self.tableView reloadSections:section withRowAnimation:NO];
+            [self.tableView reloadData];
         });
     }
 }

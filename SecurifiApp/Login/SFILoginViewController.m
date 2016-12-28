@@ -461,12 +461,10 @@
 }
 
 #pragma mark - Cloud Command : Sender and Receivers
-
 - (void)sendResetPasswordRequest {
     NSString *email = self.emailID.text;
-
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [[SecurifiToolkit sharedInstance] asyncRequestResetCloudPassword:email];
+    HTTPRequest* request = [HTTPRequest new];
+    [request sendAsyncHTTPResetPasswordRequest:email];
 }
 
 
@@ -479,41 +477,9 @@
         [self setHeadline:NSLocalizedString(@"Almost there.", @"Almost there.") subHeadline:NSLocalizedString(@"Password reset link has been sent to your account.", @"Password reset link has been sent to your account.") loginButtonEnabled:NO];
     }
     else {
-        NSString *failureReason;
-        if([[data valueForKey:@"reason"] isEqualToString:@"Email Taken"]){
-            failureReason = @"Fail";
-        }
-        else {
-            failureReason = @"Fail";
-        }
+        [self setHeadline:NSLocalizedString(@"Failed", @"Failed") subHeadline:[data objectForKey:@"reason"] loginButtonEnabled:NO];
     }
     
-//    ResetPasswordResponse *obj = (ResetPasswordResponse *) [data valueForKey:@"data"];
-
-//    if (obj.isSuccessful) {
-//        [self setHeadline:NSLocalizedString(@"Almost there.", @"Almost there.") subHeadline:NSLocalizedString(@"Password reset link has been sent to your account.", @"Password reset link has been sent to your account.") loginButtonEnabled:NO];
-//    }
-//    else {
-//        switch (obj.reasonCode) {
-//            case 1:
-//                [self setOopsMsg:NSLocalizedString(@"sensor.activation.The username was not found", @"The username was not found")];
-//                break;
-//            case 2:
-//                //Display Activation Screen
-//                [self setHeadline:NSLocalizedString(@"Almost there.", @"Almost there.") subHeadline:NSLocalizedString(@"You need to activate your account.", @"You need to activate your account.") loginButtonEnabled:NO];
-//                [self presentActivationScreen];
-//                break;
-//            case 3:
-//            case 5:
-//                [self setOopsMsg:NSLocalizedString(@"Sorry! Your password cannot be reset at the moment. Try again later.", @"Sorry! Your password cannot be reset at the moment. Try again later.")];
-//                break;
-//            case 4:
-//                [self setOopsMsg:NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.")];
-//                break;
-//            default:
-//                break;
-//        }
-//    }
 }
 
 - (void)sendReactivationRequest {
