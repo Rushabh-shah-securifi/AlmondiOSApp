@@ -518,6 +518,8 @@
 		F417B2AE1DA290030073C440 /* AdvRouterHelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */; };
 		F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F426AE2E1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
+		F44D533D1E138E05005C8F43 /* IoTLearnMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */; };
+		F44D533E1E138E05005C8F43 /* IoTLearnMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */; };
 		F46129F51DB76BC500EAD7F0 /* SliderComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */; };
 		F46129F61DB76BC500EAD7F0 /* SliderComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */; };
 		F48CF1781DD0859500B44257 /* HelpSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F48CF1771DD0859500B44257 /* HelpSearchTableViewController.m */; };
@@ -1213,6 +1215,8 @@
 		F426AE2B1D19515500AE60C8 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		F43814941D993B2800D5C762 /* Almond.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Almond.entitlements; sourceTree = "<group>"; };
+		F44D533B1E138E05005C8F43 /* IoTLearnMoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IoTLearnMoreViewController.h; sourceTree = "<group>"; };
+		F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IoTLearnMoreViewController.m; sourceTree = "<group>"; };
 		F46129F31DB76BC500EAD7F0 /* SliderComponentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderComponentView.h; sourceTree = "<group>"; };
 		F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderComponentView.m; sourceTree = "<group>"; };
 		F48CF1761DD0859500B44257 /* HelpSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpSearchTableViewController.h; sourceTree = "<group>"; };
@@ -1950,6 +1954,8 @@
 				F4F981CB1DFA880A00FB0676 /* IoTDevicesListViewController.m */,
 				F4F981CC1DFA880A00FB0676 /* IoTDeviceViewController.h */,
 				F4F981CD1DFA880A00FB0676 /* IoTDeviceViewController.m */,
+				F44D533B1E138E05005C8F43 /* IoTLearnMoreViewController.h */,
+				F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */,
 			);
 			name = Dashboard;
 			sourceTree = "<group>";
@@ -3336,6 +3342,7 @@
 				F4EA08271D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */,
 				F417B2AE1DA290030073C440 /* AdvRouterHelpController.m in Sources */,
 				1C709A0A1B5A3157007D397C /* SFICloudLinkViewController.m in Sources */,
+				F44D533E1E138E05005C8F43 /* IoTLearnMoreViewController.m in Sources */,
 				1DF0385A73D7AE7E9208F510 /* UIColor+Securifi.m in Sources */,
 				CEF6F4F31C92CAD600C68975 /* CrossButton.m in Sources */,
 				CEF6F4F51C92CAD600C68975 /* DimmerButton.m in Sources */,
@@ -3379,6 +3386,7 @@
 				1C7E7DCF1A41A0990026F0BA /* SFITableViewController.m in Sources */,
 				F400B6C11D65ECCD00DDEE50 /* SupportViewController.m in Sources */,
 				1C7E7DD11A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
+				F44D533D1E138E05005C8F43 /* IoTLearnMoreViewController.m in Sources */,
 				CEF6F4FE1C92CAD600C68975 /* RuleTextField.m in Sources */,
 				A5AC1E841CC7BA01009F362B /* RuleSceneUtil.m in Sources */,
 				CE40BF151D225791007C2148 /* HistoryCell.m in Sources */,
