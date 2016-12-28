@@ -22,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
-    self.issueTypes = @[@"1", @"2", @"3"];
+//    self.issueTypes = @[@"1", @"2", @"3"]; //test
     [self makeHelpDictionary];
     // Do any additional setup after loading the view.
 }
