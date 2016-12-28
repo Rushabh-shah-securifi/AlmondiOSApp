@@ -20,7 +20,7 @@
 #import "GenericIndexUtil.h"
 #import "AlmondManagement.h"
 #import "MBProgressHUD.h"
-
+#import "IoTLearnMoreViewController.h"
 
 @interface IoTDeviceViewController ()<UITableViewDelegate,UITableViewDataSource,MBProgressHUDDelegate>
 @property (weak, nonatomic) IBOutlet UISwitch *iotSwitch;
@@ -147,19 +147,18 @@
                selector:@selector(onDeviceListAndDynamicResponseParsed:)
                    name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
                  object:nil];
-   
-
-    
-  
 }
+
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
     [self.navigationController setNavigationBarHidden:NO];
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 -(NSString *)getDescripTionText:(NSDictionary*)returnDict{
     NSString *displayText;
     for(NSString *key in returnDict.allKeys){
@@ -171,6 +170,7 @@
     }
     return displayText;
 }
+
 -(void)setAllowAndBlock{
     self.infoLabel.hidden= YES;
     NSLog(@"client.deviceAllowedType %d",self.client.deviceAllowedType);
@@ -274,12 +274,13 @@
     else
         return @"UPnP is a protocol that applications use to automatically set up port forwarding in the router. Viruses and Malwares can use UPnP in devices to gain remote access of your network. You can disable UPnP on your Almond from the Wifi tab.Learn More";
 }
+
 -(void)handleTapOnLabel:(id)sender{
 //    NSLog(@"hyper link pressed");NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@", self.uriDict[@"hostName"]]];
 //    [[UIApplication sharedApplication] openURL:url];
 }
-#pragma mark tableDelege
 
+#pragma mark tableDelege
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
@@ -519,6 +520,10 @@
     return controller;
 }
 
+- (IBAction)onLearnMoreTap:(id)sender {
+    IoTLearnMoreViewController *ctrl = [self getStoryBoardController:@"MainDashboard" ctrlID:@"IoTLearnMoreViewController"];
+    [self pushViewController:ctrl];
+}
 
 
 -(void)pushViewController:(UIViewController *)viewCtrl{
