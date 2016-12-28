@@ -54,6 +54,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
                                                                     NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
                                                                     NSFontAttributeName : [UIFont standardNavigationTitleFont]
                                                                     };
+
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
     self.tableView.separatorColor = [UIColor clearColor];
@@ -61,14 +62,30 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     self.navigationItem.title = NSLocalizedString(ACCOUNTS_NAVBAR_TITLE_SETTINGS, ACCOUNTS_SETTINGS);
     
     failureReasonForAccountsPageResponse = @{
-                                             @1:NSLocalizedString(ACCOUNTS_UNLINKALMOND_FAILURE_REASONCODE1, THERE_WAS_SOME_ERROR_ON_CLOUD_PLEASE_TRY_LATER),
-                                             @2:NSLocalizedString(ACCOUNTS_UNLINKALMOND_FAILURE_REASONCODE2, SORRY_YOU_ARE_NOT_REGISTERED_WITH_US_YET),
-                                             @3:NSLocalizedString(ACCOUNTS_UNLINKALMOND_FAILURE_REASONCODE3, YOU_NEED_TO_ACTIVATE_YOUR_ACCOUNT),
-                                             @4:NSLocalizedString(ACCOUNTS_UNLINKALMOND_FAILURE_REASONCODE4, YOU_NEED_TO_ACTIVATE_YOUR_ACCOUNT),
-                                             @5:NSLocalizedString(ACCOUNTS_UNLINKALMOND_FAILURE_REASONCODE5, THE_CURRENT_PASSWORD_WAS_INCORRECT),
-                                             @6:NSLocalizedString(ACCOUNTS_UNLINKALMOND_FAILURE_REASONCODE6, THERE_WAS_SOME_ERROR_ON_CLOUD_PLEASE_TRY_LATER),
-                                             @26:@"Please try again",
-                                             @27:@"User was already removed"};
+                                             @5 :THIS_USER_DOES_NOT_HAVE_A_SECURIFI_ACCOUNT,
+                                             @6 :THIS_USER_NEEDS_TO_VERIFY_ACCOUNT,
+                                             @7 :THIS_IS_NOT_YOUR_ALMOND,
+                                             @8 :ALREADY_INVITED,
+                                             @9 :YOU_ARE_OWNER_OF_THIS_ALMOND,
+                                             @10:PLEASE_TRY_AGAIN_LATER,
+                                             @11:PASSWORD_CANNOT_BE_BLANK,
+                                             @12:PASSWORDS_DID_NOT_MATCH,
+                                             @13:PASSWORDS_SHOULD_BE_BETWEEN_6_AND_32_CHARACTERS,
+                                             @14:PASSWORD_CANNOT_BE_BLANK,
+                                             @15:INCORRECT_PASSWORD,
+                                             @16:COULD_NOT_WRITE_TO_SERVER_PLEASE_CHECK_INTERNET_CONNECTION,
+                                             @17:COULD_NOT_WRITE_TO_SERVER_PLEASE_CHECK_INTERNET_CONNECTION,
+                                             @18:COULD_NOT_WRITE_TO_SERVER_PLEASE_CHECK_INTERNET_CONNECTION,
+                                             @19:COULD_NOT_WRITE_TO_SERVER_PLEASE_CHECK_INTERNET_CONNECTION,
+                                             @20:THE_EMAIL_ID_IS_INVALID,
+                                             @21:COULD_NOT_DELETE_YOUR_ACCOUNT,
+                                             @22:COULD_NOT_DELETE_YOUR_ACCOUNT,
+                                             @23:COULD_NOT_DELETE_YOUR_ACCOUNT,
+                                             @24:COULD_NOT_DELETE_YOUR_ACCOUNT,
+                                             @25:COULD_NOT_UNLINK,
+                                             @26:PLEASE_TRY_AGAIN_LATER,
+                                             @27:USER_WAS_ALREADY_REMOVED
+                                             };
     
     accountCell = [[SFIAccountCellView alloc] initWithFrame:self.tableView.frame];
     [accountCell initWith:self.tableView.frame];
@@ -85,12 +102,14 @@ static NSString *simpleTableIdentifier = @"AccountCell";
                selector:@selector(loadAlmondList)
                    name:RELOAD_ACCOUNTS_PAGE
                  object:nil];
-    
     [center addObserver:self
                selector:@selector(loadAlmondList)
                    name:kSFIDidUpdateAlmondList
                  object:nil];
-    
+    [center addObserver:self
+               selector:@selector(accountResponseCallback:)
+                   name:ACCOUNTS_RELATED
+                 object:nil];
     [center addObserver:self
                selector:@selector(accountResponseCallback:)
                    name:kSFIDidChangeAlmondName
@@ -107,7 +126,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [self sendRequest:(CommandType*)CommandType_ACCOUNTS_RELATED withCommandString:@"UserProfileRequest" withDictionaryData:data withLocalizedStrings:localizedStrings];
     
     [[Analytics sharedInstance] markAccountsScreen];
-    
 }
 
 
@@ -247,7 +265,14 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     return cell;
 }
 
-#pragma mark - onButtonsClickedFromAccountCell
+
+#pragma mark - deletegatesFromAccountCell
+- (void) stopHUD {
+    dispatch_async(dispatch_get_main_queue(),^{
+        [self.HUD hide:YES];
+    });
+}
+
 - (void) onProfileButtonClicked:(id)sender {
     [self onProfileClicked:sender];
 }
@@ -471,13 +496,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     ownedAlmondList = [AlmondManagement getOwnedAlmondList];
     sharedAlmondList = [AlmondManagement getSharedAlmondList];
     
-    NSLog(@"%lu is the owned almond list count", (unsigned long)ownedAlmondList.count);
-    NSLog(@"%lu is the shared almond list count", (unsigned long)sharedAlmondList.count);
-    
-    SFIAlmondPlus* almond = ownedAlmondList[0];
-    NSMutableArray* array = almond.accessEmailIDs;
-    
-    NSLog(@"%lu is the accessible list count %@", (unsigned long)array.count, array);
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
         [self.tableView reloadData];
@@ -542,27 +560,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 }
 
 
--(void) modifyUserAdd: (BOOL)add{
-    SFIAlmondPlus*  almond =[self findAlmond:ownedAlmondList];
-    NSMutableArray *currentAccessEmailList = almond.accessEmailIDs;
-    NSMutableArray *newAccessEmailList = [NSMutableArray array];
-    if(!add){
-        for (NSString *currentEmail in currentAccessEmailList) {
-            if (![currentEmail isEqualToString:changedEmailID])
-                [newAccessEmailList addObject:currentEmail];
-        }
-        almond.accessEmailIDs = newAccessEmailList;
-    }else{
-        if (currentAccessEmailList == nil)
-            currentAccessEmailList = newAccessEmailList;
-        [currentAccessEmailList addObject:changedEmailID];
-        almond.accessEmailIDs = currentAccessEmailList;
-    }
-}
-
-
 - (void)accountResponseCallback:(id)sender {
-    
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     NSError *error = nil;
@@ -576,6 +574,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     NSString *failureReason = [failureReasonForAccountsPageResponse objectForKey:[dictionary valueForKey:@"Reason"]];
                                
     dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
         [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     });
 }

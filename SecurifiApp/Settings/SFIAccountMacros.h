@@ -17,6 +17,22 @@
 #define EXPANDED_OWNED_ALMOND_ROW_HEIGHT 170
 #define EXPANDED_SHARED_ALMOND_ROW_HEIGHT 120
 
+#define PASSWORD_CANNOT_BE_BLANK @"Passowrd cannot be blank"
+#define PASSWORDS_DID_NOT_MATCH   @"Passwords did not match"
+#define PASSWORDS_SHOULD_BE_BETWEEN_6_AND_32_CHARACTERS @"Passwords should be between 6 and 32 characters"
+#define THIS_USER_DOES_NOT_HAVE_A_SECURIFI_ACCOUNT @"The User does not have a securifi account"
+#define THIS_USER_NEEDS_TO_VERIFY_ACCOUNT @"This user needs to verify Account"
+#define THIS_IS_NOT_YOUR_ALMOND @"This is not your Almond"
+#define ALREADY_INVITED @"Already Invited"
+#define YOU_ARE_OWNER_OF_THIS_ALMOND @"You are the owner of this almond"
+#define PLEASE_TRY_AGAIN_LATER  @"Please try this again later"
+#define INCORRECT_PASSWORD @"Incorrect Password"
+#define COULD_NOT_WRITE_TO_SERVER_PLEASE_CHECK_INTERNET_CONNECTION @"Could not write to server, Please check internet Connection"
+#define THE_EMAIL_ID_IS_INVALID @"The email ID is invalid"
+#define COULD_NOT_DELETE_YOUR_ACCOUNT @"Could not Delete your Account"
+#define COULD_NOT_UNLINK @"Could not unlink"
+#define PLEASE_TRY_AGAIN @"Please try again"
+#define USER_WAS_ALREADY_REMOVED @"User was already Removed"
 #define ACCOUNTS_ALERT_ONINVITETOSHAREALMOND_INVITE @"accounts.alert.onInviteToShareAlmond.Invite"
 #define ACCOUNTS_ALERT_ONINVITETOSHAREALMOND_CANCEL @"accounts.alert.onInviteToShareAlmond.Cancel"
 #define INVITE @"Invite"

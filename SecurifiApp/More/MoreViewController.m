@@ -52,9 +52,6 @@
     if(!self.isLocal)
         [self sendUserProfileRequest];
     
-    dispatch_async(dispatch_get_main_queue(),^{
-        [self.tableView reloadData];
-    });
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -71,7 +68,7 @@
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
                selector:@selector(userProfileResponseCallback:)
-                   name:USER_PROFILE_NOTIFIER
+                   name:ACCOUNTS_RELATED
                  object:nil];
     
     [center addObserver:self
@@ -93,6 +90,7 @@
                selector:@selector(onLogoutResponse:)
                    name:kSFIDidLogoutNotification
                  object:nil];
+    
 }
 
 
@@ -103,21 +101,25 @@
 
 
 - (void)userProfileResponseCallback:(id)sender {
+    
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
+    NSError *error = nil;
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[data valueForKey:@"data"] options:kNilOptions error:&error];
     
-    UserProfileResponse *obj = (UserProfileResponse *) [data valueForKey:@"data"];
-    NSLog(@"User profile response: %@", obj);
-    if (obj.isSuccessful) {
-        //Store user profile information
-        self.userName = [NSString stringWithFormat:@"%@ %@", obj.firstName, obj.lastName];
-        
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.tableView reloadData];
+    NSString *commandType = [dictionary valueForKey:COMMAND_TYPE];
+    if(![commandType isEqualToString:@"UserProfileResponse"])
+        return;
+    
+    NSString* success = [dictionary objectForKey:@"Success"];
+    
+    if ([success isEqualToString:@"true"]) {
+        self.userName = [[dictionary objectForKey:@"FirstName"] stringByAppendingString:[dictionary objectForKey:@"LastName"]];
+        NSRange range = NSMakeRange(0,1);
+        NSIndexSet *section = [NSIndexSet indexSetWithIndexesInRange:range];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.tableView reloadSections:section withRowAnimation:NO];
         });
-    }
-    else {
-        DLog(@"Reason Code %d", obj.reasonCode);
     }
 }
 
@@ -134,6 +136,7 @@
     [moreFeatures addObject:@{@"help_center_icon":NSLocalizedString(@"help_center", @"")}];
     return moreFeatures;
 }
+
 
 #pragma mark check methods
 -(BOOL)isFirmwareCompatible{

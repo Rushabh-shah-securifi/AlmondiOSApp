@@ -278,7 +278,7 @@ NSArray *fieldNumbersForEachCategory;
 
 
 - (void)updateProfileResponseCallback:(id)sender {
-    
+    [self.delegate stopHUD];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     

@@ -25,6 +25,8 @@
 
 -(void) showToastonTableViewController:(NSDictionary*) dictionary;
 
+-(void) stopHUD;
+
 -(void) loadAlmondList;
 @end
 
