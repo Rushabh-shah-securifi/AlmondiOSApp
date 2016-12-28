@@ -272,18 +272,6 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(NSString *)setExplanationText:(NSString *)type{
-    if([type isEqualToString:@"1"])
-        return @"Your device  has an open telnet (port:80) and uses a weak username and password. Telnet enabled devices are highly vulnerable to Mirai Botnet attacks. We suggest you block this device or create a strong username and password if you can access the telnet. Contact your device vendor for more assistance.Learn More ";
-    else if([type isEqualToString:@"2"])
-        return @"Your device has open ports. These ports may be used by some applications for allowing remote access of your system. If you do not use this device for such applications,it may be vulnerable. We suggest you block this device or contact your device vendor Learn More ";
-    else if([type isEqualToString:@"3"])
-        return @"The local web interface for this device uses a weak username and password. We suggest you block the device or change the password. Typically, settings can be accessed by entering the ip address of the device in your web browser. Contact your device vendor for more assistance.Learn More";
-    else if([type isEqualToString:@"4"])
-        return @"Your device is being used for port forwarding. Port forwarding is usually enabled manually for gaming applications and for remote access of cameras and DVRs. If you are not aware of port forwarding for this device, we suggest you block this device or contact your device vendor.Learn More";
-    else
-        return @"UPnP is a protocol that applications use to automatically set up port forwarding in the router. Viruses and Malwares can use UPnP in devices to gain remote access of your network. You can disable UPnP on your Almond from the Wifi tab.Learn More";
-}
 
 -(void)handleTapOnLabel:(id)sender{
 //    NSLog(@"hyper link pressed");NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@", self.uriDict[@"hostName"]]];
@@ -539,9 +527,21 @@
 
 - (IBAction)onLearnMoreTap:(id)sender {
     IoTLearnMoreViewController *ctrl = [self getStoryBoardController:@"MainDashboard" ctrlID:@"IoTLearnMoreViewController"];
+    ctrl.issueTypes = [[self getIssueTypes] sortedArrayUsingSelector: @selector(compare:)];
     [self pushViewController:ctrl];
 }
 
+- (NSArray *)getIssueTypes{
+    NSMutableArray *issueTags = [NSMutableArray new];
+    for(NSString *key in self.iotDevice.allKeys){
+        if([key isEqualToString:@"MAC"])
+            continue;
+        NSDictionary *issue = self.iotDevice[key];
+        if([issue[@"P"] integerValue] == 1)
+            [issueTags addObject:issue[@"Tag"]];
+    }
+    return issueTags;
+}
 
 -(void)pushViewController:(UIViewController *)viewCtrl{
     dispatch_async(dispatch_get_main_queue(), ^{

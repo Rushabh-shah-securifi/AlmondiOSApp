@@ -200,7 +200,7 @@ int mii;
     AdvCellType type = [sectionDict[CELL_TYPE] integerValue];
     if(type == Adv_Help){
         AdvRouterHelpController *ctrl = [AdvRouterHelpController new];
-        ctrl.helpType = indexPath.row;
+        ctrl.row = indexPath.row;
         self.navigationController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:ctrl animated:YES];
     }

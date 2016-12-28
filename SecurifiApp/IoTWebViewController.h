@@ -1,5 +1,5 @@
 //
-//  IoTLearnMoreViewController.h
+//  IoTWebViewController.h
 //  SecurifiApp
 //
 //  Created by Masood on 12/28/16.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface IoTLearnMoreViewController : UIViewController
-@property (nonatomic) NSArray *issueTypes;
+@interface IoTWebViewController : UIViewController
+@property (nonatomic) NSInteger row;
 @end

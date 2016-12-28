@@ -672,6 +672,10 @@
 		F4F981CE1DFA880A00FB0676 /* IoTDevicesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F981CB1DFA880A00FB0676 /* IoTDevicesListViewController.m */; };
 		F4F981CF1DFA880A00FB0676 /* IoTDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F981CD1DFA880A00FB0676 /* IoTDeviceViewController.m */; };
 		F4F981D21DFA899B00FB0676 /* List_TypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F981D11DFA899B00FB0676 /* List_TypeView.m */; };
+		F4FDAB441E13C4BB0061089E /* IoTLearnMoreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FDAB431E13C4BB0061089E /* IoTLearnMoreTableViewCell.m */; };
+		F4FDAB451E13C4BB0061089E /* IoTLearnMoreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FDAB431E13C4BB0061089E /* IoTLearnMoreTableViewCell.m */; };
+		F4FDAB481E13E9380061089E /* IoTWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FDAB471E13E9380061089E /* IoTWebViewController.m */; };
+		F4FDAB491E13E9380061089E /* IoTWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FDAB471E13E9380061089E /* IoTWebViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1414,6 +1418,10 @@
 		F4F981CD1DFA880A00FB0676 /* IoTDeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IoTDeviceViewController.m; path = Dashboard/IoTDeviceViewController.m; sourceTree = "<group>"; };
 		F4F981D01DFA899B00FB0676 /* List_TypeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = List_TypeView.h; sourceTree = "<group>"; };
 		F4F981D11DFA899B00FB0676 /* List_TypeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = List_TypeView.m; sourceTree = "<group>"; };
+		F4FDAB421E13C4BB0061089E /* IoTLearnMoreTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IoTLearnMoreTableViewCell.h; sourceTree = "<group>"; };
+		F4FDAB431E13C4BB0061089E /* IoTLearnMoreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IoTLearnMoreTableViewCell.m; sourceTree = "<group>"; };
+		F4FDAB461E13E9380061089E /* IoTWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IoTWebViewController.h; sourceTree = "<group>"; };
+		F4FDAB471E13E9380061089E /* IoTWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IoTWebViewController.m; sourceTree = "<group>"; };
 		F65023B0DECE8F15E5353C48 /* Pods-Almond.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Almond.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Almond/Pods-Almond.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1956,6 +1964,10 @@
 				F4F981CD1DFA880A00FB0676 /* IoTDeviceViewController.m */,
 				F44D533B1E138E05005C8F43 /* IoTLearnMoreViewController.h */,
 				F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */,
+				F4FDAB421E13C4BB0061089E /* IoTLearnMoreTableViewCell.h */,
+				F4FDAB431E13C4BB0061089E /* IoTLearnMoreTableViewCell.m */,
+				F4FDAB461E13E9380061089E /* IoTWebViewController.h */,
+				F4FDAB471E13E9380061089E /* IoTWebViewController.m */,
 			);
 			name = Dashboard;
 			sourceTree = "<group>";
@@ -3252,6 +3264,7 @@
 				1C7E7DA61A41A0990026F0BA /* SFIAccountsTableViewController.m in Sources */,
 				1C7E7DBC1A41A0990026F0BA /* SFICardView.m in Sources */,
 				1C7E7D881A41A0990026F0BA /* SFINotificationsViewController.m in Sources */,
+				F4FDAB451E13C4BB0061089E /* IoTLearnMoreTableViewCell.m in Sources */,
 				1C7E7D9A1A41A0990026F0BA /* Analytics.m in Sources */,
 				1C7E7D9E1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
 				2A4C24381D0FC3FA001191E8 /* DashboardViewController.m in Sources */,
@@ -3340,6 +3353,7 @@
 				F417B2A61DA25CBD0073C440 /* AdvanceRouterSettingsController.m in Sources */,
 				1DF038A445EB0F3A6476DC32 /* SFIHuePickerView.m in Sources */,
 				F4EA08271D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */,
+				F4FDAB491E13E9380061089E /* IoTWebViewController.m in Sources */,
 				F417B2AE1DA290030073C440 /* AdvRouterHelpController.m in Sources */,
 				1C709A0A1B5A3157007D397C /* SFICloudLinkViewController.m in Sources */,
 				F44D533E1E138E05005C8F43 /* IoTLearnMoreViewController.m in Sources */,
@@ -3520,6 +3534,7 @@
 				F4F981D21DFA899B00FB0676 /* List_TypeView.m in Sources */,
 				1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */,
 				1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */,
+				F4FDAB441E13C4BB0061089E /* IoTLearnMoreTableViewCell.m in Sources */,
 				F4EA082A1D6C551F00D6CC28 /* HelpViewController.m in Sources */,
 				1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */,
 				F492EA4E1DF158EA00FB3B76 /* SubscriptionPlansViewController.m in Sources */,
@@ -3536,6 +3551,7 @@
 				CEF6F4F41C92CAD600C68975 /* DimmerButton.m in Sources */,
 				1DF035317380AA5E0BD86161 /* MessageView.m in Sources */,
 				1DF0358BE9EBF2A3821D948D /* TableHeaderView.m in Sources */,
+				F4FDAB481E13E9380061089E /* IoTWebViewController.m in Sources */,
 				CE57A3491D70591A00F14B25 /* ParentalControlsViewController.m in Sources */,
 				1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */,
 				CEF6F4D81C92CAD600C68975 /* AddRuleSceneClass.m in Sources */,
