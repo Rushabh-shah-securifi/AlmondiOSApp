@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *ioTdevicetable;
 @property (weak, nonatomic) IBOutlet UIImageView *backArrIcon;
 @property (nonatomic) NSMutableArray *scannedDeviceList;
+@property (nonatomic) NSArray *healthyDEviceArr;
 @property (nonatomic) NSArray *excludedDevices;
 @property (weak, nonatomic) IBOutlet UILabel *no_scanDevice_label;
 @property (weak, nonatomic) IBOutlet UILabel *lastScan_label;
@@ -85,7 +86,7 @@
 #pragma mark tableviewDelegate
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 3;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -95,8 +96,12 @@
         
         return self.scannedDeviceList.count;
     }
-    else
+    else if(section == 1)
+        return self.healthyDEviceArr.count;
+    else{
+        NSLog(@"self.excludedDevices.count %ld",self.excludedDevices.count);
         return self.excludedDevices.count;
+    }
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -116,7 +121,21 @@
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[self getClientName:iotDevice[@"MAC"]],[self getIsVulnableText:iotDevice]];
         NSString *iconName = [self getIcon:iotDevice[@"MAC"]];
-        UIColor *color = [self getColor:iotDevice];
+        UIColor *color = [UIColor redColor];
+//        UIColor *color = [self getColor:iotDevice];
+        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:color];
+        cell.detailTextLabel.text = [self getLabelText:iotDevice];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    else if(indexPath.section == 1){
+        
+        NSDictionary *iotDevice = [self.healthyDEviceArr objectAtIndex:indexPath.row];
+        NSLog(@"iotDevice = %@",iotDevice);
+        cell.textLabel.numberOfLines = 2;
+        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        cell.textLabel.text = [NSString stringWithFormat:@"%@",[self getClientName:iotDevice[@"MAC"]]];
+        NSString *iconName = [self getIcon:iotDevice[@"MAC"]];
+        UIColor *color = [SFIColors ruleGraycolor];
         cell.imageView.image = [CommonMethods imageNamed:iconName withColor:color];
         cell.detailTextLabel.text = [self getLabelText:iotDevice];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -172,7 +191,10 @@
     }
     NSString *string;
     if(section == 0){
-        string = @"SCAN RESULTS";
+        string = @"VULNERABLE DEVICES";
+    }
+    else if(section == 1){
+        string = @"HEALTHY DEVICES";
     }
     else{
         string = @"EXCLUDED DEVICES";
@@ -201,6 +223,18 @@
         newWindow.hideTable = NO;
         newWindow.hideMiddleView = YES;
         
+        NSLog(@"IoTDevicesListViewController IF");
+        [self.navigationController pushViewController:newWindow animated:YES];
+    }
+    else if(indexPath.section == 1){
+        if(self.healthyDEviceArr.count < indexPath.row)
+            return;
+        NSString *iotDeviceMAc = [self.healthyDEviceArr objectAtIndex:indexPath.row];
+        NSDictionary *iotDevice = @{@"MAC":iotDeviceMAc};
+        IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
+        newWindow.iotDevice = iotDevice;
+        newWindow.hideTable = NO;
+        newWindow.hideMiddleView = YES;
         NSLog(@"IoTDevicesListViewController IF");
         [self.navigationController pushViewController:newWindow animated:YES];
     }
@@ -236,8 +270,10 @@
     
     if(flags>1)
         displayText = @"Multiple risks identified";
-    else
-    {
+    else if(flags == 0){
+        displayText = @"";
+    }
+   else if(flags == 1) {
         for(NSString *key in returnDict.allKeys){
             if([key isEqualToString:@"MAC"])
                 continue;
@@ -247,6 +283,7 @@
         }
         displayText = @"Your device is at risk";
     }
+    
     
     
     return displayText;
@@ -358,7 +395,7 @@
         self.blinking_lbl.hidden = YES;
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         self.scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
-        
+        self.healthyDEviceArr = toolkit.iotScanResults[@"HealthyDevice"];
         self.excludedDevices = toolkit.iotScanResults[@"scanExclude"];
         NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] intValue]];
         NSString *lastScanYtime = [dat stringFromDateAMPM];

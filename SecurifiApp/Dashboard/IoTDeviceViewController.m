@@ -234,14 +234,23 @@
             continue;
         NSDictionary *dict = returnDict[key];
         if([dict[@"P"]isEqualToString:@"1"]){
+            NSString *portsDetail = [self getPortsStrings:dict[@"Value"]];
             NSDictionary *LabelsDict = @{@"Label":[CommonMethods type:dict[@"Tag"]],
-                                         @"Tag":dict[@"Tag"]
+                                         @"Tag":dict[@"Tag"],
+                                         @"Value":portsDetail
+                                         
                                    };
             
             [self.warningLables addObject: LabelsDict];
         }
     }
 
+}
+-(NSString *)getPortsStrings:(NSArray *)ports{
+    if(ports.count == 0)
+        return @"";
+    NSString *portsDetail = [ports componentsJoinedByString:@", "];
+    return [NSString stringWithFormat:@"Ports: [%@]",portsDetail];
 }
 -(UIColor *)getolor:(NSDictionary *)returnDict{
     for(NSString *key in returnDict.allKeys){
@@ -313,6 +322,9 @@
     cell.textLabel.numberOfLines = 2;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     cell.textLabel.font = [UIFont securifiFont:14];
+    cell.detailTextLabel.text = dict[@"Value"];
+    cell.detailTextLabel.font = [UIFont securifiFont:12];
+    cell.detailTextLabel.textColor = [UIColor lightGrayColor];
     CGSize itemSize = CGSizeMake(30,30);
     UIGraphicsBeginImageContext(itemSize);
     CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
@@ -326,7 +338,7 @@
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    return 40;
+    return 50;
 }
 - (IBAction)blockClientRequest:(id)sender {
      mii = arc4random()%10000;
