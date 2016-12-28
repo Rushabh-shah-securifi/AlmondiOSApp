@@ -12,6 +12,7 @@
 #import "Client.h"
 #import "ClientPayload.h"
 #import "UIColor+Securifi.h"
+#import "SFIColors.h"
 
 #import "Colours.h"
 #import "UIFont+Securifi.h"
@@ -356,7 +357,7 @@
 
 
 -(UIColor *)getColor:(NSDictionary *)returnDict{
-    UIColor *color;
+    UIColor *color = nil;
     if(returnDict.allKeys.count == 1){
          return  [UIColor securifiScreenGreen];
     }
@@ -379,7 +380,11 @@
                 color = [UIColor orangeColor];
             continue;
         }
+        
     }
+    if(self.sectionType == healthy_section)
+        return [SFIColors clientGreenColor];
+        
     return color;
 }
 

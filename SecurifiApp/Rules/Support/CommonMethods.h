@@ -104,4 +104,5 @@
 
 + (NSAttributedString *)getAttributedString:(NSString *)text1 subText:(NSString *)subText text:(NSString *)text2 fontSize:(int)fontSize;
 
++(BOOL)isIoTdevice:(NSString *)clientType;
 @end
