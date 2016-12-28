@@ -87,7 +87,7 @@
                                                     <rect key="frame" x="165" y="4" width="194" height="39"/>
                                                     <subviews>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Secure Text" textAlignment="right" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="M5r-6r-TWt">
-                                                            <rect key="frame" x="0.0" y="6" width="147" height="26"/>
+                                                            <rect key="frame" x="0.0" y="6" width="135" height="26"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="26" id="61Y-Cv-Rm7"/>
                                                             </constraints>
@@ -102,14 +102,16 @@
                                                                 <constraint firstAttribute="height" constant="1" id="nDB-dD-tqZ"/>
                                                             </constraints>
                                                         </view>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOW-Mp-Rsc">
-                                                            <rect key="frame" x="155" y="0.0" width="46" height="39"/>
+                                                        <button autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOW-Mp-Rsc">
+                                                            <rect key="frame" x="143" y="0.0" width="58" height="39"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="39" id="LrK-Uh-Ibz"/>
-                                                                <constraint firstAttribute="width" constant="46" id="sRa-Mc-JZW"/>
+                                                                <constraint firstAttribute="width" constant="58" id="sRa-Mc-JZW"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="11"/>
-                                                            <state key="normal" title="SHOW"/>
+                                                            <state key="normal" title="SHOW">
+                                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                            </state>
                                                             <connections>
                                                                 <action selector="onEyeBtnTap:" destination="0jU-mW-Ijv" eventType="touchUpInside" id="2A6-Mo-4Q5"/>
                                                             </connections>
