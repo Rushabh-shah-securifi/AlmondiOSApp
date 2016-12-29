@@ -14,7 +14,7 @@
 @property (nonatomic) UIColor *color;
 @property (nonatomic) UIImageView *iconView;
 @property (nonatomic,weak) id<clientTypeCellDelegate> delegate;
--(void)setupLabel;
+-(void)setupLabel:(BOOL)hideIcon;
 -(void)writelabelName:(NSString*)name value:(NSString*)value;
 -(void)changeButtonColor;
 

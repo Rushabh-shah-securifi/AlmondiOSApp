@@ -172,8 +172,12 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 40;
 }
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-    return 60;
+//-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return 60;
+//}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return  60;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -399,6 +403,7 @@
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     toolkit.lastScanTime = systemTime;
+    NSLog(@"currentAlmond.lastScanTime %lld",toolkit.lastScanTime);
     [toolkit asyncSendToNetwork:cloudCommand];
     self.blinking_lbl.hidden = NO;
     self.blinking_lbl.alpha = 0;
@@ -448,9 +453,8 @@
     }
 -(void)checkForLastScanTime{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    
     NSLog(@"toolkit.lastScanTime = %ld, toolkit.iotScanResults %lld",toolkit.lastScanTime,[toolkit.iotScanResults[@"scanTime"] longLongValue]);
-   NSInteger lastScan =  [toolkit.iotScanResults[@"scanTime"] longLongValue];
+   long long lastScan =  [toolkit.iotScanResults[@"scanTime"] longLongValue];
     if(lastScan>=toolkit.lastScanTime){
         [self.scannowBtn setTitle:@"Scan Now" forState:UIControlStateNormal];
         self.blinking_lbl.hidden = YES;

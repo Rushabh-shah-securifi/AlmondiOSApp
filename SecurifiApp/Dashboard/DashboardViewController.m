@@ -191,8 +191,8 @@
         self.inactiveNetworkDevices.hidden = YES;
         self.no_scanObjLabel.hidden = NO;
         self.iotSecurityImg.hidden = YES;
-        self.tableYconstrain1.constant = self.constatnt1+90;
-        self.tableYconstrain2.constant = self.constatnt2+90;
+        self.tableYconstrain1.constant = self.constatnt1+100;
+        self.tableYconstrain2.constant = self.constatnt2+100;
         self.iotSecurityButton.hidden = NO;
         self.vulnableDevices.text = @"VULNERABLE DEVICES";
         [self.iotSecurityButton removeTarget:nil
@@ -999,6 +999,8 @@
 -(void)onAlmondSelectedDelegate:(SFIAlmondPlus *)selectedAlmond{
     [self removeAlmondSelectionView];
     NSLog(@"i am called");
+    
+    _toolkit.lastScanTime = 0;
     [AlmondManagement setCurrentAlmond:selectedAlmond];
     [self sendScanNowReq];
     [self iotUIUpdate];
@@ -1117,12 +1119,24 @@
             self.noIot_label.text = @"No Device scanned";
             self.lastScanIot_label.hidden = YES;
         }
+        [self checkForLastScanTime];
     });
 
    
 }
 
-
-
+-(void)checkForLastScanTime{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSLog(@"toolkit.lastScanTime = %ld, toolkit.iotScanResults %lld",toolkit.lastScanTime,[toolkit.iotScanResults[@"scanTime"] longLongValue]);
+    NSInteger lastScan =  [toolkit.iotScanResults[@"scanTime"] longLongValue];
+    if(lastScan>=toolkit.lastScanTime){
+        self.lastScanIot_label.hidden = NO;
+        
+    }
+    else {
+        self.lastScanIot_label.hidden = YES;
+        self.noIot_label.text = @"Scan in progress";
+        }
+}
 
 @end

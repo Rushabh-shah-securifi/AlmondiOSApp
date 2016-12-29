@@ -75,7 +75,7 @@
     if (cell == nil) {
         cell = [[clientTypeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"clientTypeCell"];
         cell.frame = CGRectMake(0, 0, tableView.frame.size.width, 45);
-        [cell setupLabel];
+        [cell setupLabel:YES];
     }
     int currentvalPos = 0;
     for(NSString *str in self.valueArr){

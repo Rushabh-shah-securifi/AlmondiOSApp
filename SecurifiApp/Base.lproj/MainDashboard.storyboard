@@ -427,12 +427,12 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nsb-Oz-R6e">
-                                                <rect key="frame" x="95" y="48" width="200" height="15"/>
+                                                <rect key="frame" x="82" y="48" width="235" height="15"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="15" id="76L-es-gmu"/>
-                                                    <constraint firstAttribute="width" constant="200" id="g3I-oU-KBw"/>
+                                                    <constraint firstAttribute="width" constant="235" id="g3I-oU-KBw"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="15"/>
+                                                <fontDescription key="fontDescription" name="AvenirLTStd-Roman" family="Avenir LT Std" pointSize="16"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QrP-Ve-EXb">
@@ -441,8 +441,8 @@
                                                     <constraint firstAttribute="height" constant="21" id="HbB-5z-exE"/>
                                                     <constraint firstAttribute="width" constant="219" id="XXS-CL-74b"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="12"/>
-                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="14"/>
+                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Sk-fS-sTU">
@@ -470,7 +470,7 @@
                                             <constraint firstItem="09U-N2-jXz" firstAttribute="leading" secondItem="gh4-i5-ivb" secondAttribute="leading" id="gZe-HK-6Ot"/>
                                             <constraint firstItem="9Sk-fS-sTU" firstAttribute="top" secondItem="gh4-i5-ivb" secondAttribute="top" constant="3" id="hdb-Kn-04M"/>
                                             <constraint firstItem="j2Z-7B-2xt" firstAttribute="centerX" secondItem="gh4-i5-ivb" secondAttribute="centerX" id="sJf-C7-grr"/>
-                                            <constraint firstItem="nsb-Oz-R6e" firstAttribute="centerX" secondItem="gh4-i5-ivb" secondAttribute="centerX" constant="7.5" id="yPD-SN-c3O"/>
+                                            <constraint firstItem="nsb-Oz-R6e" firstAttribute="centerX" secondItem="gh4-i5-ivb" secondAttribute="centerX" constant="12" id="yPD-SN-c3O"/>
                                         </constraints>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="dashboardTable" bounces="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BSm-N8-ckF">
