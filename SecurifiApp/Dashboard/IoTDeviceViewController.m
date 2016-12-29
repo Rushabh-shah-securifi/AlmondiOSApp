@@ -287,6 +287,10 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if(self.sectionType == healthy_section)
+    {
+        return 1;
+    }
         return self.warningLables.count;
     
 }
@@ -296,6 +300,11 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
+    }
+    if(self.sectionType == healthy_section)
+    {
+        cell = [self everyThingsFineLabel:cell];
+        return cell;
     }
         NSDictionary *dict = [self.warningLables objectAtIndex:indexPath.row];
         cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -576,6 +585,22 @@
         [self.HUD hide:YES];
     });
     
+}
+-(UITableViewCell *)everyThingsFineLabel:(UITableViewCell *)cell{
+    cell.imageView.image = [UIImage imageNamed:@"ic_check_circle_green"];
+    cell.textLabel.text = @"Everything looks good";
+    cell.textLabel.numberOfLines = 2;
+    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    cell.textLabel.font = [UIFont securifiFont:12];
+    CGSize itemSize = CGSizeMake(30,30);
+    UIGraphicsBeginImageContext(itemSize);
+    CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
+    [cell.imageView.image drawInRect:imageRect];
+    
+    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return cell;
 }
 
 @end

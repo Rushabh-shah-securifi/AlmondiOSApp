@@ -1111,6 +1111,10 @@
         NSLog(@"noSiotScanned %@",noSiotScanned);
         self.noIot_label.text = [NSString stringWithFormat:@"%@ Devices scanned",toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0"];
         self.lastScanIot_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
+        self.noIot_label.alpha = 1;
+        [UIView animateWithDuration:1.0 delay:0.2 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
+            self.noIot_label.alpha = 1;
+        } completion:nil];
         
 //        toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0"
         self.no_scanObjLabel.text = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
@@ -1119,6 +1123,10 @@
         if([toolkit.iotScanResults[@"scanCount"] isEqualToString:@"0"]){
             self.noIot_label.text = @"No Device scanned";
             self.lastScanIot_label.hidden = YES;
+            self.noIot_label.alpha = 1;
+            [UIView animateWithDuration:1.0 delay:0.2 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
+                self.noIot_label.alpha = 1;
+            } completion:nil];
         }
         [self checkForLastScanTime];
     });
