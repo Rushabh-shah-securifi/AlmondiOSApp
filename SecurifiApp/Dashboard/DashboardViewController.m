@@ -1099,6 +1099,7 @@
             self.lastScanIot_label.hidden = YES;
             self.no_scanObjLabel.text = @"0";
             [self checkForLastScanTime];
+            self.lastScanIot_label.hidden = YES;
              return ;
         }
         
@@ -1108,7 +1109,7 @@
     NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] intValue]];
     NSString *lastScanYtime = [dat stringFromDateAMPM];
     NSString *noSiotScanned = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
-        NSLog(@"noSiotScanned %@",noSiotScanned);
+        NSLog(@"lastScanYtime == %@",lastScanYtime);
         self.noIot_label.text = [NSString stringWithFormat:@"%@ Devices scanned",toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0"];
         self.lastScanIot_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
         self.noIot_label.alpha = 1;

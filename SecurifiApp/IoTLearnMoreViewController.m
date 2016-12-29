@@ -22,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
-//    self.issueTypes = @[@"1", @"2", @"3"]; //test
+    self.issueTypes = @[@"1", @"2", @"3"]; //test
     [self makeHelpDictionary];
     // Do any additional setup after loading the view.
 }
@@ -92,8 +92,10 @@
         cell = [[IoTLearnMoreTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     
-    if(indexPath.section == 0)
+    if(indexPath.section == 0){
+        NSLog(@"self.issueTypes[indexPath.row] %@",self.issueTypes[indexPath.row]);
         [cell setIssueCell:self.issueTypes[indexPath.row]];
+    }
     else
         [cell setHelpCell:self.helpsArray[indexPath.row]];
     
