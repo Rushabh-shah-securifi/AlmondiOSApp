@@ -154,9 +154,9 @@
     
     cell.textLabel.numberOfLines = 2;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    cell.textLabel.font = [UIFont securifiFont:16];
+    cell.textLabel.font = [UIFont securifiFont:14];
     cell.detailTextLabel.textColor = [SFIColors ruleGraycolor];
-    cell.detailTextLabel.font = [UIFont securifiFont:14];
+    cell.detailTextLabel.font = [UIFont securifiFont:13];
     CGSize itemSize = CGSizeMake(30,30);
     UIGraphicsBeginImageContext(itemSize);
     CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
@@ -165,71 +165,81 @@
     cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    
-    
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 40;
+    return 35;
 }
 //-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
 //    return 60;
 //}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return  60;
+    if (indexPath.section == 0) {
+        return 55;
+    }
+    return  40;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     NSLog(@"view for header: %ld", (long)section);
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 35)];
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, tableView.frame.size.width, 25)];
-    [label setFont:[UIFont securifiBoldFont:17]];
-    if (section >0) {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 8, tableView.frame.size.width, 25)];
+    [label setFont:[UIFont securifiBoldFont:16]];
+//    if (section >0) {
         UITableViewHeaderFooterView *foot = (UITableViewHeaderFooterView *)view;
         CGRect sepFrame = CGRectMake(0, 0, 415, 1);
         UIView *seperatorView =[[UIView alloc] initWithFrame:sepFrame];
         seperatorView.backgroundColor = [UIColor colorWithWhite:224.0/255.0 alpha:1.0];
         [foot addSubview:seperatorView];
-    }
-    NSDictionary *attrDict = @{
-                               NSFontAttributeName : [UIFont securifiLightFont:12],
-                               NSForegroundColorAttributeName : [UIColor lightGrayColor]
-                               };
-    NSDictionary *attrDict1 = @{
-                               NSForegroundColorAttributeName : [UIColor grayColor]
-                               };
-    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]init];
-    NSAttributedString *attr = [[NSAttributedString alloc]initWithString:@"Vulnerable Devices " attributes:attrDict1];
-    self.lastScanTime  = self.lastScanTime ?[NSString stringWithFormat:@"(Last Scan: %@)",self.lastScanTime]:@"";
-    NSAttributedString *attr1 = [[NSAttributedString alloc]initWithString:self.lastScanTime attributes:attrDict];
+//    }
     
-    [attrStr appendAttributedString:attr];
-    [attrStr appendAttributedString:attr1];
-    
+
     NSString *string;
     if(section == 0){
         
-//        string = @"VULNERABLE DEVICES";
-        label.attributedText = attrStr;;
+//        string = @"VULNERABLE DEVICES";@"Vulnerable Devices "
+        label.attributedText = [self getAttributeString:@"Vulnerable Devices "];
     }
     else if(section == 1){
-        string = @"Healthy Devices";
-        label.text = string;
-        label.textColor = [UIColor grayColor];
+//        string = @"Healthy Devices";
+//        label.text = string;
+//        label.textColor = [UIColor grayColor];
+        label.attributedText = [self getAttributeString:@"Healthy Devices "];
     }
     else{
         string = @"Excluded Devices";
         label.text = string;
         label.textColor = [UIColor grayColor];
     }
-    
-    
-    
     [view addSubview:label];
     view.backgroundColor = [UIColor whiteColor];
     return view;
+}
+-(NSAttributedString *)getAttributeString:(NSString *)text{
+    NSDictionary *attrDict = @{
+                               NSFontAttributeName : [UIFont securifiLightFont:12],
+                               NSForegroundColorAttributeName : [UIColor darkGrayColor]
+                               };
+    NSDictionary *attrDict1 = @{
+                                NSForegroundColorAttributeName : [UIColor grayColor]
+                                };
+    
+
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]init];
+    NSAttributedString *attr = [[NSAttributedString alloc]initWithString:text attributes:attrDict1];
+   
+    
+    self.lastScanTime  = self.lastScanTime ?[NSString stringWithFormat:@"%@",self.lastScanTime]:@"";
+    
+     NSLog(@"self.lastScanTime %@ %ld",self.lastScanTime,self.scannedDeviceList.count);
+    
+    NSAttributedString *attr1 = [[NSAttributedString alloc]initWithString:[NSString stringWithFormat:@"(%@)",self.lastScanTime] attributes:attrDict];
+    
+    [attrStr appendAttributedString:attr];
+    [attrStr appendAttributedString:attr1];
+    return attrStr;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -246,7 +256,7 @@
         newWindow.iotDevice = iotDevice;
         newWindow.hideTable = NO;
         newWindow.hideMiddleView = YES;
-        
+        newWindow.sectionType = vulnerable_section;
         NSLog(@"IoTDevicesListViewController IF");
         [self.navigationController pushViewController:newWindow animated:YES];
     }
@@ -431,7 +441,17 @@
 -(void)iotScanresultsCallBackController:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self checkForLastScanTime];
+        
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        NSString *noData =toolkit.iotScanResults[@"NoDataFound"]?toolkit.iotScanResults[@"NoDataFound"]:@"";
+       
+        if([noData isEqualToString:@"NoDataFound"]){
+            self.ioTdevicetable.hidden = YES;
+        }
+        else {
+            self.ioTdevicetable.hidden = NO;
+        }
+        
         self.scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
         self.healthyDEviceArr = toolkit.iotScanResults[@"HealthyDevice"];
         self.excludedDevices = toolkit.iotScanResults[@"scanExclude"];

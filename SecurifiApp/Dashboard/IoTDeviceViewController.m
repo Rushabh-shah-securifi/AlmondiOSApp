@@ -224,6 +224,9 @@
                 self.blockButton.backgroundColor = [UIColor darkGrayColor];
             }
         }
+        if(self.sectionType == vulnerable_section){
+            self.topView.backgroundColor = [self getColor:self.iotDevice];
+        }
     });
 
 }
@@ -313,6 +316,8 @@
     cell.textLabel.font = [UIFont securifiFont:14];
     cell.detailTextLabel.text = dict[@"Value"];
     cell.detailTextLabel.font = [UIFont securifiFont:12];
+    cell.detailTextLabel.numberOfLines = 2;
+    cell.detailTextLabel.lineBreakMode = NSLineBreakByCharWrapping;
     cell.detailTextLabel.textColor = [UIColor lightGrayColor];
     CGSize itemSize = CGSizeMake(30,30);
     UIGraphicsBeginImageContext(itemSize);
@@ -327,7 +332,7 @@
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    return 50;
+    return 60;
 }
 - (IBAction)blockClientRequest:(id)sender {
      mii = arc4random()%10000;

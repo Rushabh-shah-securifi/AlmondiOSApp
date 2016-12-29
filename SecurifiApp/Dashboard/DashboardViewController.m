@@ -1098,6 +1098,7 @@
             self.noIot_label.text = @"No Device scanned";
             self.lastScanIot_label.hidden = YES;
             self.no_scanObjLabel.text = @"0";
+            [self checkForLastScanTime];
              return ;
         }
         
@@ -1136,6 +1137,10 @@
     else {
         self.lastScanIot_label.hidden = YES;
         self.noIot_label.text = @"Scan in progress";
+        self.noIot_label.alpha = 0;
+        [UIView animateWithDuration:1.0 delay:0.2 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
+            self.noIot_label.alpha = 1;
+        } completion:nil];
         }
 }
 
