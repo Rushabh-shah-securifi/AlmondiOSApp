@@ -29,7 +29,9 @@
 }
 
 - (void)setIssueCell:(NSString *)type{
-    self.issueDesc.text = [CommonMethods type:type];
+    NSLog(@"setIssueCell: type %@",type);
+    self.issueTitle.text = [CommonMethods type:type];
+    
     self.issueDesc.text = [CommonMethods getExplanationText:type];
 }
 

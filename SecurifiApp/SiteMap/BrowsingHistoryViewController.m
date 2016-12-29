@@ -442,6 +442,9 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(self.is_IotType)
+        return;
+    
     if(self.isTapped == NO)
         if(self.dayArr.count > indexPath.section){
             NSArray *browsHist = self.dayArr[indexPath.section];

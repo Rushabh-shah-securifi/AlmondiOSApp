@@ -22,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
-    self.issueTypes = @[@"1", @"2", @"3"]; //test
+//    self.issueTypes = @[@"1", @"2", @"3"]; //test
     [self makeHelpDictionary];
     // Do any additional setup after loading the view.
 }
@@ -93,6 +93,7 @@
     }
     
     if(indexPath.section == 0){
+        NSLog(@"self.issueTypes %@",self.issueTypes);
         NSLog(@"self.issueTypes[indexPath.row] %@",self.issueTypes[indexPath.row]);
         [cell setIssueCell:self.issueTypes[indexPath.row]];
     }
