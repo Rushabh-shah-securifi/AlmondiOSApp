@@ -13,6 +13,7 @@
 #import "UIFont+Securifi.h"
 #import "AlmondManagement.h"
 #import "SFIAlmondPlus.h"
+#import "CommonMethods.h"
 @interface List_TypeView()<UITableViewDataSource,UITableViewDelegate,clientTypeCellDelegate,UITextFieldDelegate>
 @property (nonatomic)UITableView *tableType;
 @property (nonatomic)UITextField *searchtextField;
@@ -134,6 +135,14 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = self.color;
     NSString *value = [self.displayText_value valueForKey:[self.displayArray_copy objectAtIndex:indexPath.row]];
+    cell.iconView.image = [UIImage imageNamed:@"ic_security_black"];
+    if([CommonMethods isIoTdevice:value])
+    {
+        cell.iconView.alpha = 1.0;
+    }
+    else
+        cell.iconView.alpha = 0.3;
+    
     [cell writelabelName:[self.displayArray_copy objectAtIndex:indexPath.row] value:value];
     if(currentvalPos == indexPath.row)
         [cell changeButtonColor];

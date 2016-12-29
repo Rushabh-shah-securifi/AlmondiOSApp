@@ -12,6 +12,7 @@
 @end
 @interface clientTypeCell : UITableViewCell
 @property (nonatomic) UIColor *color;
+@property (nonatomic) UIImageView *iconView;
 @property (nonatomic,weak) id<clientTypeCellDelegate> delegate;
 -(void)setupLabel;
 -(void)writelabelName:(NSString*)name value:(NSString*)value;
