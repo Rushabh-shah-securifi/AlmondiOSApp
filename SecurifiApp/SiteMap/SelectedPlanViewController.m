@@ -90,13 +90,13 @@ int mii;
     self.couponTxtFld.delegate = self;
     
     self.topPlanLbl.text = [AlmondPlan getPlanString:self.selectedPlan];
-    self.selectedPlanAmtLbl.text = [NSString stringWithFormat:@"$%zd.00", [AlmondPlan getPlanAmount:self.selectedPlan]];
-    self.totalAmtLbl.text = [NSString stringWithFormat:@"$%zd.00", [AlmondPlan getPlanAmount:self.selectedPlan]];
+    self.selectedPlanAmtLbl.text = [NSString stringWithFormat:@"$%@", [AlmondPlan getPlanAmount:self.selectedPlan]];
+    self.totalAmtLbl.text = [NSString stringWithFormat:@"$%@", [AlmondPlan getPlanAmount:self.selectedPlan]];
     
     if(self.selectedPlan == PlanTypeFree){
         [self.paymentBtn setTitle:@"Start My Trial" forState:UIControlStateNormal];
     }else if([AlmondPlan hasPaidSubscription]){
-        [self.paymentBtn setTitle:[NSString stringWithFormat:@"Pay $%zd", [AlmondPlan getPlanAmount:self.selectedPlan]] forState:UIControlStateNormal];
+        [self.paymentBtn setTitle:[NSString stringWithFormat:@"Pay $%@", [AlmondPlan getPlanAmount:self.selectedPlan]] forState:UIControlStateNormal];
     }
 }
 

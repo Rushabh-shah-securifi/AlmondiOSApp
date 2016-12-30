@@ -151,13 +151,15 @@
     PlanType freePlanType = self.almondPlan.planType != PlanTypeNone? PlanTypeFreeExpired: PlanTypeFree;
     [plans addObject:[self getPlanDict:@"1 Month" midLabel:@"Free" btmLabel:text1 planType:freePlanType]];
 
-    [plans addObject:[self getPlanDict:@"1 Day" midLabel:@"Test" btmLabel:@"PLAN" planType:PlanTypeOneDay]];
+//    [plans addObject:[self getPlanDict:@"1 Day" midLabel:@"Test" btmLabel:@"PLAN" planType:PlanTypeOneDay]];
     
-    [plans addObject:[self getPlanDict:@"1 Month" midLabel:@"$5" btmLabel:@"PLAN" planType:PlanTypeOneMonth]];
+    [plans addObject:[self getPlanDict:@"1 Month" midLabel:@"$9.99" btmLabel:@"$3.99" planType:PlanTypeOneMonth]];
     
-    [plans addObject:[self getPlanDict:@"3 Months" midLabel:@"$12" btmLabel:@"PLAN" planType:PlanTypeThreeMonths]];
+//    [plans addObject:[self getPlanDict:@"3 Months" midLabel:@"$12" btmLabel:@"PLAN" planType:PlanTypeThreeMonths]];
     
 //    [plans addObject:[self getPlanDict:@"6 Months" midLabel:@"$20" btmLabel:@"PLAN" planType:PlanTypeSixMonths]];
+    
+    [plans addObject:[self getPlanDict:@"1 Year" midLabel:@"$48" btmLabel:@"$39.99" planType:PlanTypeOneYear]];
     
     return plans;
 }
@@ -200,14 +202,22 @@
 
 - (void)addLables:(UIButton *)btn plan:(NSDictionary *)plan{
     UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, CGRectGetWidth(btn.frame), 20)];
-    [self addLable:plan[TOP_LABEL] btn:btn label:label1 fntName:@"Avenir-Heavy" fntSze:14];
+    [self addLable:plan[TOP_LABEL] btn:btn label:label1 fntName:@"Avenir-Roman" fntSze:16];
     
-    UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, CGRectGetWidth(btn.frame), 30)];
+    //label2
+    UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, CGRectGetWidth(btn.frame), 20)];
     label2.center = CGPointMake(CGRectGetMidX(btn.bounds), CGRectGetMidY(btn.bounds));
-    [self addLable:plan[MID_LABEL] btn:btn label:label2 fntName:@"Avenir-Roman" fntSze:24];
+    [self addLable:plan[MID_LABEL] btn:btn label:label2 fntName:@"Avenir-Roman" fntSze:16];
+    NSMutableAttributedString *attributeString = [[NSMutableAttributedString alloc] initWithString:plan[MID_LABEL]];
+    [attributeString addAttribute:NSStrikethroughStyleAttributeName
+                            value:@2
+                            range:NSMakeRange(0, [attributeString length])];
+    if(![[plan[MID_LABEL] lowercaseString] isEqualToString:@"free"])
+        label2.attributedText = attributeString;
     
+    //label3
     UILabel *label3 = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetHeight(btn.frame)-30, CGRectGetWidth(btn.frame), 20)];
-    [self addLable:plan[BOTTOM_LABEL] btn:btn label:label3 fntName:@"Avenir-Roman" fntSze:14];
+    [self addLable:plan[BOTTOM_LABEL] btn:btn label:label3 fntName:@"Avenir-Heavy" fntSze:18];
 }
 
 -(void)addLable:(NSString *)title btn:(UIButton *)btn label:(UILabel*)label fntName:(NSString *)fntName fntSze:(int)fntSze{
@@ -276,6 +286,9 @@
             break;
         case PlanTypeSixMonths:
             self.planDesc.attributedText = [CommonMethods getAttributedString:text1 subText:@"6 Months $20 Plan " text:text2 fontSize:self.planDesc.font.pointSize];
+            break;
+        case PlanTypeOneYear:
+            self.planDesc.attributedText = [CommonMethods getAttributedString:text1 subText:@"1 Year $39.99 Plan " text:text2 fontSize:self.planDesc.font.pointSize];
             break;
         default:
             break;
