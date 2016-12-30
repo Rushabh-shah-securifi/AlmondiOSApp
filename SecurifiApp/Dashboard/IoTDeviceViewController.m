@@ -67,6 +67,10 @@
     
     self.tableView.hidden = _hideTable;
 //    self.learnMore.hidden = _hideTable;
+    if(self.sectionType == vulnerable_section)
+        self.learnMore.hidden = NO;
+    else
+        self.learnMore.hidden = YES;
     self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
     NSLog(@"iot device mac %@",self.iotDevice[@"MAC"]);
     self.client = [Client getClientByMAC:self.iotDevice[@"MAC"]];
@@ -591,7 +595,7 @@
     cell.textLabel.text = @"Everything looks good";
     cell.textLabel.numberOfLines = 2;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    cell.textLabel.font = [UIFont securifiFont:12];
+    cell.textLabel.font = [UIFont securifiFont:14];
     CGSize itemSize = CGSizeMake(30,30);
     UIGraphicsBeginImageContext(itemSize);
     CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
