@@ -71,6 +71,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lastScanIot_label;
 @property (weak, nonatomic) IBOutlet UILabel *noIot_label;
 @property (weak, nonatomic) IBOutlet UILabel *no_scanObjLabel;
+@property (weak, nonatomic) IBOutlet UILabel *scan_In_progress;
 
 
 @end
@@ -1095,6 +1096,8 @@
         
         if(toolkit.iotScanResults[@"scanDevice"] == Nil){
             NSLog(@"toolkit.iotScanResults = %@",toolkit.iotScanResults);
+            self.noIot_label.hidden = NO;
+            self.scan_In_progress.hidden = YES;
             self.noIot_label.text = @"No Device scanned";
             self.lastScanIot_label.hidden = YES;
             self.no_scanObjLabel.text = @"0";
@@ -1112,10 +1115,8 @@
         NSLog(@"lastScanYtime == %@",lastScanYtime);
         self.noIot_label.text = [NSString stringWithFormat:@"%@ Devices scanned",toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0"];
         self.lastScanIot_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
-        self.noIot_label.alpha = 1;
-        [UIView animateWithDuration:1.0 delay:0.2 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
-            self.noIot_label.alpha = 1;
-        } completion:nil];
+        self.noIot_label.hidden = NO;
+        self.scan_In_progress.hidden = YES;
         
 //        toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0"
         self.no_scanObjLabel.text = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
@@ -1124,10 +1125,8 @@
         if([toolkit.iotScanResults[@"scanCount"] isEqualToString:@"0"]){
             self.noIot_label.text = @"No Device scanned";
             self.lastScanIot_label.hidden = YES;
-            self.noIot_label.alpha = 1;
-            [UIView animateWithDuration:1.0 delay:0.2 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
-                self.noIot_label.alpha = 1;
-            } completion:nil];
+            self.noIot_label.hidden = NO;
+            self.scan_In_progress.hidden = YES;
         }
         [self checkForLastScanTime];
     });
@@ -1145,10 +1144,12 @@
     }
     else {
         self.lastScanIot_label.hidden = YES;
-        self.noIot_label.text = @"Scan in progress";
-        self.noIot_label.alpha = 0;
+        self.noIot_label.hidden = YES;
+        self.scan_In_progress.hidden = NO;
+        self.scan_In_progress.text = @"Scan in progress";
+        self.scan_In_progress.alpha = 0;
         [UIView animateWithDuration:1.0 delay:0.2 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
-            self.noIot_label.alpha = 1;
+            self.scan_In_progress.alpha = 1;
         } completion:nil];
         }
 }
