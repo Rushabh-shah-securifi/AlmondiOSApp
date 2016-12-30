@@ -414,7 +414,7 @@ int mii;
 - (void)onCopy2GDelegate:(BOOL)isEnabled{
     NSString *value = isEnabled? @"true": @"false";
     [self showHudWithTimeoutMsg:@"Please Wait!" time:15];
-    [RouterPayload requestAlmondPropertyChange:mii action:@"KeepSameSSID" value:value uptime:nil];
+    [RouterPayload requestAlmondPropertyChange:mii action:@"KeepSameSSID" value:value uptime:nil uptime1:nil];
 }
 
 - (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString *)ssid {

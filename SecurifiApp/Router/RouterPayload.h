@@ -24,5 +24,5 @@
 + (void)sendLogs:(NSString*)message mii:(int)mii mac:(NSString*)almondMac;
 
 //advanced router settings
-+(void)requestAlmondPropertyChange:(int)mii action:(NSString*)action value:(NSString *)value uptime:(NSString *)uptime;
++(void)requestAlmondPropertyChange:(int)mii action:(NSString*)action value:(NSString *)value uptime:(NSString *)uptime uptime1:(NSString *)uptime1;
 @end
