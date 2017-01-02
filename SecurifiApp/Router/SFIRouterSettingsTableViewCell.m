@@ -56,7 +56,7 @@
     [cardView addLine];
     
     //if([self isInREMode] || [self isGuestAndAP] || [self is5GAndCopyEnabled])
-    if([self isInREMode] || [self isGuestAndAP] || [self supportsCopy2GAndCopyEnabled]){
+    if([self isInREMode] || [self isGuestAndAP] || [self supportsCopy2GAndCopyEnabled] || !setting.enabled){
         [cardView addNameLabel:NSLocalizedString(@"router.settings.label.SSID", @"SSID") valueLabel:setting.ssid];
     }
     else{
