@@ -211,16 +211,16 @@ int mii;
     NSString *strValue = value? @"true": @"false";
     switch (type) {
         case Adv_LocalWebInterface:{
-            [RouterPayload requestAlmondPropertyChange:mii action:@"WebAdminEnable" value:strValue uptime:nil uptime1:nil];
+            [RouterPayload requestAlmondPropertyChange:mii action:@"WebAdminEnable" value:strValue uptime:nil];
         }
             break;
         case Adv_UPnP:{
             NSLog(@"upnp");
-            [RouterPayload requestAlmondPropertyChange:mii action:@"Upnp" value:strValue uptime:nil uptime1:nil];
+            [RouterPayload requestAlmondPropertyChange:mii action:@"Upnp" value:strValue uptime:nil];
         }
             break;
         case Adv_AlmondScreenLock:{
-            [RouterPayload requestAlmondPropertyChange:mii action:@"ScreenLock" value:strValue uptime:nil uptime1:nil];
+            [RouterPayload requestAlmondPropertyChange:mii action:@"ScreenLock" value:strValue uptime:nil];
         }
             break;
             
@@ -236,10 +236,12 @@ int mii;
         case Adv_LocalWebInterface:{
             NSLog(@"local web interface");
             if(isSecureFld){
-                NSString *encryptedBase64 = [AlmondProperties getBase64EncryptedSting:[AlmondManagement currentAlmond].almondplusMAC uptime:almondProperty.uptime1 password:value];
+                NSString *randomUptime = @(arc4random() % 100000).stringValue;
+                NSString *encryptedBase64 = [AlmondProperties getBase64EncryptedSting:[AlmondManagement currentAlmond].almondplusMAC uptime:randomUptime password:value];
                 NSLog(@"encrypted base 64: %@", encryptedBase64);
                 
-                [RouterPayload requestAlmondPropertyChange:mii action:@"WebAdminPassword" value:encryptedBase64 uptime:nil uptime1:almondProperty.uptime1];
+                NSLog(@"decrypted pass: %@", [self getDecryptedPass:encryptedBase64 uptime:randomUptime]);
+                [RouterPayload requestAlmondPropertyChange:mii action:@"WebAdminPassword" value:encryptedBase64 uptime:randomUptime];
             }else{
                 //non editable
             }
@@ -248,12 +250,13 @@ int mii;
 
         case Adv_AlmondScreenLock:{
             if(isSecureFld){
-                NSString *encryptedBase64 = [AlmondProperties getBase64EncryptedSting:[AlmondManagement currentAlmond].almondplusMAC uptime:almondProperty.uptime password:value];
+                NSString *randomUptime = @(arc4random() % 100000).stringValue;
+                NSString *encryptedBase64 = [AlmondProperties getBase64EncryptedSting:[AlmondManagement currentAlmond].almondplusMAC uptime:randomUptime password:value];
                 NSLog(@"encrypted base 64: %@", encryptedBase64);
                 
-                [RouterPayload requestAlmondPropertyChange:mii action:@"ScreenPIN" value:encryptedBase64 uptime:almondProperty.uptime uptime1:nil];
+                [RouterPayload requestAlmondPropertyChange:mii action:@"ScreenPIN" value:encryptedBase64 uptime:randomUptime];
             }else{
-                [RouterPayload requestAlmondPropertyChange:mii action:@"ScreenTimeout" value:value uptime:nil uptime1:nil];
+                [RouterPayload requestAlmondPropertyChange:mii action:@"ScreenTimeout" value:value uptime:nil];
             }
         }
             break;
@@ -262,11 +265,11 @@ int mii;
             NSLog(@"diagnostic");
             if(row == 1){
                 NSLog(@"row 1");
-                [RouterPayload requestAlmondPropertyChange:mii action:@"CheckInternetIP" value:value uptime:nil uptime1:nil];
+                [RouterPayload requestAlmondPropertyChange:mii action:@"CheckInternetIP" value:value uptime:nil];
             }
             
             else if(row == 2)
-                [RouterPayload requestAlmondPropertyChange:mii action:@"CheckInternetURL" value:value uptime:nil uptime1:nil];
+                [RouterPayload requestAlmondPropertyChange:mii action:@"CheckInternetURL" value:value uptime:nil];
         }
             break;
         case Adv_Language:{
@@ -329,8 +332,10 @@ int mii;
     NSMutableArray *cellsArray = [NSMutableArray new];
     [cellsArray addObject:[self getCellDict:@"Local Web Interface" value:almondProperty.webAdminEnable]];
     [cellsArray addObject:[self getCellDict:@"Login" value:@"admin"]];
+    
     decrytedPass = [self getDecryptedPass:almondProperty.webAdminPassword uptime:almondProperty.uptime1];
-    [cellsArray addObject:[self getCellDict:@"Password" value:decrytedPass]];
+    NSLog(@"pass: %@, uptime1: %@",almondProperty.webAdminPassword, almondProperty.uptime1);
+    [cellsArray addObject:[self getCellDict:@"Password" value:decrytedPass?:@""]];
     [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_LocalWebInterface]];
     
     //screen lock
