@@ -437,7 +437,7 @@ int mii;
 -(void)showForceRemoveAlert{
     NSString *desc = NSLocalizedString(@"force_remove_almond", @"");
     //not using showalert because this has other button title.
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:desc delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:desc delegate:self cancelButtonTitle:@"ForceRemove" otherButtonTitles:@"Cancel", nil];
     alert.tag = FORCE_REMOVE;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [alert show];
@@ -463,15 +463,15 @@ int mii;
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
         }
+        else if(alertView.tag == FORCE_REMOVE){
+            [self showHudWithTimeoutMsgDelegate:NSLocalizedString(@"removing_wait", @"") time:5];
+            [MeshPayload requestForceRemoveSlave:mii uniqueName:self.almondStatObj.slaveUniqueName];
+        }
     }else{
         if(alertView.tag == REMOVE){
             [self showHudWithTimeoutMsgDelegate:NSLocalizedString(@"removing_wait", @"") time:40];
             self.removeAlmondTimer = [NSTimer scheduledTimerWithTimeInterval:40 target:self selector:@selector(onRemoveAlmTimeout:) userInfo:nil repeats:NO];
             [MeshPayload requestRemoveSlave:mii uniqueName:self.almondStatObj.slaveUniqueName];
-        }
-        else if(alertView.tag == FORCE_REMOVE){
-            [self showHudWithTimeoutMsgDelegate:NSLocalizedString(@"removing_wait", @"") time:5];
-            [MeshPayload requestForceRemoveSlave:mii uniqueName:self.almondStatObj.slaveUniqueName];
         }
     }
 }

@@ -1234,7 +1234,7 @@ Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add
 "weak_signal_strength" = "Wireless signal seems to be weak.";
 "remove_almond" = "Remove Almond";
 "remove_almond_alert" = "Are you sure, you want to remove %@?";
-"force_remove_almond" = "Unable to remove the Almond. Try again after rebooting the additional Almond.\n\Or\nForce Remove";
+"force_remove_almond" = "Unable to remove the Almond. Try again after rebooting the additional Almond.\n\n or";
 "sorry_could_not_remove" = "Sorry! Could not remove. Try removing from Almond";
 "removing_wait" = "Removing...Please wait!";
 
