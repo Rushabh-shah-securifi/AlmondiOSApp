@@ -955,6 +955,7 @@ int mii;
                  }
              }else{
                  MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupAdding" isStatView:NO];
+                 ctrl.maxHopCount = self.routerSummary.maxHopCount;
                  dispatch_async(dispatch_get_main_queue(), ^{
                      [self presentViewController:ctrl animated:YES completion:nil];
                  });
