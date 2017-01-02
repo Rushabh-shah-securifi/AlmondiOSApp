@@ -56,13 +56,16 @@
     self.password.returnKeyType = UIReturnKeyDone;
 
     self.emailID.text = nil;
-    self.password.text = nil;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.emailID.delegate = self;
     self.password.delegate = self;
+    
+    self.password.text = nil; //password bug fix
+    
     [self tryEnableLostPwdButton];
     [self tryEnableLoginButton];
     [self setStandardLoginMsg];
