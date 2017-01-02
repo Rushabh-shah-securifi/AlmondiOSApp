@@ -423,12 +423,12 @@
         "AppLabel": "iot_security_camelcase",
         "Values": {
             "true": {
-            				"AppLabel": "on_camelcase",
-            				"Label": "On"
+                "AppLabel": "on_camelcase",
+                "Label": "On"
             },
             "false": {
-            				"AppLabel": "off_camelcase",
-            				"Label": "Off"
+                "AppLabel": "off_camelcase",
+                "Label": "Off"
             }
         }
     },
@@ -1885,10 +1885,16 @@
         "Name": "THERMOSTAT_MODE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "MULTI_BUTTON",
+        "Layout": "LIST",
         "AppLabel": "mode",
         "DefaultIcon": "img_off",
         "Values": {
+            "eco":{
+                "Icon": "eco_icon",
+                "AppLabel": "eco",
+                "Label": "Echo",
+                "Notification": "modeChangeEcho"
+            },
             "heat-cool": {
                 "Icon": "img_auto",
                 "AppLabel": "nest_heat_cool",
@@ -2799,3 +2805,4 @@
         }
     }
 }
+
