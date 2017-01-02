@@ -1566,6 +1566,12 @@ img {width:90%}
 </p>
 </body>
 </html>";
+
+
+//subscriptions
+"h_initiateScan" = "Initiate a new scan with the tap of a button.";
+"h_flagDevices" = "Flag devices with an unusual traffic pattern.";
+"h_monitorSites" = "Monitor the sites your kids are browsing.";
 /* ==================================================================== */
 
 /*

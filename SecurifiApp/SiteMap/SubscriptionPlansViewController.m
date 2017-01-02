@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UILabel *planDesc;
+@property (weak, nonatomic) IBOutlet UILabel *slideImgLbl;
 
 @property (nonatomic)AlmondPlan *almondPlan;
 @property (nonatomic)PlanType newSelectedPlan;
@@ -41,6 +42,9 @@
     self.almondPlan = [AlmondPlan getAlmondPlan:self.currentMAC];
     self.planDesc.text = @"Please select a plan from the plans listed above.";
     self.newSelectedPlan = PlanTypeNone;
+    
+    self.imgView.image = [UIImage imageNamed:@"iot-security-device-scan"];
+    self.slideImgLbl.text = NSLocalizedString(@"h_initiateScan", @"");
     
     [self addSwipeToView:self.centerView];
     [self setupScrollView];
@@ -96,6 +100,22 @@
     else
         [self slideAnimation:NO];
     
+    switch (currntPg) {
+        case 0:
+            self.imgView.image = [UIImage imageNamed:@"iot-security-device-scan"];
+            self.slideImgLbl.text = NSLocalizedString(@"h_initiateScan", @"");
+            break;
+        case 1:
+            self.imgView.image = [UIImage imageNamed:@"iot-security-devices-active"];
+            self.slideImgLbl.text = NSLocalizedString(@"h_flagDevices", @"");
+            break;
+        case 2:
+            self.imgView.image = [UIImage imageNamed:@"iot-security-web-history"];
+            self.slideImgLbl.text = NSLocalizedString(@"h_monitorSites", @"");
+            break;
+        default:
+            break;
+    }
 //    self.imgView.image = [UIImage imageNamed:currntPg == 0? @"h_scene_behave": @"h_scene_create"];
 //    self.centerView.backgroundColor = currntPg == 0? [UIColor lightGrayColor]: [UIColor orangeColor];
     self.prevCount = currntPg;

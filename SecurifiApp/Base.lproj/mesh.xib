@@ -58,7 +58,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Almond" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JgZ-KU-Hub">
-                    <rect key="frame" x="106.5" y="14" width="107" height="21"/>
+                    <rect key="frame" x="107" y="14" width="107" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="BFh-kZ-te9"/>
                     </constraints>
@@ -74,7 +74,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose an Interface" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j3M-6O-yTF">
-                    <rect key="frame" x="52" y="81" width="216.5" height="33"/>
+                    <rect key="frame" x="52" y="81" width="217" height="33"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="33" id="MeF-cI-L1G"/>
                     </constraints>
