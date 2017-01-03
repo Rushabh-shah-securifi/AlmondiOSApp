@@ -14,9 +14,9 @@
 #import "GenericValue.h"
 
 @implementation RulesNestThermostat
-
+//for scene-rule
 + (NSArray *)handleNestThermostat:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues modeFilter:(BOOL)modeFilter triggers:(NSMutableArray*)triggers{
-    NSArray *newGenIndexVals = [self getNestGenericIndexVals:deviceID withGenericIndexValues:genericIndexValues];
+    NSArray *newGenIndexVals = [self getNestGenericIndexVals:deviceID withGenericIndexValues:genericIndexValues isSceneRule:YES];
     if(modeFilter){
         NSString *matchData = nil;
         for(SFIButtonSubProperties *subProperty in triggers){
@@ -29,8 +29,9 @@
     return newGenIndexVals;
 }
 
+//for sensor
 +(NSArray*)handleNestThermostatForSensor:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues{
-    NSArray *newGenIndexVals = [self getNestGenericIndexVals:deviceID withGenericIndexValues:genericIndexValues];
+    NSArray *newGenIndexVals = [self getNestGenericIndexVals:deviceID withGenericIndexValues:genericIndexValues isSceneRule:NO];
     newGenIndexVals = [self filterIndexesBasedOnHomeAway:deviceID genericIndexVals:newGenIndexVals];
     newGenIndexVals = [self filterDeviceMode:newGenIndexVals deviceId:deviceID modeVal:[Device getValueForIndex:2 deviceID:deviceID]];
     return newGenIndexVals;
@@ -55,7 +56,7 @@
 }
 
 
-+ (NSArray*)getNestGenericIndexVals:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexVals{
++ (NSArray*)getNestGenericIndexVals:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexVals isSceneRule:(BOOL)isSceneRule{
     NSLog(@"can cool value: %@", [Device getValueForIndex:12 deviceID:deviceID]);
     BOOL canCool = [[Device getValueForIndex:12 deviceID:deviceID] isEqualToString:@"true"];
     BOOL canHeat = [[Device getValueForIndex:13 deviceID:deviceID] isEqualToString:@"true"];
@@ -68,8 +69,13 @@
         /*****    faster   *****/
         GenericIndexValue *newGenericIndexVal = nil;
         if(canCool == NO && canHeat == NO){
-            if(genIndexVal.index == 2)//SFIDevicePropertyType_NEST_THERMOSTAT_MODE
+            if(genIndexVal.index == 2 && !isSceneRule)//SFIDevicePropertyType_NEST_THERMOSTAT_MODE
                 newGenericIndexVal = [self addOnlyModeOff:genIndexVal];
+            
+            //incaseof scene rule we do not add even off mode
+            else if(genIndexVal.index == 2 && isSceneRule)//SFIDevicePropertyType_NEST_THERMOSTAT_MODE
+                continue;
+            
             else if(genIndexVal.index == 3)//SFIDevicePropertyType_THERMOSTAT_TARGET
                 continue;
             else if(genIndexVal.index == 5)//SFIDevicePropertyType_THERMOSTAT_RANGE_LOW
@@ -235,7 +241,7 @@
     return genericIndexValue;
 }
 
-
+//for sensor
 +(NSArray*)filterIndexesBasedOnModeForIndexes:(NSArray*)genericIndexValues deviceId:(sfi_id)deviceId matchData:(NSString*)matchData{
     NSMutableArray *newGenericIndexValues = [genericIndexValues mutableCopy];
     NSLog(@"new genericindex values before : %@", newGenericIndexValues);
@@ -254,9 +260,17 @@
                     [newGenericIndexValues removeObject:genIndexVal];
                 }
             }
-        }else{
+        }
+        else if([matchData isEqualToString:@"off"]){
             for(GenericIndexValue *genIndexVal in genericIndexValues){
                 if(genIndexVal.index == 3 || genIndexVal.index == 5 ||genIndexVal.index == 6 ||genIndexVal.index == 9){
+                    [newGenericIndexValues removeObject:genIndexVal];
+                }
+            }
+        }
+        else if([matchData isEqualToString:@"eco"]){
+            for(GenericIndexValue *genIndexVal in genericIndexValues){
+                if(genIndexVal.index == 3 || genIndexVal.index == 5 ||genIndexVal.index == 6){
                     [newGenericIndexValues removeObject:genIndexVal];
                 }
             }
@@ -267,6 +281,7 @@
     return newGenericIndexValues;
 }
 
+//for rule scene
 +(NSArray*)filterDeviceMode:(NSArray*)genericIndexValues deviceId:(sfi_id)deviceId modeVal:(NSString*)modeVal{
     BOOL canCool = [[Device getValueForIndex:12 deviceID:deviceId] isEqualToString:@"true"];
     BOOL canHeat = [[Device getValueForIndex:13 deviceID:deviceId] isEqualToString:@"true"];
@@ -296,6 +311,13 @@
             NSLog(@"three");
             for(GenericIndexValue *genIndexVal in genericIndexValues){
                 if(genIndexVal.index == 3 || genIndexVal.index == 5 ||genIndexVal.index == 6||genIndexVal.index == 9){
+                    [newGenericIndexValues removeObject:genIndexVal];
+                }
+            }
+        }
+        else if([modeVal isEqualToString:@"eco"]){
+            for(GenericIndexValue *genIndexVal in genericIndexValues){
+                if(genIndexVal.index == 3 || genIndexVal.index == 5 ||genIndexVal.index == 6){
                     [newGenericIndexValues removeObject:genIndexVal];
                 }
             }
@@ -339,6 +361,10 @@
         else if([mode isEqualToString:@"off"] && (subProperty.index == 5 || subProperty.index ==6 ||subProperty.index == 3 || subProperty.index == 9)){
             [newPropertyList addObject:subProperty];
         }
+        else if([mode isEqualToString:@"eco"] && (subProperty.index == 5 || subProperty.index ==6 ||subProperty.index == 3)){
+            [newPropertyList addObject:subProperty];
+        }
+        
     }
     [entries removeObjectsInArray:newPropertyList];
 }
