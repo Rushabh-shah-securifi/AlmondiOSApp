@@ -69,7 +69,7 @@
         GenericIndexValue *newGenericIndexVal = nil;
         if(canCool == NO && canHeat == NO){
             if(genIndexVal.index == 2)//SFIDevicePropertyType_NEST_THERMOSTAT_MODE
-                newGenericIndexVal = [self addOnlyModeOffAndEco:genIndexVal];
+                newGenericIndexVal = [self addOnlyModeOff:genIndexVal];
             else if(genIndexVal.index == 3)//SFIDevicePropertyType_THERMOSTAT_TARGET
                 continue;
             else if(genIndexVal.index == 5)//SFIDevicePropertyType_THERMOSTAT_RANGE_LOW
@@ -150,8 +150,8 @@
     return genericIndexValue;
 }
 
-//cancool-false, canheat-false -> show only mode "off" button
-+ (GenericIndexValue *)addOnlyModeOffAndEco:(GenericIndexValue *)genericIndexValue{
+//cancool-false, canheat-false -> show only mode "off"  button
++ (GenericIndexValue *)addOnlyModeOff:(GenericIndexValue *)genericIndexValue{
     GenericIndexClass *newGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexValue.genericIndex];
     
     NSMutableDictionary *newGenericValueDict = [NSMutableDictionary new];
@@ -159,7 +159,7 @@
     
     for(NSString *keyValue in currentGenericValueDict){
         GenericValue *gVal = currentGenericValueDict[keyValue];
-        if([gVal.value isEqualToString:@"off"] || [gVal.value isEqualToString:@"eco"]){
+        if([gVal.value isEqualToString:@"off"]){
             [newGenericValueDict setValue:gVal forKey:keyValue];
         }
     }

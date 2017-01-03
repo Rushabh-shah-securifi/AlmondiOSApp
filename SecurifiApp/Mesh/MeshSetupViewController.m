@@ -338,7 +338,7 @@ int mii;
 
 #pragma mark mesh edit delegate
 -(void)slaveNameDidChangeDelegate:(NSString *)name{
-    [self.almondStatObj.keyVals replaceObjectAtIndex:0 withObject:@{@"Location":name}];
+    [self.almondStatObj.keyVals replaceObjectAtIndex:0 withObject:@{@"Location":name?:@""}];
     dispatch_async(dispatch_get_main_queue(), ^{
         self.almondName.text = name;
         [self.meshTableView reloadData];

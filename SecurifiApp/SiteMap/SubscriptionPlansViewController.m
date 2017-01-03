@@ -299,7 +299,7 @@
             self.planDesc.attributedText = [CommonMethods getAttributedString:text1 subText:@"1 Day Test Plan " text:text2 fontSize:self.planDesc.font.pointSize];
             break;
         case PlanTypeOneMonth:
-            self.planDesc.attributedText = [CommonMethods getAttributedString:text1 subText:@"1 Month $5 Plan " text:text2 fontSize:self.planDesc.font.pointSize];
+            self.planDesc.attributedText = [CommonMethods getAttributedString:text1 subText:@"1 Month $3.99 Plan " text:text2 fontSize:self.planDesc.font.pointSize];
             break;
         case PlanTypeThreeMonths:
             self.planDesc.attributedText = [CommonMethods getAttributedString:text1 subText:@"3 Months $12 Plan " text:text2 fontSize:self.planDesc.font.pointSize];

@@ -42,7 +42,7 @@
     [cardView addTopBorder:self.backgroundColor];
     
     if([SFIWirelessSetting is5G:setting.type] && [SFIWirelessSetting supportsCopy2g:self.firmware]){
-        [cardView addTitleAndCopySwitch:@"Copy 2G setting" target:self action:@selector(onCopy2g:) on:isCopy2GEnabled];
+        [cardView addTitleAndCopySwitch:@"Copy 2G Settings" target:self action:@selector(onCopy2g:) on:isCopy2GEnabled];
         [cardView addLine];
     }
     

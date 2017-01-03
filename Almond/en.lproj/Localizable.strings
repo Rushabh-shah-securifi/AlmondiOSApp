@@ -631,6 +631,7 @@ Follow it, then login below.";
 "ac_cool"="Cool";
 "heat"="Heat";
 "target_temperature"="TARGET TEMPERATURE";
+"eco" = "Eco";
 
 "nest_label_away_mode"="NEST MODE";
 "Auto-away"="AUTO-AWAY";
