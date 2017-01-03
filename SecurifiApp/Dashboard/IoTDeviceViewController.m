@@ -42,6 +42,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *iotSecurity_label;
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
 
+@property BOOL isEcho_Nest;
 @end
 
 @implementation IoTDeviceViewController
@@ -74,6 +75,8 @@
     self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
     NSLog(@"iot device mac %@",self.iotDevice[@"MAC"]);
     self.client = [Client getClientByMAC:self.iotDevice[@"MAC"]];
+    NSLog(@"self.client previous type %@",self.client.previousType);
+     NSLog(@"self.client current type type %@",self.client.deviceType);
     NSLog(@"self.client.name %@",self.client.name);
     NSLog(@"iot device mac %@",self.client.deviceMAC);
     
@@ -231,6 +234,21 @@
         if(self.sectionType == vulnerable_section){
             self.topView.backgroundColor = [self getColor:self.iotDevice];
         }
+        if(_hideMiddleView == NO){
+            if([self.client.deviceType isEqualToString:@"amazon_echo"] && [self.client.previousType isEqualToString:@"nest"]){
+                self.topView.backgroundColor = [UIColor redColor];
+                self.infoLabel.hidden= NO;
+                self.infoLabel.text = @"This device is behaving suspiciously.Try resetting the device or remove it from your network.";
+                self.isEcho_Nest = YES;
+            }
+            else if([self.client.deviceType isEqualToString:@"nest"] && [self.client.previousType isEqualToString:@"amazon_echo"]){
+                self.topView.backgroundColor = [UIColor redColor];
+                self.infoLabel.hidden= NO;
+                self.infoLabel.text = @"This device is behaving suspiciously.Try resetting the device or remove it from your network.";
+                self.isEcho_Nest = YES;
+            }
+        }
+        
     });
 
 }
@@ -545,7 +563,10 @@
 
 - (IBAction)onLearnMoreTap:(id)sender {
     IoTLearnMoreViewController *ctrl = [self getStoryBoardController:@"MainDashboard" ctrlID:@"IoTLearnMoreViewController"];
+    
     ctrl.issueTypes = [[self getIssueTypes] sortedArrayUsingSelector: @selector(compare:)];
+    if(self.isEcho_Nest)
+        ctrl.issueTypes = @[@"7"];
     [self pushViewController:ctrl];
 }
 

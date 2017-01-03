@@ -433,7 +433,12 @@ static const int xIndent = 10;
             NSLog(@"enable / disable %d - %d",client.webHistoryEnable,client.bW_Enable);
             NSLog(@"enable / disable dns  %d - %d",client.iot_serviceEnable,client.iot_dnsEnable);
             client = [client copy];
+            
+            
             [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
+            NSLog(@"client.previousType %@,client.deviceType %@",client.previousType,client.deviceType);
+            
+            
             [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
         }
     }

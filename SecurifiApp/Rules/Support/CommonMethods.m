@@ -95,6 +95,12 @@
     return attrString;
 }
 
++ (NSAttributedString *)getAttributedStringWithAttribute:(NSAttributedString *)attributedText subText:(NSString *)subText fontSize:(int)fontSize{
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithAttributedString:attributedText];
+    NSRange boldRange = [attributedText.string rangeOfString:subText];
+    [attrString addAttribute:NSFontAttributeName value:[UIFont securifiBoldFont:fontSize] range:boldRange];
+    return attrString;
+}
 + (NSAttributedString *)getAttributedString:(NSString *)text1 subText:(NSString *)subText text:(NSString *)text2 fontSize:(int)fontSize{
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:text1];
     NSAttributedString *attrString2 = [[NSAttributedString alloc] initWithString:text2];
@@ -864,6 +870,7 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
         return @"Port forwarding enabled for this device";
     else
         return @"Device using Universal Plug and Play(UPnP) service";
+    
 }
 
 + (NSString *)getExplanationText:(NSString *)type{
@@ -877,6 +884,8 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
         return @"Your device is being used for port forwarding. Port forwarding is usually enabled manually for gaming applications and for remote access of cameras and DVRs. If you are not aware of port forwarding for this device, we suggest you block this device or contact your device vendor.";
     else
         return @"UPnP is a protocol that applications use to automatically set up port forwarding in the router. Viruses and Malwares can use UPnP in devices to gain remote access of your network. You can disable UPnP on your Almond from the Wifi tab.";
+  
+    
 }
 
 +(BOOL)isIoTdevice:(NSString *)clientType{
