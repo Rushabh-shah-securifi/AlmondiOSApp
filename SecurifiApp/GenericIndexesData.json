@@ -1245,6 +1245,7 @@
             "Min": "0",
             "Max": "3000",
             "Unit": "Lux",
+            "Factor": "1",
             "prefix": "illuminanceChange"
         }
     },
@@ -1718,6 +1719,7 @@
         "Formatter": {
             "Min": "0",
             "Max": "999",
+            "Factor": "1",
             "prefix": "ir_code_changed"
         }
     },

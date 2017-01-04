@@ -355,6 +355,14 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         }
         
     }
+    else if(genericIndexObject.formatter != nil && [genericIndexObject.layoutType isEqualToString:@"SLIDER"]){
+        NSString *formattedValue=[genericIndexObject.formatter transform:value genericId:genericIndexID];
+        NSLog(@"slider icon2 - display text: %@, value: %@ units : %@ ,formattedValue = %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units,formattedValue);
+        //NSString *formattedValue = [NSString stringWithFormat:@"",[value floatValue] * genericIndexObject.formatter.factor];
+        GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:formattedValue prefix:genericIndexObject.formatter.prefix andUnit:@""];
+        
+        return genericValue1;
+    }
     else if(genericIndexObject.formatter != nil && ![genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] && ![genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] && ![genericIndexObject.layoutType isEqualToString:@"HUE_ONLY"]){
         NSString *formattedValue=[genericIndexObject.formatter transform:value genericId:genericIndexID];
          NSLog(@"slider icon2 - display text: %@, value: %@ units : %@ ,formattedValue = %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units,formattedValue);
@@ -365,12 +373,12 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     }
     else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"])){
         NSLog(@"slider icon - display text: %@, value: %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value);
-        int brightnessValue;
+        int brightnessValue = [value intValue];
         if([genericIndexObject.ID isEqualToString:@"100"])
             brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
         NSString *value = @(brightnessValue).stringValue;
          NSLog(@"slider icon3 - display text: %@, value: %@ units : %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units);
-        NSString *formattedValue = [NSString stringWithFormat:@"",[value floatValue] * genericIndexObject.formatter.factor];
+        NSString *formattedValue = [NSString stringWithFormat:@"%.0f",[value floatValue] * genericIndexObject.formatter.factor];
         return [[GenericValue alloc]initWithDisplayText:[genericIndexObject.formatter transform:value genericId:genericIndexID]
                                                    icon:genericIndexObject.icon
                                             toggleValue:nil
