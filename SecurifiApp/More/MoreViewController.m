@@ -480,6 +480,7 @@
     [alert show];
 }
 
+
 #pragma  mark - Alertview delgate
 
 - (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView {
@@ -491,6 +492,7 @@
     }
     return flag;
 }
+
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     NSLog(@"Button Index =%ld", (long) buttonIndex);

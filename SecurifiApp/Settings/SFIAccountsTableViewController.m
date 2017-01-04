@@ -5,6 +5,8 @@
 //  Created by Priya Yerunkar on 15/09/14.
 //  Copyright (c) 2014 Securifi Ltd. All rights reserved.
 //
+
+
 #import "SFIAccountsTableViewController.h"
 #import "MBProgressHUD.h"
 #import "iToast.h"
@@ -120,7 +122,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 }
 
 
-
 -(void) addButtonToPostNotification {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button addTarget:self
@@ -144,6 +145,10 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [super viewDidDisappear:animated];
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    
+    [center removeObserver:self
+                      name:RELOAD_ACCOUNTS_PAGE
+                    object:nil];
     
     [center removeObserver:self
                       name:ACCOUNTS_RELATED
@@ -510,8 +515,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }
 }
 
-
 #pragma mark - Cloud Command : Sender and Receivers
+
 -(void) sendRequest:(CommandType *)commandType withCommandString:(NSString*)commandString withDictionaryData:(NSMutableDictionary *)data withLocalizedStrings:(NSArray *)strings {
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     if(strings!=nil){
@@ -542,6 +547,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
 }
 
+
 -(SFIAlmondPlus *)findAlmond:(NSMutableArray*)almondList{
     for (SFIAlmondPlus *current in almondList) {
         if ([current.almondplusMAC isEqualToString:currentAlmondMAC])
@@ -549,7 +555,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }
     return nil;
 }
-
 
 - (void)accountResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
@@ -607,7 +612,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
             [[[iToast makeText:[NSString stringWithFormat:NSLocalizedString(ACCOUNTS_ITOAST_UNABLETOCHANGEALMONDNAME, @"Sorry! We were unable to change Almond's name3333. %@"), failureReason]] setGravity:iToastGravityBottom] show:iToastTypeWarning];
         });
     }
-    
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
     });

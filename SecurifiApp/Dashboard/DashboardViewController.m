@@ -93,6 +93,8 @@
     
     [self initializeAddButtonView];
     [self initializeHUD];
+    [self navigationBarStyle];
+    
     self.constatnt1 =self.tableYconstrain1.constant;
     
     self.constatnt2 =self.tableYconstrain2.constant;
@@ -103,8 +105,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    [self navigationBarStyle];
-     [self sendScanNowReq];
+    [self sendScanNowReq];
     
     [self iotUIUpdate];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -296,6 +297,7 @@
 #pragma mark Navigation UI
 -(void)navigationBarStyle{
     
+    
     self.navigationImg = [[UIImageView alloc] initWithImage:[CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]]];
     self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
     self.navigationController.view.backgroundColor = [SFIColors lightOrangeDashColor];
@@ -384,8 +386,7 @@
             self.inactiveNetworkDevices.text = [NSString stringWithFormat: @"%lu", (unsigned long)[Client inactiveClientCount]];
         });
     }
-    else
-    {
+    else{
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self SelectAlmond:NSLocalizedString(@"dashBoard AddAlmond", @"AddAlmond")];
             [self.AddAlmond setTitle:NSLocalizedString(@"dashBoard AddAlmond", @"AddAlmond") forState:UIControlStateNormal];
@@ -400,6 +401,7 @@
             self.activeNetworkDevices.text =[NSString stringWithFormat:@"%d ",0 ];
             self.inactiveNetworkDevices.text = [NSString stringWithFormat: @"%d",0];
         });
+
     }
 }
 

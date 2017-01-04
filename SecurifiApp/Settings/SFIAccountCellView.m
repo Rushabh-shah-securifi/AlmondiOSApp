@@ -308,6 +308,7 @@ NSArray *fieldNumbersForEachCategory;
             NSString* keyValue = ((SFIUserProfile*)_userProfileData[index]).keyValue;
             if([keyValue isEqualToString:keyToUpdate]){
                 ((SFIUserProfile*)_userProfileData[index]).data =  dataToUpdate;
+                break;
             }
         }
     }else{
