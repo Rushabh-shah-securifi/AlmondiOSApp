@@ -71,6 +71,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lastScanIot_label;
 @property (weak, nonatomic) IBOutlet UILabel *noIot_label;
 @property (weak, nonatomic) IBOutlet UILabel *no_scanObjLabel;
+@property (weak, nonatomic) IBOutlet UILabel *scan_In_progress;
 
 
 @end
@@ -189,8 +190,8 @@
         self.inactiveNetworkDevices.hidden = YES;
         self.no_scanObjLabel.hidden = NO;
         self.iotSecurityImg.hidden = YES;
-        self.tableYconstrain1.constant = self.constatnt1+90;
-        self.tableYconstrain2.constant = self.constatnt2+90;
+        self.tableYconstrain1.constant = self.constatnt1+100;
+        self.tableYconstrain2.constant = self.constatnt2+100;
         self.iotSecurityButton.hidden = NO;
         self.vulnableDevices.text = @"VULNERABLE DEVICES";
         [self.iotSecurityButton removeTarget:nil
@@ -998,6 +999,8 @@
 -(void)onAlmondSelectedDelegate:(SFIAlmondPlus *)selectedAlmond{
     [self removeAlmondSelectionView];
     NSLog(@"i am called");
+    
+    _toolkit.lastScanTime = 0;
     [AlmondManagement setCurrentAlmond:selectedAlmond];
     [self sendScanNowReq];
     [self iotUIUpdate];
@@ -1089,17 +1092,30 @@
 -(void)iotScanresultsCallBackDashBoard:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    if(toolkit.iotScanResults[@"scanDevice"] == Nil)
-            return ;
+        
+        if(toolkit.iotScanResults[@"scanDevice"] == Nil){
+            NSLog(@"toolkit.iotScanResults = %@",toolkit.iotScanResults);
+            self.noIot_label.hidden = NO;
+            self.scan_In_progress.hidden = YES;
+            self.noIot_label.text = @"No Device scanned";
+            self.lastScanIot_label.hidden = YES;
+            self.no_scanObjLabel.text = @"0";
+            [self checkForLastScanTime];
+            self.lastScanIot_label.hidden = YES;
+             return ;
+        }
+        
         
     NSArray *scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
     NSArray *excludedDevices = toolkit.iotScanResults[@"scanExclude"];
     NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] intValue]];
     NSString *lastScanYtime = [dat stringFromDateAMPM];
     NSString *noSiotScanned = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
-        NSLog(@"noSiotScanned %@",noSiotScanned);
+        NSLog(@"lastScanYtime == %@",lastScanYtime);
         self.noIot_label.text = [NSString stringWithFormat:@"%@ Devices scanned",toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0"];
         self.lastScanIot_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
+        self.noIot_label.hidden = NO;
+        self.scan_In_progress.hidden = YES;
         
 //        toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0"
         self.no_scanObjLabel.text = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
@@ -1108,13 +1124,33 @@
         if([toolkit.iotScanResults[@"scanCount"] isEqualToString:@"0"]){
             self.noIot_label.text = @"No Device scanned";
             self.lastScanIot_label.hidden = YES;
+            self.noIot_label.hidden = NO;
+            self.scan_In_progress.hidden = YES;
         }
+        [self checkForLastScanTime];
     });
 
    
 }
 
-
-
+-(void)checkForLastScanTime{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSLog(@"toolkit.lastScanTime = %ld, toolkit.iotScanResults %lld",toolkit.lastScanTime,[toolkit.iotScanResults[@"scanTime"] longLongValue]);
+    NSInteger lastScan =  [toolkit.iotScanResults[@"scanTime"] longLongValue];
+    if(lastScan>=toolkit.lastScanTime){
+        self.lastScanIot_label.hidden = NO;
+        
+    }
+    else {
+        self.lastScanIot_label.hidden = YES;
+        self.noIot_label.hidden = YES;
+        self.scan_In_progress.hidden = NO;
+        self.scan_In_progress.text = @"Scan in progress";
+        self.scan_In_progress.alpha = 0;
+        [UIView animateWithDuration:1.0 delay:0.2 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
+            self.scan_In_progress.alpha = 1;
+        } completion:nil];
+        }
+}
 
 @end

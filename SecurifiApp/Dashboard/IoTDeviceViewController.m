@@ -12,6 +12,7 @@
 #import "Client.h"
 #import "ClientPayload.h"
 #import "UIColor+Securifi.h"
+#import "SFIColors.h"
 
 #import "Colours.h"
 #import "UIFont+Securifi.h"
@@ -41,6 +42,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *iotSecurity_label;
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
 
+@property BOOL isEcho_Nest;
 @end
 
 @implementation IoTDeviceViewController
@@ -66,9 +68,15 @@
     
     self.tableView.hidden = _hideTable;
 //    self.learnMore.hidden = _hideTable;
+    if(self.sectionType == vulnerable_section)
+        self.learnMore.hidden = NO;
+    else
+        self.learnMore.hidden = YES;
     self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
     NSLog(@"iot device mac %@",self.iotDevice[@"MAC"]);
     self.client = [Client getClientByMAC:self.iotDevice[@"MAC"]];
+    NSLog(@"self.client previous type %@",self.client.previousType);
+     NSLog(@"self.client current type type %@",self.client.deviceType);
     NSLog(@"self.client.name %@",self.client.name);
     NSLog(@"iot device mac %@",self.client.deviceMAC);
     
@@ -223,6 +231,24 @@
                 self.blockButton.backgroundColor = [UIColor darkGrayColor];
             }
         }
+        if(self.sectionType == vulnerable_section){
+            self.topView.backgroundColor = [self getColor:self.iotDevice];
+        }
+        if(_hideMiddleView == NO){
+            if([self.client.deviceType isEqualToString:@"amazon_echo"] && [self.client.previousType isEqualToString:@"nest"]){
+                self.topView.backgroundColor = [UIColor redColor];
+                self.infoLabel.hidden= NO;
+                self.infoLabel.text = @"This device is behaving suspiciously.Try resetting the device or remove it from your network.";
+                self.isEcho_Nest = YES;
+            }
+            else if([self.client.deviceType isEqualToString:@"nest"] && [self.client.previousType isEqualToString:@"amazon_echo"]){
+                self.topView.backgroundColor = [UIColor redColor];
+                self.infoLabel.hidden= NO;
+                self.infoLabel.text = @"This device is behaving suspiciously.Try resetting the device or remove it from your network.";
+                self.isEcho_Nest = YES;
+            }
+        }
+        
     });
 
 }
@@ -271,18 +297,6 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(NSString *)setExplanationText:(NSString *)type{
-    if([type isEqualToString:@"1"])
-        return @"Your device  has an open telnet (port:80) and uses a weak username and password. Telnet enabled devices are highly vulnerable to Mirai Botnet attacks. We suggest you block this device or create a strong username and password if you can access the telnet. Contact your device vendor for more assistance.Learn More ";
-    else if([type isEqualToString:@"2"])
-        return @"Your device has open ports. These ports may be used by some applications for allowing remote access of your system. If you do not use this device for such applications,it may be vulnerable. We suggest you block this device or contact your device vendor Learn More ";
-    else if([type isEqualToString:@"3"])
-        return @"The local web interface for this device uses a weak username and password. We suggest you block the device or change the password. Typically, settings can be accessed by entering the ip address of the device in your web browser. Contact your device vendor for more assistance.Learn More";
-    else if([type isEqualToString:@"4"])
-        return @"Your device is being used for port forwarding. Port forwarding is usually enabled manually for gaming applications and for remote access of cameras and DVRs. If you are not aware of port forwarding for this device, we suggest you block this device or contact your device vendor.Learn More";
-    else
-        return @"UPnP is a protocol that applications use to automatically set up port forwarding in the router. Viruses and Malwares can use UPnP in devices to gain remote access of your network. You can disable UPnP on your Almond from the Wifi tab.Learn More";
-}
 
 -(void)handleTapOnLabel:(id)sender{
 //    NSLog(@"hyper link pressed");NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@", self.uriDict[@"hostName"]]];
@@ -295,6 +309,10 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if(self.sectionType == healthy_section)
+    {
+        return 1;
+    }
         return self.warningLables.count;
     
 }
@@ -304,6 +322,11 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
+    }
+    if(self.sectionType == healthy_section)
+    {
+        cell = [self everyThingsFineLabel:cell];
+        return cell;
     }
         NSDictionary *dict = [self.warningLables objectAtIndex:indexPath.row];
         cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -324,6 +347,8 @@
     cell.textLabel.font = [UIFont securifiFont:14];
     cell.detailTextLabel.text = dict[@"Value"];
     cell.detailTextLabel.font = [UIFont securifiFont:12];
+    cell.detailTextLabel.numberOfLines = 2;
+    cell.detailTextLabel.lineBreakMode = NSLineBreakByCharWrapping;
     cell.detailTextLabel.textColor = [UIColor lightGrayColor];
     CGSize itemSize = CGSizeMake(30,30);
     UIGraphicsBeginImageContext(itemSize);
@@ -338,7 +363,7 @@
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    return 50;
+    return 60;
 }
 - (IBAction)blockClientRequest:(id)sender {
      mii = arc4random()%10000;
@@ -356,7 +381,7 @@
 
 
 -(UIColor *)getColor:(NSDictionary *)returnDict{
-    UIColor *color;
+    UIColor *color = nil;
     if(returnDict.allKeys.count == 1){
          return  [UIColor securifiScreenGreen];
     }
@@ -379,7 +404,11 @@
                 color = [UIColor orangeColor];
             continue;
         }
+        
     }
+    if(self.sectionType == healthy_section)
+        return [SFIColors clientGreenColor];
+        
     return color;
 }
 
@@ -534,9 +563,24 @@
 
 - (IBAction)onLearnMoreTap:(id)sender {
     IoTLearnMoreViewController *ctrl = [self getStoryBoardController:@"MainDashboard" ctrlID:@"IoTLearnMoreViewController"];
+    
+    ctrl.issueTypes = [[self getIssueTypes] sortedArrayUsingSelector: @selector(compare:)];
+    if(self.isEcho_Nest)
+        ctrl.issueTypes = @[@"7"];
     [self pushViewController:ctrl];
 }
 
+- (NSArray *)getIssueTypes{
+    NSMutableArray *issueTags = [NSMutableArray new];
+    for(NSString *key in self.iotDevice.allKeys){
+        if([key isEqualToString:@"MAC"])
+            continue;
+        NSDictionary *issue = self.iotDevice[key];
+        if([issue[@"P"] integerValue] == 1)
+            [issueTags addObject:issue[@"Tag"]];
+    }
+    return issueTags;
+}
 
 -(void)pushViewController:(UIViewController *)viewCtrl{
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -566,6 +610,22 @@
         [self.HUD hide:YES];
     });
     
+}
+-(UITableViewCell *)everyThingsFineLabel:(UITableViewCell *)cell{
+    cell.imageView.image = [UIImage imageNamed:@"ic_check_circle_green"];
+    cell.textLabel.text = @"Everything looks good";
+    cell.textLabel.numberOfLines = 2;
+    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    cell.textLabel.font = [UIFont securifiFont:14];
+    CGSize itemSize = CGSizeMake(30,30);
+    UIGraphicsBeginImageContext(itemSize);
+    CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
+    [cell.imageView.image drawInRect:imageRect];
+    
+    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return cell;
 }
 
 @end

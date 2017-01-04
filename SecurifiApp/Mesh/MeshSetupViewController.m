@@ -232,6 +232,7 @@ int mii;
         self.meshView = [[MeshView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20)];
         NSLog(@"nav viewheight: %f", CGRectGetHeight(self.view.frame));
         self.meshView.delegate = self;
+        self.meshView.maxHopCount = self.maxHopCount;
         
         [self.meshView initializeFirstScreen:[CommonMethods getMeshDict:@"Interface"]];
         [self.meshView addInfoScreen:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-20)];
@@ -337,7 +338,7 @@ int mii;
 
 #pragma mark mesh edit delegate
 -(void)slaveNameDidChangeDelegate:(NSString *)name{
-    [self.almondStatObj.keyVals replaceObjectAtIndex:0 withObject:@{@"Location":name}];
+    [self.almondStatObj.keyVals replaceObjectAtIndex:0 withObject:@{@"Location":name?:@""}];
     dispatch_async(dispatch_get_main_queue(), ^{
         self.almondName.text = name;
         [self.meshTableView reloadData];
@@ -436,7 +437,7 @@ int mii;
 -(void)showForceRemoveAlert{
     NSString *desc = NSLocalizedString(@"force_remove_almond", @"");
     //not using showalert because this has other button title.
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:desc delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"" message:desc delegate:self cancelButtonTitle:@"ForceRemove" otherButtonTitles:@"Cancel", nil];
     alert.tag = FORCE_REMOVE;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [alert show];
@@ -462,15 +463,15 @@ int mii;
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
         }
+        else if(alertView.tag == FORCE_REMOVE){
+            [self showHudWithTimeoutMsgDelegate:NSLocalizedString(@"removing_wait", @"") time:5];
+            [MeshPayload requestForceRemoveSlave:mii uniqueName:self.almondStatObj.slaveUniqueName];
+        }
     }else{
         if(alertView.tag == REMOVE){
             [self showHudWithTimeoutMsgDelegate:NSLocalizedString(@"removing_wait", @"") time:40];
             self.removeAlmondTimer = [NSTimer scheduledTimerWithTimeInterval:40 target:self selector:@selector(onRemoveAlmTimeout:) userInfo:nil repeats:NO];
             [MeshPayload requestRemoveSlave:mii uniqueName:self.almondStatObj.slaveUniqueName];
-        }
-        else if(alertView.tag == FORCE_REMOVE){
-            [self showHudWithTimeoutMsgDelegate:NSLocalizedString(@"removing_wait", @"") time:5];
-            [MeshPayload requestForceRemoveSlave:mii uniqueName:self.almondStatObj.slaveUniqueName];
         }
     }
 }

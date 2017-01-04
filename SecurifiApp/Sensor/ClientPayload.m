@@ -33,7 +33,7 @@
     if(![self hasCompleteData:client])
         return;
     
-    NSLog(@"client BW_enable %d and @(client.deviceAllowedType).stringValue %@",client.bW_Enable,@(client.deviceAllowedType).stringValue);
+    NSLog(@"client BW_enable %d and @(client.deviceAllowedType).stringValue %@ previous_type %@",client.bW_Enable,@(client.deviceAllowedType).stringValue,client.previousType);
     NSDictionary * clients = @{
                                C_ID:client.deviceID,
                                CLIENT_NAME:client.name,

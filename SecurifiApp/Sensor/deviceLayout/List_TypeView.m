@@ -13,6 +13,9 @@
 #import "UIFont+Securifi.h"
 #import "AlmondManagement.h"
 #import "SFIAlmondPlus.h"
+#import "CommonMethods.h"
+#import "AlmondPlan.h"
+
 @interface List_TypeView()<UITableViewDataSource,UITableViewDelegate,clientTypeCellDelegate,UITextFieldDelegate>
 @property (nonatomic)UITableView *tableType;
 @property (nonatomic)UITextField *searchtextField;
@@ -22,6 +25,7 @@
 @property (nonatomic)NSMutableArray *displayArray_copy;
 @property (nonatomic)NSMutableArray *valueArr_copy;
 @property (nonatomic)NSMutableDictionary *displayText_value;
+@property BOOL hasPaymentDone;
 
 @end
 @implementation List_TypeView
@@ -42,6 +46,8 @@
     return self;
 }
 -(void)addSearchTextField{
+    SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
+    self.hasPaymentDone = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 5, 18, 18)];
     imageView.image  = [UIImage imageNamed:@"search_icon_white"];
     [self addSubview:imageView];
@@ -118,7 +124,7 @@
     if (cell == nil) {
         cell = [[clientTypeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"clientTypeCell"];
         cell.frame = CGRectMake(0, 0, tableView.frame.size.width, 45);
-        [cell setupLabel];
+        [cell setupLabel:self.hasPaymentDone];
     }
     int currentvalPos = 0;
     
@@ -134,6 +140,14 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = self.color;
     NSString *value = [self.displayText_value valueForKey:[self.displayArray_copy objectAtIndex:indexPath.row]];
+    cell.iconView.image = [UIImage imageNamed:@"ic_security_black"];
+    if([CommonMethods isIoTdevice:value])
+    {
+        cell.iconView.alpha = 1.0;
+    }
+    else
+        cell.iconView.alpha = 0.3;
+    
     [cell writelabelName:[self.displayArray_copy objectAtIndex:indexPath.row] value:value];
     if(currentvalPos == indexPath.row)
         [cell changeButtonColor];

@@ -41,8 +41,8 @@
     
     [cardView addTopBorder:self.backgroundColor];
     
-    if([self is5G]){
-        [cardView addTitleAndCopySwitch:@"Copy 2G setting" target:self action:@selector(onCopy2g:) on:isCopy2GEnabled];
+    if([SFIWirelessSetting is5G:setting.type] && [SFIWirelessSetting supportsCopy2g:self.firmware]){
+        [cardView addTitleAndCopySwitch:@"Copy 2G Settings" target:self action:@selector(onCopy2g:) on:isCopy2GEnabled];
         [cardView addLine];
     }
     
@@ -56,7 +56,7 @@
     [cardView addLine];
     
     //if([self isInREMode] || [self isGuestAndAP] || [self is5GAndCopyEnabled])
-    if([self isInREMode] || [self isGuestAndAP] || [self is5GAndCopyEnabled]){
+    if([self isInREMode] || [self isGuestAndAP] || [self supportsCopy2GAndCopyEnabled] || !setting.enabled){
         [cardView addNameLabel:NSLocalizedString(@"router.settings.label.SSID", @"SSID") valueLabel:setting.ssid];
     }
     else{
@@ -76,12 +76,14 @@
 
     [cardView freezeLayout];
 }
+
 -(BOOL)siteMapSupportFirmware:(NSString *)almondFiemware{
     if([almondFiemware hasPrefix:@"AL3-"])
         return YES;
     else
         return NO;
 }
+
 -(BOOL)isInREMode{
     return [self.mode.lowercaseString isEqualToString:@"re"];
 }
@@ -98,13 +100,10 @@
     return self.hasSlaves && ![self.wirelessSetting.type.lowercaseString hasPrefix:@"guest"];
 }
 
--(BOOL)is5G{
-    return [self.wirelessSetting.type isEqualToString:@"5G"];
-}
-
--(BOOL)is5GAndCopyEnabled{
+-(BOOL)supportsCopy2GAndCopyEnabled{
+    SFIWirelessSetting *setting = self.wirelessSetting;
     BOOL isCopy2GEnabled = [SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue;
-    return isCopy2GEnabled && [self is5G];
+    return isCopy2GEnabled && [SFIWirelessSetting is5G:setting.type] && [SFIWirelessSetting supportsCopy2g:self.firmware];
 }
 
 #pragma mark - UISwitch actions

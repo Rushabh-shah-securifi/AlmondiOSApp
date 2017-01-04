@@ -142,7 +142,7 @@ typedef void (^STPPaymentAuthorizationStatusCallback)(PKPaymentAuthorizationStat
     NSLog(@"summaryItemsForShippingMethod");
     //PKPaymentSummaryItem *shirtItem = [PKPaymentSummaryItem summaryItemWithLabel:@"Cool Subscription" amount:[NSDecimalNumber decimalNumberWithString:@"10.00"]]; //shirtItem.amount
     //    NSDecimalNumber *total = [shirtItem.amount decimalNumberByAdding:shippingMethod.amount];
-    NSNumber *number = [NSNumber numberWithInt:(int)[AlmondPlan getPlanAmount:self.selectedPlan]];
+    NSNumber *number = [NSNumber numberWithFloat:[AlmondPlan getPlanAmount:self.selectedPlan].floatValue];
     NSDecimalNumber *totAmt = [NSDecimalNumber decimalNumberWithDecimal:[number decimalValue]];
     PKPaymentSummaryItem *totalItem = [PKPaymentSummaryItem summaryItemWithLabel:@"" amount:totAmt];
     return @[totalItem];
@@ -191,7 +191,7 @@ typedef void (^STPPaymentAuthorizationStatusCallback)(PKPaymentAuthorizationStat
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     PaymentViewController *paymentViewController = [storyboard instantiateViewControllerWithIdentifier:@"PaymentViewController"];
     
-    NSString *amountStr = [NSString stringWithFormat:@"%zd", [AlmondPlan getPlanAmount:self.selectedPlan]];
+    NSString *amountStr = [NSString stringWithFormat:@"%@", [AlmondPlan getPlanAmount:self.selectedPlan]];
     paymentViewController.amount = [NSDecimalNumber decimalNumberWithString:amountStr];
     paymentViewController.backendCharger = self;
     paymentViewController.delegate = self;

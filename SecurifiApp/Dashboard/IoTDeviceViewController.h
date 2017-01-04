@@ -7,9 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-
+typedef NS_ENUM(NSUInteger, SectionType) {
+    vulnerable_section,
+    healthy_section,
+    excluded_section
+    
+};
 @interface IoTDeviceViewController : UIViewController
 @property (nonatomic) NSDictionary *iotDevice;
+@property(nonatomic) SectionType sectionType;
 @property BOOL hideMiddleView;
 @property BOOL hideTable;
 @end

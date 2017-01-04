@@ -102,6 +102,11 @@
 
 + (NSAttributedString *)getAttributedString:(NSString *)text subText:(NSString *)subText fontSize:(int)fontSize;
 
++ (NSAttributedString *)getAttributedStringWithAttribute:(NSAttributedString *)attributedText subText:(NSString *)subText fontSize:(int)fontSize;
+
 + (NSAttributedString *)getAttributedString:(NSString *)text1 subText:(NSString *)subText text:(NSString *)text2 fontSize:(int)fontSize;
 
++(BOOL)isIoTdevice:(NSString *)clientType;
+
++ (NSString *)getExplanationText:(NSString *)type;
 @end

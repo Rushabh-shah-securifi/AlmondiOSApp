@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *blinking_lbl;
 @property (weak, nonatomic) IBOutlet UIButton *scannowBtn;
 @property (weak, nonatomic) IBOutlet UIView *bottoMView;
+@property (nonatomic)NSString *lastScanTime;
 
 
 @end
@@ -121,8 +122,7 @@
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[self getClientName:iotDevice[@"MAC"]],[self getIsVulnableText:iotDevice]];
         NSString *iconName = [self getIcon:iotDevice[@"MAC"]];
-        UIColor *color = [UIColor redColor];
-//        UIColor *color = [self getColor:iotDevice];
+        UIColor *color = [self getColor:iotDevice];
         cell.imageView.image = [CommonMethods imageNamed:iconName withColor:color];
         cell.detailTextLabel.text = [self getLabelText:iotDevice];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -135,7 +135,7 @@
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.textLabel.text = [NSString stringWithFormat:@"%@",[self getClientName:iotDevice[@"MAC"]]];
         NSString *iconName = [self getIcon:iotDevice[@"MAC"]];
-        UIColor *color = [SFIColors ruleGraycolor];
+        UIColor *color = [SFIColors clientGreenColor];
         cell.imageView.image = [CommonMethods imageNamed:iconName withColor:color];
         cell.detailTextLabel.text = [self getLabelText:iotDevice];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -156,7 +156,7 @@
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     cell.textLabel.font = [UIFont securifiFont:14];
     cell.detailTextLabel.textColor = [SFIColors ruleGraycolor];
-    cell.detailTextLabel.font = [UIFont securifiFont:12];
+    cell.detailTextLabel.font = [UIFont securifiFont:13];
     CGSize itemSize = CGSizeMake(30,30);
     UIGraphicsBeginImageContext(itemSize);
     CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
@@ -165,47 +165,81 @@
     cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    
-    
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 30;
+    return 35;
 }
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-    return 45;
+//-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return 60;
+//}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section == 0) {
+        return 55;
+    }
+    return  40;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     NSLog(@"view for header: %ld", (long)section);
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 35)];
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, tableView.frame.size.width, 18)];
-    [label setFont:[UIFont boldSystemFontOfSize:14]];
-    if (section >0) {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 8, tableView.frame.size.width, 25)];
+    [label setFont:[UIFont securifiBoldFont:16]];
+//    if (section >0) {
         UITableViewHeaderFooterView *foot = (UITableViewHeaderFooterView *)view;
         CGRect sepFrame = CGRectMake(0, 0, 415, 1);
         UIView *seperatorView =[[UIView alloc] initWithFrame:sepFrame];
         seperatorView.backgroundColor = [UIColor colorWithWhite:224.0/255.0 alpha:1.0];
         [foot addSubview:seperatorView];
-    }
+//    }
+    
+
     NSString *string;
     if(section == 0){
-        string = @"VULNERABLE DEVICES";
+        
+//        string = @"VULNERABLE DEVICES";@"Vulnerable Devices "
+        label.attributedText = [self getAttributeString:@"Vulnerable Devices "];
     }
     else if(section == 1){
-        string = @"HEALTHY DEVICES";
+//        string = @"Healthy Devices";
+//        label.text = string;
+//        label.textColor = [UIColor grayColor];
+        label.attributedText = [self getAttributeString:@"Healthy Devices "];
     }
     else{
-        string = @"EXCLUDED DEVICES";
+        string = @"Excluded Devices";
+        label.text = string;
+        label.textColor = [UIColor grayColor];
     }
-    
-    
-    label.text = string;
-    label.textColor = [UIColor grayColor];
     [view addSubview:label];
     view.backgroundColor = [UIColor whiteColor];
     return view;
+}
+-(NSAttributedString *)getAttributeString:(NSString *)text{
+    NSDictionary *attrDict = @{
+                               NSFontAttributeName : [UIFont securifiLightFont:12],
+                               NSForegroundColorAttributeName : [UIColor darkGrayColor]
+                               };
+    NSDictionary *attrDict1 = @{
+                                NSForegroundColorAttributeName : [UIColor grayColor]
+                                };
+    
+
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]init];
+    NSAttributedString *attr = [[NSAttributedString alloc]initWithString:text attributes:attrDict1];
+   
+    
+    self.lastScanTime  = self.lastScanTime ?[NSString stringWithFormat:@"%@",self.lastScanTime]:@"";
+    
+     NSLog(@"self.lastScanTime %@ %ld",self.lastScanTime,self.scannedDeviceList.count);
+    
+    NSAttributedString *attr1 = [[NSAttributedString alloc]initWithString:[NSString stringWithFormat:@"(%@)",self.lastScanTime] attributes:attrDict];
+    
+    [attrStr appendAttributedString:attr];
+    [attrStr appendAttributedString:attr1];
+    return attrStr;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -222,7 +256,7 @@
         newWindow.iotDevice = iotDevice;
         newWindow.hideTable = NO;
         newWindow.hideMiddleView = YES;
-        
+        newWindow.sectionType = vulnerable_section;
         NSLog(@"IoTDevicesListViewController IF");
         [self.navigationController pushViewController:newWindow animated:YES];
     }
@@ -230,11 +264,14 @@
         if(self.healthyDEviceArr.count < indexPath.row)
             return;
         NSString *iotDeviceMAc = [self.healthyDEviceArr objectAtIndex:indexPath.row];
-        NSDictionary *iotDevice = @{@"MAC":iotDeviceMAc};
+//        NSDictionary *iotDevice = @{@"MAC":iotDeviceMAc};
+        NSDictionary *iotDevice = [self.healthyDEviceArr objectAtIndex:indexPath.row];
+        
         IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
         newWindow.iotDevice = iotDevice;
         newWindow.hideTable = NO;
         newWindow.hideMiddleView = YES;
+        newWindow.sectionType = healthy_section;
         NSLog(@"IoTDevicesListViewController IF");
         [self.navigationController pushViewController:newWindow animated:YES];
     }
@@ -256,35 +293,46 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 -(NSString *)getLabelText:(NSDictionary *)returnDict{
-    int flags = 0;
-    
-    NSString *displayText;
+    int redflags = 0;
+    int orangeflags = 0;
+    NSLog(@"return dict == %@",returnDict);
     
     for(NSString *key in returnDict.allKeys){
         if([key isEqualToString:@"MAC"])
             continue;
         NSDictionary *dict = returnDict[key];
-        if([dict[@"P"]isEqualToString:@"1"])
-            flags++;
-    }
-    
-    if(flags>1)
-        displayText = @"Multiple risks identified";
-    else if(flags == 0){
-        displayText = @"";
-    }
-   else if(flags == 1) {
-        for(NSString *key in returnDict.allKeys){
-            if([key isEqualToString:@"MAC"])
-                continue;
-            NSDictionary *dict = returnDict[key];
+        if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"]){
             if([dict[@"P"]isEqualToString:@"1"])
-                displayText = [CommonMethods type:dict[@"Tag"]];
+                redflags++;
         }
-        displayText = @"Your device is at risk";
+        else{
+            if([dict[@"P"]isEqualToString:@"1"])
+                orangeflags++;
+        }
     }
+    NSLog(@"red = %d,orange %d",redflags,orangeflags);
+    NSMutableString *displayText = [[NSMutableString alloc]init];
+    
+    if(redflags == 1)
+    {
+        [displayText appendString:[NSString stringWithFormat:@"%d vulnerability",redflags]];
+    }
+    else if(redflags > 1)
+    {
+        [displayText appendString:[NSString stringWithFormat:@"%d vulnerabilities",redflags]];
+    }
+    if(redflags > 0)
+        [displayText appendString:@", "];
     
     
+    if(orangeflags == 1)
+    {
+        [displayText appendString:[NSString stringWithFormat:@"%d warning",orangeflags]];
+    }
+    else if(orangeflags > 1)
+    {
+        [displayText appendString:[NSString stringWithFormat:@"%d warnings",orangeflags]];
+    }
     
     return displayText;
 }
@@ -328,7 +376,7 @@
                 return @"is vulnerable";
             }
             else
-                return @"may be vulnerable";
+                return @"needs attention";
         }
     }
     return @"";
@@ -351,6 +399,7 @@
 }
 - (IBAction)scanNowRequest:(id)sender {
     NSInteger mii = arc4random()%10000;
+    self.lastScan_label.hidden = YES;
     [self.scannowBtn setTitle:@"Scanning" forState:UIControlStateNormal];
     SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
     NSString* amac = currentAlmond.almondplusMAC;
@@ -360,7 +409,11 @@
                                   };
     
     GenericCommand *cloudCommand = [GenericCommand jsonStringPayloadCommand:commandInfo commandType:CommandType_UPDATE_REQUEST];
+    NSInteger systemTime = round([[NSDate date] timeIntervalSince1970]);
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    toolkit.lastScanTime = systemTime;
+    NSLog(@"currentAlmond.lastScanTime %lld",toolkit.lastScanTime);
     [toolkit asyncSendToNetwork:cloudCommand];
     self.blinking_lbl.hidden = NO;
     self.blinking_lbl.alpha = 0;
@@ -387,23 +440,29 @@
 }
 -(void)iotScanresultsCallBackController:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
-//        if(sender != Nil){
-//            [self.scannowBtn setTitle:@"Scan Now" forState:UIControlStateNormal];
-//            self.blinking_lbl.hidden = YES;
-//        }
+        [self checkForLastScanTime];
         
-        self.blinking_lbl.hidden = YES;
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        NSString *noData =toolkit.iotScanResults[@"NoDataFound"]?toolkit.iotScanResults[@"NoDataFound"]:@"";
+       
+        if([noData isEqualToString:@"NoDataFound"]){
+            self.ioTdevicetable.hidden = YES;
+        }
+        else {
+            self.ioTdevicetable.hidden = NO;
+        }
+        
         self.scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
         self.healthyDEviceArr = toolkit.iotScanResults[@"HealthyDevice"];
         self.excludedDevices = toolkit.iotScanResults[@"scanExclude"];
-        NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] intValue]];
+        NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] longLongValue]];
         NSString *lastScanYtime = [dat stringFromDateAMPM];
+        self.lastScanTime = [dat stringFromDateAMPM];
         NSString *no_deviceScanned  = toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0";
         self.no_scanDevice_label.text = [NSString stringWithFormat:@"%@  Devices scanned",no_deviceScanned];
         
         self.lastScan_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
-        if([toolkit.iotScanResults[@"scanCount"] isEqualToString:@"0"]){
+        if([toolkit.iotScanResults[@"scanCount"] isEqualToString:@"0"] || toolkit.iotScanResults[@"scanCount"] == nil){
             self.no_scanDevice_label.text = @"No Device scanned";
             self.lastScan_label.hidden = YES;
 //            self.ioTdevicetable.hidden = YES;
@@ -412,5 +471,23 @@
 
     });
     }
-
+-(void)checkForLastScanTime{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSLog(@"toolkit.lastScanTime = %ld, toolkit.iotScanResults %lld",toolkit.lastScanTime,[toolkit.iotScanResults[@"scanTime"] longLongValue]);
+   long long lastScan =  [toolkit.iotScanResults[@"scanTime"] longLongValue];
+    if(lastScan>=toolkit.lastScanTime){
+        [self.scannowBtn setTitle:@"Scan Now" forState:UIControlStateNormal];
+        self.blinking_lbl.hidden = YES;
+        self.lastScan_label.hidden = NO;
+    }
+    else {
+        [self.scannowBtn setTitle:@"Scanning" forState:UIControlStateNormal];
+        self.blinking_lbl.hidden = NO;
+        self.lastScan_label.hidden = YES;
+        self.blinking_lbl.alpha = 0;
+        [UIView animateWithDuration:1.0 delay:0.2 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
+            self.blinking_lbl.alpha = 1;
+        } completion:nil];
+    }
+}
 @end

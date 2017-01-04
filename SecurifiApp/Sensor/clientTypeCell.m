@@ -8,11 +8,14 @@
 
 #import "clientTypeCell.h"
 #import "UIFont+Securifi.h"
+
+
 @interface clientTypeCell()
 @property (nonatomic) UILabel *labelName;
 @property (nonatomic) UIButton *button;
 @property (nonatomic) UIButton *btnSelect;
 @property (nonatomic) NSString *valueString;
+
 @end
 @implementation clientTypeCell
 
@@ -25,8 +28,16 @@
 
     // Configure the view for the selected state
 }
--(void)setupLabel{
-    self.labelName = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 250, 20)];
+-(void)setupLabel:(BOOL)hideIcon{
+    
+    if(hideIcon){
+        self.iconView = [[UIImageView alloc]initWithFrame:CGRectMake(2, 5, 20, 20)];
+        [self.contentView addSubview:self.iconView];
+         self.labelName = [[UILabel alloc]initWithFrame:CGRectMake(25, 5, 235, 20)];
+    }
+    else{
+        self.labelName = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 245, 20)];
+    }
     self.labelName.textColor = [UIColor whiteColor];
     self.labelName.font = [UIFont securifiFont:16];
     NSLog(@"cell frame width: %f", self.frame.size.width);
@@ -38,6 +49,7 @@
     [self.btnSelect addTarget:self action:@selector(typeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.contentView addSubview:self.labelName];
+    
     [self.contentView addSubview:self.btnSelect];
 }
 -(void)writelabelName:(NSString*)name value:(NSString *)value{

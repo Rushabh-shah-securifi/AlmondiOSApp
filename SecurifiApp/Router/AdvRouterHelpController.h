@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef NS_ENUM(NSInteger, Feature){
-//    Feature_Vpn = 0,
-    Feature_Port_Forwarding,
-    Feature_DNS,
-    Feature_Static_IP_Settings,
-    Feature_UPnP
-};
+//typedef NS_ENUM(NSInteger, Feature){
+////    Feature_Vpn = 0,
+//    Feature_Port_Forwarding,
+//    Feature_DNS,
+//    Feature_Static_IP_Settings,
+//    Feature_UPnP
+//};
 
 @interface AdvRouterHelpController : UIViewController
-@property (nonatomic) Feature helpType;
+@property (nonatomic) NSInteger row;
 @end

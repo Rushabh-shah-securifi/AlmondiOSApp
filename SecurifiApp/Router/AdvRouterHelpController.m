@@ -20,34 +20,30 @@
     [super viewDidLoad];
     [self showHelp];
 //    [self testWebView];
-    // Do any additional setup after loading the view.
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 - (void)testWebView{
     NSString *htmlString = NSLocalizedString(@"AddingDev_alScreen_desc", @"");
     [self displayWebView:htmlString];
 }
 
 
+
 - (void)showHelp{
-    switch (self.helpType) {
+    switch (self.row) {
 //        case Feature_Vpn:
 //            [self showVpnHelp];
 //            break;
-        case Feature_Port_Forwarding:
+        case 0:
             [self showPortForwardingHelp];
             break;
-        case Feature_DNS:
+        case 1:
             [self showDnsHelp];
             break;
-        case Feature_Static_IP_Settings:
+        case 2:
             [self showStaticIPHelp];
             break;
-        case Feature_UPnP:
+        case 3:
             [self showUpnpHelp];
             break;
         default:

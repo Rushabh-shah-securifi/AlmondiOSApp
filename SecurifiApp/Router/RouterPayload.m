@@ -149,6 +149,7 @@
     if(uptime)
         [payload setObject:uptime forKey:@"Uptime"];
     [payload setObject:almondMac forKey:@"AlmondMAC"];
+    
     GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
     [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
 }

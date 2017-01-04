@@ -95,6 +95,12 @@
     return attrString;
 }
 
++ (NSAttributedString *)getAttributedStringWithAttribute:(NSAttributedString *)attributedText subText:(NSString *)subText fontSize:(int)fontSize{
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithAttributedString:attributedText];
+    NSRange boldRange = [attributedText.string rangeOfString:subText];
+    [attrString addAttribute:NSFontAttributeName value:[UIFont securifiBoldFont:fontSize] range:boldRange];
+    return attrString;
+}
 + (NSAttributedString *)getAttributedString:(NSString *)text1 subText:(NSString *)subText text:(NSString *)text2 fontSize:(int)fontSize{
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:text1];
     NSAttributedString *attrString2 = [[NSAttributedString alloc] initWithString:text2];
@@ -864,6 +870,31 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
         return @"Port forwarding enabled for this device";
     else
         return @"Device using Universal Plug and Play(UPnP) service";
+    
 }
+
++ (NSString *)getExplanationText:(NSString *)type{
+    if([type isEqualToString:@"1"])
+        return @"Your device  has an open telnet (port:80) and uses a weak username and password. Telnet enabled devices are highly vulnerable to Mirai Botnet attacks. We suggest you block this device or create a strong username and password if you can access the telnet. Contact your device vendor for more assistance.";
+    else if([type isEqualToString:@"2"])
+        return @"Your device has open ports. These ports may be used by some applications for allowing remote access of your system. If you do not use this device for such applications,it may be vulnerable. We suggest you block this device or contact your device vendor.";
+    else if([type isEqualToString:@"3"])
+        return @"The local web interface for this device uses a weak username and password. We suggest you block the device or change the password. Typically, settings can be accessed by entering the ip address of the device in your web browser. Contact your device vendor for more assistance.";
+    else if([type isEqualToString:@"4"])
+        return @"Your device is being used for port forwarding. Port forwarding is usually enabled manually for gaming applications and for remote access of cameras and DVRs. If you are not aware of port forwarding for this device, we suggest you block this device or contact your device vendor.";
+    else
+        return @"UPnP is a protocol that applications use to automatically set up port forwarding in the router. Viruses and Malwares can use UPnP in devices to gain remote access of your network. You can disable UPnP on your Almond from the Wifi tab.";
+  
+    
+}
+
++(BOOL)isIoTdevice:(NSString *)clientType{
+    NSArray *iotTypes = @[@"withings",@"dlink_cameras",@"hikvision",@"foscam",@"motorola_connect",@"ibaby_monitor",@"osram_lightify",@"honeywell_appliances",@"ge_appliances",@"wink",@"airplay_speakers",@"sonos",@"belkin_wemo",@"samsung_smartthings",@"ring_doorbell",@"piper",@"canary",@"august_connect",@"nest_cam",@"nest_protect",@"nest_thermostat",@"amazon_dash",@"amazon_echo",@"nest",@"philips_hue"];
+    if([iotTypes containsObject: clientType] )
+        return YES;
+    else return  NO;
+}
+
+
 
 @end

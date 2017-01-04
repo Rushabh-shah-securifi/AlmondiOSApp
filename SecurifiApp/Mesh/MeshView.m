@@ -55,6 +55,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *notRtNowBtn;
 @property (weak, nonatomic) IBOutlet UIButton *namingBtn;
 @property (weak, nonatomic) IBOutlet UILabel *namingTitle;
+@property (weak, nonatomic) IBOutlet UILabel *noteLbl;
 
 
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
@@ -501,6 +502,13 @@
         [self.timer invalidate];
         self.slavesDictArray = nil;
         self.currentSlaves = nil;
+        if(self.maxHopCount >= 3){
+            self.noteLbl.hidden = NO;
+            NSString *text = [NSString stringWithFormat:@"NOTE : You already have %ld Wi-Fi hops in your Home Wi-Fi system. We recommend wired connection or power-line adapters to further extend the network.", (long)self.maxHopCount];
+            self.noteLbl.attributedText = [CommonMethods getAttributedString:text subText:@"We recommend wired connection or power-line adapters" fontSize:self.noteLbl.font.pointSize];
+        }else{
+            self.noteLbl.hidden = YES;
+        }
     }
     else if(view.tag == 2){//almond list
         [self.almondPicker reloadAllComponents];

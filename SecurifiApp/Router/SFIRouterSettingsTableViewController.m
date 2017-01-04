@@ -116,14 +116,11 @@ int mii;
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 300;
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    return 300;
-    
     SFIWirelessSetting *setting = [self tryGetWirelessSettingsForTableRow:indexPath.row];
-    if([setting.type isEqualToString:@"5G"])
+    if([SFIWirelessSetting is5G:setting.type] && [SFIWirelessSetting supportsCopy2g:self.firmware])
         return 350;
     else
         return 300;
@@ -147,17 +144,18 @@ int mii;
     cell.hasSlaves = self.hasSlaves;
     cell.mode = self.mode;
     cell.delegate = self;
-
+    cell.firmware = self.firmware;
     return cell;
 }
 
 -(UIColor *)getCellColor:(SFIWirelessSetting *)setting{
-    if([setting.type isEqualToString:@"5G"]){
+    if([SFIWirelessSetting is5G:setting.type] && [SFIWirelessSetting supportsCopy2g:self.firmware]) {
         return [SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue? [UIColor lightGrayColor] :[[SFIColors blueColor] color];
     }else{
         return setting.enabled ? [[SFIColors blueColor] color] : [UIColor lightGrayColor];
     }
 }
+
 - (SFIWirelessSetting *)tryGetWirelessSettingsForTableRow:(NSInteger)row {
     NSArray *settings = self.wirelessSettings;
 
