@@ -24,12 +24,15 @@
 
 #define SLAVE_OFFLINE_TAG   1
 #define ENABLE_TYPE_TAG     2
+#define SAME_SSIDS_PASS     3
+#define COPY_PASS           4
 
 @interface SFIRouterSettingsTableViewController () <SFIRouterTableViewActions, TableHeaderViewDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic) BOOL disposed;
 @property(nonatomic) BOOL isSharing;
 @property(nonatomic) BOOL isEnabled;
+@property(nonatomic) int keyType;
 @property(nonatomic) SFIWirelessSetting *currentSetting;
 
 @end
@@ -115,15 +118,24 @@ int mii;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 300;
+    return 340;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     SFIWirelessSetting *setting = [self tryGetWirelessSettingsForTableRow:indexPath.row];
-    if([SFIWirelessSetting is5G:setting.type] && [SFIWirelessSetting supportsCopy2g:self.firmware])
-        return 350;
-    else
-        return 300;
+    if([SFIWirelessSetting is5G:setting.type] && [SFIWirelessSetting supportsCopy2g:self.firmware]){
+        if(setting.password)
+            return 430;
+        else
+            return 390;
+    }
+    else{
+        if(setting.password)
+            return 380;
+        else
+            return 340;
+    }
+        
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -230,14 +242,22 @@ int mii;
 //    BOOL isCopyEnabled = [SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue;
     for(SFIWirelessSetting *setting in self.wirelessSettings){
         if([setting.type isEqualToString:@"5G"])
-            setting.ssid = [self get2GSSID];
+            setting.ssid = [self getSSID:@"2G"];
     }
 }
 
-- (NSString *)get2GSSID{
+- (NSString *)getSSID:(NSString *)type{
     for(SFIWirelessSetting *setting in self.wirelessSettings){
-        if([setting.type isEqualToString:@"2G"])
+        if([setting.type isEqualToString:type])
             return setting.ssid;
+    }
+    return nil;
+}
+
+- (NSString *)getPassword:(NSString *)type{
+    for(SFIWirelessSetting *setting in self.wirelessSettings){
+        if([setting.type isEqualToString:type])
+            return setting.password;
     }
     return nil;
 }
@@ -266,9 +286,10 @@ int mii;
             if(((NSArray *)genericRouterCommand.command).count == 0)//only for al3, when slave is offline
                 [self showToast:@"Sorry! Please try after some time."];
             else{
-                NSString *password = [self getPassword:genericRouterCommand];
+                SFIWirelessSetting *newSettingObj = [(NSArray*)genericRouterCommand.command firstObject];
+                NSString *password = newSettingObj.password;
                 if(password.length != 0 && password != nil)
-                    [self shareWiFi:self.currentSetting.ssid password:[self getPassword:genericRouterCommand]];
+                    [self shareWiFi:self.currentSetting.ssid password:password];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
@@ -311,21 +332,6 @@ int mii;
     });
 }
 
-- (NSString *)getPassword:(SFIGenericRouterCommand *)genericCmd{
-    NSString *encryptedPass = @"";
-    if(genericCmd.command == nil)
-        return @"";
-    for(SFIWirelessSetting *setting in genericCmd.command){
-        if([setting.type isEqualToString:self.currentSetting.type]){
-            encryptedPass = setting.password;
-        }
-    }
-    if(encryptedPass == nil || encryptedPass.length == 0)
-        return @"";
-    NSData *payload = [[NSData alloc] initWithBase64EncodedString:encryptedPass options:NSDataBase64DecodingIgnoreUnknownCharacters];
-    return [payload securifiDecryptPasswordForAlmond:[AlmondManagement currentAlmond].almondplusMAC almondUptime:genericCmd.uptime];
-}
-
 
 - (void)shareWiFi:(NSString *)ssid password:(NSString *)password{
     NSLog(@"ssid: %@, password: %@", ssid, password);
@@ -353,13 +359,23 @@ int mii;
     SFIWirelessSetting *newSettingObj = newSetting.firstObject;
     for(SFIWirelessSetting *setting in self.wirelessSettings){
         if([setting.type isEqualToString:newSettingObj.type]){
-            setting.type = newSettingObj.type;
-            setting.ssid = newSettingObj.ssid;
-            setting.enabled = newSettingObj.enabled;
-            setting.password = newSettingObj.password;
+            switch (self.keyType) {
+                case ssid_key:
+                    setting.ssid = newSettingObj.ssid;
+                    break;
+                case enable_key:
+                    setting.enabled = newSettingObj.enabled;
+                    break;
+                case pass_key:
+                    setting.password = newSettingObj.password;
+                    break;
+                default:
+                    break;
+            }
             break;
         }
     }
+    self.keyType = -1;
 }
 
 #pragma mark - SFIRouterTableViewActions protocol methods
@@ -390,7 +406,7 @@ int mii;
     else{
         SFIWirelessSetting *copy = [setting copy];
         copy.enabled = isEnabled;
-        [self onUpdateWirelessSettings:copy isTypeEnable:YES];
+        [self onUpdateWirelessSettings:copy keyType:enable_key];
     }
 }
 
@@ -406,7 +422,7 @@ int mii;
 - (void)onShareBtnTapDelegate:(SFIWirelessSetting *)settings{
     NSLog(@"onShareBtnTapDelegate");
     self.isSharing = YES;
-    [self onUpdateWirelessSettings:settings isTypeEnable:NO];
+    [self onUpdateWirelessSettings:settings keyType:ssid_key];
 }
 
 - (void)onCopy2GDelegate:(BOOL)isEnabled{
@@ -418,18 +434,61 @@ int mii;
 - (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString *)ssid {
     SFIWirelessSetting *copy = [setting copy];
     copy.ssid = ssid;
-    [self onUpdateWirelessSettings:copy isTypeEnable:NO];
+    if([SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue == NO){
+        if([setting.type isEqualToString:@"2G"]){
+            if([self checkIF2GAnd5GSSIDsSame:@"5G" newValue:ssid] && ![self checkIF2GAnd5GPasswordsSame]){
+                self.currentSetting = copy;
+                [self showAlert:@"" msg:NSLocalizedString(@"alert_copy_pass", @"") cancel:@"No" other:@"Yes" tag:COPY_PASS];
+                return;
+            }
+        }else if([setting.type isEqualToString:@"5G"]){
+            if([self checkIF2GAnd5GSSIDsSame:@"2G" newValue:ssid] && ![self checkIF2GAnd5GPasswordsSame]){
+                self.currentSetting = copy;
+                [self showAlert:@"" msg:NSLocalizedString(@"alert_copy_pass", @"") cancel:@"No" other:@"Yes" tag:COPY_PASS];
+                return;
+            }
+        }
+        
+    }
+    [self onUpdateWirelessSettings:copy keyType:ssid_key];
+}
+
+- (BOOL)checkIF2GAnd5GSSIDsSame:(NSString *)type newValue:(NSString *)newValue{
+    return [[self getSSID:type] isEqualToString:newValue];
+}
+
+- (void)onPasswordChangeDelegate:(SFIWirelessSetting *)setting newPass:(NSString *)newPass{
+    SFIWirelessSetting *copy = [setting copy];
+    copy.password = newPass;
+    if([SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue == NO){
+        
+        if([self checkIF2GAnd5GPasswordsSame] && [self checkIF2GAnd5GSSIDsSame]){
+            [self showAlert:@"" msg:NSLocalizedString(@"alert_same_ssids_pass", @"") cancel:@"Ok" other:nil tag:SAME_SSIDS_PASS];
+            return;
+        }
+        
+    }
+    [self onUpdateWirelessSettings:copy keyType:pass_key];
+}
+
+- (BOOL)checkIF2GAnd5GPasswordsSame{
+    return [[self getPassword:@"2G"] isEqualToString:[self getPassword:@"5G"]];
+}
+
+- (BOOL)checkIF2GAnd5GSSIDsSame{
+    return [[self getSSID:@"2G"] isEqualToString:[self getSSID:@"5G"]];
 }
 
 - (void)onEnableWirelessAccessForDevice:(NSString *)deviceMAC allow:(BOOL)isAllowed {
 }
 
-- (void)onUpdateWirelessSettings:(SFIWirelessSetting *)copy isTypeEnable:(BOOL)isTypeEnable{
+- (void)onUpdateWirelessSettings:(SFIWirelessSetting *)copy keyType:(int)keyType{
     NSLog(@"******onUpdateWirelessSettings*******");
     self.currentSetting = copy;
+    self.keyType = keyType;
     [self showHudWithTimeoutMsg:@"Please Wait!" time:15];
     
-    [RouterPayload setWirelessSettings:mii wirelessSettings:copy mac:[AlmondManagement currentAlmond].almondplusMAC isTypeEnable:isTypeEnable forceUpdate:@"false"];
+    [RouterPayload setWirelessSettings:mii wirelessSettings:copy mac:[AlmondManagement currentAlmond].almondplusMAC keyType:keyType forceUpdate:@"false"];
 }
 
 - (void)showHudWithTimeoutMsg:(NSString*)hudMsg time:(NSTimeInterval)sec{
@@ -467,27 +526,45 @@ int mii;
 
 #pragma mark alert delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    NSLog(@"router settings clicked index");
+    NSLog(@"router settings clicked index tag: %d", alertView.tag);
     if (buttonIndex == [alertView cancelButtonIndex]){
         if(alertView.tag == ENABLE_TYPE_TAG){
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
             });
         }
-    }else{
+        else if(alertView.tag == COPY_PASS){
+            [self showAlert:@"" msg:NSLocalizedString(@"alert_choose_diff_network", @"") cancel:@"Ok" other:nil tag:-1];
+        }
+    }
+    else{
         if(alertView.tag == ENABLE_TYPE_TAG){
             SFIWirelessSetting *copy = [self.currentSetting copy];
             copy.enabled = self.isEnabled;
-            [self onUpdateWirelessSettings:copy isTypeEnable:YES];
+            [self onUpdateWirelessSettings:copy keyType:enable_key];
         }
         else if(alertView.tag == SLAVE_OFFLINE_TAG){
-            /*[self showUpdatingSettingsHUD];
-            SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            [RouterPayload setWirelessSettings:mii wirelessSettings:self.currentSetting mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:NO forceUpdate:@"true"];
-            [self.HUD hide:YES afterDelay:15];*/
+            
         }
-        
+        else if(alertView.tag == COPY_PASS){
+            //copy 2g pass to 5g
+            if([_currentSetting.type isEqualToString:@"2G"]){
+                SFIWirelessSetting *setting = [self getSetting:@"5G"];
+                setting.password = _currentSetting.password;
+            }else if([_currentSetting.type isEqualToString:@"5G"]){
+                SFIWirelessSetting *setting = [self getSetting:@"2G"];
+                setting.password = _currentSetting.password;
+            }
+        }
     }
+}
+
+- (SFIWirelessSetting *)getSetting:(NSString *)type{
+    for(SFIWirelessSetting *setting in self.wirelessSettings){
+        if([setting.type isEqualToString:type])
+            return setting;
+    }
+    return nil;
 }
 
 @end

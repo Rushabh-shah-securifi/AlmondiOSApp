@@ -104,4 +104,8 @@ typedef NS_ENUM(int, SFICardView_right_offset) {
 
 - (void)addTitleAndCopySwitch:(NSString *)title target:(id)target action:(SEL)action on:(BOOL)isSwitchOn;
 
+- (void)addPasswordLabel:(NSString*)name valueLabel:(NSString *)value;
+
+- (void)addPasswordLabel:(NSString*)name field:(UITextField *)field valueTextField:(NSString *)value delegate:(id<UITextFieldDelegate>)delegate target:(id)target action:(SEL)action tag:(NSInteger)tag;
+
 @end

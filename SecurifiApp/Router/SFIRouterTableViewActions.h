@@ -24,6 +24,8 @@
 
 - (void)onCopy2GDelegate:(BOOL)isEnabled;
 
+- (void)onPasswordChangeDelegate:(SFIWirelessSetting *)setting newPass:(NSString *)newPass;
+
 // NO == block device
 - (void)onEnableWirelessAccessForDevice:(NSString*)deviceMAC allow:(BOOL)isAllowed;
 

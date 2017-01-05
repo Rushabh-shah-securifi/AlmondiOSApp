@@ -1573,6 +1573,11 @@ img {width:90%}
 "h_initiateScan" = "Initiate a new scan with the tap of a button.";
 "h_flagDevices" = "Flag devices with an unusual traffic pattern.";
 "h_monitorSites" = "Monitor the sites your kids are browsing.";
+
+"alert_same_ssids_pass" = "Names of your 5GHz network and 2.4GHz network are same but the passwords are different. Please choose different names for the two networks or keep the password same.";
+
+"alert_copy_pass" = "Name of the 5GHz network is same as the 2.4GHz network on your Almond. Do you want to copy the password also?";
+"alert_choose_diff_network" = "Please choose a different network name.";
 /* ==================================================================== */
 
 /*

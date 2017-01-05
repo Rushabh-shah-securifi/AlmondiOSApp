@@ -203,6 +203,20 @@
     [self markYOffsetUsingRect:label.frame addAdditional:5];
 }
 
+- (void)addPasswordLabel:(NSString*)name valueLabel:(NSString *)value {
+    UILabel *label;
+    UIFont *font = self.bodyFont;
+    
+    label = [self makeLabel:name font:font alignment:NSTextAlignmentLeft];
+    [self addSubview:label];
+    
+    label = [self makeLabel:value font:font alignment:NSTextAlignmentRight];
+    label.text = [@"" stringByPaddingToLength:[label.text length] withString: @"•" startingAtIndex:0];
+    [self addSubview:label];
+    
+    [self markYOffsetUsingRect:label.frame addAdditional:5];
+}
+
 - (void)addTextFieldPlaceHolder:(NSString *)placeHolder placeHolderColor:(UIColor *)placeHolderColor delegate:(id <UITextFieldDelegate>)delegate tag:(NSInteger)tag target:(id)target action:(SEL)action buttonTitle:(NSString *)buttonTitle {
     CGFloat right_offset = [self standardRightOffset:SFICardView_right_offset_inset];
     CGFloat left_offset = 10;
@@ -244,6 +258,26 @@
     [self markYOffsetUsingRect:field.frame addAdditional:5];
 }
 
+- (void)addPasswordLabel:(NSString*)name field:(UITextField *)field valueTextField:(NSString *)value delegate:(id<UITextFieldDelegate>)delegate target:(id)target action:(SEL)action tag:(NSInteger)tag {
+    UIFont *font = self.bodyFont;
+    
+    UILabel *label = [self makeLabel:name font:font alignment:NSTextAlignmentLeft];
+    [self addSubview:label];
+    
+    UIButton *toggle = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetWidth(self.frame)-55, self.baseYCoordinate, 55, 30)];
+    [CommonMethods setButtonProperties:toggle title:@"Show" titleColor:[UIColor whiteColor] bgColor:[UIColor clearColor] font:font];
+    [toggle addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:toggle];
+    
+    field = [self makePassTextField:value frame:[self makePasswordFieldValueRect:120] field:field];
+    field.secureTextEntry = YES;
+    field.delegate = delegate;
+    field.tag = tag;
+    [self addSubview:field];
+    
+    [self markYOffsetUsingRect:field.frame addAdditional:5];
+}
+
 - (UITextField *)makeTextField:(NSString *)text frame:(CGRect)frame {
     UIColor *color = [self.backgroundColor blackOrWhiteContrastingColor];
 
@@ -256,6 +290,21 @@
 
     [field addBottomBorderWithHeight:0.5 andColor:color];
 
+    return field;
+}
+
+- (UITextField *)makePassTextField:(NSString *)text frame:(CGRect)frame field:(UITextField *)field{
+    UIColor *color = [self.backgroundColor blackOrWhiteContrastingColor];
+    
+    field.frame = frame;
+    field.text = text;
+    field.textAlignment = NSTextAlignmentRight;
+    field.textColor = color;
+    field.font = self.bodyFont;
+    field.returnKeyType = UIReturnKeyDone;
+    
+    [field addBottomBorderWithHeight:0.5 andColor:color];
+    
     return field;
 }
 
@@ -474,6 +523,9 @@
     return CGRectMake(leftOffset - 10, self.baseYCoordinate, self.frame.size.width - leftOffset - 10, 30);
 }
 
+- (CGRect)makePasswordFieldValueRect:(int)leftOffset {
+    return CGRectMake(leftOffset - 10, self.baseYCoordinate, self.frame.size.width - leftOffset - 45, 30);
+}
 #pragma mark - Manged controls (enable and disable)
 
 - (void)addManagedControl:(UIView*) view {
