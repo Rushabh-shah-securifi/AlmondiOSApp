@@ -2224,6 +2224,7 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
+        "DefaultIcon": "lock_open",
         "AppLabel": "pin",
         "ExcludeFrom": "Scene_Rule"
     },
@@ -2233,6 +2234,7 @@
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "clamp1_power",
+        "DefaultIcon": "online_icon",
         "Conditional": "true",
         "Formatter": {
             "Min": "0",
@@ -2248,6 +2250,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "clamp2_power",
         "Conditional": "true",
+        "DefaultIcon": "online_icon",
         "Formatter": {
             "Min": "0",
             "Max": "9999",

@@ -1771,7 +1771,7 @@ Contact us at support@securifi.com";
 "notification_smoke_on" = " detected smoke.";
 
 "notification_dimmable" = " is dimmed to ";
-"stoped" = " stoped";
+"stoped" = " Stoped";
 "emergency" = " emergency";
 "fire" = " fire";
 "ambulance" = " ambulance";
@@ -1945,7 +1945,7 @@ Contact us at support@securifi.com";
 "is_enabled" = " is enabled";
 "is_disabled" = "is disabled";
 "volume_low_text" = "'s volume is Low";
-"volume_medium_text" = "'s volume is Low";
+"volume_medium_text" = "'s volume is Medium";
 "volume_high_text" = "'s volume is High";
 
 "blink_start_text" = " is blinking";

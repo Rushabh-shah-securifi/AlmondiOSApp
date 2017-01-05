@@ -371,7 +371,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         
         return genericValue1;
     }
-    else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"])){
+    else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [genericIndexObject.layoutType isEqualToString:@"SINGLE_TEMP"])){
         NSLog(@"slider icon - display text: %@, value: %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value);
         int brightnessValue = [value intValue];
         if([genericIndexObject.ID isEqualToString:@"100"])
