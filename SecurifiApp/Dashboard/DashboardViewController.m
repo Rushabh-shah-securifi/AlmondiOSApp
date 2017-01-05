@@ -67,11 +67,11 @@
 @property (weak, nonatomic) IBOutlet UIImageView *iotSecurityImg;
 @property CGFloat constatnt1;
 @property CGFloat constatnt2;
-
 @property (weak, nonatomic) IBOutlet UILabel *lastScanIot_label;
 @property (weak, nonatomic) IBOutlet UILabel *noIot_label;
 @property (weak, nonatomic) IBOutlet UILabel *no_scanObjLabel;
 @property (weak, nonatomic) IBOutlet UILabel *scan_In_progress;
+@property (nonatomic) AlmondSelectionTableView *almondSelectionTableView;
 
 
 @end
@@ -80,7 +80,6 @@
 @implementation DashboardViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     
     _statusIcon = [NetworkStatusIcon new];
     self.toolkit = [SecurifiToolkit sharedInstance];
@@ -102,7 +101,10 @@
 
     CGSize scrollableSize = CGSizeMake(Scroller.frame.size.width,Scroller.frame.size.height+ 130);
     [Scroller setContentSize:scrollableSize];
+    
+    _almondSelectionTableView = [AlmondSelectionTableView new];
 }
+
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
@@ -166,15 +168,18 @@
     [NotificationAccessAndRefreshCommands tryRefreshNotifications];
     [self initializeUI];
     _statusIcon.networkStatusIconDelegate = self;
-    NSLog(@"View will appear is called in DashBoardViewController");
+    
     [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
     [self iotScanresultsCallBackDashBoard:nil];
-    
+    [self makeAlmondSelectionView];
+    [self createAlmondListPopup];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.almondSelectionTableView removeFromSuperview];
+    [self.buttonMaskView removeFromSuperview];
 }
 
 -(void)initializeUI{
@@ -182,6 +187,7 @@
     [self updateDeviceClientListCountAndCurrentAlmond];
     [self tryShowLoadingData];
 }
+
 -(void)iotUIUpdate{
     SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
     BOOL hasSubscribe = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
@@ -198,9 +204,8 @@
                                       action:NULL
                             forControlEvents:UIControlEventTouchUpInside];
         [self.iotSecurityButton addTarget:self action:@selector(launchIOtDevicelit:) forControlEvents:UIControlEventTouchUpInside];
-       
-        
     }
+    
     else if(!hasSubscribe && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
         // call my scbscription
         //change icon name
@@ -217,6 +222,7 @@
                             forControlEvents:UIControlEventTouchUpInside];
         [self.iotSecurityButton addTarget:self action:@selector(launchMySubscription:) forControlEvents:UIControlEventTouchUpInside];
     }
+    
     else if(![currentAlmond siteMapSupportFirmware:currentAlmond.firmware]){
         // call my scbscription
         self.activeNetworkDevices.hidden = NO;
@@ -433,10 +439,8 @@
 }
 
 - (void)onAlmondListDidChange:(id)sender {
-    
     [self onCurrentAlmondChanged:nil];
 }
-
 
 - (BOOL)isDeviceListEmpty {
     return self.toolkit.devices.count == 0;
@@ -796,7 +800,6 @@
     });
 }
 
-
 - (void)presentLocalNetworkSettingsEditor {
     RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
     editor.delegate = self;
@@ -942,42 +945,58 @@
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
+
 #pragma mark almond selection view
-- (void)showAlmondSelection{
+-(void) makeAlmondSelectionView {
     self.buttonMaskView = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
     self.buttonMaskView.backgroundColor = [SFIColors maskColor];
     [self.buttonMaskView addTarget:self action:@selector(onBtnMskTap:) forControlEvents:UIControlEventTouchUpInside];
     
-    AlmondSelectionTableView *view = [AlmondSelectionTableView new];
-    view.methodsDelegate = self;
-    view.needsAddAlmond = YES;
-    view.currentMAC = [AlmondManagement currentAlmond].almondplusMAC;
-    [view initializeView:self.buttonMaskView.frame];
-    [self.buttonMaskView addSubview:view];
-    
-    [self slideAnimation];
+    _almondSelectionTableView.methodsDelegate = self;
+    _almondSelectionTableView.needsAddAlmond = YES;
+    _almondSelectionTableView.currentMAC = [AlmondManagement currentAlmond].almondplusMAC;
+    [_almondSelectionTableView initializeView:self.buttonMaskView.frame];
+    [self.buttonMaskView addSubview:_almondSelectionTableView];
 }
 
--(void)slideAnimation{
+
+- (void) createAlmondListPopup {
+    self.buttonMaskView = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
+    self.buttonMaskView.backgroundColor = [SFIColors maskColor];
+    [self.buttonMaskView addTarget:self action:@selector(onBtnMskTap:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _almondSelectionTableView = [AlmondSelectionTableView new];
+    _almondSelectionTableView.methodsDelegate = self;
+    _almondSelectionTableView.needsAddAlmond = NO;
+    //_almondSelectionTableView.currentMAC = self.currentMAC;
+    
+    [_almondSelectionTableView initializeView:self.buttonMaskView.frame];
+    [self.buttonMaskView addSubview:_almondSelectionTableView];
+    
     CATransition *transition = [CATransition animation];
     transition.duration = 0.3;
     transition.type = kCATransitionReveal;
+    self.buttonMaskView.alpha = 0;
     [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     [self.buttonMaskView.layer addAnimation:transition forKey:nil];
     [self.tabBarController.view addSubview:self.buttonMaskView];
 }
 
+- (void)showAlmondSelection{
+    self.buttonMaskView.alpha = 1;
+}
+
 - (void)onCloseBtnTapDelegate{
-    [self removeAlmondSelectionView];
+    [self hideAlmondSelectionView];
 }
 
 -(void)onBtnMskTap:(id)sender{
-    [self removeAlmondSelectionView];
+    [self hideAlmondSelectionView];
 }
 
 - (void)onAddAlmondTapDelegate{
     NSLog(@"on add almond tap");
-    [self removeAlmondSelectionView];
+    [self hideAlmondSelectionView];
     NSLog(@"i am called");
     switch ([[SecurifiToolkit sharedInstance] currentConnectionMode]) {
         case SFIAlmondConnectionMode_cloud: {
@@ -996,10 +1015,9 @@
     }
 }
 
+
 -(void)onAlmondSelectedDelegate:(SFIAlmondPlus *)selectedAlmond{
-    [self removeAlmondSelectionView];
-    NSLog(@"i am called");
-    
+    [self hideAlmondSelectionView];
     _toolkit.lastScanTime = 0;
     [AlmondManagement setCurrentAlmond:selectedAlmond];
     [self sendScanNowReq];
@@ -1012,16 +1030,15 @@
     [self.toolkit asyncSendToNetwork:cmd];
 }
 
--(void)removeAlmondSelectionView{
+-(void)hideAlmondSelectionView{
     [UIView animateWithDuration:0.3
                           delay:0.0
                         options: UIViewAnimationOptionCurveEaseOut
                      animations:^{
                          self.buttonMaskView.alpha = 0;
                      }completion:^(BOOL finished){
-                         [self.buttonMaskView removeFromSuperview];
-                     }];
-    self.buttonMaskView = nil;
+                         
+                    }];
 }
 
 #pragma mark help screens

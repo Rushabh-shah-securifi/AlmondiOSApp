@@ -20,7 +20,6 @@
 #import "NotificationDeleteRegistrationRequest.h"
 #import "AlmondManagement.h"
 #import "MySubscriptionsViewController.h"
-
 #define USER_INVITE_ALERT               0
 
 @interface MoreViewController ()<MoreCellTableViewCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RouterNetworkSettingsEditorDelegate, UIAlertViewDelegate, UITextFieldDelegate>

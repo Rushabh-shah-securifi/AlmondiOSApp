@@ -95,10 +95,12 @@ static NSString *simpleTableIdentifier = @"AccountCell";
                selector:@selector(loadAlmondList)
                    name:RELOAD_ACCOUNTS_PAGE
                  object:nil];
+    
     [center addObserver:self
                selector:@selector(loadAlmondList)
                    name:kSFIDidUpdateAlmondList
                  object:nil];
+    
     [center addObserver:self
                selector:@selector(accountResponseCallback:)
                    name:ACCOUNTS_RELATED

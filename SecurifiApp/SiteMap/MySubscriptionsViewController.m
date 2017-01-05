@@ -5,7 +5,6 @@
 //  Created by Masood on 12/5/16.
 //  Copyright © 2016 Securifi Ltd. All rights reserved.
 //
-
 #import "MySubscriptionsViewController.h"
 #import "MySubscriptionsTableViewCell.h"
 #import "SubscriptionPlansViewController.h"
@@ -25,6 +24,7 @@
 #define INTERNET_SECURITY 1
 
 @interface MySubscriptionsViewController ()<MySubscriptionsTableViewCellDelegate, AlmondSelectionTableViewDelegate, UIAlertViewDelegate, MBProgressHUDDelegate>
+
 @property (nonatomic) UILabel *almondLabel;
 @property (nonatomic) UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UIButton *almSelectionBtn;
@@ -32,48 +32,53 @@
 
 @property (nonatomic) NSMutableArray *mySubscriptionsArray;
 @property (nonatomic) UIButton *buttonMaskView;
-@property (nonatomic)AlmondPlan *almondPlan;
+@property (nonatomic) AlmondPlan *almondPlan;
 @property (nonatomic) NSString *currentMAC;
-@property(nonatomic) MBProgressHUD *HUD;
+@property (nonatomic) MBProgressHUD *HUD;
+@property AlmondSelectionTableView *almondSelectionTableview;
+@property CATransition *transition;
 @end
 
 @implementation MySubscriptionsViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     SFIAlmondPlus *Al3 = [AlmondManagement tryLoadCurrentAL3];
     self.currentMAC = Al3.almondplusMAC;
-    self.almondLabel.text = [AlmondManagement cloudAlmond:self.currentMAC].almondplusName;
-    
     [self initializeMySubscriptionsArray];
     [self makeAlmondSelectionBtn];
-    [self setUpHUD];
-}
-
-- (void)viewDidLayoutSubviews{
+    [self createAlmondListPopup];
     
+    [self setUpHUD];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [self initializeNotification];
-    
     self.almondPlan = [AlmondPlan getAlmondPlan:self.currentMAC];
-    NSLog(@"almond plan %@", self.almondPlan);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
 }
+
 
 -(void)viewWillDisappear:(BOOL)animated{
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
         // Navigation back button was pressed. Do some stuff
         [self.navigationController setNavigationBarHidden:NO];
     }
+    
     [super viewWillDisappear:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [self.almondSelectionTableview removeFromSuperview];
+    [self.HUD removeFromSuperview];
+    [self.almSelectionBtn removeFromSuperview];
+    [self.buttonMaskView removeFromSuperview];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -107,7 +112,8 @@
     _HUD.delegate = self;
     [self.navigationController.view addSubview:_HUD];
 }
-#pragma mark hud methods
+
+#pragma mark - hud methods
 - (void)showHudWithTimeoutMsg:(NSString*)hudMsg time:(NSTimeInterval)sec{
     NSLog(@"showHudWithTimeoutMsg");
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -121,14 +127,11 @@
     [self.HUD show:YES];
 }
 
-#pragma mark ui mehtods
+#pragma mark  - ui mehtods
 - (void)makeAlmondSelectionBtn{
-//    [UICommonMethods clearSubView:self.almSelectionBtn];
-    
     NSString *currentAlmName = [AlmondManagement cloudAlmond:self.currentMAC].almondplusName;
     _almondLabel = [[UILabel alloc]init];
     _imgView = [[UIImageView alloc]init];
-    [self setFrames:currentAlmName];
     
     //almond name label
     [CommonMethods setLableProperties:_almondLabel text:currentAlmName textColor:[SFIColors paymentColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentCenter];
@@ -140,13 +143,41 @@
     _imgView.image = [[UIImage imageNamed:@"arrow_drop_down_black"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [_imgView setTintColor:[SFIColors paymentColor]];
     [self.almSelectionBtn addSubview:_imgView];
+    
 }
 
+
+- (void) createAlmondListPopup {
+    self.buttonMaskView = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
+    self.buttonMaskView.backgroundColor = [SFIColors maskColor];
+    [self.buttonMaskView addTarget:self action:@selector(onBtnMskTap:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _almondSelectionTableview = [AlmondSelectionTableView new];
+    _almondSelectionTableview.methodsDelegate = self;
+    _almondSelectionTableview.needsAddAlmond = NO;
+    _almondSelectionTableview.currentMAC = self.currentMAC;
+    
+    [_almondSelectionTableview initializeView:self.buttonMaskView.frame];
+    [self.buttonMaskView addSubview:_almondSelectionTableview];
+    
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.3;
+    transition.type = kCATransitionReveal;
+    self.buttonMaskView.alpha = 0;
+    [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    [self.buttonMaskView.layer addAnimation:transition forKey:nil];
+    [self.tabBarController.view addSubview:self.buttonMaskView];
+}
+
+
 - (void)setFrames:(NSString *)currentAlmName{
+    
     CGFloat titleWidth;
     CGSize textSize;
+
     textSize = [currentAlmName sizeWithAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"Avenir-Roman" size:18]}];
     titleWidth = textSize.width + 10;
+    
     if(titleWidth > 150){
         titleWidth = 150;
     }
@@ -155,7 +186,11 @@
     _almondLabel.center = CGPointMake(CGRectGetWidth(_almSelectionBtn.bounds)/2-10, CGRectGetHeight(_almSelectionBtn.bounds)/2);
     
     _imgView.frame = CGRectMake(CGRectGetMaxX(_almondLabel.frame)+1, CGRectGetMinY(_almondLabel.frame), 30, 30);
+    
+    _almondLabel.text = currentAlmName;
+    
 }
+
 
 #pragma mark button tap methods
 - (IBAction)onBackBtnTap:(id)sender {
@@ -163,9 +198,12 @@
         [self.navigationController popViewControllerAnimated:YES];
     });
 }
+
+
 - (IBAction)onAlmondSelectionTap:(id)sender {
     [self showAlmondSelection];
 }
+
 
 #pragma mark table and search delegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -212,6 +250,7 @@
     if (cell == nil){
         cell = [[MySubscriptionsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
+    
     cell.delegate = self;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     NSDictionary *routerFeature  = self.mySubscriptionsArray[indexPath.section];
@@ -226,79 +265,55 @@
     if(indexPath.row == 0){
         NSNumber *isExpandedInvert = [NSNumber numberWithBool:![subscriptionType[IS_EXPANDED] boolValue]];
         NSLog(@"invert: %@, did select router array: %@", isExpandedInvert, self.mySubscriptionsArray);
-        
         [subscriptionType setObject:isExpandedInvert forKey:IS_EXPANDED];
         dispatch_async(dispatch_get_main_queue(), ^{
             [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
         });
     }
-    
 }
 
-#pragma mark almond selection
+#pragma mark -  almond selection
 - (void)showAlmondSelection{
-    self.buttonMaskView = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
-    self.buttonMaskView.backgroundColor = [SFIColors maskColor];
-    [self.buttonMaskView addTarget:self action:@selector(onBtnMskTap:) forControlEvents:UIControlEventTouchUpInside];
-    
-    AlmondSelectionTableView *view = [AlmondSelectionTableView new];
-    view.methodsDelegate = self;
-    view.needsAddAlmond = NO;
-    view.currentMAC = self.currentMAC;
-    [view initializeView:self.buttonMaskView.frame];
-    [self.buttonMaskView addSubview:view];
-    
-    [self slideAnimation];
-}
-
--(void)slideAnimation{
-    CATransition *transition = [CATransition animation];
-    transition.duration = 0.3;
-    transition.type = kCATransitionReveal;
-    [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-    [self.buttonMaskView.layer addAnimation:transition forKey:nil];
-    [self.tabBarController.view addSubview:self.buttonMaskView];
+    self.buttonMaskView.alpha = 1;
 }
 
 - (void)onCloseBtnTapDelegate{
-    [self removeAlmondSelectionView];
+    [self hideAlmondSelectionView];
 }
 
 -(void)onBtnMskTap:(id)sender{
-    [self removeAlmondSelectionView];
+    [self hideAlmondSelectionView];
 }
 
 - (void)onAddAlmondTapDelegate{
-    NSLog(@"on add almond tap delegate");
+    
 }
 
+
 -(void)onAlmondSelectedDelegate:(SFIAlmondPlus *)selectedAlmond{
-    [self removeAlmondSelectionView];
-    NSLog(@"onAlmondSelectedDelegate i am called");
+    [self hideAlmondSelectionView];
     [self setFrames:selectedAlmond.almondplusName];
     self.currentMAC = selectedAlmond.almondplusMAC;
-    
-    _almondLabel.text = selectedAlmond.almondplusName;
-    //[AlmondManagement setCurrentAlmond:selectedAlmond];
     self.almondPlan = [AlmondPlan getAlmondPlan:selectedAlmond.almondplusMAC];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
 }
 
--(void)removeAlmondSelectionView{
+
+-(void)hideAlmondSelectionView{
     [UIView animateWithDuration:0.3
                           delay:0.0
                         options: UIViewAnimationOptionCurveEaseOut
                      animations:^{
                          self.buttonMaskView.alpha = 0;
-                     }completion:^(BOOL finished){
-                         [self.buttonMaskView removeFromSuperview];
+                     } completion:^(BOOL finished){
+
                      }];
-    self.buttonMaskView = nil;
 }
 
-#pragma mark alert methods
+
+#pragma mark  - alert methods
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == [alertView cancelButtonIndex]){
         //cancel clicked ...do your action
@@ -318,7 +333,8 @@
         [alert show];
     });
 }
-#pragma mark cell delegate methods
+
+#pragma mark - cell delegate methods
 - (void)onLeftBtnTapDelegate:(NSString *)btnTitle{//
     if([btnTitle isEqualToString:CANCEL_SUBSCRIPTION]){
         NSString *msg = [NSString stringWithFormat:@"By cancelling your subscription you will no longer have access to Internet Security on %@.", [AlmondManagement cloudAlmond:self.currentMAC].almondplusName];
@@ -349,7 +365,8 @@
     });
 }
 
-#pragma mark payload/command
+
+#pragma mark - payload/command
 - (void)sendDeleteSubscriptionCommand{
     NSLog(@"sendDeleteSubscriptionCommand");
     NSString *almondMac = self.currentMAC;
@@ -382,7 +399,7 @@
     });
     
     BOOL isSuccessful = [payload[@"Success"] boolValue];
-    NSString *cmdType = payload[COMMAND_TYPE];
+    
     if(isSuccessful){
         [self pushPaymentCompleteController];
         //need to check on this if/else
