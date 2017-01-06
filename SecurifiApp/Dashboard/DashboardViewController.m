@@ -67,11 +67,11 @@
 @property (weak, nonatomic) IBOutlet UIImageView *iotSecurityImg;
 @property CGFloat constatnt1;
 @property CGFloat constatnt2;
+
 @property (weak, nonatomic) IBOutlet UILabel *lastScanIot_label;
 @property (weak, nonatomic) IBOutlet UILabel *noIot_label;
 @property (weak, nonatomic) IBOutlet UILabel *no_scanObjLabel;
 @property (weak, nonatomic) IBOutlet UILabel *scan_In_progress;
-@property (nonatomic) AlmondSelectionTableView *almondSelectionTableView;
 
 
 @end
@@ -80,6 +80,7 @@
 @implementation DashboardViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     
     _statusIcon = [NetworkStatusIcon new];
     self.toolkit = [SecurifiToolkit sharedInstance];
@@ -91,23 +92,21 @@
     self.clientNotificationArr = [[NSMutableArray alloc]init];
     self.deviceNotificationArr = [[NSMutableArray alloc]init];
     
+    
+    //add almond button
     [self initializeAddButtonView];
     [self initializeHUD];
-    [self navigationBarStyle];
-    
     self.constatnt1 =self.tableYconstrain1.constant;
     
     self.constatnt2 =self.tableYconstrain2.constant;
-
+    
     CGSize scrollableSize = CGSizeMake(Scroller.frame.size.width,Scroller.frame.size.height+ 130);
     [Scroller setContentSize:scrollableSize];
-    
-    _almondSelectionTableView = [AlmondSelectionTableView new];
 }
-
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    [self navigationBarStyle];
     [self sendScanNowReq];
     
     [self iotUIUpdate];
@@ -126,7 +125,6 @@
                selector:@selector(onAlmondNameDidChange:)
                    name:kSFIDidChangeAlmondName
                  object:nil];
-    
     [center addObserver:self
                selector:@selector(onCurrentAlmondChanged:)
                    name:kSFIDidChangeCurrentAlmond
@@ -168,12 +166,16 @@
     [NotificationAccessAndRefreshCommands tryRefreshNotifications];
     [self initializeUI];
     _statusIcon.networkStatusIconDelegate = self;
+    NSLog(@"View will appear is called in DashBoardViewController");
     [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
     [self iotScanresultsCallBackDashBoard:nil];
+    
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -199,8 +201,9 @@
                                       action:NULL
                             forControlEvents:UIControlEventTouchUpInside];
         [self.iotSecurityButton addTarget:self action:@selector(launchIOtDevicelit:) forControlEvents:UIControlEventTouchUpInside];
+        
+        
     }
-    
     else if(!hasSubscribe && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
         // call my scbscription
         //change icon name
@@ -217,7 +220,6 @@
                             forControlEvents:UIControlEventTouchUpInside];
         [self.iotSecurityButton addTarget:self action:@selector(launchMySubscription:) forControlEvents:UIControlEventTouchUpInside];
     }
-    
     else if(![currentAlmond siteMapSupportFirmware:currentAlmond.firmware]){
         // call my scbscription
         self.activeNetworkDevices.hidden = NO;
@@ -278,6 +280,7 @@
     [btnArrow addTarget:self action:@selector(AlmondSelection:) forControlEvents:UIControlEventTouchUpInside];
     [Scroller addSubview:button];
     [Scroller addSubview:btnArrow];
+    
     [self SelectAlmond:NSLocalizedString(@"dashBoard AddAlmond", @"Add Almond")];
 }
 
@@ -298,8 +301,6 @@
 
 #pragma mark Navigation UI
 -(void)navigationBarStyle{
-    
-    
     self.navigationImg = [[UIImageView alloc] initWithImage:[CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]]];
     self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
     self.navigationController.view.backgroundColor = [SFIColors lightOrangeDashColor];
@@ -313,7 +314,7 @@
     [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"away_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
     [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
     
-
+    
     _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES isDashBoard:YES];
     
     _notificationButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(notificationAction:)];
@@ -388,7 +389,8 @@
             self.inactiveNetworkDevices.text = [NSString stringWithFormat: @"%lu", (unsigned long)[Client inactiveClientCount]];
         });
     }
-    else{
+    else
+    {
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self SelectAlmond:NSLocalizedString(@"dashBoard AddAlmond", @"AddAlmond")];
             [self.AddAlmond setTitle:NSLocalizedString(@"dashBoard AddAlmond", @"AddAlmond") forState:UIControlStateNormal];
@@ -403,7 +405,6 @@
             self.activeNetworkDevices.text =[NSString stringWithFormat:@"%d ",0 ];
             self.inactiveNetworkDevices.text = [NSString stringWithFormat: @"%d",0];
         });
-
     }
 }
 
@@ -429,6 +430,7 @@
     NSLog(@"on Current almond changed");
     [self initializeUI];
     [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
+    // getrecentnotification to instantly show onclick
     [self getRecentNotification];
     [NotificationAccessAndRefreshCommands tryRefreshNotifications];
 }
@@ -436,6 +438,7 @@
 - (void)onAlmondListDidChange:(id)sender {
     [self onCurrentAlmondChanged:nil];
 }
+
 
 - (BOOL)isDeviceListEmpty {
     return self.toolkit.devices.count == 0;
@@ -606,13 +609,12 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger deviceRowCount = [self isSensorNotificationEmpty]? 1: self.deviceNotificationArr.count;
     NSInteger clientRowCount = [self isClientNotificationEmpty]? 1: self.clientNotificationArr.count;
-//    if(section == 0)
-//        return 2;
-     if(section == 0)
+    //    if(section == 0)
+    //        return 2;
+    if(section == 0)
         return deviceRowCount;
     else
         return clientRowCount;
-    
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -629,15 +631,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
     }
-//    if (indexPath.section == 0) {
-//        cell.textLabel.numberOfLines = 2;
-//        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-//        cell.textLabel.text = @"Suspicious activity on amazon echo";
-//        NSString *iconName = @"default_device";
-//        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[UIColor redColor]];
-//        cell.detailTextLabel.text = @"5 min ago";
-//    }
-     if (indexPath.section == 0) {
+    if (indexPath.section == 0) {
         if(indexPath.row > (int)self.deviceNotificationArr.count-1)
             return cell;
         //        NSLog(@"indexpathrow: %ld, arraycount: %d", (long)indexPath.row, self.deviceNotificationArr.count-1);
@@ -671,6 +665,7 @@
             cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
         }
     }
+    
     cell.textLabel.numberOfLines = 2;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     cell.textLabel.font = [UIFont systemFontOfSize:12];
@@ -704,10 +699,10 @@
     }
     NSString *string;
     switch (section) {
-//        case 0:
-//            string = @"INTERNET SECURITY";
-//            break;
-//            
+            //        case 0:
+            //            string = @"INTERNET SECURITY";
+            //            break;
+            //
         case 0:
             string = NSLocalizedString(@"smart_device_noti_title", @"");
             break;
@@ -795,6 +790,7 @@
     });
 }
 
+
 - (void)presentLocalNetworkSettingsEditor {
     RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
     editor.delegate = self;
@@ -866,6 +862,7 @@
              NSFontAttributeName : bold_font,
              NSForegroundColorAttributeName : [UIColor lightGrayColor],
              };
+    
     NSString *message;
     message = sensorSupport.notificationText;
     
@@ -879,9 +876,11 @@
 }
 
 - (NSAttributedString *)setDateLabelText:(SFINotification *)notification {
+    
     if (notification == nil) {
         return [[NSAttributedString alloc] initWithString:@"" attributes:@{}];
     }
+    
     NSDateFormatter *formatter = [NSDateFormatter new];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:notification.time];
     
@@ -894,6 +893,7 @@
              NSFontAttributeName : [UIFont securifiBoldFontLarge],
              NSForegroundColorAttributeName : [UIColor grayColor],
              };
+
     formatter.dateFormat = @"dd/MM - hh:mm";
     str = [formatter stringFromDate:date];
     str = (str == nil)? @"": str;
@@ -940,57 +940,42 @@
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
-
 #pragma mark almond selection view
--(void) makeAlmondSelectionView {
+- (void)showAlmondSelection{
     self.buttonMaskView = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
     self.buttonMaskView.backgroundColor = [SFIColors maskColor];
     [self.buttonMaskView addTarget:self action:@selector(onBtnMskTap:) forControlEvents:UIControlEventTouchUpInside];
     
-    _almondSelectionTableView.methodsDelegate = self;
-    _almondSelectionTableView.needsAddAlmond = YES;
-    _almondSelectionTableView.currentMAC = [AlmondManagement currentAlmond].almondplusMAC;
-    [_almondSelectionTableView initializeView:self.buttonMaskView.frame];
-    [self.buttonMaskView addSubview:_almondSelectionTableView];
+    AlmondSelectionTableView *view = [AlmondSelectionTableView new];
+    view.methodsDelegate = self;
+    view.needsAddAlmond = YES;
+    view.currentMAC = [AlmondManagement currentAlmond].almondplusMAC;
+    [view initializeView:self.buttonMaskView.frame];
+    [self.buttonMaskView addSubview:view];
+    [self slideAnimation];
 }
 
 
-- (void) createAlmondListPopup {
-    self.buttonMaskView = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.view.frame.size.height)];
-    self.buttonMaskView.backgroundColor = [SFIColors maskColor];
-    [self.buttonMaskView addTarget:self action:@selector(onBtnMskTap:) forControlEvents:UIControlEventTouchUpInside];
-    
-    _almondSelectionTableView = [AlmondSelectionTableView new];
-    _almondSelectionTableView.methodsDelegate = self;
-    _almondSelectionTableView.needsAddAlmond = YES;
-    
-    [_almondSelectionTableView initializeView:self.buttonMaskView.frame];
-    [self.buttonMaskView addSubview:_almondSelectionTableView];
-    
+-(void)slideAnimation{
     CATransition *transition = [CATransition animation];
     transition.duration = 0.3;
     transition.type = kCATransitionReveal;
-    self.buttonMaskView.alpha = 0;
     [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     [self.buttonMaskView.layer addAnimation:transition forKey:nil];
     [self.tabBarController.view addSubview:self.buttonMaskView];
 }
 
-- (void)showAlmondSelection{
-    self.buttonMaskView.alpha = 1;
-}
-
 - (void)onCloseBtnTapDelegate{
-    [self hideAlmondSelectionView];
+    [self removeAlmondSelectionView];
 }
 
 -(void)onBtnMskTap:(id)sender{
-    [self hideAlmondSelectionView];
+    [self removeAlmondSelectionView];
 }
 
 - (void)onAddAlmondTapDelegate{
     NSLog(@"on add almond tap");
-    [self hideAlmondSelectionView];
+    [self removeAlmondSelectionView];
     NSLog(@"i am called");
     switch ([[SecurifiToolkit sharedInstance] currentConnectionMode]) {
         case SFIAlmondConnectionMode_cloud: {
@@ -1011,12 +996,15 @@
 
 
 -(void)onAlmondSelectedDelegate:(SFIAlmondPlus *)selectedAlmond{
-    [self hideAlmondSelectionView];
+    [self removeAlmondSelectionView];
+    NSLog(@"i am called");
+    
     _toolkit.lastScanTime = 0;
     [AlmondManagement setCurrentAlmond:selectedAlmond];
     [self sendScanNowReq];
     [self iotUIUpdate];
 }
+
 -(void)sendScanNowReq{
     SFIAlmondPlus *alm = [AlmondManagement currentAlmond];
     GenericCommand *cmd  = [GenericCommand requestScanNow:alm.almondplusMAC];
@@ -1024,15 +1012,16 @@
     [self.toolkit asyncSendToNetwork:cmd];
 }
 
--(void)hideAlmondSelectionView{
+-(void)removeAlmondSelectionView{
     [UIView animateWithDuration:0.3
                           delay:0.0
                         options: UIViewAnimationOptionCurveEaseOut
                      animations:^{
                          self.buttonMaskView.alpha = 0;
                      }completion:^(BOOL finished){
-                         
-                    }];
+                         [self.buttonMaskView removeFromSuperview];
+                     }];
+    self.buttonMaskView = nil;
 }
 
 #pragma mark help screens
@@ -1064,7 +1053,6 @@
     [self showOkGotItView];
 }
 
-
 - (void)showOkGotItView{
     NSLog(@"showokgotit");
     self.maskView = [[UIView alloc]init];
@@ -1076,12 +1064,14 @@
     
     [self.maskView addSubview:self.helpScreensObj];
 }
+
 - (void)launchIOtDevicelit:(id)sender {
     IoTDevicesListViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDevicesListViewController"];
     NSLog(@"IoTDevicesListViewController IF");
     [self.navigationController pushViewController:newWindow animated:YES];
-    //        }
 }
+
+
 -(void)launchMySubscription:(id)sender{
     MySubscriptionsViewController *ctrl = [self getStoryBoardController:@"SiteMapStoryBoard" ctrlID:@"MySubscriptionsViewController"];
     [self pushViewController:ctrl];
@@ -1099,10 +1089,11 @@
         [self.navigationController pushViewController:viewCtrl animated:YES];
     });
 }
+
 #pragma mark IOtScan
 -(void)iotScanresultsCallBackDashBoard:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         
         if(toolkit.iotScanResults[@"scanDevice"] == Nil){
             NSLog(@"toolkit.iotScanResults = %@",toolkit.iotScanResults);
@@ -1113,22 +1104,19 @@
             self.no_scanObjLabel.text = @"0";
             [self checkForLastScanTime];
             self.lastScanIot_label.hidden = YES;
-             return ;
+            return ;
         }
         
-        
-    NSArray *scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
-    NSArray *excludedDevices = toolkit.iotScanResults[@"scanExclude"];
-    NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] intValue]];
-    NSString *lastScanYtime = [dat stringFromDateAMPM];
-    NSString *noSiotScanned = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
+        NSArray *scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
+        NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] intValue]];
+        NSString *lastScanYtime = [dat stringFromDateAMPM];
         NSLog(@"lastScanYtime == %@",lastScanYtime);
         self.noIot_label.text = [NSString stringWithFormat:@"%@ Devices scanned",toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0"];
         self.lastScanIot_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
         self.noIot_label.hidden = NO;
         self.scan_In_progress.hidden = YES;
         
-//        toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0"
+        //        toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0"
         self.no_scanObjLabel.text = [NSString stringWithFormat:@"%ld",scannedDeviceList.count];
         
         self.lastScanIot_label.hidden = NO;
@@ -1140,9 +1128,8 @@
         }
         [self checkForLastScanTime];
     });
-
-   
 }
+
 
 -(void)checkForLastScanTime{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -1150,7 +1137,6 @@
     NSInteger lastScan =  [toolkit.iotScanResults[@"scanTime"] longLongValue];
     if(lastScan>=toolkit.lastScanTime){
         self.lastScanIot_label.hidden = NO;
-        
     }
     else {
         self.lastScanIot_label.hidden = YES;
@@ -1161,7 +1147,7 @@
         [UIView animateWithDuration:1.0 delay:0.2 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
             self.scan_In_progress.alpha = 1;
         } completion:nil];
-        }
+    }
 }
 
 @end
