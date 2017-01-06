@@ -203,6 +203,7 @@
 #define DELETE_SECONDARY_USER_REQUEST @"DeleteSecondaryUserRequest"
 #define ALMOND_MAC @"AlmondMAC"
 #define EMAIL_ID @"EmailID"
+#define USER_ID  @"UserID"
 #define DELETE_ME_AS_SECONDARY_USER_REQUEST @"DeleteMeAsSecondaryUserRequest"
 #define Password @"Password"
 #define DELETE_ACCOUNT_REQUEST @"DeleteAccountRequest"

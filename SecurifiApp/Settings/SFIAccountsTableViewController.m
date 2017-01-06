@@ -345,6 +345,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 - (void)onDeleteAccountClicked:(id)sender {
     //Confirmation Box
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(ACCOUNTS_ALERT_ONDELETEACCOUNT_TITLE, DELETE_ACCOUNT) message:NSLocalizedString(ACCOUNTS_ALERT_ONDELETEACCOUNT_MESSAGE, DELETING_THE_ACCOUNT_WILL_UNLINK_YOUR_ALMONDS_AND_DELETE_USER_PREFERENCES_TO_CONFIRM_ACCOUNT_DELETION_ENTER_YOUR_PASSWORD_BELOW) delegate:self cancelButtonTitle:NSLocalizedString(ACCOUNTS_ALERT_ONDELETEACCOUNT_CANCEL, CANCEL) otherButtonTitles:NSLocalizedString(ACCOUNTS_ALERT_ONDELETE_DELETE, DELETE), nil];
+    
     alert.alertViewStyle = UIAlertViewStyleSecureTextInput;
     alert.tag = DELETE_ACCOUNT_CONFIRMATION;
     [[alert textFieldAtIndex:0] setDelegate:self];
@@ -353,7 +354,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 
 - (void)onUnlinkAlmondClicked:(id)sender {
-    DLog(@"onUnlinkAlmondClicked");
+    
     UIButton *btn = (UIButton *) sender;
     NSUInteger index = (NSUInteger) btn.tag;
     
@@ -416,7 +417,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     NSMutableDictionary* dictionary = [NSMutableDictionary new];
     [dictionary setObject:currentAlmondMAC forKey:ALMOND_MAC];
-    [dictionary setObject:emailID forKey:EMAIL_ID];
+    
+    NSString* userId = [AlmondManagement getUserIDfromEmail: emailID andAlmondMAC: currentAlmond.almondplusMAC];
+    [dictionary setObject:userId forKey:USER_ID];
     [self sendRequest:(CommandType*)CommandType_ACCOUNTS_RELATED withCommandString:DELETE_SECONDARY_USER_REQUEST withDictionaryData:dictionary withLocalizedStrings:localizedStrings];
 }
 
@@ -502,6 +505,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 
 -(void) showToastonTableViewController:(NSDictionary*)dictionary {
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
     });
@@ -511,14 +515,15 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         if(failureReason==nil){
             failureReason =  NSLocalizedString(ACCOUNTS_UPDATEACCOUNT_FAILURE_DEFAULT, SORRY_UPDATE_WAS_UNSUCCESSFUL);
         }
+        
         dispatch_async(dispatch_get_main_queue(), ^() {
             [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
         });
     }
 }
 
-#pragma mark - Cloud Command : Sender and Receivers
 
+#pragma mark - Cloud Command : Sender and Receivers
 -(void) sendRequest:(CommandType *)commandType withCommandString:(NSString*)commandString withDictionaryData:(NSMutableDictionary *)data withLocalizedStrings:(NSArray *)strings {
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     if(strings!=nil){
@@ -565,10 +570,13 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     NSDictionary * dictionary = [NSJSONSerialization JSONObjectWithData:[data valueForKey:@"data"] options:kNilOptions error:&error];
     NSString *success = [dictionary valueForKey:SUCCESS];
     
-    if ([success isEqualToString:@"true"])
+    if ([success isEqualToString:@"true"]){
+        if([[dictionary objectForKey:@"CommandType"] isEqualToString:@"DeleteAccountResponse"]){
+            [self.delegate userAccountDidDelete:self];
+        }
         return;
+    }
     
-    NSLog(@"Reason %@", [dictionary valueForKey:@"Reason"]);
     NSString *failureReason = [failureReasonForAccountsPageResponse objectForKey:[dictionary valueForKey:@"Reason"]];
                                
     dispatch_async(dispatch_get_main_queue(), ^() {
