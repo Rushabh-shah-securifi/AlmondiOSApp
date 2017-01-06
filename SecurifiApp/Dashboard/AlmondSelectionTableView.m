@@ -20,19 +20,25 @@ static const int footerHt = 60;
 
 @interface AlmondSelectionTableView()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic)NSArray *almondList;
-@property NSInteger currentCell;
 @end
 
 @implementation AlmondSelectionTableView
 
+/*
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 - (void)initializeView:(CGRect)maskFrame{
     self.dataSource = self;
     self.delegate = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.bounces = NO;
+    NSLog(@"i am called");
     enum SFIAlmondConnectionMode modeValue = [[SecurifiToolkit sharedInstance] currentConnectionMode];
     self.almondList = [self buildAlmondList:modeValue];
-    self.currentCell = 0;
     self.frame = CGRectMake(0, CGRectGetHeight(maskFrame)-[self getHeight], CGRectGetWidth(maskFrame), [self getHeight]);
 }
 
@@ -49,32 +55,30 @@ static const int footerHt = 60;
     return baseHt +rowsHt + 10;
 }
 
-
 - (NSArray *)buildAlmondList:(enum SFIAlmondConnectionMode)mode5 {
-    
     switch (mode5) {
         case SFIAlmondConnectionMode_cloud: {
             NSArray *cloud = [AlmondManagement almondList];
-            
             if (!cloud)
                 cloud = @[];
             
             if(!self.needsAddAlmond)
                 cloud = [AlmondManagement getAL3s:cloud];
+            
             return cloud;
         }
-            
         case SFIAlmondConnectionMode_local: {
             NSArray *local = [AlmondManagement localLinkedAlmondList];
             if (!local)
                 local = @[];
             return local;
         }
-    
         default:
             return @[];
     }
 }
+
+
 
 #pragma mark tableView delegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -86,34 +90,27 @@ static const int footerHt = 60;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    NSLog(@"Almond selection cell for row");
     if([self hasNoAlmond])
         return [self createNoAlmondCell:(UITableView *)tableView];
     
     AlmondSelectionCell *cell =  [tableView dequeueReusableCellWithIdentifier:@"almondCell"];
-
-    SFIAlmondPlus *currentAlmond = self.almondList[indexPath.row];
     
     if (cell == nil) {
         cell = [[AlmondSelectionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"almondCell"];
-        
-        [cell initializeCell:self.frame withAlmondName:currentAlmond.almondplusName];
+        [cell initializeCell:self.frame];
     }
-    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-    if([self isCurrentAlmond:currentAlmond.almondplusMAC])
-        [cell markTheCell];
-
-    else
-        [cell unMarkTheCell];
     
+    SFIAlmondPlus *almond = self.almondList[indexPath.row];
+    [cell setUpCell:almond.almondplusName isCurrent:[self isCurrentAlmond:almond.almondplusMAC]];
     return cell;
 }
 
 -(UITableViewCell *)createNoAlmondCell:(UITableView *)tableView{
     NSLog(@"no almond cell");
     UITableViewCell *cell =  [tableView dequeueReusableCellWithIdentifier:@"noAlmond"];
+    
     if (cell == nil) {
         cell = [[AlmondSelectionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"noAlmond"];
         cell.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), rowHeight);
@@ -124,22 +121,12 @@ static const int footerHt = 60;
     return cell;
 }
 
-
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     if(self.almondList.count == 0)
         return;
     
-    AlmondSelectionCell* previousCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_currentCell inSection:0]];
-    [previousCell unMarkTheCell];
-    
-    AlmondSelectionCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-    [cell markTheCell];
-    
-    _currentCell = indexPath.row;
     [self.methodsDelegate onAlmondSelectedDelegate:self.almondList[indexPath.row]];
 }
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return rowHeight;
@@ -154,7 +141,7 @@ static const int footerHt = 60;
     UIView *headerBgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, headerHt)];
     headerBgView.backgroundColor = [UIColor whiteColor];
     
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(5, 5, self.frame.size.width-10, 40)];    
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(5, 5, self.frame.size.width-10, 40)];
     UIButton *closeButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, 40)];
     [CommonMethods setButtonProperties:closeButton title:@"Close" titleColor:[SFIColors lightBlueColor] bgColor:[UIColor whiteColor] font:[UIFont securifiFont:16]];
     [closeButton addTarget:self action:@selector(onCloseBtnTap:) forControlEvents:UIControlEventTouchUpInside];

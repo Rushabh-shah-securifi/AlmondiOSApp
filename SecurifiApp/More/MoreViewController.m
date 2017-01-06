@@ -23,45 +23,49 @@
 #define USER_INVITE_ALERT               0
 
 @interface MoreViewController ()<MoreCellTableViewCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RouterNetworkSettingsEditorDelegate, UIAlertViewDelegate, UITextFieldDelegate>
+
 @property (nonatomic) NSArray *moreFeatures;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic) NSString *userName;
 @property (nonatomic) BOOL isLocal;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
+@property MySubscriptionsViewController *subscriptionsPage;
 @end
 
 @implementation MoreViewController
 
 - (void)viewDidLoad {
-    NSLog(@"more controller view did load");
     [super viewDidLoad];
     self.title = NSLocalizedString(@"more", @"");
     self.userName = @"";
     [self loadProfileImage];
 }
 
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    
     self.isLocal = [[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local;
     
     self.moreFeatures= [self getFeaturesArray];
+    [self.tableView reloadData];
     [self initializeNotification];
     
     if(!self.isLocal)
         [self sendUserProfileRequest];
-    
 }
+
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 - (void)initializeNotification{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -186,7 +190,6 @@
         }
         else if(section == 4){//logout all
             cell = [self getMorecell:tableView identifier:@"morecell5" indexPath:indexPath accessory:NO];
-            
         }
         else if(section == 5){//app version
             cell = [self getMorecell:tableView identifier:@"morecell3" indexPath:indexPath accessory:NO];
@@ -306,7 +309,9 @@
     }
 }
 
+
 - (void)asyncRequestDeregisterForNotification {
+    
     SecurifiToolkit* toolkit = [SecurifiToolkit sharedInstance];
     if (![KeyChainAccess isSecApnTokenRegistered]) {
         NSLog(@"asyncRequestRegisterForNotification : no device token to deregister");
@@ -322,13 +327,12 @@
     NotificationDeleteRegistrationRequest *req = [NotificationDeleteRegistrationRequest new];
     req.regID = deviceToken;
     req.platform = @"iOS";
-    
     GenericCommand *cmd = [GenericCommand new];
     cmd.commandType = CommandType_NOTIFICATION_DEREGISTRATION;
     cmd.command = req;
-    
     [toolkit asyncSendToNetwork:cmd];
 }
+
 
 #pragma mark action methods
 - (void)gotoReviews{
@@ -357,13 +361,13 @@
         RulesTableViewController *controller = (RulesTableViewController *)[self getStoryBoardController:@"Rules" ctrlID:@"RulesTableViewController"];
         [self setMoreBackButton];
         [self pushViewController:controller];
-    }
-    else if([rowVal isEqualToString:NSLocalizedString(@"my_subscriptions", @"")]){
-        MySubscriptionsViewController *ctrl = [self getStoryBoardController:@"SiteMapStoryBoard" ctrlID:@"MySubscriptionsViewController"];
-        [self pushViewController:ctrl];
         
-    }
-    else if([rowVal isEqualToString:NSLocalizedString(@"add_almond", @"")] || [rowVal isEqualToString:NSLocalizedString(@"link_almond_account", @"")]){
+    }else if([rowVal isEqualToString:NSLocalizedString(@"my_subscriptions", @"")]){
+        if(_subscriptionsPage == nil)
+            _subscriptionsPage = [self getStoryBoardController:@"SiteMapStoryBoard" ctrlID:@"MySubscriptionsViewController"];
+        [self pushViewController:_subscriptionsPage];
+        
+    }else if([rowVal isEqualToString:NSLocalizedString(@"add_almond", @"")] || [rowVal isEqualToString:NSLocalizedString(@"link_almond_account", @"")]){
         if(self.isLocal){
             RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
             editor.delegate = self;

@@ -42,14 +42,12 @@
 @implementation MySubscriptionsViewController
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
     SFIAlmondPlus *Al3 = [AlmondManagement tryLoadCurrentAL3];
     self.currentMAC = Al3.almondplusMAC;
     [self initializeMySubscriptionsArray];
     [self makeAlmondSelectionBtn];
     [self createAlmondListPopup];
-    
     [self setUpHUD];
 }
 
@@ -72,11 +70,6 @@
     
     [super viewWillDisappear:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    [self.almondSelectionTableview removeFromSuperview];
-    [self.HUD removeFromSuperview];
-    [self.almSelectionBtn removeFromSuperview];
-    [self.buttonMaskView removeFromSuperview];
 }
 
 
@@ -277,6 +270,7 @@
     self.buttonMaskView.alpha = 1;
 }
 
+
 - (void)onCloseBtnTapDelegate{
     [self hideAlmondSelectionView];
 }
@@ -284,6 +278,7 @@
 -(void)onBtnMskTap:(id)sender{
     [self hideAlmondSelectionView];
 }
+
 
 - (void)onAddAlmondTapDelegate{
     

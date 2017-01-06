@@ -42,6 +42,7 @@ NSArray *fieldNumbersForEachCategory;
 }
 
 - (void)sendUpdateUserProfileRequest {
+    
     NSMutableDictionary *data = [NSMutableDictionary new];
     [data setObject:UPDATE_USERPROFILE_REQUEST forKey:COMMAND_TYPE];
     if([_keyvalue isEqualToString:@"Address"]){
@@ -58,9 +59,9 @@ NSArray *fieldNumbersForEachCategory;
 
 
 - (void) onEditOrDoneButtonClicked :(id)sender {
+    
     UIButton *btn = (UIButton *) sender;
     if([btn.titleLabel.text isEqualToString:NSLocalizedString(ACCOUNTS_USERPROFILE_BUTTON_DONE, DONE)]) {
-        
         [self sendUpdateUserProfileRequest];
         [btn setTitle:NSLocalizedString(ACCOUNTS_USERPROFILE_BUTTON_EDIT, EDIT) forState:UIControlStateNormal];
         for(int count=0; count< _userProfileData.count; count++){
@@ -72,6 +73,7 @@ NSArray *fieldNumbersForEachCategory;
         for(int count=0; count< _userProfileData.count; count++){
             ((UITextField*)_textFieldView[count]).enabled = TRUE;
         }
+        
         UITextField * textField = (UITextField*)_textFieldView[0];
         [textField becomeFirstResponder];
     }
@@ -100,7 +102,6 @@ NSArray *fieldNumbersForEachCategory;
                                                @5:NSLocalizedString(ACCOUNTS_USERPROFILE_LABEL_COUNTRY, COUNTRY),
                                                @6:NSLocalizedString(ACCOUNTS_USERPROFILE_LABEL_ZIPCODE, ZIP_CODE)
                                                };
-    
     
     _baseYCordinate += 5;
     UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(10, _baseYCordinate, 120, 30)];
@@ -139,12 +140,13 @@ NSArray *fieldNumbersForEachCategory;
     _textFieldView = [NSMutableArray new];
     for(id obj in _userProfileData){
         _baseYCordinate += 20;
-        _textFieldView[count] = [[UITextField alloc] initWithFrame:CGRectMake(10, _baseYCordinate, 100, 30)];
+        _textFieldView[count] = [[UITextField alloc] initWithFrame:CGRectMake(10, _baseYCordinate, 200, 30)];
         ((UITextField*)_textFieldView[count]).placeholder = NSLocalizedString(@"accounts.userprofile.textfield.placeholder.firstName", @"We do not know your first name yet");
         [((UITextField*)_textFieldView[count]) setValue:[UIColor colorWithRed:255.0 / 255.0 green:255.0 / 255.0 blue:255.0 / 255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
         if(![(NSString*)obj isEqualToString:@""]) {
             ((UITextField*)_textFieldView[count]).text = (NSString*)obj;
         }
+        
         ((UITextField*)_textFieldView[count]).textAlignment = NSTextAlignmentLeft;
         ((UITextField*)_textFieldView[count]).tag = count;
         ((UITextField*)_textFieldView[count]).textColor = [UIColor whiteColor];

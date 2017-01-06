@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface AlmondSelectionCell : UITableViewCell
-- (void)initializeCell:(CGRect)frame withAlmondName:(NSString*)almondName;
-- (void)markTheCell;
-- (void)unMarkTheCell;
+- (void)initializeCell:(CGRect)frame;
+- (void)setUpCell:(NSString *)almondName isCurrent:(BOOL)isCurrent;
 @end

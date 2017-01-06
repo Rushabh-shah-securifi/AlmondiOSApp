@@ -168,18 +168,13 @@
     [NotificationAccessAndRefreshCommands tryRefreshNotifications];
     [self initializeUI];
     _statusIcon.networkStatusIconDelegate = self;
-    
     [_statusIcon markNetworkStatusIcon:self.leftButton isDashBoard:YES];
     [self iotScanresultsCallBackDashBoard:nil];
-    [self makeAlmondSelectionView];
-    [self createAlmondListPopup];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self.almondSelectionTableView removeFromSuperview];
-    [self.buttonMaskView removeFromSuperview];
 }
 
 -(void)initializeUI{
@@ -967,9 +962,7 @@
     
     _almondSelectionTableView = [AlmondSelectionTableView new];
     _almondSelectionTableView.methodsDelegate = self;
-    
     _almondSelectionTableView.needsAddAlmond = YES;
-    //_almondSelectionTableView.currentMAC = self.currentMAC;
     
     [_almondSelectionTableView initializeView:self.buttonMaskView.frame];
     [self.buttonMaskView addSubview:_almondSelectionTableView];
