@@ -275,6 +275,12 @@
     button.titleLabel.font = font;
 }
 
++(void)setLabelProperties:(UILabel*)button title:(NSString *)title titleColor:(UIColor*)titleColor bgColor:(UIColor *)bgColor font:(UIFont *)font{
+    button.text = title;
+    button.textColor = titleColor;
+    button.backgroundColor = bgColor;
+    button.font = font;
+}
 #pragma mark ui methods
 +(void)addLineSeperator:(UIView*)view yPos:(int)ypos{
     UIView *lineSeperator = [[UIView alloc]initWithFrame:CGRectMake(0, ypos, view.frame.size.width, 1)];
@@ -897,4 +903,32 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
 
 
 
+=======
++(NSString *)colorShadesforValue:(int)defaultcolor byValueOfcolor:(NSString *)value{
+    float hue = [value floatValue];
+    int intClolor = defaultcolor/8;
+    
+    
+    UIColor *color = [UIColor colorWithHue:(hue/defaultcolor) saturation:100 brightness:100 alpha:1.0];
+    //                    NSDictionary *attr = @{
+    //                            NSBackgroundColorAttributeName : color,
+    //                    }
+    //                    NSAttributedString *a = [[NSAttributedString alloc] initWithString:@"\u25a1" attributes:attr];
+    if(hue>=0 && hue <= 1*intClolor)
+        return [NSString stringWithFormat:@"%@(%@)",@"red shade",[color.hexString uppercaseString]];
+    else if(hue>=1 && hue <= 2*intClolor)
+        return [NSString stringWithFormat:@"%@(%@)",@"orange shade",[color.hexString uppercaseString]];
+    else if(hue>=2 && hue <= 3*intClolor)
+        return [NSString stringWithFormat:@"%@(%@)",@"yellow shade",[color.hexString uppercaseString]];
+    else if(hue>=3 && hue <= 4*intClolor)
+        return [NSString stringWithFormat:@"%@(%@)",@"green shade",[color.hexString uppercaseString]];
+    else if(hue>=5 && hue <= 6*intClolor)
+        return [NSString stringWithFormat:@"%@(%@)",@"indigo shade",[color.hexString uppercaseString]];
+    else if(hue>=6 && hue <= 7*intClolor)
+        return [NSString stringWithFormat:@"%@(%@)",@"violet shade",[color.hexString uppercaseString]];
+    else if(hue > 7 *intClolor)
+        return [NSString stringWithFormat:@"%@(%@)",@"reddish shade",[color.hexString uppercaseString]];
+    else
+        return [NSString stringWithFormat:@"(%@)",[color.hexString uppercaseString]];
+}
 @end

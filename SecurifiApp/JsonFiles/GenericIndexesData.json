@@ -54,6 +54,7 @@
         "Layout": "LIST_TYPE",
         "AppLabel": "type",
         "DefaultIcon": "help_icon",
+        "DefaultIcon":"help_icon",
         "Values": {
             "identifying": {
                 "Icon": "identifying",
@@ -879,12 +880,14 @@
                 "Icon": "fire_on",
                 "Label": "GAS DETECTED",
                 "Notification": "notification_gas_off"
+                "Notification": "notification_gas_on"
             },
             "false": {
                 "AppLabel": "ok",
                 "Icon": "fire_off",
                 "Label": "OK",
                 "Notification": "notification_gas_on"
+                "Notification": "notification_gas_off"
             }
         }
     },
@@ -978,7 +981,7 @@
         "Placement": "Badge",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "lowBattery",
-        "DefaultIcon": "low_battery",
+        "DefaultIcon":"low_battery",
         "Values": {
             "true": {
                 "Icon": "low_battery",
@@ -1196,7 +1199,7 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "powerLabel",
-        "DefaultIcon": "switch_off",
+        "DefaultIcon":"switch_off",
         "Values": {
             "0": {
                 "ToggleValue": "255",
@@ -1363,6 +1366,7 @@
             "Min": "0",
             "Max": "3000",
             "Unit": "Lux",
+            "Factor": "1",
             "prefix": "illuminanceChange"
         }
     },
@@ -1457,7 +1461,7 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "mode",
-        "DefaultIcon": "img_off",
+        "DefaultIcon":"img_off",
         "Values": {
             "Auto": {
                 "Icon": "img_auto",
@@ -1532,7 +1536,7 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "fan_mode",
-        "DefaultIcon": "btn_fan_off",
+        "DefaultIcon":"btn_fan_off",
         "Values": {
             "On Low": {
                 "Icon": "btn_fan_off",
@@ -1555,7 +1559,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "fan_state",
         "ExcludeFrom": "Rule",
-        "DefaultIcon": "img_off",
+        "DefaultIcon":"img_off",
         "Notification": "thermostat_fanState"
     },
     "41": {
@@ -1565,7 +1569,7 @@
         "Layout": "SINGLE_TEMP",
         "AppLabel": "setpoint_temp",
         "Conditional": "true",
-        "DefaultIcon": "target_temperature",
+        "DefaultIcon":"target_temperature",
         "Formatter": {
             "Min": "32",
             "Max": "104",
@@ -1580,7 +1584,7 @@
         "Layout": "LIST",
         "AppLabel": "actions",
         "ExcludeFrom": "Rule_Scene",
-        "DefaultIcon": "garage_close",
+        "DefaultIcon":"garage_close",
         "Values": {
             "0": {
                 "ToggleValue": "99",
@@ -1605,7 +1609,7 @@
         "AppLabel": "actions",
         "Layout": "MULTI_BUTTON",
         "ExcludeFrom": "Scene_Trigger",
-        "DefaultIcon": "motion_off",
+        "DefaultIcon":"motion_off",
         "Values": {
             "true": {
                 "AppLabel": "stop_",
@@ -1669,7 +1673,7 @@
         "Placement": "Detail",
         "Layout": "LIST",
         "AppLabel": "mode",
-        "DefaultIcon": "img_off",
+        "DefaultIcon":"img_off",
         "Values": {
             "Auto": {
                 "Icon": "img_auto",
@@ -1757,7 +1761,7 @@
         "Placement": "Detail",
         "Layout": "LIST",
         "AppLabel": "fan_mode",
-        "DefaultIcon": "fan_auto",
+        "DefaultIcon":"fan_auto",
         "Values": {
             "Auto Low": {
                 "Icon": "fan_auto",
@@ -1791,7 +1795,7 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "swing",
-        "DefaultIcon": "swingoff_icon",
+        "DefaultIcon":"swingoff_icon",
         "Values": {
             "0": {
                 "ToggleValue": "1",
@@ -1816,7 +1820,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "battery",
         "Conditional": "true",
-        "DefaultIcon": "low_battery",
+        "DefaultIcon":"low_battery",
         "Formatter": {
             "Min": "0",
             "Max": "100",
@@ -1836,6 +1840,7 @@
         "Formatter": {
             "Min": "0",
             "Max": "999",
+            "Factor": "1",
             "prefix": "ir_code_changed"
         }
     },
@@ -1887,7 +1892,7 @@
         "Placement": "Detail",
         "Layout": "LIST",
         "AppLabel": "mode",
-        "DefaultIcon": "img_off",
+        "DefaultIcon":"img_off",
         "Values": {
             "eco":{
                 "Icon": "eco_icon",
@@ -1928,7 +1933,7 @@
         "Layout": "SINGLE_TEMP",
         "AppLabel": "target_temperature",
         "Conditional": "true",
-        "DefaultIcon": "target_temperature",
+        "DefaultIcon":"target_temperature",
         "Formatter": {
             "Min": "50",
             "Max": "90",
@@ -1943,7 +1948,7 @@
         "Layout": "SINGLE_TEMP",
         "AppLabel": "low_temp",
         "Conditional": "true",
-        "DefaultIcon": "target_temperature",
+        "DefaultIcon":"target_temperature",
         "Formatter": {
             "Min": "50",
             "Max": "87",
@@ -1958,7 +1963,7 @@
         "Layout": "SINGLE_TEMP",
         "AppLabel": "high_temp",
         "Conditional": "true",
-        "DefaultIcon": "target_temperature",
+        "DefaultIcon":"target_temperature",
         "Formatter": {
             "Min": "53",
             "Max": "90",
@@ -1973,7 +1978,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "nest_label_away_mode",
         "ExcludeFrom": "Scene_Rule",
-        "DefaultIcon": "home_white",
+        "DefaultIcon":"home_white",
         "Values": {
             "home": {
                 "Icon": "home_white",
@@ -2002,7 +2007,7 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "fan",
-        "DefaultIcon": "btn_fan_off",
+        "DefaultIcon":"btn_fan_off",
         "Values": {
             "true": {
                 "Icon": "btn_fan_on",
@@ -2024,7 +2029,7 @@
         "Placement": "Hidden",
         "Layout": "MULTI_BUTTON",
         "ExcludeFrom": "Scene",
-        "DefaultIcon": "online_icon",
+        "DefaultIcon":"online_icon",
         "Values": {
             "true": {
                 "Icon": "online_icon",
@@ -2057,12 +2062,12 @@
         "Type": "Functional",
         "Placement": "Hidden",
         "ExcludeFrom": "Scene_Rule",
-        "DefaultIcon": "img_off",
+        "DefaultIcon":"img_off",
         "Values": {
             "true": {
                 "AppLabel": "emergency_heat",
                 "Label": "Using Emergency Heat",
-                "Notification": "emergency_heat"
+                "Notification": "notification_emergency_heat"
             }
         }
     },
@@ -2078,7 +2083,7 @@
         "Placement": "HeaderOnly",
         "Layout": "MULTI_BUTTON",
         "ExcludeFrom": "Scene",
-        "DefaultIcon": "img_off",
+        "DefaultIcon":"img_off",
         "Values": {
             "heating": {
                 "Icon": "img_heat",
@@ -2111,17 +2116,17 @@
         "Type": "Info",
         "Placement": "Message",
         "ExcludeFrom": "Scene_Rule",
-        "DefaultIcon": "img_off",
+        "DefaultIcon":"img_off",
         "Values": {
             "-1": {
                 "Icon": "img_off",
                 "Label": "Wrong mode selection",
-                "Notification": "error_1"
+                "Notification":"error_1"
             },
             "-2": {
                 "Icon": "img_off",
                 "Label": "Cannot change target temperature while structure is away",
-                "Notification": "error_2"
+                "Notification":"error_2"
             },
             "-3": {
                 "Icon": "img_off",
@@ -2131,12 +2136,12 @@
             "-4": {
                 "Icon": "img_off",
                 "Label": "Cannot change fan_timer_active while structure is Away",
-                "Notification": "error_4"
+                "Notification":"error_4"
             },
             "-5": {
                 "Icon": "img_off",
                 "Label": "heat-cool mode 3 unit issue",
-                "Notification": "error_5"
+                "Notification":"error_5"
             },
             "-6": {
                 "Icon": "img_off",
@@ -2146,72 +2151,72 @@
             "-7": {
                 "Icon": "img_off",
                 "Label": "Cannot set c and f temperatures simultaneously",
-                "Notification": "error_7"
+                "Notification":"error_7"
             },
             "-8": {
                 "Icon": "img_off",
                 "Label": "Cannot set target temperature closer than N degrees C/F",
-                "Notification": "error_8"
+                "Notification":"error_8"
             },
             "-9": {
                 "Icon": "img_off",
                 "Label": "Temperature C/F value is too low",
-                "Notification": "error_9"
+                "Notification":"error_9"
             },
             "-10": {
                 "Icon": "img_off",
                 "Label": "Temperature C/F value is too high",
-                "Notification": "error_10"
+                "Notification":"error_10"
             },
             "-11": {
                 "Icon": "img_off",
                 "Label": "Temperature C/F value too low for lock temperature",
-                "Notification": "error_11"
+                "Notification":"error_11"
             },
             "-12": {
                 "Icon": "img_off",
                 "Label": "Temperature C/F value too high for lock temperature",
-                "Notification": "error_12"
+                "Notification":"error_12"
             },
             "-13": {
                 "Icon": "img_off",
                 "Label": "Cannot change HVAC mode during energy-saving events",
-                "Notification": "error_13"
+                "Notification":"error_13"
             },
             "-14": {
                 "Icon": "img_off",
                 "Label": "Cannot change HVAC mode to Heat/Cool",
-                "Notification": "error_14"
+                "Notification":"error_14"
             },
             "-15": {
                 "Icon": "img_off",
                 "Label": "Invalid HVAC mode",
-                "Notification": "error_15"
+                "Notification":"error_15"
             },
             "-16": {
                 "Icon": "img_off",
                 "Label": "Cannot activate fan during smoke/co safety shutoff",
-                "Notification": "error_16"
+                "Notification":"error_16"
             },
             "-17": {
                 "Icon": "img_off",
                 "Label": "fan_timer_active not set",
-                "Notification": "error_17"
+                "Notification":"error_17"
             },
             "-18": {
                 "Icon": "img_off",
                 "Label": "Cannot change Away state while emergency heat is on",
-                "Notification": "error_18"
+                "Notification":"error_18"
             },
             "503": {
                 "Icon": "img_off",
                 "Label": "Service Unavailable",
-                "Notification": "error_503"
+                "Notification":"error_503"
             },
             "429": {
                 "Icon": "img_off",
                 "Label": "Too Many Requests",
-                "Notification": "tooMany"
+                "Notification":"tooMany"
             }
         }
     },
@@ -2222,7 +2227,7 @@
         "AppLabel": "co_lable",
         "Layout": "TEXT_VIEW",
         "ExcludeFrom": "Rule",
-        "DefaultIcon": "nest_protect_icon",
+        "DefaultIcon":"nest_protect_icon",
         "Values": {
             "ok": {
                 "Icon": "nest_protect_icon",
@@ -2251,7 +2256,7 @@
         "AppLabel": "smoke_lable",
         "Layout": "TEXT_VIEW",
         "ExcludeFrom": "Rule",
-        "DefaultIcon": "nest_protect_icon",
+        "DefaultIcon":"nest_protect_icon",
         "Values": {
             "ok": {
                 "Icon": "nest_protect_icon",
@@ -2306,7 +2311,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "battery",
         "ExcludeFrom": "Scene_Rule",
-        "DefaultIcon": "img_off",
+        "DefaultIcon":"img_off",
         "Values": {
             "ok": {
                 "Label": "OK",
@@ -2346,6 +2351,7 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
+        "DefaultIcon": "lock_open",
         "AppLabel": "pin",
         "ExcludeFrom": "Scene_Rule"
     },
@@ -2355,6 +2361,7 @@
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "clamp1_power",
+        "DefaultIcon": "online_icon",
         "Conditional": "true",
         "Formatter": {
             "Min": "0",
@@ -2370,6 +2377,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "clamp2_power",
         "Conditional": "true",
+        "DefaultIcon": "online_icon",
         "Formatter": {
             "Min": "0",
             "Max": "9999",
@@ -2414,7 +2422,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "powerLabel",
         "Conditional": "true",
-        "DefaultIcon": "target_temperature",
+        "DefaultIcon":"target_temperature",
         "Formatter": {
             "Min": "0",
             "Max": "1920",
@@ -2760,7 +2768,7 @@
         "Formatter": {
             "Min": "0",
             "Max": "99999",
-            "Unit": " sec",
+            "Unit": "sec",
             "prefix": "timer_text"
         }
     },
@@ -2775,7 +2783,7 @@
         "Formatter": {
             "Min": "0",
             "Max": "99999",
-            "Unit": " sec",
+            "Unit": "sec",
             "prefix": "timer_text"
             
         }
@@ -2805,4 +2813,3 @@
         }
     }
 }
-

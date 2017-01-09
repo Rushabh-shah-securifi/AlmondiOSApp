@@ -2067,4 +2067,228 @@ Contact us at support@securifi.com";
 "iot_security_camelcase" = "IoT Security";
 "ap_re_wired_iot" = "This device is in wired connection. Web history requires wireless connection in RE/AP Mode.";
 "blocked_client_iot" = "Web history is disabled for blocked devices. You can still see records from when the device was last active.";
+=======
+/*notification*/
+"notification_switch_on" = " is turned On";
+"notification_switch_off" = " is turned Off.";
+"notification_door_on" = " is Opened.";
+"notification_door_off" = " is Closed.";
+"notification_motion_on" = " Motion Detected.";
+"notification_motion_off" = "'s motion stopped.";
+
+"notification_vibration_on" = " Vibration Detected";
+"notification_vibration_off" = "'s vibration stopped";
+"notification_water_on" = " detected water";
+"notification_water_off" = " leakage stopped";
+"notification_gas_off" = "'s Gas is gone";
+"notification_gas_on" = "'s Gas Detected";
+"notification_fire_on" = "'s detected Fire";
+"notification_fire_off" = " Fire Detected!";
+"is_ok" = "is OK";
+"notification_tamper" = " has been tampered.";
+
+"notification_keyfob_armed" = " is armed";
+"notification_keyfob_disarmed" = " is disarmed";
+"notification_keyfob_permiter_armed" = " is perimeter Armed";
+
+
+"hasLowBattery" = " has Low Battery.";
+
+"is_turned_on_for" = " is turned on for ";
+"notification_alarm_on" = " is Ringing";
+"notification_alarm_off" = " is Silent";
+
+"notification_smoke_off" = "'s Smoke is gone.";
+"notification_smoke_on" = " detected smoke.";
+
+"notification_dimmable" = " is dimmed to ";
+"stoped" = " Stoped";
+"emergency" = " emergency";
+"fire" = " fire";
+"ambulance" = " ambulance";
+"police" = " police";
+"door_chime" = " Door Chime";
+"beep" = " beep";
+
+"notification_closed" = " is Closed.";
+"notification_opened" = " is Opened.";
+"notification_closing" = " was Closing";
+"notification_stopped" = " was Stopped";
+"notification_opening" = " was Opening";
+
+
+"notification_processing" = " is Processing.";
+
+"notification_doorlock_off" = " is Unlocked.";
+"notification_doorlock_on" = " is locked.";
+
+"notification_doorlock_partial" = " is not fully locked.";
+
+"temp_changed_to" = "'s temperature is";
+
+"pressure_changed_to" = "'s pressure changed to";
+
+"notification_light_prefix" = " Illuminance ";
+"notificationColor" = "'s color changed to ";
+"notificationSaturation" = "'s saturation changed to ";
+
+
+"color_temp" = " Color Temperature";
+"power_prefix" = " Power ";
+
+"nest_heat_cool" = " Heat-Cool";
+"thermostat_mode" = " Mode ";
+"thermostat_heat" = " Heating Temp ";
+
+"thermostat_cool" = " Cooling Temp ";
+"thermostat_fanMode" = " Fan Mode ";
+
+"thermostat_fanState" = " Fan ";
+"temperature_prefix_comma" = " Temp ";
+
+
+"auto" = " Auto";
+"thermostat_mode" = " Mode ";
+
+"swing_off" = " Swing Off";
+"swing_on" = " Swing On";
+"battery_status" = "'s Battery Status";
+"ir_code_changed" = "'s IR code changed to ";
+"nest_label_low_range" = " Low Range";
+"nest_label_high_range" = " High Range";
+
+"is_online" = " is now online.";
+"is_offline" = " is offline.";
+
+"smoke_ok" = " No Smoke";
+"co_detected" = " CO Detected!";
+"smoke_on"=" SMOKE DETECTED!";
+"energy" = " energy";
+
+"clamp1_power"=" CLAMP1 POWER";
+"clamp2_power"=" CLAMP2 POWER";
+"clamp1_energy"=" CLAMP1 ENERGY";
+"clamp2_energy"=" CLAMP2 ENERGY";
+
+"notification_power_prefix" = " Power ";
+"occupied"="OCCUPIED";
+"unoccupied"="UNOCCUPIED";
+
+"one_press" = " One Press";
+"two_press" = " Two Press";
+"long_press" = " Long Press";
+"no_press" = " No Press";
+"press" = " Press";
+
+"changed_to" = " changed to";
+"sirenStoped" = " Siren stopped";
+"emergencyTone_text" = " is Ringing with Emergency tone";
+"fire_text" = " is Ringing with Fire tone";
+"ambulance_text" = " is Ringing with Ambulance tone";
+"police_text" = " is Ringing with Police tone";
+"door_chime_text" = " is Ringing with Door Chime tone";
+"beep_text" = " is Ringing with Beep tone";
+"power_off" = " Power Off";
+"power_on" = " Power On";
+"humidityChange" = " humidity is ";
+"illuminanceChange" = " illuminance changed to";
+"set_to" = " is set to ";
+"saturation_set_to" = " Saturation set to ";
+"color_temp_is" = " color temperature is";
+"powerReading" = "'s power reading is ";
+"modeChangeAuto" = "'s mode set to Auto ";
+"modeChangeCool" = "'s mode set to Cool ";
+"modeChangeHeat" = "'s mode set to Heat ";
+"modeChangeOff" = "'s mode set to Off ";
+"heatingUp" = "'s heating up to";
+"coolingDown" = " is cooling down to ";
+"modeChangeResume" = "'s mode set to Resume";
+"modeChangeFanOnly" = "'s mode set to Fan Only";
+"modeChangeDryAir" = "'s mode set to Dry Air";
+"modeChangeAutoChangeOver" = "'s mode set to Auto Changeover";
+"heatingUp" = " is heating up to ";
+
+
+"fanOnLow_text" = "'s fan on Low ";
+"fanAutoLow_text" = "'s fan on Auto Low";
+"thermostat_fanState" = " Fan ";
+"temp_changed_to" = "'s temperature is ";
+"fanUnknown_text" = "'s fan on Medium ";
+"fanOnHigh_text" = "'s fan on High";
+"swingOff_text" = "'s swing stopped";
+"swingOn_text" = "'s swing started";
+"battery_is" = "'s battery is ";
+"voltageReading" = "'s voltage reading is";
+"currentReading" = "'s current reading is";
+"modeChangeHC" = "'s mode set to Heat-Cool";
+"nest_mode_home_text" = "'s nest mode is Home";
+"nest_mode_away_text" = "'s nest mode is Away";
+"nest_mode_autoaway_text" = "s nest mode is Auto-Away";
+"fan_started" = " Fan started";
+"fan_stopped"=" Fan stopped";
+"notification_emergency_heat" = " is using Emergency Heat ";
+"is_heating" = " is heating";
+"is_cooling" = " is cooling";
+"is_off" = " is off";
+"error_1" = " Wrong mode selected";
+"error_2" = " Cannot change temperature in Away mode";
+"error_3" = " Device is Offline";
+"error_4" = " Cannot set fan in Away mode";
+"error_5" = " Low temperature can\u0027t be more than high temperature";
+"error_6" = " Couldn't change HVAC mode as thermostat lock is enabled";
+"error_7" = " Cannot set c and f temperatures simultaneously";
+"error_8" = "Cannot set target temperature closer than N degrees C/F";
+
+"error_9" = " Target temperature is lower than the range";
+"error_10" = " Target temperature is higher than the range";
+"error_11" = " Couldn't set target temperature, value is lower than lock temp";
+"error_12" = " Couldn't set target temperature, value is higher than lock temp";
+"error_13" = " Cannot change HVAC mode during energy-saving events";
+"error_14" = " Cannot change HVAC mode";
+"error_15" = " Invalid HVAC mode";
+"error_16" = " Cannot activate fan during smoke/co safety shutoff";
+"error_17" = " Fan timer is not set";
+"error_18" = " Emergency Heat is On";
+"error_503" = " Nest service is unavailable";
+"tooMany" = " Too many requests";
+"co_not_detected_text" = " is not detected";
+"co_warning_text" = ": CO Warning";
+"co_emergency_text" = ": CO Emergency";
+"smoke_not_detected_text" = " Smoke is not detected";
+"smoke_warning_text" = ": Smoke Warning";
+"smoke_emergency_text" = ": Smoke Emergency";
+
+"energyReading" = "'s energy reading is";
+"clamp1Power_text" = "'s Clamp 1 power is ";
+"clamp2Power_text" = "'s Clamp 2 power is ";
+"clamp1Energy_text" = "'s Clamp 1 energy is ";
+"clamp2Energy_text" = "'s Clamp 2 energy is ";
+
+"presenceDetected" = ": presence detected";
+"presenceNotDetected" = ": no presence detected";
+"tone_alarm" = "'s tone is set to Alarm";
+"tone_siren" = "'s tone is set to Siren";
+"tone_doorbell" = "'s tone is set to Door Bell";
+ "notification_swith1_on" = "s Switch 1 turned Off";
+"notification_swith1_off" = "'s Switch 1 turned Off";
+"notification_swith2_on" = "'s Switch 2 turned On";
+"notification_swith2_off" = "'s Switch 2 turned Off";
+"is_enabled" = " is enabled";
+"is_disabled" = "is disabled";
+"volume_low_text" = "'s volume is Low";
+"volume_medium_text" = "'s volume is Medium";
+"volume_high_text" = "'s volume is High";
+
+"blink_start_text" = " is blinking";
+"blink_stop_text" = " stopped blinking";
+"brightness_changed" = " Brightness set to";
+
+"timer_text" = "'s timer set to ";
+
+
+
+
+
+
+
 
