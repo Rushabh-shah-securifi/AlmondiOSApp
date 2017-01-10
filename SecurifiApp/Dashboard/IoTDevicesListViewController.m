@@ -56,6 +56,10 @@
         self.bottoMView.hidden = YES;
         self.scannowBtn.hidden = YES;
     }
+    [self initNotification];
+    [self.navigationController setNavigationBarHidden:YES];
+}
+-(void)initNotification{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     
     [center addObserver:self
@@ -63,7 +67,6 @@
                    name:NOTIFICATION_IOT_SCAN_RESULT_CONTROLLER_NOTIFIER
                  object:nil];
 
-    [self.navigationController setNavigationBarHidden:YES];
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
@@ -75,15 +78,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 #pragma mark tableviewDelegate
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -104,6 +98,14 @@
         return self.excludedDevices.count;
     }
 }
+-(void)cellpara:(UITableViewCell *)cell nosline:(int)nosLine textLabel:(NSString *)textlabel detailText:(NSString *)detailText imageName:(NSString *)imageName color:(UIColor *)color{
+    cell.textLabel.numberOfLines = nosLine;
+    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    cell.textLabel.text = textlabel;
+    NSString *iconName = imageName;
+    cell.imageView.image = [CommonMethods imageNamed:iconName withColor:color];
+    cell.detailTextLabel.text = detailText;
+}
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     static NSString *CellIdentifier = @"Cell";
@@ -117,43 +119,37 @@
             return cell;
         }
         NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
-        NSLog(@"iotDevice = %@",iotDevice);
-        cell.textLabel.numberOfLines = 2;
-        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[self getClientName:iotDevice[@"MAC"]],[self getIsVulnableText:iotDevice]];
+        NSString* text = [NSString stringWithFormat:@"%@ %@",[self getClientName:iotDevice[@"MAC"]],[self getIsVulnableText:iotDevice]];
+        NSString *detailText = [self getLabelText:iotDevice];
         NSString *iconName = [self getIcon:iotDevice[@"MAC"]];
         UIColor *color = [self getColor:iotDevice];
-        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:color];
-        cell.detailTextLabel.text = [self getLabelText:iotDevice];
+        
+        [self cellpara:cell nosline:2 textLabel:text detailText:detailText imageName:iconName color:color];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     else if(indexPath.section == 1){
         
         NSDictionary *iotDevice = [self.healthyDEviceArr objectAtIndex:indexPath.row];
         NSLog(@"iotDevice = %@",iotDevice);
-        cell.textLabel.numberOfLines = 2;
-        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        cell.textLabel.text = [NSString stringWithFormat:@"%@",[self getClientName:iotDevice[@"MAC"]]];
+        NSString* text = [NSString stringWithFormat:@"%@",[self getClientName:iotDevice[@"MAC"]]];
         NSString *iconName = [self getIcon:iotDevice[@"MAC"]];
         UIColor *color = [SFIColors clientGreenColor];
-        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:color];
-        cell.detailTextLabel.text = [self getLabelText:iotDevice];
+        NSString* detailTextLabel = [self getLabelText:iotDevice];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [self cellpara:cell nosline:2 textLabel:text detailText:detailTextLabel imageName:iconName color:color];
     }
     else{
         NSString *iotDeviceMAC = [self.excludedDevices objectAtIndex:indexPath.row];
         cell.textLabel.numberOfLines = 2;
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        cell.textLabel.text = [NSString stringWithFormat:@"%@",[self getClientName:iotDeviceMAC]];
+        NSString* text = [NSString stringWithFormat:@"%@",[self getClientName:iotDeviceMAC]];
         NSString *iconName = [self getIcon:iotDeviceMAC];
         
-        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[SFIColors ruleGraycolor]];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [self cellpara:cell nosline:2 textLabel:text detailText:@"" imageName:iconName color:[SFIColors ruleGraycolor]];
         // cell.detailTextLabel.text = [self getLabelText:iotDevice];
     }
     
-    cell.textLabel.numberOfLines = 2;
-    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     cell.textLabel.font = [UIFont securifiFont:14];
     cell.detailTextLabel.textColor = [SFIColors ruleGraycolor];
     cell.detailTextLabel.font = [UIFont securifiFont:13];
@@ -198,14 +194,9 @@
 
     NSString *string;
     if(section == 0){
-        
-//        string = @"VULNERABLE DEVICES";@"Vulnerable Devices "
-        label.attributedText = [self getAttributeString:@"Vulnerable Devices "];
+    label.attributedText = [self getAttributeString:@"Vulnerable Devices "];
     }
     else if(section == 1){
-//        string = @"Healthy Devices";
-//        label.text = string;
-//        label.textColor = [UIColor grayColor];
         label.attributedText = [self getAttributeString:@"Healthy Devices "];
     }
     else{
@@ -242,52 +233,36 @@
     return attrStr;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+   
+  
     
+    IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
+   
+    newWindow.hideTable = NO;
+    newWindow.hideMiddleView = YES;
     if (indexPath.section == 0) {
-        if(self.scannedDeviceList.count == 0){
-            return;
-        }
-        
         if(self.scannedDeviceList.count < indexPath.row)
             return;
         NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
-        
-        IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
         newWindow.iotDevice = iotDevice;
-        newWindow.hideTable = NO;
-        newWindow.hideMiddleView = YES;
         newWindow.sectionType = vulnerable_section;
-        NSLog(@"IoTDevicesListViewController IF");
-        [self.navigationController pushViewController:newWindow animated:YES];
+       
     }
     else if(indexPath.section == 1){
         if(self.healthyDEviceArr.count < indexPath.row)
             return;
-        NSString *iotDeviceMAc = [self.healthyDEviceArr objectAtIndex:indexPath.row];
-//        NSDictionary *iotDevice = @{@"MAC":iotDeviceMAc};
         NSDictionary *iotDevice = [self.healthyDEviceArr objectAtIndex:indexPath.row];
-        
-        IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
         newWindow.iotDevice = iotDevice;
-        newWindow.hideTable = NO;
-        newWindow.hideMiddleView = YES;
         newWindow.sectionType = healthy_section;
-        NSLog(@"IoTDevicesListViewController IF");
-        [self.navigationController pushViewController:newWindow animated:YES];
     }
     else{
         if(self.excludedDevices.count < indexPath.row)
             return;
         NSString *iotDeviceMAc = [self.excludedDevices objectAtIndex:indexPath.row];
         NSDictionary *iotDevice = @{@"MAC":iotDeviceMAc};
-        IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
         newWindow.iotDevice = iotDevice;
-        newWindow.hideTable = NO;
-        newWindow.hideMiddleView = YES;
-        NSLog(@"IoTDevicesListViewController IF");
-        [self.navigationController pushViewController:newWindow animated:YES];
     }
-    
+     [self.navigationController pushViewController:newWindow animated:YES];
 }
 - (IBAction)backButtonClicked:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];

@@ -19,8 +19,9 @@
 #import "BrowsingHistoryDataBase.h"
 #import "AlmondManagement.h"
 #import "MBProgressHUD.h"
+#import "HTTPRequest.h"
 
-@interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,NSURLConnectionDelegate,DetailsPeriodViewControllerDelegate,UIAlertViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,MBProgressHUDDelegate>
+@interface ParentalControlsViewController ()<ParentControlCellDelegate,CategoryViewDelegate,HTTPDelegate,DetailsPeriodViewControllerDelegate,UIAlertViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,MBProgressHUDDelegate>
 @property (nonatomic) NSMutableArray *parentsControlArr;
 @property (nonatomic) CategoryView *cat_view_more;
 @property (weak, nonatomic) IBOutlet UIView *dataLogView;
@@ -61,6 +62,10 @@
 @property (nonatomic) NSString *Datenew;
 @property (nonatomic) NSString *label;
 
+@property (nonatomic) HTTPRequest *httpReq;
+
+
+
 @property BOOL isSendBWReq;
 @end
 
@@ -69,22 +74,23 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[Analytics sharedInstance] markParentalPage];
+    [self initUIStart];
+    [self setUpHUD];
+   
+}
+-(void)initUIStart{
     self.DaysValuenew = @"7";
     self.label = @"Past week";
     self.Datenew = [CommonMethods getTodayDate];
     self.isSendBWReq = YES;
-    [[Analytics sharedInstance] markParentalPage];
+    
     self.parentsControlArr = [[NSMutableArray alloc]init];
     self.cat_view_more = [[CategoryView alloc]initParentalControlMoreClickView:CGRectMake(0, self.view.frame.size.height - 180, 188 , 320)];
     self.cat_view_more.delegate = self;
     int deviceID = _genericParams.headerGenericIndexValue.deviceID;
-    [self setUpHUD];
+    
     self.client = [Client findClientByID:@(deviceID).stringValue];//dont put in viewDid load
-    
-    NSLog(@"viewDidLoad ParentalControlsViewController");
-    //    [self createArr];
-    
-    // Do any additional setup after loading the view.
 }
 -(void)setUpHUD{
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -94,84 +100,54 @@
     [self.navigationController.view addSubview:_HUD];
 }
 -(void)viewWillAppear:(BOOL)animated{
-    NSLog(@"viewWillAppear ParentalControlsViewController");
     [self.navigationController setNavigationBarHidden:YES];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
+    self.httpReq = [[HTTPRequest alloc]init];
+    self.httpReq.delegate = self;
+    
     self.amac = almond.almondplusMAC;
     self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
-    NSString *todayDate = [CommonMethods getTodayDate];
     
     if(self.isSendBWReq){
         [self createRequest:@"Bandwidth" value:self.DaysValuenew date:self.Datenew];
         self.NosDayLabel.text = self.label;
     }
     self.routerMode = toolkit.routerMode;
-    
     self.isLocal = [toolkit useLocalNetwork:almond.almondplusMAC];
     [super viewWillAppear:YES];
     self.isPressed = YES;
     [self initializeNotifications];
     self.switchView1.transform = CGAffineTransformMakeScale(0.70, 0.70);
     self.switchView3.transform = CGAffineTransformMakeScale(0.70, 0.70);
+
+    [self checkForClientProperty];
+    [self checkForBlock];
+    [self checkForLocal];
     
+    self.icon.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
+    self.clientName.text = self.client.name;
+
+    self.lastSeen.text = [NSString stringWithFormat:@"last activated time %@",[self getLastSeenTime]];
+}
+-(NSString *)getLastSeenTime{
+    NSDate* date = [NSDate dateWithTimeIntervalSince1970:[self.client.deviceLastActiveTime integerValue]];
+    NSDateFormatter *dateformate=[[NSDateFormatter alloc]init];//Accessed on matt's iPhone on Wed 29 June 11:00.
+    [dateformate setDateFormat:@"EEEE dd MMMM HH:mm"]; // Date formater
+    NSString *str = [dateformate stringFromDate:date];
+    return str;
+}
+-(void)switchOne:(BOOL)s1 switchThree:(BOOL)s3 viewTwo:(BOOL)v2 viewConstrin:(int)constrain viewOne:(BOOL)v1 viewThree:(BOOL)v3 dataLogView:(BOOL)d1{
+    self.switchView1.hidden = s1;
+    self.switchView3.hidden = s3;
+    self.view2.hidden = v2;
+    self.view1.hidden = v1;
+    self.view3.hidden = v3;
+    self.dataLogView.hidden = d1;
+    self.viewTwoTop.constant = constrain;
     
-    NSArray  *arr = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:self.client.deviceID];
-    
-    NSString *connection;
-    
-    
-    if(self.client.webHistoryEnable == NO){
-        self.switchView1.on = NO;
-        self.view2.hidden = YES;
-        self.clrHis.hidden = YES;
-        self.viewTwoTop.constant = -40;
-    }
-    else{
-        self.switchView1.on = YES;
-        self.view2.hidden = NO;
-        self.clrHis.hidden = NO;
-        self.viewTwoTop.constant = 1;
-    }
-    if(self.client.bW_Enable == NO){
-        self.switchView3.on = NO;
-        self.dataLogView.hidden = YES;
-        self.clrBW.hidden = YES;
-    }
-    else{
-        self.switchView3.on = YES;
-        self.dataLogView.hidden = NO;
-        self.clrBW.hidden = NO;
-    }
-    
-    
-    for (GenericIndexValue *genericIndexValue in arr) {
-        
-        if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"]){
-            connection = genericIndexValue.genericValue.value;
-            
-            //self.dataLogView.hidden = YES;
-        }
-        else {
-            
-        }
-        
-        if([genericIndexValue.genericIndex.ID isEqualToString:@"-19"] && [genericIndexValue.genericValue.value isEqualToString:@"1"]){
-            NSLog(@"blocked ");
-            
-            self.switchView3.on = NO;
-            self.switchView3.hidden = YES;
-             self.switchView1.hidden = YES;
-            self.clrHis.hidden = YES;
-            self.blockClientTxt.hidden = NO;
-            self.view3.hidden = YES;
-            self.blockClientTxt.text = @"Web history and Data usage are disabled for blocked devices. You can still see records from when the device was last active.";
-            self.dataLogView.hidden = YES;
-            self.clrBW.hidden = YES;
-            
-        }
-    }
-    
+}
+-(void)checkForLocal{
     if(self.isLocal){
         
         BOOL isinternet = [[SecurifiToolkit sharedInstance]isCloudReachable];
@@ -188,7 +164,28 @@
         }
         
     }
-    NSLog(@"client connection = %@ & router mode  = %@ ",connection,self.routerMode);
+    
+}
+-(void)checkForBlock{
+    NSArray  *arr = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:self.client.deviceID];
+    
+    NSString *connection;
+    for (GenericIndexValue *genericIndexValue in arr) {
+        
+        if([genericIndexValue.genericIndex.ID isEqualToString:@"-16"]){
+            connection = genericIndexValue.genericValue.value;
+        }
+        
+        if([genericIndexValue.genericIndex.ID isEqualToString:@"-19"] && [genericIndexValue.genericValue.value isEqualToString:@"1"]){
+            self.switchView3.on = NO;
+            self.clrHis.hidden = YES;
+            self.blockClientTxt.hidden = NO;
+            self.blockClientTxt.text = @"Web history and Data usage are disabled for blocked devices. You can still see records from when the device was last active.";
+            self.clrBW.hidden = YES;
+            [self switchOne:YES switchThree:YES viewTwo:NO viewConstrin:1 viewOne:NO viewThree:YES dataLogView:YES];
+            
+        }
+    }
     
     if([self.routerMode isEqualToString:@"ap"] || [self.routerMode isEqualToString:@"re"] ||[self.routerMode isEqualToString:@"WirelessSlave"] || [self.routerMode isEqualToString:@"WiredSlave"]){
         if([connection isEqualToString:@"wireless"]){
@@ -196,40 +193,33 @@
             self.dataLogView.hidden = YES;
             self.blockClientTxt.hidden = NO;
             self.blockClientTxt.text = @"For checking Data usage, Almond must be in Router Mode.";
-             self.view3.hidden = YES;
+            self.view3.hidden = YES;
         }
         else{
             self.switchView3.on = NO;
             self.switchView1.on = NO;
-            self.view3.hidden = YES;
-            self.view2.hidden = YES;
-            self.view1.hidden = YES;
-            self.dataLogView.hidden = YES;
+            [self switchOne:NO switchThree:NO viewTwo:YES viewConstrin:1 viewOne:YES viewThree:YES dataLogView:YES];
             self.blockClientTxt.hidden = NO;
             self.blockClientTxt.text = @"This device is in wired connection. Web history requires wireless connection in RE/AP Mode. For checking Data usage, Almond must be in Router Mode.";
         }
     }
-    self.icon.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
-    self.clientName.text = self.client.name;
-    NSDate* date = [NSDate dateWithTimeIntervalSince1970:[self.client.deviceLastActiveTime integerValue]];
-    NSDateFormatter *dateformate=[[NSDateFormatter alloc]init];//Accessed on matt's iPhone on Wed 29 June 11:00.
-    [dateformate setDateFormat:@"EEEE dd MMMM HH:mm"]; // Date formater
-    NSString *str = [dateformate stringFromDate:date];
-    self.lastSeen.text = [NSString stringWithFormat:@"last activated time %@",str];
 }
-
-//-(void) viewWillDisappear:(BOOL) animated
-//{
-//    [super viewWillDisappear:animated];
-//    if ([self isMovingFromParentViewController])
-//    {
-//        if (self.navigationController.delegate== self)
-//        {
-//            self.navigationController.delegate = nil;
-//            NSLog(@"removing dlegate");
-//        }
-//    }
-//}
+-(void)checkForClientProperty{
+    
+    if(self.client.webHistoryEnable == NO){
+        [self webHistoryOFf];
+    }
+    else{
+        [self webHistoryON];
+    }
+    if(self.client.bW_Enable == NO){
+        [self bwOFf];
+    }
+    else{
+        [self bwON];
+    }
+    
+}
 -(void)viewWillDisappear:(BOOL)animated{
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
         // Navigation back button was pressed. Do some stuff
@@ -257,22 +247,11 @@
                  object:nil];
 }
 -(void)onCommandResponse:(id)sender{ //mobile command sensor and client 1064
-    NSLog(@"device edit - onUpdateDeviceIndexResponse");
-    //    NSDictionary *payload;
-    
-    NSNotification *notifier = (NSNotification *) sender;
+        NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *payload = [notifier userInfo];
-    NSLog(@"payload mobile command: %@", payload);
-    //    if (dataInfo==nil || [dataInfo valueForKey:@"data"]==nil ) {
-    //        return;
-    //    }
-    
-    if (payload[@"MobileInternalIndex"] == nil) {
+        if (payload[@"MobileInternalIndex"] == nil) {
         return;
     }
-    
-    NSLog(@"payload mobile command: %@", payload);
-    
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     if (isSuccessful) {
         [self.navigationController popViewControllerAnimated:YES];
@@ -281,20 +260,32 @@
         NSLog(@"not able to update....");
     }
 }
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+-(void)webHistoryON{
+    self.switchView1.on = YES;
+    self.view2.hidden = NO;
+    self.clrHis.hidden = NO;
+    self.viewTwoTop.constant = 1;
+
+}
+-(void)webHistoryOFf{
+    self.switchView1.on = NO;
+    self.view2.hidden = YES;
+    self.clrHis.hidden = YES;
+    self.viewTwoTop.constant = -40;
+}
+-(void)bwON{
+    self.switchView3.on = YES;
+    self.dataLogView.hidden = NO;
+    self.clrBW.hidden = NO;
+}
+-(void)bwOFf{
+    self.switchView3.on = NO;
+    self.dataLogView.hidden = YES;
+    self.clrBW.hidden = YES;
+}
 
 - (IBAction)backButton:(id)sender {
-    
     [self.navigationController popViewControllerAnimated:YES];
-    
 }
 
 -(void)saveNewValue:(NSString *)newValue forIndex:(int)index{
@@ -330,22 +321,24 @@
     self.parentsControlArr = [NSMutableArray arrayWithArray:Arr];
     
 }
+-(void)switchOneActionUI:(BOOL)hidden constarin:(int)constrain{
+    self.view2.hidden = hidden;
+    self.clrHis.hidden = hidden;
+    self.viewTwoTop.constant = constrain;
+}
+
 - (IBAction)switch1Action:(id)sender {
     UISwitch *actionSwitch = (UISwitch *)sender;
         BOOL state = [actionSwitch isOn];
         if(state == NO){
-            self.view2.hidden = YES;
-            self.clrHis.hidden = YES;
-            self.viewTwoTop.constant = -40;
+            [self switchOneActionUI:YES constarin:-40];
             self.client.webHistoryEnable = NO;
             [self saveNewValue:@"NO" forIndex:-23];
     
         }
         else{
-            
-            self.view2.hidden = NO;
-            self.clrHis.hidden = NO;
-            self.viewTwoTop.constant = 1;
+           
+            [self switchOneActionUI:NO constarin:1];
             self.client.webHistoryEnable = YES;
             [self saveNewValue:@"YES" forIndex:-23];
             [[Analytics sharedInstance] markLogWebHistory];
@@ -361,15 +354,6 @@
             self.clrBW.hidden = YES;
             self.client.bW_Enable = NO;
             [self saveNewValue:@"NO" forIndex:-25];
-//            UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
-//                                                             message:@"Disabling Web history will delete all your previous history records. Are you sure,you want to disable web history?"
-//                                                            delegate:self
-//                                                   cancelButtonTitle:@"Cancel"
-//                                                   otherButtonTitles:@"Done",nil];
-//            [alert setDelegate:self];
-//            alert.tag = 2;
-//            alert.alertViewStyle = UIAlertViewStyleDefault;
-//            [alert show];
             }
         else{
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Usage cycle reset date" message:@"set date of the month" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
@@ -386,13 +370,7 @@
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == [alertView cancelButtonIndex]){
-         if(alertView.tag == 1){
-             self.switchView1.on = YES;
-         }
-         else if(alertView.tag == 2){
-             self.switchView3.on = YES;
-         }
-         else if(alertView.tag == 3){
+        if(alertView.tag == 3){
              self.switchView3.on = NO;
              self.dataLogView.hidden = YES;
          }
@@ -402,27 +380,9 @@
          else if (alertView.tag == 6){
              
          }
-
     }
     else{
-        if(alertView.tag == 1){
-            self.view2.hidden = YES;
-            self.clrHis.hidden = YES;
-            self.viewTwoTop.constant = -40;
-            self.client.webHistoryEnable = NO;
-            [self saveNewValue:@"NO" forIndex:-23];
-            [self createRequest:@"ClearHistory" value:@"ClearHistory" date:[CommonMethods getTodayDate]];
-            
-        }
-        else if(alertView.tag == 2){
-            self.dataLogView.hidden = YES;
-            self.clrBW.hidden = YES;
-            self.client.bW_Enable = NO;
-            [self saveNewValue:@"NO" forIndex:-25];
-            [self createRequest:@"ClearBandwidth" value:@"ClearBandwidth" date:[CommonMethods getTodayDate]];
-        }
-        else if(alertView.tag == 3){
-            
+         if(alertView.tag == 3){
             self.dataLogView.hidden = NO;
             self.clrBW.hidden = NO;
             self.client.bW_Enable = YES;
@@ -464,12 +424,6 @@
         newWindow.client = self.client;
         self.isSendBWReq = YES;
         [self.navigationController pushViewController:newWindow animated:YES];
-        //        }
-        //        else
-        //        {   controller.client = self.client;
-        //             NSLog(@"instantiateViewControllerWithIdentifier else");
-        //            [self.navigationController pushViewController:controller animated:YES];
-        //        }
         self.isPressed = NO;
         
     }
@@ -506,16 +460,12 @@
 -(void)switch1ActionDynamic:(BOOL)isOn{
     dispatch_async(dispatch_get_main_queue(), ^{
         if(isOn == NO){
-            self.view2.hidden = YES;
-            self.clrHis.hidden = YES;
-            self.viewTwoTop.constant = -40;
+            [self switchOneActionUI:YES constarin:-40];
             self.client.webHistoryEnable = NO;
             
         }
         else{
-            self.view2.hidden = NO;
-            self.clrHis.hidden = NO;
-            self.viewTwoTop.constant = 1;
+            [self switchOneActionUI:NO constarin:1];
             self.client.webHistoryEnable = YES;
             
         }
@@ -560,14 +510,9 @@
 }
 - (IBAction)iconOutletClicked:(id)sender {
     self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 180, self.navigationController.view.bounds.size.width , 320);
-//    [self.cat_view_more setTranslatesAutoresizingMaskIntoConstraints:YES];
-   // [self activateConstraintsForView:self.cat_view_more respectToParentView:self.view];
     self.cat_view_more.backgroundColor = [UIColor whiteColor];
-//    [self stretchToSuperView:self.cat_view_more];
     [self.view addSubview:self.cat_view_more];
     self.backGrayButton.hidden = NO;
-    
-    
 }
 
 -(void)closeMoreView{
@@ -582,48 +527,10 @@
     NSString *req ;
     req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@",search,value,date,_amac,_cmac];
     [self showHudWithTimeoutMsg:@"Loading..." withDelay:1];
-    [self sendHttpRequest:req];
+    [self.httpReq sendHttpRequest:req];
     
 }
--(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
-    //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
-    dispatch_queue_t sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
-    dispatch_async(sendReqQueue,^(){
-        
-        NSLog(@"post req = %@",post);
-        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-        NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-        [request setURL:[NSURL URLWithString:@"https://sitemonitoring.securifi.com:8081"]];
-        [request setHTTPMethod:@"POST"];
-        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
-        [request setHTTPBody:postData];
-        NSURLResponse *res= Nil;
-        //[NSURLConnection connectionWithRequest:request delegate:self];
-        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&res error:nil];
-        if(data == nil)
-            return ;
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        NSLog(@"dict BW respose %@",dict);
-        if([dict[@"search"] isEqualToString:@"ClearHistory"]){
-            NSLog(@"clear history success");
-            
-            [BrowsingHistoryDataBase deleteOldEntries:self.amac clientMac:self.cmac];
-            return;
-        }
-        if([dict[@"search"] isEqualToString:@"ClearBandwidth"]){
-            [self createRequest:@"Bandwidth" value:self.DaysValuenew date:self.Datenew];
-            return;
-        }
-        
-        [self InsertInDB:dict[@"Data"]];
-    });
-    
-    
-    //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
-}
--(void)InsertInDB:(NSDictionary *)dict{
+-(void)responseDict:(NSDictionary *)dict{
     if(dict[@"RX"] == NULL || dict[@"TX"] == NULL)
         return ;
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -704,7 +611,6 @@
 }
 
 -(void)updateDetailPeriod:(NSString *)value date:(NSString*)date lavelText:(NSString*)labelText{
-    NSLog(@"updateDetailPeriod");
     self.DaysValuenew = value;
     self.Datenew = date;
     [self createRequest:@"Bandwidth" value:self.DaysValuenew   date:self.Datenew];
