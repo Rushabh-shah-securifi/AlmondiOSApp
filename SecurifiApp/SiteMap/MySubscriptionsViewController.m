@@ -43,7 +43,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    SFIAlmondPlus *Al3 = [AlmondManagement tryLoadCurrentAL3];
+    SFIAlmondPlus *Al3 = [AlmondManagement tryGetCurrentPrimaryAL3];
     self.currentMAC = Al3.almondplusMAC;
     [self initializeMySubscriptionsArray];
     [self makeAlmondSelectionBtn];
@@ -87,7 +87,6 @@
 }
 
 - (void)initializeMySubscriptionsArray{
-    //This was coded for expansion of sections on tap. Now with new changes it is not needed, but anyways I am keeping the code for possible changes in future.
     NSArray *titles = @[@"IoT Security"];
     self.mySubscriptionsArray = [NSMutableArray new];
     for(NSString *title in titles){
@@ -150,7 +149,6 @@
     _almondSelectionTableview.needsAddAlmond = NO;
     _almondSelectionTableview.currentMAC = self.currentMAC;
     
-    [_almondSelectionTableview initializeView:self.buttonMaskView.frame];
     [self.buttonMaskView addSubview:_almondSelectionTableview];
     
     CATransition *transition = [CATransition animation];
@@ -194,6 +192,8 @@
 
 
 - (IBAction)onAlmondSelectionTap:(id)sender {
+    [_almondSelectionTableview initializeView:self.buttonMaskView.frame];
+    
     [self showAlmondSelection];
 }
 

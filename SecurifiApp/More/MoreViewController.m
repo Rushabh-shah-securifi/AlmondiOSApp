@@ -128,7 +128,7 @@
 -(NSArray *)getFeaturesArray{
     NSMutableArray *moreFeatures = [NSMutableArray new];
     [moreFeatures addObject:@{@"rule_forward_icon":NSLocalizedString(@"rules", @"")}];
-    if(!self.isLocal && [AlmondManagement hasAtleaseOneAL3])
+    if(!self.isLocal && [AlmondManagement hasAtleaseOnePrimaryAL3])
         [moreFeatures addObject:@{@"subscriptions_icon":NSLocalizedString(@"my_subscriptions", @"")}];
     
     NSString *addAlmondText = self.isLocal? NSLocalizedString(@"add_almond", @""): NSLocalizedString(@"link_almond_account", @"");

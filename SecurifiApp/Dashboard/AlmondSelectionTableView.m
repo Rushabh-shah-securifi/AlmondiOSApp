@@ -63,7 +63,7 @@ static const int footerHt = 60;
                 cloud = @[];
             
             if(!self.needsAddAlmond)
-                cloud = [AlmondManagement getAL3s:cloud];
+                cloud = [AlmondManagement getPrimaryAL3s:cloud];
             
             return cloud;
         }
