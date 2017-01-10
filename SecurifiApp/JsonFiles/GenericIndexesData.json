@@ -54,7 +54,6 @@
         "Layout": "LIST_TYPE",
         "AppLabel": "type",
         "DefaultIcon": "help_icon",
-        "DefaultIcon":"help_icon",
         "Values": {
             "identifying": {
                 "Icon": "identifying",
@@ -879,14 +878,12 @@
                 "AppLabel": "gas_on",
                 "Icon": "fire_on",
                 "Label": "GAS DETECTED",
-                "Notification": "notification_gas_off"
                 "Notification": "notification_gas_on"
             },
             "false": {
                 "AppLabel": "ok",
                 "Icon": "fire_off",
                 "Label": "OK",
-                "Notification": "notification_gas_on"
                 "Notification": "notification_gas_off"
             }
         }

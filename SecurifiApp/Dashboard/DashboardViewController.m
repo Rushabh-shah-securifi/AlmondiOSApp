@@ -652,6 +652,7 @@
         gval = [self getMatchingGenericValueForGenericIndexID:indexID forValue:notification.value];
         cell.textLabel.numberOfLines = 2;
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+         if(notification != NULL && gval != NULL)
         cell.textLabel.attributedText = [self prepareNotificationText:gval andNotification:notification];
         NSString *iconName = @"default_device";
         if(gval.icon != nil)

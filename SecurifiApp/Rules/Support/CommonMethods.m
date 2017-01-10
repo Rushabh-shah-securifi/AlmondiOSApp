@@ -901,9 +901,6 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     else return  NO;
 }
 
-
-
-=======
 +(NSString *)colorShadesforValue:(int)defaultcolor byValueOfcolor:(NSString *)value{
     float hue = [value floatValue];
     int intClolor = defaultcolor/8;

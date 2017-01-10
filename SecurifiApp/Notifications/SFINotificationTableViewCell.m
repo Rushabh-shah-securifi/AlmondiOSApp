@@ -147,8 +147,9 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     SFINotification *notification = self.notification;
 
     Device *device = [Device getDeviceForID:notification.deviceId];
-    NSLog(@"notification text %@,device type %d,value type %d",notification.value,notification.deviceType,notification.valueType);
+    NSLog(@"notification text %@,device type %d,value %d,device name %@",notification.value,notification.deviceType,notification.valueType,notification.deviceName);
     NSLog(@"device name %@ ID: %d",notification.deviceName,notification.deviceId);
+    
     [self getGenericIndexValuesByPlacementForDevice:device value:notification.value  devicetype:notification.deviceType notification:(SFINotification *)notification];
 //    [self setIcon];
 //    [self setMessageLabelText:notification];
@@ -172,7 +173,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     }
     return [genericIndexesSet allObjects];
 }
-- (NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)devicert value:(NSString *)value devicetype:(int)devicetype notification:(SFINotification *)not{
+- (NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)devicedfd value:(NSString *)value devicetype:(int)devicetype notification:(SFINotification *)not{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericDeviceClass *genericDevice = toolkit.genericDevices[@(devicetype).stringValue];
     if(genericDevice==nil)

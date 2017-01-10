@@ -41,6 +41,7 @@
 #import "SFIButtonSubProperties.h"
 #import "NewAddSceneViewController.h"
 #import "AddRulesViewController.h"
+#import "AlmondManagement.h"
 
 #define ITEM_SPACING  2.0
 #define LABELSPACING 20.0
@@ -55,7 +56,7 @@
 #define BUTTON_FRAME CGRectMake(0, LABELHEIGHT + LABELVALUESPACING,view.frame.size.width-10,  35)
 static const int xIndent = 10;
 
-@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,MultiButtonViewDelegate,GridViewDelegate,ListButtonDelegate,UIGestureRecognizerDelegate,BlinkLedViewDelegate,List_TypeViewDelegate
+@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,MultiButtonViewDelegate,GridViewDelegate,ListButtonDelegate,UIGestureRecognizerDelegate,BlinkLedViewDelegate,List_TypeViewDelegate>
 
 //can be removed
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
@@ -107,7 +108,7 @@ static const int xIndent = 10;
     });
     self.isLocal = [self.toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
     self.navigationController.view.backgroundColor = [UIColor wheatColor];
-    self.isLocal = [self.toolkit useLocalNetwork:[self.toolkit currentAlmond].almondplusMAC];
+   
     self.toolkit=[SecurifiToolkit sharedInstance];
     self.ViewFrame = self.view.frame;
     [self setUpDeviceEditCell];

@@ -95,7 +95,6 @@
 
 +(NSArray *)domainEpocArr:(NSArray *)arr;
 
-<<<<<<< HEAD
 
 +(NSString *)isVulnerable:(NSString *)caseStr;
 
