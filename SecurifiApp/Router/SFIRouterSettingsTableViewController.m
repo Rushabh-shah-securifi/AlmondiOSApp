@@ -34,7 +34,7 @@
 @property(nonatomic) BOOL isEnabled;
 @property(nonatomic) int keyType;
 @property(nonatomic) SFIWirelessSetting *currentSetting;
-
+@property(nonatomic) BOOL copyPass;
 @end
 
 @implementation SFIRouterSettingsTableViewController
@@ -311,12 +311,26 @@ int mii;
             });
             return;//
         }
+        
         NSLog(@"genericRouterCommand.commandType %d",genericRouterCommand.commandType);
         switch (genericRouterCommand.commandType) {
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
                 [self processSettings:genericRouterCommand.command];
                 if([SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue)
                     [self set2GSSIDTo5G];
+                
+                if(self.copyPass){
+                    SFIWirelessSetting *newSettingObj = [(NSArray*)genericRouterCommand.command firstObject];
+                    if([newSettingObj.type isEqualToString:@"2G"]){
+                        SFIWirelessSetting *setting = [self getSetting:@"5G"];
+                        setting.password = _currentSetting.password;
+                    }else if([newSettingObj.type isEqualToString:@"5G"]){
+                        SFIWirelessSetting *setting = [self getSetting:@"2G"];
+                        setting.password = _currentSetting.password;
+                    }
+                    self.copyPass = NO;
+                }
+                
                 // settings was null, reload in case they are late arriving and the view is waiting for them
                 NSLog(@"processRouterCommandResponse reload");
                 [self showToast:NSLocalizedString(@"successfully_updated", @"")];//
@@ -434,6 +448,8 @@ int mii;
 - (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString *)ssid {
     SFIWirelessSetting *copy = [setting copy];
     copy.ssid = ssid;
+    
+    //special case handling
     if([SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue == NO){
         if([setting.type isEqualToString:@"2G"]){
             if([self checkIF2GAnd5GSSIDsSame:@"5G" newValue:ssid] && ![self checkIF2GAnd5GPasswordsSame]){
@@ -448,8 +464,9 @@ int mii;
                 return;
             }
         }
-        
     }
+    //special case handling
+    
     [self onUpdateWirelessSettings:copy keyType:ssid_key];
 }
 
@@ -548,13 +565,8 @@ int mii;
         }
         else if(alertView.tag == COPY_PASS){
             //copy 2g pass to 5g
-            if([_currentSetting.type isEqualToString:@"2G"]){
-                SFIWirelessSetting *setting = [self getSetting:@"5G"];
-                setting.password = _currentSetting.password;
-            }else if([_currentSetting.type isEqualToString:@"5G"]){
-                SFIWirelessSetting *setting = [self getSetting:@"2G"];
-                setting.password = _currentSetting.password;
-            }
+            self.copyPass = YES;
+            [self onUpdateWirelessSettings:self.currentSetting keyType:ssid_key];
         }
     }
 }
