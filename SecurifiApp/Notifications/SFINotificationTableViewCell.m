@@ -189,39 +189,15 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     
     NSString *notificationString = [NSString stringWithFormat:@"%@",gval.value];
     NSLog(@"outer notificaation obj.value %@",notificationString);
-    if(devicetype != SFIDeviceType_WIFIClient){
-    NSDictionary *notificationDict = @{
-                                       @"devicename":not.deviceName?not.deviceName:@"",
-                                       @"notificationText":gval.notificationText?gval.notificationText:@"",
-                                       @"prefix":gval.notificationPrefix?gval.notificationPrefix:@"",
-                                      @"value":gval.value,
-                                       @"unit":gval.unit?gval.unit:@""
-                                       
-                                       };
-        NSLog(@"outer notificaation obj dict  %@",notificationDict);
-    [self seticon:gval.icon];
-    [self setNotificationLabel:notificationDict];
-    }
+    
     if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
-        NSString *deviceName;
-        UIFont *bold_font = [UIFont securifiBoldFont];
-        UIFont *normal_font = [UIFont securifiNormalFont];
-         NSMutableAttributedString *mutableAttributedString = nil;
-        NSDictionary *attr;
-        
-        attr = @{
-                 NSFontAttributeName : bold_font,
-                 NSForegroundColorAttributeName : [UIColor grayColor],
-                 };
-        
-        
         Client *client = [Client new];
         client.deviceType = @"other";
         self.iconView.image = [UIImage imageNamed:[client iconName]];
         
         NSArray * properties = [not.deviceName componentsSeparatedByString:@"|"];
         NSString *name = properties[3];
-        //        NSLog(@" name notification Name == %@",name);
+        NSString *deviceName;
         if([name rangeOfString:@"An unknown device" options:NSCaseInsensitiveSearch].location != NSNotFound){
             NSArray *nameArr = [name componentsSeparatedByString:@"An unknown device"];
             deviceName = nameArr[1];
@@ -229,21 +205,50 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         else
             deviceName = name;
         
-        NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:deviceName attributes:attr];
-        //NSLog(@"notification msg: %@", message);
-        
+       NSAttributedString *nameStr = [self getAttributedString:deviceName];
         [self setTextFieldOrTextView:nameStr];
-        
-        
+    }
+    else if(self.notification.deviceType == SFIDeviceType_DirectPass){
+        self.iconView.image = [UIImage imageNamed:@"emergency_icon"];
+        NSAttributedString *nameStr = [self getAttributedString:not.deviceName];
+        [self setTextFieldOrTextView:nameStr];
+    }
+    else{ //for Device
+        NSDictionary *notificationDict = @{
+                                           @"devicename":not.deviceName?not.deviceName:@"",
+                                           @"notificationText":gval.notificationText?gval.notificationText:@"",
+                                           @"prefix":gval.notificationPrefix?gval.notificationPrefix:@"",
+                                           @"value":gval.value,
+                                           @"unit":gval.unit?gval.unit:@""
+                                           };
+        NSLog(@"outer notificaation obj dict  %@",notificationDict);
+        [self seticon:gval.icon];
+        [self setNotificationLabel:notificationDict];
     }
     return nil;
 }
+
+- (NSAttributedString *)getAttributedString:(NSString *)text{
+    UIFont *bold_font = [UIFont securifiBoldFont];
+    //        UIFont *normal_font = [UIFont securifiNormalFont];
+    //        NSMutableAttributedString *mutableAttributedString = nil;
+    NSDictionary *attr;
+    
+    attr = @{
+             NSFontAttributeName : bold_font,
+             NSForegroundColorAttributeName : [UIColor grayColor],
+             };
+     return [[NSAttributedString alloc] initWithString:text attributes:attr];
+}
+
+
 -(void)setTextFieldOrTextView:(NSAttributedString*)attributedString{
     if(self.enableDebugMode)
         self.messageTextField.attributedText = attributedString;
     else
         self.messageText.attributedText = attributedString;
 }
+
 -(NSString *)getgenericIndexfor:(int)devicetype andIndex:(NSString *)indexId{
     NSString *deviceTypeString = @(devicetype).stringValue;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];

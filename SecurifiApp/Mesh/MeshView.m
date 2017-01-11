@@ -663,7 +663,7 @@
             if(self.wirelessBtn.selected){
             msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
 
-                //            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
+//            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
             }
             else{
                 msg = @"Unplug all cables except WAN cable. Do not unplug power cable";
@@ -684,8 +684,8 @@
                 [self showAlert:self.almondNormalName msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
         }
     }
-    
 }
+
 -(NSDictionary *)getPayload:(id)sender{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSNotification *notifier = (NSNotification *) sender;
