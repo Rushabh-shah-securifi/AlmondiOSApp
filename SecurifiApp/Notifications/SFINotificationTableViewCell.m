@@ -190,7 +190,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     NSString *notificationString = [NSString stringWithFormat:@"%@",gval.value];
     NSLog(@"outer notificaation obj.value %@",notificationString);
     
-    if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
+    if (self.notification.notiCat == SFINotificationCategory_Clients) {
         Client *client = [Client new];
         client.deviceType = @"other";
         self.iconView.image = [UIImage imageNamed:[client iconName]];
@@ -208,7 +208,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
        NSAttributedString *nameStr = [self getAttributedString:deviceName];
         [self setTextFieldOrTextView:nameStr];
     }
-    else if(self.notification.deviceType == SFIDeviceType_DirectPass){
+    else if(self.notification.notiCat == SFINotificationCategory_Iot){
         self.iconView.image = [UIImage imageNamed:@"emergency_icon"];
         NSAttributedString *nameStr = [self getAttributedString:not.deviceName];
         [self setTextFieldOrTextView:nameStr];
