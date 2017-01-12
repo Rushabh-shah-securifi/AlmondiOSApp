@@ -187,7 +187,6 @@
         self.count+= 100;
         recordCount = self.count;
     }
-    
     self.dayArr = [BrowsingHistoryDataBase insertAndGetHistoryRecord:responseDict readlimit:recordCount amac:self.amac cmac:self.cmac];
     if(self.reload){
         [self reloadTable];
@@ -197,8 +196,8 @@
     if([last_date isEqualToString:[CommonMethods getTodayDate]] && ![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
         [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&pageState=%@&IOT=%d",_amac,_cmac,self.incompleteDB[@"PS"],self.is_IotType] showHudFirstTime:NO];
     }
-    
 }
+
 
 #pragma mark table and search delegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

@@ -454,6 +454,7 @@
 		CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58276B1D10127400843B4C /* WeatherRuleButton.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
 		CE7D242E1E24A03600811CAD /* LabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7D242D1E24A03600811CAD /* LabelView.m */; };
+		CE7D24321E27596200811CAD /* IoTVulnerabilityData.json in Resources */ = {isa = PBXBuildFile; fileRef = CE7D24311E27596200811CAD /* IoTVulnerabilityData.json */; };
 		CE7E89B61DC356CB00B0C3C6 /* DetailsPeriodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7E89B51DC356CB00B0C3C6 /* DetailsPeriodViewController.m */; };
 		CE8251331E08FF9400212E50 /* MainDashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE8251311E08FF9400212E50 /* MainDashboard.storyboard */; };
 		CEABC65B1D6F14A000C2DCD4 /* CategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEABC65A1D6F14A000C2DCD4 /* CategoryView.m */; };
@@ -1158,6 +1159,7 @@
 		CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPickerIndicatorView1.m; sourceTree = "<group>"; };
 		CE7D242C1E24A03600811CAD /* LabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelView.h; sourceTree = "<group>"; };
 		CE7D242D1E24A03600811CAD /* LabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelView.m; sourceTree = "<group>"; };
+		CE7D24311E27596200811CAD /* IoTVulnerabilityData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = IoTVulnerabilityData.json; sourceTree = "<group>"; };
 		CE7E89B41DC356CB00B0C3C6 /* DetailsPeriodViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsPeriodViewController.h; sourceTree = "<group>"; };
 		CE7E89B51DC356CB00B0C3C6 /* DetailsPeriodViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsPeriodViewController.m; sourceTree = "<group>"; };
 		CE8251321E08FF9400212E50 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MainDashboard.storyboard; sourceTree = "<group>"; };
@@ -2560,6 +2562,7 @@
 				B017E8831DE8600400BC0DE8 /* deviceListJson.json */,
 				B017E8841DE8600400BC0DE8 /* DeviceListResponse.json */,
 				B017E8851DE8600400BC0DE8 /* GenericIndexesData.json */,
+				CE7D24311E27596200811CAD /* IoTVulnerabilityData.json */,
 				B017E8861DE8600400BC0DE8 /* helpCenterJson.json */,
 				B017E8871DE8600400BC0DE8 /* responseMain.json */,
 				B017E8881DE8600400BC0DE8 /* scene_names.txt */,
@@ -3093,6 +3096,7 @@
 				A58DB32D1BB16EAF00717C02 /* Almond-Localizable.strings in Resources */,
 				B017E88D1DE8600400BC0DE8 /* deviceListJson.json in Resources */,
 				A58DB3101BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
+				CE7D24321E27596200811CAD /* IoTVulnerabilityData.json in Resources */,
 				A58DB4551BB3CD3F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB30B1BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
 				846414DB1B736B80008AB07F /* AvenirLTStd-Black.otf in Resources */,

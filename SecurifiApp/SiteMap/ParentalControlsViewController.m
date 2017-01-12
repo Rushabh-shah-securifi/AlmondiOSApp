@@ -101,34 +101,38 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [self.navigationController setNavigationBarHidden:YES];
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
+   
     self.httpReq = [[HTTPRequest alloc]init];
     self.httpReq.delegate = self;
-    
-    self.amac = almond.almondplusMAC;
-    self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
-    
+    self.switchView1.transform = CGAffineTransformMakeScale(0.70, 0.70);
+    self.switchView3.transform = CGAffineTransformMakeScale(0.70, 0.70);
+    [self initMethodToolkit];
     if(self.isSendBWReq){
         [self createRequest:@"Bandwidth" value:self.DaysValuenew date:self.Datenew];
         self.NosDayLabel.text = self.label;
     }
-    self.routerMode = toolkit.routerMode;
-    self.isLocal = [toolkit useLocalNetwork:almond.almondplusMAC];
     [super viewWillAppear:YES];
     self.isPressed = YES;
     [self initializeNotifications];
-    self.switchView1.transform = CGAffineTransformMakeScale(0.70, 0.70);
-    self.switchView3.transform = CGAffineTransformMakeScale(0.70, 0.70);
-
     [self checkForClientProperty];
     [self checkForBlock];
     [self checkForLocal];
-    
+    [self iconTextUpdate];
+}
+-(void)iconTextUpdate{
     self.icon.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
     self.clientName.text = self.client.name;
-
+    
     self.lastSeen.text = [NSString stringWithFormat:@"last activated time %@",[self getLastSeenTime]];
+}
+-(void)initMethodToolkit{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
+     self.amac = almond.almondplusMAC;
+     self.cmac = [CommonMethods hexToString:self.client.deviceMAC];
+    self.routerMode = toolkit.routerMode;
+    self.isLocal = [toolkit useLocalNetwork:almond.almondplusMAC];
+
 }
 -(NSString *)getLastSeenTime{
     NSDate* date = [NSDate dateWithTimeIntervalSince1970:[self.client.deviceLastActiveTime integerValue]];
@@ -180,7 +184,7 @@
             self.switchView3.on = NO;
             self.clrHis.hidden = YES;
             self.blockClientTxt.hidden = NO;
-            self.blockClientTxt.text = @"Web history and Data usage are disabled for blocked devices. You can still see records from when the device was last active.";
+            self.blockClientTxt.text = NSLocalizedString(@"Web_history_and_Data_usage", @"");
             self.clrBW.hidden = YES;
             [self switchOne:YES switchThree:YES viewTwo:NO viewConstrin:1 viewOne:NO viewThree:YES dataLogView:YES];
             
@@ -192,7 +196,7 @@
             self.switchView3.on = NO;
             self.dataLogView.hidden = YES;
             self.blockClientTxt.hidden = NO;
-            self.blockClientTxt.text = @"For checking Data usage, Almond must be in Router Mode.";
+            self.blockClientTxt.text = NSLocalizedString(@"For_checking_Data_usage", @"");
             self.view3.hidden = YES;
         }
         else{
@@ -200,7 +204,7 @@
             self.switchView1.on = NO;
             [self switchOne:NO switchThree:NO viewTwo:YES viewConstrin:1 viewOne:YES viewThree:YES dataLogView:YES];
             self.blockClientTxt.hidden = NO;
-            self.blockClientTxt.text = @"This device is in wired connection. Web history requires wireless connection in RE/AP Mode. For checking Data usage, Almond must be in Router Mode.";
+            self.blockClientTxt.text = NSLocalizedString(@"This_device_is_in_wired", @"");
         }
     }
 }
