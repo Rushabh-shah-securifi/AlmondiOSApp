@@ -431,7 +431,7 @@ NSLog(@"dict tag %@ ",dict[@"Tag"]);
     
     ctrl.issueTypes = [[self getIssueTypes] sortedArrayUsingSelector: @selector(compare:)];
     if(self.isEcho_Nest)
-        ctrl.issueTypes = @[@"7"];
+        ctrl.issueTypes = @[@"10"];
     [self pushViewController:ctrl];
 }
 
