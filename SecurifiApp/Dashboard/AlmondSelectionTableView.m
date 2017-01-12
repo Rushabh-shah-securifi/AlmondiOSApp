@@ -40,6 +40,7 @@ static const int footerHt = 60;
     enum SFIAlmondConnectionMode modeValue = [[SecurifiToolkit sharedInstance] currentConnectionMode];
     self.almondList = [self buildAlmondList:modeValue];
     self.frame = CGRectMake(0, CGRectGetHeight(maskFrame)-[self getHeight], CGRectGetWidth(maskFrame), [self getHeight]);
+    [self reloadData];
 }
 
 -(CGFloat)getHeight{

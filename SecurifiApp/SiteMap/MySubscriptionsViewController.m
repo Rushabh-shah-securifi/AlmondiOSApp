@@ -43,10 +43,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    SFIAlmondPlus *Al3 = [AlmondManagement tryGetCurrentPrimaryAL3];
-    self.currentMAC = Al3.almondplusMAC;
     [self initializeMySubscriptionsArray];
-    
     [self makeAlmondSelectionBtn];
     [self createAlmondListPopup];
     [self setUpHUD];
@@ -54,6 +51,10 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    SFIAlmondPlus *Al3 = [AlmondManagement tryGetCurrentPrimaryAL3];
+    self.currentMAC = Al3.almondplusMAC;
+    [self setFrames:Al3.almondplusName];
+    
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [self initializeNotification];
     self.almondPlan = [AlmondPlan getAlmondPlan:self.currentMAC];
@@ -122,13 +123,11 @@
 
 #pragma mark  - ui mehtods
 - (void)makeAlmondSelectionBtn{
-    NSString *currentAlmName = [AlmondManagement cloudAlmond:self.currentMAC].almondplusName;
     _almondLabel = [[UILabel alloc]init];
     _imgView = [[UIImageView alloc]init];
-    [self setFrames:currentAlmName];
     
     //almond name label
-    [CommonMethods setLableProperties:_almondLabel text:currentAlmName textColor:[SFIColors paymentColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentCenter];
+    [CommonMethods setLableProperties:_almondLabel text:@"" textColor:[SFIColors paymentColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentCenter];
     _almondLabel.center = CGPointMake(CGRectGetWidth(_almSelectionBtn.bounds)/2-10, CGRectGetHeight(_almSelectionBtn.bounds)/2);
     [self.almSelectionBtn addSubview:_almondLabel];
     
@@ -148,7 +147,6 @@
     _almondSelectionTableview = [AlmondSelectionTableView new];
     _almondSelectionTableview.methodsDelegate = self;
     _almondSelectionTableview.needsAddAlmond = NO;
-    _almondSelectionTableview.currentMAC = self.currentMAC;
     [self.buttonMaskView addSubview:_almondSelectionTableview];
     
     CATransition *transition = [CATransition animation];
@@ -189,6 +187,7 @@
 
 
 - (IBAction)onAlmondSelectionTap:(id)sender {
+    _almondSelectionTableview.currentMAC = self.currentMAC;
     [_almondSelectionTableview initializeView:self.buttonMaskView.frame];
     
     [self showAlmondSelection];
