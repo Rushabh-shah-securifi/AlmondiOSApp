@@ -51,62 +51,37 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUpHUD];
-//    self.explanationLable.userInteractionEnabled = YES;
-//    [self.explanationLable addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapOnLabel:)]];
-//    // Assign attributedText to UILabel
-//    self.explanationLable.attributedText = attributedString;
-    // Do any additional setup after loading the view.
+
 }
 -(void)viewWillAppear:(BOOL)animated{
     self.middleView.hidden = _hideMiddleView;
+    self.tableView.hidden = _hideTable;
     self.isDNSScan = !_hideMiddleView;
-    
+    self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
     if(_hideMiddleView == YES)
         self.iotSecurity_label.text = @"IoT Scan";
     else
         self.iotSecurity_label.text = @"IoT Security";
     
-    self.tableView.hidden = _hideTable;
-//    self.learnMore.hidden = _hideTable;
+    
     if(self.sectionType == vulnerable_section)
         self.learnMore.hidden = NO;
     else
         self.learnMore.hidden = YES;
-    self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
-    NSLog(@"iot device mac %@",self.iotDevice[@"MAC"]);
-    self.client = [Client getClientByMAC:self.iotDevice[@"MAC"]];
-    NSLog(@"self.client previous type %@",self.client.previousType);
-     NSLog(@"self.client current type type %@",self.client.deviceType);
-    NSLog(@"self.client.name %@",self.client.name);
-    NSLog(@"iot device mac %@",self.client.deviceMAC);
-    
-    //    if(!self.client.iot_serviceEnable){
-    //        self.middleView.hidden = YES;
-    //        self.tableView.hidden = YES;
-    //        self.learnMore.hidden = YES;
-    //    }
-    
-    NSString *TypeImg = [self.client iconName];
-    NSLog(@"Type Img %@",TypeImg);
-    self.clientImg.image = [UIImage imageNamed:TypeImg];
-    self.clientName.text = self.client.name;
-    NSLog(@"self.client.name %@",self.client.name);
+    [self setcientNameImg];
     [self getDescriptionLables:self.iotDevice];
     [self setAllowAndBlock];
-    //       self.topView.backgroundColor = [self getolor:self.iotDevice];
-    NSString *displayText = [self getDescripTionText:self.iotDevice];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",displayText,@"Learn More"] attributes:nil];
-    NSRange linkRange = NSMakeRange(displayText.length, @"Learn More".length); // for the word "link" in the string above
-    
-    NSDictionary *linkAttributes = @{ NSForegroundColorAttributeName : [UIColor colorWithRed:0.05 green:0.4 blue:0.65 alpha:1.0],
-                                      NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle) };
-    [attributedString setAttributes:linkAttributes range:linkRange];
-    
     [self initializeNotifications];
     [super viewWillAppear:YES];
     [self forRouterModetest];
     [self.navigationController setNavigationBarHidden:YES];
     
+}
+-(void)setcientNameImg{
+    self.client = [Client getClientByMAC:self.iotDevice[@"MAC"]];
+    NSString *TypeImg = [self.client iconName];
+    self.clientImg.image = [UIImage imageNamed:TypeImg];
+    self.clientName.text = self.client.name;
 }
 -(void)forRouterModetest{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -135,22 +110,13 @@
         }
         else{
             self.iotSwitch.hidden = NO;
-            //self.infoLabel.text = NSLocalizedString(@"dashBoard AddAlmond", @"Add Almond");
         }
     }
 }
 -(void)initializeNotifications{
     NSLog(@"initialize notifications sensor table");
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    
-    [center addObserver:self //indexupdate or name/location change both
-               selector:@selector(onCommandResponse:)
-                   name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
-                 object:nil];
-    [center addObserver:self //mobile response 1525 - client notification
-               selector:@selector(onClientPreferenceUpdateResponse:)
-                   name:NOTIFICATION_WIFI_CLIENT_UPDATE_PREFERENCE_REQUEST_NOTIFIER
-                 object:nil];
+ 
     [center addObserver:self //common dynamic reponse handler for sensor and clients
                selector:@selector(onDeviceListAndDynamicResponseParsed:)
                    name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
@@ -178,7 +144,27 @@
     }
     return displayText;
 }
-
+-(void)clientInActiveUI{
+    self.blockLabel.text = @"InActive";
+    [self.blockButton setTitle:@"Block Device" forState:UIControlStateNormal];
+    self.topView.backgroundColor = [UIColor lightGrayColor];
+    self.blockButton.backgroundColor = [UIColor darkGrayColor];
+}
+-(void)clientActiveUI{
+    self.blockLabel.text = @"Active";
+    [self.blockButton setTitle:@"Block Device" forState:UIControlStateNormal];
+    if(_isDNSScan)
+        self.topView.backgroundColor = [UIColor securifiScreenGreen];
+    else
+        self.topView.backgroundColor = [self getColor:self.iotDevice];
+    self.blockButton.backgroundColor = [UIColor darkGrayColor];
+}
+-(void)amazoneNestUI{
+    self.topView.backgroundColor = [UIColor redColor];
+    self.infoLabel.hidden= NO;
+    self.infoLabel.text = @"This device is behaving suspiciously.Try resetting the device or remove it from your network.";
+    self.isEcho_Nest = YES;
+}
 -(void)setAllowAndBlock{
     self.infoLabel.hidden= YES;
     NSLog(@"client.deviceAllowedType %d",self.client.deviceAllowedType);
@@ -189,24 +175,13 @@
             self.iotSwitch.on = self.client.iot_dnsEnable;
         
     if(!self.client.isActive){
-        self.blockLabel.text = @"InActive";
-        
-        [self.blockButton setTitle:@"Block Device" forState:UIControlStateNormal];
-        self.topView.backgroundColor = [UIColor lightGrayColor];
-        self.blockButton.backgroundColor = [UIColor darkGrayColor];
+        [self clientInActiveUI];
     }
     else{
-        self.blockLabel.text = @"Active";
-        [self.blockButton setTitle:@"Block Device" forState:UIControlStateNormal];
-        if(_isDNSScan)
-            self.topView.backgroundColor = [UIColor securifiScreenGreen];
-        else
-            self.topView.backgroundColor = [self getColor:self.iotDevice];
-        self.blockButton.backgroundColor = [UIColor darkGrayColor];
+        [self clientActiveUI];
     }
         if(self.client.deviceAllowedType == 1){
             self.blockLabel.text = @"Blocked";
-            
             [self.blockButton setTitle:@"Allow Device" forState:UIControlStateNormal];
             self.topView.backgroundColor = [UIColor darkGrayColor];
             self.blockButton.backgroundColor = [UIColor securifiScreenGreen];
@@ -215,20 +190,10 @@
         }
         else{
             if(!self.client.isActive){
-                self.blockLabel.text = @"InActive";
-                
-                [self.blockButton setTitle:@"Block Device" forState:UIControlStateNormal];
-                self.topView.backgroundColor = [UIColor lightGrayColor];
-                self.blockButton.backgroundColor = [UIColor darkGrayColor];
+                [self clientInActiveUI];
             }
             else{
-                self.blockLabel.text = @"Active";
-                [self.blockButton setTitle:@"Block Device" forState:UIControlStateNormal];
-                if(_isDNSScan)
-                    self.topView.backgroundColor = [UIColor securifiScreenGreen];
-                else
-                    self.topView.backgroundColor = [self getColor:self.iotDevice];
-                self.blockButton.backgroundColor = [UIColor darkGrayColor];
+                [self clientActiveUI];
             }
         }
         if(self.sectionType == vulnerable_section){
@@ -236,21 +201,13 @@
         }
         if(_hideMiddleView == NO){
             if([self.client.deviceType isEqualToString:@"amazon_echo"] && [self.client.previousType isEqualToString:@"nest"]){
-                self.topView.backgroundColor = [UIColor redColor];
-                self.infoLabel.hidden= NO;
-                self.infoLabel.text = @"This device is behaving suspiciously.Try resetting the device or remove it from your network.";
-                self.isEcho_Nest = YES;
+                [self amazoneNestUI];
             }
             else if([self.client.deviceType isEqualToString:@"nest"] && [self.client.previousType isEqualToString:@"amazon_echo"]){
-                self.topView.backgroundColor = [UIColor redColor];
-                self.infoLabel.hidden= NO;
-                self.infoLabel.text = @"This device is behaving suspiciously.Try resetting the device or remove it from your network.";
-                self.isEcho_Nest = YES;
+                [self amazoneNestUI];
             }
         }
-        
     });
-
 }
 
 -(void)getDescriptionLables:(NSDictionary*)returnDict{
@@ -260,17 +217,26 @@
             continue;
         NSDictionary *dict = returnDict[key];
         if([dict[@"P"]isEqualToString:@"1"]){
-            NSString *portsDetail = [self getPortsStrings:dict[@"Value"]];
+            NSArray *ports = dict[@"Value"];
+            NSString *portsDetail = [self getPortsStrings:ports];
             NSDictionary *LabelsDict = @{@"Label":[CommonMethods type:dict[@"Tag"]],
                                          @"Tag":dict[@"Tag"],
                                          @"Value":portsDetail
-                                         
                                    };
-            
             [self.warningLables addObject: LabelsDict];
+            NSDictionary *LabelsDictNew;
+            if([dict[@"Tag"] isEqualToString:@"1"]){
+                for(NSString *port in ports){
+                    if(port.intValue < 1024){
+                        LabelsDictNew = @{@"Label":[CommonMethods type:dict[@"Tag"]],
+                                                     @"Tag":dict[@"Tag"],
+                                                     @"Value":portsDetail
+                                                     };
+                    }
+                }
+            }
         }
     }
-
 }
 -(NSString *)getPortsStrings:(NSArray *)ports{
     if(ports.count == 0)
@@ -278,21 +244,7 @@
     NSString *portsDetail = [ports componentsJoinedByString:@", "];
     return [NSString stringWithFormat:@"Ports: [%@]",portsDetail];
 }
--(UIColor *)getolor:(NSDictionary *)returnDict{
-    for(NSString *key in returnDict.allKeys){
-        if([key isEqualToString:@"MAC"])
-            continue;
-        NSDictionary *dict = returnDict[key];
-        if([dict[@"P"]isEqualToString:@"1"]){
-            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"]){
-                return [UIColor redColor];
-            }
-            else
-                return [UIColor orangeColor];
-        }
-    }
-    return [UIColor grayColor];
-}
+
 - (IBAction)backButtonClicked:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -328,19 +280,17 @@
         cell = [self everyThingsFineLabel:cell];
         return cell;
     }
-        NSDictionary *dict = [self.warningLables objectAtIndex:indexPath.row];
-        cell.textLabel.textAlignment = NSTextAlignmentLeft;
-        cell.textLabel.numberOfLines = 2;
-        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        cell.textLabel.text = dict[@"Label"];
-        NSString *iconName = @"tamper";
-        UIColor *color;
-    NSLog(@"dict tag %@ ",dict[@"Tag"]);
-        if([dict[@"Tag"] isEqualToString:@"1"]||[dict[@"Tag"] isEqualToString:@"3"])
-            color = [UIColor redColor];
-        else
-            color = [UIColor orangeColor];
-        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:color];
+    NSDictionary *dict = [self.warningLables objectAtIndex:indexPath.row];
+    cell.textLabel.textAlignment = NSTextAlignmentLeft;
+    cell.textLabel.text = dict[@"Label"];
+    NSString *iconName = @"tamper";
+    UIColor *color;
+NSLog(@"dict tag %@ ",dict[@"Tag"]);
+    if([dict[@"Tag"] isEqualToString:@"1"]||[dict[@"Tag"] isEqualToString:@"3"])
+        color = [UIColor redColor];
+    else
+        color = [UIColor orangeColor];
+    cell.imageView.image = [CommonMethods imageNamed:iconName withColor:color];
     cell.textLabel.textColor = [UIColor blackColor];
     cell.textLabel.numberOfLines = 2;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -370,12 +320,10 @@
      [self showHudWithTimeoutMsg:@"Loading..." withDelay:1];
     if(self.client.deviceAllowedType == 0){
         self.client.deviceAllowedType = 1;
-        
     }
     else {
         self.client.deviceAllowedType = 0;
     }
-    
     [ClientPayload getUpdateClientPayloadForClient:self.client mobileInternalIndex:mii];
 }
 
@@ -391,10 +339,7 @@
         
         NSDictionary *dict = returnDict[key];
         NSLog(@"dict   == %@",dict);
-//        if(dict == nil){
-//            
-//            return  [UIColor securifiScreenGreen];
-//        }
+
         if([dict[@"P"]isEqualToString:@"1"]){
             if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"]){
                 color = [UIColor redColor];
@@ -414,98 +359,18 @@
 
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");
-    
     [self hideHude];
-        NSNotification *notifier = (NSNotification *) sender;
-        NSDictionary *dataInfo = [notifier userInfo];
-        if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
-            return;
-        }
-        NSDictionary *payload = dataInfo[@"data"];
-        NSString *commandType = payload[COMMAND_TYPE];
-    
-         //checking if response is of only that particular client, only then pop
-    NSLog(@"payload:: %@",payload);
-        if(payload[CLIENTS]){
-            SecurifiToolkit *toolkit =[SecurifiToolkit sharedInstance];
-        NSDictionary *clientPayload = payload[CLIENTS];
-        NSString *clientID = clientPayload.allKeys.firstObject;
-            NSDictionary *clientDict = clientPayload[clientID];
-            NSLog(@"clientDict = %@",clientDict);
-            
-            for(Client *client in toolkit.clients){
-                if([clientID isEqualToString:client.deviceID]){
-                    // need to work on Block property
-                    NSString *newValue ;
-                    if([clientDict[BLOCK] isEqualToString:@"1"]){
-                        client.deviceAllowedType = 1;
-                        self.client.deviceAllowedType = 1;
-                    }
-                    else{
-                         client.deviceAllowedType = 0;
-                    self.client.deviceAllowedType = 0;
-                    }
-                    if([clientDict[IOTEnable] isEqualToString:@"true"]){
-                        client.iot_serviceEnable = YES;
-                        self.client.iot_serviceEnable = YES;
-                    }
-                    else{
-                        client.iot_serviceEnable = NO;
-                        self.client.iot_serviceEnable = NO;
-                    }
-                    if([clientDict[DNSEnable] isEqualToString:@"true"]){
-                        client.iot_dnsEnable = YES;
-                        self.client.iot_dnsEnable = YES;
-                    }
-                    else{
-                        client.iot_dnsEnable = NO;
-                        self.client.iot_dnsEnable = NO;
-                    }
-                    
-                    [self setAllowAndBlock];
-                    
-                }
+        SecurifiToolkit *toolkit =[SecurifiToolkit sharedInstance];
+        for(Client *client in toolkit.clients){
+            if([self.client.deviceID isEqualToString:client.deviceID]){
+                self.client = [client copy];
+                [self setAllowAndBlock];
                 
-                
+            }
         }
-        }
 }
--(void)onClientPreferenceUpdateResponse:(id)sender{//client individual 1525
-    NSLog(@"device edit - onClientPreferenceUpdateResponse");
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data == nil) {
-        return;
-    }
-    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    if ([mainDict[@"MobileInternalIndex"] integerValue]!=mii) {
-        return;
-    }
-    if ([mainDict[@"Success"] boolValue] == NO) {
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            //[self showToast:NSLocalizedString(@"sorry_could_not_update", @"")];
-            [self.navigationController popViewControllerAnimated:YES];
-        });
-        return;
-    }
-    else{
-        //[self showToast:NSLocalizedString(@"successfully_updated", @"")];
-    }
-}
--(void)onCommandResponse:(id)sender{
-   
-    NSDictionary *payload;
-    
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *dataInfo = [notifier userInfo];
-    
-    if (dataInfo==nil || [dataInfo valueForKey:@"data"]==nil ) {
-        return;
-    }
-    payload = [dataInfo[@"data"] objectFromJSONData];
-   
-    NSLog(@"onCommandResponse %@",payload);
-}
+
+
 - (IBAction)viewHistoryButtonClicked:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
     BrowsingHistoryViewController *newWindow = [storyboard   instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];

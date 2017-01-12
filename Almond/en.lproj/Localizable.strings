@@ -2283,11 +2283,35 @@ Contact us at support@securifi.com";
 "brightness_changed" = " Brightness set to";
 
 "timer_text" = "'s timer set to ";
+"NO_ONE_17" = "No One 17 and Under Admitted. Clearly adult. Children are not admitted.";
 
+"Under_17_requires" = "Under 17 requires accompanying parent or adult guardian. Contains some adult material. Parents are urged to learn more about the film before taking their young children with them.";
 
+"Some_material_may" = "Some material may be inappropriate for children under 13. Parents are urged to be cautious. Some material may be inappropriate for Pre-teenagers.";
 
+"We_currently_have_no_information" = "We currently have no information about the rating of this website.";
 
+"Some_material_may_not" = "Some material may not be suitable for children. Parents urged to give  \"parental guidance\". May contain some material parents might not like for their young children.";
 
+"All_ages_admitted" = "All ages admitted. Nothing that would offend parents for viewing by children.";
 
+"Web_history_and_Data_usage" = "Web history and Data usage are disabled for blocked devices. You can still see records from when the device was last active.";
+"For_checking_Data_usage" = "For checking Data usage, Almond must be in Router Mode.";
 
+"This_device_is_in_wired" = "This device is in wired connection. Web history requires wireless connection in RE/AP Mode. For checking Data usage, Almond must be in Router Mode.";
 
+"open_port_wc_title" = "Open telnet port with weak username and password";
+"open_ports_title" = "Several open ports found in device ";
+"local_wc_title" = "Local web page uses weak username and  password";
+"port_forward_title" = "Port forwarding enabled for this device";
+"upnp_iot_title" = "Device using Universal Plug and Play(UPnP) service";
+
+"open_port_wc_desc" = "Your device  has an open telnet (port:80) and uses a weak username and password. Telnet enabled devices are highly vulnerable to Mirai Botnet attacks. We suggest you block this device or create a strong username and password if you can access the telnet. Contact your device vendor for more assistance.";
+"open_ports_iot_desc" = "Your device has open ports. These ports may be used by some applications for allowing remote access of your system. If you do not use this device for such applications,it may be vulnerable. We suggest you block this device or contact your device vendor.";
+"local_wc_desc" = "The local web interface for this device uses a weak username and password. We suggest you block the device or change the password. Typically, settings can be accessed by entering the ip address of the device in your web browser. Contact your device vendor for more assistance.";
+"port_forward_iot_desc" = "Your device is being used for port forwarding. Port forwarding is usually enabled manually for gaming applications and for remote access of cameras and DVRs. If you are not aware of port forwarding for this device, we suggest you block this device or contact your device vendor.";
+"upnp_iot_desc" = "UPnP is a protocol that applications use to automatically set up port forwarding in the router. Viruses and Malwares can use UPnP in devices to gain remote access of your network. You can disable UPnP on your Almond from the Wifi tab.";
+"open_ports_title1" = "No reason to worry though.";
+"open_ports_iot_desc1" = "Open private ports found in your device. The port numbers range from 0 through 65535. But the ones from 0 to 1024 are called “Well known ports” - as they are used by commonly known applications. Ports 1024 to 65536 are called private or registered ports. Application running on these ports ( 1024 to 65536) may not be known to hackers or unauthorised user and therefore it is less prone to attacks. Typically, these ports are used by device vendors ( your Laptops and Desktop) for running different applications that may require internet connectivity.";
+"upnp_iot_title1" = "Device using UPnP(Universal Plug n Play)  service on  private ports Ports: [1024….65536]";
+"upnp_iot_desc1" = "UPnP is a service that some devices use to automatically set up port forwarding in the router.For example, UPnP is used by applications running on gaming consoles to connect to gaming servers.  Hackers or unauthorized  users can use open ports which are forwarded by UPnP to gain control of your devices. Port numbers range from 0 through 65535. But the ones from 0 to 1024 are called “Well known ports” - as they are used by commonly known applications. Ports 1024 to 65536 are called registered or private ports.Application running on ports 1024 to 65536 may not be known to hackers or unauthorised user, and are therefore less prone to attacks. But UPnP allows applications on public network to bypass router firewall and connect directly to applications running on your device,therefore If you don’t use any such services or applications, we suggest that you disable UPnP on your Almond from the Almond App  by going to the advanced router features section of the Wifi tab.";

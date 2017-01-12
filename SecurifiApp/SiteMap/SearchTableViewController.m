@@ -24,7 +24,6 @@
 #import "HTTPRequest.h"
 
 
-
 #define CATEORY @"Category"
 #define LASTHOUR @"LastHour"
 #define PRESENTHOUR @"PresentHour"
@@ -33,6 +32,13 @@
 #define LASTWEEK @"LastWeek"
 #define WEEKDAY @"WeekDay"
 #define FROMTHISDATE @"FromThisDate"
+#define UNKNOWN @"Unknown"
+
+#define  RESTRICTED @"Restricted"
+#define  NC17 @"NC-17"
+#define  PG13 @"PG-13"
+#define  PG @"PG"
+#define  G @"G"
 
 
 
@@ -316,36 +322,36 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
             [self setSearchpattenMethod:WeekSearch withString:@"Last Week"];
         }
         else if (indexPath.section == 2 && indexPath.row == 0){
-            [self createRequest:@"Category" value:@"0"];
+            [self createRequest:CATEORY value:@"0"];
             
-            [self categorySearch:@"Unknown" andDisplayText:@"Unknown"];
+            [self categorySearch:UNKNOWN andDisplayText:UNKNOWN];
         }
         else if (indexPath.section == 2 && indexPath.row == 1){
-            [self createRequest:@"Category" value:@"4"];
+            [self createRequest:CATEORY value:@"4"];
             
             
-            [self categorySearch:@"NC-17" andDisplayText:@"Adults Only"];
+            [self categorySearch:NC17 andDisplayText:@"Adults Only"];
         }
         else if (indexPath.section == 2 && indexPath.row == 2){
-            [self createRequest:@"Category" value:@"5"];
+            [self createRequest:CATEORY value:@"5"];
             
-            [self categorySearch:@"Restricted" andDisplayText:@"Restricted"];
+            [self categorySearch:RESTRICTED andDisplayText:@"Restricted"];
         }
         else if (indexPath.section == 2 && indexPath.row == 3){
-            [self createRequest:@"Category" value:@"3"];
+            [self createRequest:CATEORY value:@"3"];
             
-            [self categorySearch:@"PG-13" andDisplayText:@"Parents Strongly Cautioned"
+            [self categorySearch:PG13 andDisplayText:@"Parents Strongly Cautioned"
              ];
         }
         else if (indexPath.section == 2 && indexPath.row == 4){
-            [self createRequest:@"Category" value:@"2"];
+            [self createRequest:CATEORY value:@"2"];
             
-            [self categorySearch:@"PG" andDisplayText:
+            [self categorySearch:PG andDisplayText:
              @"Parental Guidance Suggested"];
         }
         else if (indexPath.section == 2 && indexPath.row == 5){
-            [self createRequest:@"Category" value:@"1"];
-            [self categorySearch:@"G" andDisplayText:@"General Audiences"];
+            [self createRequest:CATEORY value:@"1"];
+            [self categorySearch:G andDisplayText:@"General Audiences"];
         }
     }
     else{
@@ -621,14 +627,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     else if(self.isManuelSearch){
          [self createRequest:DOMAINNAME value:[searchString lowercaseString]];
     }
-    //    NSLog(@"searching string self.searchPatten %ld = %@",(long)self.searchPatten,searchString );
-    //
-    //    [self getHistoryFromDB:searchString];
-    //
-    //    [self.dayArr removeAllObjects];
-    //    [self.browsingHistory getBrowserHistoryImages:self.historyDict dispatchQueue:self.imageDownloadQueue dayArr:self.dayArr];
-    //
-    // [self reloadSearchTable];
+    
     if(self.dayArr.count == 0)
         self.NoresultFound.hidden = YES;
     [searchBar setShowsCancelButton:YES animated:YES];
@@ -662,7 +661,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSDictionary *PG_13 = @{@"hostName":@"Parents Strongly Cautioned",
                             @"image" : [UIImage imageNamed:@"Parents_Strongly_Cautioned"]
                             };
-    NSDictionary *PG = @{@"hostName":@"Parential Guidence Suggested",
+    NSDictionary *PG2 = @{@"hostName":@"Parential Guidence Suggested",
                          @"image" : [UIImage imageNamed:@"Parental_Guidance"]
                          };
     
@@ -670,18 +669,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
                               @"image" : [UIImage imageNamed:@"General_Audiences"]
                               };
     
-    self.categorySearch = [NSArray arrayWithObjects:unknown,adults,restricted,PG_13,PG,General, nil];
-    //
-    //    NSSet *set = [NSSet setWithArray:[NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"recentSearch"]]];
+    self.categorySearch = [NSArray arrayWithObjects:unknown,adults,restricted,PG_13,PG2,General, nil];
     self.recentSearchDictObj = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"recentSearch"]];
     self.recentSearchDict = [NSMutableDictionary dictionaryWithDictionary:[self.recentSearchDictObj valueForKey:[NSString stringWithFormat:@"%@%@",self.amac,self.cmac]]];
-    NSLog(@"recent search after %@ = ",self.recentSearchDict);
-    
-    
     self.recentSearchObj = [[NSMutableArray alloc]init];
-    //NSLog(@"recent seaech count = %d",[RecentSearchDB GetHistoryDatabaseCount:self.amac clientMac:_cmac]);
-    NSLog(@"self.recentSearchDictObj %@",self.recentSearchDictObj);
-    //self.recentSearchObj = [RecentSearchDB getAllRecentwithLimit:1 almonsMac:self.amac clientMac:self.cmac];
     NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:nil ascending:NO selector:@selector(localizedCompare:)];
     NSArray* sortedArray = [[self.recentSearchDict allKeys] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [self.recentSearchObj removeAllObjects];
@@ -701,32 +692,6 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     
 }
 
-
-//-(void)getHistoryFromDB:(NSString *)searchString{
-//    NSLog(@"self.searchPatten %ld..%@",(long)self.searchPatten,searchString);
-//    if(self.searchPatten == CategorySearch){
-//        self.historyDict = [BrowsingHistoryDataBase searchBYCategoty:searchString almonsMac:self.amac clientMac:self.cmac];
-//        NSLog(@"CategorySearch reached");
-//    }
-//    if(self.searchPatten == RecentSearch){
-//        self.historyDict = [BrowsingHistoryDataBase getSearchString:searchString almonsMac:self.amac clientMac:self.cmac];
-//    }
-//    else if (self.searchPatten == WeekDaySearch){
-//        self.historyDict = [BrowsingHistoryDataBase weekDaySearch:searchString almonsMac:self.amac clientMac:self.cmac];
-//    }
-//    else if(self.searchPatten == TodaySearch){
-//        self.historyDict = [BrowsingHistoryDataBase todaySearch:self.amac clientMac:self.cmac];
-//    }
-//    else if(self.searchPatten == DateSearch){
-//        self.historyDict = [BrowsingHistoryDataBase DaySearch:searchString almonsMac:self.amac clientMac:self.cmac];
-//    }
-//    else if(self.searchPatten == LastHourSearch){
-//        self.historyDict = [BrowsingHistoryDataBase LastHourSearch:self.amac clientMac:self.cmac];
-//    }
-//    else if(self.searchPatten == WeekSearch){
-//        self.historyDict = [BrowsingHistoryDataBase ThisWeekSearch:self.amac clientMac:self.cmac];
-//    }
-//}
 #pragma mark parser methods
 -(void)reloadTable{
     NSLog(@"reload called");

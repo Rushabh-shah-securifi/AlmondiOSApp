@@ -18,8 +18,9 @@
 #import "HistoryCell.h"
 #import "CommonMethods.h"
 #import "AlmondManagement.h"
+#import "HTTPRequest.h"
 
-@interface ChangeCategoryViewController ()<CategoryViewDelegate,UITableViewDelegate,UITableViewDelegate,NSURLConnectionDelegate>
+@interface ChangeCategoryViewController ()<CategoryViewDelegate,UITableViewDelegate,UITableViewDelegate,HTTPDelegate>
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
 @property (weak, nonatomic) IBOutlet UILabel *catogeryTag;
 @property (weak, nonatomic) IBOutlet UILabel *catogeryFuncLbl;
@@ -41,7 +42,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *iconMore;
 
 @property(nonatomic)NSArray *epocsArr;
-
+@property (nonatomic) HTTPRequest *httpReq;
 @end
 
 @implementation ChangeCategoryViewController
@@ -51,6 +52,8 @@
     [super viewDidLoad];
     self.clientName.text = self.client.name;
     [self.epocTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"epocCell"];
+    self.httpReq = [[HTTPRequest alloc]init];
+    self.httpReq.delegate = self;
 
 }
 -(void)updateNavi:(UIColor *)backGroundColor title:(NSString *)title tintColor:(UIColor *)tintColor tintBarColor:(UIColor *)tintBarColor{
@@ -67,82 +70,66 @@
     NSDateFormatter *dateformate=[[NSDateFormatter alloc]init];//Accessed on matt's iPhone on Wed 29 June 11:00.
     [dateformate setDateFormat:@"EEEE dd MMMM HH:mm"]; // Date formater
     NSString *str = [dateformate stringFromDate:date];
-    
-    
- //   NSLog(@"uri dict = %@ ",self.uriDict);
-        [self categoryMap:self.uriDict[@"categoryObj"]];
-        [self createRequest:@"Epoch" value:self.uriDict[@"hostName"] suggestValue:@""];
+    [self categoryMap:self.uriDict[@"categoryObj"]];
+    [self createRequest:@"Epoch" value:self.uriDict[@"hostName"] suggestValue:@""];
     
 }
 - (IBAction)backButtonPressed:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
--(void)categoryMap:(NSDictionary *)uriDict{
-    NSString *urlStr = self.uriDict[@"hostName"];
+-(NSAttributedString *)getAttributeText:(NSString *)urlStr{
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:urlStr attributes:nil];
     NSRange linkRange = NSMakeRange(0, urlStr.length); // for the word "link" in the string above
     
     NSDictionary *linkAttributes = @{ NSForegroundColorAttributeName : [UIColor colorWithRed:0.05 green:0.4 blue:0.65 alpha:1.0],
                                       NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle) };
     [attributedString setAttributes:linkAttributes range:linkRange];
-   
+    return attributedString;
+}
+-(void)globalColor:(NSString *)colorHex catogeryTag:(NSString *)catogeryTagTxt catogeryFuncLbl:(NSString *)catogeryFuncLblTxt LblClientLastVicited:(NSString *)LblClientLastVicitedTxt{
+    self.globalColor = [UIColor colorFromHexString:colorHex];
+    self.catogeryTag.text =catogeryTagTxt;
+    self.catogeryFuncLbl.text = catogeryFuncLblTxt;
+    self.LblClientLastVicited.text = LblClientLastVicitedTxt;
+}
+-(void)categoryMap:(NSDictionary *)uriDict{
+    NSString *urlStr = self.uriDict[@"hostName"];
+    
     self.LblUri.userInteractionEnabled = YES;
     [self.LblUri addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapOnLabel:)]];
-    // Assign attributedText to UILabel
-    self.LblUri.attributedText = attributedString;
-//    self.LblUri.text = self.uriDict[@"hostName"];
+    self.LblUri.attributedText = [self getAttributeText:urlStr];
+
     if([[uriDict valueForKey:@"categoty"] isEqualToString:@"NC-17"]){
-        
-        self.globalColor = [UIColor colorFromHexString:@"000000"];
-        self.catogeryTag.text =@"Adults Only";
-        self.catogeryFuncLbl.text = @"No One 17 and Under Admitted. Clearly adult. Children are not admitted.";
-        self.LblClientLastVicited.text = [NSString stringWithFormat:@"%@ site accessed on %@",@"NC-17",self.client.name];
+        [self globalColor:@"000000" catogeryTag:@"Adults Only" catogeryFuncLbl:NSLocalizedString(@"NO_ONE_17", @"") LblClientLastVicited:[NSString stringWithFormat:@"%@ site accessed on %@",@"NC-17",self.client.name]];
        
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"R"]){
-        self.globalColor = [UIColor colorFromHexString:@"f44336"];
-        self.LblClientLastVicited.text = [NSString stringWithFormat:@"%@ site accessed on %@",@"R",self.client.name];
-        self.catogeryTag.text =@"Restricted";
-        self.catogeryFuncLbl.text = @"Under 17 requires accompanying parent or adult guardian. Contains some adult material. Parents are urged to learn more about the film before taking their young children with them.";
-     
+      [self globalColor:@"f44336" catogeryTag:@"Restricted" catogeryFuncLbl:NSLocalizedString(@"Under_17_requires", @"") LblClientLastVicited:[NSString stringWithFormat:@"%@ site accessed on %@",@"R",self.client.name]];
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"PG-13"]){
-        self.globalColor = [UIColor colorFromHexString:@"ff9800"];
-        self.LblClientLastVicited.text = [NSString stringWithFormat:@"%@ Accessed on %@",@"PG-13",self.client.name];
-        self.catogeryTag.text =@"Parents Strongly Cautioned";
-        self.catogeryFuncLbl.text = @"Some material may be inappropriate for children under 13. Parents are urged to be cautious. Some material may be inappropriate for Pre-teenagers.";
+        
+        [self globalColor:@"ff9800" catogeryTag:@"Parents Strongly Cautioned" catogeryFuncLbl:NSLocalizedString(@"Some_material_may", @"") LblClientLastVicited:[NSString stringWithFormat:@"%@ Accessed on %@",@"PG-13",self.client.name]];
       
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"U"]){
-        self.globalColor = [UIColor colorFromHexString:@"825CC2"];
-        self.catogeryTag.text =@"Unknown rating";
-        self.LblClientLastVicited.text = [NSString stringWithFormat:@"%@ Accessed on %@",@"U",self.client.name];
-        self.catogeryFuncLbl.text = @"We currently have no information about the rating of this website.";
         
+         [self globalColor:@"825CC2" catogeryTag:@"Unknown rating" catogeryFuncLbl:NSLocalizedString(@"We_currently_have_no_information", @"") LblClientLastVicited:[NSString stringWithFormat:@"%@ Accessed on %@",@"U",self.client.name]];
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"PG"]){
-        self.globalColor = [UIColor colorFromHexString:@"ffc107"];
-        self.catogeryTag.text =@"Parential Guidence Suggested";
-        self.LblClientLastVicited.text = [NSString stringWithFormat:@"%@ Accessed on %@",@"PG",self.client.name];
-        self.catogeryFuncLbl.text = @"Some material may not be suitable for children. Parents urged to give  \"parental guidance\". May contain some material parents might not like for their young children.";
+       
+        [self globalColor:@"ffc107" catogeryTag:@"Parential Guidence Suggested" catogeryFuncLbl:NSLocalizedString(@"Some_material_may_not", @"") LblClientLastVicited:[NSString stringWithFormat:@"%@ Accessed on %@",@"PG",self.client.name]];
         
     }
     else if ([[uriDict valueForKey:@"categoty"] isEqualToString:@"G"]){
-        self.globalColor = [UIColor colorFromHexString:@"4caf50"];
-        self.catogeryTag.text =@"General Audiences";
-        self.LblClientLastVicited.text = [NSString stringWithFormat:@"%@ Accessed on %@",@"G",self.client.name];
+    
         self.catogeryFuncLbl.font = [UIFont securifiFont:16];
-        self.catogeryFuncLbl.text = @"All ages admitted. Nothing that would offend parents for viewing by children.";
-        
+        [self globalColor:@"4caf50" catogeryTag:@"General Audiences" catogeryFuncLbl:NSLocalizedString(@"All_ages_admitted", @"") LblClientLastVicited:[NSString stringWithFormat:@"%@ Accessed on %@",@"G",self.client.name]];
     }
     
     self.iconMore.image = [CommonMethods imageNamed:@"iconMore" withColor:self.globalColor];
     self.bottomView.backgroundColor = self.globalColor;
     _LblCatogeryTag.backgroundColor = self.globalColor;
-//    self.catogeryTag.text =[uriDict valueForKey:@"categoty"];
-    
     self.LblCatogeryTag.text =[uriDict valueForKey:@"categoty"];
-   
     self.LblCatogeryType.text = [NSString stringWithFormat:@" Category : %@",[uriDict valueForKey:@"subCategory"]];
 }
 
@@ -152,12 +139,10 @@
 }
 - (IBAction)changedCatogeryButtonPrssed:(id)sender {
     NSLog(@"changedCatogeryButtonPrssed");
-    
-        self.cat_view = [[CategoryView alloc]init];
+            self.cat_view = [[CategoryView alloc]init];
         self.cat_view.delegate = self;
         self.cat_view.frame = CGRectMake(0, self.view.frame.size.height - 250, self.view.frame.size.width, 250);
         [self.view addSubview:self.cat_view];
-    
     
     self.backGroundButton.hidden = NO;
 }
@@ -201,7 +186,6 @@
             [self afterCategoryChange];
             break;
         }
-            
             break;
         default:
             break;
@@ -222,11 +206,7 @@
     [self.view addSubview:self.cat_view_more];
     self.backGroundButton.hidden = NO;
 }
--(void)showmsg{
-//    self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 120, self.view.frame.size.width, 320);
-//    
-//    [self.view addSubview:self.cat_view_more];
-}
+
 -(void)closeMoreView{
     [self.cat_view removeFromSuperview];
     [self.cat_view_more removeFromSuperview];
@@ -313,42 +293,16 @@
     req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@",search,value,Date,amac,cmac];
     else
     req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&suggestedValue=%@&AMAC=%@&CMAC=%@",search,value,Date,suggestValue,amac,cmac];
-    [self sendHttpRequest:req];
+    [self.httpReq sendHttpRequest:req];
     
 }
--(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
-    //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
-    dispatch_queue_t sendReqQueue = dispatch_queue_create("send_req", DISPATCH_QUEUE_SERIAL);
-    dispatch_async(sendReqQueue,^(){
-        
-        NSLog(@"post req = %@",post);
-        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-        NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-        [request setURL:[NSURL URLWithString:@"https://sitemonitoring.securifi.com:8081"]];
-        [request setHTTPMethod:@"POST"];
-        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
-        [request setHTTPBody:postData];
-        NSURLResponse *res= Nil;
-        //[NSURLConnection connectionWithRequest:request delegate:self];
-        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&res error:nil];
-        if(data == nil)
-            return ;
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        NSLog(@"dict respose %@",dict);
-        if(dict[@"Data"] == NULL)
-            return;
-        [self InsertInDB:dict[@"Data"]];
-    });
-    
-    
-    //www.sundoginteractive.com/blog/ios-programmatically-posting-to-http-and-webview#sthash.tkwg2Vjg.dpuf
-}
--(void)InsertInDB:(NSArray *)dict{
+
+-(void)responseDict:(NSDictionary *)dict{
     if(dict.count==0)
         return;
-    self.epocsArr = [CommonMethods domainEpocArr:dict];
+    NSLog(@"dict = %@",dict);
+    
+    self.epocsArr = [CommonMethods domainEpocArr:dict[@"Data"]];
     dispatch_async(dispatch_get_main_queue(), ^() {
     [self.epocTable reloadData];
     });

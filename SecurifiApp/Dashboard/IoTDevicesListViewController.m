@@ -166,9 +166,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 35;
 }
-//-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return 60;
-//}
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
@@ -234,8 +232,6 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
    
-  
-    
     IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
    
     newWindow.hideTable = NO;
@@ -329,7 +325,7 @@
         
         NSDictionary *dict = returnDict[key];
         if([dict[@"P"]isEqualToString:@"1"]){
-            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"]){
+            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] || [dict[@"Tag"]isEqualToString:@"7"]){
                 color = [UIColor redColor];
                 break;
             }
@@ -390,6 +386,9 @@
     toolkit.lastScanTime = systemTime;
     NSLog(@"currentAlmond.lastScanTime %lld",toolkit.lastScanTime);
     [toolkit asyncSendToNetwork:cloudCommand];
+    [self startAnimation];
+}
+-(void)startAnimation{
     self.blinking_lbl.hidden = NO;
     self.blinking_lbl.alpha = 0;
     [UIView animateWithDuration:1.0 delay:0.2 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
@@ -426,26 +425,26 @@
         else {
             self.ioTdevicetable.hidden = NO;
         }
-        
         self.scannedDeviceList = toolkit.iotScanResults[@"scanDevice"];
         self.healthyDEviceArr = toolkit.iotScanResults[@"HealthyDevice"];
         self.excludedDevices = toolkit.iotScanResults[@"scanExclude"];
-        NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[toolkit.iotScanResults[@"scanTime"] longLongValue]];
-        NSString *lastScanYtime = [dat stringFromDateAMPM];
-        self.lastScanTime = [dat stringFromDateAMPM];
+        self.lastScanTime = [self getLastScanTime:toolkit.iotScanResults[@"scanTime"]];
         NSString *no_deviceScanned  = toolkit.iotScanResults[@"scanCount"]?toolkit.iotScanResults[@"scanCount"]:@"0";
         self.no_scanDevice_label.text = [NSString stringWithFormat:@"%@  Devices scanned",no_deviceScanned];
-        
-        self.lastScan_label.text = [NSString stringWithFormat:@"Last scanned at %@",lastScanYtime];
+        self.lastScan_label.text = [NSString stringWithFormat:@"Last scanned at %@",[self getLastScanTime:toolkit.iotScanResults[@"scanTime"]]];
         if([toolkit.iotScanResults[@"scanCount"] isEqualToString:@"0"] || toolkit.iotScanResults[@"scanCount"] == nil){
             self.no_scanDevice_label.text = @"No Device scanned";
             self.lastScan_label.hidden = YES;
-//            self.ioTdevicetable.hidden = YES;
         }
         [self.ioTdevicetable reloadData];
 
     });
-    }
+}
+-(NSString *)getLastScanTime:(NSString *)timeEpoch{
+    NSDate *dat = [NSDate dateWithTimeIntervalSince1970:[timeEpoch longLongValue]];
+    NSString *lastScanYtime = [dat stringFromDateAMPM];
+    return lastScanYtime;
+}
 -(void)checkForLastScanTime{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSLog(@"toolkit.lastScanTime = %ld, toolkit.iotScanResults %lld",toolkit.lastScanTime,[toolkit.iotScanResults[@"scanTime"] longLongValue]);
