@@ -11,6 +11,8 @@
 #import "Analytics.h"
 #import "AlmondPlusConstants.h"
 #import "AlmondManagement.h"
+#import "AlmondProperties.h"
+#import "NSData+Securifi.h"
 
 #define  APP_ID @"1001"
 
@@ -62,7 +64,7 @@
  }
  */
 
-+ (void)setWirelessSettings:(int)mii wirelessSettings:(SFIWirelessSetting*)wirelessSettingObj mac:(NSString*)almondMac isTypeEnable:(BOOL)isTypeEnable forceUpdate:(NSString *)forceUpdate{
++ (void)setWirelessSettings:(int)mii wirelessSettings:(SFIWirelessSetting*)wirelessSettingObj mac:(NSString*)almondMac keyType:(int)keyType forceUpdate:(NSString *)forceUpdate{
 
     if ([almondMac isEqualToString:NO_ALMOND]) {
         return;
@@ -73,20 +75,30 @@
     [payload setObject:@(mii).stringValue forKey:@"MobileInternalIndex"];
     [payload setObject:almondMac forKey:@"AlmondMAC"];
     [payload setObject:forceUpdate forKey:@"ForceUpdate"];
+    
     NSMutableDictionary *wirelessSetting = [NSMutableDictionary new];
-    NSLog(@"type: %@", wirelessSettingObj.type);
     [wirelessSetting setObject:wirelessSettingObj.type forKey:@"Type"];
-    if(isTypeEnable)
+    if(keyType == enable_key)
         [wirelessSetting setObject:wirelessSettingObj.enabled?@"true":@"false" forKey:@"Enabled"];
-    else
+    else if(keyType == ssid_key)
         [wirelessSetting setObject:wirelessSettingObj.ssid forKey:@"SSID"];
+    else if(keyType == pass_key){
+        NSString *randomUptime = @(arc4random() % 100000).stringValue;
+        NSLog(@"pass: %@", wirelessSettingObj.password);
+        NSString *encryptedBase64 = [AlmondProperties getBase64EncryptedSting:[AlmondManagement currentAlmond].almondplusMAC uptime:randomUptime password:wirelessSettingObj.password];
+        
+        NSLog(@"decrypted pass: %@", [self getDecryptedPass:encryptedBase64 uptime:randomUptime]);
+        
+        [wirelessSetting setObject:encryptedBase64 forKey:@"Password"];
+    }
+    
     
     [payload setObject:wirelessSetting forKey:@"WirelessSetting"];
     
     GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
     [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
-    
 }
+
 +(void)updateFirmware:(int)mii version:(NSString*)version mac:(NSString*)almondMac{
     if ([almondMac isEqualToString:NO_ALMOND]) {
         return;
@@ -154,4 +166,10 @@
     [[SecurifiToolkit sharedInstance] asyncSendToNetwork:genericCmd];
 }
 
++ (NSString *)getDecryptedPass:(NSString *)encryptedPass uptime:(NSString *)uptime{
+    if(encryptedPass.length == 0)
+        return @"";
+    NSData *payload = [[NSData alloc] initWithBase64EncodedString:encryptedPass options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    return [payload securifiDecryptPasswordForAlmond:[AlmondManagement currentAlmond].almondplusMAC almondUptime:uptime];
+}
 @end

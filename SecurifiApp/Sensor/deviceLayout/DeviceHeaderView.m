@@ -118,6 +118,7 @@
     }else{
         self.deviceValueImgLable.hidden = YES;
         self.deviceImage.hidden = NO;
+        NSLog(@"genericValue.icon %@",self.genericParams.headerGenericIndexValue.genericValue.icon);
         self.deviceImage.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
         
         if(self.genericParams.isSensor && (deviceType == SFIDeviceType_HueLamp_48 || deviceType == SFIDeviceType_ColorDimmableLight_32)&& [[Device getValueForIndex:2 deviceID:deviceID] isEqualToString:@"true"]){

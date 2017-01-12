@@ -28,6 +28,7 @@
 #import "SFIAlmondLocalNetworkSettings.h"
 #import "Client.h"
 #import "ConnectionStatus.h"
+
 #import "LocalNetworkManagement.h"
 #import "NotificationAccessAndRefreshCommands.h"
 #import "NetworkStatusIcon.h"
@@ -38,6 +39,9 @@
 #import "MySubscriptionsViewController.h"
 #import "GenericCommand.h"
 #import "AlmondPlan.h"
+#import "GenericDeviceClass.h"
+#import "GenericValue.h"
+#import "DeviceIndex.h"
 
 
 
@@ -52,6 +56,7 @@
 @property(nonatomic) id <SFINotificationStore> store;
 @property(nonatomic) NSArray *clientNotificationArr;
 @property(nonatomic) NSArray *deviceNotificationArr;
+@property(nonatomic) NSArray *iotNotificationArr;
 @property(nonatomic) CircleLabel *countLabel;
 @property(nonatomic) UIButton *countButton;
 @property(nonatomic) UIImageView *navigationImg;
@@ -91,7 +96,7 @@
     [self loadNotification];
     self.clientNotificationArr = [[NSMutableArray alloc]init];
     self.deviceNotificationArr = [[NSMutableArray alloc]init];
-    
+    self.iotNotificationArr = [[NSMutableArray alloc]init];
     
     //add almond button
     [self initializeAddButtonView];
@@ -592,8 +597,9 @@
 
 -(void )getRecentNotification{
     NSLog(@"getDeviceClientNotification");
-    self.deviceNotificationArr = [self.store fetchRecentNotifications:[AlmondManagement currentAlmond].almondplusMAC isSensor:YES];
-    self.clientNotificationArr = [self.store fetchRecentNotifications:[AlmondManagement currentAlmond].almondplusMAC isSensor:NO];
+    self.deviceNotificationArr = [self.store fetchRecentSmartDeviceNotifications:[AlmondManagement currentAlmond].almondplusMAC];
+    self.clientNotificationArr = [self.store fetchRecentClientNotifications:[AlmondManagement currentAlmond].almondplusMAC];
+    self.iotNotificationArr = [self.store fetchRecentIotNotifications:[AlmondManagement currentAlmond].almondplusMAC];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.dashboardTable reloadData];
@@ -603,66 +609,84 @@
 #pragma mark tableviewDelegate
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 3;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    NSInteger iotRowCount = [self isIotNotificationEmpty]? 1: self.iotNotificationArr.count;
     NSInteger deviceRowCount = [self isSensorNotificationEmpty]? 1: self.deviceNotificationArr.count;
     NSInteger clientRowCount = [self isClientNotificationEmpty]? 1: self.clientNotificationArr.count;
-    //    if(section == 0)
-    //        return 2;
+
     if(section == 0)
+        return iotRowCount;
+    else if(section == 1)
         return deviceRowCount;
     else
         return clientRowCount;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    if(indexPath.section == 0 && [self isSensorNotificationEmpty]){
-        return [self createEmptyCell:tableView isSensor:YES];
-    }else if(indexPath.section == 1 && [self isClientNotificationEmpty]){
-        return [self createEmptyCell:tableView isSensor:NO];
+    if(indexPath.section == 0 && [self isIotNotificationEmpty]){
+        return [self createEmptyCell:tableView text:NSLocalizedString(@"no_recent_IoT_notifications", @"")];
+    }
+    else if(indexPath.section == 1 && [self isSensorNotificationEmpty]){
+        return [self createEmptyCell:tableView text:NSLocalizedString(@"no_recent_smarthome_notification", @"")];
+    }
+    else if(indexPath.section == 2 && [self isClientNotificationEmpty]){
+        return [self createEmptyCell:tableView text:NSLocalizedString(@"no_netwrok_notifications", @"")];
     }
     
-    SensorSupport *sensorSupport = [SensorSupport new];
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
     }
+    
     if (indexPath.section == 0) {
-        if(indexPath.row > (int)self.deviceNotificationArr.count-1)
+        if(indexPath.row > (int)self.iotNotificationArr.count-1)
             return cell;
-        //        NSLog(@"indexpathrow: %ld, arraycount: %d", (long)indexPath.row, self.deviceNotificationArr.count-1);
-        SFINotification *notification = [self.deviceNotificationArr objectAtIndex:indexPath.row];
-        [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
+        SFINotification *notification = [self.iotNotificationArr objectAtIndex:indexPath.row];
+        
         cell.textLabel.numberOfLines = 2;
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        cell.textLabel.attributedText = [self setMessageLabelText:notification sensorSupport:sensorSupport];
+        cell.textLabel.text = notification.deviceName;
+        cell.imageView.image = [CommonMethods imageNamed:@"emergency_icon" withColor:[UIColor redColor]];
+        cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
+    }
+     else if (indexPath.section == 1) {
+        if(indexPath.row > (int)self.deviceNotificationArr.count-1)
+            return cell;
+        SFINotification *notification = [self.deviceNotificationArr objectAtIndex:indexPath.row];
+        NSString *indexID = [self getgenericIndexfor:notification.deviceType andIndex:@(notification.valueIndex).stringValue];
+        GenericValue *gval;
+        gval = [self getMatchingGenericValueForGenericIndexID:indexID forValue:notification.value];
+        cell.textLabel.numberOfLines = 2;
+        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+         if(notification != NULL && gval != NULL)
+        cell.textLabel.attributedText = [self prepareNotificationText:gval andNotification:notification];
         NSString *iconName = @"default_device";
-        if(sensorSupport.valueSupport != nil)
-            iconName = sensorSupport.valueSupport.iconName;
+        if(gval.icon != nil)
+            iconName = gval.icon;
         cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[SFIColors ruleBlueColor]];
         cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
     }
-    else if(indexPath.section == 1){
+    else if(indexPath.section == 2){
         if(indexPath.row > (int)self.clientNotificationArr.count-1)
             return cell;
         
         SFINotification *notification = [self.clientNotificationArr objectAtIndex:indexPath.row];
-        [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
+        
         if ([notification.deviceName rangeOfString:@"joined" options:NSCaseInsensitiveSearch].location != NSNotFound){
             cell.imageView.image = [UIImage imageNamed:@"online"];
             cell.textLabel.numberOfLines = 2;
             cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-            cell.textLabel.attributedText = [self setMessageLabelText:notification sensorSupport:sensorSupport];
+            cell.textLabel.attributedText = [self forClientNotification:notification];
             cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
         }
         else{
             cell.imageView.image = [UIImage imageNamed:@"offline"];
-            cell.textLabel.attributedText = [self setMessageLabelText:notification sensorSupport:sensorSupport];
-            cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
+            cell.textLabel.attributedText = [self forClientNotification:notification];
+            cell.detailTextLabel.attributedText = [self forClientNotification:notification];
         }
     }
     
@@ -687,7 +711,7 @@
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     NSLog(@"view for header: %ld", (long)section);
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 25)];
-    
+    view.backgroundColor = [UIColor whiteColor];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, tableView.frame.size.width, 18)];
     [label setFont:[UIFont boldSystemFontOfSize:14]];
     if (section >0) {
@@ -699,14 +723,13 @@
     }
     NSString *string;
     switch (section) {
-            //        case 0:
-            //            string = @"INTERNET SECURITY";
-            //            break;
-            //
         case 0:
-            string = NSLocalizedString(@"smart_device_noti_title", @"");
+            string = @"IoT Notifications";
             break;
         case 1:
+            string = NSLocalizedString(@"smart_device_noti_title", @"");
+            break;
+        case 2:
             string = NSLocalizedString(@"client_noti_title", @"");
             break;
     }
@@ -716,14 +739,14 @@
     return view;
 }
 
--(UITableViewCell*)createEmptyCell:(UITableView *)tableView isSensor:(BOOL)isSensor{
+-(UITableViewCell*)createEmptyCell:(UITableView *)tableView text:(NSString *)text{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell" ];
     }
     cell.imageView.image = [UIImage imageNamed:@"default_device"];
     cell.textLabel.font = [UIFont systemFontOfSize:12];
-    cell.textLabel.text = isSensor? NSLocalizedString(@"no_recent_smarthome_notification", @"No Recent SmartHome Activity"): NSLocalizedString(@"no_netwrok_notifications", @"No Recent Network Activity");
+    cell.textLabel.text = text;
     cell.detailTextLabel.text = @"";
     
     return cell;
@@ -737,6 +760,9 @@
     return self.clientNotificationArr.count == 0;
 }
 
+-(BOOL)isIotNotificationEmpty{
+    return self.iotNotificationArr.count == 0;
+}
 #pragma mark onConnectionStatus
 
 - (void) showNetworkTogglePopUp:(NSString*)title withSubTitle1:(NSString*)subTitle1 withSubTitle2:(NSString*)subTitle2 withMode1:(SFIAlmondConnectionMode)mode1 withMode2:(SFIAlmondConnectionMode)mode2 presentLocalNetworkSettingsEditor:(BOOL)present {
@@ -1083,6 +1109,192 @@
 }
 
 
+#pragma mark notification methods
+
+-(NSAttributedString *)prepareNotificationText:(GenericValue*)gval andNotification:(SFINotification *)not{
+    NSString *notificationString = [NSString stringWithFormat:@"%@",gval.value];
+    NSLog(@"outer notificaation obj.value %@",notificationString);
+    
+        NSDictionary *notificationDict = @{
+                                           @"devicename":not.deviceName?not.deviceName:@"",
+                                           @"notificationText":gval.notificationText?gval.notificationText:@"",
+                                           @"prefix":gval.notificationPrefix?gval.notificationPrefix:@"",
+                                           @"value":gval.value,
+                                           @"unit":gval.unit?gval.unit:@""
+                                           
+                                           };
+        NSLog(@"outer notificaation obj dict  %@",notificationDict);
+        return [self setNotificationLabel:notificationDict];
+
+}
+-(NSAttributedString *)setNotificationLabel:(NSDictionary *)notification{
+        if (notification == nil) {
+            //self.messageTextField.attributedText = [[NSAttributedString alloc] initWithString:@""];
+            return [[NSAttributedString alloc] initWithString:@""];
+        }
+        UIFont *bold_font = [UIFont securifiBoldFont];
+        UIFont *normal_font = [UIFont securifiNormalFont];
+        NSDictionary *attr;
+        attr = @{
+                 NSFontAttributeName : bold_font,
+                 NSForegroundColorAttributeName : [UIColor blackColor],
+                 };
+        NSString *deviceName = notification[@"devicename"];
+        NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:deviceName attributes:attr];
+        
+        attr = @{
+                 NSFontAttributeName : bold_font,
+                 NSForegroundColorAttributeName : [UIColor lightGrayColor],
+                 };
+        
+        NSString *message;
+        
+        NSMutableAttributedString *mutableAttributedString = nil;
+        message = notification[@"notificationText"];
+        if (message == nil) {
+            message = @"";
+        }
+        if(![message isEqualToString:@""]){
+            NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:message attributes:attr];
+            NSMutableAttributedString *container = [NSMutableAttributedString new];
+            [container appendAttributedString:nameStr];
+            [container appendAttributedString:[[NSAttributedString alloc] initWithString:@" " attributes:nil]];
+            [container appendAttributedString:eventStr];
+            
+            //        self.messageTextField.text = [NSString stringWithFormat:@"%@ %@",deviceName,message];
+            return container;
+        }
+        else{
+            NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@ %@%@",notification[@"prefix"],message,notification[@"value"],notification[@"unit"]] attributes:attr];
+            NSMutableAttributedString *container = [NSMutableAttributedString new];
+            [container appendAttributedString:nameStr];
+            [container appendAttributedString:eventStr];
+            
+           return container;
+            // self.messageTextField.text = [NSString stringWithFormat:@"%@ %@ %@ %@%@",deviceName,notification[@"prefix"],message,notification[@"value"],notification[@"unit"]];
+        }
+    
+        
+}
+-(NSString *)getgenericIndexfor:(int)devicetype andIndex:(NSString *)indexId{
+    NSString *deviceTypeString = @(devicetype).stringValue;
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    GenericDeviceClass *genericDevice = toolkit.genericDevices[deviceTypeString];
+    NSDictionary *deviceIndexes = genericDevice.Indexes;
+    NSLog(@"deviceIndexes %@",deviceIndexes);
+    NSLog(@"deviceIndexArr all keys id %@",indexId);
+    BOOL match = NO;
+    
+    //    for(NSString *key in deviceIndexArr){
+    //        DeviceIndex *index = deviceIndexes[key];
+    //        [genericIndexes addObject:index.genericIndex];
+    for (NSString * ID in deviceIndexes.allKeys) {
+        DeviceIndex *index = deviceIndexes[indexId];
+        if(index){
+            return index.genericIndex;
+        }
+    }
+    return @"0";
+}
+- (GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value{
+    //NSLog(@"value: %@", value);
+    //    if(value.length == 0 || value == nil)
+    //        value = @"NaN";
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    GenericIndexClass *genericIndexObject = toolkit.genericIndexes[genericIndexID];
+    NSLog(@"genericIndex obj %@",genericIndexObject.layoutType);
+    if(genericIndexObject == nil || value == nil)
+        return nil;
+    if([genericIndexObject.ID isEqualToString:@"30"]){
+        NSString *colorShade = [CommonMethods colorShadesforValue:65535 byValueOfcolor:value];
+        GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:colorShade prefix:genericIndexObject.formatter.prefix];
+    }
+    else if([genericIndexObject.ID isEqualToString:@"31"]){
+        NSString *colorShade = [CommonMethods colorShadesforValue:255 byValueOfcolor:value];
+        GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:colorShade prefix:genericIndexObject.formatter.prefix];
+    }
+    else if(genericIndexObject.values != nil){
+        GenericValue *gval = genericIndexObject.values[value];
+        NSString *notificationString = [NSString stringWithFormat:@"%@,%@,%@,%@",gval.notificationText,gval.notificationPrefix,value,gval.icon];
+        NSLog(@"notificaation obj %@",notificationString);
+        
+        return genericIndexObject.values[value]? genericIndexObject.values[value]: [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:nil value:value excludeFrom:nil eventType:nil notificationText:gval.notificationText];
+    }
+    else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"HUE_ONLY"])){
+        if([genericIndexObject.ID isEqualToString:@"99"]){
+            int brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
+            NSString *str = @(brightnessValue).stringValue;
+            NSLog(@"slider icon1 - display text: %@, value: %@ units : %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units);
+            
+            GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:str prefix:genericIndexObject.formatter.prefix andUnit:genericIndexObject.formatter.units];
+            return genericValue1;
+        }
+        
+    }
+    else if(genericIndexObject.formatter != nil && ![genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] && ![genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] && ![genericIndexObject.layoutType isEqualToString:@"HUE_ONLY"]){
+        NSString *formattedValue=[genericIndexObject.formatter transform:value genericId:genericIndexID];
+        NSLog(@"slider icon2 - display text: %@, value: %@ units : %@ ,formattedValue = %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units,formattedValue);
+        //NSString *formattedValue = [NSString stringWithFormat:@"",[value floatValue] * genericIndexObject.formatter.factor];
+        GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:formattedValue prefix:genericIndexObject.formatter.prefix andUnit:@""];
+        
+        //        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:formattedValue
+        //                                                                     iconText:formattedValue
+        //                                                                        value:value
+        //                                                                  excludeFrom:genericIndexObject.excludeFrom
+        //                                                             transformedValue:[genericIndexObject.formatter transformValue:value] prefix:genericIndexObject.formatter.prefix];
+        
+        return genericValue1;
+    }
+    else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"])){
+        NSLog(@"slider icon - display text: %@, value: %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value);
+        int brightnessValue;
+        if([genericIndexObject.ID isEqualToString:@"100"])
+            brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
+        NSString *value = @(brightnessValue).stringValue;
+        NSLog(@"slider icon3 - display text: %@, value: %@ units : %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units);
+        NSString *formattedValue = [NSString stringWithFormat:@"",[value floatValue] * genericIndexObject.formatter.factor];
+        return [[GenericValue alloc]initWithDisplayText:[genericIndexObject.formatter transform:value genericId:genericIndexID]
+                                                   icon:genericIndexObject.icon
+                                            toggleValue:nil
+                                                  value:formattedValue
+                                            excludeFrom:nil
+                                              eventType:nil
+                                       transformedValue:[genericIndexObject.formatter transformValue:value] prefix:genericIndexObject.formatter.prefix andUnits:genericIndexObject.formatter.units]; //need icon aswell as transformedValue
+        
+    }
+    
+    return [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:value value:value excludeFrom:genericIndexObject.excludeFrom eventType:nil notificationText:@""];
+}
+
+-(NSAttributedString *)forClientNotification:(SFINotification *)notification{
+    NSArray * properties = [notification.deviceName componentsSeparatedByString:@"|"];
+    NSString *name = properties[3];
+    NSString *deviceName;
+    if([name rangeOfString:@"An unknown device" options:NSCaseInsensitiveSearch].location != NSNotFound){
+        NSArray *nameArr = [name componentsSeparatedByString:@"An unknown device"];
+        deviceName = nameArr[1];
+    }
+    else
+        deviceName = name;
+    
+    
+    //NSLog(@"notification msg: %@", message);
+     return [self getAttributedString:deviceName];
+}
+   
+- (NSAttributedString *)getAttributedString:(NSString *)text{
+    UIFont *bold_font = [UIFont securifiBoldFont];
+    //        UIFont *normal_font = [UIFont securifiNormalFont];
+    //        NSMutableAttributedString *mutableAttributedString = nil;
+    NSDictionary *attr;
+    
+    attr = @{
+             NSFontAttributeName : bold_font,
+             NSForegroundColorAttributeName : [UIColor grayColor],
+             };
+    return [[NSAttributedString alloc] initWithString:text attributes:attr];
+}
 
 -(void)pushViewController:(UIViewController *)viewCtrl{
     dispatch_async(dispatch_get_main_queue(), ^{

@@ -21,6 +21,7 @@
 #import "MBProgressHUD.h"
 #import "BrowsingHistoryUtil.h"
 #import "AlmondManagement.h"
+#import "HTTPRequest.h"
 
 
 
@@ -48,7 +49,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     CategorySearch
 };
 
-@interface SearchTableViewController ()<UISearchResultsUpdating, UISearchBarDelegate,UITextFieldDelegate,MBProgressHUDDelegate,BrowsingHistoryDelegate,NSURLConnectionDelegate>
+@interface SearchTableViewController ()<UISearchResultsUpdating, UISearchBarDelegate,UITextFieldDelegate,MBProgressHUDDelegate,BrowsingHistoryDelegate,HTTPDelegate>
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic) UITableView *searchTableView;
 @property (nonatomic) NSArray *suggSearchArr;
@@ -76,7 +77,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 @property (nonatomic) NSString *value;
 @property BOOL isSendReq;
 @property (nonatomic) NSMutableArray *allUri;
-@property (nonatomic) NSURLConnection *conn;
+@property (nonatomic) HTTPRequest *httpReq;
 
 
 ;
@@ -113,10 +114,13 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     NSLog(@"viewWillAppear searchPage");
+    self.httpReq = [[HTTPRequest alloc]init];
+    self.httpReq.delegate = self;
     self.incompleteDB = @{
                           @"PS" : [NSNull null]
                           };
     [self addSuggestionSearchObj];
+    
     [self initializeSearchController];
     
     
@@ -125,8 +129,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 -(void)viewWillDisappear:(BOOL)animated{
     self.NoresultFound.hidden = YES;
     [super viewWillDisappear:YES];
-    [self.conn cancel];
-    self.conn = nil;
+     [self.httpReq cancleConnection];
     
     
     
@@ -289,7 +292,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         
     self.isSendReq = YES;
     
-    [self sendHttpRequest:req];
+    [self.httpReq sendHttpRequest:req];
     
 }
 
@@ -366,116 +369,39 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     }
     
 }
-//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    
-//    //NSLog(@"willDisplayCell section %ld row %ld",indexPath.section,indexPath.row);
-//    if(tableView != self.tableView)
-//    {
-//        
-//    NSInteger lastSectionIndex = [tableView numberOfSections] - 1;
-//    NSInteger lastRowIndex = [tableView numberOfRowsInSection:lastSectionIndex] - 1;
-//    
-//    
-//        if ((indexPath.section == lastSectionIndex) && (indexPath.row == lastRowIndex)) {
-//            if(![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
-//                //send next req
-//                NSLog(@"self.search %@,self.value %@",self.searchStr,self.value);
-//                if(self.search && self.value)
-//                [self createRequest:self.searchStr value:self.value];
-//            }
-//        }
-//    }
-//}
+
 #pragma mark sendReq methods
 
 -(void)sendReq:(SearchPatten)searchpatten withString:(NSString *)string{
-    
+    [self showHudWithTimeoutMsg:@"Loading..." withDelay:5];
     if(searchpatten == WeekSearch){
-        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&week%@",_amac,_cmac,[BrowsingHistoryDataBase getTodayDate]]];
+        [self.httpReq sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&week%@",_amac,_cmac,[BrowsingHistoryDataBase getTodayDate]]];
     }
     else if(searchpatten == TodaySearch){
-        [self sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&today%@",_amac,_cmac,[BrowsingHistoryDataBase getTodayDate]]];
+        [self.httpReq sendHttpRequest:[NSString stringWithFormat: @"AMAC=%@&CMAC=%@&today%@",_amac,_cmac,[BrowsingHistoryDataBase getTodayDate]]];
     }
 }
--(void)sendHttpRequest:(NSString *)post {// make it paramater CMAC AMAC StartTag EndTag
-    //NSString *post = [NSString stringWithFormat: @"userName=%@&password=%@", self.userName, self.password];
+
+- (void)responseDict:(NSDictionary*)responseDict {
     
-    [self showHudWithTimeoutMsg:@"Loading..." withDelay:5];
-    NSLog(@"post req = %@",post);
-    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-    [request setURL:[NSURL URLWithString:@"https://sitemonitoring.securifi.com:8081"]];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; [request setTimeoutInterval:20.0];
-    [request setHTTPBody:postData];
-    self.conn = [NSURLConnection connectionWithRequest:request delegate:self];
-   
-    
-    
-}
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response { _responseData = [[NSMutableData alloc] init];
-    NSLog(@"didReceiveResponse");
-}
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    [_responseData appendData:data];
-    NSLog(@"didReceiveData");
-}
-- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse*)cachedResponse {
-    NSLog(@"willCacheResponse");
-    return nil;
-}
-- (NSDictionary*)parseJson:(NSString*)fileName{
-    NSError *error = nil;
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName
-                                                         ofType:@"json"];
-    NSData *dataFromFile = [NSData dataWithContentsOfFile:filePath];
-    NSDictionary *data = [NSJSONSerialization JSONObjectWithData:dataFromFile
-                                                         options:kNilOptions
-                                                           error:&error];
-    
-    
-    if (error != nil) {
-        //NSLog(@"Error: was not able to load json file: %@.",fileName);
-    }
-    return data;
-}
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    //Now you can do what you want with the response string from the data
-    if(_responseData == nil)
+    if(![responseDict[@"AMAC"] isEqualToString:self.amac] || ![responseDict[@"CMAC"] isEqualToString:self.cmac])
         return;
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:_responseData options:0 error:nil];
-    [_responseData setLength:0];
-    _responseData = nil;
-    /*note get endidentifier from db */
-    //dispatch_async(self.sendReqQueue,^(){
-    if(dict == NULL)
-        return;
-    if(dict[@"Data"] == NULL)
-        return;
-    if(dict[@"AMAC"] == NULL || dict[@"CMAC"] == NULL)
-        return;
-    if(![dict[@"AMAC"] isEqualToString:self.amac] || ![dict[@"CMAC"] isEqualToString:self.cmac])
-        return;
-    NSInteger changedHourTag = dict[@"ChangeHour"]!=NULL?[dict[@"ChangeHour"] integerValue]:0;
-    NSLog(@"response dict %@",dict);
+    NSInteger changedHourTag = responseDict[@"ChangeHour"]!=NULL?[responseDict[@"ChangeHour"] integerValue]:0;
     if(changedHourTag == 1)
         [self createRequest:@"LastHour" value:self.value];
     
     NSMutableDictionary *clientBrowsingHistory = [[NSMutableDictionary alloc]init];
-    NSString *searchLastHour = dict[@"search"]!=NULL?dict[@"search"]:@"";
-    NSArray *allObj = dict[@"Data"];
+    NSString *searchLastHour = responseDict[@"search"]!=NULL?responseDict[@"search"]:@"";
+    NSArray *allObj = responseDict[@"Data"];
     NSDictionary *last_uriDict = [allObj lastObject];
     NSString *last_date = last_uriDict[@"Date"];
-    NSLog(@"pagestat %@",dict[@"pageState"]);
-    if(dict[@"pageState"]==NULL){
-        NSLog(@"PSS %@",dict[@"pageState"]);
+    if(responseDict[@"pageState"]==NULL){
+        NSLog(@"PSS %@",responseDict[@"pageState"]);
     }
     if(last_date != NULL)
         self.incompleteDB = @{
                               @"lastDate" : last_date,
-                              @"PS" : dict[@"pageState"]? : [NSNull null]
+                              @"PS" : responseDict[@"pageState"]? : [NSNull null]
                               };
     
     for(NSDictionary *uriDict in allObj)
@@ -488,6 +414,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSArray *sortedDate = [self sortedDateArr:[dayDict allKeys]];
         [self.dayArr removeAllObjects];
     NSLog(@"self.dayarr count %ld",(unsigned long)self.dayArr.count);
+    
     for (NSString *dates in sortedDate){
         NSLog(@"dates == %@",dates);
         NSArray *oneDayUris = dayDict[dates];
@@ -495,6 +422,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     }
     [self reloadSearchTable];
     NSLog(@"pageStat = %@",_incompleteDB[@"PS"]);
+  
     if(![self.incompleteDB[@"PS"] isKindOfClass:[NSNull class]]){
         
         [self createRequest:self.searchStr value:self.value];
@@ -521,18 +449,6 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
         [dateArr addObject:string];
     }
     return dateArr;
-}
-- (void)addToDictionary:(NSMutableDictionary *)rowIndexValDict uriInfo:(NSDictionary *)uriInfo rowID:(NSString *)day{
-    
-    NSMutableArray *augArray = [rowIndexValDict valueForKey:[NSString stringWithFormat:@"%@",day]];
-    if(augArray != nil){
-        [augArray addObject:uriInfo];
-        [rowIndexValDict setValue:augArray forKey:[NSString stringWithFormat:@"%@",day]];
-    }else{
-        NSMutableArray *tempArray = [NSMutableArray new];
-        [tempArray addObject:uriInfo];
-        [rowIndexValDict setValue:tempArray forKey:[NSString stringWithFormat:@"%@",day]];
-    }
 }
 
 #pragma mark searchDelegate methods
@@ -597,14 +513,10 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     NSLog(@"selectedScopeButtonIndexDidChange");
 }
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    [self.conn cancel];
-    self.conn = nil;
+    [self.httpReq cancleConnection];
     [searchBar resignFirstResponder];
     [self.dayArr removeAllObjects];
     [self.allUri removeAllObjects];
-    
-    
-    
     NSLog(@"searchBarCancelButtonClicked self.dayArr %ld",(unsigned long)self.dayArr.count);
      self.incompleteDB = @{
                                                @"PS" : [NSNull null]
@@ -624,8 +536,7 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
 }
 -(void)onCancleButton{
     self.isManuelSearch = YES;
-    [self.conn cancel];
-    self.conn = nil;
+    [self.httpReq cancleConnection];
     [self.dayArr removeAllObjects];// making sure ermovinf all obj from self .day arr
     NSLog(@"onCancleButton");
     [self.allUri removeAllObjects];
@@ -886,18 +797,5 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
     self.NoresultFound.hidden = YES;
     
 }
-+(NSDictionary*)parseJson:(NSString*)fileName{
-    NSError *error = nil;
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName
-                                                         ofType:@"json"];
-    NSData *dataFromFile = [NSData dataWithContentsOfFile:filePath];
-    NSDictionary *data = [NSJSONSerialization JSONObjectWithData:dataFromFile
-                                                         options:kNilOptions
-                                                           error:&error];
-    
-    if (error != nil) {
-        //NSLog(@"Error: was not able to load json file: %@.",fileName);
-    }
-    return data;
-}
+
 @end

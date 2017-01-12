@@ -36,6 +36,12 @@
 #import "GenericIndexClass.h"
 #import "AlmondManagement.h"
 #import "List_TypeView.h"
+#import "LabelView.h"
+#import "Rule.h"
+#import "SFIButtonSubProperties.h"
+#import "NewAddSceneViewController.h"
+#import "AddRulesViewController.h"
+#import "AlmondManagement.h"
 
 #define ITEM_SPACING  2.0
 #define LABELSPACING 20.0
@@ -45,12 +51,13 @@
 #define VIEW_FRAME_SMALL CGRectMake(xIndent, yPos, self.indexesScroll.frame.size.width-xIndent, LABELHEIGHT)
 #define VIEW_FRAME_LARGE CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, 65)
 #define LABEL_FRAME CGRectMake(0, 0, view.frame.size.width-16, LABELHEIGHT)
+#define LABEL_FRAME2 CGRectMake(0, 0, view2.frame.size.width-16, LABELHEIGHT)
 #define SLIDER_FRAME CGRectMake(0, LABELHEIGHT + LABELVALUESPACING,view.frame.size.width-10, 35)
 #define BUTTON_FRAME CGRectMake(0, LABELHEIGHT + LABELVALUESPACING,view.frame.size.width-10,  35)
 static const int xIndent = 10;
 
-@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,MultiButtonViewDelegate,GridViewDelegate,ListButtonDelegate,UIGestureRecognizerDelegate,BlinkLedViewDelegate,List_TypeViewDelegate
->
+@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,MultiButtonViewDelegate,GridViewDelegate,ListButtonDelegate,UIGestureRecognizerDelegate,BlinkLedViewDelegate,List_TypeViewDelegate>
+
 //can be removed
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
 
@@ -78,15 +85,7 @@ static const int xIndent = 10;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.toolkit=[SecurifiToolkit sharedInstance];
-    self.ViewFrame = self.view.frame;
-    [self setUpDeviceEditCell];
-    self.miiTable = [NSMutableDictionary new];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTest:)];
-    [tap setDelegate:self];
     
-    if(self.genericParams.isSensor)
-        [self.indexesScroll addGestureRecognizer:tap];
 }
 
 -(void)setUpDeviceEditCell{
@@ -100,14 +99,27 @@ static const int xIndent = 10;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-    NSLog(@"deviceedit viewWillAppear");
     [super viewWillAppear:YES];
+
     
     [self initializeNotifications];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self drawIndexes];
     });
     self.isLocal = [self.toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
+    self.navigationController.view.backgroundColor = [UIColor wheatColor];
+   
+    self.toolkit=[SecurifiToolkit sharedInstance];
+    self.ViewFrame = self.view.frame;
+    [self setUpDeviceEditCell];
+    self.miiTable = [NSMutableDictionary new];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTest:)];
+    [tap setDelegate:self];
+    
+    if(self.genericParams.isSensor)
+        [self.indexesScroll addGestureRecognizer:tap];
+    
+    NSLog(@"viewWillAppear: %f",self.deviceEditHeaderCell.frame.origin.y);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -313,11 +325,78 @@ static const int xIndent = 10;
         historyButton = [historyButton addButton:@"Device History" button:historyButton color:self.genericParams.color];
         [historyButton addTarget:self action:@selector(onShowSensorLogs) forControlEvents:UIControlEventTouchUpInside];
         CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.keyBoardComp + 60);
-        yPos = yPos + view.frame.size.height + LABELSPACING;
+        yPos = yPos + view.frame.size.height;
+        self.keyBoardComp = yPos;
         [self.indexesScroll setContentSize:scrollableSize];
         [view addSubview:historyButton];
         
         [self.indexesScroll addSubview:view];
+    }
+    if(self.genericParams.isSensor){
+        NSArray *sceneArr = [self isPresentInRuleList:NO];
+        NSLog(@"scn arr count %ld",sceneArr.count);
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp, self.indexesScroll.frame.size.width-xIndent, 65)];
+        UILabel *label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
+        [self setUpLable:label withPropertyName:@"SCENES"];
+        [view addSubview:label];
+        [self.indexesScroll addSubview:view];
+        yPos = yPos + view.frame.size.height - 20;
+        self.keyBoardComp = yPos;
+        if(sceneArr.count == 0){
+            
+            LabelView *lableView = [[LabelView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp,view.frame.size.width-10,  35) color:self.genericParams.color text:@"This device is not part of any scene" isRule:NO];
+            lableView.delegate = self;
+            CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.keyBoardComp + 65);
+            yPos = yPos + lableView.frame.size.height + LABELSPACING;
+            self.keyBoardComp = yPos;
+            [self.indexesScroll setContentSize:scrollableSize];
+            [self.indexesScroll addSubview:lableView];
+        }
+        else
+        for(Rule *scene in sceneArr){
+           
+            LabelView *lableView = [[LabelView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp,view.frame.size.width-10,  35) color:self.genericParams.color rule:scene isRule:NO];
+            lableView.delegate = self;
+            CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.keyBoardComp + 35);
+            yPos = yPos + lableView.frame.size.height + LABELSPACING;
+            self.keyBoardComp = yPos;
+            [self.indexesScroll setContentSize:scrollableSize];
+            [self.indexesScroll addSubview:lableView];
+        }
+        NSArray *ruleArr = [self isPresentInRuleList:YES];
+        NSLog(@"ruleArr arr count %ld",ruleArr.count);
+        {
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp, self.indexesScroll.frame.size.width-xIndent, 65)];
+        UILabel *label2 = [[UILabel alloc]initWithFrame:LABEL_FRAME];
+        [self setUpLable:label2 withPropertyName:@"RULES"];
+        [view addSubview:label2];
+        [self.indexesScroll addSubview:view];
+        yPos = yPos + view.frame.size.height - 20;
+         self.keyBoardComp = yPos;
+        if(ruleArr.count == 0){
+           
+            
+            LabelView *lableView2 = [[LabelView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp,view.frame.size.width-10,  35) color:self.genericParams.color text:@"This device is not part of any rules" isRule:YES];
+            lableView2.delegate = self;
+            CGSize scrollableSize2 = CGSizeMake(self.indexesScroll.frame.size.width,self.keyBoardComp + 35);
+            yPos = yPos + lableView2.frame.size.height + LABELSPACING;
+            [self.indexesScroll setContentSize:scrollableSize2];
+            [self.indexesScroll addSubview:lableView2];
+
+        }
+        for(Rule *rule in ruleArr){
+            
+            LabelView *lableView2 = [[LabelView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp,view.frame.size.width-10,  35) color:self.genericParams.color rule:rule isRule:YES];
+            lableView2.delegate = self;
+            [view addSubview:lableView2];
+            CGSize scrollableSize2 = CGSizeMake(self.indexesScroll.frame.size.width,self.keyBoardComp + 35);
+            yPos = yPos + lableView2.frame.size.height + LABELSPACING;
+            self.keyBoardComp = yPos;
+            [self.indexesScroll setContentSize:scrollableSize2];
+            [self.indexesScroll addSubview:lableView2];
+            
+        }
+        }
     }
 }
 -(void)onShowSensorLogs{
@@ -641,6 +720,7 @@ static const int xIndent = 10;
     
     [self.deviceEditHeaderCell resetHeaderView];
     [self.deviceEditHeaderCell initialize:self.genericParams cellType:SensorEdit_Cell isSiteMap:NO];
+     NSLog(@"resetHeader: %f",self.deviceEditHeaderCell.frame.origin.y);
 }
 
 -(void)revertToOldValue:(GenericIndexValue*)genIndexVal{
@@ -825,6 +905,84 @@ static const int xIndent = 10;
         dispatch_async(dispatch_get_main_queue(), ^(){
             [self.navigationController popViewControllerAnimated:YES];
         });
+    }
+}
+-(void)lableArrowClicked:(Rule *)rule isRule:(BOOL)isRule{
+    if(isRule){
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Rules" bundle:nil];
+        AddRulesViewController * addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
+        addRuleController.rule = rule;
+        addRuleController.isInitialized = YES;
+//        [self presentViewController:addRuleController animated:YES completion:nil];
+        [self.navigationController pushViewController:addRuleController animated:YES];
+    }
+    else{
+         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
+        NewAddSceneViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"NewAddSceneViewController"];
+        viewController.scene = rule;
+        viewController.isInitialized = YES;
+//        [self presentViewController:viewController animated:YES completion:nil];
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+}
+-(NSMutableArray *)isPresentInRuleList:(BOOL)isRule{
+    NSMutableArray *ruleArr = [[NSMutableArray alloc]init];
+    
+    NSArray *ruleList = isRule?self.toolkit.ruleList:self.toolkit.scenesArray;
+    NSLog(@"ruleList arr %@",ruleList);
+    if(!isRule){
+        for(NSDictionary *sceneDict in ruleList){
+            Rule *scene = [self getScene:sceneDict];
+            for(SFIButtonSubProperties *subProperty in scene.triggers){
+                if(subProperty.deviceId == self.genericParams.headerGenericIndexValue.deviceID){
+                    [ruleArr addObject: scene];
+                    break;
+                    
+                }
+            }
+            
+        }
+        return ruleArr;
+    }
+    for(Rule *rules in ruleList){
+        for(SFIButtonSubProperties *subProperty in rules.triggers){
+            if(subProperty.deviceId == self.genericParams.headerGenericIndexValue.deviceID){
+                    [ruleArr addObject: rules];
+                break;
+                }
+            }
+        for(SFIButtonSubProperties *subProperty in rules.actions){
+            if(subProperty.deviceId == self.genericParams.headerGenericIndexValue.deviceID){
+                [ruleArr addObject: rules];
+                break;
+            }
+        }
+        
+    }
+return ruleArr;
+}
+-(Rule *)getScene:(NSDictionary*)dict{
+    Rule *scene = [[Rule alloc]init];
+    scene.ID = [dict valueForKey:@"ID"];
+    scene.name = [dict valueForKey:@"Name"]==nil?@"":[dict valueForKey:@"Name"];
+    scene.isActive = [[dict valueForKey:@"Active"] boolValue];
+    scene.triggers= [NSMutableArray new];
+    [self getEntriesList:[dict valueForKey:@"SceneEntryList"] list:scene.triggers];
+    return scene;
+}
+-(void)getEntriesList:(NSArray*)sceneEntryList list:(NSMutableArray *)triggers{
+    for(NSDictionary *triggersDict in sceneEntryList){
+        SFIButtonSubProperties* subProperties = [[SFIButtonSubProperties alloc] init];
+        NSLog(@"triggersDict %@",triggersDict);
+        subProperties.deviceId = [[triggersDict valueForKey:@"ID"] intValue];
+        subProperties.index = [[triggersDict valueForKey:@"Index"] intValue];
+        subProperties.matchData = [triggersDict valueForKey:@"Value"];
+        subProperties.valid = [[triggersDict valueForKey:@"Valid"] boolValue];
+        subProperties.eventType = [triggersDict valueForKey:@"EventType"];
+        //        subProperties.type = subProperties.deviceId==0?@"EventTrigger":@"DeviceTrigger";
+        //        subProperties.delay=[triggersDict valueForKey:@"PreDelay"];
+        //        [self addTime:triggersDict timeProperty:subProperties];
+        [triggers addObject:subProperties];
     }
 }
 @end

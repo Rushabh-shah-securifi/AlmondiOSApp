@@ -46,6 +46,7 @@
     SFIAlmondPlus *Al3 = [AlmondManagement tryGetCurrentPrimaryAL3];
     self.currentMAC = Al3.almondplusMAC;
     [self initializeMySubscriptionsArray];
+    
     [self makeAlmondSelectionBtn];
     [self createAlmondListPopup];
     [self setUpHUD];
@@ -124,6 +125,7 @@
     NSString *currentAlmName = [AlmondManagement cloudAlmond:self.currentMAC].almondplusName;
     _almondLabel = [[UILabel alloc]init];
     _imgView = [[UIImageView alloc]init];
+    [self setFrames:currentAlmName];
     
     //almond name label
     [CommonMethods setLableProperties:_almondLabel text:currentAlmName textColor:[SFIColors paymentColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentCenter];
@@ -135,7 +137,6 @@
     _imgView.image = [[UIImage imageNamed:@"arrow_drop_down_black"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [_imgView setTintColor:[SFIColors paymentColor]];
     [self.almSelectionBtn addSubview:_imgView];
-    
 }
 
 
@@ -148,7 +149,6 @@
     _almondSelectionTableview.methodsDelegate = self;
     _almondSelectionTableview.needsAddAlmond = NO;
     _almondSelectionTableview.currentMAC = self.currentMAC;
-    
     [self.buttonMaskView addSubview:_almondSelectionTableview];
     
     CATransition *transition = [CATransition animation];
@@ -162,7 +162,6 @@
 
 
 - (void)setFrames:(NSString *)currentAlmName{
-    
     CGFloat titleWidth;
     CGSize textSize;
 
@@ -175,11 +174,9 @@
     
     _almondLabel.frame = CGRectMake(0, 0, titleWidth, 30);
     _almondLabel.center = CGPointMake(CGRectGetWidth(_almSelectionBtn.bounds)/2-10, CGRectGetHeight(_almSelectionBtn.bounds)/2);
-    
+
     _imgView.frame = CGRectMake(CGRectGetMaxX(_almondLabel.frame)+1, CGRectGetMinY(_almondLabel.frame), 30, 30);
-    
     _almondLabel.text = currentAlmName;
-    
 }
 
 
@@ -222,7 +219,8 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 10;
+//    return 10;
+    return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{

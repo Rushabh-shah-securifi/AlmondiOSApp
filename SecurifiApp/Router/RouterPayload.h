@@ -9,13 +9,17 @@
 #import <Foundation/Foundation.h>
 #import "SFIRouterTableViewController.h"
 
+static const int enable_key = 1;
+static const int ssid_key = 2;
+static const int pass_key = 3;
+
 @interface RouterPayload : NSObject
 
 + (void)routerSummary:(int)mii mac:(NSString*)almondMac;
 
 + (void)getWirelessSettings:(int)mii mac:(NSString*)almondMac;
 
-+ (void)setWirelessSettings:(int)mii wirelessSettings:(SFIWirelessSetting*)wirelessSettingObj mac:(NSString*)almondMac isTypeEnable:(BOOL)isTypeEnable forceUpdate:(NSString *)forceUpdate;
++ (void)setWirelessSettings:(int)mii wirelessSettings:(SFIWirelessSetting*)wirelessSettingObj mac:(NSString*)almondMac keyType:(int)keyType forceUpdate:(NSString *)forceUpdate;
 
 + (void)updateFirmware:(int)mii version:(NSString*)version mac:(NSString*)almondMac;
 

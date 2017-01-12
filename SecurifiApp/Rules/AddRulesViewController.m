@@ -12,7 +12,6 @@
 #import "SecurifiToolkit/SecurifiTypes.h"
 #import "Colours.h"
 #import "SFIDeviceIndex.h"
-#import "SensorIndexSupport.h"
 #import "IndexValueSupport.h"
 #import "ValueFormatter.h"
 #import "RulesConstants.h"
@@ -80,11 +79,12 @@ UIAlertView *alert;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
+    self.navigationController.navigationBar.translucent = NO;
     if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
     }
+    
     [CommonMethods clearTopScroll:self.triggersActionsScrollView middleScroll:self.deviceListScrollView bottomScroll:self.deviceIndexButtonScrollView];
 }
 
