@@ -152,10 +152,9 @@
     CATransition *transition = [CATransition animation];
     transition.duration = 0.3;
     transition.type = kCATransitionReveal;
-    self.buttonMaskView.alpha = 0;
     [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     [self.buttonMaskView.layer addAnimation:transition forKey:nil];
-    [self.tabBarController.view addSubview:self.buttonMaskView];
+//    [self.tabBarController.view addSubview:self.buttonMaskView];
 }
 
 
@@ -265,6 +264,7 @@
 #pragma mark -  almond selection
 - (void)showAlmondSelection{
     self.buttonMaskView.alpha = 1;
+    [self.tabBarController.view addSubview:self.buttonMaskView];
 }
 
 
@@ -299,8 +299,8 @@
                         options: UIViewAnimationOptionCurveEaseOut
                      animations:^{
                          self.buttonMaskView.alpha = 0;
-                     } completion:^(BOOL finished){
-
+                     }completion:^(BOOL finished){
+                         [self.buttonMaskView removeFromSuperview];
                      }];
 }
 
