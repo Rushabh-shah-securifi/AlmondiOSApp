@@ -543,63 +543,17 @@
         return ;
     dispatch_async(dispatch_get_main_queue(), ^() {
         
-        NSArray *downArr = [self readableValueWithBytes:dict[@"RX"]];
+        NSArray *downArr = [CommonMethods readableValueWithBytes:dict[@"RX"]];
         self.BWDownload.text = [downArr objectAtIndex:0];
         self.MbDownTxt.text = [NSString stringWithFormat:@"%@ Download",[downArr objectAtIndex:1]];
         
-        NSArray *upArr = [self readableValueWithBytes:dict[@"TX"]];
+        NSArray *upArr = [CommonMethods readableValueWithBytes:dict[@"TX"]];
         self.BWUpload.text = [upArr objectAtIndex:0];
         self.MbupTxt.text = [NSString stringWithFormat:@"%@ Upload",[upArr objectAtIndex:1]];
         
     });
 }
-- (NSArray *)readableValueWithBytes:(id)bytes{
-    
-    NSString *readable = @"0 KB";
-    if (([bytes longLongValue] == 0)){
-        
-        readable = [NSString stringWithFormat:@"0 KB"];
-    }
-    //round bytes to one kilobyte, if less than 1024 bytes
-    if (([bytes longLongValue] < 1024) && ([bytes longLongValue] > 1)){
-        
-        readable = [NSString stringWithFormat:@"1 KB"];
-    }
-    
-    //kilobytes
-    if (([bytes longLongValue]/1024)>=1){
-        
-        readable = [NSString stringWithFormat:@"%0.1f KB", ([bytes doubleValue]/1024)];
-    }
-    
-    //megabytes
-    if (([bytes longLongValue]/1024/1024)>=1){
-        
-        readable = [NSString stringWithFormat:@"%0.1f MB", ([bytes doubleValue]/1024/1024)];
-    }
-    
-    //gigabytes
-    if (([bytes longLongValue]/1024/1024/1024)>=1){
-        
-        readable = [NSString stringWithFormat:@"%0.1f GB", ([bytes doubleValue]/1024/1024/1024)];
-        
-    }
-    
-    //terabytes
-    if (([bytes longLongValue]/1024/1024/1024/1024)>=1){
-        
-        readable = [NSString stringWithFormat:@"%0.1f TB", ([bytes doubleValue]/1024/1024/1024/1024)];
-    }
-    
-    //petabytes
-    if (([bytes longLongValue]/1024/1024/1024/1024/1024)>=1){
-        
-        readable = [NSString stringWithFormat:@"%0.1f PB", ([bytes doubleValue]/1024/1024/1024/1024/1024)];
-    }
-    
-    NSArray* arrayOfStrings = [readable componentsSeparatedByString:@" "];
-    return arrayOfStrings;
-}
+
 - (IBAction)detailPeriodButtonClicked:(id)sender {
     DetailsPeriodViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"DetailsPeriodViewController"];
 
