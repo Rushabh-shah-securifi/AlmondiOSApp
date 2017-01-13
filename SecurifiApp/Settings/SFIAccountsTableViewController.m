@@ -105,8 +105,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
                selector:@selector(accountResponseCallback:)
                    name:ACCOUNTS_RELATED
                  object:nil];
+    
     [center addObserver:self
-               selector:@selector(accountResponseCallback:)
+               selector:@selector(loadAlmondList)
                    name:kSFIDidChangeAlmondName
                  object:nil];
     
@@ -143,7 +144,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 
 - (void)viewDidDisappear:(BOOL)animated {
-    NSLog(@"View did disappear is called");
+    
     [super viewDidDisappear:animated];
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -305,8 +306,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 - (UITableViewCell *)createUserProfileCell:(UITableViewCell *)cell listRow:(int)indexPathRow {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    NSLog(@"old account cell is reused");
     [accountCell drawAccountCell:self.tableView.frame];
     [cell addSubview: accountCell];
     return cell;
@@ -388,6 +387,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     alert.tag = USER_INVITE_ALERT;
     [[alert textFieldAtIndex:0] setDelegate:self];
     [alert show];
+    
 }
 
 
@@ -425,11 +425,10 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 
 - (void)onRemoveSharedAlmondClicked:(id)sender {
-    NSLog(@"onRemoveSharedAlmondClicked");
+    
     UIButton *btn = (UIButton *) sender;
     NSUInteger index = (NSUInteger) btn.tag;
     SFIAlmondPlus *currentAlmond = [self sharedAlmondAtIndexPathRow:index];
-    NSLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
     currentAlmondMAC = currentAlmond.almondplusMAC;
     NSArray *localizedStrings = @[ACCOUNTS_HUD_REMOVESHAREDALMOND, REMOVE_SHARED_ALMOND];
     NSMutableDictionary *dictionary = [NSMutableDictionary new];
@@ -543,7 +542,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 }
 
 - (void) addAlmond:(SFIAlmondPlus*) almond toList:(NSArray*)almondList {
-    NSLog(@"dynamic almond add is called");
     NSArray* list = almondList;
     NSMutableArray* newOwnedList = [NSMutableArray new];
     for(SFIAlmondPlus* almond in list){
@@ -562,6 +560,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }
     return nil;
 }
+
 
 - (void)accountResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
@@ -583,28 +582,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [self.HUD hide:YES];
         [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     });
-}
-
-
--(void) almondNameChangeResponse:(NSDictionary*) dictionary {
-    NSLog(@" almondnamechangeresponsecalled");
-    if ([[dictionary valueForKey:@"AlmondMAC"] length] != 0) {
-        if (nameChangedForAlmond == NAME_CHANGED_OWNED_ALMOND) {
-            for (SFIAlmondPlus *currentAlmond in ownedAlmondList) {
-                if ([currentAlmond.almondplusMAC isEqualToString:currentAlmondMAC]){
-                    NSLog(@"%@ almondnamechangeresponsecalled",changedAlmondName);
-                    currentAlmond.almondplusName = changedAlmondName;
-                }
-            }
-        }
-        else if (nameChangedForAlmond == NAME_CHANGED_SHARED_ALMOND) {
-            for (SFIAlmondPlus *currentAlmond in sharedAlmondList) {
-                if ([currentAlmond.almondplusMAC isEqualToString:currentAlmondMAC]) {
-                    currentAlmond.almondplusName = changedAlmondName;
-                }
-            }
-        }
-    }
 }
 
 
