@@ -107,10 +107,7 @@
     self.switchView1.transform = CGAffineTransformMakeScale(0.70, 0.70);
     self.switchView3.transform = CGAffineTransformMakeScale(0.70, 0.70);
     [self initMethodToolkit];
-    if(self.isSendBWReq){
-        [self createRequest:@"Bandwidth" value:self.DaysValuenew date:self.Datenew];
-        self.NosDayLabel.text = self.label;
-    }
+    
     [super viewWillAppear:YES];
     self.isPressed = YES;
     [self initializeNotifications];
@@ -118,6 +115,10 @@
     [self checkForBlock];
     [self checkForLocal];
     [self iconTextUpdate];
+    if(self.isSendBWReq){
+        [self createRequest:@"Bandwidth" value:self.DaysValuenew date:self.Datenew];
+        self.NosDayLabel.text = self.label;
+    }
 }
 -(void)iconTextUpdate{
     self.icon.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
@@ -182,6 +183,8 @@
         
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-19"] && [genericIndexValue.genericValue.value isEqualToString:@"1"]){
             self.switchView3.on = NO;
+//            self.switchView1.hidden = YES;
+//            self.switchView3.hidden = YES;
             self.clrHis.hidden = YES;
             self.blockClientTxt.hidden = NO;
             self.blockClientTxt.text = NSLocalizedString(@"Web_history_and_Data_usage", @"");
@@ -534,7 +537,8 @@
     [self.httpReq sendHttpRequest:req];
     
 }
--(void)responseDict:(NSDictionary *)dict{
+-(void)responseDict:(NSDictionary *)responseDict{
+    NSDictionary *dict = responseDict[@"Data"];
     if(dict[@"RX"] == NULL || dict[@"TX"] == NULL)
         return ;
     dispatch_async(dispatch_get_main_queue(), ^() {

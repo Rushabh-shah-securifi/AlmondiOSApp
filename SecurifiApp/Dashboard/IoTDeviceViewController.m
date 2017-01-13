@@ -74,6 +74,7 @@
     [self initializeNotifications];
     [super viewWillAppear:YES];
     [self forRouterModetest];
+    
     [self.navigationController setNavigationBarHidden:YES];
     
 }
@@ -82,6 +83,13 @@
     NSString *TypeImg = [self.client iconName];
     self.clientImg.image = [UIImage imageNamed:TypeImg];
     self.clientName.text = self.client.name;
+}
+-(void)blockUnblockCheck{
+    if (self.client.deviceAllowedType == DeviceAllowed_Blocked) {
+        self.iotSwitch.hidden = YES;
+    }
+    else
+        self.iotSwitch.hidden = NO;
 }
 -(void)forRouterModetest{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -102,6 +110,7 @@
     if(isLocal){
         self.iotSwitch.hidden = YES;
     }
+    
     if([routerMode isEqualToString:@"ap"] || [routerMode isEqualToString:@"re"] ||[routerMode isEqualToString:@"WirelessSlave"] || [routerMode isEqualToString:@"WiredSlave"]){
         if(![connection isEqualToString:@"wireless"]){
             self.iotSwitch.hidden = YES;
@@ -207,6 +216,7 @@
                 [self amazoneNestUI];
             }
         }
+        [self blockUnblockCheck];
     });
 }
 
