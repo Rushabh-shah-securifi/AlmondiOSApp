@@ -20,7 +20,8 @@
 #import "NotificationDeleteRegistrationRequest.h"
 #import "AlmondManagement.h"
 #import "MySubscriptionsViewController.h"
-#define USER_INVITE_ALERT               0
+#import "SFIAccountMacros.h"
+
 
 @interface MoreViewController ()<MoreCellTableViewCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RouterNetworkSettingsEditorDelegate, UIAlertViewDelegate, UITextFieldDelegate>
 
@@ -30,7 +31,9 @@
 @property (nonatomic) BOOL isLocal;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property MySubscriptionsViewController *subscriptionsPage;
+@property NSDictionary* failureReasonForUserInvite;
 @end
+
 
 @implementation MoreViewController
 
@@ -52,6 +55,23 @@
     
     if(!self.isLocal)
         [self sendUserProfileRequest];
+    
+    _failureReasonForUserInvite = @{
+                                             @5 :THIS_USER_DOES_NOT_HAVE_A_SECURIFI_ACCOUNT,
+                                             @6 :THIS_USER_NEEDS_TO_VERIFY_ACCOUNT,
+                                             @7 :THIS_IS_NOT_YOUR_ALMOND,
+                                             @8 :ALREADY_INVITED,
+                                             @9 :YOU_ARE_OWNER_OF_THIS_ALMOND,
+                                             @10:PLEASE_TRY_AGAIN_LATER,
+                                             @20:THE_EMAIL_ID_IS_INVALID,
+                                             @21:COULD_NOT_DELETE_YOUR_ACCOUNT,
+                                             @22:COULD_NOT_DELETE_YOUR_ACCOUNT,
+                                             @23:COULD_NOT_DELETE_YOUR_ACCOUNT,
+                                             @24:COULD_NOT_DELETE_YOUR_ACCOUNT,
+                                             @25:COULD_NOT_UNLINK,
+                                             @26:PLEASE_TRY_AGAIN_LATER,
+                                             @27:USER_WAS_ALREADY_REMOVED
+                                             };
 }
 
 
@@ -76,7 +96,7 @@
     
     [center addObserver:self
                selector:@selector(userInviteResponseCallback:)
-                   name:USER_INVITE_NOTIFIER
+                   name:USER_INVITE_RESPONSE
                  object:nil];
     
     [center addObserver:self
@@ -93,11 +113,11 @@
                selector:@selector(onLogoutResponse:)
                    name:kSFIDidLogoutNotification
                  object:nil];
-    
 }
 
 
 - (void)sendUserProfileRequest {
+    
     NSMutableDictionary * data = [NSMutableDictionary new];
     [[SecurifiToolkit sharedInstance] asyncSendRequest:(CommandType*)CommandType_ACCOUNTS_RELATED commandString:@"UserProfileRequest" payloadData:data];
 }
@@ -111,19 +131,23 @@
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[data valueForKey:@"data"] options:kNilOptions error:&error];
     
     NSString *commandType = [dictionary valueForKey:COMMAND_TYPE];
-    if(![commandType isEqualToString:@"UserProfileResponse"])
+    if(!([commandType isEqualToString:@"UserProfileResponse"] || [commandType isEqualToString:@"UserInviteResponse"]))
         return;
     
-    NSString* success = [dictionary objectForKey:@"Success"];
+    NSString* success = dictionary[@"Success"];
     
     if ([success isEqualToString:@"true"]) {
-        self.userName = [[dictionary objectForKey:@"FirstName"] stringByAppendingString:[dictionary objectForKey:@"LastName"]];
+        self.userName = [dictionary[@"FirstName"] stringByAppendingString:dictionary[@"LastName"]];
         dispatch_sync(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
+    }else{
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.HUD hide:YES];
+            [self showToast: _failureReasonForUserInvite[ dictionary[@"Reason"]]];
+        });
     }
 }
-
 
 -(NSArray *)getFeaturesArray{
     NSMutableArray *moreFeatures = [NSMutableArray new];
@@ -513,61 +537,21 @@
 - (void)sendUserInviteRequest:(NSString *)emailID almondMAC:(NSString *)almondMAC {
     [self addHud:NSLocalizedString(@"accounts.hud.inviteUserToShareAlmond", @"Inviting user to share Almond...")];
     [self showHudWithTimeout];
-    [[SecurifiToolkit sharedInstance] asyncRequestInviteForSharingAlmond:almondMAC inviteEmail:emailID];
+    NSMutableDictionary* dictionary = [NSMutableDictionary new];
+    dictionary[@"AlmondMAC"] = almondMAC;
+    dictionary[@"EmailID"] = emailID;
+    [self sendRequest:(CommandType*)CommandType_ACCOUNTS_RELATED withCommandString:USER_INVITE_REQUEST withDictionaryData:dictionary];
 }
 
+
+-(void) sendRequest:(CommandType *)commandType withCommandString:(NSString*)commandString withDictionaryData:(NSMutableDictionary *)data{
+    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
+    [[SecurifiToolkit sharedInstance] asyncSendRequest:commandType commandString:commandString payloadData:data];
+}
+
+
 - (void)userInviteResponseCallback:(id)sender {
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    
-    UserInviteResponse *obj = (UserInviteResponse *) [data valueForKey:@"data"];
-    
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    
-    if (obj.isSuccessful) {
-        [self showToast:@"Successfully Updated!"];
-    }
-    else {
-        NSLog(@"Reason %@", obj.reason);
-        //Display appropriate reason
-        NSString *failureReason;
-        switch (obj.reasonCode) {
-            case 1:
-                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode1", @"There was some error on cloud. Please try later.");
-                break;
-                
-            case 2:
-                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode2", @"This user does not have a Securifi account.");
-                break;
-                
-            case 3:
-                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode3", @"The user has not verified the Securifi account yet.");
-                break;
-                
-            case 4:
-                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode4", @"You do not own this almond.");
-                break;
-                
-            case 5:
-                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode5", @"You need to fill all the fields.");
-                break;
-                
-            case 6:
-                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode6", @"You have already shared this almond with the user.");
-                break;
-                
-            case 7:
-                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode7", @"You can not add yourself as secondary user.");
-                break;
-                
-                
-            default:
-                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.default", @"Sorry! Sharing of Almond was unsuccessful.");
-                break;
-                
-        }
-        [self showToast:failureReason];
-    }
+  [self showToast:@"Successfully Updated!"];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
     });
@@ -604,6 +588,7 @@
     });
 }
 
+
 #pragma mark image delegate
 // This method is called when an image has been chosen from the library or taken from the camera.
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
@@ -619,7 +604,6 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [picker dismissViewControllerAnimated:YES completion:nil];
     });
-    
 }
 
 

@@ -183,7 +183,6 @@
 #define DYNAMIC_ALMOND_DELETE   @"DynamicAlmondDelete"
 #define DYNAMIC_ALMOND_ADD      @"DynamicAlmondAdd"
 #define DELETE_ME_SECONDARY_USER_DEFAULT_RESPONSE @"DeleteMeSecondaryUser_defaultresponse"
-#define USER_INVITE_RESPONSE @"UserInviteResponse"
 #define DELETE_SECONDARY_USER_RESPONSE @"DeleteSecondaryUserResponse"
 #define ME_AS_SECONDARY_USER_RESPONSE @"MeAsSecondaryUserResponse"
 #define ALMOND_AFFILIATION_DATA_RESPONSE @"AlmondAffiliationDataResponse"
