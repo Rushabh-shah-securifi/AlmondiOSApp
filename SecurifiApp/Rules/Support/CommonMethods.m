@@ -26,6 +26,7 @@
     (isWeather && compareValue);
 }
 
+
 +(NSString*)getDays:(NSArray*)earlierSelection{
     NSLog(@"earlierSelection count %ld ",earlierSelection.count);
     if(earlierSelection.count==7 || earlierSelection.count==0)
@@ -44,6 +45,7 @@
     return [NSString stringWithString:days];
 }
 
+
 +(NSMutableDictionary*)setDayDict{
     NSMutableDictionary *dayDict = [NSMutableDictionary new];
     [dayDict setValue:@"Sun" forKey:@(0).stringValue];
@@ -56,30 +58,6 @@
     return dayDict;
 }
 
-+(BOOL)isDimmerLayout:(NSString*)genericLayout layout:(NSString *)layoutType{
-    if(genericLayout  != nil){
-        NSLog(@"genericLayout %@",genericLayout);
-        if([genericLayout rangeOfString:layoutType options:NSCaseInsensitiveSearch].location != NSNotFound){// data string contains check string
-            return YES;
-        }
-    }
-    return NO;
-}
-
-+(void)clearTopScroll:(UIScrollView *)top middleScroll:(UIScrollView*)middle bottomScroll:(UIScrollView*)bottom{
-    [self clearScrollView:top];
-    [self clearScrollView:middle];
-    [self clearScrollView:bottom];
-}
-
-+ (void)clearScrollView:(UIScrollView*)scrollView{
-    NSLog(@"clearTopScrollView");
-    NSArray *viewsToRemove = [scrollView subviews];
-    for (UIView *v in viewsToRemove) {
-        if (![v isKindOfClass:[UIImageView class]])
-            [v removeFromSuperview];
-    }
-}
 
 + (NSMutableAttributedString *)getAttributeString:(NSString *)header fontSize:(int)fontsize LightFont:(BOOL)lightFontneed{
     UIFont *lightFont = lightFontneed?[UIFont securifiLightFont:fontsize]:[UIFont securifiBoldFont:fontsize];
@@ -101,6 +79,7 @@
     [attrString addAttribute:NSFontAttributeName value:[UIFont securifiBoldFont:fontSize] range:boldRange];
     return attrString;
 }
+
 + (NSAttributedString *)getAttributedString:(NSString *)text1 subText:(NSString *)subText text:(NSString *)text2 fontSize:(int)fontSize{
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:text1];
     NSAttributedString *attrString2 = [[NSAttributedString alloc] initWithString:text2];
@@ -131,75 +110,7 @@
     return [color.hexString uppercaseString];
 }
 
-+ (UIImage *)imageNamed:(NSString *)name withColor:(UIColor *)color {
-    // load the image
-    UIImage *img = [UIImage imageNamed:name];
-    
-    // begin a new image context, to draw our colored image onto
-    UIGraphicsBeginImageContext(img.size);
-    
-    // get a reference to that context we created
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    // set the fill color
-    [color setFill];
-    
-    // translate/flip the graphics context (for transforming from CG* coords to UI* coords
-    CGContextTranslateCTM(context, 0, img.size.height);
-    CGContextScaleCTM(context, 1.0, -1.0);
-    
-    // set the blend mode to color burn, and the original image
-    CGContextSetBlendMode(context, kCGBlendModeMultiply);
-    CGRect rect = CGRectMake(0, 0, img.size.width, img.size.height);
-    CGContextDrawImage(context, rect, img.CGImage);
-    
-    // set a mask that matches the shape of the image, then draw (color burn) a colored rectangle
-    CGContextClipToMask(context, rect, img.CGImage);
-    CGContextAddRect(context, rect);
-    CGContextDrawPath(context,kCGPathFill);
-    
-    // generate a new UIImage from the graphics context we drew onto
-    UIImage *coloredImg = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    //return the color-burned image
-    return coloredImg;
-}
-+(UIImage *)MultiplyImageByConstantColor:(UIImage*)image andColor:(UIColor *)color {
-    
-    CGSize backgroundSize = image.size;
-    UIGraphicsBeginImageContext(backgroundSize);
-    
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-    
-    CGRect backgroundRect;
-    backgroundRect.size = backgroundSize;
-    backgroundRect.origin.x = 0;
-    backgroundRect.origin.y = 0;
-    
-    CGFloat r,g,b,a;
-    [color getRed:&r green:&g blue:&b alpha:&a];
-    CGContextSetRGBFillColor(ctx, r, g, b, a);
-    CGContextFillRect(ctx, backgroundRect);
-    
-    CGRect imageRect;
-    imageRect.size = image.size;
-    imageRect.origin.x = (backgroundSize.width - image.size.width)/2;
-    imageRect.origin.y = (backgroundSize.height - image.size.height)/2;
-    
-    // Unflip the image
-    CGContextTranslateCTM(ctx, 0, backgroundSize.height);
-    CGContextScaleCTM(ctx, 1.0, -1.0);
-    
-    CGContextSetBlendMode(ctx, kCGBlendModeMultiply);
-    CGContextDrawImage(ctx, imageRect, image.CGImage);
-    
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return newImage;
-}
+
 + (NSString *)stringFromWeekday:(NSInteger)weekday
 {
     static NSString *strings[] = {
@@ -215,7 +126,6 @@
     return strings[weekday - 1];
 }
 
-
 + (UIColor *)colorWithHexString:(NSString *)str_HEX  alpha:(CGFloat)alpha_range{
     int red = 0;
     int green = 0;
@@ -223,6 +133,7 @@
     sscanf([str_HEX UTF8String], "%02X%02X%02X", &red, &green, &blue);
     return  [UIColor colorWithRed:red/255.0 green:green/255.0 blue:blue/255.0 alpha:alpha_range];
 }
+
 
 + (NSString *) UIColorToHexString:(UIColor *)uiColor{
     CGFloat red,green,blue,alpha;
@@ -246,47 +157,7 @@
     NSLog(@"colorRGB %d",colorRGB)  ;
     return colorRGB;
 }
-#pragma mark label methods
-+(void)setLableProperties:(UILabel*)label text:(NSString*)text textColor:(UIColor*)textColor fontName:(NSString *)fontName fontSize:(float)size alignment:(NSTextAlignment)alignment{
-    label.text = text;
-    label.font = [UIFont fontWithName:fontName size:size];
-    label.numberOfLines = 0;
-    label.textAlignment = alignment;
-    label.textColor = textColor;
-}
 
-
-+(void)setLineSpacing:(UILabel*)label text:(NSString *)text spacing:(int)spacing{
-    NSString *labelText = text;
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:labelText];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setLineSpacing:spacing];
-    paragraphStyle.alignment = NSTextAlignmentCenter;
-    
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [labelText length])];
-    label.attributedText = attributedString ;
-}
-
-#pragma mark button methods
-+(void)setButtonProperties:(UIButton*)button title:(NSString *)title titleColor:(UIColor*)titleColor bgColor:(UIColor *)bgColor font:(UIFont *)font{
-    [button setTitle:title forState:UIControlStateNormal];
-    [button setTitleColor:titleColor forState:UIControlStateNormal];
-    button.backgroundColor = bgColor;
-    button.titleLabel.font = font;
-}
-
-+(void)setLabelProperties:(UILabel*)button title:(NSString *)title titleColor:(UIColor*)titleColor bgColor:(UIColor *)bgColor font:(UIFont *)font{
-    button.text = title;
-    button.textColor = titleColor;
-    button.backgroundColor = bgColor;
-    button.font = font;
-}
-#pragma mark ui methods
-+(void)addLineSeperator:(UIView*)view yPos:(int)ypos{
-    UIView *lineSeperator = [[UIView alloc]initWithFrame:CGRectMake(0, ypos, view.frame.size.width, 1)];
-    lineSeperator.backgroundColor = [SFIColors lineColor];
-    [view addSubview:lineSeperator];
-}
 
 #pragma mark parsing
 + (NSDictionary*)parseJson:(NSString*)fileName{
@@ -306,15 +177,17 @@
 
 #pragma mark helpcenter json parsing methods
 + (NSDictionary *)getDict:(NSString*)helpItem itemName:(NSString*)itemName{//helpItem, itemName
-    NSArray *helpItems = [[CommonMethods parseJson:@"helpCenterJson"] valueForKey:@"HelpItems"];
+    NSArray *helpItems = [[self parseJson:@"helpCenterJson"] valueForKey:@"HelpItems"];
     NSDictionary *guide = [self getDictForName:helpItem array:helpItems];
-    return [CommonMethods getDictForName:itemName array:guide[ITEMS]];
+    return [self getDictForName:itemName array:guide[ITEMS]];
 }
 
 + (NSDictionary *)getMeshDict:(NSString *)itemName{
-    NSArray *meshItems = [[CommonMethods parseJson:@"helpCenterJson"] valueForKey:@"Mesh"];
+    NSArray *meshItems = [[self parseJson:@"helpCenterJson"] valueForKey:@"Mesh"];
     return [self getDictForName:itemName array:meshItems];
 }
+
+
 + (NSDictionary *)getDictForName:(NSString*)name array:(NSArray*)array{
     for(NSDictionary *dict in array){
         if([dict[@"name"] isEqualToString:name]){
@@ -347,8 +220,8 @@
             return YES;
     }
     return  NO;
-    
 }
+
 +(BOOL)isContainWeeKday:(NSString*)search{
     NSArray *weekDay = @[@"sunday", @"monday", @"tuesday", @"wednesday", @"thursday", @"friday", @"saturday"];
     for (NSString *day  in weekDay) {
@@ -360,12 +233,13 @@
 }
 
 
-+ (BOOL) isAllDigits:(NSString *)string
-{
++ (BOOL) isAllDigits:(NSString *)string {
     NSCharacterSet* nonNumbers = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
     NSRange r = [string rangeOfCharacterFromSet: nonNumbers];
     return r.location == NSNotFound && string.length > 0;
 }
+
+
 +(BOOL)checkValidation:(NSString*)search date:(NSString *)date monthname:(NSString *)monthName{
     NSArray * searchArr = [search componentsSeparatedByString:@" "];
     NSString *day;
@@ -385,8 +259,8 @@
     return NO;
 }
 
+
 + (BOOL)isNumeric:(NSString *)code{
-    
     NSScanner *ns = [NSScanner scannerWithString:code];
     int the_value;
     if ( [ns scanInt:&the_value] )
@@ -402,7 +276,7 @@
 
 + (int )getRGBForHex:(NSString*)hueValue sliderValue:(NSString*)slider{
     NSLog(@"hueValue Slidr value %@,%@",hueValue,slider);
-    NSString *colorHex = [CommonMethods getColorHex:hueValue];
+    NSString *colorHex = [self getColorHex:hueValue];
     UIColor *color = [UIColor colorFromHexString:colorHex];
     CGFloat r,g,b,a;
     int sliderValue = [slider intValue];
@@ -687,17 +561,6 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     HSL2RGB(h, s, l, &red, &green, &blue);
     NSLog(@"r = %f, g = %f, b = %f", red, green, blue);
     
-//    CGFloat nred;
-//    CGFloat ngreen;
-//    CGFloat nblue;
-//    CGFloat alpha;
-//    UIColor *color = [UIColor colorWithHue:h saturation:s
-//                                brightness:l alpha:1.0];
-//    if ( [color getRed:&nred green:&ngreen blue:&nblue alpha:&alpha]) {
-//        // color converted
-//    }
-//    NSLog(@"r = %f, g = %f, b = %f", nred, ngreen, nblue);
-    
     int colorRGB =  (((int)red << 16) | ((int)green << 8) | (int)blue);;
     NSLog(@"Colorrgb: %d", colorRGB);
     return colorRGB;
@@ -721,6 +584,7 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     NSLog(@"new name: %@", newName);
     return newName;
 }
+
 +(NSString *)hexToString:(NSString*)mac{
     
     NSString *stringWithoutColon = [mac
@@ -890,12 +754,8 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     float hue = [value floatValue];
     int intClolor = defaultcolor/8;
     
-    
     UIColor *color = [UIColor colorWithHue:(hue/defaultcolor) saturation:100 brightness:100 alpha:1.0];
-    //                    NSDictionary *attr = @{
-    //                            NSBackgroundColorAttributeName : color,
-    //                    }
-    //                    NSAttributedString *a = [[NSAttributedString alloc] initWithString:@"\u25a1" attributes:attr];
+    
     if(hue>=0 && hue <= 1*intClolor)
         return [NSString stringWithFormat:@"%@(%@)",@"red shade",[color.hexString uppercaseString]];
     else if(hue>=1 && hue <= 2*intClolor)

@@ -127,7 +127,7 @@
     _imgView = [[UIImageView alloc]init];
     
     //almond name label
-    [CommonMethods setLableProperties:_almondLabel text:@"" textColor:[SFIColors paymentColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentCenter];
+    [UICommonMethods setLableProperties:_almondLabel text:@"" textColor:[SFIColors paymentColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentCenter];
     _almondLabel.center = CGPointMake(CGRectGetWidth(_almSelectionBtn.bounds)/2-10, CGRectGetHeight(_almSelectionBtn.bounds)/2);
     [self.almSelectionBtn addSubview:_almondLabel];
     

@@ -7,8 +7,9 @@
 //
 
 #import "AlmondSelectionCell.h"
-#import "CommonMethods.h"
+#import "UICommonMethods.h"
 #import "Colours.h"
+
 @interface AlmondSelectionCell()
 @property (nonatomic)UILabel *almond;
 @property (nonatomic)UIImageView *imgView;
@@ -33,7 +34,7 @@
     NSLog(@"cell height: %f", CGRectGetHeight(self.frame));
     
     self.almond = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 150, 40)];
-    [CommonMethods setLableProperties:self.almond text:@"" textColor:[UIColor blackColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentLeft];
+    [UICommonMethods setLableProperties:self.almond text:@"" textColor:[UIColor blackColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentLeft];
     [self addSubview:self.almond];
     
     self.imgView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetWidth(self.frame)-30, 8, 20, 20)];

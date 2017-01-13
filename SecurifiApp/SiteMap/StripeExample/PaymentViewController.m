@@ -10,6 +10,7 @@
 #import "SFIColors.h"
 #import "PaymentViewController.h"
 #import "CommonMethods.h"
+#import "UICommonMethods.h"
 #import "UIFont+Securifi.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "PaymentCompleteViewController.h"
@@ -31,7 +32,6 @@
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-
     
     // Setup payment view
     STPPaymentCardTextField *paymentTextField = [[STPPaymentCardTextField alloc] init];
@@ -45,7 +45,7 @@
     UIButton *payBtn = [UIButton new];
     payBtn.enabled = NO;
     payBtn.alpha = 0.5;
-    [CommonMethods setButtonProperties:payBtn title:title titleColor:[UIColor whiteColor] bgColor:[SFIColors paymentColor] font:[UIFont securifiFont:18]];
+    [UICommonMethods setButtonProperties:payBtn title:title titleColor:[UIColor whiteColor] bgColor:[SFIColors paymentColor] font:[UIFont securifiFont:18]];
     [payBtn addTarget:self action:@selector(onPayBtnTap:) forControlEvents:UIControlEventTouchUpInside];
     self.payBtn = payBtn;
     [self.view addSubview:self.payBtn];

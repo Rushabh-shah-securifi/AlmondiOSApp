@@ -9,6 +9,7 @@
 #import "IoTDeviceViewController.h"
 #import "BrowsingHistoryViewController.h"
 #import "CommonMethods.h"
+#import "UICommonMethods.h"
 #import "Client.h"
 #import "ClientPayload.h"
 #import "UIColor+Securifi.h"
@@ -290,7 +291,7 @@ NSLog(@"dict tag %@ ",dict[@"Tag"]);
         color = [UIColor redColor];
     else
         color = [UIColor orangeColor];
-    cell.imageView.image = [CommonMethods imageNamed:iconName withColor:color];
+    cell.imageView.image = [UICommonMethods imageNamed:iconName withColor:color];
     cell.textLabel.textColor = [UIColor blackColor];
     cell.textLabel.numberOfLines = 2;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;

@@ -21,7 +21,6 @@
 #import "SFIColors.h"
 #import "RulesTableViewController.h"
 #import "SFISubPropertyBuilder.h"
-//for wifi clients
 #import "GenericCommand.h"
 #import "SecurifiToolkit/SFIDevice.h"
 #import "SFIRouterClientsTableViewController.h"
@@ -31,7 +30,7 @@
 #import "MBProgressHUD.h"
 #import "AddRuleSceneClass.h"
 #import "Analytics.h"
-#import "CommonMethods.h"
+#import "UICommonMethods.h"
 #import "AlmondManagement.h"
 
 
@@ -85,7 +84,7 @@ UIAlertView *alert;
         [center removeObserver:self];
     }
     
-    [CommonMethods clearTopScroll:self.triggersActionsScrollView middleScroll:self.deviceListScrollView bottomScroll:self.deviceIndexButtonScrollView];
+    [UICommonMethods clearTopScroll:self.triggersActionsScrollView middleScroll:self.deviceListScrollView bottomScroll:self.deviceIndexButtonScrollView];
 }
 
 - (void)onTabBarDidChange:(id)sender{

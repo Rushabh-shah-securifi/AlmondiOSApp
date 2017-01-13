@@ -8,6 +8,7 @@
 
 #import "AlmondSelectionTableView.h"
 #import "AlmondSelectionCell.h"
+#import "UICommonMethods.h"
 #import "CommonMethods.h"
 #import "SFIColors.h"
 #import "UIFont+Securifi.h"
@@ -116,7 +117,7 @@ static const int footerHt = 60;
         cell = [[AlmondSelectionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"noAlmond"];
         cell.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), rowHeight);
         UILabel *noAlmondLbl = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), rowHeight)];
-        [CommonMethods setLableProperties:noAlmondLbl text:@"Tap on below button to add an Almond." textColor:[SFIColors helpTextDescription] fontName:@"Avenir-Roman" fontSize:15 alignment:NSTextAlignmentCenter];
+        [UICommonMethods setLableProperties:noAlmondLbl text:@"Tap on below button to add an Almond." textColor:[SFIColors helpTextDescription] fontName:@"Avenir-Roman" fontSize:15 alignment:NSTextAlignmentCenter];
         [cell addSubview:noAlmondLbl];
     }
     return cell;
@@ -144,17 +145,17 @@ static const int footerHt = 60;
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(5, 5, self.frame.size.width-10, 40)];
     UIButton *closeButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, 40)];
-    [CommonMethods setButtonProperties:closeButton title:@"Close" titleColor:[SFIColors lightBlueColor] bgColor:[UIColor whiteColor] font:[UIFont securifiFont:16]];
+    [UICommonMethods setButtonProperties:closeButton title:@"Close" titleColor:[SFIColors lightBlueColor] bgColor:[UIColor whiteColor] font:[UIFont securifiFont:16]];
     [closeButton addTarget:self action:@selector(onCloseBtnTap:) forControlEvents:UIControlEventTouchUpInside];
     [headerView addSubview:closeButton];
     
     UILabel *selectAlmond = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 150, 40)];
     selectAlmond.center = CGPointMake(headerView.bounds.size.width/2, selectAlmond.center.y);
-    [CommonMethods setLableProperties:selectAlmond text:@"Select Almond" textColor:[UIColor blackColor] fontName:@"Avenir-Heavy" fontSize:18 alignment:NSTextAlignmentCenter];
+    [UICommonMethods setLableProperties:selectAlmond text:@"Select Almond" textColor:[UIColor blackColor] fontName:@"Avenir-Heavy" fontSize:18 alignment:NSTextAlignmentCenter];
     [headerView addSubview:selectAlmond];
     
-    [CommonMethods addLineSeperator:headerBgView yPos:49];
-    [CommonMethods addLineSeperator:headerBgView yPos:64];
+    [UICommonMethods addLineSeperator:headerBgView yPos:49];
+    [UICommonMethods addLineSeperator:headerBgView yPos:64];
     
     [headerBgView addSubview:headerView];
     return headerBgView;
@@ -172,10 +173,10 @@ static const int footerHt = 60;
     
     UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, footerHt)];
     footerView.backgroundColor = [UIColor whiteColor];
-    [CommonMethods addLineSeperator:footerView yPos:0];
+    [UICommonMethods addLineSeperator:footerView yPos:0];
     
     UIButton *addAlmond = [[UIButton alloc]initWithFrame:CGRectMake(10, 10, self.frame.size.width-20, 40)];
-    [CommonMethods setButtonProperties:addAlmond title:@"Add Almond" titleColor:[UIColor whiteColor] bgColor:[SFIColors lightBlueColor] font:[UIFont securifiFont:16]];
+    [UICommonMethods setButtonProperties:addAlmond title:@"Add Almond" titleColor:[UIColor whiteColor] bgColor:[SFIColors lightBlueColor] font:[UIFont securifiFont:16]];
     [addAlmond addTarget:self action:@selector(onAddAlmondTap:) forControlEvents:UIControlEventTouchUpInside];
     addAlmond.backgroundColor = [SFIColors lightBlueColor];
     [footerView addSubview:addAlmond];

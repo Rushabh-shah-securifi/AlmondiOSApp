@@ -77,8 +77,8 @@
     [[Analytics sharedInstance] markParentalPage];
     [self initUIStart];
     [self setUpHUD];
-   
 }
+
 -(void)initUIStart{
     self.DaysValuenew = @"7";
     self.label = @"Past week";
@@ -92,6 +92,7 @@
     
     self.client = [Client findClientByID:@(deviceID).stringValue];//dont put in viewDid load
 }
+
 -(void)setUpHUD{
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
@@ -99,6 +100,7 @@
     _HUD.delegate = self;
     [self.navigationController.view addSubview:_HUD];
 }
+
 -(void)viewWillAppear:(BOOL)animated{
     [self.navigationController setNavigationBarHidden:YES];
    
@@ -119,12 +121,14 @@
     [self checkForLocal];
     [self iconTextUpdate];
 }
+
 -(void)iconTextUpdate{
     self.icon.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
     self.clientName.text = self.client.name;
     
     self.lastSeen.text = [NSString stringWithFormat:@"last activated time %@",[self getLastSeenTime]];
 }
+
 -(void)initMethodToolkit{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
@@ -372,6 +376,7 @@
             [alert show];
             }
 }
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == [alertView cancelButtonIndex]){
         if(alertView.tag == 3){
@@ -532,13 +537,13 @@
     req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@",search,value,date,_amac,_cmac];
     [self showHudWithTimeoutMsg:@"Loading..." withDelay:1];
     [self.httpReq sendHttpRequest:req];
-    
 }
+
 -(void)responseDict:(NSDictionary *)dict{
     if(dict[@"RX"] == NULL || dict[@"TX"] == NULL)
         return ;
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
-        
         NSArray *downArr = [self readableValueWithBytes:dict[@"RX"]];
         self.BWDownload.text = [downArr objectAtIndex:0];
         self.MbDownTxt.text = [NSString stringWithFormat:@"%@ Download",[downArr objectAtIndex:1]];
@@ -546,16 +551,17 @@
         NSArray *upArr = [self readableValueWithBytes:dict[@"TX"]];
         self.BWUpload.text = [upArr objectAtIndex:0];
         self.MbupTxt.text = [NSString stringWithFormat:@"%@ Upload",[upArr objectAtIndex:1]];
-        
     });
 }
+
+
 - (NSArray *)readableValueWithBytes:(id)bytes{
     
     NSString *readable = @"0 KB";
     if (([bytes longLongValue] == 0)){
-        
         readable = [NSString stringWithFormat:@"0 KB"];
     }
+    
     //round bytes to one kilobyte, if less than 1024 bytes
     if (([bytes longLongValue] < 1024) && ([bytes longLongValue] > 1)){
         
@@ -578,7 +584,6 @@
     if (([bytes longLongValue]/1024/1024/1024)>=1){
         
         readable = [NSString stringWithFormat:@"%0.1f GB", ([bytes doubleValue]/1024/1024/1024)];
-        
     }
     
     //terabytes
@@ -596,6 +601,8 @@
     NSArray* arrayOfStrings = [readable componentsSeparatedByString:@" "];
     return arrayOfStrings;
 }
+
+
 - (IBAction)detailPeriodButtonClicked:(id)sender {
     DetailsPeriodViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"DetailsPeriodViewController"];
 
@@ -613,6 +620,7 @@
     self.isSendBWReq = NO;
     [self.navigationController pushViewController:newWindow animated:YES];
 }
+
 
 -(void)updateDetailPeriod:(NSString *)value date:(NSString*)date lavelText:(NSString*)labelText{
     self.DaysValuenew = value;

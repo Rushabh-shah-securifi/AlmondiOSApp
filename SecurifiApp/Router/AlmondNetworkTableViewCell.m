@@ -10,6 +10,7 @@
 #import "UIFont+Securifi.h"
 #import "UIColor+Securifi.h"
 #import "CommonMethods.h"
+#import "UICommonMethods.h"
 #import "UIFont+Securifi.h"
 
 @interface AlmondNetworkTableViewCell()
@@ -107,7 +108,7 @@
 
 -(void)addLable:(NSString *)title view:(UIScrollView *)scrlView offset:(CGFloat)xOffset{
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(xOffset, 70, 60, 40)];
-    [CommonMethods setLableProperties:label text:title textColor:[UIColor whiteColor] fontName:@"Avenir-Heavy" fontSize:14 alignment:NSTextAlignmentCenter];
+    [UICommonMethods setLableProperties:label text:title textColor:[UIColor whiteColor] fontName:@"Avenir-Heavy" fontSize:14 alignment:NSTextAlignmentCenter];
     [scrlView addSubview:label];
 }
 
@@ -148,7 +149,7 @@
     
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     NSLog(@"point size: %f", textFont.pointSize);
-    [CommonMethods setLableProperties:label text:title textColor:[UIColor whiteColor] fontName:textFont.fontName fontSize:textFont.pointSize alignment:alignment];
+    [UICommonMethods setLableProperties:label text:title textColor:[UIColor whiteColor] fontName:textFont.fontName fontSize:textFont.pointSize alignment:alignment];
     label.numberOfLines = lineCount;
     
     return label;

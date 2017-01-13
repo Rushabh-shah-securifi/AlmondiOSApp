@@ -108,6 +108,7 @@
     }
     self.isTapped = NO;
 }
+
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
     [self.navigationController setNavigationBarHidden:NO];
@@ -170,8 +171,8 @@
         self.dayArr = @[];
             [self reloadTable];
         return;
-
     }
+    
     if(responseDict[@"Data"] == NULL)
         return;
     NSDictionary *last_uriDict = [allObj lastObject];
@@ -182,6 +183,7 @@
                               @"PS" : responseDict[@"pageState"]? : [NSNull null]
                               };
     }
+    
     int recordCount =0;
     if(self.reload){
         self.count+= 100;

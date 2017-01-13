@@ -306,8 +306,8 @@
 
 #pragma mark Navigation UI
 -(void)navigationBarStyle{
-    self.navigationImg = [[UIImageView alloc] initWithImage:[CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]]];
-    self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
+    self.navigationImg = [[UIImageView alloc] initWithImage:[UICommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]]];
+    self.bannerImage.image = [UICommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
     self.navigationController.view.backgroundColor = [SFIColors lightOrangeDashColor];
     
     self.navigationImg.frame = CGRectMake(0, 0, self.navigationController.navigationBar.frame.size.width, self.navigationController.navigationBar.frame.size.height);
@@ -316,8 +316,8 @@
     [self.navigationItem setTitle:@"Dashboard"];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     
-    [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"away_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
-    [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
+    [self.buttonHomeAway setImage:[UICommonMethods imageNamed:@"away_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
+    [self.buttonHome setImage:[UICommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
     
     
     _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES isDashBoard:YES];
@@ -357,26 +357,26 @@
         dispatch_async(dispatch_get_main_queue(), ^() {
             _labelHomeAway.hidden = YES;
             _labelHome.hidden = NO;
-            self.navigationImg.image = [CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightBlueColor]];
-            self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightBlueColor]];
+            self.navigationImg.image = [UICommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightBlueColor]];
+            self.bannerImage.image = [UICommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightBlueColor]];
             [self.buttonHome setBackgroundColor:[SFIColors lightBlueColor]];
             self.navigationController.view.backgroundColor = [SFIColors lightBlueColor];
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
-            [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"away_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
-            [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
+            [self.buttonHomeAway setImage:[UICommonMethods imageNamed:@"away_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
+            [self.buttonHome setImage:[UICommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
         });
     }
     else{
         dispatch_async(dispatch_get_main_queue(), ^() {
             _labelHomeAway.hidden = NO;
             _labelHome.hidden = YES;
-            self.navigationImg.image = [CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]];
-            self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
+            self.navigationImg.image = [UICommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]];
+            self.bannerImage.image = [UICommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
             [self.buttonHomeAway setBackgroundColor:[SFIColors lightOrangeDashColor]];
             self.navigationController.view.backgroundColor = [SFIColors lightOrangeDashColor];
             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
-            [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"away_white" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
-            [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
+            [self.buttonHomeAway setImage:[UICommonMethods imageNamed:@"away_white" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
+            [self.buttonHome setImage:[UICommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
         });
     }
 }
@@ -402,8 +402,8 @@
             //_labelAlmond.text = @"AddAlmond";
             _labelHomeAway.hidden = YES;
             _labelHome.hidden = YES;
-            [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"away_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
-            [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
+            [self.buttonHomeAway setImage:[UICommonMethods imageNamed:@"away_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
+            [self.buttonHome setImage:[UICommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
             self.smartHomeDevices.text = [NSString stringWithFormat:@"%d ",0 ];
@@ -650,7 +650,7 @@
         cell.textLabel.numberOfLines = 2;
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.textLabel.text = notification.deviceName;
-        cell.imageView.image = [CommonMethods imageNamed:@"emergency_icon" withColor:[UIColor redColor]];
+        cell.imageView.image = [UICommonMethods imageNamed:@"emergency_icon" withColor:[UIColor redColor]];
         cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
     }
      else if (indexPath.section == 1) {
@@ -667,7 +667,7 @@
         NSString *iconName = @"default_device";
         if(gval.icon != nil)
             iconName = gval.icon;
-        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[SFIColors ruleBlueColor]];
+        cell.imageView.image = [UICommonMethods imageNamed:iconName withColor:[SFIColors ruleBlueColor]];
         cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
     }
     else if(indexPath.section == 2){
@@ -840,8 +840,8 @@
 -(void)changeColorOfNavigationItam {
     NSLog(@"change color of navigation itam is called");
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.navigationImg.image = [CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightGrayColor]];
-        self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightGrayColor]];
+        self.navigationImg.image = [UICommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightGrayColor]];
+        self.bannerImage.image = [UICommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightGrayColor]];
         self.navigationController.view.backgroundColor = [SFIColors lightGrayColor];
         if (self.toolkit.mode_src ==2) {
             [self.buttonHome setBackgroundColor:[SFIColors lightGrayColor] ];
@@ -1208,11 +1208,9 @@
         return nil;
     if([genericIndexObject.ID isEqualToString:@"30"]){
         NSString *colorShade = [CommonMethods colorShadesforValue:65535 byValueOfcolor:value];
-        GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:colorShade prefix:genericIndexObject.formatter.prefix];
     }
     else if([genericIndexObject.ID isEqualToString:@"31"]){
         NSString *colorShade = [CommonMethods colorShadesforValue:255 byValueOfcolor:value];
-        GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:colorShade prefix:genericIndexObject.formatter.prefix];
     }
     else if(genericIndexObject.values != nil){
         GenericValue *gval = genericIndexObject.values[value];

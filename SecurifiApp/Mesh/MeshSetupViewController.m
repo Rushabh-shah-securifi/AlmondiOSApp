@@ -19,6 +19,7 @@
 #import "Analytics.h"
 #import "MeshEditViewController.h"
 #import "ConnectionStatus.h"
+#import "UICommonMethods.h"
 #import "AlmondManagement.h"
 
 #define REMOVE 1
@@ -155,7 +156,7 @@ int mii;
         
         [self showAlert:@"" msg:NSLocalizedString(@"no_internet_alert", @"") cancel:@"Ok" other:nil tag:NETWORK_OFFLINE];
     }
-     else if(statusIntValue == (int)(ConnectionStatusType*)AUTHENTICATED){
+    else if(statusIntValue == (int)(ConnectionStatusType*)AUTHENTICATED){
          if([[SecurifiToolkit sharedInstance] currentConnectionMode] == SFIAlmondConnectionMode_local){
              [[SecurifiToolkit sharedInstance] connectMesh];
          }
@@ -288,10 +289,10 @@ int mii;
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, tableView.frame.size.width, 20)];
     NSString *headerTitle = section == 0? @"NETWORK": (section == 1? @"PREFERENCES": @"NOTIFICATIONS");
-    [CommonMethods setLableProperties:label text:headerTitle textColor:[SFIColors ruleGraycolor] fontName:@"Avenir-Roman" fontSize:16 alignment:NSTextAlignmentLeft];
+    [UICommonMethods setLableProperties:label text:headerTitle textColor:[SFIColors ruleGraycolor] fontName:@"Avenir-Roman" fontSize:16 alignment:NSTextAlignmentLeft];
     [view addSubview:label];
     
-    [CommonMethods addLineSeperator:view yPos:32];
+    [UICommonMethods addLineSeperator:view yPos:32];
     return view;
 }
 
