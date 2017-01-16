@@ -81,7 +81,7 @@
         [cardView addShortLine];
     }
     
-    [cardView addNameLabel:@"Type" valueLabel:setting.type];
+    [cardView addNameLabel:@"Type" valueLabel:NSLocalizedString(setting.type,@"")];
     [cardView addShortLine];
     [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Channel", @"Channel") valueLabel:[NSString stringWithFormat:@"%d", setting.channel]];
     [cardView addShortLine];
