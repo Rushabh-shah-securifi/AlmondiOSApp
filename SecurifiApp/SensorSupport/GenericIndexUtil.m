@@ -285,7 +285,7 @@
                                                                                forValue:value];
             genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:genericID.intValue deviceID:clientID.intValue];
             
-            if([genericID.stringValue isEqualToString:@"-26"] ){
+            if([genericID.stringValue isEqualToString:@"-27"] ){
                 if(client.is_IoTDeviceType && hasSubscribe)
                 [genericIndexValues addObject:genericIndexValue];
             }

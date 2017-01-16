@@ -179,7 +179,7 @@ int randomMobileInternalIndex;
         
         
     }
-   else if([gIval.genericIndex.ID isEqualToString:@"-26"]){
+   else if([gIval.genericIndex.ID isEqualToString:@"-27"]){
        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainDashboard" bundle:nil];
        IoTDeviceViewController *newWindow = [storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
        NSString *deviceID = @(self.genericParams.headerGenericIndexValue. deviceID).stringValue;
