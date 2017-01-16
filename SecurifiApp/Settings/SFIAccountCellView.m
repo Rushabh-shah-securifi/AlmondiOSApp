@@ -182,16 +182,14 @@ NSArray *fieldNumbersForEachCategory;
         
         SFIUserProfileCell* profileCell = [[SFIUserProfileCell alloc] initWithFrame:userProfileCellframe];
         
-        [profileCell initWith:userProfileCellframe withUserProfileData:userProfileData ];
+        [profileCell initWith:userProfileCellframe withUserProfileData:userProfileData];
         
         profileCell.delegate = self;
         
         [self addSubview: profileCell];
         
         profileNumber++;
-        
     }
-    
     
     baseYCordinate += 400;
     UIButton *btnDeleteAccount = [[UIButton alloc] init];
@@ -219,11 +217,9 @@ NSArray *fieldNumbersForEachCategory;
     if(![commandType isEqualToString:@"UserProfileResponse"])
         return;
     
-    NSLog(@"%@ and %@ is the address of the account cell class and moreviewcontroller",self,self.delegate);
     NSString* success = [dictionary valueForKey:SUCCESS];
     _userProfileData = [NSMutableArray new];
     if ([success isEqualToString:@"true"]) {
-        
         _firstName = [dictionary valueForKey:FirstName];
         _lastName = [dictionary valueForKey:@"LastName"];
         _email = [[SecurifiToolkit sharedInstance] loginEmail];
@@ -243,12 +239,14 @@ NSArray *fieldNumbersForEachCategory;
         firstName.label = FIRST_NAME;
         firstName.keyValue = FirstName;
         [firstName.data addObject:[dictionary valueForKey:FirstName]];
+        [firstName.placeHolders addObject:NSLocalizedString(@"accounts.userprofile.textfield.placeholder.firstName", @"We do not know your first name yet")];
         [_userProfileData addObject:firstName];
         
         SFIUserProfile* lastName = [SFIUserProfile new];
         lastName.label = LAST_NAME;
         lastName.keyValue = LastName;
         [lastName.data addObject:[dictionary valueForKey:LastName]];
+        [lastName.placeHolders addObject:NSLocalizedString(@"accounts.userprofile.textfield.placeholder.lastName", @"We do not know your last name yet")];
         [_userProfileData addObject:lastName];
         
         SFIUserProfile* address = [SFIUserProfile new];
@@ -257,18 +255,25 @@ NSArray *fieldNumbersForEachCategory;
         [address.data addObject:[dictionary valueForKey:@"AddressLine1"]];
         [address.data addObject:[dictionary valueForKey:@"AddressLine2"]];
         [address.data addObject:[dictionary valueForKey:@"AddressLine3"]];
+        
+        [address.placeHolders addObject:NSLocalizedString(@"accounts.userprofile.textfield.placeholder.address1", @"Address Line 1")];
+        [address.placeHolders addObject:NSLocalizedString(@"accounts.userprofile.textfield.placeholder.address2", @"Address Line 2")];
+        [address.placeHolders addObject:NSLocalizedString(@"accounts.userprofile.textfield.placeholder.address3", @"Address Line 3")];
+        
         [_userProfileData addObject:address];
         
         SFIUserProfile* country = [SFIUserProfile new];
         country.label = @"COUNTRY";
         country.keyValue = @"Country";
         [country.data addObject:[dictionary valueForKey:@"Country"]];
+        [country.placeHolders addObject:NSLocalizedString(@"accounts.userprofile.textfield.placeholder.country", @"In which country do you reside?")];
         [_userProfileData addObject:country];
         
         SFIUserProfile* zipCode = [SFIUserProfile new];
         zipCode.label = @"ZIPCODE";
         zipCode.keyValue = @"ZipCode";
         [zipCode.data addObject:[dictionary valueForKey:@"ZipCode"]];
+        [zipCode.placeHolders addObject:NSLocalizedString(@"accounts.userprofile.textfield.placeholder.zipCode", @"What is your ZIP Code?")];
         [_userProfileData addObject:zipCode];
         
         [self.delegate loadAlmondList];

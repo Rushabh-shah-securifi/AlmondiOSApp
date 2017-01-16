@@ -14,9 +14,9 @@
 @property NSMutableArray *textFieldView;
 @property float baseYCordinate;
 @property NSMutableArray *userProfileData;
+@property NSMutableArray *userProfilePlaceHolders;
 @property NSString* keyvalue;
 @property NSDictionary *profileNumberFieldname;
-@property NSDictionary  *NSLocalizedStringForUserProfileLabels;
 @end
 
 @implementation SFIUserProfileCell
@@ -42,7 +42,6 @@ NSArray *fieldNumbersForEachCategory;
 }
 
 - (void)sendUpdateUserProfileRequest {
-    
     NSMutableDictionary *data = [NSMutableDictionary new];
     [data setObject:UPDATE_USERPROFILE_REQUEST forKey:COMMAND_TYPE];
     if([_keyvalue isEqualToString:@"Address"]){
@@ -79,6 +78,7 @@ NSArray *fieldNumbersForEachCategory;
     }
 }
 
+
 -(SFIUserProfileCell*)initWithFrame:(CGRect)frame {
     return [super initWithFrame:frame];
 }
@@ -90,20 +90,15 @@ NSArray *fieldNumbersForEachCategory;
     for(int count=0; count<userProfile.data.count; count++){
         _changedValue[count] = [userProfile.data objectAtIndex:count];
     }
+    
     _userProfile = userProfile;
     _userProfileData = ((SFIUserProfile*)userProfile).data;
+    _userProfilePlaceHolders = ((SFIUserProfile*)userProfile).placeHolders;
+    
     _baseYCordinate = 0;
     _keyvalue = ((SFIUserProfile*)userProfile).keyValue;
-    _NSLocalizedStringForUserProfileLabels = @{@0:NSLocalizedString(ACCOUNTS_USERPROFILE_LABEL_PRIMARYEMAIL, PRIMARY_EMAIL),
-                                               @1:NSLocalizedString(ACCOUNTS_USERPROFILE_BUTTON_CHANGEPASSWORD, CHANGE_PASSWORD),
-                                               @2:NSLocalizedString(ACCOUNTS_USERPROFILE_LABEL_FIRSTNAME, FIRST_NAME),
-                                               @3:NSLocalizedString(ACCOUNTS_USERPROFILE_LABEL_LASTNAME, LAST_NAME),
-                                               @4:NSLocalizedString(ACCOUNTS_USERPROFILE_LABEL_ADDRESS, ADDRESS),
-                                               @5:NSLocalizedString(ACCOUNTS_USERPROFILE_LABEL_COUNTRY, COUNTRY),
-                                               @6:NSLocalizedString(ACCOUNTS_USERPROFILE_LABEL_ZIPCODE, ZIP_CODE)
-                                               };
-    
     _baseYCordinate += 5;
+    
     UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(10, _baseYCordinate, 120, 30)];
     lbl.backgroundColor = [UIColor clearColor];
     lbl.textColor = [UIColor whiteColor];
@@ -136,15 +131,21 @@ NSArray *fieldNumbersForEachCategory;
         [self addSubview:btnChange];
     }
     
-    int count = 0;
     _textFieldView = [NSMutableArray new];
-    for(id obj in _userProfileData){
+    
+    for(int count = 0;count < [_userProfileData count]; count++){
         _baseYCordinate += 20;
         _textFieldView[count] = [[UITextField alloc] initWithFrame:CGRectMake(10, _baseYCordinate, 200, 30)];
-        ((UITextField*)_textFieldView[count]).placeholder = NSLocalizedString(@"accounts.userprofile.textfield.placeholder.firstName", @"We do not know your first name yet");
-        [((UITextField*)_textFieldView[count]) setValue:[UIColor colorWithRed:255.0 / 255.0 green:255.0 / 255.0 blue:255.0 / 255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
-        if(![(NSString*)obj isEqualToString:@""]) {
-            ((UITextField*)_textFieldView[count]).text = (NSString*)obj;
+        
+        NSString* fieldValue = [_userProfileData objectAtIndex:count];
+        
+        if([_userProfilePlaceHolders count] != 0){
+            NSString* placeHolderValue = [_userProfilePlaceHolders objectAtIndex:count];
+            ((UITextField*)_textFieldView[count]).attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeHolderValue attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:255.0 / 255.0 green:255.0 / 255.0 blue:255.0 / 255.0 alpha:0.5]}];
+        }
+        
+        if(![fieldValue isEqualToString:@""]) {
+            ((UITextField*)_textFieldView[count]).text = fieldValue;
         }
         
         ((UITextField*)_textFieldView[count]).textAlignment = NSTextAlignmentLeft;
@@ -156,7 +157,6 @@ NSArray *fieldNumbersForEachCategory;
         [((UITextField*)_textFieldView[count]) addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
         ((UITextField*)_textFieldView[count]).enabled = FALSE;
         [self addSubview:((UITextField*)_textFieldView[count])];
-        count++;
     }
     
     _baseYCordinate += 30;
