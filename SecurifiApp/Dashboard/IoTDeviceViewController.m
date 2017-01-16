@@ -23,8 +23,10 @@
 #import "AlmondManagement.h"
 #import "MBProgressHUD.h"
 #import "IoTLearnMoreViewController.h"
+#import "HTTPRequest.h"
+#import "CommonMethods.h"
 
-@interface IoTDeviceViewController ()<UITableViewDelegate,UITableViewDataSource,MBProgressHUDDelegate>
+@interface IoTDeviceViewController ()<UITableViewDelegate,UITableViewDataSource,MBProgressHUDDelegate,HTTPDelegate>
 @property (weak, nonatomic) IBOutlet UISwitch *iotSwitch;
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UIButton *blockButton;
@@ -42,6 +44,13 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *iotSecurity_label;
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
+@property (nonatomic) HTTPRequest *httpReq;
+
+@property (weak, nonatomic) IBOutlet UILabel *MBUpLbl;
+@property (weak, nonatomic) IBOutlet UILabel *MBLblUP;
+@property (weak, nonatomic) IBOutlet UILabel *MbDownLbl;
+@property (weak, nonatomic) IBOutlet UILabel *MbLblDown;
+
 
 @property BOOL isEcho_Nest;
 @end
@@ -56,6 +65,8 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     self.middleView.hidden = _hideMiddleView;
+    self.httpReq = [HTTPRequest new];
+    _httpReq.delegate = self;
     self.tableView.hidden = _hideTable;
     self.isDNSScan = !_hideMiddleView;
     self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
@@ -75,14 +86,48 @@
     [self initializeNotifications];
     [super viewWillAppear:YES];
     [self forRouterModetest];
+    [self createRequest:@"Bandwidth" value:@"7" date:[CommonMethods getTodayDate]];
+    
     [self.navigationController setNavigationBarHidden:YES];
     
+}
+-(void)createRequest:(NSString *)search value:(NSString*)value date:(NSString *)date{
+    NSString *req ;
+    NSString *almMAC = [AlmondManagement currentAlmond].almondplusMAC;
+    NSString *cmac = [CommonMethods hexToString:self.client.deviceMAC];
+    req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@",search,value,date,almMAC,cmac];
+    [self showHudWithTimeoutMsg:@"Loading..." withDelay:1];
+    [self.httpReq sendHttpRequest:req];
+    
+}
+-(void)responseDict:(NSDictionary *)responseDict{
+    NSDictionary *dict = responseDict[@"Data"];
+    if(dict[@"RX"] == NULL || dict[@"TX"] == NULL)
+        return ;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        
+        NSArray *downArr = [CommonMethods readableValueWithBytes:dict[@"RX"]];
+        self.MbDownLbl.text = [downArr objectAtIndex:0];
+        self.MbLblDown.text = [NSString stringWithFormat:@"%@ Download",[downArr objectAtIndex:1]];
+        
+        NSArray *upArr = [CommonMethods readableValueWithBytes:dict[@"TX"]];
+        self.MBUpLbl.text = [upArr objectAtIndex:0];
+        self.MBLblUP.text = [NSString stringWithFormat:@"%@ Upload",[upArr objectAtIndex:1]];
+        
+    });
 }
 -(void)setcientNameImg{
     self.client = [Client getClientByMAC:self.iotDevice[@"MAC"]];
     NSString *TypeImg = [self.client iconName];
     self.clientImg.image = [UIImage imageNamed:TypeImg];
     self.clientName.text = self.client.name;
+}
+-(void)blockUnblockCheck{
+    if (self.client.deviceAllowedType == DeviceAllowed_Blocked) {
+        self.iotSwitch.hidden = YES;
+    }
+    else
+        self.iotSwitch.hidden = NO;
 }
 -(void)forRouterModetest{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -103,6 +148,7 @@
     if(isLocal){
         self.iotSwitch.hidden = YES;
     }
+    
     if([routerMode isEqualToString:@"ap"] || [routerMode isEqualToString:@"re"] ||[routerMode isEqualToString:@"WirelessSlave"] || [routerMode isEqualToString:@"WiredSlave"]){
         if(![connection isEqualToString:@"wireless"]){
             self.iotSwitch.hidden = YES;
@@ -208,6 +254,7 @@
                 [self amazoneNestUI];
             }
         }
+        [self blockUnblockCheck];
     });
 }
 

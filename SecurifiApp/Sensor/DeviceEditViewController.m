@@ -374,8 +374,6 @@ static const int xIndent = 10;
         yPos = yPos + view.frame.size.height - 20;
          self.keyBoardComp = yPos;
         if(ruleArr.count == 0){
-           
-            
             LabelView *lableView2 = [[LabelView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp,view.frame.size.width-10,  35) color:self.genericParams.color text:@"This device is not part of any rules" isRule:YES];
             lableView2.delegate = self;
             CGSize scrollableSize2 = CGSizeMake(self.indexesScroll.frame.size.width,self.keyBoardComp + 35);
@@ -933,11 +931,16 @@ static const int xIndent = 10;
     if(!isRule){
         for(NSDictionary *sceneDict in ruleList){
             Rule *scene = [self getScene:sceneDict];
+             NSLog(@"Scene name %@",scene.name);
             for(SFIButtonSubProperties *subProperty in scene.triggers){
+                NSLog(@"subProperty.deviceId == self.genericParams.headerGenericIndexValue.deviceID %d == %d",subProperty.deviceId,self.genericParams.headerGenericIndexValue.deviceID);
+               
                 if(subProperty.deviceId == self.genericParams.headerGenericIndexValue.deviceID){
-                    [ruleArr addObject: scene];
-                    break;
-                    
+                    if(![subProperty.eventType isEqualToString:@"AlmondModeUpdated"])
+                        {
+                        [ruleArr addObject: scene];
+                        break ;
+                        }
                 }
             }
             
@@ -945,19 +948,31 @@ static const int xIndent = 10;
         return ruleArr;
     }
     for(Rule *rules in ruleList){
+        BOOL isRuleFound = NO;
         for(SFIButtonSubProperties *subProperty in rules.triggers){
+            
             if(subProperty.deviceId == self.genericParams.headerGenericIndexValue.deviceID){
+                if(![subProperty.eventType isEqualToString:@"AlmondModeUpdated"]){
                     [ruleArr addObject: rules];
-                break;
+                    isRuleFound = YES;
+                    break ;
+                    }
                 }
             }
+        if(isRuleFound)
+            return ruleArr;
+        
         for(SFIButtonSubProperties *subProperty in rules.actions){
             if(subProperty.deviceId == self.genericParams.headerGenericIndexValue.deviceID){
-                [ruleArr addObject: rules];
-                break;
+                if(![subProperty.eventType isEqualToString:@"AlmondModeUpdated"]){
+                    [ruleArr addObject: rules];
+                    isRuleFound = YES;
+                    break;
+                }
             }
         }
-        
+        if(isRuleFound)
+            return ruleArr;
     }
 return ruleArr;
 }

@@ -101,4 +101,6 @@
 
 +(NSString *)colorShadesforValue:(int)defaultcolor byValueOfcolor:(NSString *)value;
 
++ (NSArray *)readableValueWithBytes:(id)bytes;
+
 @end

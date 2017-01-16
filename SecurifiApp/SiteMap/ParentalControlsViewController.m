@@ -109,10 +109,7 @@
     self.switchView1.transform = CGAffineTransformMakeScale(0.70, 0.70);
     self.switchView3.transform = CGAffineTransformMakeScale(0.70, 0.70);
     [self initMethodToolkit];
-    if(self.isSendBWReq){
-        [self createRequest:@"Bandwidth" value:self.DaysValuenew date:self.Datenew];
-        self.NosDayLabel.text = self.label;
-    }
+    
     [super viewWillAppear:YES];
     self.isPressed = YES;
     [self initializeNotifications];
@@ -120,6 +117,10 @@
     [self checkForBlock];
     [self checkForLocal];
     [self iconTextUpdate];
+    if(self.isSendBWReq){
+        [self createRequest:@"Bandwidth" value:self.DaysValuenew date:self.Datenew];
+        self.NosDayLabel.text = self.label;
+    }
 }
 
 -(void)iconTextUpdate{
@@ -186,6 +187,8 @@
         
         if([genericIndexValue.genericIndex.ID isEqualToString:@"-19"] && [genericIndexValue.genericValue.value isEqualToString:@"1"]){
             self.switchView3.on = NO;
+//            self.switchView1.hidden = YES;
+//            self.switchView3.hidden = YES;
             self.clrHis.hidden = YES;
             self.blockClientTxt.hidden = NO;
             self.blockClientTxt.text = NSLocalizedString(@"Web_history_and_Data_usage", @"");
@@ -517,6 +520,7 @@
     NSLog(@"self.resetBWDate %@",self.resetBWDate);
     return ;
 }
+
 - (IBAction)iconOutletClicked:(id)sender {
     self.cat_view_more.frame = CGRectMake(0, self.view.frame.size.height - 180, self.navigationController.view.bounds.size.width , 320);
     self.cat_view_more.backgroundColor = [UIColor whiteColor];
@@ -539,69 +543,24 @@
     [self.httpReq sendHttpRequest:req];
 }
 
--(void)responseDict:(NSDictionary *)dict{
+
+-(void)responseDict:(NSDictionary *)responseDict{
+    NSDictionary *dict = responseDict[@"Data"];
+
     if(dict[@"RX"] == NULL || dict[@"TX"] == NULL)
         return ;
     
     dispatch_async(dispatch_get_main_queue(), ^() {
-        NSArray *downArr = [self readableValueWithBytes:dict[@"RX"]];
+
+        NSArray *downArr = [CommonMethods readableValueWithBytes:dict[@"RX"]];
         self.BWDownload.text = [downArr objectAtIndex:0];
         self.MbDownTxt.text = [NSString stringWithFormat:@"%@ Download",[downArr objectAtIndex:1]];
         
-        NSArray *upArr = [self readableValueWithBytes:dict[@"TX"]];
+        NSArray *upArr = [CommonMethods readableValueWithBytes:dict[@"TX"]];
         self.BWUpload.text = [upArr objectAtIndex:0];
         self.MbupTxt.text = [NSString stringWithFormat:@"%@ Upload",[upArr objectAtIndex:1]];
     });
 }
-
-
-- (NSArray *)readableValueWithBytes:(id)bytes{
-    
-    NSString *readable = @"0 KB";
-    if (([bytes longLongValue] == 0)){
-        readable = [NSString stringWithFormat:@"0 KB"];
-    }
-    
-    //round bytes to one kilobyte, if less than 1024 bytes
-    if (([bytes longLongValue] < 1024) && ([bytes longLongValue] > 1)){
-        
-        readable = [NSString stringWithFormat:@"1 KB"];
-    }
-    
-    //kilobytes
-    if (([bytes longLongValue]/1024)>=1){
-        
-        readable = [NSString stringWithFormat:@"%0.1f KB", ([bytes doubleValue]/1024)];
-    }
-    
-    //megabytes
-    if (([bytes longLongValue]/1024/1024)>=1){
-        
-        readable = [NSString stringWithFormat:@"%0.1f MB", ([bytes doubleValue]/1024/1024)];
-    }
-    
-    //gigabytes
-    if (([bytes longLongValue]/1024/1024/1024)>=1){
-        
-        readable = [NSString stringWithFormat:@"%0.1f GB", ([bytes doubleValue]/1024/1024/1024)];
-    }
-    
-    //terabytes
-    if (([bytes longLongValue]/1024/1024/1024/1024)>=1){
-        
-        readable = [NSString stringWithFormat:@"%0.1f TB", ([bytes doubleValue]/1024/1024/1024/1024)];
-    }
-    
-    //petabytes
-    if (([bytes longLongValue]/1024/1024/1024/1024/1024)>=1){
-        
-        readable = [NSString stringWithFormat:@"%0.1f PB", ([bytes doubleValue]/1024/1024/1024/1024/1024)];
-    }
-    
-    NSArray* arrayOfStrings = [readable componentsSeparatedByString:@" "];
-    return arrayOfStrings;
-}
-
 
 - (IBAction)detailPeriodButtonClicked:(id)sender {
     DetailsPeriodViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"DetailsPeriodViewController"];
@@ -652,10 +611,12 @@
                 alert.alertViewStyle = UIAlertViewStyleDefault;
                 [alert show];
 }
+    
 - (void)showHUD:(NSString *)text {
     self.HUD.labelText = text;
     [self.HUD show:YES];
 }
+    
 - (void)showHudWithTimeoutMsg:(NSString*)hudMsg withDelay:(int)second {
     NSLog(@"showHudWithTimeoutMsg");
     dispatch_async(dispatch_get_main_queue(), ^() {
