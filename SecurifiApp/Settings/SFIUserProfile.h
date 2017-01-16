@@ -11,4 +11,5 @@
 @property (nonatomic, retain) NSString* label;
 @property (nonatomic, retain) NSString *keyValue;
 @property (nonatomic) NSMutableArray *data;
+@property (nonatomic) NSMutableArray *placeHolders;
 @end

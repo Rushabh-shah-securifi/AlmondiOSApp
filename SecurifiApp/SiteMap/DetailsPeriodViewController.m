@@ -149,6 +149,7 @@ NSDate *_dateSelected;
     NSDictionary *month = @{@"hostName":@"  Past month",
                             @"image" : [UIImage imageNamed:@"schedule_icon"]
                             };
+    
     NSDictionary *dateRange = @{@"hostName":@"  Date Range",
                                 @"image" : [UIImage imageNamed:@"event_icon"]
                                 };

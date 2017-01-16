@@ -10,6 +10,7 @@
 #import "MoreCellTableViewCell.h"
 #import "SFIColors.h"
 #import "CommonMethods.h"
+#import "UICommonMethods.h"
 #import "SFICloudLinkViewController.h"
 #import "HelpCenter.h"
 #import "AlmondPlusConstants.h"
@@ -137,7 +138,8 @@
     NSString* success = dictionary[@"Success"];
     
     if ([success isEqualToString:@"true"]) {
-        self.userName = [dictionary[@"FirstName"] stringByAppendingString:dictionary[@"LastName"]];
+        self.userName = [dictionary[@"FirstName"] stringByAppendingString:[@" " stringByAppendingString:dictionary[@"LastName"]]];
+        
         dispatch_sync(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
@@ -260,14 +262,14 @@
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
         headerView.backgroundColor = [UIColor whiteColor];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 79)];
-        [CommonMethods setLableProperties:label text:NSLocalizedString(@"update_fimware", @"") textColor:[UIColor blackColor] fontName:@"Avenir-Light" fontSize:16 alignment:NSTextAlignmentCenter];
+        [UICommonMethods setLableProperties:label text:NSLocalizedString(@"update_fimware", @"") textColor:[UIColor blackColor] fontName:@"Avenir-Light" fontSize:16 alignment:NSTextAlignmentCenter];
         [headerView addSubview:label];
-        [CommonMethods addLineSeperator:headerView yPos:headerView.frame.size.height-1];
+        [UICommonMethods addLineSeperator:headerView yPos:headerView.frame.size.height-1];
         return headerView;
     }else{
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 25)];
         headerView.backgroundColor = [UIColor whiteColor];
-        [CommonMethods addLineSeperator:headerView yPos:headerView.frame.size.height-1];
+        [UICommonMethods addLineSeperator:headerView yPos:headerView.frame.size.height-1];
         return headerView;
     }
 }

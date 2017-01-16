@@ -110,8 +110,6 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
    
     [self.tableView registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"abc"];
     
-    //    [self addSuggestionSearchObj];
-    //    [self initializeSearchController ];
     self.allUri = [NSMutableArray new];
     self.isManuelSearch = YES;
     
@@ -646,11 +644,11 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
                                @"image" : [UIImage imageNamed:@"schedule_icon"]
                                };
     
-    
     self.suggSearchArr = [[NSArray alloc]initWithObjects:lasthour,today,thisWeek, nil];
     NSDictionary *unknown = @{@"hostName":@"Unknown Rating",
                               @"image" : [UIImage imageNamed:@"unknown_category"]
                               };
+    
     NSDictionary *adults = @{@"hostName":@"Adults Only",
                              @"image" : [UIImage imageNamed:@"Adults_Only"]
                              };
@@ -685,11 +683,8 @@ typedef NS_ENUM(NSInteger, SearchPatten) {
             break;
         [self.recentSearchObj addObject:recent];
         [self.searchStrArr addObject:[self.recentSearchDict valueForKey:[sortedArray objectAtIndex:i]]];
-        
-        
     }
     NSLog(@"recent obj222 %@",[self.recentSearchDict allKeys]);
-    
 }
 
 #pragma mark parser methods

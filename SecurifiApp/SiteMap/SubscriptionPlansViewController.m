@@ -10,6 +10,7 @@
 #import "Colours.h"
 #import <QuartzCore/QuartzCore.h>
 #import "CommonMethods.h"
+#import "UICommonMethods.h"
 #import "SFIColors.h"
 #import "SelectedPlanViewController.h"
 #import "AlmondPlan.h"
@@ -241,7 +242,7 @@
 }
 
 -(void)addLable:(NSString *)title btn:(UIButton *)btn label:(UILabel*)label fntName:(NSString *)fntName fntSze:(int)fntSze{
-    [CommonMethods setLableProperties:label text:title textColor:label.textColor = [SFIColors paymentColor] fontName:fntName fontSize:fntSze alignment:NSTextAlignmentCenter];
+    [UICommonMethods setLableProperties:label text:title textColor:label.textColor = [SFIColors paymentColor] fontName:fntName fontSize:fntSze alignment:NSTextAlignmentCenter];
     [btn addSubview:label];
 }
 

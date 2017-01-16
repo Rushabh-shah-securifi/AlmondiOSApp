@@ -38,13 +38,13 @@
 #import "ConnectionStatus.h"
 #import "AlmondManagement.h"
 
-#define DEF_NETWORKING_SECTION          0
+#define DEF_WIRELESS_SECTION            0
 #define DEF_MESH_SECTION                1
 #define DEF_ADVANCED_ROUTER_SECTION     2
-#define DEF_WIRELESS_SECTION            3
-#define DEF_ROUTER_VERSION_SECTION      4
-#define DEF_ROUTER_REBOOT_SECTION       5
-#define DEF_ROUTER_SEND_LOGS_SECTION    6
+#define DEF_NETWORKING_SECTION          3
+#define DEF_ROUTER_REBOOT_SECTION       4
+#define DEF_ROUTER_SEND_LOGS_SECTION    5
+#define DEF_ROUTER_VERSION_SECTION      6
 
 #define REBOOT_TAG 1
 #define FIRMWARE_UPDATE_TAG 2
@@ -304,20 +304,20 @@ int mii;
         return 400;
     }
     switch (indexPath.section) {
-        case DEF_NETWORKING_SECTION:
-            return networkingHeight;
+        case DEF_WIRELESS_SECTION:
+            return  [self getSettingsRowHeight];
         case DEF_MESH_SECTION:
             return [self isAL3]?almondNtwkHeight: 0;
         case DEF_ADVANCED_ROUTER_SECTION:
             return _enableAdvRouter? advanceRtrHeight: 0;
-        case DEF_WIRELESS_SECTION:
-            return  [self getSettingsRowHeight];
-        case DEF_ROUTER_VERSION_SECTION:
-            return self.newAlmondFirmwareVersionAvailable? versionHeight: versionHeight - 20;
+        case DEF_NETWORKING_SECTION:
+            return networkingHeight;
         case DEF_ROUTER_REBOOT_SECTION:
             return rebootHeight;
         case DEF_ROUTER_SEND_LOGS_SECTION:
             return logsHeight;
+        case DEF_ROUTER_VERSION_SECTION:
+            return self.newAlmondFirmwareVersionAvailable? versionHeight: versionHeight - 20;
         default: {
             return 100;
         }
@@ -365,10 +365,11 @@ int mii;
         tableView.scrollEnabled = YES;
         NSArray *summaries;
         switch (indexPath.section) {
-            case DEF_NETWORKING_SECTION:{
-                summaries = [self getNetworkSummary];
-                return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link") selector:@selector(onEditNetworkSettings:) cardColor:[UIColor securifiRouterTileGreenColor]];
+            case DEF_WIRELESS_SECTION:{
+                summaries = [self getWirelessSettingsSummary];
+                return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings") selector:@selector(onEditWirelessSettingsCard:) cardColor:[UIColor securifiRouterTileSlateColor]];
             }
+            
             case DEF_MESH_SECTION:{
                 if([self isAL3])
                     return [self createAlmondNetworkCell:tableView];
@@ -387,20 +388,9 @@ int mii;
                     return [self createZeroCell:tableView];
                 }
             }
-            case DEF_WIRELESS_SECTION:{
-                summaries = [self getWirelessSettingsSummary];
-                return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings") selector:@selector(onEditWirelessSettingsCard:) cardColor:[UIColor securifiRouterTileSlateColor]];
-            }
-            case DEF_ROUTER_VERSION_SECTION:{
-                NSString *title = NSLocalizedString(@"router.software-version-new.title.Software Version", @"Software Version");
-                
-                if(self.newAlmondFirmwareVersionAvailable)
-                    [title stringByAppendingString:@" *"];
-                summaries = [self getRouterVersionSummary];
-                SFICardViewSummaryCell *cell = (SFICardViewSummaryCell *)[self createSummaryCell:tableView summaries:summaries title:title selector:nil cardColor:[UIColor securifiRouterTileYellowColor]];
-                if(self.newAlmondFirmwareVersionAvailable)
-                    [self addButton:cell buttonLabel:NSLocalizedString(@"UPDATE FIRMWARE", @"UPDATE FIRMWARE") selector:@selector(onFirmwareUpdate:) frameHeight:versionHeight];
-                return cell;
+            case DEF_NETWORKING_SECTION:{
+                summaries = [self getNetworkSummary];
+                return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link") selector:@selector(onEditNetworkSettings:) cardColor:[UIColor securifiRouterTileGreenColor]];
             }
                 
             case DEF_ROUTER_REBOOT_SECTION:{
@@ -414,6 +404,17 @@ int mii;
                 summaries = [self getLogsSummary];
                 return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Send Logs", @"Report a Problem") selector:@selector(onLogsCard:) cardColor:[[SFIColors yellowColor] color]];
                 
+            case DEF_ROUTER_VERSION_SECTION:{
+                NSString *title = NSLocalizedString(@"router.software-version-new.title.Software Version", @"Software Version");
+                
+                if(self.newAlmondFirmwareVersionAvailable)
+                    [title stringByAppendingString:@" *"];
+                summaries = [self getRouterVersionSummary];
+                SFICardViewSummaryCell *cell = (SFICardViewSummaryCell *)[self createSummaryCell:tableView summaries:summaries title:title selector:nil cardColor:[UIColor securifiRouterTileYellowColor]];
+                if(self.newAlmondFirmwareVersionAvailable)
+                    [self addButton:cell buttonLabel:NSLocalizedString(@"UPDATE FIRMWARE", @"UPDATE FIRMWARE") selector:@selector(onFirmwareUpdate:) frameHeight:versionHeight];
+                return cell;
+            }
             default:
                 return [self createSummaryCell:tableView summaries:nil title:nil selector:nil cardColor:[UIColor whiteColor]];
         }
@@ -535,7 +536,7 @@ int mii;
     if(self.routerSummary){
         for (SFIWirelessSummary *sum in self.routerSummary.wirelessSummaries) {
             NSString *enabled = sum.enabled ? NSLocalizedString(@"enabled", @"enabled") : NSLocalizedString(@"disabled", @"disabled");
-            [summary addObject:[NSString stringWithFormat:NSLocalizedString(@"ssid_is",@"%@ (%@) is %@"), sum.ssid, sum.type, enabled]];
+            [summary addObject:[NSString stringWithFormat:NSLocalizedString(@"ssid_is",@"%@: %@ is %@"), NSLocalizedString(sum.type,@""), sum.ssid, enabled]];
         }
     }else{
         return @[NSLocalizedString(@"Settings are not available.", @"Settings are not available.")];

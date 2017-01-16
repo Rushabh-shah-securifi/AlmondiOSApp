@@ -17,6 +17,7 @@
 #import "Analytics.h"
 #import "HistoryCell.h"
 #import "CommonMethods.h"
+#import "UICommonMethods.h"
 #import "AlmondManagement.h"
 #import "HTTPRequest.h"
 
@@ -126,7 +127,7 @@
         [self globalColor:@"4caf50" catogeryTag:@"General Audiences" catogeryFuncLbl:NSLocalizedString(@"All_ages_admitted", @"") LblClientLastVicited:[NSString stringWithFormat:@"%@ Accessed on %@",@"G",self.client.name]];
     }
     
-    self.iconMore.image = [CommonMethods imageNamed:@"iconMore" withColor:self.globalColor];
+    self.iconMore.image = [UICommonMethods imageNamed:@"iconMore" withColor:self.globalColor];
     self.bottomView.backgroundColor = self.globalColor;
     _LblCatogeryTag.backgroundColor = self.globalColor;
     self.LblCatogeryTag.text =[uriDict valueForKey:@"categoty"];
@@ -307,6 +308,7 @@
     [self.epocTable reloadData];
     });
 }
+
 - (IBAction)moreButtonTap:(id)sender {
     self.bottomView.hidden = NO;
     self.backGroundButton.hidden = NO;

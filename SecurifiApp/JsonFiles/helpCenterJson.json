@@ -22,7 +22,7 @@
                                         "color": "ffd893",
                                         "image": "h_home_away"
                                         }, {
-                                        "title": "Almond_Notifications",
+                                        "title": "notifications",
                                         "description": "Notifications_desc",
                                         "color": "bbf3c7",
                                         "image": "h_notifications"
@@ -47,7 +47,8 @@
                                         "title": "Adding_a_New_Device",
                                         "description": "Adding_a_New_Device_Desc",
                                         "color": "b9f6ca",
-                                        "image": "h_addnewdev"
+                                        "image": "h_addnewdev",
+                                        "url": "local"
                                         }, {
                                         "title": "Quick_Actions",
                                         "description": "Quick_Actions_Desc",
@@ -87,7 +88,7 @@
                             "name": "rules",
                             "screencount": "3",
                             "screens": [{
-                                        "title": "Rules",
+                                        "title": "rules",
                                         "description": "Rules_Desc",
                                         "color": "ffd893",
                                         "image": "h_rule_mean"
@@ -139,6 +140,40 @@
                                         "description": "wifi_help2",
                                         "color": "ffd893",
                                         "image": "h_rules_wifi"
+                                        }]
+                            }, {
+                            "name": "internet_security_camelcase",
+                            "screencount": "6",
+                            "screens": [{
+                                        "title": "h_subscription_title1",
+                                        "description": "h_subscription_desc1",
+                                        "color": "80d8ff",
+                                        "image": "subscription_help1"
+                                        }, {
+                                        "title": "h_subscription_title2",
+                                        "description": "h_subscription_desc2",
+                                        "color": "fbce79",
+                                        "image": "subscription_help2"
+                                        }, {
+                                        "title": "h_subscription_title3",
+                                        "description": "h_subscription_desc3",
+                                        "color": "bff2c6",
+                                        "image": "subscription_help3"
+                                        }, {
+                                        "title": "h_subscription_title4",
+                                        "description": "h_subscription_desc4",
+                                        "color": "bff2c6",
+                                        "image": "subscription_help4"
+                                        }, {
+                                        "title": "h_subscription_title5",
+                                        "description": "h_subscription_desc5",
+                                        "color": "d1c4e9",
+                                        "image": "subscription_help5"
+                                        }, {
+                                        "title": "h_subscription_title6",
+                                        "description": "h_subscription_desc6",
+                                        "color": "d1c4e9",
+                                        "image": "subscription_help6"
                                         }]
                             }
                             ]
@@ -247,14 +282,14 @@
                                         "image": "foreground"
                                         }]
                             }]
-                  
-                  
                   }, {
                   "name": "Support",
                   "icon": "chat_bubble_ic",
                   "color": "support",
                   "items": []
-                  }],
+                  }
+                  
+                  ],
     "Mesh": [{
              "name": "Interface",
              "screencount": "3",
@@ -314,5 +349,3 @@
     
     
 }
-
-

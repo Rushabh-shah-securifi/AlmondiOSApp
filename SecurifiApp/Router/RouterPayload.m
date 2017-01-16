@@ -100,7 +100,7 @@
 }
 
 +(void)updateFirmware:(int)mii version:(NSString*)version mac:(NSString*)almondMac{
-    if ([almondMac isEqualToString:NO_ALMOND]) {
+    if ([almondMac isEqualToString:NO_ALMOND] || almondMac == nil || version == nil) {
         return;
     }
     NSMutableDictionary *payload = [NSMutableDictionary new];

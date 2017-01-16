@@ -8,10 +8,11 @@
 
 #import "IoTLearnMoreTableViewCell.h"
 #import "CommonMethods.h"
+#import "UIFont+Securifi.h"
 
 @interface IoTLearnMoreTableViewCell()
 @property (weak, nonatomic) IBOutlet UILabel *issueTitle;
-@property (weak, nonatomic) IBOutlet UILabel *issueDesc;
+@property (weak, nonatomic) IBOutlet UITextView *issueDesc;
 
 @property (weak, nonatomic) IBOutlet UILabel *helpTitle;
 @end
@@ -36,6 +37,12 @@
         attString = [CommonMethods getAttributedStringWithAttribute:attString subText:@"Your device is compromised" fontSize:self.issueDesc.font.pointSize];
         self.issueDesc.attributedText = attString;
     }
+    else if([type isEqualToString:@"2"] || [type isEqualToString:@"6"]){
+        
+         self.issueTitle.text = [CommonMethods type:type];
+        NSLog(@"text == %@",[CommonMethods getExplanationText:type]);
+        self.issueDesc.attributedText = [self setLink:[CommonMethods getExplanationText:type] link:@"https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers" label:self.issueDesc];
+    }
     else{
         self.issueTitle.text = [CommonMethods type:type];
         
@@ -46,4 +53,21 @@
 - (void)setHelpCell:(NSString *)title{
     self.helpTitle.text = title;
 }
+
+- (NSAttributedString *)setLink:(NSString *)content link:(NSString *)link_str label:(UITextView *)label{
+    NSDictionary *attribs = @{
+                              NSForegroundColorAttributeName: [UIColor blackColor],
+                              NSFontAttributeName: [UIFont securifiFont:14], //has font name and size perhaps
+                              };
+    
+    NSMutableAttributedString * attrStr = [[NSMutableAttributedString alloc] initWithString:content attributes:attribs];
+    NSURL *link = [NSURL URLWithString:link_str];//@"https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers"
+    
+    [attrStr addAttribute:NSLinkAttributeName value:link range:NSMakeRange(attrStr.length-5, 4)];
+    [attrStr addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(attrStr.length-5, 4)];
+
+//    [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(attrStr.length-5, 4)];
+    return attrStr;
+}
+
 @end

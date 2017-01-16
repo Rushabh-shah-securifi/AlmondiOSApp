@@ -13,6 +13,7 @@
 #import "Colours.h"
 #import "SFICopyLabel.h"
 #import "CommonMethods.h"
+#import "UICommonMethods.h"
 
 @interface SFICardView ()
 @property(nonatomic, readonly) CGFloat baseYCoordinate;
@@ -265,7 +266,7 @@
     [self addSubview:label];
     
     UIButton *toggle = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetWidth(self.frame)-55, self.baseYCoordinate, 55, 30)];
-    [CommonMethods setButtonProperties:toggle title:@"Show" titleColor:[UIColor whiteColor] bgColor:[UIColor clearColor] font:font];
+    [UICommonMethods setButtonProperties:toggle title:@"Show" titleColor:[UIColor whiteColor] bgColor:[UIColor clearColor] font:font];
     [toggle addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:toggle];
     
@@ -420,7 +421,6 @@
 
 - (void)addTitleAndCopySwitch:(NSString *)title target:(id)target action:(SEL)action on:(BOOL)isSwitchOn {
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 1.5, CGRectGetWidth(self.frame), 50)];
-//    view.backgroundColor = [UIColor lightGrayColor];
     
     UILabel *label;
     if(isSwitchOn)
@@ -430,7 +430,6 @@
     
     [view addSubview:label];
 
-    
     UISwitch *ctrl = [self makeOnOffSwitch:target action:action on:isSwitchOn];
     [view addSubview:ctrl];
     [self addManagedControl:ctrl];
@@ -439,6 +438,7 @@
     [self markYOffsetUsingRect:view.frame addAdditional:0];
 }
 
+
 - (UIButton *)makeShareLinkButton:(id)target action:(SEL)action{
     CGFloat width = CGRectGetWidth(self.frame);
     CGRect frame = CGRectMake(width - 110, self.baseYCoordinate, 40, 31);
@@ -446,13 +446,12 @@
     //button
     UIButton *btn = [[UIButton alloc] initWithFrame:frame];
     btn.layer.cornerRadius = 5.0;
-//    btn.backgroundColor = [UIColor grayColor];
+    
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     
     //image
     UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 0, 20, 20)];
     imgView.contentMode = UIViewContentModeScaleAspectFit;
-//    imgView.backgroundColor = [UIColor yellowColor];
     
     UIImage *image = [UIImage imageNamed:@"share"];
     imgView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -461,14 +460,7 @@
     imgView.center = CGPointMake(CGRectGetMidX(btn.bounds), CGRectGetMidY(btn.bounds));
     [btn addSubview:imgView];
     
-    //label
-//    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, 50, 25)];
-//    [CommonMethods setLableProperties:label text:@"Share" textColor:[UIColor whiteColor] fontName:@"AvenirLTStd-Bold" fontSize:20 alignment:NSTextAlignmentCenter];
-//    label.center = CGPointMake(CGRectGetMidX(label.frame), CGRectGetMidY(btn.bounds));
-//    label.backgroundColor = [UIColor orangeColor];
-    
     [btn addSubview:imgView];
-//    [btn addSubview:label];
     
     return btn;
 }

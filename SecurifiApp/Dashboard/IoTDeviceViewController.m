@@ -9,6 +9,7 @@
 #import "IoTDeviceViewController.h"
 #import "BrowsingHistoryViewController.h"
 #import "CommonMethods.h"
+#import "UICommonMethods.h"
 #import "Client.h"
 #import "ClientPayload.h"
 #import "UIColor+Securifi.h"
@@ -45,6 +46,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
 @property (nonatomic) HTTPRequest *httpReq;
 
+@property (weak, nonatomic) IBOutlet UIView *DataUsageView;
 @property (weak, nonatomic) IBOutlet UILabel *MBUpLbl;
 @property (weak, nonatomic) IBOutlet UILabel *MBLblUP;
 @property (weak, nonatomic) IBOutlet UILabel *MbDownLbl;
@@ -85,10 +87,12 @@
     [self initializeNotifications];
     [super viewWillAppear:YES];
     [self forRouterModetest];
-    [self createRequest:@"Bandwidth" value:@"7" date:[CommonMethods getTodayDate]];
+    
     
     [self.navigationController setNavigationBarHidden:YES];
-    
+    if(self.hideMiddleView == NO)
+        [self createRequest:@"Bandwidth" value:@"7" date:[CommonMethods getTodayDate]];
+    self.DataUsageView.hidden = self.hideMiddleView;
 }
 -(void)createRequest:(NSString *)search value:(NSString*)value date:(NSString *)date{
     NSString *req ;
@@ -152,10 +156,14 @@
         if(![connection isEqualToString:@"wireless"]){
             self.iotSwitch.hidden = YES;
             self.infoLabel.hidden = NO;
+            if(self.hideMiddleView == NO)
+                self.DataUsageView.hidden = YES;
             self.infoLabel.text = NSLocalizedString(@"ap_re_wired_iot", @"Add Almond");
         }
         else{
             self.iotSwitch.hidden = NO;
+            if(self.hideMiddleView == NO)
+                self.DataUsageView.hidden = NO;
         }
     }
 }
@@ -209,6 +217,8 @@
     self.topView.backgroundColor = [UIColor redColor];
     self.infoLabel.hidden= NO;
     self.infoLabel.text = @"This device is behaving suspiciously.Try resetting the device or remove it from your network.";
+    if(self.hideMiddleView == NO)
+        self.DataUsageView.hidden = YES;
     self.isEcho_Nest = YES;
 }
 -(void)setAllowAndBlock{
@@ -232,9 +242,13 @@
             self.topView.backgroundColor = [UIColor darkGrayColor];
             self.blockButton.backgroundColor = [UIColor securifiScreenGreen];
             self.infoLabel.hidden= NO;
+            if(self.hideMiddleView == NO)
+                self.DataUsageView.hidden = YES;
             self.infoLabel.text = NSLocalizedString(@"blocked_client_iot", @"");
         }
         else{
+            if(self.hideMiddleView == NO)
+                self.DataUsageView.hidden = NO;
             if(!self.client.isActive){
                 [self clientInActiveUI];
             }
@@ -337,7 +351,7 @@ NSLog(@"dict tag %@ ",dict[@"Tag"]);
         color = [UIColor redColor];
     else
         color = [UIColor orangeColor];
-    cell.imageView.image = [CommonMethods imageNamed:iconName withColor:color];
+    cell.imageView.image = [UICommonMethods imageNamed:iconName withColor:color];
     cell.textLabel.textColor = [UIColor blackColor];
     cell.textLabel.numberOfLines = 2;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;

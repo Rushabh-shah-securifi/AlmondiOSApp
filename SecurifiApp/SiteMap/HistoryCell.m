@@ -136,9 +136,5 @@
     }
     return @"";
 }
-//-(void)changeIconColor{
-//    self.checkMarkIcon.hidden = NO;
-//    self.checkMarkIcon.image  = [CommonMethods imageNamed:@"iconSceneChekmark" withColor:[UIColor colorFromHexString:@"825CC2"]];
-//}
 
 @end

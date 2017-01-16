@@ -116,7 +116,7 @@ UILabel *topLabel;
         if (![v isKindOfClass:[UIImageView class]])
             [v removeFromSuperview];
     }
-}//
+}
 
 + (void)addTopLabel{
     topLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 20)];
@@ -128,6 +128,7 @@ UILabel *topLabel;
     [triggersActionsScrollView addSubview:topLabel];
 }
 
+
 + (SwitchButton *)setIconAndText:(int)positionId buttonProperties:(SFIButtonSubProperties *)buttonProperties icon:(NSString *)icon text:(NSString*)text isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString*)bottomText{
     buttonProperties.positionId=positionId;
     buttonProperties.iconName=icon;
@@ -135,6 +136,7 @@ UILabel *topLabel;
     [self drawButton: buttonProperties isTrigger:isTrigger isDimButton:isDimmbutton bottomText:bottomText];
     return [self drawImage: @"plus_icon" withSubProperties:buttonProperties isTrigger:isTrigger];
 }
+
 
 + (void)buildEntryList:(NSArray *)entries isTrigger:(BOOL)isTrigger {
     int positionId = 0;
@@ -364,6 +366,7 @@ UILabel *topLabel;
             switchButton->actionbutton.bgView.backgroundColor = [SFIColors ruleGraycolor];
             switchButton->delayButton.backgroundColor = [SFIColors ruleGraycolor];
         }
+        
         switchButton.subProperties = subProperties;
         
         [switchButton->actionbutton setButtonCross:isCrossHidden];
@@ -382,7 +385,6 @@ UILabel *topLabel;
             else if(subProperties.index == 3){
                 [switchButton->actionbutton changeImageColor:[UIColor colorFromHexString:(subProperties.deviceType == SFIDeviceType_ColorDimmableLight_32 ?[CommonMethods getDimmableHex:subProperties.matchData] :[CommonMethods getColorHex:subProperties.matchData])]];
             }
-            
         }
         (switchButton->delayButton).userInteractionEnabled = disableUserInteraction;
         [switchButton->delayButton addTarget:self action:@selector(onActionDelayClicked:) forControlEvents:UIControlEventTouchUpInside];

@@ -10,6 +10,7 @@
 #import "AdvRouterTableViewCell.h"
 #import "AdvRouterHelpController.h"
 #import "CommonMethods.h"
+#import "UICommonMethods.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "SFIColors.h"
 #import "RouterPayload.h"
@@ -173,7 +174,7 @@ int mii;
         headerView.backgroundColor = [UIColor whiteColor];
         
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(5, 5, CGRectGetWidth(headerView.frame)-10, headerHeight-5)];
-        [CommonMethods setLableProperties:label text:NSLocalizedString(@"adv_feature_alert", @"") textColor:[UIColor blackColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentCenter];
+        [UICommonMethods setLableProperties:label text:NSLocalizedString(@"adv_feature_alert", @"") textColor:[UIColor blackColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentCenter];
         [headerView addSubview:label];
         label.backgroundColor = [SFIColors lineColor];
         return headerView;

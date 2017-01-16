@@ -13,6 +13,7 @@
 @synthesize label;
 @synthesize keyValue;
 @synthesize data;
+@synthesize placeHolders;
 
 - (id)init
 {
@@ -20,6 +21,7 @@
     if (self)
     {
         data = [NSMutableArray new];
+        placeHolders = [NSMutableArray new];
     }
     return self;
 }

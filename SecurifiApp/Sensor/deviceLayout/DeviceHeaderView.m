@@ -156,7 +156,7 @@
             self.parentrolBtn.hidden = NO;
         
         if(client.webHistoryEnable == NO){
-            self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_off"];
+             [self.parentrolBtn setImage:[UIImage imageNamed:@"icon_history_off"] forState:UIControlStateNormal];
             NSLog(@"icon_history_off");
             self.deviceValue.text = @"Web History Off";
             [self.parentrolBtn removeTarget:nil
@@ -165,7 +165,8 @@
             [self.parentrolBtn addTarget:self action:@selector(onParentalControllClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
         else{
-            self.parentrolBtn.imageView.image = [UIImage imageNamed:@"icon_history_on"];
+            
+            [self.parentrolBtn setImage:[UIImage imageNamed:@"icon_history_on"] forState:UIControlStateNormal];
             NSLog(@"icon_history_on");
             self.deviceValue.text = @"Web History On";
             
@@ -182,13 +183,13 @@
             [self.parentrolBtn addTarget:self action:@selector(onIoTControllClicked:) forControlEvents:UIControlEventTouchUpInside];
             
             if(client.iot_dnsEnable == YES){
-                self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_security_black"];
                 
+                [self.parentrolBtn setImage:[UIImage imageNamed:@"ic_security_black"] forState:UIControlStateNormal];
                 NSLog(@"ic_security_black");
                 self.deviceValue.text = @"IoT Security On";
             }
             else{
-                self.parentrolBtn.imageView.image = [UIImage imageNamed:@"ic_insecure_black"];
+                [self.parentrolBtn setImage:[UIImage imageNamed:@"ic_insecure_black"] forState:UIControlStateNormal];
                 NSLog(@"ic_insecure_black");
                 self.deviceValue.text = @"IoT Security Off";
             }

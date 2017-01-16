@@ -11,8 +11,8 @@
 @interface BrowsingHistory ()
 @property (nonatomic) NSMutableDictionary *urlToImageDict;
 
-
 @end
+
 @implementation BrowsingHistory
 
 -(void)getBrowserHistoryImages:(NSDictionary *)historyDict dispatchQueue:(dispatch_queue_t)imageDownloadQueue dayArr:(NSMutableArray *)dayArr{
@@ -60,7 +60,6 @@
         }
         [dayArr addObject:oneDayUri];
     }
-    
 }
 
 
