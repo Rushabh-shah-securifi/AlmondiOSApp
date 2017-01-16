@@ -8,6 +8,7 @@
 
 #import "HelpSearchTableViewController.h"
 #import "CommonMethods.h"
+#import "UICommonMethods.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "NSString+securifi.h"
 #import "HelpViewController.h"
@@ -68,9 +69,9 @@ static const int headerHeight = 40;
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, headerHeight-1)];
     NSDictionary *searchItem = self.searchArray[section];
 
-    [CommonMethods setLableProperties:label text:NSLocalizedString(searchItem[HEADER_TITLE], @"") textColor:[UIColor lightGrayColor] fontName:@"Avenir-Heavy" fontSize:18 alignment:NSTextAlignmentCenter];
+    [UICommonMethods setLableProperties:label text:NSLocalizedString(searchItem[HEADER_TITLE], @"") textColor:[UIColor lightGrayColor] fontName:@"Avenir-Heavy" fontSize:18 alignment:NSTextAlignmentCenter];
     [headerView addSubview:label];
-    [CommonMethods addLineSeperator:headerView yPos:headerView.frame.size.height-1];
+    [UICommonMethods addLineSeperator:headerView yPos:headerView.frame.size.height-1];
     return headerView;
 }
 

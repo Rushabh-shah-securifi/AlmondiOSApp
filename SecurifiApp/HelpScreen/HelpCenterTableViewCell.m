@@ -9,6 +9,7 @@
 #import "HelpCenterTableViewCell.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "CommonMethods.h"
+#import "UICommonMethods.h"
 #import "SFIColors.h"
 
 //This class is linked with multiple cells
@@ -51,7 +52,7 @@
 
 - (void)setUpHelpItemCell:(NSDictionary*)helpItem row:(NSInteger)row{
     self.itemLabel.text = NSLocalizedString([[helpItem[ITEMS] objectAtIndex:row] valueForKey:@"name"], @"");
-    self.itemImg.image = [CommonMethods imageNamed:helpItem[S_ICON] withColor:[UIColor grayColor]];
+    self.itemImg.image = [UICommonMethods imageNamed:helpItem[S_ICON] withColor:[UIColor grayColor]];
 }
 
 - (void)setUpSupportCell:(NSArray*)countryNumber row:(NSInteger)row{

@@ -9,6 +9,7 @@
 #import "IoTDevicesListViewController.h"
 #import "IoTDeviceViewController.h"
 #import "CommonMethods.h"
+#import "UICommonMethods.h"
 #import "SFIColors.h"
 #import "Client.h"
 #import "UIFont+Securifi.h"
@@ -44,7 +45,7 @@
     [super viewWillAppear:animated];
     self.scannedDeviceList = [[NSMutableArray alloc]init];
     [self iotScanresultsCallBackController:nil];
-    self.backArrIcon.image = [CommonMethods imageNamed:@"back_icon" withColor:[UIColor lightGrayColor]];
+    self.backArrIcon.image = [UICommonMethods imageNamed:@"back_icon" withColor:[UIColor lightGrayColor]];
     SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
     BOOL hasSubscribe = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
     
@@ -103,7 +104,7 @@
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     cell.textLabel.text = textlabel;
     NSString *iconName = imageName;
-    cell.imageView.image = [CommonMethods imageNamed:iconName withColor:color];
+    cell.imageView.image = [UICommonMethods imageNamed:iconName withColor:color];
     cell.detailTextLabel.text = detailText;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -222,14 +223,14 @@
     
     self.lastScanTime  = self.lastScanTime ?[NSString stringWithFormat:@"%@",self.lastScanTime]:@"";
     
-     NSLog(@"self.lastScanTime %@ %ld",self.lastScanTime,self.scannedDeviceList.count);
-    
     NSAttributedString *attr1 = [[NSAttributedString alloc]initWithString:[NSString stringWithFormat:@"(%@)",self.lastScanTime] attributes:attrDict];
     
     [attrStr appendAttributedString:attr];
     [attrStr appendAttributedString:attr1];
     return attrStr;
 }
+
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
    
     IoTDeviceViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"IoTDeviceViewController"];
@@ -242,7 +243,6 @@
         NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
         newWindow.iotDevice = iotDevice;
         newWindow.sectionType = vulnerable_section;
-       
     }
     else if(indexPath.section == 1){
         if(self.healthyDEviceArr.count < indexPath.row)
@@ -260,9 +260,11 @@
     }
      [self.navigationController pushViewController:newWindow animated:YES];
 }
+
 - (IBAction)backButtonClicked:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 -(NSString *)getLabelText:(NSDictionary *)returnDict{
     int redflags = 0;
     int orangeflags = 0;
@@ -307,16 +309,19 @@
     
     return displayText;
 }
+
 -(NSString *)getClientName:(NSString *)mac{
     NSLog(@"mac = %@",mac);
     Client *client = [Client getClientByMAC:mac];
     return client.name;
 }
+
 -(NSString *)getIcon:(NSString *)mac{
     Client *client = [Client getClientByMAC:mac];
     NSLog(@"[client iconName] %@",[client iconName]);
     return [client iconName];
 }
+
 -(UIColor *)getColor:(NSDictionary *)returnDict{
     UIColor *color;
     for(NSString *key in returnDict.allKeys){
