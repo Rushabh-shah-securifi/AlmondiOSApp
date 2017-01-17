@@ -17,6 +17,8 @@
 #import "UIViewController+Securifi.h"
 #import "PaymentCompleteViewController.h"
 #import "MBProgressHUD.h"
+#import "HelpViewController.h"
+
 
 #define MY_SUBSCIRIPTION_1 @"my_subscriptions_cell_1"
 #define MY_SUBSCIRIPTION_2 @"my_subscriptions_cell_2"
@@ -58,12 +60,28 @@
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [self initializeNotification];
     self.almondPlan = [AlmondPlan getAlmondPlan:self.currentMAC];
+    [self initNotification];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
 }
-
-
+-(void)initNotification{
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self
+               selector:@selector(presentHelpQuickTips) //for both sensors and clients
+                   name:PRESENT_IOT_QUICK_TIPS
+                 object:nil];
+}
+-(void)presentHelpQuickTips{
+     NSDictionary *startScreen = [CommonMethods getDict:@"Quick_Tips" itemName:@"internet_security_camelcase"];
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"HelpScreenStoryboard" bundle:nil];
+    HelpViewController *ctrl = [storyBoard instantiateViewControllerWithIdentifier:@"HelpViewController"];
+    ctrl.startScreen = startScreen;
+    ctrl.isHelpTopic = NO;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:ctrl animated:YES completion:nil];
+    });
+}
 -(void)viewWillDisappear:(BOOL)animated{
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
         // Navigation back button was pressed. Do some stuff

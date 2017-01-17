@@ -609,30 +609,28 @@
 #pragma mark tableviewDelegate
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return 2;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSInteger iotRowCount = [self isIotNotificationEmpty]? 1: self.iotNotificationArr.count;
     NSInteger deviceRowCount = [self isSensorNotificationEmpty]? 1: self.deviceNotificationArr.count;
     NSInteger clientRowCount = [self isClientNotificationEmpty]? 1: self.clientNotificationArr.count;
 
     if(section == 0)
-        return iotRowCount;
-    else if(section == 1)
         return deviceRowCount;
     else
         return clientRowCount;
+   
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.section == 0 && [self isIotNotificationEmpty]){
-        return [self createEmptyCell:tableView text:NSLocalizedString(@"no_recent_IoT_notifications", @"")];
-    }
-    else if(indexPath.section == 1 && [self isSensorNotificationEmpty]){
+//    if(indexPath.section == 0 && [self isIotNotificationEmpty]){
+//        return [self createEmptyCell:tableView text:NSLocalizedString(@"no_recent_IoT_notifications", @"")];
+//    }
+     if(indexPath.section == 0 && [self isSensorNotificationEmpty]){
         return [self createEmptyCell:tableView text:NSLocalizedString(@"no_recent_smarthome_notification", @"")];
     }
-    else if(indexPath.section == 2 && [self isClientNotificationEmpty]){
+    else if(indexPath.section == 1 && [self isClientNotificationEmpty]){
         return [self createEmptyCell:tableView text:NSLocalizedString(@"no_netwrok_notifications", @"")];
     }
     
@@ -642,18 +640,18 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
     }
     
-    if (indexPath.section == 0) {
-        if(indexPath.row > (int)self.iotNotificationArr.count-1)
-            return cell;
-        SFINotification *notification = [self.iotNotificationArr objectAtIndex:indexPath.row];
-        
-        cell.textLabel.numberOfLines = 2;
-        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        cell.textLabel.text = notification.deviceName;
-        cell.imageView.image = [UICommonMethods imageNamed:@"emergency_icon" withColor:[UIColor redColor]];
-        cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
-    }
-     else if (indexPath.section == 1) {
+//    if (indexPath.section == 0) {
+//        if(indexPath.row > (int)self.iotNotificationArr.count-1)
+//            return cell;
+//        SFINotification *notification = [self.iotNotificationArr objectAtIndex:indexPath.row];
+//        
+//        cell.textLabel.numberOfLines = 2;
+//        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//        cell.textLabel.text = notification.deviceName;
+//        cell.imageView.image = [UICommonMethods imageNamed:@"emergency_icon" withColor:[UIColor redColor]];
+//        cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
+//    }
+      if (indexPath.section == 0) {
         if(indexPath.row > (int)self.deviceNotificationArr.count-1)
             return cell;
         SFINotification *notification = [self.deviceNotificationArr objectAtIndex:indexPath.row];
@@ -670,7 +668,7 @@
         cell.imageView.image = [UICommonMethods imageNamed:iconName withColor:[SFIColors ruleBlueColor]];
         cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
     }
-    else if(indexPath.section == 2){
+    else if(indexPath.section == 1){
         if(indexPath.row > (int)self.clientNotificationArr.count-1)
             return cell;
         
@@ -723,13 +721,13 @@
     }
     NSString *string;
     switch (section) {
+//        case 0:
+//            string = @"IoT Notifications";
+//            break;
         case 0:
-            string = @"IoT Notifications";
-            break;
-        case 1:
             string = NSLocalizedString(@"smart_device_noti_title", @"");
             break;
-        case 2:
+        case 1:
             string = NSLocalizedString(@"client_noti_title", @"");
             break;
     }

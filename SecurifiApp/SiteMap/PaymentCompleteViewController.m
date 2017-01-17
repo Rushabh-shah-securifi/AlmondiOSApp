@@ -9,6 +9,8 @@
 #import "PaymentCompleteViewController.h"
 #import "AlmondManagement.h"
 
+#import "CommonMethods.h"
+
 @interface PaymentCompleteViewController ()<UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLbl;
@@ -70,7 +72,11 @@
 
 - (IBAction)onButtonTap:(id)sender {
     if(self.type == SubscriptionResponse_Success){
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:^{
+            NSLog(@"Dismiss completed");
+            [[NSNotificationCenter defaultCenter] postNotificationName:PRESENT_IOT_QUICK_TIPS object:nil userInfo:nil];
+        }];
+        //
     }else if(self.type == SubscriptionResponse_Failed){
         [self dismissViewControllerAnimated:YES completion:nil];
     }else if(self.type == SubscriptionResponse_Cancelled){

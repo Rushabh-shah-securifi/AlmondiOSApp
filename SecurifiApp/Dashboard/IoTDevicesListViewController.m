@@ -330,7 +330,7 @@
         
         NSDictionary *dict = returnDict[key];
         if([dict[@"P"]isEqualToString:@"1"]){
-            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] || [dict[@"Tag"]isEqualToString:@"7"]){
+            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] ){
                 color = [UIColor redColor];
                 break;
             }

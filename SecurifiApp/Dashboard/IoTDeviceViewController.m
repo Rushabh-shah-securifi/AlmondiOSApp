@@ -51,6 +51,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *MBLblUP;
 @property (weak, nonatomic) IBOutlet UILabel *MbDownLbl;
 @property (weak, nonatomic) IBOutlet UILabel *MbLblDown;
+@property (weak, nonatomic) IBOutlet UISwitch *DataUsageEnable;
+@property (weak, nonatomic) IBOutlet UIView *dataUsage;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *BlockButtonTop;
+@property NSInteger buttonTop;
 
 
 @property BOOL isEcho_Nest;
@@ -61,20 +65,32 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+     self.buttonTop = self.BlockButtonTop.constant;
     [self setUpHUD];
 
 }
 -(void)viewWillAppear:(BOOL)animated{
     self.middleView.hidden = _hideMiddleView;
+    
     self.httpReq = [HTTPRequest new];
     _httpReq.delegate = self;
     self.tableView.hidden = _hideTable;
     self.isDNSScan = !_hideMiddleView;
     self.iotSwitch.transform = CGAffineTransformMakeScale(0.70, 0.70);
-    if(_hideMiddleView == YES)
+    self.DataUsageEnable.transform = CGAffineTransformMakeScale(0.70, 0.70);
+    
+    if(_hideMiddleView == YES){
         self.iotSecurity_label.text = @"IoT Scan";
-    else
+        self.middleView.hidden = _hideMiddleView;
+        self.dataUsage.hidden  = _hideMiddleView;
+        self.BlockButtonTop.constant = self.buttonTop - 90;
+    }
+    else{
         self.iotSecurity_label.text = @"IoT Security";
+        self.middleView.hidden = _hideMiddleView;
+        self.dataUsage.hidden  = _hideMiddleView;
+        self.BlockButtonTop.constant = self.buttonTop ;
+    }
     
     
     if(self.sectionType == vulnerable_section)
@@ -128,9 +144,12 @@
 -(void)blockUnblockCheck{
     if (self.client.deviceAllowedType == DeviceAllowed_Blocked) {
         self.iotSwitch.hidden = YES;
+        self.DataUsageEnable.hidden = YES;
     }
-    else
+    else{
         self.iotSwitch.hidden = NO;
+        self.DataUsageEnable.hidden = NO;
+    }
 }
 -(void)forRouterModetest{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -150,11 +169,13 @@
     
     if(isLocal){
         self.iotSwitch.hidden = YES;
+        self.DataUsageEnable.hidden = YES;
     }
     
     if([routerMode isEqualToString:@"ap"] || [routerMode isEqualToString:@"re"] ||[routerMode isEqualToString:@"WirelessSlave"] || [routerMode isEqualToString:@"WiredSlave"]){
         if(![connection isEqualToString:@"wireless"]){
             self.iotSwitch.hidden = YES;
+            self.DataUsageEnable.hidden = YES;
             self.infoLabel.hidden = NO;
             if(self.hideMiddleView == NO)
                 self.DataUsageView.hidden = YES;
@@ -162,6 +183,7 @@
         }
         else{
             self.iotSwitch.hidden = NO;
+            self.DataUsageEnable.hidden = NO;
             if(self.hideMiddleView == NO)
                 self.DataUsageView.hidden = NO;
         }
@@ -229,7 +251,9 @@
             self.iotSwitch.on = self.client.iot_serviceEnable;
         else
             self.iotSwitch.on = self.client.iot_dnsEnable;
-        
+    self.DataUsageEnable.on = self.client.bW_Enable;
+        if(self.hideMiddleView == NO)
+            self.DataUsageView.hidden = !self.client.bW_Enable;
     if(!self.client.isActive){
         [self clientInActiveUI];
     }
@@ -260,12 +284,12 @@
             self.topView.backgroundColor = [self getColor:self.iotDevice];
         }
         if(_hideMiddleView == NO){
-            if([self.client.deviceType isEqualToString:@"amazon_echo"] && [self.client.previousType isEqualToString:@"nest"]){
-                [self amazoneNestUI];
-            }
-            else if([self.client.deviceType isEqualToString:@"nest"] && [self.client.previousType isEqualToString:@"amazon_echo"]){
-                [self amazoneNestUI];
-            }
+//            if([self.client.deviceType isEqualToString:@"amazon_echo"] && [self.client.previousType isEqualToString:@"nest"]){
+//                [self amazoneNestUI];
+//            }
+//            else if([self.client.deviceType isEqualToString:@"nest"] && [self.client.previousType isEqualToString:@"amazon_echo"]){
+//                [self amazoneNestUI];
+//            }
         }
         [self blockUnblockCheck];
     });
@@ -441,6 +465,22 @@ NSLog(@"dict tag %@ ",dict[@"Tag"]);
     [self.navigationController pushViewController:newWindow animated:YES];
     
 }
+- (IBAction)dataUsageEnDis:(id)sender {
+    UISwitch *actionSwitch = (UISwitch *)sender;
+    BOOL state = [actionSwitch isOn];
+    mii = arc4random()%10000;
+    
+    NSLog(@"state %d",state);
+    if(state == NO){
+            self.client.bW_Enable = NO;
+            [self saveNewValue:@"NO" forIndex:-25];
+        }
+        if(state == YES){
+            [self saveNewValue:@"YES" forIndex:-25];
+        }
+    NSLog(@"self.client.iot_serviceEnable %d",self.client.iot_serviceEnable);
+    [ClientPayload getUpdateClientPayloadForClient:self.client mobileInternalIndex:mii];
+}
 - (IBAction)iotServiceEnableDisable:(id)sender {
     UISwitch *actionSwitch = (UISwitch *)sender;
     BOOL state = [actionSwitch isOn];
@@ -552,6 +592,8 @@ NSLog(@"dict tag %@ ",dict[@"Tag"]);
     UIGraphicsEndImageContext();
     
     return cell;
+}
+- (IBAction)deleteDataUsage:(id)sender {
 }
 
 @end
