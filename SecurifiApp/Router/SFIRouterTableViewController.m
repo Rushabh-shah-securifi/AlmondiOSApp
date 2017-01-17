@@ -46,6 +46,10 @@
 #define DEF_ROUTER_SEND_LOGS_SECTION    5
 #define DEF_ROUTER_VERSION_SECTION      6
 
+#define DEF_NETWORKING_LOCAL_SECTION      0
+#define DEF_MESH_LOCAL_SECTION            1
+
+
 #define REBOOT_TAG 1
 #define FIRMWARE_UPDATE_TAG 2
 
@@ -303,23 +307,36 @@ int mii;
     if ([self isNotConnectedToCloud] || ![self isFirmwareCompatible]) {
         return 400;
     }
-    switch (indexPath.section) {
-        case DEF_WIRELESS_SECTION:
-            return  [self getSettingsRowHeight];
-        case DEF_MESH_SECTION:
-            return [self isAL3]?almondNtwkHeight: 0;
-        case DEF_ADVANCED_ROUTER_SECTION:
-            return _enableAdvRouter? advanceRtrHeight: 0;
-        case DEF_NETWORKING_SECTION:
-            return networkingHeight;
-        case DEF_ROUTER_REBOOT_SECTION:
-            return rebootHeight;
-        case DEF_ROUTER_SEND_LOGS_SECTION:
-            return logsHeight;
-        case DEF_ROUTER_VERSION_SECTION:
-            return self.newAlmondFirmwareVersionAvailable? versionHeight: versionHeight - 20;
-        default: {
-            return 100;
+    if([self currentConnectionMode] == SFIAlmondConnectionMode_local){
+        switch (indexPath.section) {
+            case DEF_NETWORKING_LOCAL_SECTION:
+                return networkingHeight;
+            case DEF_MESH_LOCAL_SECTION:
+                return [self isAL3]? almondNtwkHeight: 0;
+            default: {
+                return 100;
+            }
+        }
+    }
+    else{
+        switch (indexPath.section) {
+            case DEF_WIRELESS_SECTION:
+                return  [self getSettingsRowHeight];
+            case DEF_MESH_SECTION:
+                return [self isAL3]? almondNtwkHeight: 0;
+            case DEF_ADVANCED_ROUTER_SECTION:
+                return _enableAdvRouter? advanceRtrHeight: 0;
+            case DEF_NETWORKING_SECTION:
+                return networkingHeight;
+            case DEF_ROUTER_REBOOT_SECTION:
+                return rebootHeight;
+            case DEF_ROUTER_SEND_LOGS_SECTION:
+                return logsHeight;
+            case DEF_ROUTER_VERSION_SECTION:
+                return self.newAlmondFirmwareVersionAvailable? versionHeight: versionHeight - 20;
+            default: {
+                return 100;
+            }
         }
     }
 }
@@ -364,6 +381,27 @@ int mii;
     }else{
         tableView.scrollEnabled = YES;
         NSArray *summaries;
+        if([self currentConnectionMode] == SFIAlmondConnectionMode_local){
+            switch (indexPath.section) {
+                case DEF_NETWORKING_LOCAL_SECTION:{
+                    summaries = [self getNetworkSummary];
+                    return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link") selector:@selector(onEditNetworkSettings:) cardColor:[UIColor securifiRouterTileGreenColor]];
+                }
+                    
+                case DEF_MESH_LOCAL_SECTION:{
+                    if([self isAL3])
+                        return [self createAlmondNetworkCell:tableView];
+                    else{
+                        return [self createZeroCell:tableView];
+                    }
+                }
+                    
+                default: {
+                    return [self createSummaryCell:tableView summaries:nil title:nil selector:nil cardColor:[UIColor whiteColor]];
+                }
+            }
+        }
+        
         switch (indexPath.section) {
             case DEF_WIRELESS_SECTION:{
                 summaries = [self getWirelessSettingsSummary];
