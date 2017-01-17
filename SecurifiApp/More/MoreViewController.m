@@ -138,7 +138,8 @@
     NSString* success = dictionary[@"Success"];
     
     if ([success isEqualToString:@"true"]) {
-        self.userName = [dictionary[@"FirstName"] stringByAppendingString:[@" " stringByAppendingString:dictionary[@"LastName"]]];
+        if([commandType isEqualToString:@"UserProfileResponse"])
+            self.userName = [dictionary[@"FirstName"] stringByAppendingString:[@" " stringByAppendingString:dictionary[@"LastName"]]];
         
         dispatch_sync(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
