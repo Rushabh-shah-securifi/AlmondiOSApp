@@ -106,7 +106,8 @@ static const int xIndent = 10;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self drawIndexes];
     });
-    self.isLocal = [self.toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
+    
+    self.isLocal = [[SecurifiToolkit sharedInstance] useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
     self.navigationController.view.backgroundColor = [UIColor wheatColor];
    
     self.toolkit=[SecurifiToolkit sharedInstance];
@@ -316,7 +317,6 @@ static const int xIndent = 10;
             self.keyBoardComp = yPos;
             [self.indexesScroll setContentSize:scrollableSize];
         }
-        
     }
     if(!self.isLocal && self.genericParams.isSensor){
         UIView *view = [[UIView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp, self.indexesScroll.frame.size.width-xIndent, 65)];
@@ -397,6 +397,8 @@ static const int xIndent = 10;
         }
     }
 }
+
+
 -(void)onShowSensorLogs{
     SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     //        ctrl.enableDebugMode = YES; // can uncomment for development/test
