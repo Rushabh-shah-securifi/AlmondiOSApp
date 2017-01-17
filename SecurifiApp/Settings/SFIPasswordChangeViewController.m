@@ -150,15 +150,14 @@
 }
 
 #pragma mark - Cloud Command : Sender and Receivers
-
 - (void)sendUserPasswordChangeRequest {
     NSString *oldPwd = self.currentpassword.text;
     NSString *newPwd = self.changedPassword.text;
     NSMutableDictionary* payloadDictionary = [NSMutableDictionary new];
     [payloadDictionary setObject:@"ChangePasswordRequest" forKey:COMMAND_TYPE];
     [payloadDictionary setObject:[[SecurifiToolkit sharedInstance] loginEmail] forKey:@"EmailID"];
-    [payloadDictionary setObject:newPwd forKey:@"Password"];
-    [payloadDictionary setObject:oldPwd forKey:@"NewPassword"];
+    [payloadDictionary setObject:newPwd forKey:@"NewPass"];
+    [payloadDictionary setObject:oldPwd forKey:@"CurrentPass"];
     
     NSString* payload = [CreateJSON getJSONStringFromDictionary: payloadDictionary];
     GenericCommand* cmd = [GenericCommand new];
@@ -183,6 +182,7 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
                 [self.HUD hide:YES];
     });
+    
     if([success isEqualToString:@"true"]){
         dispatch_async(dispatch_get_main_queue(), ^() {
                 [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];

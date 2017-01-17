@@ -740,6 +740,7 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     NSDictionary *vulnurabilityData = [self parseJson:@"IoTVulnerabilityData"];
     NSDictionary *singleVulnability = vulnurabilityData[type];
     NSString *title = singleVulnability[@"description"];
+   
     return NSLocalizedString(title,@"");
 }
 

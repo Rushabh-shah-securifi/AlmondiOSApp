@@ -513,7 +513,6 @@ static const int xIndent = 10;
             
             
             [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
-            NSLog(@"client.previousType %@,client.deviceType %@",client.previousType,client.deviceType);
             
             
             [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
