@@ -952,7 +952,7 @@ static const int xIndent = 10;
         for(SFIButtonSubProperties *subProperty in rules.triggers){
             
             if(subProperty.deviceId == self.genericParams.headerGenericIndexValue.deviceID){
-                if(![subProperty.eventType isEqualToString:@"AlmondModeUpdated"]){
+                if(![self checkEventType:subProperty.eventType]){
                     [ruleArr addObject: rules];
                     isRuleFound = YES;
                     break ;
@@ -964,7 +964,7 @@ static const int xIndent = 10;
         
         for(SFIButtonSubProperties *subProperty in rules.actions){
             if(subProperty.deviceId == self.genericParams.headerGenericIndexValue.deviceID){
-                if(![subProperty.eventType isEqualToString:@"AlmondModeUpdated"]){
+                if(![self checkEventType:subProperty.eventType]){
                     [ruleArr addObject: rules];
                     isRuleFound = YES;
                     break;
@@ -975,6 +975,13 @@ static const int xIndent = 10;
             return ruleArr;
     }
 return ruleArr;
+}
+-(BOOL)checkEventType:(NSString *)eventType{
+    if([eventType isEqualToString:@"AlmondModeUpdated"] || [eventType isEqualToString:@"ClientJoined"] || [eventType isEqualToString:@"ClientLeft"]){
+        return YES;
+    }
+    else
+        return NO;
 }
 -(Rule *)getScene:(NSDictionary*)dict{
     Rule *scene = [[Rule alloc]init];
