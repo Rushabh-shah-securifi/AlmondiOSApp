@@ -2306,8 +2306,8 @@ Contact us at support@securifi.com";
 "open_ports_title" = "Open Well-Known Ports found in your device";
 "local_wc_title" = "Local web page uses weak username and password";
 "port_forward_title" = "Port forwarding enabled for this device";
-"upnp_iot_title" = "Device using UPnP(Universal Plug n Play) service on private ports";
-
+"upnp_iot_title1" = "Device using UPnP(Universal Plug n Play) service on private ports";
+"upnp_iot_title" = "Device using UPnP(Universal Plug n Play) service on Well-Known ports";
 "open_port_wc_desc" = "Your device has an open telnet (port:23) and uses a weak username and password. Devices with open telnets are highly vulnerable to Mirai like botnet attacks. We suggest you block this device or, if you can access the telnet, create a strong username and password. Furthermore, make sure that you have up to date firmware on your device. Contact your device vendor for more assistance.";
 "open_ports_iot_desc" = "Open ports found in your device. The port numbers range from 0 through 65535. But the ones from 0 to 1024 are called “Well known ports” - as they are used by commonly known applications. Ports 1024 to 65536 are called private or registered ports. Since applications running on these ports ( 0  to 1024 ) are widely known and standardised, they are most vulnerable to attacks by hackers or unauthorized users.\nMake sure your device has up to date firmware and contact your device vendor if you do not recognize the services running on these open ports.More information on Port numbers and protocol can be found here.";
 
@@ -2315,7 +2315,7 @@ Contact us at support@securifi.com";
 
 "open_ports_title1" = "Your device has open private ports";
 "open_ports_iot_desc1" = "No reason to worry though.\n Open private ports found in your device. The port numbers range from 0 through 65535. But the ones from 0 to 1024 are called “Well known ports” - as they are used by commonly known applications. Ports 1024 to 65536 are called private or registered ports. Application running on these ports ( 1024 to 65536) may not be known to hackers or unauthorised user and therefore it is less prone to attacks. Typically, these ports are used by device vendors ( your Laptops and Desktop) for running different applications that may require internet connectivity.\n More information on Port numbers and protocol can be found here.";
-"upnp_iot_title1" = "Device using UPnP(Universal Plug n Play) service on Well-Known ports";
+
 "upnp_iot_desc1" = "UPnP is a service that some devices use to automatically set up port forwarding in the router.For example, UPnP is used by applications running on gaming consoles to connect to gaming servers.  Hackers or unauthorized  users can use open ports which are forwarded by UPnP to gain control of your devices. The port numbers range from 0 through 65535. But the ones from 0 to 1024 are called “Well known ports” - as they are used by commonly known applications. Ports 1024 to 49151 are called registered ports and ports above 49151 to 65536 are called private ports. \n Since, application running on these ports ( 0 to 1024 ) are widely known and standardized, they are most vulnerable to hackers and unauthorised user. Furthermore, UPnP allows applications on public network to bypass router firewall and connect directly to applications running on your device. Therefore If you don’t use any such services or applications, we suggest that you disable UPnP on your Almond from the Almond App  by going to the advanced router features section of the Wifi tab.";
 "h_subscription_desc1" = "Get a snapshot of vulnerable devices from the dashboard. Know the number of devices scanned and the last scanned time.";
 "h_subscription_desc2" = "Scan your network with the tap of a button. Categorize devices as vulnerable or healthy.";

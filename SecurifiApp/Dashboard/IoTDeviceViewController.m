@@ -24,9 +24,11 @@
 #import "MBProgressHUD.h"
 #import "IoTLearnMoreViewController.h"
 #import "HTTPRequest.h"
+#import "DetailsPeriodViewController.h"
 #import "CommonMethods.h"
 
-@interface IoTDeviceViewController ()<UITableViewDelegate,UITableViewDataSource,MBProgressHUDDelegate,HTTPDelegate>
+@interface IoTDeviceViewController ()<UITableViewDelegate,UITableViewDataSource,MBProgressHUDDelegate,HTTPDelegate,DetailsPeriodViewControllerDelegate,UIAlertViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
+
 @property (weak, nonatomic) IBOutlet UISwitch *iotSwitch;
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UIButton *blockButton;
@@ -55,6 +57,9 @@
 @property (weak, nonatomic) IBOutlet UIView *dataUsage;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *BlockButtonTop;
 @property NSInteger buttonTop;
+@property (weak, nonatomic) IBOutlet UILabel *NosDayLabel;
+@property (nonatomic) NSString *resetBWDate;
+@property (nonatomic) NSString *label;
 
 
 @property BOOL isEcho_Nest;
@@ -106,9 +111,12 @@
     
     
     [self.navigationController setNavigationBarHidden:YES];
-    if(self.hideMiddleView == NO)
+    if(self.hideMiddleView == NO){
         [self createRequest:@"Bandwidth" value:@"7" date:[CommonMethods getTodayDate]];
+        self.label = @"Past week";
+    }
     self.DataUsageView.hidden = self.hideMiddleView;
+//    self.NosDayLabel.text = self.label;
 }
 -(void)createRequest:(NSString *)search value:(NSString*)value date:(NSString *)date{
     NSString *req ;
@@ -252,8 +260,7 @@
         else
             self.iotSwitch.on = self.client.iot_dnsEnable;
     self.DataUsageEnable.on = self.client.bW_Enable;
-        if(self.hideMiddleView == NO)
-            self.DataUsageView.hidden = !self.client.bW_Enable;
+        
     if(!self.client.isActive){
         [self clientInActiveUI];
     }
@@ -291,6 +298,9 @@
 //                [self amazoneNestUI];
 //            }
         }
+    if(self.hideMiddleView == NO)
+            self.DataUsageView.hidden = !self.client.bW_Enable;
+
         [self blockUnblockCheck];
     });
 }
@@ -468,18 +478,23 @@ NSLog(@"dict tag %@ ",dict[@"Tag"]);
 - (IBAction)dataUsageEnDis:(id)sender {
     UISwitch *actionSwitch = (UISwitch *)sender;
     BOOL state = [actionSwitch isOn];
-    mii = arc4random()%10000;
-    
-    NSLog(@"state %d",state);
     if(state == NO){
-            self.client.bW_Enable = NO;
-            [self saveNewValue:@"NO" forIndex:-25];
-        }
-        if(state == YES){
-            [self saveNewValue:@"YES" forIndex:-25];
-        }
-    NSLog(@"self.client.iot_serviceEnable %d",self.client.iot_serviceEnable);
-    [ClientPayload getUpdateClientPayloadForClient:self.client mobileInternalIndex:mii];
+        self.DataUsageView.hidden = YES;
+        self.client.bW_Enable = NO;
+        [self saveNewValue:@"NO" forIndex:-25];
+    }
+    else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Usage cycle reset date" message:@"set date of the month" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+        alert.tag = 3;
+        UIPickerView *picker = [[UIPickerView alloc] initWithFrame:CGRectMake(10, 0, 320, 216)];
+        picker.delegate = self;
+        picker.dataSource = self;
+        picker.showsSelectionIndicator = YES;
+        [alert addSubview:picker];
+        alert.bounds = CGRectMake(0, 0, 320 + 20, alert.bounds.size.height + 216 + 20);
+        [alert setValue:picker forKey:@"accessoryView"];
+        [alert show];
+    }
 }
 - (IBAction)iotServiceEnableDisable:(id)sender {
     UISwitch *actionSwitch = (UISwitch *)sender;
@@ -594,6 +609,78 @@ NSLog(@"dict tag %@ ",dict[@"Tag"]);
     return cell;
 }
 - (IBAction)deleteDataUsage:(id)sender {
+    UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                     message:@"Are you sure,you want to delete data usage?"
+                                                    delegate:self
+                                           cancelButtonTitle:@"Cancel"
+                                           otherButtonTitles:@"Done",nil];
+    [alert setDelegate:self];
+    alert.tag = 5;
+    alert.alertViewStyle = UIAlertViewStyleDefault;
+    [alert show];
+}
+- (IBAction)changeTpastWeak:(id)sender {
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+    DetailsPeriodViewController *newWindow = [storyBoard   instantiateViewControllerWithIdentifier:@"DetailsPeriodViewController"];
+    
+    if([self.NosDayLabel.text isEqualToString:@"LastDay"])
+        newWindow.str = @"0";
+    else if ([self.NosDayLabel.text isEqualToString:@"Past week"])
+        newWindow.str = @"1";
+    else if([self.NosDayLabel.text isEqualToString:@"Past month"])
+        newWindow.str = @"2";
+    else
+        newWindow.str = @"3";
+    
+    newWindow.delegate = self;
+    NSLog(@"instantiateViewControllerWithIdentifier IF");
+    [self.navigationController pushViewController:newWindow animated:YES];
+}
+
+-(void)updateDetailPeriod:(NSString *)value date:(NSString*)date lavelText:(NSString*)labelText{
+    [self createRequest:@"Bandwidth" value:value  date:date];
+     self.label = labelText;
+    self.NosDayLabel.text = labelText;
+    
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == [alertView cancelButtonIndex]){
+         if (alertView.tag == 6){
+        }
+    }
+    else{
+        if(alertView.tag == 5){
+            [self createRequest:@"ClearBandwidth" value:@"ClearBandwidth" date:[CommonMethods getTodayDate]];
+        }
+        else if(alertView.tag == 3){
+            self.DataUsageView.hidden = NO;
+            self.client.bW_Enable = YES;
+            [self saveNewValue:@"YES" forIndex:-25];
+            [self createRequest:@"DataUsageReset" value:self.resetBWDate date:[CommonMethods getTodayDate]];
+            
+        }
+    }
+}
+-(void)onPreciselyDatePickerValueChanged:(id)sender{
+    UIDatePicker *datePicker = (UIDatePicker *)sender;
+    NSLog(@"date picker date %@",datePicker.date);
+}
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return 31;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return [NSString stringWithFormat:@"%ld",row+1];
+}
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    self.resetBWDate = [NSString stringWithFormat:@"%ld",row+1];
+    NSLog(@"self.resetBWDate %@",self.resetBWDate);
+    return ;
 }
 
 @end
