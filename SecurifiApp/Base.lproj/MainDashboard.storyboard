@@ -1001,8 +1001,11 @@
                                                     <constraint firstAttribute="height" constant="36" id="GFV-eH-xUO"/>
                                                     <constraint firstAttribute="width" constant="180" id="tnA-Mx-plF"/>
                                                 </constraints>
+                                                <connections>
+                                                    <action selector="changeTpastWeak:" destination="Hx6-sF-eKd" eventType="touchUpInside" id="xBv-ST-A2y"/>
+                                                </connections>
                                             </button>
-                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Past week" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fsd-Fb-Crt">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Past week" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fsd-Fb-Crt">
                                                 <rect key="frame" x="-52" y="8" width="207" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="L86-hh-dOT"/>
@@ -1038,7 +1041,7 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rightarrow-icon" translatesAutoresizingMaskIntoConstraints="NO" id="8Gs-uK-a7L">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rightarrow-icon" translatesAutoresizingMaskIntoConstraints="NO" id="8Gs-uK-a7L">
                                                 <rect key="frame" x="159" y="8" width="23" height="23"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="23" id="1GD-Ft-ZPO"/>
@@ -1234,6 +1237,7 @@
                         <outlet property="MBUpLbl" destination="RRw-fu-EFB" id="r67-On-Tv3"/>
                         <outlet property="MbDownLbl" destination="THW-gg-BAw" id="5iz-wb-kwo"/>
                         <outlet property="MbLblDown" destination="lKm-S8-eP8" id="sHB-wq-bMF"/>
+                        <outlet property="NosDayLabel" destination="Fsd-Fb-Crt" id="RMZ-3S-b1z"/>
                         <outlet property="blockButton" destination="k9l-Jf-9sT" id="Nwg-eO-81k"/>
                         <outlet property="blockLabel" destination="ebb-TG-Daq" id="Hha-9Z-ceF"/>
                         <outlet property="clientImg" destination="dKs-DZ-2pr" id="dpe-Zg-oSj"/>
@@ -1353,6 +1357,7 @@
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                            <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                                         </textView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
