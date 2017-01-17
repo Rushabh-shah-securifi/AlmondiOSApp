@@ -194,7 +194,8 @@
         
         
         NSMutableAttributedString * attrStr = [[NSMutableAttributedString alloc] initWithString:desc attributes:attribs];
-        NSURL *link = ![screen[S_URL] isEqualToString:@"local"]? [NSURL URLWithString:screen[S_URL]]: [self getLocalURL];
+//        NSURL *link = ![screen[S_URL] isEqualToString:@"local"]? [NSURL URLWithString:screen[S_URL]]: [self getLocalURL];
+        NSURL *link =[NSURL URLWithString:screen[S_URL]];
         [attrStr addAttribute:NSLinkAttributeName value:link range:NSMakeRange(attrStr.length-5, 4)];
         [attrStr addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(attrStr.length-5, 4)];
         self.desc.attributedText = attrStr;

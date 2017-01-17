@@ -10,6 +10,9 @@
 #import "SFICardView.h"
 #import "SFIRouterTableViewActions.h"
 
+#define MIN_PASS_LENGTH 8
+#define MAX_PASS_LENGTH 32
+
 #define MAX_SSID_LENGTH 32
 
 #define SSID_FIELD 0
@@ -184,7 +187,14 @@
     NSString *str = textField.text;
     if([str isEqualToString:self.wirelessSetting.ssid])
         return;
-    BOOL valid = [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
+    BOOL valid;
+    if(textField.tag == SSID_FIELD){
+        valid = [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
+    }
+    else if(textField.tag == PASSWORD_FIELD){
+        valid = [self validatePassMinLen:str] && [self validatePassMaxLen:str];
+    }
+    
     if (valid) {
         [textField resignFirstResponder];
         if(textField.tag == SSID_FIELD){
@@ -201,6 +211,16 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+- (BOOL)validatePassMinLen:(NSString *)str {
+    // SSID name value must be 1 char or longer
+    return str.length >= MIN_PASS_LENGTH;
+}
+
+- (BOOL)validatePassMaxLen:(NSString *)str {
+    // SSID name value must be 180 chars or fewer
+    return str.length <= MAX_PASS_LENGTH;
 }
 
 - (BOOL)validateSSIDNameMinLen:(NSString *)str {
