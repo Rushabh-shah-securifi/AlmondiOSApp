@@ -102,7 +102,7 @@ NSArray *fieldNumbersForEachCategory;
     UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(10, _baseYCordinate, 120, 30)];
     lbl.backgroundColor = [UIColor clearColor];
     lbl.textColor = [UIColor whiteColor];
-    lbl.text = _keyvalue;
+    lbl.text = _userProfile.label;
     [lbl setFont:[UIFont securifiBoldFont:13]];
     lbl.textAlignment = NSTextAlignmentLeft;
     [self addSubview:lbl];
@@ -123,6 +123,7 @@ NSArray *fieldNumbersForEachCategory;
             if ([_userProfile.data[0] isEqualToString:@""]) {
                 [btnChange setTitle:NSLocalizedString(ACCOUNTS_USERPROFILE_BUTTON_ADD, ADD) forState:UIControlStateNormal];
             }
+            
             else {
                 [btnChange setTitle:NSLocalizedString(ACCOUNTS_USERPROFILE_BUTTON_EDIT, EDIT) forState:UIControlStateNormal];
             }
@@ -160,11 +161,10 @@ NSArray *fieldNumbersForEachCategory;
     }
     
     _baseYCordinate += 30;
-    UIImageView *imgLine3 = [[UIImageView alloc] initWithFrame:CGRectMake(5, _baseYCordinate, 100, 1)];
+    UIImageView *imgLine3 = [[UIImageView alloc] initWithFrame:CGRectMake(5, _baseYCordinate, 330, 1)];
     imgLine3.image = [UIImage imageNamed:LINE];
     imgLine3.alpha = 0.2;
     [self addSubview:imgLine3];
-    
 }
 
 @end

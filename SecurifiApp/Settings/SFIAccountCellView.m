@@ -231,7 +231,7 @@ NSArray *fieldNumbersForEachCategory;
         [_userProfileData addObject:email];
         
         SFIUserProfile* changePassword = [SFIUserProfile new];
-        changePassword.label = CHANGE_PASSWORD;
+        changePassword.label = PASSWORD;
         changePassword.keyValue = @"ChangePassword";
         [_userProfileData addObject:changePassword];
         
@@ -250,7 +250,7 @@ NSArray *fieldNumbersForEachCategory;
         [_userProfileData addObject:lastName];
         
         SFIUserProfile* address = [SFIUserProfile new];
-        address.label = @"ADDRESS";
+        address.label = ADDRESS;
         address.keyValue = @"Address";
         [address.data addObject:[dictionary valueForKey:@"AddressLine1"]];
         [address.data addObject:[dictionary valueForKey:@"AddressLine2"]];
@@ -263,14 +263,14 @@ NSArray *fieldNumbersForEachCategory;
         [_userProfileData addObject:address];
         
         SFIUserProfile* country = [SFIUserProfile new];
-        country.label = @"COUNTRY";
+        country.label = COUNTRY;
         country.keyValue = @"Country";
         [country.data addObject:[dictionary valueForKey:@"Country"]];
         [country.placeHolders addObject:NSLocalizedString(@"accounts.userprofile.textfield.placeholder.country", @"In which country do you reside?")];
         [_userProfileData addObject:country];
         
         SFIUserProfile* zipCode = [SFIUserProfile new];
-        zipCode.label = @"ZIPCODE";
+        zipCode.label = ZIP_CODE;
         zipCode.keyValue = @"ZipCode";
         [zipCode.data addObject:[dictionary valueForKey:@"ZipCode"]];
         [zipCode.placeHolders addObject:NSLocalizedString(@"accounts.userprofile.textfield.placeholder.zipCode", @"What is your ZIP Code?")];

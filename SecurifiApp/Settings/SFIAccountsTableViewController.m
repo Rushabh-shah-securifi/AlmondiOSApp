@@ -74,8 +74,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
                                              @21:COULD_NOT_DELETE_YOUR_ACCOUNT,
                                              @22:COULD_NOT_DELETE_YOUR_ACCOUNT,
                                              @23:COULD_NOT_DELETE_YOUR_ACCOUNT,
-                                             @24:COULD_NOT_DELETE_YOUR_ACCOUNT,
-                                             @25:COULD_NOT_UNLINK,
+                                             @24:INCORRECT_PASSWORD,
+                                             @25:INCORRECT_PASSWORD,
                                              @26:PLEASE_TRY_AGAIN_LATER,
                                              @27:USER_WAS_ALREADY_REMOVED
                                              };
@@ -229,6 +229,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }
     return 120;
 }
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
@@ -387,9 +388,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     alert.tag = USER_INVITE_ALERT;
     [[alert textFieldAtIndex:0] setDelegate:self];
     [alert show];
-    
 }
-
 
 
 - (void)onEmailRemoveClicked:(id)sender {
@@ -425,7 +424,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 
 - (void)onRemoveSharedAlmondClicked:(id)sender {
-    
     UIButton *btn = (UIButton *) sender;
     NSUInteger index = (NSUInteger) btn.tag;
     SFIAlmondPlus *currentAlmond = [self sharedAlmondAtIndexPathRow:index];
