@@ -961,7 +961,7 @@ static const int xIndent = 10;
                 }
             }
         if(isRuleFound)
-            return ruleArr;
+            continue;
         
         for(SFIButtonSubProperties *subProperty in rules.actions){
             if(subProperty.deviceId == self.genericParams.headerGenericIndexValue.deviceID){
@@ -973,7 +973,7 @@ static const int xIndent = 10;
             }
         }
         if(isRuleFound)
-            return ruleArr;
+            continue;
     }
 return ruleArr;
 }

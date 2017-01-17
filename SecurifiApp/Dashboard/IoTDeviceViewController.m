@@ -128,7 +128,11 @@
     
 }
 -(void)responseDict:(NSDictionary *)responseDict{
+    if([responseDict[@"search"] isEqualToString:@"ClearBandwidth"])
+        return;
+    
     NSDictionary *dict = responseDict[@"Data"];
+    
     if(dict[@"RX"] == NULL || dict[@"TX"] == NULL)
         return ;
     dispatch_async(dispatch_get_main_queue(), ^() {
