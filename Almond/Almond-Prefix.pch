@@ -18,7 +18,7 @@
 #endif
 
 #import <SecurifiToolkit/Log.h>
-#define NSLog //
+//#define NSLog //
 
 #define ELog(args...) DDLogError(args)
 //#define NSLog(args...) DDLogInfo(args) //uncommenting it was disabling logs, look into it

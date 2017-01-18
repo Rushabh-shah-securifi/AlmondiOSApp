@@ -189,13 +189,20 @@
             self.infoLabel.hidden = NO;
             self.dataUsage.hidden = YES;
             self.DataUsageView.hidden = YES;
+            self.blockButton.hidden = YES;
+            self.middleView.hidden = YES;
+            
             self.infoLabel.text = NSLocalizedString(@"ap_re_wired_iot", @"Add Almond");
+            
         }
         else{
             self.iotSwitch.hidden = NO;
-            self.DataUsageEnable.hidden = NO;
-            if(self.hideMiddleView == NO)
-                self.DataUsageView.hidden = NO;
+            self.infoLabel.hidden = NO;
+            self.DataUsageEnable.hidden = YES;
+            self.infoLabel.text = NSLocalizedString(@"For_checking_Data_usage", @"");
+            self.dataUsage.hidden = YES;
+            self.blockButton.hidden = YES;
+            
         }
     }
 }
