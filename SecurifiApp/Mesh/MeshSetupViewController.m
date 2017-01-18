@@ -306,6 +306,8 @@ int mii;
     if(indexPath.row == 0 ){
         if(self.almondStatObj.isMaster && !self.hasLocationTag){
             accType = UITableViewCellAccessoryNone;
+        }else if(!self.almondStatObj.isMaster && (!self.almondStatObj.isActive || !self.almondStatObj.internetStat)){
+            accType = UITableViewCellAccessoryNone;
         }else{
             accType = UITableViewCellAccessoryDisclosureIndicator;
         }
@@ -323,7 +325,10 @@ int mii;
     if(indexPath.row == 0 ){
         if(self.almondStatObj.isMaster && !self.hasLocationTag){
             
-        }else{
+        }else if(!self.almondStatObj.isMaster && (!self.almondStatObj.isActive || !self.almondStatObj.internetStat)){
+        
+        }
+        else{
             [self presentMeshController];
         }
     }

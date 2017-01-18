@@ -177,12 +177,12 @@ int mii;
         [self.HUD hide:YES];
     });
     if(isSuccessful){
-        [self showToast:@"Payment Successful!"];
+//        [self showToast:@"Payment Successful!"];
         
         [AlmondPlan updateAlmondPlan:self.selectedPlan epoch:payload[RENEWAL_EPOCH] mac:self.currentMAC];
         [self pushPaymentCompleteController:SubscriptionResponse_Success];
     }else{
-        [self showToast:@"Sorry! proceedings failed."];
+//        [self showToast:@"Sorry! proceedings failed."];
         [self pushPaymentCompleteController:SubscriptionResponse_Failed];
     }
 }

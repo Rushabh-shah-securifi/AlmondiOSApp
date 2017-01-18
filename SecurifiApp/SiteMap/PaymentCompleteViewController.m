@@ -37,11 +37,13 @@
 - (void)setupUI{
     NSString *desc;
     NSString *almondName = [AlmondManagement cloudAlmond:self.currentMAC].almondplusName;
+    NSString *monthString = [AlmondPlan getPlanMonths:self.selectedPlanType] == 1? @"Month": @"Months";
+    
     if(self.type == SubscriptionResponse_Success){
-        desc = [NSString stringWithFormat:@"You now have access to Internet Security on %@ for %zd month/months", almondName, [AlmondPlan getPlanMonths:self.selectedPlanType]];
+        desc = [NSString stringWithFormat:@"You now have access to Internet Security on %@ for %zd %@", almondName, [AlmondPlan getPlanMonths:self.selectedPlanType], monthString];
         [self setImage:[UIImage imageNamed:@"payment_check_circle"] title:@"Hooray!" desc:desc topHidden:YES btmHidden:NO topTitle:@"" btmTitle:@"Done"];
     }else if(self.type == SubscriptionResponse_Failed){
-        desc = [NSString stringWithFormat:@"We were unable to process your payment for IoT Security for %zd Month/Months $%@ Plan.", [AlmondPlan getPlanMonths:self.selectedPlanType], [AlmondPlan getPlanAmount:self.selectedPlanType]];
+        desc = [NSString stringWithFormat:@"We were unable to process your payment for IoT Security for %zd %@ $%@ Plan.", [AlmondPlan getPlanMonths:self.selectedPlanType], monthString, [AlmondPlan getPlanAmount:self.selectedPlanType]];
         [self setImage:[UIImage imageNamed:@"ic_error_outline"] title:@"Payment Error" desc:desc topHidden:NO btmHidden:NO topTitle:@"Try Again" btmTitle:@"Nevermind"];
     }else if(self.type == SubscriptionResponse_Cancelled){
         desc = [NSString stringWithFormat:@"You no longer have access to the IoT Security on %@.", almondName];
