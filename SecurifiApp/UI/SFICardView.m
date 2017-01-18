@@ -14,6 +14,7 @@
 #import "SFICopyLabel.h"
 #import "CommonMethods.h"
 #import "UICommonMethods.h"
+#import "AlmondManagement.h"
 
 @interface SFICardView ()
 @property(nonatomic, readonly) CGFloat baseYCoordinate;
@@ -274,7 +275,8 @@
     field.secureTextEntry = YES;
     field.delegate = delegate;
     field.tag = tag;
-    field.userInteractionEnabled = NO;
+    if(![[AlmondManagement currentAlmond].firmware hasPrefix:@"AL3-"])
+        field.userInteractionEnabled = NO;
     [self addSubview:field];
     
     [self markYOffsetUsingRect:field.frame addAdditional:5];
