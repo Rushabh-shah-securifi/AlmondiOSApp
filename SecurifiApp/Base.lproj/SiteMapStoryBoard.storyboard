@@ -2214,6 +2214,7 @@
                     <connections>
                         <outlet property="paymentBtn" destination="tVq-0M-fSn" id="tzS-W0-Ejz"/>
                         <outlet property="selectedPlanAmtLbl" destination="eTZ-oj-fs4" id="uwB-c6-qJZ"/>
+                        <outlet property="topPlanDesc" destination="RqP-QZ-mbu" id="mby-mi-Eju"/>
                         <outlet property="topPlanLbl" destination="JCD-02-qhj" id="c8c-CL-Fqn"/>
                         <outlet property="totalAmtLbl" destination="vuI-Hl-oah" id="DNa-D7-qjx"/>
                     </connections>
