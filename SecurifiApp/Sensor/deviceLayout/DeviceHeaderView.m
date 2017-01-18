@@ -151,10 +151,12 @@
         BOOL local = [toolkit useLocalNetwork:[AlmondManagement currentAlmond].almondplusMAC];
         if(local){
             self.parentrolBtn.hidden = YES;
+            self.deviceValue.hidden = YES;
         }
-        else
+        else{
             self.parentrolBtn.hidden = NO;
-        
+            self.deviceValue.hidden = NO;
+        }
         if(client.webHistoryEnable == NO){
              [self.parentrolBtn setImage:[UIImage imageNamed:@"icon_history_off"] forState:UIControlStateNormal];
             NSLog(@"icon_history_off");

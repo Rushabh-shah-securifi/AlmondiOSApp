@@ -2067,7 +2067,7 @@ Contact us at support@securifi.com";
 
 
 "iot_security_camelcase" = "IoT Security";
-"ap_re_wired_iot" = "This device is in wired connection. Web history requires wireless connection in RE/AP Mode.";
+"ap_re_wired_iot" = "This device is in wired connection. Web history requires wireless connection in RE/AP Mode. For checking Data usage, Almond must be in Router Mode.";
 "blocked_client_iot" = "Web history is disabled for blocked devices. You can still see records from when the device was last active.";
 /*notification*/
 "notification_switch_on" = " is turned On";

@@ -17,6 +17,8 @@
 
 @interface SelectedPlanViewController ()<MBProgressHUDDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *topPlanLbl;
+@property (weak, nonatomic) IBOutlet UILabel *topPlanDesc;
+
 @property (weak, nonatomic) IBOutlet UILabel *selectedPlanAmtLbl;
 @property (weak, nonatomic) IBOutlet UITextField *couponTxtFld;
 @property (weak, nonatomic) IBOutlet UILabel *discountAmtLbl;
@@ -90,12 +92,15 @@ int mii;
     self.couponTxtFld.delegate = self;
     
     self.topPlanLbl.text = [AlmondPlan getPlanString:self.selectedPlan];
+    self.topPlanDesc.text = [NSString stringWithFormat:@"For enabling IoT Security on %@", [AlmondManagement cloudAlmond:self.currentMAC].almondplusName];
+    
     self.selectedPlanAmtLbl.text = [NSString stringWithFormat:@"$%@", [AlmondPlan getPlanAmount:self.selectedPlan]];
     self.totalAmtLbl.text = [NSString stringWithFormat:@"$%@", [AlmondPlan getPlanAmount:self.selectedPlan]];
     
     if(self.selectedPlan == PlanTypeFree){
         [self.paymentBtn setTitle:@"Start My Trial" forState:UIControlStateNormal];
-    }else if([AlmondPlan hasPaidSubscription]){
+    }
+    else if([AlmondPlan hasPaidSubscription]){
         [self.paymentBtn setTitle:[NSString stringWithFormat:@"Pay $%@", [AlmondPlan getPlanAmount:self.selectedPlan]] forState:UIControlStateNormal];
     }
 }
@@ -177,12 +182,12 @@ int mii;
         [self.HUD hide:YES];
     });
     if(isSuccessful){
-        [self showToast:@"Payment Successful!"];
+//        [self showToast:@"Payment Successful!"];
         
         [AlmondPlan updateAlmondPlan:self.selectedPlan epoch:payload[RENEWAL_EPOCH] mac:self.currentMAC];
         [self pushPaymentCompleteController:SubscriptionResponse_Success];
     }else{
-        [self showToast:@"Sorry! proceedings failed."];
+//        [self showToast:@"Sorry! proceedings failed."];
         [self pushPaymentCompleteController:SubscriptionResponse_Failed];
     }
 }

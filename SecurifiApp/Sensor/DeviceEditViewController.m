@@ -984,6 +984,13 @@ return ruleArr;
     else
         return NO;
 }
+-(BOOL)isRepetingRule:(NSArray *)ruleArr rule:(Rule*)rule{
+    for (Rule *ruleObj in ruleArr) {
+        if([rule.ID isEqualToString:ruleObj.ID])
+            return NO;
+    }
+    return YES;
+}
 -(Rule *)getScene:(NSDictionary*)dict{
     Rule *scene = [[Rule alloc]init];
     scene.ID = [dict valueForKey:@"ID"];

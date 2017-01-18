@@ -929,12 +929,12 @@
                                     <constraint firstAttribute="bottom" secondItem="aK6-jF-xBg" secondAttribute="bottom" id="vlC-kc-pR5"/>
                                 </constraints>
                             </view>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qic-6Y-wcI">
-                                <rect key="frame" x="30" y="311" width="315" height="195"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qic-6Y-wcI">
+                                <rect key="frame" x="16" y="311" width="343" height="195"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="195" id="GXJ-1D-LVH"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
                                 <color key="textColor" red="0.47450980390000003" green="0.47450980390000003" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1212,13 +1212,13 @@
                             <constraint firstItem="dGC-gO-UYu" firstAttribute="top" secondItem="Qee-dP-ROw" secondAttribute="bottom" id="L2S-9w-Zds"/>
                             <constraint firstAttribute="trailing" secondItem="dGC-gO-UYu" secondAttribute="trailing" id="L89-jE-OSp"/>
                             <constraint firstItem="qic-6Y-wcI" firstAttribute="top" secondItem="k9l-Jf-9sT" secondAttribute="bottom" constant="-16" id="LuA-At-fhJ"/>
-                            <constraint firstItem="qic-6Y-wcI" firstAttribute="leading" secondItem="7pJ-Nf-51W" secondAttribute="leadingMargin" constant="14" id="NcR-0i-ILU"/>
+                            <constraint firstItem="qic-6Y-wcI" firstAttribute="leading" secondItem="7pJ-Nf-51W" secondAttribute="leadingMargin" id="NcR-0i-ILU"/>
                             <constraint firstItem="oQ9-kT-J0p" firstAttribute="leading" secondItem="7pJ-Nf-51W" secondAttribute="leading" id="TyO-1o-kNV"/>
                             <constraint firstAttribute="trailing" secondItem="oQ9-kT-J0p" secondAttribute="trailing" id="WOf-ol-s7V"/>
                             <constraint firstItem="oQ9-kT-J0p" firstAttribute="top" secondItem="k9l-Jf-9sT" secondAttribute="bottom" constant="15" id="aAH-8U-kyS"/>
                             <constraint firstItem="ZD5-ef-YhE" firstAttribute="top" secondItem="JRV-0i-B4M" secondAttribute="bottom" constant="10" id="fb5-V0-GFj"/>
                             <constraint firstItem="JPj-GY-gXh" firstAttribute="top" secondItem="k9l-Jf-9sT" secondAttribute="bottom" constant="8" id="iWr-Ha-ci0"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="qic-6Y-wcI" secondAttribute="trailing" constant="14" id="nqf-tx-BQd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="qic-6Y-wcI" secondAttribute="trailing" id="nqf-tx-BQd"/>
                             <constraint firstAttribute="trailing" secondItem="Qee-dP-ROw" secondAttribute="trailing" id="pMm-Rt-5HS"/>
                             <constraint firstItem="dGC-gO-UYu" firstAttribute="leading" secondItem="7pJ-Nf-51W" secondAttribute="leading" id="pcZ-ds-5YA"/>
                             <constraint firstItem="k9l-Jf-9sT" firstAttribute="top" secondItem="dGC-gO-UYu" secondAttribute="bottom" constant="50" id="qd0-m2-cwf"/>
@@ -1350,7 +1350,7 @@
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="Ph2-3a-7cI">
+                                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="Ph2-3a-7cI">
                                                             <rect key="frame" x="8" y="55" width="348" height="158"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>

@@ -98,16 +98,13 @@
     }
     
     
-    if(self.sectionType == vulnerable_section)
-        self.learnMore.hidden = NO;
-    else
-        self.learnMore.hidden = YES;
+    self.learnMore.hidden = NO;
     [self setcientNameImg];
     [self getDescriptionLables:self.iotDevice];
     [self setAllowAndBlock];
     [self initializeNotifications];
     [super viewWillAppear:YES];
-    [self forRouterModetest];
+    
     
     
     [self.navigationController setNavigationBarHidden:YES];
@@ -116,6 +113,7 @@
         self.label = @"Past week";
     }
     self.DataUsageView.hidden = self.hideMiddleView;
+    [self forRouterModetest];
 //    self.NosDayLabel.text = self.label;
 }
 -(void)createRequest:(NSString *)search value:(NSString*)value date:(NSString *)date{
@@ -189,15 +187,22 @@
             self.iotSwitch.hidden = YES;
             self.DataUsageEnable.hidden = YES;
             self.infoLabel.hidden = NO;
-            if(self.hideMiddleView == NO)
-                self.DataUsageView.hidden = YES;
+            self.dataUsage.hidden = YES;
+            self.DataUsageView.hidden = YES;
+            self.blockButton.hidden = YES;
+            self.middleView.hidden = YES;
+            
             self.infoLabel.text = NSLocalizedString(@"ap_re_wired_iot", @"Add Almond");
+            
         }
         else{
             self.iotSwitch.hidden = NO;
-            self.DataUsageEnable.hidden = NO;
-            if(self.hideMiddleView == NO)
-                self.DataUsageView.hidden = NO;
+            self.infoLabel.hidden = NO;
+            self.DataUsageEnable.hidden = YES;
+            self.infoLabel.text = NSLocalizedString(@"For_checking_Data_usage", @"");
+            self.dataUsage.hidden = YES;
+            self.blockButton.hidden = YES;
+            
         }
     }
 }
@@ -306,7 +311,9 @@
             self.DataUsageView.hidden = !self.client.bW_Enable;
 
         [self blockUnblockCheck];
+        [self forRouterModetest];
     });
+    
 }
 
 -(void)getDescriptionLables:(NSDictionary*)returnDict{
@@ -377,6 +384,21 @@
     if(self.sectionType == healthy_section)
     {
         cell = [self everyThingsFineLabel:cell];
+        NSDictionary *dict;
+        if(self.warningLables.count > 0)
+        {
+            dict = [self.warningLables objectAtIndex:indexPath.row];
+        NSLog(@"self.warningLables %@",self.warningLables);
+        if([dict[@"Tag"] isEqualToString:@"6"]){
+            cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            cell.textLabel.text = dict[@"Label"];
+            NSString *iconName = @"tamper";
+            cell.imageView.image = [UICommonMethods imageNamed:iconName withColor:[SFIColors clientGreenColor]];
+             cell.detailTextLabel.text = dict[@"Value"];
+            cell = [self cellProperties:cell];
+            return cell;
+        }
+        }
         return cell;
     }
     NSDictionary *dict = [self.warningLables objectAtIndex:indexPath.row];
@@ -385,7 +407,7 @@
     NSString *iconName = @"tamper";
     UIColor *color;
 NSLog(@"dict tag %@ ",dict[@"Tag"]);
-    if([dict[@"Tag"] isEqualToString:@"1"]||[dict[@"Tag"] isEqualToString:@"3"])
+    if([dict[@"Tag"] isEqualToString:@"1"]||[dict[@"Tag"] isEqualToString:@"3"] || [dict[@"Tag"] isEqualToString:@"5"])
         color = [UIColor redColor];
     else
         color = [UIColor orangeColor];
@@ -440,7 +462,7 @@ NSLog(@"dict tag %@ ",dict[@"Tag"]);
         NSLog(@"dict   == %@",dict);
 
         if([dict[@"P"]isEqualToString:@"1"]){
-            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"]){
+            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] || [dict[@"Tag"] isEqualToString:@"5"]){
                 color = [UIColor redColor];
                 break;
             }
@@ -469,7 +491,25 @@ NSLog(@"dict tag %@ ",dict[@"Tag"]);
         }
 }
 
-
+-(UITableViewCell *)cellProperties:(UITableViewCell *)cell{
+    cell.textLabel.textColor = [UIColor blackColor];
+    cell.textLabel.numberOfLines = 2;
+    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    cell.textLabel.font = [UIFont securifiFont:14];
+    cell.detailTextLabel.font = [UIFont securifiFont:12];
+    cell.detailTextLabel.numberOfLines = 2;
+    cell.detailTextLabel.lineBreakMode = NSLineBreakByCharWrapping;
+    cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+    CGSize itemSize = CGSizeMake(30,30);
+    UIGraphicsBeginImageContext(itemSize);
+    CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
+    [cell.imageView.image drawInRect:imageRect];
+    
+    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    return cell;
+}
 - (IBAction)viewHistoryButtonClicked:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
     BrowsingHistoryViewController *newWindow = [storyboard   instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
@@ -627,7 +667,7 @@ NSLog(@"dict tag %@ ",dict[@"Tag"]);
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
     DetailsPeriodViewController *newWindow = [storyBoard   instantiateViewControllerWithIdentifier:@"DetailsPeriodViewController"];
     
-    if([self.NosDayLabel.text isEqualToString:@"LastDay"])
+    if([self.NosDayLabel.text isEqualToString:@"Today"])
         newWindow.str = @"0";
     else if ([self.NosDayLabel.text isEqualToString:@"Past week"])
         newWindow.str = @"1";
