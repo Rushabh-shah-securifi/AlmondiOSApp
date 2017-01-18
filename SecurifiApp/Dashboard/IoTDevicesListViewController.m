@@ -120,6 +120,7 @@
             return cell;
         }
         NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
+        NSLog(@" iotDevice === %@",iotDevice);
         NSString* text = [NSString stringWithFormat:@"%@ %@",[self getClientName:iotDevice[@"MAC"]],[self getIsVulnableText:iotDevice]];
         NSString *detailText = [self getLabelText:iotDevice];
         NSString *iconName = [self getIcon:iotDevice[@"MAC"]];
@@ -277,7 +278,7 @@
         if([key isEqualToString:@"MAC"])
             continue;
         NSDictionary *dict = returnDict[key];
-        if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"]){
+        if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] || [dict[@"Tag"]isEqualToString:@"5"]){
             if([dict[@"P"]isEqualToString:@"1"])
                 redflags++;
         }
@@ -343,7 +344,7 @@
         
         NSDictionary *dict = returnDict[key];
         if([dict[@"P"]isEqualToString:@"1"]){
-            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] ){
+            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] || [dict[@"Tag"]isEqualToString:@"5"]){
                 color = [UIColor redColor];
                 break;
             }
@@ -361,7 +362,7 @@
         NSDictionary *dict = returnDict[key];
         NSLog(@"returnDict %@",returnDict);
         if([dict[@"P"]isEqualToString:@"1"]){
-            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"]){
+            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] || [dict[@"Tag"]isEqualToString:@"5"]){
                 return @"is vulnerable";
             }
             else
