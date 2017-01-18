@@ -135,7 +135,7 @@
         NSString* text = [NSString stringWithFormat:@"%@",[self getClientName:iotDevice[@"MAC"]]];
         NSString *iconName = [self getIcon:iotDevice[@"MAC"]];
         UIColor *color = [SFIColors clientGreenColor];
-        NSString* detailTextLabel = [self getLabelText:iotDevice];
+        NSString* detailTextLabel = [self healthyDevicesDetaiText:iotDevice];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [self cellpara:cell nosline:2 textLabel:text detailText:detailTextLabel imageName:iconName color:color];
     }
@@ -240,6 +240,9 @@
     if (indexPath.section == 0) {
         if(self.scannedDeviceList.count < indexPath.row)
             return;
+        if(self.scannedDeviceList.count == 0)
+            return;
+        
         NSDictionary *iotDevice = [self.scannedDeviceList objectAtIndex:indexPath.row];
         newWindow.iotDevice = iotDevice;
         newWindow.sectionType = vulnerable_section;
@@ -308,6 +311,16 @@
     }
     
     return displayText;
+}
+-(NSString *)healthyDevicesDetaiText:(NSDictionary *)returnDict{
+    NSDictionary *dict = returnDict[@"Ports"];
+    NSString *returnText;
+    if([dict[@"P"]isEqualToString:@"1"]){
+        returnText = @"Something's not right here";
+    }
+    else returnText = @"Everythings looks good";
+    
+    return returnText;
 }
 
 -(NSString *)getClientName:(NSString *)mac{
