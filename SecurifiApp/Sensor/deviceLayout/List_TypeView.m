@@ -86,9 +86,10 @@
         if([key isEqualToString:@"identifying"])
             continue;
         GenericValue *gVal = [self.genericIndexValue.genericIndex.values valueForKey:key];
-        if(!isAl3)
-            if([self isIoTdevice:gVal.value])
-                continue;
+        
+//        if(!isAl3)
+//            if([self isIoTdevice:gVal.value])
+//                continue;
         
         [self.displayArray addObject:gVal.displayText];
         [self.valueArr addObject:gVal.value];
