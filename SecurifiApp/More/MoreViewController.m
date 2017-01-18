@@ -125,21 +125,20 @@
 
 
 - (void)userProfileResponseCallback:(id)sender {
-    
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     NSError *error = nil;
-    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[data valueForKey:@"data"] options:kNilOptions error:&error];
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:[data valueForKey:@"data"] options:kNilOptions error:&error];
     
-    NSString *commandType = [dictionary valueForKey:COMMAND_TYPE];
+    NSString *commandType = dict[COMMAND_TYPE];
     if(!([commandType isEqualToString:@"UserProfileResponse"] || [commandType isEqualToString:@"UserInviteResponse"]))
         return;
     
-    NSString* success = dictionary[@"Success"];
+    BOOL success = [dict[@"Success"] boolValue];
     
-    if ([success isEqualToString:@"true"]) {
-        if([commandType isEqualToString:@"UserProfileResponse"])
-            self.userName = [dictionary[@"FirstName"] stringByAppendingString:[@" " stringByAppendingString:dictionary[@"LastName"]]];
+    if (success) {
+        if([commandType isEqualToString:@"UserProfileResponse"] && dict[@"FirstName"] != nil && dict[@"LastName"] != nil)
+            self.userName = [dict[@"FirstName"] stringByAppendingString:[@" " stringByAppendingString:dict[@"LastName"]]];
         
         dispatch_sync(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
@@ -147,7 +146,7 @@
     }else{
         dispatch_sync(dispatch_get_main_queue(), ^{
             [self.HUD hide:YES];
-            [self showToast: _failureReasonForUserInvite[ dictionary[@"Reason"]]];
+            [self showToast: _failureReasonForUserInvite[dict[@"Reason"]]];
         });
     }
 }
