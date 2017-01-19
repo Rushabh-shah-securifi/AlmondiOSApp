@@ -113,7 +113,8 @@
         self.label = @"Past week";
     }
     self.DataUsageView.hidden = self.hideMiddleView;
-    [self forRouterModetest];
+    if(self.hideMiddleView == NO)
+        [self forRouterModetest];
 //    self.NosDayLabel.text = self.label;
 }
 -(void)createRequest:(NSString *)search value:(NSString*)value date:(NSString *)date{
@@ -153,7 +154,8 @@
 }
 -(void)blockUnblockCheck{
     if (self.client.deviceAllowedType == DeviceAllowed_Blocked) {
-        self.iotSwitch.hidden = YES;
+        if(_hideMiddleView == NO)
+            self.iotSwitch.hidden = YES;
         self.DataUsageEnable.hidden = YES;
         self.DataUsageView.hidden = YES;
         self.dataUsage.hidden = YES;
@@ -191,6 +193,7 @@
     }
     if([routerMode isEqualToString:@"ap"] || [routerMode isEqualToString:@"re"] ||[routerMode isEqualToString:@"WirelessSlave"] || [routerMode isEqualToString:@"WiredSlave"]){
         if(![connection isEqualToString:@"wireless"]){
+            
             self.iotSwitch.hidden = YES;
             self.DataUsageEnable.hidden = YES;
             self.infoLabel.hidden = NO;
@@ -318,7 +321,8 @@
             self.DataUsageView.hidden = !self.client.bW_Enable;
 
         [self blockUnblockCheck];
-        [self forRouterModetest];
+        if(self.hideMiddleView == NO)
+            [self forRouterModetest];
     });
     
 }
@@ -460,6 +464,7 @@ NSLog(@"dict tag %@ ",dict[@"Tag"]);
     UIColor *color = nil;
     NSLog(@"returnDict %@",returnDict);
     if(returnDict.allKeys.count == 1){
+       
          return  [UIColor securifiScreenGreen];
     }
     for(NSString *key in returnDict.allKeys){
