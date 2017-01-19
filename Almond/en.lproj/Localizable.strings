@@ -1361,6 +1361,7 @@ Tap the Add Sensor icon on the touch screen of your Almond hub, and then tap Add
 "what_is_dns" = "What is DNS?";
 "what_is_an_open_port" = "What is an open port and what services run on ports?";
 "what_to_do" = "What to do in case device has vulnerabilities?";
+"What_if_your" = "What if your Almond appears as vulnerable after scanning? ";
 "best_practices" = "Best practices for protecting your internet enabled device";
 
 //html
@@ -1539,6 +1540,20 @@ FTP is one of the most commonly used file transfer protocols on the Internet and
 <li>If your device vendor is unable to help you, we suggest that you replace the device and buy from vendors with no known vulnerabilities.</li>
 </ul>
 </p>
+</body>
+</html>";
+
+"what_if_your_desc" = "
+<html>
+<head>
+<style type=text/css>body {font-family: Avenir-Roman; font-size: 16; height: auto; text-align:justify}img {width:90%}
+</style>
+</head>
+
+<body>
+<h3>What if your Almond appears as vulnerable after scanning? </h3>
+<p>Almond might show an open port warning [ port 80], when local web UI is enabled. Users are suggested to disable the local web UI by default and not enable it unless required. Port 80 belongs to “Well-known” port category and may become vulnerable when left open.</p>
+<p>Almond might appear vulnerable with open Telnet or SSH ports in case of AP or Range extender mode. We suggest you upgrade the firmware in Almond or contact our support team for more assistance.</p>
 </body>
 </html>";
 

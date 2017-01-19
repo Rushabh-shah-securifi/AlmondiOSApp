@@ -52,6 +52,9 @@
             [self displayWebView:NSLocalizedString(@"what_to_do_desc", @"")];
             break;
         case 9:
+            [self displayWebView:NSLocalizedString(@"what_if_your_desc", @"")];
+            break;
+        case 10:
             [self displayWebView:NSLocalizedString(@"best_practices_desc", @"")];
             break;
         default:

@@ -44,6 +44,7 @@
                         NSLocalizedString(@"what_is_dns", @""),
                         NSLocalizedString(@"what_is_an_open_port", @""),
                         NSLocalizedString(@"what_to_do", @""),
+                        NSLocalizedString(@"What_if_your", @""),
                         NSLocalizedString(@"best_practices", @"")];
 }
 
