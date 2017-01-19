@@ -9,9 +9,10 @@
 #import "SFIRouterSettingsTableViewCell.h"
 #import "SFICardView.h"
 #import "SFIRouterTableViewActions.h"
+#import "UIViewController+Securifi.h"
 
 #define MIN_PASS_LENGTH 8
-#define MAX_PASS_LENGTH 32
+#define MAX_PASS_LENGTH 31
 
 #define MAX_SSID_LENGTH 32
 
@@ -123,6 +124,7 @@
     return self.hasSlaves && ![self.wirelessSetting.type.lowercaseString hasPrefix:@"guest"];
 }
 
+
 -(BOOL)supportsCopy2GAndCopyEnabled{
     SFIWirelessSetting *setting = self.wirelessSetting;
     BOOL isCopy2GEnabled = [SecurifiToolkit sharedInstance].almondProperty.keepSameSSID.boolValue;
@@ -168,44 +170,103 @@
     return YES;
 }
 
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    
+    return YES;
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 //    [textField selectAll:self];
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    return [self validateSSIDNameMaxLen:str];
-}
+//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+//    NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
+//    return [self validateSSIDNameMaxLen:str];
+//}
 
 //- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
 //    NSString *str = textField.text;
 //    return [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
 //}
 
+-(BOOL) isHex :(NSString*) string {
+    for(int i=0; i<string.length ; i++){
+        unichar chr = [string characterAtIndex:i];
+        if(!( (chr>=48&&chr<=57) || (chr >=65&&chr<=70) || (chr >=97 && chr <= 102) ))
+            return false;
+    }
+    return true;
+}
+
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     NSLog(@"textFieldDidEndEditing*****");
     NSString *str = textField.text;
-    if([str isEqualToString:self.wirelessSetting.ssid])
-        return;
     BOOL valid;
-    if(textField.tag == SSID_FIELD){
-        valid = [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
-    }
-    else if(textField.tag == PASSWORD_FIELD){
-        valid = [self validatePassMinLen:str] && [self validatePassMaxLen:str];
-    }
     
-    if (valid) {
-        [textField resignFirstResponder];
-        if(textField.tag == SSID_FIELD){
+    [textField resignFirstResponder];
+    self.cardView.enableActionButtons = YES;
+    
+    if(textField.tag == SSID_FIELD){
+        
+        if([str isEqualToString:self.wirelessSetting.ssid]){
+            return;
+        }
+        else{
+            valid = [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
+        }
+        
+        if (valid) {
             [self.delegate onChangeDeviceSSID:self.wirelessSetting newSSID:textField.text];
             [self.delegate routerTableCellDidEndEditingValue];
         }
-        else if(textField.tag == PASSWORD_FIELD){
-            [self.delegate onPasswordChangeDelegate:self.wirelessSetting newPass:textField.text];
-        }
-        self.cardView.enableActionButtons = YES;
     }
+    else if(textField.tag == PASSWORD_FIELD){
+        
+        if([str isEqualToString:self.wirelessSetting.password])
+            return;
+        
+        else if([self.wirelessSetting.security isEqualToString:@"WEP"]){
+            if([self isHex:str]){
+                valid = (str.length == 10 || str.length == 26);
+            }else{
+                valid = (str.length == 5|| str.length == 13);
+            }
+        }else{
+            valid = [self validatePassMinLen:str] && [self validatePassMaxLen:str];
+        }
+        
+        if(valid){
+            [self.delegate onPasswordChangeDelegate:self.wirelessSetting newPass:textField.text];
+        }else{
+            NSString* reason = [NSString stringWithFormat:@"WEP ASCII Key Length must be 5 or 13 charactes. Your Key %@ is 16 %d long. Enter 10 or 26 characters to use a Hex Key", str, str.length];
+            [self.delegate showToastDelegate:reason];
+            return;
+        }
+    }
+    
+    /************/
+//    if([str isEqualToString:self.wirelessSetting.ssid])
+//        return;
+//    
+//    BOOL valid;
+//    if(textField.tag == SSID_FIELD){
+//        valid = [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
+//    }
+//    else if(textField.tag == PASSWORD_FIELD){
+//        valid = [self validatePassMinLen:str] && [self validatePassMaxLen:str];
+//    }
+//    
+//    if (valid) {
+//        [textField resignFirstResponder];
+//        if(textField.tag == SSID_FIELD){
+//            [self.delegate onChangeDeviceSSID:self.wirelessSetting newSSID:textField.text];
+//            [self.delegate routerTableCellDidEndEditingValue];
+//        }
+//        else if(textField.tag == PASSWORD_FIELD){
+//            [self.delegate onPasswordChangeDelegate:self.wirelessSetting newPass:textField.text];
+//        }
+//        self.cardView.enableActionButtons = YES;
+//    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

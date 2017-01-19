@@ -521,6 +521,10 @@ int mii;
     [self.HUD show:YES];
 }
 
+#pragma mark cell delegate methods
+- (void)showToastDelegate:(NSString *)msg{
+    [self showToast:msg];
+}
 #pragma mark - TableHeaderViewDelegate methods
 
 - (void)dismissHeaderView:(TableHeaderView *)view {
