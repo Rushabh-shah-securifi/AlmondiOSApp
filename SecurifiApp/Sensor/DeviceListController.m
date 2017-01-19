@@ -718,6 +718,8 @@ int mii;
     newWindow.iotDevice = iotDevice;
     newWindow.hideTable = YES;
     newWindow.hideMiddleView = NO;
+    newWindow.sectionType = 7;
+
     
     NSLog(@"IoTDevicesListViewController IF");
     [self.navigationController pushViewController:newWindow animated:YES];
