@@ -202,6 +202,7 @@
             self.infoLabel.text = NSLocalizedString(@"For_checking_Data_usage", @"");
             self.dataUsage.hidden = YES;
             self.blockButton.hidden = YES;
+            self.DataUsageView.hidden = YES;
             
         }
     }
