@@ -356,7 +356,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
             NSString *str = @(brightnessValue).stringValue;
              NSLog(@"slider icon1 - display text: %@, value: %@ units : %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units);
             
-            GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:str prefix:genericIndexObject.formatter.prefix andUnit:genericIndexObject.formatter.units];
+            GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:str prefix:genericIndexObject.formatter.prefix andUnit:genericIndexObject.formatter.units?:@"%"];
             return genericValue1;
         }
         
