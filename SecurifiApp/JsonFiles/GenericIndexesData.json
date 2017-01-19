@@ -2781,6 +2781,7 @@
             "Min": "0",
             "Max": "99999",
             "Unit": "sec",
+            "Factor": "1",
             "prefix": "timer_text"
             
         }

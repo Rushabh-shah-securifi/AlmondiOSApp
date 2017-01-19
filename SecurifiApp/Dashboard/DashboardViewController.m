@@ -1206,9 +1206,13 @@
         return nil;
     if([genericIndexObject.ID isEqualToString:@"30"]){
         NSString *colorShade = [CommonMethods colorShadesforValue:65535 byValueOfcolor:value];
+        GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:colorShade prefix:genericIndexObject.formatter.prefix];
+        return genericValue1;
     }
     else if([genericIndexObject.ID isEqualToString:@"31"]){
         NSString *colorShade = [CommonMethods colorShadesforValue:255 byValueOfcolor:value];
+        GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:colorShade prefix:genericIndexObject.formatter.prefix];
+        return genericValue1;
     }
     else if(genericIndexObject.values != nil){
         GenericValue *gval = genericIndexObject.values[value];
@@ -1223,10 +1227,18 @@
             NSString *str = @(brightnessValue).stringValue;
             NSLog(@"slider icon1 - display text: %@, value: %@ units : %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units);
             
-            GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:str prefix:genericIndexObject.formatter.prefix andUnit:genericIndexObject.formatter.units];
+            GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:str prefix:genericIndexObject.formatter.prefix andUnit:genericIndexObject.formatter.units?:@"%"];
             return genericValue1;
         }
         
+    }
+    else if(genericIndexObject.formatter != nil && [genericIndexObject.layoutType isEqualToString:@"SLIDER"]){
+        NSString *formattedValue=[genericIndexObject.formatter transform:value genericId:genericIndexID];
+        NSLog(@"slider icon2 - display text: %@, value: %@ units : %@ ,formattedValue = %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units,formattedValue);
+        //NSString *formattedValue = [NSString stringWithFormat:@"",[value floatValue] * genericIndexObject.formatter.factor];
+        GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:formattedValue prefix:genericIndexObject.formatter.prefix andUnit:@""];
+        
+        return genericValue1;
     }
     else if(genericIndexObject.formatter != nil && ![genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] && ![genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] && ![genericIndexObject.layoutType isEqualToString:@"HUE_ONLY"]){
         NSString *formattedValue=[genericIndexObject.formatter transform:value genericId:genericIndexID];
@@ -1234,22 +1246,16 @@
         //NSString *formattedValue = [NSString stringWithFormat:@"",[value floatValue] * genericIndexObject.formatter.factor];
         GenericValue *genericValue1 = [[GenericValue alloc]initWithDisplayTextNotification:genericIndexObject.icon value:formattedValue prefix:genericIndexObject.formatter.prefix andUnit:@""];
         
-        //        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:formattedValue
-        //                                                                     iconText:formattedValue
-        //                                                                        value:value
-        //                                                                  excludeFrom:genericIndexObject.excludeFrom
-        //                                                             transformedValue:[genericIndexObject.formatter transformValue:value] prefix:genericIndexObject.formatter.prefix];
-        
         return genericValue1;
     }
-    else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"])){
+    else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [genericIndexObject.layoutType isEqualToString:@"SINGLE_TEMP"])){
         NSLog(@"slider icon - display text: %@, value: %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value);
-        int brightnessValue;
+        int brightnessValue = [value intValue];
         if([genericIndexObject.ID isEqualToString:@"100"])
             brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
         NSString *value = @(brightnessValue).stringValue;
         NSLog(@"slider icon3 - display text: %@, value: %@ units : %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units);
-        NSString *formattedValue = [NSString stringWithFormat:@"",[value floatValue] * genericIndexObject.formatter.factor];
+        NSString *formattedValue = [NSString stringWithFormat:@"%.0f",[value floatValue] * genericIndexObject.formatter.factor];
         return [[GenericValue alloc]initWithDisplayText:[genericIndexObject.formatter transform:value genericId:genericIndexID]
                                                    icon:genericIndexObject.icon
                                             toggleValue:nil

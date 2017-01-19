@@ -155,6 +155,8 @@
     if (self.client.deviceAllowedType == DeviceAllowed_Blocked) {
         self.iotSwitch.hidden = YES;
         self.DataUsageEnable.hidden = YES;
+        self.DataUsageView.hidden = YES;
+        self.dataUsage.hidden = YES;
     }
     else{
         self.iotSwitch.hidden = NO;
@@ -164,6 +166,8 @@
 -(void)forRouterModetest{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSString *routerMode = toolkit.routerMode;
+   
+
 //    NSLog(@"client connection = %@ & router mode  = %@ ",routerMode);
     SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
     BOOL isLocal = [toolkit useLocalNetwork:almond.almondplusMAC];
@@ -181,7 +185,10 @@
         self.iotSwitch.hidden = YES;
         self.DataUsageEnable.hidden = YES;
     }
-    
+    if(routerMode == nil){
+        self.DataUsageEnable.hidden = YES;
+        return;
+    }
     if([routerMode isEqualToString:@"ap"] || [routerMode isEqualToString:@"re"] ||[routerMode isEqualToString:@"WirelessSlave"] || [routerMode isEqualToString:@"WiredSlave"]){
         if(![connection isEqualToString:@"wireless"]){
             self.iotSwitch.hidden = YES;
@@ -202,6 +209,7 @@
             self.infoLabel.text = NSLocalizedString(@"For_checking_Data_usage", @"");
             self.dataUsage.hidden = YES;
             self.blockButton.hidden = YES;
+            self.DataUsageView.hidden = YES;
             
         }
     }
@@ -282,8 +290,7 @@
             self.topView.backgroundColor = [UIColor darkGrayColor];
             self.blockButton.backgroundColor = [UIColor securifiScreenGreen];
             self.infoLabel.hidden= NO;
-            if(self.hideMiddleView == NO)
-                self.DataUsageView.hidden = YES;
+            self.DataUsageView.hidden = YES;
             self.infoLabel.text = NSLocalizedString(@"blocked_client_iot", @"");
         }
         else{
@@ -451,6 +458,7 @@ NSLog(@"dict tag %@ ",dict[@"Tag"]);
 
 -(UIColor *)getColor:(NSDictionary *)returnDict{
     UIColor *color = nil;
+    NSLog(@"returnDict %@",returnDict);
     if(returnDict.allKeys.count == 1){
          return  [UIColor securifiScreenGreen];
     }
