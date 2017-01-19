@@ -275,7 +275,9 @@
     field.secureTextEntry = YES;
     field.delegate = delegate;
     field.tag = tag;
-    field.userInteractionEnabled = NO;
+    if([[AlmondManagement currentAlmond].firmware hasPrefix:@"AL3-"] == NO)
+        field.userInteractionEnabled = NO;
+    
     [self addSubview:field];
     
     [self markYOffsetUsingRect:field.frame addAdditional:5];

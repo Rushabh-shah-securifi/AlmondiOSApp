@@ -78,18 +78,21 @@
     
     NSMutableDictionary *wirelessSetting = [NSMutableDictionary new];
     [wirelessSetting setObject:wirelessSettingObj.type forKey:@"Type"];
+    
     if(keyType == enable_key)
         [wirelessSetting setObject:wirelessSettingObj.enabled?@"true":@"false" forKey:@"Enabled"];
+    
     else if(keyType == ssid_key)
         [wirelessSetting setObject:wirelessSettingObj.ssid forKey:@"SSID"];
+    
     else if(keyType == pass_key){
         NSString *randomUptime = @(arc4random() % 100000).stringValue;
-        NSLog(@"pass: %@", wirelessSettingObj.password);
         NSString *encryptedBase64 = [AlmondProperties getBase64EncryptedSting:[AlmondManagement currentAlmond].almondplusMAC uptime:randomUptime password:wirelessSettingObj.password];
         
         NSLog(@"decrypted pass: %@", [self getDecryptedPass:encryptedBase64 uptime:randomUptime]);
         
         [wirelessSetting setObject:encryptedBase64 forKey:@"Password"];
+        [wirelessSetting setObject:randomUptime forKey:@"Uptime"];
     }
     
     
