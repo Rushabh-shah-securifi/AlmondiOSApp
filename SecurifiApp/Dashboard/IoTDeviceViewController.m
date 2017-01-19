@@ -116,6 +116,8 @@
     if(self.hideMiddleView == NO)
         [self forRouterModetest];
 //    self.NosDayLabel.text = self.label;
+    if(self.client.canBeBlocked == NO)
+        self.blockButton.hidden = YES;
 }
 -(void)createRequest:(NSString *)search value:(NSString*)value date:(NSString *)date{
     NSString *req ;
