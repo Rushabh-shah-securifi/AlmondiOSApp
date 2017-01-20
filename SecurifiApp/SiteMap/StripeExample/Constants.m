@@ -14,14 +14,14 @@
  */
 
 // This can be found at https://dashboard.stripe.com/account/apikeys
-NSString *const StripePublishableKey = @"pk_test_srNJciYtWOxIS2nGIDF7FBw0"; // TODO: replace nil with your own value 
+NSString *const StripePublishableKey = @"pk_live_OIFkzRdLAMUbVdrMK2kuOYlH"; // TODO: replace nil with your own value
 
 // To set this up, check out https://github.com/stripe/example-ios-backend
 // This should be in the format https://my-shiny-backend.herokuapp.com
 NSString *const BackendChargeURLString = @"https://protected-cove-94203.herokuapp.com"; // TODO: replace nil with your own value  
 
 // To learn how to obtain an Apple Merchant ID, head to https://stripe.com/docs/mobile/apple-pay
-NSString *const AppleMerchantId = @"merchant.com.almond.securifidev"; // TODO: replace nil with your own value
+NSString *const AppleMerchantId = @"merchant.com.securifi.almond"; // TODO: replace nil with your own value
 
 @implementation Constants
 @end
