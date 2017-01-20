@@ -142,8 +142,9 @@
         SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
         BOOL hasSubscribe = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
         NSLog(@"hasSubscribe %d",hasSubscribe);
+        BOOL isiOTSupportFW = [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware];
         
-        if(hasSubscribe){
+        if(hasSubscribe && isiOTSupportFW){
 
         Client *client = [Client findClientByID:@(deviceID).stringValue];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];

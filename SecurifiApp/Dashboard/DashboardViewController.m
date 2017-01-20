@@ -194,7 +194,7 @@
     SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
     BOOL hasSubscribe = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
     NSLog(@"hasSubscribe %d",hasSubscribe);
-    if(hasSubscribe && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
+    if(hasSubscribe && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
         self.inactiveNetworkDevices.hidden = YES;
         self.no_scanObjLabel.hidden = NO;
         self.iotSecurityImg.hidden = YES;
@@ -209,7 +209,7 @@
         
         
     }
-    else if(!hasSubscribe && [currentAlmond siteMapSupportFirmware:currentAlmond.firmware] && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
+    else if(!hasSubscribe &&  [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
         // call my scbscription
         //change icon name
         self.vulnableDevices.text = @"IOT SECURITY DISABLED";
@@ -225,7 +225,7 @@
                             forControlEvents:UIControlEventTouchUpInside];
         [self.iotSecurityButton addTarget:self action:@selector(launchMySubscription:) forControlEvents:UIControlEventTouchUpInside];
     }
-    else if(![currentAlmond siteMapSupportFirmware:currentAlmond.firmware]){
+    else{
         // call my scbscription
         self.activeNetworkDevices.hidden = NO;
         self.inactiveNetworkDevices.hidden = NO;

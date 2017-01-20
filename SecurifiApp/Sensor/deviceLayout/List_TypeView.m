@@ -78,10 +78,7 @@
         return [(NSString *)obj1 compare:(NSString *)obj2 options:NSNumericSearch];
     }];
     SFIAlmondPlus *alm = [AlmondManagement currentAlmond];
-    BOOL isAl3 = [alm siteMapSupportFirmware:alm.firmware];
-    
-    NSLog(@"isAl3 %d",isAl3);
-    
+    BOOL isAl3 = [alm iotSupportFirmwareVersion:alm.firmware];
     for(NSString *key in sortedKeys){
         if([key isEqualToString:@"identifying"])
             continue;

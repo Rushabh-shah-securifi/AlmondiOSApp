@@ -328,19 +328,4 @@ int randomMobileInternalIndex;
     [self.HUD show:YES];
 }
 
-- (NSDictionary*)parseJson:(NSString*)fileName{
-    NSError *error = nil;
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName
-                                                         ofType:@"json"];
-    NSData *dataFromFile = [NSData dataWithContentsOfFile:filePath];
-    NSDictionary *data = [NSJSONSerialization JSONObjectWithData:dataFromFile
-                                                         options:kNilOptions
-                                                           error:&error];
-    
-    if (error != nil) {
-        NSLog(@"Error: was not able to load json file: %@.",fileName);
-    }
-    return data;
-}
-
 @end
