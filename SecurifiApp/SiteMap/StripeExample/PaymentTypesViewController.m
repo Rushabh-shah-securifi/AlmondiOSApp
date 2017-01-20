@@ -152,7 +152,7 @@ typedef void (^STPPaymentAuthorizationStatusCallback)(PKPaymentAuthorizationStat
                        didAuthorizePayment:(PKPayment *)payment
                                 completion:(STPPaymentAuthorizationStatusCallback)completion {
     
-    
+    self.isCancel = NO;
     NSLog(@"didAuthorizePayment");
     [[STPAPIClient sharedClient] createTokenWithPayment:payment
                                              completion:^(STPToken *token, NSError *error) {
@@ -219,7 +219,7 @@ typedef void (^STPPaymentAuthorizationStatusCallback)(PKPaymentAuthorizationStat
 
 -(void)onSubscribeMeCommandResponse:(id)sender{
     NSLog(@"onSubscribeMeCommandResponse");
-    self.isCancel = NO;
+    
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSNotification *notifier = (NSNotification *) sender;
