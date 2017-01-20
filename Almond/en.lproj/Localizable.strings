@@ -2038,8 +2038,8 @@ Contact us at support@securifi.com";
 "Connected to your Almond locally." = "Connected to your Almond locally.";
 "Back to Cloud Link" = "Back to Cloud Link";
 "ssid_is" = "%@: %@ is %@";
-"2G" = "2.4 GHz";
-"5G" = "5 GHz";
+"2G" = "2.4GHz";
+"5G" = "5GHz";
 
 "roku" = "Roku";
 "withings" = "Withings";

@@ -60,6 +60,7 @@
     [attrStr addAttribute:NSLinkAttributeName value:link range:NSMakeRange(attrStr.length-5, 4)];
     [attrStr addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(attrStr.length-5, 4)];
     [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(attrStr.length-5, 4)];
+    self.issueDesc.linkTextAttributes = attribs;
     return attrStr;
 }
 
