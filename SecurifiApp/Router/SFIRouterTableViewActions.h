@@ -27,6 +27,8 @@
 - (void)onPasswordChangeDelegate:(SFIWirelessSetting *)setting newPass:(NSString *)newPass;
 
 - (void)showToastDelegate:(NSString *)msg;
+
+- (void)showAlertDelegate:(NSString *)msg;
 // NO == block device
 - (void)onEnableWirelessAccessForDevice:(NSString*)deviceMAC allow:(BOOL)isAllowed;
 

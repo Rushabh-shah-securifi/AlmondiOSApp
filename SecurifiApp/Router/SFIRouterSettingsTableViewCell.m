@@ -157,9 +157,7 @@
 #pragma mark - UIButton actions
 - (void)onShareBtnTap:(id)sendesr{
     NSLog(@"onShareBtnTap");
-
     [self.delegate onShareBtnTapDelegate:self.wirelessSetting];
-
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -207,7 +205,6 @@
     self.cardView.enableActionButtons = YES;
     
     if(textField.tag == SSID_FIELD){
-        
         if([str isEqualToString:self.wirelessSetting.ssid]){
             return;
         }
@@ -220,10 +217,12 @@
             [self.delegate routerTableCellDidEndEditingValue];
         }
     }
+    
     else if(textField.tag == PASSWORD_FIELD){
-        
+        NSString* reason;
         if([str isEqualToString:self.wirelessSetting.password])
             return;
+        
         
         else if([self.wirelessSetting.security isEqualToString:@"WEP"]){
             if([self isHex:str]){
@@ -231,16 +230,16 @@
             }else{
                 valid = (str.length == 5|| str.length == 13);
             }
+            reason = [NSString stringWithFormat:@"WEP ASCII Key Length must be 5 or 13 charactes. Your Key %@ is  %zd characters long. Enter 10 or 26 characters to use a Hex Key", str, str.length];
         }else{
             valid = [self validatePassMinLen:str] && [self validatePassMaxLen:str];
+            reason = [NSString stringWithFormat:@"Password length must be between 8 and 31 characters"];
         }
         
         if(valid){
             [self.delegate onPasswordChangeDelegate:self.wirelessSetting newPass:textField.text];
         }else{
-            NSString* reason = [NSString stringWithFormat:@"WEP ASCII Key Length must be 5 or 13 charactes. Your Key %@ is 16 %d long. Enter 10 or 26 characters to use a Hex Key", str, str.length];
-            [self.delegate showToastDelegate:reason];
-            return;
+            [self.delegate showAlertDelegate:reason];
         }
     }
     

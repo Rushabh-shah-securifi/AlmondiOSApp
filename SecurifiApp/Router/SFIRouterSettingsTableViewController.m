@@ -22,10 +22,11 @@
 #import "NSData+Securifi.h"
 #import "AlmondManagement.h"
 
-#define SLAVE_OFFLINE_TAG   1
-#define ENABLE_TYPE_TAG     2
-#define SAME_SSIDS_PASS     3
-#define COPY_PASS           4
+#define SLAVE_OFFLINE_TAG       1
+#define ENABLE_TYPE_TAG         2
+#define SAME_SSIDS_PASS         3
+#define COPY_PASS               4
+#define ASCII_HEX_PASS_ALERT    5
 
 @interface SFIRouterSettingsTableViewController () <SFIRouterTableViewActions, TableHeaderViewDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -525,6 +526,13 @@ int mii;
 - (void)showToastDelegate:(NSString *)msg{
     [self showToast:msg];
 }
+
+- (void)showAlertDelegate:(NSString *)msg{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self showAlert:@"" msg:msg cancel:@"Ok" other:nil tag:ASCII_HEX_PASS_ALERT];
+    });
+}
+
 #pragma mark - TableHeaderViewDelegate methods
 
 - (void)dismissHeaderView:(TableHeaderView *)view {
@@ -556,6 +564,9 @@ int mii;
         }
         else if(alertView.tag == COPY_PASS){
             [self showAlert:@"" msg:NSLocalizedString(@"alert_choose_diff_network", @"") cancel:@"Ok" other:nil tag:-1];
+        }
+        else if(alertView.tag == ASCII_HEX_PASS_ALERT){
+            
         }
     }
     else{
