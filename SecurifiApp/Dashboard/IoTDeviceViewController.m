@@ -129,8 +129,10 @@
     
 }
 -(void)responseDict:(NSDictionary *)responseDict{
-    if([responseDict[@"search"] isEqualToString:@"ClearBandwidth"])
+    if([responseDict[@"search"] isEqualToString:@"ClearBandwidth"] || [responseDict[@"search"] isEqualToString:@"ClearHistory"]){
+        [self createRequest:@"Bandwidth" value:@"7"   date:[CommonMethods getTodayDate]];
         return;
+    }
     
     NSDictionary *dict = responseDict[@"Data"];
     

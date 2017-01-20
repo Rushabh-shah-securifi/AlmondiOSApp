@@ -192,6 +192,7 @@
 
 -(void)iotUIUpdate{
     SFIAlmondPlus *currentAlmond = [AlmondManagement currentAlmond];
+    BOOL isAtleastOnePrimaryAL3 = [AlmondManagement hasAtleaseOnePrimaryAL3];
     BOOL hasSubscribe = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
     NSLog(@"hasSubscribe %d",hasSubscribe);
     if(hasSubscribe && [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
@@ -209,7 +210,7 @@
         
         
     }
-    else if(!hasSubscribe &&  [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
+    else if(!hasSubscribe &&  [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware] && isAtleastOnePrimaryAL3){
         // call my scbscription
         //change icon name
         self.vulnableDevices.text = @"IOT SECURITY DISABLED";
@@ -1251,8 +1252,8 @@
     else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [genericIndexObject.layoutType isEqualToString:@"SINGLE_TEMP"])){
         NSLog(@"slider icon - display text: %@, value: %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value);
         int brightnessValue = [value intValue];
-        if([genericIndexObject.ID isEqualToString:@"100"])
-            brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
+//        if([genericIndexObject.ID isEqualToString:@"100"])
+//            brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
         NSString *value = @(brightnessValue).stringValue;
         NSLog(@"slider icon3 - display text: %@, value: %@ units : %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units);
         NSString *formattedValue = [NSString stringWithFormat:@"%.0f",[value floatValue] * genericIndexObject.formatter.factor];

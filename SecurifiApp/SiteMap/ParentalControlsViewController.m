@@ -546,7 +546,13 @@
 
 -(void)responseDict:(NSDictionary *)responseDict{
     NSDictionary *dict = responseDict[@"Data"];
-
+// ClearBandwidth ClearHistory
+    if([responseDict[@"search"] isEqualToString:@"ClearBandwidth"] || [responseDict[@"search"] isEqualToString:@"ClearHistory"]){
+        [self createRequest:@"Bandwidth" value:self.DaysValuenew   date:self.Datenew];
+         return;
+    }
+    
+    
     if(dict[@"RX"] == NULL || dict[@"TX"] == NULL)
         return ;
     

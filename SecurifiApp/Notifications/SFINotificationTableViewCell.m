@@ -380,8 +380,10 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [genericIndexObject.layoutType isEqualToString:@"SINGLE_TEMP"])){
         NSLog(@"slider icon - display text: %@, value: %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value);
         int brightnessValue = [value intValue];
-        if([genericIndexObject.ID isEqualToString:@"100"])
-            brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
+        NSLog(@"genericIndexObject.ID == %@",genericIndexObject.ID);
+        
+//        if([genericIndexObject.ID isEqualToString:@"100"])
+//            brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
         NSString *value = @(brightnessValue).stringValue;
          NSLog(@"slider icon3 - display text: %@, value: %@ units : %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units);
         NSString *formattedValue = [NSString stringWithFormat:@"%.0f",[value floatValue] * genericIndexObject.formatter.factor];
