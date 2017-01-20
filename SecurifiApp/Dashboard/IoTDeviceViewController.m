@@ -60,7 +60,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *NosDayLabel;
 @property (nonatomic) NSString *resetBWDate;
 @property (nonatomic) NSString *label;
-
+@property BOOL isSendBWReq;
 
 @property BOOL isEcho_Nest;
 @end
@@ -72,6 +72,7 @@
     [super viewDidLoad];
      self.buttonTop = self.BlockButtonTop.constant;
     [self setUpHUD];
+    self.isSendBWReq = YES;
 
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -109,6 +110,7 @@
     
     [self.navigationController setNavigationBarHidden:YES];
     if(self.hideMiddleView == NO){
+        if(self.isSendBWReq == YES)
         [self createRequest:@"Bandwidth" value:@"7" date:[CommonMethods getTodayDate]];
         self.label = @"Past week";
     }
@@ -694,6 +696,7 @@ NSLog(@"dict tag %@ ",dict[@"Tag"]);
         newWindow.str = @"3";
     
     newWindow.delegate = self;
+    self.isSendBWReq = NO;
     NSLog(@"instantiateViewControllerWithIdentifier IF");
     [self.navigationController pushViewController:newWindow animated:YES];
 }
