@@ -37,7 +37,7 @@
     NSString *headerText = @"";
     NSMutableString *detailText = [[NSMutableString alloc]initWithString:@""];
     int index = 0;
-    GenericValue *genericValue;
+    GenericValue *genericValue; //the value assigned to this will be generic value of header
     GenericIndexClass *genericIndex;
     for(GenericIndexValue *genericIndexValue in genericIndexValues){
         

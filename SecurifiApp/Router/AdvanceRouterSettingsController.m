@@ -22,6 +22,7 @@
 #define ADVANCED_SETTINGS @"advance_settings"
 #define ADVANCE_ROUTER @"advance_router"
 
+#define SLAVE_OFFLINE_TAG 1
 
 static const int headerHeight = 90;
 static const int footerHeight = 10;
@@ -96,11 +97,23 @@ int mii;
     NSLog(@"payload: %@", payload);
     
     BOOL isSuccessful = [payload[@"Success"] boolValue];
-    
+    /* {"CommandType":"ChangeAlmondProperties","Success":"false","OfflineSlaves":"Downstairs","Reason":"Slave in offline","MobileInternalIndex":"-1442706141"}
+     */
     if(isSuccessful){
 //        [self showToast:@"Successfully Updated!"];
     }else{
-        [self showToast:@"Sorry! Could not update"];
+        if([[payload[REASON] lowercaseString] hasSuffix:@"offline"]){
+            NSArray *slaves = [payload[OFFLINE_SLAVES] componentsSeparatedByString:@","];
+            NSString *subMsg = slaves.count == 1? @"Almond is": @"Almonds are";
+            
+            NSString *msg = [NSString stringWithFormat:@"Unable to change settings. Check if \"%@\" %@ active and with in range of other \nAlmond 3 units in your Home WiFi network.", payload[OFFLINE_SLAVES], subMsg];
+            [self showAlert:@"" msg:msg cancel:@"OK" other:nil tag:SLAVE_OFFLINE_TAG];
+            
+        }
+        else{
+            [self showToast:@"Sorry! Could not update"];
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
             [self.HUD hide:YES];
@@ -400,5 +413,25 @@ int mii;
 
 -(BOOL)isAL3{
     return [[AlmondManagement currentAlmond].firmware hasPrefix:@"AL3-"];
+}
+
+#pragma mark alert methods
+- (void)showAlert:(NSString *)title msg:(NSString *)msg cancel:(NSString*)cncl other:(NSString *)other tag:(int)tag{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:other, nil];
+    alert.tag = tag;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [alert show];
+    });
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == [alertView cancelButtonIndex]){
+        if(alertView.tag == SLAVE_OFFLINE_TAG){
+            
+        }
+    }
+    else{
+        
+    }
 }
 @end

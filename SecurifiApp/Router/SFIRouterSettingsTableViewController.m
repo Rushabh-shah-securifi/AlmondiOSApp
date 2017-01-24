@@ -271,7 +271,7 @@ int mii;
     }
 
     SFIGenericRouterCommand *response = (SFIGenericRouterCommand *) [data valueForKey:@"data"];
-    if(response.commandType != SFIGenericRouterCommandType_WIRELESS_SETTINGS)
+    if(response.commandType != SFIGenericRouterCommandType_WIRELESS_SETTINGS && response.commandType !=SFIGenericRouterCommandType_ALMOND_PROPERTY)
         return;
     [self processRouterCommandResponse:response];
 }
@@ -302,9 +302,12 @@ int mii;
             
         else if(genericRouterCommand.commandSuccess == NO){
             if([genericRouterCommand.responseMessage.lowercaseString isEqualToString:@"slave in offline"]){
-                NSString *msg = [NSString stringWithFormat:@"Unable to change settings. Check if \"%@\" Almond(s) is/are active and with in range of other \nAlmond 3 units in your Home WiFi network.", genericRouterCommand.offlineSlaves];
+                NSArray *slaves = [genericRouterCommand.offlineSlaves componentsSeparatedByString:@","];
+                NSString *subMsg = slaves.count == 1? @"Almond is": @"Almonds are";
+                
+                NSString *msg = [NSString stringWithFormat:@"Unable to change settings. Check if \"%@\" %@ active and with in range of other \nAlmond 3 units in your Home WiFi network.", genericRouterCommand.offlineSlaves, subMsg];
                 [self showAlert:@"" msg:msg cancel:@"Ok" other:nil tag:SLAVE_OFFLINE_TAG];
-                [self showToast:NSLocalizedString(@"ParseRouterCommand Sorry! unable to update.", @"Sorry! unable to update.")];
+//                [self showToast:NSLocalizedString(@"ParseRouterCommand Sorry! unable to update.", @"Sorry! unable to update.")];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
