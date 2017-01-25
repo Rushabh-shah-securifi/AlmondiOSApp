@@ -574,7 +574,9 @@ int mii;
     if(self.routerSummary){
         for (SFIWirelessSummary *sum in self.routerSummary.wirelessSummaries) {
             NSString *enabled = sum.enabled ? NSLocalizedString(@"enabled", @"enabled") : NSLocalizedString(@"disabled", @"disabled");
-            [summary addObject:[NSString stringWithFormat:NSLocalizedString(@"ssid_is",@"%@: %@ is %@"), NSLocalizedString(sum.type,@""), sum.ssid, enabled]];
+            
+            NSString *type = [sum.type hasPrefix:@"Guest"]? @"Guest": sum.type;
+            [summary addObject:[NSString stringWithFormat:NSLocalizedString(@"ssid_is",@"%@: %@ is %@"), NSLocalizedString(type, @""), sum.ssid, enabled]];
         }
     }else{
         return @[NSLocalizedString(@"Settings are not available.", @"Settings are not available.")];
