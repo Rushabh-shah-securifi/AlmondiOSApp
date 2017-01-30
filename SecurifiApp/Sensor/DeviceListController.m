@@ -34,6 +34,7 @@
 #import "HTTPRequest.h"
 #import "AlmondManagement.h"
 #import "IoTDeviceViewController.h"
+#import "DevicePropertiesViewController.h"
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -468,9 +469,16 @@ int mii;
 -(void)delegateDeviceSettingButtonClick:(GenericParams*)genericParams{
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
-        DeviceEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DeviceEditViewController"];
+        DevicePropertiesViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DevicePropertiesViewController"];
         viewController.genericParams = genericParams;
-        [self.navigationController pushViewController:viewController animated:YES];
+        [self presentViewController:viewController animated:YES completion:nil];
+        
+        
+        
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
+//        DeviceEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DeviceEditViewController"];
+//        viewController.genericParams = genericParams;
+//        [self.navigationController pushViewController:viewController animated:YES];
     });
 }
 

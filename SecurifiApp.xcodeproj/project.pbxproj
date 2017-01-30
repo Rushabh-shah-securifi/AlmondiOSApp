@@ -616,6 +616,9 @@
 		F4B8768B1D54653500DCF76F /* GenericParams.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B876611D54653500DCF76F /* GenericParams.m */; };
 		F4B8768C1D54653500DCF76F /* PerformanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B876631D54653500DCF76F /* PerformanceTest.m */; };
 		F4B8768D1D54653500DCF76F /* PerformanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B876631D54653500DCF76F /* PerformanceTest.m */; };
+		F4BF6CF61E3F0BBE00E2BC21 /* DevicePropertiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BF6CF51E3F0BBE00E2BC21 /* DevicePropertiesViewController.m */; };
+		F4BF6CF91E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BF6CF81E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m */; };
+		F4BF6CFA1E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BF6CF81E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m */; };
 		F4D633E01DC217EE000BF076 /* hue_bridge.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633BF1DC217EE000BF076 /* hue_bridge.pdf */; };
 		F4D633E11DC217EE000BF076 /* add_sensor_screenshot.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633C01DC217EE000BF076 /* add_sensor_screenshot.pdf */; };
 		F4D633E21DC217EE000BF076 /* add_sensor_zigbee_tab.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633C11DC217EE000BF076 /* add_sensor_zigbee_tab.pdf */; };
@@ -1372,6 +1375,10 @@
 		F4B876611D54653500DCF76F /* GenericParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericParams.m; sourceTree = "<group>"; };
 		F4B876621D54653500DCF76F /* PerformanceTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceTest.h; sourceTree = "<group>"; };
 		F4B876631D54653500DCF76F /* PerformanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceTest.m; sourceTree = "<group>"; };
+		F4BF6CF41E3F0BBE00E2BC21 /* DevicePropertiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevicePropertiesViewController.h; sourceTree = "<group>"; };
+		F4BF6CF51E3F0BBE00E2BC21 /* DevicePropertiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevicePropertiesViewController.m; sourceTree = "<group>"; };
+		F4BF6CF71E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevicePropertyTableViewCell.h; sourceTree = "<group>"; };
+		F4BF6CF81E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevicePropertyTableViewCell.m; sourceTree = "<group>"; };
 		F4D633BF1DC217EE000BF076 /* hue_bridge.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = hue_bridge.pdf; sourceTree = "<group>"; };
 		F4D633C01DC217EE000BF076 /* add_sensor_screenshot.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = add_sensor_screenshot.pdf; sourceTree = "<group>"; };
 		F4D633C11DC217EE000BF076 /* add_sensor_zigbee_tab.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = add_sensor_zigbee_tab.pdf; sourceTree = "<group>"; };
@@ -2551,6 +2558,10 @@
 				F4B876611D54653500DCF76F /* GenericParams.m */,
 				F4B876621D54653500DCF76F /* PerformanceTest.h */,
 				F4B876631D54653500DCF76F /* PerformanceTest.m */,
+				F4BF6CF41E3F0BBE00E2BC21 /* DevicePropertiesViewController.h */,
+				F4BF6CF51E3F0BBE00E2BC21 /* DevicePropertiesViewController.m */,
+				F4BF6CF71E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.h */,
+				F4BF6CF81E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m */,
 			);
 			path = Sensor;
 			sourceTree = "<group>";
@@ -3304,6 +3315,7 @@
 				1C7E7DC61A41A0990026F0BA /* SFIHighlightedButton.m in Sources */,
 				1C7E7D8E1A41A0990026F0BA /* SFIRouterDevicesTableViewCell.m in Sources */,
 				F4B8767D1D54653500DCF76F /* MultiButtonView.m in Sources */,
+				F4BF6CFA1E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m in Sources */,
 				F492EA571DF5616500FB3B76 /* PaymentCompleteViewController.m in Sources */,
 				1C7E7DC01A41A0990026F0BA /* SFIColors.m in Sources */,
 				F4B8768B1D54653500DCF76F /* GenericParams.m in Sources */,
@@ -3464,6 +3476,7 @@
 				1C7E7DCD1A41A0990026F0BA /* SFISlider.m in Sources */,
 				CEF6F4FA1C92CAD600C68975 /* RulesConstants.m in Sources */,
 				1C7E7D911A41A0990026F0BA /* SFIRouterRebootTableViewCell.m in Sources */,
+				F4BF6CF61E3F0BBE00E2BC21 /* DevicePropertiesViewController.m in Sources */,
 				F4B875571D53837B00DCF76F /* UIImageView+Securifi.m in Sources */,
 				CEF6F5021C92CAD600C68975 /* TimeView.m in Sources */,
 				1C7E7DBB1A41A0990026F0BA /* SFICardView.m in Sources */,
@@ -3506,6 +3519,7 @@
 				F4B876821D54653500DCF76F /* DeviceListController.m in Sources */,
 				CEF6F4EA1C92CAD600C68975 /* RulesNestThermostat.m in Sources */,
 				F4B8767E1D54653500DCF76F /* Slider.m in Sources */,
+				F4BF6CF91E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m in Sources */,
 				F492EA521DF54C5500FB3B76 /* SelectedPlanViewController.m in Sources */,
 				1C7E7D851A41A0990026F0BA /* SFILogoutAllViewController.m in Sources */,
 				1C7E7D8F1A41A0990026F0BA /* SFIRouterReboot.m in Sources */,
