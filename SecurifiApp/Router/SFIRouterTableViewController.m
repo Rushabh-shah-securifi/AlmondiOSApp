@@ -791,7 +791,9 @@ int mii;
                 //NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
                 self.routerSummary = (SFIRouterSummary *)genericRouterCommand.command;
                 self.enableAdvRouter = [self isAl3AnyMode];
-                //NSLog(@"routersummary: %@", self.routerSummary);
+
+                //setting firmware version to use in meshview
+                [AlmondManagement currentAlmond].firmware = self.routerSummary.firmwareVersion;
                 
                 if(self.currentConnectionMode == SFIAlmondConnectionMode_cloud){ //Do only in Cloud
                     NSLog(@"updating local network settings");

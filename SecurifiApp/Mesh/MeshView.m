@@ -17,7 +17,6 @@
 #import "ConnectionStatus.h"
 #import "AlmondManagement.h"
 
-
 #define ADD_FAIL -2
 #define NETWORK_OFFLINE -1
 #define HELP_INFO 0
@@ -94,6 +93,7 @@
 @property (nonatomic) NSString *selectedName;
 @property (nonatomic) BOOL isYesBlinkTapped;
 
+@property (nonatomic) UIAlertView *alert;
 @property (nonatomic)int mii;
 @end
 
@@ -653,12 +653,24 @@
     NSLog(@"check point 2");
     if(isSuccessful){
         //do nothing, wait for dynamic response
+        
+        //new case
+        /*
+         {\"CommandMode\":\"Reply\",\"CommandType\":\"AddWirelessSlaveMobile\",\"Reason\":\"Adding to network.\",\"Success\":\"true\"}
+         */
+//        [self alertViewCancel:self.alert];
+        if(self.alert){
+            [self.alert dismissWithClickedButtonIndex:0 animated:YES];
+            [self onYesLEDBlinking:nil];
+        }
     }
     else{
         NSLog(@"check point 3");
         [self.delegate hideHUDDelegate];
         NSString *msg;
         NSString *reason = payload[REASON];
+        NSString *cancelTitle = [self toShowAlertWithoutOk:[AlmondManagement currentAlmond].firmware]? nil: @"Ok";
+        NSLog(@"firmware: %@",[AlmondManagement currentAlmond].firmware);
         if([reason.lowercaseString hasPrefix:@"unplug all"]){
             if(self.wirelessBtn.selected){
             msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
@@ -668,7 +680,8 @@
             else{
                 msg = @"Unplug all cables except WAN cable. Do not unplug power cable";
             }
-            [self showAlert:self.almondNormalName msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
+            
+            [self showAlert:self.almondNormalName msg:msg cancel:cancelTitle other:nil tag:ADD_FAIL];
         }
         else if([reason.lowercaseString hasPrefix:@"unable to"]){
             if(self.wirelessBtn.selected)
@@ -676,13 +689,22 @@
             else
                 msg = [NSString stringWithFormat:@"Unable to reach %@. Check for loose wired connections between your Almonds and try again!", self.almondNormalName];
             
-            [self showAlert:self.almondNormalName msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
+            [self showAlert:self.almondNormalName msg:msg cancel:cancelTitle other:nil tag:ADD_FAIL];
         }
         else{
             [self.blinkTimer invalidate];
             if(self.currentView.tag == BLINK_CHECK)//on ok tap this will take to interface page
                 [self showAlert:self.almondNormalName msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
         }
+    }
+}
+
+- (BOOL)toShowAlertWithoutOk:(NSString *)firmware{
+    AlmondVersionCheckerResult result = [AlmondVersionChecker compareVersions:@"AL3-R015d" currentVersion:firmware];
+    if(result == AlmondVersionCheckerResult_currentSameAsLatest || result == AlmondVersionCheckerResult_currentNewerThanLatest){
+        return YES;
+    }else{
+        return NO;
     }
 }
 
@@ -702,6 +724,7 @@
     }
     return payload;
 }
+
 
 -(void)onCommandResponse:(id)sender{
     NSLog(@"mesh view onCommandResponse");
@@ -911,10 +934,10 @@
 
 - (void)showAlert:(NSString *)title msg:(NSString *)msg cancel:(NSString*)cncl other:(NSString *)other tag:(int)tag{
     NSLog(@"mesh view show alert tag: %d", tag);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:nil];
-    alert.tag = tag;
+    self.alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:nil];
+    self.alert.tag = tag;
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [alert show];
+        [self.alert show];
     });
 }
 
@@ -944,6 +967,7 @@
         }else if(alertView.tag == ADD_FAIL){
             if(self.currentView.tag != BLINK_CHECK)
                 return;
+            
             [self onYesLEDBlinking:nil];
         }
     }
