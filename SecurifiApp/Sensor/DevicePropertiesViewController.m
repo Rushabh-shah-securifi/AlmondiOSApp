@@ -12,6 +12,8 @@
 #import "UICommonMethods.h"
 #import "DevicePropertyTableViewCell.h"
 #import "UICommonMethods.h"
+#import "PickerComponentView.h"
+#import "DeviceNotificationViewController.h"
 
 #define DEVICE_PROPERTY_CELL @"devicepropertycell"
 
@@ -27,6 +29,8 @@ static const int defHeaderLableHt = 20;
 @property (weak, nonatomic) IBOutlet DeviceHeaderView *deviceHeaderView;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property BOOL is_Expanded;
+@property (strong, nonatomic) NSIndexPath *indexPath;
 
 @end
 
@@ -34,9 +38,20 @@ static const int defHeaderLableHt = 20;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self  initSection];
     [self setUpDevicePropertyEditHeaderView];
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    [self.navigationController setNavigationBarHidden:YES];
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
+    [self.navigationController setNavigationBarHidden:NO];
+}
+-(void)initSection{
+    //self.expandedCells = [[NSMutableArray alloc]init];
+}
 
 -(void)setUpDevicePropertyEditHeaderView{
     if(self.genericParams.isSensor){
@@ -68,7 +83,18 @@ static const int defHeaderLableHt = 20;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return defRowHeight;
+    CGFloat kExpandedCellHeight = 250;
+    CGFloat kNormalCellHeigh = 50;
+    
+    if (self.indexPath == indexPath)
+    {
+        return kExpandedCellHeight; //It's not necessary a constant, though
+    }
+    else
+    {
+        return kNormalCellHeigh; //Again not necessary a constant
+    }
+    //return defRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -93,7 +119,6 @@ static const int defHeaderLableHt = 20;
         viewHt = defHeaderLableHt;
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), defHeaderHeight)];
     }
-    
     
     view.backgroundColor = [UIColor whiteColor];
     [UICommonMethods addLineSeperator:view yPos:viewHt-1];
@@ -120,17 +145,44 @@ static const int defHeaderLableHt = 20;
         cell = [[DevicePropertyTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     [cell setUpCell:nil indexPath:indexPath];
-    
+    if (self.indexPath == indexPath)
+    {
+        for(UIView *picView in cell.contentView.subviews){
+            if([picView isKindOfClass:[PickerComponentView class]])
+               [picView removeFromSuperview];
+        }
+        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, 200) arrayList:@[@"1",@"2",@"3",@"1",@"2",@"3"]];
+        //pickerView.center = self.view.center;
+        pickerView.center = CGPointMake(cell.contentView.bounds.size.width/2, cell.contentView.center.y);
+        [cell.contentView addSubview:pickerView];
+    }
     return cell;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.section == 1)
+    {
+        DeviceNotificationViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"DeviceNotificationViewController"];
     
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+    else{
+        if(self.indexPath == indexPath)
+            self.indexPath = nil;
+        else
+            self.indexPath = indexPath;
+        
+        [tableView beginUpdates]; // Animate the height change
+        //[tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [tableView endUpdates];
+    }
 }
 
 #pragma mark action
 - (IBAction)onDoneBtnTap:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

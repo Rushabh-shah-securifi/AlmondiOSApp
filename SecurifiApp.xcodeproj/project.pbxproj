@@ -441,6 +441,9 @@
 		B095F99A1DCF7CBF00CBCCDF /* NetworkStatusIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = B095F9991DCF7CBF00CBCCDF /* NetworkStatusIcon.m */; };
 		B0E41DF31DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B0E41DF21DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf */; };
 		B0E41DF51DCC1BA100D5FD2A /* h_keyfob_image_V3.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B0E41DF41DCC1BA100D5FD2A /* h_keyfob_image_V3.pdf */; };
+		CE3C497F1E40734C00AD6E17 /* PickerComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3C497E1E40734C00AD6E17 /* PickerComponentView.m */; };
+		CE3C49821E41C04700AD6E17 /* DeviceNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3C49811E41C04700AD6E17 /* DeviceNotificationViewController.m */; };
+		CE3C49851E41EA7600AD6E17 /* NotificationCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3C49841E41EA7600AD6E17 /* NotificationCellTableViewCell.m */; };
 		CE3EDAF21D4742EC00C153A6 /* BrowsingHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3EDAEF1D4742EC00C153A6 /* BrowsingHistoryViewController.m */; };
 		CE3EDAF31D4742EC00C153A6 /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3EDAF11D4742EC00C153A6 /* SearchTableViewController.m */; };
 		CE40BF131D225791007C2148 /* BrowsingHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF0A1D225791007C2148 /* BrowsingHistory.m */; };
@@ -1138,6 +1141,12 @@
 		B095F9991DCF7CBF00CBCCDF /* NetworkStatusIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkStatusIcon.m; sourceTree = "<group>"; };
 		B0E41DF21DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_keyfob_image_V2.pdf; sourceTree = "<group>"; };
 		B0E41DF41DCC1BA100D5FD2A /* h_keyfob_image_V3.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_keyfob_image_V3.pdf; sourceTree = "<group>"; };
+		CE3C497D1E40734C00AD6E17 /* PickerComponentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerComponentView.h; sourceTree = "<group>"; };
+		CE3C497E1E40734C00AD6E17 /* PickerComponentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerComponentView.m; sourceTree = "<group>"; };
+		CE3C49801E41C04700AD6E17 /* DeviceNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceNotificationViewController.h; sourceTree = "<group>"; };
+		CE3C49811E41C04700AD6E17 /* DeviceNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceNotificationViewController.m; sourceTree = "<group>"; };
+		CE3C49831E41EA7600AD6E17 /* NotificationCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCellTableViewCell.h; sourceTree = "<group>"; };
+		CE3C49841E41EA7600AD6E17 /* NotificationCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCellTableViewCell.m; sourceTree = "<group>"; };
 		CE3EDAEE1D4742EC00C153A6 /* BrowsingHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistoryViewController.h; sourceTree = "<group>"; };
 		CE3EDAEF1D4742EC00C153A6 /* BrowsingHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistoryViewController.m; sourceTree = "<group>"; };
 		CE3EDAF01D4742EC00C153A6 /* SearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewController.h; sourceTree = "<group>"; };
@@ -2562,6 +2571,10 @@
 				F4BF6CF51E3F0BBE00E2BC21 /* DevicePropertiesViewController.m */,
 				F4BF6CF71E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.h */,
 				F4BF6CF81E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m */,
+				CE3C49801E41C04700AD6E17 /* DeviceNotificationViewController.h */,
+				CE3C49811E41C04700AD6E17 /* DeviceNotificationViewController.m */,
+				CE3C49831E41EA7600AD6E17 /* NotificationCellTableViewCell.h */,
+				CE3C49841E41EA7600AD6E17 /* NotificationCellTableViewCell.m */,
 			);
 			path = Sensor;
 			sourceTree = "<group>";
@@ -2608,6 +2621,8 @@
 				F4B876571D54653500DCF76F /* TextInput.m */,
 				F4F981D01DFA899B00FB0676 /* List_TypeView.h */,
 				F4F981D11DFA899B00FB0676 /* List_TypeView.m */,
+				CE3C497D1E40734C00AD6E17 /* PickerComponentView.h */,
+				CE3C497E1E40734C00AD6E17 /* PickerComponentView.m */,
 			);
 			path = deviceLayout;
 			sourceTree = "<group>";
@@ -3448,6 +3463,7 @@
 				F4B875451D5382D500DCF76F /* MeshPayload.m in Sources */,
 				F4B876681D54653500DCF76F /* ClientPropertiesViewController.m in Sources */,
 				F4B876861D54653500DCF76F /* DeviceTableViewCell.m in Sources */,
+				CE3C497F1E40734C00AD6E17 /* PickerComponentView.m in Sources */,
 				1C7E7DBF1A41A0990026F0BA /* SFIColors.m in Sources */,
 				CE4DB3F61CEF340F00CBD6DE /* TriDimBtn.m in Sources */,
 				F492EA3C1DF009EC00FB3B76 /* Constants.m in Sources */,
@@ -3505,6 +3521,7 @@
 				1C7E7E061A41A0B30026F0BA /* main.m in Sources */,
 				F417B2A51DA25CBD0073C440 /* AdvanceRouterSettingsController.m in Sources */,
 				B0053EA91DFFC9EE002F2F20 /* SFIAlmondCell.m in Sources */,
+				CE3C49851E41EA7600AD6E17 /* NotificationCellTableViewCell.m in Sources */,
 				F4B8766E1D54653500DCF76F /* BlinkLedView.m in Sources */,
 				CEF6F4FC1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */,
 				846414C91B736B36008AB07F /* ILHuePickerView.m in Sources */,
@@ -3584,6 +3601,7 @@
 				1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */,
 				CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */,
 				1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */,
+				CE3C49821E41C04700AD6E17 /* DeviceNotificationViewController.m in Sources */,
 				1DF03A194CCC7A1DE3C2A4DC /* UIColor+Securifi.m in Sources */,
 				842651AD1BE0C86C001F79C1 /* TimeText.m in Sources */,
 				CEF6F4DA1C92CAD600C68975 /* AddRulesViewController.m in Sources */,

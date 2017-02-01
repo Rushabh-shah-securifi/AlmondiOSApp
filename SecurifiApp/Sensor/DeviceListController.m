@@ -471,8 +471,8 @@ int mii;
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
         DevicePropertiesViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DevicePropertiesViewController"];
         viewController.genericParams = genericParams;
-        [self presentViewController:viewController animated:YES completion:nil];
-        
+       // [self presentViewController:viewController animated:YES completion:nil];
+         [self.navigationController pushViewController:viewController animated:YES];
         
         
 //        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];

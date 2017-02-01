@@ -114,6 +114,8 @@
         [muDict setObject:title forKey:TITLE];
         [muDict setObject:[NSNumber numberWithBool:NO] forKey:IS_EXPANDED];
         [self.mySubscriptionsArray addObject:muDict];
+        NSLog(@"self.mySubscriptionsArray %@",self.mySubscriptionsArray);
+        
     }
 }
 
