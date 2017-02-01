@@ -640,7 +640,6 @@ Follow it, then login below.";
 "stop_"="STOP";
 "online"= "ONLINE";
 "offline"="OFFLINE";
-"emergency_heat" = "USING EMERGENCY HEAT";
 "heating"="HEATING";
 "cooling" ="COOLING";
 "idle"="IDLE";
@@ -749,6 +748,7 @@ Follow it, then login below.";
 "seconds" = "SECONDS";
 "blinking" = "Blinking";
 "blinkTimer" = "Blink Timer";
+"buzzer_timer" = "Buzzer Timer";
 
 "browsingHistory" = "Browsing History";
 "duration" = "Duration";
@@ -1593,6 +1593,21 @@ img {width:90%}
 
 "alert_copy_pass" = "Name of the 5GHz network is same as the 2.4GHz network on your Almond. Do you want to copy the password also?";
 "alert_choose_diff_network" = "Please choose a different network name.";
+
+//new app lables
+"Switch" = "Switch";
+"door_state"= "Door State";
+"State"= "State";
+
+"gas_state"= "Gas State";
+"water_state"= "Water State";
+"fire_state"= "Fire State";
+"smoke_state"= "Smaoke State";
+"armmode"= "Arm Mode";
+"hvac_state"= "HVAC State";
+
+
+
 /* ==================================================================== */
 
 /*
@@ -2242,7 +2257,7 @@ Contact us at support@securifi.com";
 "nest_mode_autoaway_text" = "s nest mode is Auto-Away";
 "fan_started" = " Fan started";
 "fan_stopped"=" Fan stopped";
-"notification_emergency_heat" = " is using Emergency Heat ";
+"emergency_heat" = " is using Emergency Heat ";
 "is_heating" = " is heating";
 "is_cooling" = " is cooling";
 "is_off" = " is off";

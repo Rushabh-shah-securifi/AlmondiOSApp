@@ -313,13 +313,11 @@
         "Values": {
             "true": {
                 "ToggleValue": "false",
-                "AppLabel": "yes",
-                "Label": "YES"
+                "AppLabel": "yes"
             },
             "false": {
                 "ToggleValue": "true",
-                "AppLabel": "no",
-                "Label": "No"
+                "AppLabel": "no"
             }
         }
     },
@@ -332,13 +330,11 @@
         "Values": {
             "Kids": {
                 "ToggleValue": "Other",
-                "AppLabel": "kids",
-                "Label": "Kids"
+                "AppLabel": "kids"
             },
             "Others": {
                 "ToggleValue": "Kid",
-                "AppLabel": "others",
-                "Label": "Others"
+                "AppLabel": "others"
             }
         }
     },
@@ -350,12 +346,12 @@
         "AppLabel": "web_history",
         "Values": {
             "true": {
-                "AppLabel": "on_camelcase",
-                "Label": "On"
+                "AppLabel": "on_camelcase"
+                
             },
             "false": {
-                "AppLabel": "off_camelcase",
-                "Label": "Off"
+                "AppLabel": "off_camelcase"
+                
             }
         }
     },
@@ -366,18 +362,15 @@
         "Values": {
             "Blocked": {
                 "Icon": "client_left",
-                "AppLabel": "blocked_",
-                "Label": "leaves"
+                "AppLabel": "blocked_"
             },
             "Active": {
                 "Icon": "client_joined",
-                "AppLabel": "active",
-                "Label": "joins"
+                "AppLabel": "active"
             },
             "Inactive": {
                 "Icon": "client_joined",
-                "AppLabel": "inactive",
-                "Label": "joins"
+                "AppLabel": "inactive"
             }
         }
     },
@@ -389,12 +382,10 @@
         "AppLabel": "monitor_device",
         "Values": {
             "true": {
-                "AppLabel": "on_camelcase",
-                "Label": "On"
+                "AppLabel": "on_camelcase"
             },
             "false": {
-                "AppLabel": "off_camelcase",
-                "Label": "Off"
+                "AppLabel": "off_camelcase"
             }
         }
     },
@@ -406,12 +397,10 @@
         "AppLabel": "iot_security_camelcase",
         "Values": {
             "true": {
-                "AppLabel": "on_camelcase",
-                "Label": "On"
+                "AppLabel": "on_camelcase"
             },
             "false": {
-                "AppLabel": "off_camelcase",
-                "Label": "Off"
+                "AppLabel": "off_camelcase"
             }
         }
     },
@@ -423,12 +412,10 @@
         "AppLabel": "iot_security_camelcase",
         "Values": {
             "true": {
-                "AppLabel": "on_camelcase",
-                "Label": "On"
+                "AppLabel": "on_camelcase"
             },
             "false": {
-                "AppLabel": "off_camelcase",
-                "Label": "Off"
+                "AppLabel": "off_camelcase"
             }
         }
     },
@@ -441,14 +428,12 @@
                 "ToggleValue": "ClientJoined",
                 "Icon": "client_left",
                 "AppLabel": "inactive",
-                "Label": "leaves",
                 "EventType": "ClientLeft"
             },
             "ClientJoined": {
                 "ToggleValue": "ClientLeft",
                 "Icon": "client_joined",
                 "AppLabel": "active",
-                "Label": "joins",
                 "EventType": "ClientJoined"
             }
         }
@@ -462,14 +447,12 @@
                 "ToggleValue": "away",
                 "Icon": "home_white",
                 "AppLabel": "home",
-                "Label": "HOME",
                 "EventType": "AlmondModeUpdated"
             },
             "away": {
                 "ToggleValue": "home",
                 "Icon": "away_white",
                 "AppLabel": "away",
-                "Label": "AWAY",
                 "EventType": "AlmondModeUpdated"
             }
         }
@@ -483,7 +466,6 @@
                 "ToggleValue": "reboot",
                 "Icon": "switch_off",
                 "AppLabel": "rebootAlmond",
-                "Label": "REBOOT ALMOND",
                 "EventType": "AlmondModeUpdated"
             }
         }
@@ -495,8 +477,7 @@
         "Values": {
             "toggle": {
                 "Icon": "toggle_icon",
-                "AppLabel": "toggle",
-                "Label": "Toggle"
+                "AppLabel": "toggle"
             }
         }
     },
@@ -509,13 +490,11 @@
         "Values": {
             "SunRiseTime": {
                 "Icon": "sunrise_icon",
-                "AppLabel": "sunRiseTime",
-                "Label": "SunRiseTime"
+                "AppLabel": "sunRiseTime"
             },
             "SunSetTime": {
                 "Icon": "sunset_icon",
-                "AppLabel": "sunSetTime",
-                "Label": "SunSetTime"
+                "AppLabel": "sunSetTime"
             }
         }
     },
@@ -528,198 +507,159 @@
         "Values": {
             "chancerain": {
                 "Icon": "chance_of_rain",
-                "AppLabel": "chancerain",
-                "Label": "Weather"
+                "AppLabel": "chancerain"
             },
             "rain": {
                 "Icon": "raining",
-                "AppLabel": "rain",
-                "Label": "Weather"
+                "AppLabel": "rain"
             },
             "clear": {
                 "Icon": "clear_sky",
-                "AppLabel": "clear",
-                "Label": "Weather"
+                "AppLabel": "clear"
             },
             "cloudy": {
                 "Icon": "cloudy",
-                "AppLabel": "cloudy",
-                "Label": "Weather"
+                "AppLabel": "cloudy"
             },
             "tstorms": {
                 "Icon": "thunder_storms",
-                "AppLabel": "tstorms",
-                "Label": "Weather"
+                "AppLabel": "tstorms"
             },
             "chancesnow": {
                 "Icon": "chance_of_snow",
-                "AppLabel": "chancesnow",
-                "Label": "Weather"
+                "AppLabel": "chancesnow"
             },
             "chanceflurries": {
                 "AppLabel": "chanceflurries",
-                "Label": "Chance of Flurries",
                 "Icon": "chance_of_flurries"
             },
             "chancesleet": {
                 "Icon": "chance_of_sleet",
-                "AppLabel": "chancesleet",
-                "Label": "Weather"
+                "AppLabel": "chancesleet"
             },
             "chancetstorms": {
                 "Icon": "chance_of_storms",
-                "AppLabel": "chancetstorms",
-                "Label": "Weather"
+                "AppLabel": "chancetstorms"
             },
             "flurries": {
                 "Icon": "flurries",
-                "AppLabel": "flurries",
-                "Label": "Weather"
+                "AppLabel": "flurries"
             },
             "fog": {
                 "Icon": "fog",
-                "AppLabel": "fog",
-                "Label": "Weather"
+                "AppLabel": "fog"
             },
             "hazy": {
                 "Icon": "hazy",
-                "AppLabel": "hazy",
-                "Label": "Weather"
+                "AppLabel": "hazy"
             },
             "mostlycloudy": {
                 "Icon": "mostly_cloudy",
-                "AppLabel": "mostlycloudy",
-                "Label": "Weather"
+                "AppLabel": "mostlycloudy"
             },
             "mostlysunny": {
                 "Icon": "mostly_sunny",
-                "AppLabel": "mostlysunny",
-                "Label": "Weather"
+                "AppLabel": "mostlysunny"
             },
             "nt_chanceflurries": {
                 "Icon": "nt_chance_of_flurries",
-                "AppLabel": "nt_chanceflurries",
-                "Label": "Weather"
+                "AppLabel": "nt_chanceflurries"
             },
             "nt_chancerain": {
                 "Icon": "nt_chance_of_rain",
-                "AppLabel": "nt_chancerain",
-                "Label": "Weather"
+                "AppLabel": "nt_chancerain"
             },
             "nt_chancesleet": {
                 "Icon": "nt_chance_of_sleet",
-                "AppLabel": "nt_chancesleet",
-                "Label": "Weather"
+                "AppLabel": "nt_chancesleet"
             },
             "nt_chancesnow": {
                 "Icon": "nt_chance_of_snow",
-                "AppLabel": "nt_chancesnow",
-                "Label": "Weather"
+                "AppLabel": "nt_chancesnow"
             },
             "nt_chancetstorms": {
                 "Icon": "nt_chance_of_storms",
-                "AppLabel": "nt_chancetstorms",
-                "Label": "Weather"
+                "AppLabel": "nt_chancetstorms"
             },
             "nt_clear": {
                 "Icon": "nt_clear_sky",
-                "AppLabel": "nt_clear",
-                "Label": "Weather"
+                "AppLabel": "nt_clear"
             },
             "nt_cloudy": {
                 "Icon": "nt_cloudy",
-                "AppLabel": "nt_cloudy",
-                "Label": "Weather"
+                "AppLabel": "nt_cloudy"
             },
             "nt_flurries": {
                 "Icon": "nt_flurries",
-                "AppLabel": "nt_flurries",
-                "Label": "Weather"
+                "AppLabel": "nt_flurries"
             },
             "nt_fog": {
                 "Icon": "nt_fog",
-                "AppLabel": "nt_fog",
-                "Label": "Weather"
+                "AppLabel": "nt_fog"
             },
             "nt_hazy": {
                 "Icon": "nt_hazy",
-                "AppLabel": "nt_hazy",
-                "Label": "Weather"
+                "AppLabel": "nt_hazy"
             },
             "nt_mostlycloudy": {
                 "Icon": "nt_mostly_cloudy",
-                "AppLabel": "nt_mostlycloudy",
-                "Label": "Weather"
+                "AppLabel": "nt_mostlycloudy"
             },
             "nt_mostlysunny": {
                 "Icon": "nt_mostly_moony",
-                "AppLabel": "nt_mostlysunny",
-                "Label": "Weather"
+                "AppLabel": "nt_mostlysunny"
             },
             "nt_partlycloudy": {
                 "Icon": "nt_partly_cloudy",
-                "AppLabel": "nt_partlycloudy",
-                "Label": "Weather"
+                "AppLabel": "nt_partlycloudy"
             },
             "nt_partlysunny": {
                 "Icon": "nt_partly_moony",
-                "AppLabel": "nt_partlysunny",
-                "Label": "Weather"
+                "AppLabel": "nt_partlysunny"
             },
             "nt_rain": {
                 "Icon": "nt_rain",
-                "AppLabel": "nt_rain",
-                "Label": "Weather"
+                "AppLabel": "nt_rain"
             },
             "nt_sleet": {
                 "Icon": "nt_sleet",
-                "AppLabel": "nt_sleet",
-                "Label": "Weather"
+                "AppLabel": "nt_sleet"
             },
             "nt_snow": {
                 "Icon": "nt_snow",
-                "AppLabel": "nt_snow",
-                "Label": "Weather"
+                "AppLabel": "nt_snow"
             },
             "nt_sunny": {
                 "Icon": "nt_moony",
-                "AppLabel": "nt_sunny",
-                "Label": "Weather"
+                "AppLabel": "nt_sunny"
             },
             "nt_tstorms": {
                 "Icon": "nt_thunder_storms",
-                "AppLabel": "nt_tstorms",
-                "Label": "Weather"
+                "AppLabel": "nt_tstorms"
             },
             "partlycloudy": {
                 "Icon": "partly_cloudy",
-                "AppLabel": "partlycloudy",
-                "Label": "Weather"
+                "AppLabel": "partlycloudy"
             },
             "sleet": {
                 "Icon": "sleet",
-                "AppLabel": "sleet",
-                "Label": "Weather"
+                "AppLabel": "sleet"
             },
             "partlysunny": {
                 "Icon": "partly_sunny",
-                "AppLabel": "partlysunny",
-                "Label": "Weather"
+                "AppLabel": "partlysunny"
             },
             "snow": {
                 "Icon": "snowing",
-                "AppLabel": "snow",
-                "Label": "Weather"
+                "AppLabel": "snow"
             },
             "sunny": {
                 "Icon": "sunny",
-                "AppLabel": "sunny",
-                "Label": "Weather"
+                "AppLabel": "sunny"
             },
             "condition": {
                 "Icon": "condition_icon",
-                "AppLabel": "sunnycondition",
-                "Label": "Condition"
+                "AppLabel": "sunnycondition"
             }
         }
     },
@@ -732,8 +672,7 @@
         "Values": {
             "condition": {
                 "Icon": "condition_icon",
-                "AppLabel": "sunnycondition",
-                "Label": "Condition"
+                "AppLabel": "sunnycondition"
             }
         }
     },
@@ -742,7 +681,7 @@
         "Type": "Actuator",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
-        "AppLabel": "switch_off",
+        "AppLabel": "Switch",
         "ShowToggleInRules": "true",
         "DefaultIcon": "switch_on",
         "Values": {
@@ -750,14 +689,12 @@
                 "ToggleValue": "false",
                 "Icon": "switch_on",
                 "AppLabel": "on",
-                "Label": "ON",
                 "Notification": "notification_switch_on"
             },
             "false": {
                 "ToggleValue": "true",
                 "Icon": "switch_off",
                 "AppLabel": "off",
-                "Label": "OFF",
                 "Notification": "notification_switch_off"
             }
         }
@@ -767,18 +704,17 @@
         "Type": "Sensor",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
+        "AppLabel": "door_state",
         "DefaultIcon": "door_off",
         "Values": {
             "true": {
                 "Icon": "door_on",
                 "AppLabel": "door_on",
-                "Label": "ACTIVE",
                 "Notification": "notification_door_on"
             },
             "false": {
                 "Icon": "door_off",
                 "AppLabel": "door_off",
-                "Label": "INACTIVE",
                 "Notification": "notification_door_off"
             }
         }
@@ -788,18 +724,17 @@
         "Type": "Sensor",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
+        "AppLabel": "State",
         "DefaultIcon": "motion_on",
         "Values": {
             "true": {
                 "AppLabel": "motion_on",
                 "Icon": "motion_on",
-                "Label": "MOTION DETECTED",
                 "Notification": "notification_motion_on"
             },
             "false": {
                 "AppLabel": "motion_off",
                 "Icon": "motion_off",
-                "Label": "NO MOTION",
                 "Notification": "notification_motion_off"
             }
         }
@@ -809,18 +744,17 @@
         "Type": "Sensor",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
+        "AppLabel": "door_state",
         "DefaultIcon": "door_on",
         "Values": {
             "true": {
                 "AppLabel": "door_on",
                 "Icon": "door_on",
-                "Label": "OPEN",
                 "Notification": "notification_door_on"
             },
             "false": {
                 "AppLabel": "door_off",
                 "Icon": "door_off",
-                "Label": "CLOSED",
                 "Notification": "notification_door_off"
             }
         }
@@ -830,18 +764,17 @@
         "Type": "Sensor",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
+        "AppLabel": "State",
         "DefaultIcon": "vibration_off",
         "Values": {
             "true": {
                 "AppLabel": "vibration_on",
                 "Icon": "vibration_on",
-                "Label": "VIBRATION DETECTED",
                 "Notification": "notification_vibration_on"
             },
             "false": {
                 "AppLabel": "vibration_off",
                 "Icon": "vibration_off",
-                "Label": "NO VIBRATION",
                 "Notification": "notification_vibration_off"
             }
         }
@@ -851,18 +784,17 @@
         "Type": "Sensor",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
+        "AppLabel": "water_state",
         "DefaultIcon": "water_off",
         "Values": {
             "true": {
                 "AppLabel": "water_on",
                 "Icon": "water_on",
-                "Label": "FLOODED",
                 "Notification": "notification_water_on"
             },
             "false": {
                 "AppLabel": "ok",
                 "Icon": "water_off",
-                "Label": "OK",
                 "Notification": "notification_water_off"
             }
         }
@@ -872,19 +804,18 @@
         "Type": "Sensor",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
+        "AppLabel": "gas_state",
         "DefaultIcon": "fire_off",
         "Values": {
             "true": {
                 "AppLabel": "gas_on",
                 "Icon": "fire_on",
-                "Label": "GAS DETECTED",
-                "Notification": "notification_gas_on"
+                "Notification": "notification_gas_off"
             },
             "false": {
                 "AppLabel": "ok",
                 "Icon": "fire_off",
-                "Label": "OK",
-                "Notification": "notification_gas_off"
+                "Notification": "notification_gas_on"
             }
         }
     },
@@ -893,18 +824,17 @@
         "Type": "Sensor",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
+        "AppLabel": "fire_state",
         "DefaultIcon": "fire_off",
         "Values": {
             "true": {
                 "AppLabel": "fire_on",
                 "Icon": "fire_on",
-                "Label": "FIRE DETECTED",
                 "Notification": "notification_fire_on"
             },
             "false": {
                 "AppLabel": "ok",
                 "Icon": "fire_off",
-                "Label": "OK",
                 "Notification": "is_ok"
             }
         }
@@ -920,7 +850,6 @@
             "true": {
                 "AppLabel": "tampered",
                 "Icon": "tamper",
-                "Label": "Device has been tampered",
                 "Notification": "notification_tamper"
             }
         }
@@ -937,12 +866,10 @@
             "true": {
                 "Icon": "panic_icon",
                 "AppLabel": "paincAlarm",
-                "Label": "Panic Alarm",
                 "Notification": "paincAlarm"
             },
             "false": {
                 "Icon": "panic_icon",
-                "Label": "NO",
                 "AppLabel": "no",
                 "ExcludeFrom": "Rule",
                 "Notification": "paincAlarm"
@@ -960,12 +887,10 @@
             "true": {
                 "Icon": "emergency_icon",
                 "AppLabel": "emergencyAlarm",
-                "Label": "Emergency Alarm",
                 "Notification": "emergencyAlarm"
             },
             "false": {
                 "Icon": "emergency_icon",
-                "Label": "NO",
                 "AppLabel": "no",
                 "ExcludeFrom": "Rule",
                 "Notification": "emergencyAlarm"
@@ -978,12 +903,11 @@
         "Placement": "Badge",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "lowBattery",
-        "DefaultIcon":"low_battery",
+        "DefaultIcon": "low_battery",
         "Values": {
             "true": {
                 "Icon": "low_battery",
                 "AppLabel": "lowBattery",
-                "Label": "Low Battery",
                 "Notification": "hasLowBattery"
             }
         }
@@ -1016,14 +940,12 @@
             "0": {
                 "ToggleValue": "255",
                 "Icon": "alarm_on",
-                "Label": "INACTIVE",
                 "AppLabel": "alarm_on",
                 "Notification": "notification_alarm_on"
             },
             "255": {
                 "ToggleValue": "0",
                 "Icon": "alarm_off",
-                "Label": "ACTIVE",
                 "AppLabel": "off",
                 "Notification": "notification_alarm_off"
             }
@@ -1034,18 +956,17 @@
         "Type": "Sensor",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
+        "AppLabel": "smoke_state",
         "DefaultIcon": "fire_off",
         "Values": {
             "0": {
                 "Icon": "fire_off",
                 "AppLabel": "ok",
-                "Label": "Okay",
                 "Notification": "notification_smoke_off"
             },
             "255": {
                 "Icon": "fire_on",
                 "AppLabel": "smoke_on",
-                "Label": "Smoke Detected",
                 "Notification": "notification_smoke_on"
             }
         }
@@ -1055,18 +976,17 @@
         "Type": "Sensor",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
+        "AppLabel": "water_state",
         "DefaultIcon": "water_off",
         "Values": {
             "0": {
                 "AppLabel": "ok",
                 "Icon": "water_off",
-                "Label": "OK",
                 "Notification": "notification_water_off"
             },
             "255": {
                 "AppLabel": "water_on",
                 "Icon": "water_on",
-                "Label": "FLOODED",
                 "Notification": "notification_water_on"
             }
         }
@@ -1112,49 +1032,42 @@
             "0": {
                 "Icon": "alarm_off",
                 "AppLabel": "stop",
-                "Label": "OFF",
                 "Notification": "sirenStoped"
             },
             "1": {
                 "ToggleValue": "0",
                 "Icon": "alarm_on",
                 "AppLabel": "emergency",
-                "Label": "EMERGENCY MODE: ON",
                 "Notification": "emergencyTone_text"
             },
             "2": {
                 "ToggleValue": "0",
                 "Icon": "alarm_on",
                 "AppLabel": "fire",
-                "Label": "FIRE MODE: ON",
                 "Notification": "fire_text"
             },
             "3": {
                 "ToggleValue": "0",
                 "Icon": "alarm_on",
                 "AppLabel": "ambulance",
-                "Label": "AMBULANCE MODE: ON",
                 "Notification": "ambulance_text"
             },
             "4": {
                 "Icon": "alarm_on",
                 "ToggleValue": "0",
                 "AppLabel": "police",
-                "Label": "POLICE MODE: ON",
                 "Notification": "police_text"
             },
             "5": {
                 "Icon": "alarm_on",
                 "ToggleValue": "0",
                 "AppLabel": "door_chime",
-                "Label": "DOOR MODE: ON",
                 "Notification": "door_chime_text"
             },
             "6": {
                 "Icon": "alarm_on",
                 "ToggleValue": "0",
                 "AppLabel": "beep",
-                "Label": "BEEP MODE: ON",
                 "Notification": "beep_text"
             }
         }
@@ -1171,20 +1084,17 @@
                 "ToggleValue": "99",
                 "Icon": "garage_close",
                 "AppLabel": "closed",
-                "Label": "CLOSED",
                 "Notification": "notification_closed"
             },
             "99": {
                 "ToggleValue": "0",
                 "Icon": "garage_open",
                 "AppLabel": "opened",
-                "Label": "OPENED",
                 "Notification": "notification_opened"
             },
             "254": {
                 "Icon": "garage_open",
                 "AppLabel": "processing",
-                "Label": "PROCESSING",
                 "ExcludeFrom": "Action_Scene",
                 "Notification": "notification_processing"
             }
@@ -1196,20 +1106,18 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "powerLabel",
-        "DefaultIcon":"switch_off",
+        "DefaultIcon": "switch_off",
         "Values": {
             "0": {
                 "ToggleValue": "255",
                 "Icon": "switch_off",
                 "AppLabel": "off",
-                "Label": "OFF",
                 "Notification": "power_off"
             },
             "255": {
                 "ToggleValue": "0",
                 "Icon": "switch_on",
                 "AppLabel": "on",
-                "Label": "ON",
                 "Notification": "power_on"
             }
         }
@@ -1233,14 +1141,12 @@
                 "ToggleValue": "255",
                 "Icon": "lock_open",
                 "AppLabel": "doorlock_off",
-                "Label": "UNLOCKED",
                 "Notification": "notification_doorlock_off"
             },
             "255": {
                 "ToggleValue": "0",
                 "Icon": "lock_close",
                 "AppLabel": "doorlock_on",
-                "Label": "LOCKED",
                 "Notification": "notification_doorlock_on"
             }
         }
@@ -1258,20 +1164,17 @@
                 "ToggleValue": "2",
                 "Icon": "lock_close",
                 "AppLabel": "doorlock_on",
-                "Label": "LOCKED",
                 "Notification": "notification_doorlock_on"
             },
             "2": {
                 "ToggleValue": "1",
                 "Icon": "lock_open",
                 "AppLabel": "doorlock_off",
-                "Label": "UNLOCKED",
                 "Notification": "notification_doorlock_off"
             },
             "0": {
                 "Icon": "lock_open",
                 "AppLabel": "doorlock_partial",
-                "Label": "PARTIALLY LOCKED",
                 "ExcludeFrom": "Scene_Rule",
                 "Notification": "notification_doorlock_partial"
             }
@@ -1282,24 +1185,22 @@
         "Type": "Sensor",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
+        "AppLabel": "armmode",
         "DefaultIcon": "keyfob_off",
         "Values": {
             "0": {
                 "Icon": "keyfob_off",
                 "AppLabel": "keyfob_disarmed",
-                "Label": "ALL DISARMED",
                 "Notification": "notification_keyfob_disarmed"
             },
             "2": {
                 "Icon": "arm_perimeter",
                 "AppLabel": "keyfob_permiter_armed",
-                "Label": "PERIMETER ARMED",
                 "Notification": "notification_keyfob_permiter_armed"
             },
             "3": {
                 "Icon": "keyfob_on",
                 "AppLabel": "keyfob_armed",
-                "Label": "ALL ARMED",
                 "Notification": "notification_keyfob_armed"
             }
         }
@@ -1313,8 +1214,8 @@
         "DefaultIcon": "target_temperature",
         "ExcludeFrom": "Scene",
         "Formatter": {
-            "Min": "35",
-            "Max": "95",
+            "Min": "-4",
+            "Max": "140",
             "Unit": "\u00B0F",
             "Factor": "1",
             "prefix": "temp_changed_to"
@@ -1363,7 +1264,6 @@
             "Min": "0",
             "Max": "3000",
             "Unit": "Lux",
-            "Factor": "1",
             "prefix": "illuminanceChange"
         }
     },
@@ -1458,30 +1358,26 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "mode",
-        "DefaultIcon":"img_off",
+        "DefaultIcon": "img_off",
         "Values": {
             "Auto": {
                 "Icon": "img_auto",
                 "AppLabel": "auto",
-                "Label": "Auto",
                 "Notification": "modeChangeAuto"
             },
             "Cool": {
                 "Icon": "img_cool",
                 "AppLabel": "cool",
-                "Label": "Cool",
                 "Notification": "modeChangeCool"
             },
             "Heat": {
                 "Icon": "img_heat",
                 "AppLabel": "heat",
-                "Label": "Heat",
                 "Notification": "modeChangeHeat"
             },
             "Off": {
                 "Icon": "img_off",
                 "AppLabel": "button_off",
-                "Label": "Off",
                 "Notification": "modeChangeOff"
             }
         }
@@ -1533,18 +1429,16 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "fan_mode",
-        "DefaultIcon":"btn_fan_off",
+        "DefaultIcon": "btn_fan_off",
         "Values": {
             "On Low": {
                 "Icon": "btn_fan_off",
                 "AppLabel": "fan_on_low",
-                "Label": "On low",
                 "Notification": "fanOnLow_text"
             },
             "Auto Low": {
                 "Icon": "btn_fan_on",
                 "AppLabel": "fan_auto_low",
-                "Label": "Auto low",
                 "Notification": "fanAutoLow_text"
             }
         }
@@ -1556,7 +1450,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "fan_state",
         "ExcludeFrom": "Rule",
-        "DefaultIcon":"img_off",
+        "DefaultIcon": "img_off",
         "Notification": "thermostat_fanState"
     },
     "41": {
@@ -1566,9 +1460,9 @@
         "Layout": "SINGLE_TEMP",
         "AppLabel": "setpoint_temp",
         "Conditional": "true",
-        "DefaultIcon":"target_temperature",
+        "DefaultIcon": "target_temperature",
         "Formatter": {
-            "Min": "32",
+            "Min": "41",
             "Max": "104",
             "Unit": "\u00B0F",
             "prefix": "temp_changed_to"
@@ -1581,20 +1475,18 @@
         "Layout": "LIST",
         "AppLabel": "actions",
         "ExcludeFrom": "Rule_Scene",
-        "DefaultIcon":"garage_close",
+        "DefaultIcon": "garage_close",
         "Values": {
             "0": {
                 "ToggleValue": "99",
                 "Icon": "garage_close",
                 "AppLabel": "close",
-                "Label": "Down",
                 "Notification": "notification_closed"
             },
             "99": {
                 "ToggleValue": "0",
                 "Icon": "garage_open",
                 "AppLabel": "open",
-                "Label": "Open",
                 "Notification": "notification_opened"
             }
         }
@@ -1606,12 +1498,11 @@
         "AppLabel": "actions",
         "Layout": "MULTI_BUTTON",
         "ExcludeFrom": "Scene_Trigger",
-        "DefaultIcon":"motion_off",
+        "DefaultIcon": "motion_off",
         "Values": {
             "true": {
                 "AppLabel": "stop_",
                 "Icon": "motion_off",
-                "Label": "Stop",
                 "Notification": "stoped"
             }
         }
@@ -1628,14 +1519,12 @@
                 "ToggleValue": "255",
                 "Icon": "garage_close",
                 "AppLabel": "closed",
-                "Label": "CLOSED",
                 "Notification": "notification_closed"
             },
             "252": {
                 "ToggleValue": "255",
                 "Icon": "icon_garage_door_down",
                 "AppLabel": "closing",
-                "Label": "CLOSING",
                 "ExcludeFrom": "Scene",
                 "Notification": "notification_closing"
             },
@@ -1643,7 +1532,6 @@
                 "ToggleValue": "0",
                 "Icon": "garage_open",
                 "AppLabel": "stopped",
-                "Label": "STOPPED",
                 "ExcludeFrom": "Scene",
                 "Notification": "stoped"
             },
@@ -1651,7 +1539,6 @@
                 "ToggleValue": "0",
                 "Icon": "icon_garage_door_up",
                 "AppLabel": "opening",
-                "Label": "OPENING",
                 "ExcludeFrom": "Scene",
                 "Notification": "notification_opening"
             },
@@ -1659,7 +1546,6 @@
                 "ToggleValue": "0",
                 "Icon": "garage_open",
                 "AppLabel": "opened",
-                "Label": "OPENED",
                 "Notification": "notification_opened"
             }
         }
@@ -1670,54 +1556,46 @@
         "Placement": "Detail",
         "Layout": "LIST",
         "AppLabel": "mode",
-        "DefaultIcon":"img_off",
+        "DefaultIcon": "img_off",
         "Values": {
             "Auto": {
                 "Icon": "img_auto",
                 "AppLabel": "auto",
-                "Label": "Auto",
                 "Notification": "modeChangeAuto"
             },
             "Cool": {
                 "Icon": "img_cool",
                 "AppLabel": "cool",
-                "Label": "Cool",
                 "Notification": "modeChangeCool"
             },
             "Heat": {
                 "Icon": "img_heat",
                 "AppLabel": "heat",
-                "Label": "Heat",
                 "Notification": "modeChangeHeat"
             },
             "Off": {
                 "Icon": "img_off",
                 "AppLabel": "offMode",
-                "Label": "Off",
                 "Notification": "modeChangeOff"
             },
             "Resume": {
                 "Icon": "resume_icon",
                 "AppLabel": "resume",
-                "Label": "Resume",
                 "Notification": "modeChangeResume"
             },
             "Fan Only": {
                 "Icon": "btn_fan_off",
                 "AppLabel": "fanOnly",
-                "Label": "Fan Only",
                 "Notification": "modeChangeFanOnly"
             },
             "Dry Air": {
                 "Icon": "water_off",
                 "AppLabel": "dryAir",
-                "Label": "Dry Air",
                 "Notification": "modeChangeDryAir"
             },
             "Auto Changeover": {
                 "Icon": "img_auto",
                 "AppLabel": "autoChangeOver",
-                "Label": "Auto Changeover",
                 "Notification": "modeChangeAutoChangeOver"
             }
         }
@@ -1758,30 +1636,26 @@
         "Placement": "Detail",
         "Layout": "LIST",
         "AppLabel": "fan_mode",
-        "DefaultIcon":"fan_auto",
+        "DefaultIcon": "fan_auto",
         "Values": {
             "Auto Low": {
                 "Icon": "fan_auto",
                 "AppLabel": "fan_auto_low",
-                "Label": "Auto",
                 "Notification": "fanAutoLow_text"
             },
             "On Low": {
                 "Icon": "fan_low",
                 "AppLabel": "fan_on_low",
-                "Label": "Low",
                 "Notification": "fanOnLow_text"
             },
             "Unknown 5": {
                 "Icon": "fan_medium",
                 "AppLabel": "medium",
-                "Label": "Medium",
                 "Notification": "fanUnknown_text"
             },
             "On High": {
                 "Icon": "fan_high",
                 "AppLabel": "fan_on_high",
-                "Label": "High",
                 "Notification": "fanOnHigh_text"
             }
         }
@@ -1792,20 +1666,18 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "swing",
-        "DefaultIcon":"swingoff_icon",
+        "DefaultIcon": "swingoff_icon",
         "Values": {
             "0": {
                 "ToggleValue": "1",
                 "Icon": "swingoff_icon",
                 "AppLabel": "off_camelcase",
-                "Label": "Off",
                 "Notification": "swingOff_text"
             },
             "1": {
                 "ToggleValue": "0",
                 "Icon": "swingon_icon",
                 "AppLabel": "on_camelcase",
-                "Label": "On",
                 "Notification": "swingOn_text"
             }
         }
@@ -1817,7 +1689,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "battery",
         "Conditional": "true",
-        "DefaultIcon":"low_battery",
+        "DefaultIcon": "low_battery",
         "Formatter": {
             "Min": "0",
             "Max": "100",
@@ -1837,7 +1709,6 @@
         "Formatter": {
             "Min": "0",
             "Max": "999",
-            "Factor": "1",
             "prefix": "ir_code_changed"
         }
     },
@@ -1875,7 +1746,7 @@
         "Name": "RETAIN_STATE",
         "Type": "Functional",
         "Placement": "Hidden",
-        "Layout": "NaN"
+        "Layout": "TEXT_VIEW"
     },
     "55": {
         "Name": "NEST_ID",
@@ -1889,36 +1760,31 @@
         "Placement": "Detail",
         "Layout": "LIST",
         "AppLabel": "mode",
-        "DefaultIcon":"img_off",
+        "DefaultIcon": "img_off",
         "Values": {
-            "eco":{
-                "Icon": "eco_icon",
+            "eco": {
+                "Icon": "echo_icon",
                 "AppLabel": "eco",
-                "Label": "Echo",
                 "Notification": "modeChangeEcho"
             },
             "heat-cool": {
                 "Icon": "img_auto",
                 "AppLabel": "nest_heat_cool",
-                "Label": "Heat-Cool",
                 "Notification": "modeChangeHC"
             },
             "cool": {
                 "Icon": "img_cool",
                 "AppLabel": "ac_cool",
-                "Label": "Cool",
                 "Notification": "modeChangeCool"
             },
             "heat": {
                 "Icon": "img_heat",
                 "AppLabel": "heat",
-                "Label": "Heat",
                 "Notification": "modeChangeHeat"
             },
             "off": {
                 "Icon": "img_off",
                 "AppLabel": "off",
-                "Label": "Off",
                 "Notification": "modeChangeOff"
             }
         }
@@ -1930,7 +1796,7 @@
         "Layout": "SINGLE_TEMP",
         "AppLabel": "target_temperature",
         "Conditional": "true",
-        "DefaultIcon":"target_temperature",
+        "DefaultIcon": "target_temperature",
         "Formatter": {
             "Min": "50",
             "Max": "90",
@@ -1945,7 +1811,7 @@
         "Layout": "SINGLE_TEMP",
         "AppLabel": "low_temp",
         "Conditional": "true",
-        "DefaultIcon":"target_temperature",
+        "DefaultIcon": "target_temperature",
         "Formatter": {
             "Min": "50",
             "Max": "87",
@@ -1960,7 +1826,7 @@
         "Layout": "SINGLE_TEMP",
         "AppLabel": "high_temp",
         "Conditional": "true",
-        "DefaultIcon":"target_temperature",
+        "DefaultIcon": "target_temperature",
         "Formatter": {
             "Min": "53",
             "Max": "90",
@@ -1975,25 +1841,22 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "nest_label_away_mode",
         "ExcludeFrom": "Scene_Rule",
-        "DefaultIcon":"home_white",
+        "DefaultIcon": "home_white",
         "Values": {
             "home": {
                 "Icon": "home_white",
                 "AppLabel": "home",
-                "Label": "Home",
                 "Notification": "nest_mode_home_text"
             },
             "away": {
                 "Icon": "away_white",
                 "AppLabel": "away",
-                "Label": "Away",
                 "Notification": "nest_mode_away_text"
             },
             "auto-away": {
                 "Icon": "away_white",
                 "AppLabel": "AUTOAWAY",
                 "ReadOnly": "true",
-                "Label": "Auto-away",
                 "Notification": "nest_mode_autoaway_text"
             }
         }
@@ -2004,18 +1867,16 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "fan",
-        "DefaultIcon":"btn_fan_off",
+        "DefaultIcon": "btn_fan_off",
         "Values": {
             "true": {
                 "Icon": "btn_fan_on",
                 "AppLabel": "start",
-                "Label": "Start",
                 "Notification": "fan_started"
             },
             "false": {
                 "Icon": "btn_fan_off",
                 "AppLabel": "stop_",
-                "Label": "Stop",
                 "Notification": "fan_stopped"
             }
         }
@@ -2026,18 +1887,16 @@
         "Placement": "Hidden",
         "Layout": "MULTI_BUTTON",
         "ExcludeFrom": "Scene",
-        "DefaultIcon":"online_icon",
+        "DefaultIcon": "online_icon",
         "Values": {
             "true": {
                 "Icon": "online_icon",
                 "AppLabel": "online",
-                "Label": "Online",
                 "Notification": "is_online"
             },
             "false": {
                 "Icon": "offline_icon",
                 "AppLabel": "offline",
-                "Label": "Offline",
                 "Notification": "is_offline"
             }
         }
@@ -2059,12 +1918,11 @@
         "Type": "Functional",
         "Placement": "Hidden",
         "ExcludeFrom": "Scene_Rule",
-        "DefaultIcon":"img_off",
+        "DefaultIcon": "img_off",
         "Values": {
             "true": {
                 "AppLabel": "emergency_heat",
-                "Label": "Using Emergency Heat",
-                "Notification": "notification_emergency_heat"
+                "Notification": "emergency_heat"
             }
         }
     },
@@ -2077,27 +1935,25 @@
     "67": {
         "Name": "HVAC_STATE",
         "Type": "Sensor",
-        "Placement": "HeaderOnly",
+        "Placement": "Header",
         "Layout": "MULTI_BUTTON",
+        "AppLabel": "hvac_state",
         "ExcludeFrom": "Scene",
-        "DefaultIcon":"img_off",
+        "DefaultIcon": "img_off",
         "Values": {
             "heating": {
                 "Icon": "img_heat",
                 "AppLabel": "heating",
-                "Label": "HEATING",
                 "Notification": "is_heating"
             },
             "cooling": {
                 "Icon": "img_cool",
                 "AppLabel": "cooling",
-                "Label": "COOLING",
                 "Notification": "is_cooling"
             },
             "off": {
                 "Icon": "img_off",
                 "AppLabel": "off",
-                "Label": "IDLE",
                 "Notification": "is_off"
             }
         }
@@ -2113,107 +1969,87 @@
         "Type": "Info",
         "Placement": "Message",
         "ExcludeFrom": "Scene_Rule",
-        "DefaultIcon":"img_off",
+        "DefaultIcon": "img_off",
         "Values": {
             "-1": {
                 "Icon": "img_off",
-                "Label": "Wrong mode selection",
-                "Notification":"error_1"
+                "Notification": "error_1"
             },
             "-2": {
                 "Icon": "img_off",
-                "Label": "Cannot change target temperature while structure is away",
-                "Notification":"error_2"
+                "Notification": "error_2"
             },
             "-3": {
                 "Icon": "img_off",
-                "Label": "Thermostat is not online",
                 "Notification": "error_3"
             },
             "-4": {
                 "Icon": "img_off",
-                "Label": "Cannot change fan_timer_active while structure is Away",
-                "Notification":"error_4"
+                "Notification": "error_4"
             },
             "-5": {
                 "Icon": "img_off",
-                "Label": "heat-cool mode 3 unit issue",
-                "Notification":"error_5"
+                "Notification": "error_5"
             },
             "-6": {
                 "Icon": "img_off",
-                "Label": "Cannot change HVAC mode while thermostat lock is enabled",
                 "Notification": "error_6"
             },
             "-7": {
                 "Icon": "img_off",
-                "Label": "Cannot set c and f temperatures simultaneously",
-                "Notification":"error_7"
+                "Notification": "error_7"
             },
             "-8": {
                 "Icon": "img_off",
-                "Label": "Cannot set target temperature closer than N degrees C/F",
-                "Notification":"error_8"
+                "Notification": "error_8"
             },
             "-9": {
                 "Icon": "img_off",
-                "Label": "Temperature C/F value is too low",
-                "Notification":"error_9"
+                "Notification": "error_9"
             },
             "-10": {
                 "Icon": "img_off",
-                "Label": "Temperature C/F value is too high",
-                "Notification":"error_10"
+                "Notification": "error_10"
             },
             "-11": {
                 "Icon": "img_off",
-                "Label": "Temperature C/F value too low for lock temperature",
-                "Notification":"error_11"
+                "Notification": "error_11"
             },
             "-12": {
                 "Icon": "img_off",
-                "Label": "Temperature C/F value too high for lock temperature",
-                "Notification":"error_12"
+                "Notification": "error_12"
             },
             "-13": {
                 "Icon": "img_off",
-                "Label": "Cannot change HVAC mode during energy-saving events",
-                "Notification":"error_13"
+                "Notification": "error_13"
             },
             "-14": {
                 "Icon": "img_off",
-                "Label": "Cannot change HVAC mode to Heat/Cool",
-                "Notification":"error_14"
+                "Notification": "error_14"
             },
             "-15": {
                 "Icon": "img_off",
-                "Label": "Invalid HVAC mode",
-                "Notification":"error_15"
+                "Notification": "error_15"
             },
             "-16": {
                 "Icon": "img_off",
-                "Label": "Cannot activate fan during smoke/co safety shutoff",
-                "Notification":"error_16"
+                "Notification": "error_16"
             },
             "-17": {
                 "Icon": "img_off",
-                "Label": "fan_timer_active not set",
-                "Notification":"error_17"
+                "Notification": "error_17"
             },
             "-18": {
                 "Icon": "img_off",
-                "Label": "Cannot change Away state while emergency heat is on",
-                "Notification":"error_18"
+                "Notification": "error_18"
             },
             "503": {
                 "Icon": "img_off",
-                "Label": "Service Unavailable",
-                "Notification":"error_503"
+                "Notification": "error_503"
             },
             "429": {
                 "Icon": "img_off",
-                "Label": "Too Many Requests",
-                "Notification":"tooMany"
+                "Notification": "tooMany"
             }
         }
     },
@@ -2224,24 +2060,21 @@
         "AppLabel": "co_lable",
         "Layout": "TEXT_VIEW",
         "ExcludeFrom": "Rule",
-        "DefaultIcon":"nest_protect_icon",
+        "DefaultIcon": "nest_protect_icon",
         "Values": {
             "ok": {
                 "Icon": "nest_protect_icon",
                 "AppLabel": "ok",
-                "Label": "OK",
                 "Notification": "co_not_detected_text"
             },
             "warning": {
                 "Icon": "icon_tampered_yellow",
                 "AppLabel": "warning",
-                "Label": "WARNING",
                 "Notification": "co_warning_text"
             },
             "emergency": {
                 "Icon": "icon_tampered_red",
                 "AppLabel": "emergency_",
-                "Label": "EMERGENCY",
                 "Notification": "co_emergency_text"
             }
         }
@@ -2253,24 +2086,21 @@
         "AppLabel": "smoke_lable",
         "Layout": "TEXT_VIEW",
         "ExcludeFrom": "Rule",
-        "DefaultIcon":"nest_protect_icon",
+        "DefaultIcon": "nest_protect_icon",
         "Values": {
             "ok": {
                 "Icon": "nest_protect_icon",
                 "AppLabel": "ok",
-                "Label": "OK",
                 "Notification": "smoke_not_detected_text"
             },
             "warning": {
                 "Icon": "icon_tampered_yellow",
                 "AppLabel": "warning",
-                "Label": "WARNING",
                 "Notification": "smoke_warning_text"
             },
             "emergency": {
                 "Icon": "icon_tampered_red",
                 "AppLabel": "emergency_",
-                "Label": "EMERGENCY",
                 "Notification": "smoke_emergency_text"
             }
         }
@@ -2292,6 +2122,11 @@
         "Placement": "Hidden"
     },
     "75": {
+        "Name": "HUE_BUILD_ID",
+        "Type": "Functional",
+        "Placement": "Hidden"
+    },
+    "76": {
         "Name": "USER_NAME",
         "Type": "Functional",
         "Placement": "Hidden"
@@ -2308,15 +2143,13 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "battery",
         "ExcludeFrom": "Scene_Rule",
-        "DefaultIcon":"img_off",
+        "DefaultIcon": "img_off",
         "Values": {
             "ok": {
-                "Label": "OK",
                 "AppLabel": "ok",
                 "Notification": "ok"
             },
             "replace": {
-                "Label": "REPLACE",
                 "AppLabel": "replace",
                 "Notification": "replace"
             }
@@ -2348,7 +2181,6 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "DefaultIcon": "lock_open",
         "AppLabel": "pin",
         "ExcludeFrom": "Scene_Rule"
     },
@@ -2358,7 +2190,6 @@
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "clamp1_power",
-        "DefaultIcon": "online_icon",
         "Conditional": "true",
         "Formatter": {
             "Min": "0",
@@ -2374,7 +2205,6 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "clamp2_power",
         "Conditional": "true",
-        "DefaultIcon": "online_icon",
         "Formatter": {
             "Min": "0",
             "Max": "9999",
@@ -2419,215 +2249,59 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "powerLabel",
         "Conditional": "true",
-        "DefaultIcon":"target_temperature",
+        "DefaultIcon": "target_temperature",
         "Formatter": {
             "Min": "0",
-            "Max": "1920",
+            "Max": "100",
             "Unit": "W",
             "prefix": "powerReading"
         }
         
     },
     "87": {
-        "Name": "OCCUPANCY_STATE",
-        "Type": "Sensor",
-        "Placement": "Header",
-        "Layout": "MULTI_BUTTON",
-        "DefaultIcon": "motion_on",
-        "Values": {
-            "true": {
-                "AppLabel": "occupied",
-                "Icon": "motion_on",
-                "Label": "OCCUPIED",
-                "Notification": "presenceDetected"
-            },
-            "false": {
-                "AppLabel": "unoccupied",
-                "Icon": "motion_off",
-                "Label": "UNOCCUPIED",
-                "Notification": "presenceNotDetected"
-            }
-        }
+        "Name": "GENERIC_STRING",
+        "Layout": "TEXT_VIEW",
+        "Type": "Actuator",
+        "DefaultIcon": "switch_off",
+        "AppLabel": "State",
+        "Placement": "Hidden",
+        "Conditional": "false",
+        "ExcludeFrom": "Scene_Rule"
     },
     "88": {
-        "Name": "ALARM_BINARY",
+        "Name": "GENERIC_INT",
+        "Layout": "Input",
         "Type": "Actuator",
-        "Placement": "Header",
-        "Layout": "MULTI_BUTTON",
-        "AppLabel": "alarm",
-        "DefaultIcon": "alarm_off",
-        "Values": {
-            "true": {
-                "ToggleValue": "false",
-                "Icon": "alarm_on",
-                "AppLabel": "alarm_on",
-                "Label": "ON",
-                "Notification": "notification_alarm_on"
-            },
-            "false": {
-                "ToggleValue": "true",
-                "Icon": "alarm_off",
-                "AppLabel": "off",
-                "Label": "OFF",
-                "Notification": "notification_alarm_off"
-            }
-        }
+        "DefaultIcon": "switch_off",
+        "Placement": "Hidden",
+        "Conditional": "true",
+        "AppLabel": "State",
+        "ExcludeFrom": "Scene_Rule"
+        
     },
     "89": {
-        "Name": "AC_SWITCH BINARY",
+        "Name": "GENERIC_DOUBLE",
+        "Layout": "Input",
         "Type": "Actuator",
-        "Placement": "Header",
-        "Layout": "MULTI_BUTTON",
-        "AppLabel": "ac_switch",
-        "ShowToggleInRules": "true",
-        "DefaultIcon": "ac_switch_off",
-        "Values": {
-            "true": {
-                "ToggleValue": "false",
-                "Icon": "ac_switch_on",
-                "AppLabel": "on",
-                "Label": "ON",
-                "Notification": "notification_switch_on"
-            },
-            "false": {
-                "ToggleValue": "true",
-                "Icon": "ac_switch_off",
-                "AppLabel": "off",
-                "Label": "OFF",
-                "Notification": "notification_switch_off"
-            }
-        }
+        "DefaultIcon": "switch_off",
+        "Placement": "Hidden",
+        "Conditional": "true",
+        "AppLabel": "State",
+        "ExcludeFrom": "Scene_Rule"
+        
     },
     "90": {
-        "Name": "HUE_SWITCH BINARY",
+        "Name": "GENERIC_BOOL",
+        "Layout": "Input",
         "Type": "Actuator",
-        "Placement": "Header",
-        "Layout": "MULTI_BUTTON",
-        "AppLabel": "hue",
-        "ShowToggleInRules": "true",
-        "DefaultIcon": "light_off",
-        "Values": {
-            "true": {
-                "ToggleValue": "false",
-                "Icon": "light_on",
-                "AppLabel": "on",
-                "Label": "ON",
-                "Notification": "notification_switch_on"
-            },
-            "false": {
-                "ToggleValue": "true",
-                "Icon": "light_off",
-                "AppLabel": "off",
-                "Label": "OFF",
-                "Notification": "notification_switch_off"
-            }
-        }
+        "DefaultIcon": "switch_off",
+        "Placement": "Hidden",
+        "Conditional": "false",
+        "AppLabel": "State",
+        "ExcludeFrom": "Scene_Rule"
+        
     },
     "91": {
-        "Name": "TONE",
-        "Type": "Actuator",
-        "Placement": "Detail",
-        "Layout": "MULTI_BUTTON",
-        "AppLabel": "ringTone",
-        "DefaultIcon": "alarm_on",
-        "ExcludeFrom": "Trigger",
-        "Values": {
-            "1": {
-                "Icon": "alarm_on",
-                "AppLabel": "alarm",
-                "Label": "Alarm",
-                "Notification": "tone_alarm"
-            },
-            "2": {
-                "Icon": "alarm_on",
-                "AppLabel": "siren",
-                "Label": "Siren",
-                "Notification": "tone_siren"
-            },
-            "3": {
-                "Icon": "alarm_on",
-                "AppLabel": "doorBell",
-                "Label": "Door Bell",
-                "Notification": "tone_doorbell"
-            }
-        }
-    },
-    "92": {
-        "Name": "MULTILEVEL BINARY",
-        "Type": "Actuator",
-        "Placement": "Header",
-        "Layout": "MULTI_BUTTON",
-        "ShowToggleInRules": "true",
-        "AppLabel": "multilevel_switch",
-        "DefaultIcon": "dimmer",
-        "Values": {
-            "true": {
-                "ToggleValue": "false",
-                "Icon": "dimmer",
-                "AppLabel": "on",
-                "Label": "ON",
-                "Notification": "notification_switch_on"
-            },
-            "false": {
-                "ToggleValue": "true",
-                "Icon": "switch_off",
-                "AppLabel": "off",
-                "Label": "OFF",
-                "Notification": "notification_switch_off"
-            }
-        }
-    },
-    "93": {
-        "Name": "MULTI_SWITCH BINARY1",
-        "Type": "Actuator",
-        "Placement": "Header_Detail",
-        "Layout": "MULTI_BUTTON",
-        "AppLabel": "switch1",
-        "ShowToggleInRules": "true",
-        "DefaultIcon": "switch_on",
-        "Values": {
-            "true": {
-                "ToggleValue": "false",
-                "Icon": "switch_on",
-                "AppLabel": "switch1_on",
-                "Label": "SWITCH1 ON",
-                "Notification": "notification_swith1_on"
-            },
-            "false": {
-                "ToggleValue": "true",
-                "Icon": "switch_off",
-                "AppLabel": "switch1_off",
-                "Label": "SWITCH1 OFF",
-                "Notification": "notification_swith1_off"
-            }
-        }
-    },
-    "94": {
-        "Name": "MULTI_SWITCH BINARY2",
-        "Type": "Actuator",
-        "Placement": "Header_Detail",
-        "Layout": "MULTI_BUTTON",
-        "AppLabel": "switch2",
-        "ShowToggleInRules": "true",
-        "DefaultIcon": "switch_on",
-        "Values": {
-            "true": {
-                "ToggleValue": "false",
-                "Icon": "switch_on",
-                "AppLabel": "switch2_on",
-                "Label": "SWITCH2 ON",
-                "Notification": "notification_swith2_on"
-            },
-            "false": {
-                "ToggleValue": "true",
-                "Icon": "switch_off",
-                "AppLabel": "switch2_off",
-                "Label": "SWITCH2 OFF",
-                "Notification": "notification_swith2_off"
-            }
-        }
-    },
-    "95": {
         "Name": "PRESS",
         "Type": "Sensor",
         "Placement": "Header",
@@ -2638,31 +2312,183 @@
             "0": {
                 "Icon": "resume_icon",
                 "AppLabel": "two_press",
-                "Label": "Two Press",
                 "Notification": "two_press"
             },
             "2": {
                 "Icon": "vibration_on",
                 "AppLabel": "long_press",
-                "Label": "Long Press",
                 "Notification": "long_press"
             },
             "3": {
                 "Icon": "vibration_off",
                 "AppLabel": "one_press",
-                "Label": "One Press",
                 "Notification": "one_press"
             },
             "4": {
                 "Icon": "switch_off",
                 "AppLabel": "no_press",
-                "Label": "No Press",
                 "ExcludeFrom": "Rule_Scene",
                 "Notification": "no_press"
             }
         }
     },
+    "92": {
+        "Name": "CUSTOM_MESSAGE",
+        "Layout": "info",
+        "Type": "sensor",
+        "DefaultIcon": "switch_off",
+        "AppLabel":"State",
+        "Placement": "Hidden"
+        
+    },
+    "93": {
+        "Name": "BUZZ_STATE",
+        "Layout": "Button",
+        "Type": "Actuator",
+        "DefaultIcon": "alarm_off",
+        "Placement": "Hidden",
+        "AppLabel":"State",
+        "Conditional": "true",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "AppLabel": "alarm_on",
+                "Icon": "alarm_on"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "AppLabel": "stopped",
+                "Icon": "alarm_off"
+            }
+        }
+    },
+    "94": {
+        "Name": "Blink BINARY",
+        "Type": "Actuator",
+        "Placement": "Hidden",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "Switch",
+        "DefaultIcon": "switch_on",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "switch_on",
+                "AppLabel": "led_on",
+                "Notification": "notification_switch_on"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "switch_off",
+                "AppLabel": "led_off",
+                "Notification": "notification_switch_off"
+            }
+        }
+    },
+    "95": {
+        "Name": "TONE",
+        "Type": "Actuator",
+        "Placement": "Hidden",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "ringTone",
+        "DefaultIcon": "alarm_on",
+        "ExcludeFrom": "Trigger",
+        "Values": {
+            "1": {
+                "Icon": "alarm_on",
+                "AppLabel": "alarm",
+                "Notification": "tone_alarm"
+            },
+            "2": {
+                "Icon": "alarm_on",
+                "AppLabel": "siren",
+                "Notification": "tone_siren"
+            },
+            "3": {
+                "Icon": "alarm_on",
+                "AppLabel": "doorBell",
+                "Notification": "tone_doorbell"
+            }
+        }
+    },
     "96": {
+        "Name": "Volume",
+        "Type": "Actuator",
+        "Placement": "Hidden",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "volume",
+        "DefaultIcon": "alarm_on",
+        "ExcludeFrom": "Trigger",
+        "Values": {
+            "1": {
+                "Icon": "low_volume_icon",
+                "AppLabel": "low_volume",
+                "Notification": "volume_low_text"
+            },
+            "2": {
+                "Icon": "medium_volume_icon",
+                "AppLabel": "medium_volume",
+                "Notification": "volume_medium_text"
+            },
+            "3": {
+                "Icon": "high_volume_icon",
+                "AppLabel": "high_volume",
+                "Notification": "volume_high_text"
+            }
+        }
+    },
+    "97": {
+        "Name": "BLINK_STATE",
+        "Type": "Actuator",
+        "Placement": "Hidden",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "blink",
+        "DefaultIcon": "switch_on",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "switch_on",
+                "AppLabel": "blink_start",
+                "Notification": "blink_start_text"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "switch_off",
+                "AppLabel": "blink_stop",
+                "Notification": "blink_stop_text"
+            }
+        }
+    },
+    "98": {
+        "Name": "RGB ",
+        "Type": "Actuator",
+        "Placement": "Hidden",
+        "Layout": "HUE_ONLY",
+        "AppLabel": "brightness",
+        "ExcludeFrom": "Trigger",
+        "DefaultIcon": "light_on",
+        "Formatter": {
+            "Min": "0",
+            "Max": "65535",
+            "prefix": "brightness_changed"
+        }
+    },
+    "99": {
+        "Name": "SECONDS",
+        "Type": "Actuator",
+        "Placement": "Detail",
+        "Layout": "TEXT_VIEW_ONLY",
+        "AppLabel": "blinkTimer",
+        "ExcludeFrom": "Trigger",
+        "DefaultIcon": "alarm_off",
+        "Formatter": {
+            "Min": "0",
+            "Max": "65535",
+            "Unit": " sec",
+            "prefix": "timer_text"
+        }
+    },
+    
+    "100": {
         "Name": "ENABLE",
         "Type": "Actuator",
         "Placement": "Functional",
@@ -2675,139 +2501,171 @@
                 "ToggleValue": "false",
                 "Icon": "switch_on",
                 "AppLabel": "enabled",
-                "Label": "Enabled",
                 "Notification": "is_enabled"
             },
             "false": {
                 "ToggleValue": "true",
                 "Icon": "switch_off",
                 "AppLabel": "disabled",
-                "Label": "Disabled",
                 "Notification": "is_disabled"
             }
         }
     },
-    "97": {
-        "Name": "Volume",
-        "Type": "Actuator",
-        "Placement": "Detail",
+    
+    "101": {
+        "Name": "OCCUPANCY_STATE",
+        "Type": "Sensor",
+        "Placement": "Hidden",
         "Layout": "MULTI_BUTTON",
-        "AppLabel": "volume",
-        "DefaultIcon": "alarm_on",
-        "ExcludeFrom": "Trigger",
-        "Values": {
-            "1": {
-                "Icon": "low_volume_icon",
-                "AppLabel": "low_volume",
-                "Label": "Low",
-                "Notification": "volume_low_text"
-            },
-            "2": {
-                "Icon": "medium_volume_icon",
-                "AppLabel": "medium_volume",
-                "Label": "Medium",
-                "Notification": "volume_medium_text"
-            },
-            "3": {
-                "Icon": "high_volume_icon",
-                "AppLabel": "high_volume",
-                "Label": "High",
-                "Notification": "volume_high_text"
-            }
-        }
-    },
-    "98": {
-        "Name": "BLINK_STATE",
-        "Type": "Actuator",
-        "Placement": "Detail",
-        "Layout": "MULTI_BUTTON",
-        "AppLabel": "blink",
-        "DefaultIcon": "switch_on",
+        "DefaultIcon": "motion_on",
         "Values": {
             "true": {
-                "ToggleValue": "false",
-                "Icon": "switch_on",
-                "AppLabel": "blink_start",
-                "Label": "Blink Start",
-                "Notification": "blink_start_text"
+                "AppLabel": "occupied",
+                "Icon": "motion_on",
+                "Notification": "presenceDetected"
             },
             "false": {
-                "ToggleValue": "true",
-                "Icon": "switch_off",
-                "AppLabel": "blink_stop",
-                "Label": "Off",
-                "Notification": "blink_stop_text"
+                "AppLabel": "unoccupied",
+                "Icon": "motion_off",
+                "Notification": "presenceNotDetected"
             }
-        }
-    },
-    "99": {
-        "Name": "RGB ",
-        "Type": "Actuator",
-        "Placement": "Detail",
-        "Layout": "HUE_ONLY",
-        "AppLabel": "brightness",
-        "ExcludeFrom": "Trigger",
-        "DefaultIcon": "light_on",
-        "Formatter": {
-            "Min": "1",
-            "Max": "16777215",
-            "prefix": "brightness_changed"
-        }
-    },
-    "100": {
-        "Name": "SECONDS",
-        "Type": "Actuator",
-        "Placement": "Detail",
-        "Layout": "TEXT_VIEW_ONLY",
-        "AppLabel": "blinkTimer",
-        "ExcludeFrom": "Trigger",
-        "DefaultIcon": "alarm_off",
-        "Formatter": {
-            "Min": "0",
-            "Max": "99999",
-            "Unit": "sec",
-            "Factor": "1",
-            "prefix": "timer_text"
-        }
-    },
-    "101": {
-        "Name": "Siren Timer",
-        "Type": "Actuator",
-        "Placement": "Header_Detail_Primary",
-        "Layout": "TEXT_VIEW_ONLY",
-        "AppLabel": "buzzer_timer",
-        "ExcludeFrom": "Trigger",
-        "DefaultIcon": "alarm_off",
-        "Formatter": {
-            "Min": "0",
-            "Max": "99999",
-            "Unit": "sec",
-            "Factor": "1",
-            "prefix": "timer_text"
-            
         }
     },
     "102": {
-        "Name": "Blink BINARY",
+        "Name": "ALARM_BINARY",
         "Type": "Actuator",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
-        "AppLabel": "switch_off",
-        "DefaultIcon": "switch_on",
+        "AppLabel": "alarm",
+        "DefaultIcon": "alarm_off",
         "Values": {
             "true": {
                 "ToggleValue": "false",
-                "Icon": "switch_on",
-                "AppLabel": "led_on",
-                "Label": "ON",
+                "Icon": "alarm_on",
+                "AppLabel": "alarm_on",
+                "Notification": "notification_alarm_on"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "alarm_off",
+                "AppLabel": "off",
+                "Notification": "notification_alarm_off"
+            }
+        }
+    },
+    "103": {
+        "Name": "AC_SWITCH BINARY",
+        "Type": "Actuator",
+        "Placement": "Header",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "ac_switch",
+        "ShowToggleInRules": "true",
+        "DefaultIcon": "ac_switch_off",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "ac_switch_on",
+                "AppLabel": "on",
+                "Notification": "notification_switch_on"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "ac_switch_off",
+                "AppLabel": "off",
+                "Notification": "notification_switch_off"
+            }
+        }
+    },
+    "104": {
+        "Name": "HUE_SWITCH BINARY",
+        "Type": "Actuator",
+        "Placement": "Header",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "hue",
+        "ShowToggleInRules": "true",
+        "DefaultIcon": "light_off",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "light_on",
+                "AppLabel": "on",
+                "Notification": "notification_switch_on"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "light_off",
+                "AppLabel": "off",
+                "Notification": "notification_switch_off"
+            }
+        }
+    },
+    
+    "105": {
+        "Name": "MULTILEVEL BINARY",
+        "Type": "Actuator",
+        "Placement": "Header",
+        "Layout": "MULTI_BUTTON",
+        "ShowToggleInRules": "true",
+        "AppLabel": "multilevel_switch",
+        "DefaultIcon": "dimmer",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "dimmer",
+                "AppLabel": "on",
                 "Notification": "notification_switch_on"
             },
             "false": {
                 "ToggleValue": "true",
                 "Icon": "switch_off",
-                "AppLabel": "led_off",
-                "Label": "OFF",
+                "AppLabel": "off",
                 "Notification": "notification_switch_off"
+            }
+        }
+    },
+    "106": {
+        "Name": "MULTI_SWITCH BINARY1",
+        "Type": "Actuator",
+        "Placement": "Header_Detail",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "switch1",
+        "ShowToggleInRules": "true",
+        "DefaultIcon": "switch_on",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "switch_on",
+                "AppLabel": "switch1_on",
+                "Notification": "notification_swith1_on"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "switch_off",
+                "AppLabel": "switch1_off",
+                "Notification": "notification_swith1_off"
+            }
+        }
+    },
+    "107": {
+        "Name": "MULTI_SWITCH BINARY2",
+        "Type": "Actuator",
+        "Placement": "Header_Detail",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "switch2",
+        "ShowToggleInRules": "true",
+        "DefaultIcon": "switch_on",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "switch_on",
+                "AppLabel": "switch2_on",
+                "Notification": "notification_swith2_on"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "switch_off",
+                "AppLabel": "switch2_off",
+                "Notification": "notification_swith2_off"
             }
         }
     }

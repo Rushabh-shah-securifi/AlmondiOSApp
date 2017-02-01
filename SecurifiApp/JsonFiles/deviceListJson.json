@@ -1,5 +1,5 @@
 {
-    "0":{
+    "0": {
         "name": "Mode",
         "isActuator": "true",
         "defaultIcon": "switch_off",
@@ -24,9 +24,9 @@
     "501": {
         "name": "Reboot",
         "isActuator": "true",
-        "isTrigger":"false",
+        "isTrigger": "false",
         "defaultIcon": "switch_off",
-        "ExcludeFrom":"Scene",
+        "ExcludeFrom": "Scene",
         "Indexes": {
             "1": {
                 "genericIndexID": "-31",
@@ -34,35 +34,35 @@
             }
         }
     },
-    "502":{
+    "502": {
         "name": "Weather",
         "isActuator": "false",
         "defaultIcon": "weather_white",
-        "ExcludeFrom":"Scene",
+        "ExcludeFrom": "Scene",
         "Indexes": {
             "1": {
                 "genericIndexID": "-33",
                 "row_no": 1
             },
-            "2":{
+            "2": {
                 "genericIndexID": "-34",
                 "row_no": 2
             },
-            "3":{
+            "3": {
                 "genericIndexID": "25",
-                "min":"-40",
-                "max":"248",
+                "min": "-40",
+                "max": "248",
                 "row_no": 3
             },
-            "4":{
+            "4": {
                 "genericIndexID": "27",
                 "row_no": 3
             },
-            "5":{
+            "5": {
                 "genericIndexID": "26",
                 "row_no": 4,
-                "min":"0",
-                "max":"9999"
+                "min": "0",
+                "max": "9999"
             }
         }
     },
@@ -84,7 +84,7 @@
         "Indexes": {
             "1": {
                 "genericIndexID": "17",
-                "Placement":"Header_Detail_Primary",
+                "Placement": "Header_Detail_Primary",
                 "row_no": 1
             }
         }
@@ -119,7 +119,7 @@
                 "row_no": 1
             },
             "2": {
-                "genericIndexID": "92",
+                "genericIndexID": "105",
                 "row_no": 2
             }
         }
@@ -137,67 +137,67 @@
                 "genericIndexID": "50",
                 "row_no": 1
             },
-            "4":{
+            "4": {
                 "genericIndexID": "79"
             },
-            "5":{
+            "5": {
                 "genericIndexID": "81"
             },
-            "6":{
+            "6": {
                 "genericIndexID": "81"
             },
-            "7":{
+            "7": {
                 "genericIndexID": "81"
             },
-            "8":{
+            "8": {
                 "genericIndexID": "81"
             },
-            "9":{
+            "9": {
                 "genericIndexID": "81"
             },
-            "10":{
+            "10": {
                 "genericIndexID": "81"
             },
-            "11":{
+            "11": {
                 "genericIndexID": "81"
             },
-            "12":{
+            "12": {
                 "genericIndexID": "81"
             },
-            "13":{
+            "13": {
                 "genericIndexID": "81"
             },
-            "14":{
+            "14": {
                 "genericIndexID": "81"
             },
-            "15":{
+            "15": {
                 "genericIndexID": "81"
             },
-            "16":{
+            "16": {
                 "genericIndexID": "81"
             },
-            "17":{
+            "17": {
                 "genericIndexID": "81"
             },
-            "18":{
+            "18": {
                 "genericIndexID": "81"
             },
-            "19":{
+            "19": {
                 "genericIndexID": "81"
             },
-            "20":{
+            "20": {
                 "genericIndexID": "81"
             },
-            "21":{
+            "21": {
                 "genericIndexID": "81"
             },
-            "22":{
+            "22": {
                 "genericIndexID": "81"
             },
-            "23":{
+            "23": {
                 "genericIndexID": "81"
             },
-            "24":{
+            "24": {
                 "genericIndexID": "81"
             }
         }
@@ -224,6 +224,8 @@
         "Indexes": {
             "1": {
                 "genericIndexID": "25",
+                "min": "35",
+                "max": "95",
                 "Placement": "Header",
                 "row_no": 4
             },
@@ -299,8 +301,8 @@
             },
             "4": {
                 "genericIndexID": "25",
-                "min":"0",
-                "max":"122",
+                "min": "0",
+                "max": "122",
                 "row_no": 2
             }
         }
@@ -324,8 +326,8 @@
             },
             "4": {
                 "genericIndexID": "25",
-                "min":"0",
-                "max":"122",
+                "min": "0",
+                "max": "122",
                 "row_no": 2
             }
         }
@@ -368,8 +370,8 @@
             },
             "4": {
                 "genericIndexID": "25",
-                "min":"0",
-                "max":"122",
+                "min": "0",
+                "max": "122",
                 "row_no": 2
             }
         }
@@ -509,11 +511,13 @@
         "defaultIcon": "ac_switch_off",
         "Indexes": {
             "1": {
-                "genericIndexID": "89",
+                "genericIndexID": "103",
                 "row_no": 1
             },
             "11": {
                 "genericIndexID": "86",
+                "min": "0",
+                "max": "1920",
                 "row_no": 2
             },
             "12": {
@@ -532,13 +536,14 @@
         "defaultIcon": "motion_off",
         "Indexes": {
             "1": {
-                "genericIndexID": "87",
+                "genericIndexID": "101",
+                "Placement": "Header",
                 "row_no": 1
             },
             "2": {
                 "genericIndexID": "25",
-                "min":"14",
-                "max":"122",
+                "min": "14",
+                "max": "122",
                 "row_no": 2
             },
             "3": {
@@ -586,14 +591,14 @@
         "Indexes": {
             "1": {
                 "genericIndexID": "25",
-                "min":"0",
-                "max":"122",
-                "Placement":"Header",
+                "min": "0",
+                "max": "122",
+                "Placement": "Header",
                 "row_no": 1
             },
             "2": {
                 "genericIndexID": "27",
-                "Placement":"HeaderOnly",
+                "Placement": "HeaderOnly",
                 "row_no": 1
             },
             "3": {
@@ -611,71 +616,71 @@
                 "genericIndexID": "23",
                 "row_no": 2
             },
-            "2":{
+            "2": {
                 "genericIndexID": "50",
                 "row_no": 1
             },
-            "3":{
+            "3": {
                 "genericIndexID": "79"
             },
-            "4":{
+            "4": {
                 "genericIndexID": "81"
             },
-            "5":{
+            "5": {
                 "genericIndexID": "81"
             },
-            "6":{
+            "6": {
                 "genericIndexID": "81"
             },
-            "7":{
+            "7": {
                 "genericIndexID": "81"
             },
-            "8":{
+            "8": {
                 "genericIndexID": "81"
             },
-            "9":{
+            "9": {
                 "genericIndexID": "81"
             },
-            "10":{
+            "10": {
                 "genericIndexID": "81"
             },
-            "11":{
+            "11": {
                 "genericIndexID": "81"
             },
-            "12":{
+            "12": {
                 "genericIndexID": "81"
             },
-            "13":{
+            "13": {
                 "genericIndexID": "81"
             },
-            "14":{
+            "14": {
                 "genericIndexID": "81"
             },
-            "15":{
+            "15": {
                 "genericIndexID": "81"
             },
-            "16":{
+            "16": {
                 "genericIndexID": "81"
             },
-            "17":{
+            "17": {
                 "genericIndexID": "81"
             },
-            "18":{
+            "18": {
                 "genericIndexID": "81"
             },
-            "19":{
+            "19": {
                 "genericIndexID": "81"
             },
-            "20":{
+            "20": {
                 "genericIndexID": "81"
             },
-            "21":{
+            "21": {
                 "genericIndexID": "81"
             },
-            "22":{
+            "22": {
                 "genericIndexID": "81"
             },
-            "23":{
+            "23": {
                 "genericIndexID": "81"
             }
         }
@@ -688,9 +693,9 @@
         "Indexes": {
             "1": {
                 "genericIndexID": "25",
-                "Placement":"Header",
-                "min":"0",
-                "max":"122",
+                "Placement": "Header",
+                "min": "0",
+                "max": "122",
                 "row_no": 1
             }
         }
@@ -699,14 +704,14 @@
         "name": "ColorDimmableLight",
         "isActuator": "true",
         "defaultIcon": "light_off",
-        "isTrigger":"false",
+        "isTrigger": "false",
         "Indexes": {
             "1": {
                 "genericIndexID": "18",
                 "row_no": 3
             },
             "2": {
-                "genericIndexID": "90",
+                "genericIndexID": "104",
                 "row_no": 1
             },
             "3": {
@@ -794,8 +799,8 @@
         "Indexes": {
             "1": {
                 "genericIndexID": "25",
-                "min":"0",
-                "max":"122",
+                "min": "0",
+                "max": "122",
                 "row_no": 1
             },
             "2": {
@@ -823,8 +828,8 @@
             },
             "4": {
                 "genericIndexID": "25",
-                "min":"0",
-                "max":"122",
+                "min": "0",
+                "max": "122",
                 "row_no": 1
             }
         }
@@ -835,7 +840,7 @@
         "defaultIcon": "alarm_off",
         "Indexes": {
             "1": {
-                "genericIndexID": "88",
+                "genericIndexID": "102",
                 "row_no": 2
             },
             "2": {
@@ -850,11 +855,11 @@
         "defaultIcon": "multiswitch_icon",
         "Indexes": {
             "1": {
-                "genericIndexID": "93",
+                "genericIndexID": "106",
                 "row_no": 1
             },
             "2": {
-                "genericIndexID": "94",
+                "genericIndexID": "107",
                 "row_no": 2
             }
         }
@@ -880,7 +885,7 @@
                 "row_no": 1
             },
             "1": {
-                "genericIndexID": "89",
+                "genericIndexID": "103",
                 "row_no": 2
             }
         }
@@ -897,13 +902,15 @@
             },
             "1": {
                 "genericIndexID": "41",
+                "min": "32",
+                "max": "104",
                 "row_no": 1
             },
             "4": {
                 "genericIndexID": "25",
-                "Placement":"Header",
-                "min":"0",
-                "max":"122",
+                "Placement": "Header",
+                "min": "0",
+                "max": "122",
                 "row_no": 1
             }
         }
@@ -919,7 +926,7 @@
                 "row_no": 2
             },
             "2": {
-                "genericIndexID": "90",
+                "genericIndexID": "104",
                 "row_no": 1
             },
             "5": {
@@ -947,13 +954,13 @@
             },
             "3": {
                 "genericIndexID": "28",
-                "Placement":"Detail",
+                "Placement": "Detail",
                 "row_no": 2
             },
             "4": {
                 "genericIndexID": "25",
-                "min":"0",
-                "max":"122",
+                "min": "0",
+                "max": "122",
                 "row_no": 2
             },
             "5": {
@@ -968,11 +975,13 @@
         "defaultIcon": "ac_switch_off",
         "Indexes": {
             "1": {
-                "genericIndexID": "89",
+                "genericIndexID": "103",
                 "row_no": 1
             },
             "11": {
                 "genericIndexID": "86",
+                "min": "0",
+                "max": "1920",
                 "row_no": 2
             },
             "12": {
@@ -1000,7 +1009,7 @@
             },
             "1": {
                 "genericIndexID": "20",
-                "Placement":"Header",
+                "Placement": "Header",
                 "row_no": 1
             }
         }
@@ -1023,9 +1032,9 @@
         "Indexes": {
             "1": {
                 "genericIndexID": "25",
-                "Placement":"Header",
-                "min":"0",
-                "max":"122",
+                "Placement": "Header",
+                "min": "0",
+                "max": "122",
                 "row_no": 4
             },
             "2": {
@@ -1055,7 +1064,7 @@
             },
             "9": {
                 "genericIndexID": "21",
-                "Placement":"Detail",
+                "Placement": "Detail",
                 "row_no": 5
             },
             "10": {
@@ -1086,12 +1095,12 @@
             },
             "2": {
                 "genericIndexID": "34",
-                "Placement":"HeaderOnly",
+                "Placement": "HeaderOnly",
                 "row_no": 1
             },
             "3": {
                 "genericIndexID": "80",
-                "Placement":"Header",
+                "Placement": "Header",
                 "row_no": 1
             },
             "4": {
@@ -1152,9 +1161,9 @@
             },
             "10": {
                 "genericIndexID": "25",
-                "Placement":"Header",
-                "min":"-4",
-                "max":"140",
+                "Placement": "Header",
+                "min": "-4",
+                "max": "140",
                 "row_no": 1
             },
             "11": {
@@ -1179,6 +1188,7 @@
             },
             "16": {
                 "genericIndexID": "67",
+                "Placement": "HeaderOnly",
                 "row_no": 5
             },
             "17": {
@@ -1219,7 +1229,7 @@
             },
             "6": {
                 "genericIndexID": "60",
-                "Placement":"Hidden",
+                "Placement": "Hidden",
                 "row_no": 1
             },
             "7": {
@@ -1228,13 +1238,18 @@
             }
         }
     },
+    "60": {
+        "name": "Generic Device",
+        "isActuator": "true",
+        "defaultIcon": "switch_off"
+    },
     "61": {
         "name": "Securifi Button",
         "isActuator": "false",
         "defaultIcon": "switch_off",
         "Indexes": {
             "1": {
-                "genericIndexID": "95",
+                "genericIndexID": "91",
                 "row_no": 1
             },
             "2": {
@@ -1255,6 +1270,8 @@
             "1": {
                 "genericIndexID": "25",
                 "Placement": "Header",
+                "min": "35",
+                "max": "95",
                 "row_no": 4
             },
             "2": {
@@ -1293,26 +1310,31 @@
         "defaultIcon": "switch_off",
         "Indexes": {
             "1": {
-                "genericIndexID": "96",
+                "genericIndexID": "100",
                 "row_no": 1
             },
             "2": {
                 "row_no": 2,
-                "genericIndexID": "88",
-                "Placement":"Header"
+                "genericIndexID": "102",
+                "Placement": "Header"
             },
             "3": {
                 "row_no": 3,
-                "genericIndexID": "91"
+                "genericIndexID": "95",
+                "Placement": "Detail"
             },
             "4": {
                 "row_no": 4,
-                "genericIndexID": "97"
+                "genericIndexID": "96",
+                "Placement": "Detail"
             },
             "5": {
                 "row_no": 5,
-                "genericIndexID": "101",
-                "Placement":"Detail"
+                "genericIndexID": "99",
+                "AppLabel": "buzzer_timer",
+                "min": "0",
+                "max": "99999",
+                "Placement": "Detail"
             }
         }
     },
@@ -1320,22 +1342,31 @@
         "name": "AlmondBlink",
         "isActuator": "true",
         "defaultIcon": "switch_off",
+        
         "Indexes": {
             "1": {
-                "genericIndexID": "102",
+                "genericIndexID": "94",
+                "Placement": "Header",
                 "row_no": 1
             },
             "2": {
                 "row_no": 2,
-                "genericIndexID": "98"
+                "genericIndexID": "97",
+                "Placement": "Detail"
             },
             "3": {
                 "row_no": 3,
-                "genericIndexID": "99"
+                "genericIndexID": "98",
+                "min": "1",
+                "max": "16777215",
+                "Placement": "Detail"
             },
             "4": {
                 "row_no": 4,
-                "genericIndexID": "100"
+                "genericIndexID": "99",
+                "min": "0",
+                "max": "99999",
+                "Placement": "Detail"
             }
         }
     }

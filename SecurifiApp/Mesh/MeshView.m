@@ -678,7 +678,7 @@
 //            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
             }
             else{
-                msg = @"Unplug all cables except WAN cable. Do not unplug power cable";
+                msg = @"Unplug all cables except WAN cable from the additional Almond you are adding. Do not unplug power cable";
             }
             
             [self showAlert:self.almondNormalName msg:msg cancel:cancelTitle other:nil tag:ADD_FAIL];
