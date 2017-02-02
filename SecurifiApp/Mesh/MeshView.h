@@ -23,6 +23,7 @@
 @property (nonatomic) BOOL isMeshEditView;
 @property (nonatomic) id<MeshViewDelegate> delegate;
 @property (nonatomic) NSInteger maxHopCount;
+@property (nonatomic) SFIRouterSummary *routerSummary;
 
 - (void)addInterfaceView:(CGRect)frame;
 - (void)removeNotificationObserver;

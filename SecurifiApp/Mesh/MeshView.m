@@ -17,6 +17,7 @@
 #import "ConnectionStatus.h"
 #import "AlmondManagement.h"
 
+#define USED_NAME -3
 #define ADD_FAIL -2
 #define NETWORK_OFFLINE -1
 #define HELP_INFO 0
@@ -618,18 +619,25 @@
 }
 
 -(void)requestSetSlaveName{
-    if(self.nameField.text.length == 0){
-        [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondUniqueName newName:self.selectedName];
-    }else{
-        if(self.nameField.text.length <= 2){
-            //show toast
-            [self.nameField resignFirstResponder];
-            [self.delegate showToastDelegate:@"Please Enter a name of atleast 3 characters."];
-            return;
-        }
-        [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondUniqueName newName:self.nameField.text];
+    [self.nameField resignFirstResponder];
+    
+    NSString *location = self.nameField.text.length == 0? self.selectedName: self.nameField.text;
+    
+    if([self.routerSummary hasSameAlmondLocation:location]){
+        [self showAlert:@"" msg:@"This Location name already has been used by other Almond in your Home Wi-Fi Network. Do you want to continue?" cancel:@"Yes" other:@"No" tag:USED_NAME];
+        return;
     }
     
+    if(location.length <= 2){
+        [self.delegate showToastDelegate:@"Please Enter a name of atleast 3 characters."];
+        return;
+    }
+    else if (location.length > 32) {
+        [self.delegate showToastDelegate:NSLocalizedString(@"accounts.itoast.almondNameMax32Characters", @"Almond Name cannot be more than 32 characters.")];
+        return;
+    }
+    
+    [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondUniqueName newName:location];
     [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:10];
 }
 
@@ -964,11 +972,17 @@
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self.delegate showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
             
-        }else if(alertView.tag == ADD_FAIL){
+        }
+        else if(alertView.tag == ADD_FAIL){
             if(self.currentView.tag != BLINK_CHECK)
                 return;
             
             [self onYesLEDBlinking:nil];
+        }
+        else if(alertView.tag == USED_NAME){
+            NSString *location = self.nameField.text.length == 0? self.selectedName: self.nameField.text;
+            [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondUniqueName newName:location];
+            [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:10];
         }
     }
     else{
