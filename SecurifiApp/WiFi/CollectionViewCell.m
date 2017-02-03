@@ -66,7 +66,7 @@
     self.dayLabel.text = @"";
     self.dayLabel.font = [UIFont securifiLightFont:12];
     self.dayLabel.textAlignment = NSTextAlignmentCenter;
-    self.dayLabel.textColor = [UIColor whiteColor];
+    self.dayLabel.textColor = [UIColor darkGrayColor];
     [self addSubview:self.dayLabel];
 }
 @end

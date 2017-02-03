@@ -24,7 +24,7 @@
     return self;
 }
 -(void)drawPickerView{
-    _pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 100, 200)];
+    _pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 100, 160)];
     _pickerView.delegate = self;
     _pickerView.dataSource = self;
     _pickerView.center = self.center;

@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GenericIndexValue.h"
+#import "GenericParams.h"
 
 @interface DeviceNotificationViewController : UIViewController
-
+@property (nonatomic)GenericIndexValue *genericIndexValue;
+@property (nonatomic)GenericParams *genericParams;
 @end

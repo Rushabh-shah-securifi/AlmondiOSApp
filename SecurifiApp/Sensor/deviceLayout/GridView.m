@@ -42,12 +42,20 @@ NSString *blockedType;
 -(void)addSegmentControll{
     NSArray *itemArray = [NSArray arrayWithObjects: NSLocalizedString(@"always", @"Always"), NSLocalizedString(@"schedule", @"Schedule"), NSLocalizedString(@"block", @"Block"), nil];
     self.allowOnNetworkSegment = [[UISegmentedControl alloc]initWithItems:itemArray];
+    
     self.allowOnNetworkSegment.frame = CGRectMake(5,10, self.frame.size.width - 10, 25);
     self.allowOnNetworkSegment.center = CGPointMake(CGRectGetMidX(self.bounds), self.allowOnNetworkSegment.center.y);
     self.allowOnNetworkSegment.tintColor = [UIColor whiteColor];
     //    self.allowOnNetworkSegment.segmentedControlStyle = UISegmentedControlStylePlain;
     [self.allowOnNetworkSegment addTarget:self action:@selector(segmentControllChanged:) forControlEvents: UIControlEventValueChanged];
-    [self setUpAllowOnNetworkSegment];
+   // [self setUpAllowOnNetworkSegment];
+    self.scrollView.hidden = NO;
+    self.allowOnNetworkSegment.hidden = YES;
+    self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(self.frame.origin.x, self.allowOnNetworkSegment.frame.origin.y + self.allowOnNetworkSegment.frame.size.height + 10, self.frame.size.width - 15, self.frame.size.height - self.frame.origin.y - 100)];
+    
+    self.scrollView.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.scrollView];
+    [self addInfo];
     [self initializeblockedDaysArray];
     [self addSubview:self.allowOnNetworkSegment];
     
@@ -70,7 +78,7 @@ NSString *blockedType;
         self.scrollView.hidden = NO;
         self.allowOnNetworkSegment.selectedSegmentIndex = 1; //OnSchedule
         blockedType = @"2";
-        [self segmentControllChanged:nil];
+       // [self segmentControllChanged:nil];
     }
 }
 
@@ -118,6 +126,9 @@ NSString *blockedType;
 }
 -(void)addInfo{
     UIView *infoView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 200, 30)];
+    UILabel *infoLabel = [[UILabel alloc]
+    initWithFrame:CGRectMake(10, infoView.frame.size.height, self.scrollView.frame.size.width - 20, 80)];
+    /*
     infoView.backgroundColor = [UIColor clearColor];
     UILabel *blockImg;
     UILabel *blockLbl;
@@ -145,15 +156,14 @@ NSString *blockedType;
     
     infoView.center = CGPointMake(CGRectGetMidX(self.scrollView.bounds), infoView.center.y);
     [self.scrollView addSubview:infoView];
-    UILabel *infoLabel = [[UILabel alloc]
-                          initWithFrame:CGRectMake(0, infoView.frame.size.height, self.scrollView.frame.size.width, 80)];
-    
+   
+    */
     infoLabel.text = NSLocalizedString(@"scheduleDescription", @"24/7");
     infoLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     infoLabel.backgroundColor = [UIColor clearColor];
     infoLabel.font = [UIFont securifiLightFont:12];
     infoLabel.center = CGPointMake(CGRectGetMidX(self.scrollView.bounds), infoLabel.center.y);
-    infoLabel.textColor = [UIColor whiteColor];
+    infoLabel.textColor = [UIColor darkGrayColor];
     infoLabel.numberOfLines = 4;
     infoLabel.baselineAdjustment = UIBaselineAdjustmentAlignBaselines;
     infoLabel.textAlignment = NSTextAlignmentCenter;
@@ -251,7 +261,7 @@ NSString *blockedType;
         [cell handleCornerCells];
         return cell;
     }
-    cell.backgroundColor = [UIColor whiteColor];
+    cell.backgroundColor = [SFIColors clientGreenColor];
     cell.userInteractionEnabled = YES;
     [cell setlabel];
     NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:row];
@@ -345,13 +355,14 @@ NSString *blockedType;
 }
 -(void)addSaveButton{
     NSLog(@"self.collectionView.frame.size.height %f",self.collectionView.frame.size.height);
-    UIButton *saveButton = [[UIButton alloc]initWithFrame:CGRectMake(0,self.collectionView.frame.size.height - 100,110,30)];
+    UILabel *saveButton = [[UILabel alloc]initWithFrame:CGRectMake(0,self.collectionView.frame.size.height - 140,300,30)];
     NSLog(@" savebutton frame %@",NSStringFromCGRect(saveButton.frame));
-    saveButton.backgroundColor = [UIColor whiteColor];
-    saveButton.titleLabel.font = [UIFont securifiFont:14];
-    [saveButton setTitleColor:self.color forState:UIControlStateNormal];
-    [saveButton setTitle:NSLocalizedString(@"save", @"SAVE") forState:UIControlStateNormal];
-    [saveButton addTarget:self action:@selector(saveButtonTap:) forControlEvents:UIControlEventTouchUpInside];
+    saveButton.backgroundColor = [UIColor clearColor];
+    saveButton.font = [UIFont securifiFont:12];
+    saveButton.textColor = [UIColor darkGrayColor];
+    saveButton.numberOfLines = 2;
+    saveButton.text = @"Tap on a day's name or an hour's number to select entirely";
+    
     saveButton.center = CGPointMake(CGRectGetMidX(self.scrollView.bounds), saveButton.center.y);
     [self.scrollView addSubview:saveButton];
     

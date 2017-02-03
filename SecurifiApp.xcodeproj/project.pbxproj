@@ -444,6 +444,7 @@
 		CE3C497F1E40734C00AD6E17 /* PickerComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3C497E1E40734C00AD6E17 /* PickerComponentView.m */; };
 		CE3C49821E41C04700AD6E17 /* DeviceNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3C49811E41C04700AD6E17 /* DeviceNotificationViewController.m */; };
 		CE3C49851E41EA7600AD6E17 /* NotificationCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3C49841E41EA7600AD6E17 /* NotificationCellTableViewCell.m */; };
+		CE3C49C61E445F5300AD6E17 /* DevicePropertiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3C49C51E445F5300AD6E17 /* DevicePropertiesViewController.m */; };
 		CE3EDAF21D4742EC00C153A6 /* BrowsingHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3EDAEF1D4742EC00C153A6 /* BrowsingHistoryViewController.m */; };
 		CE3EDAF31D4742EC00C153A6 /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3EDAF11D4742EC00C153A6 /* SearchTableViewController.m */; };
 		CE40BF131D225791007C2148 /* BrowsingHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF0A1D225791007C2148 /* BrowsingHistory.m */; };
@@ -619,7 +620,6 @@
 		F4B8768B1D54653500DCF76F /* GenericParams.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B876611D54653500DCF76F /* GenericParams.m */; };
 		F4B8768C1D54653500DCF76F /* PerformanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B876631D54653500DCF76F /* PerformanceTest.m */; };
 		F4B8768D1D54653500DCF76F /* PerformanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B876631D54653500DCF76F /* PerformanceTest.m */; };
-		F4BF6CF61E3F0BBE00E2BC21 /* DevicePropertiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BF6CF51E3F0BBE00E2BC21 /* DevicePropertiesViewController.m */; };
 		F4BF6CF91E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BF6CF81E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m */; };
 		F4BF6CFA1E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BF6CF81E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m */; };
 		F4D633E01DC217EE000BF076 /* hue_bridge.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4D633BF1DC217EE000BF076 /* hue_bridge.pdf */; };
@@ -1147,6 +1147,8 @@
 		CE3C49811E41C04700AD6E17 /* DeviceNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceNotificationViewController.m; sourceTree = "<group>"; };
 		CE3C49831E41EA7600AD6E17 /* NotificationCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCellTableViewCell.h; sourceTree = "<group>"; };
 		CE3C49841E41EA7600AD6E17 /* NotificationCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCellTableViewCell.m; sourceTree = "<group>"; };
+		CE3C49C41E445F5300AD6E17 /* DevicePropertiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevicePropertiesViewController.h; sourceTree = "<group>"; };
+		CE3C49C51E445F5300AD6E17 /* DevicePropertiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevicePropertiesViewController.m; sourceTree = "<group>"; };
 		CE3EDAEE1D4742EC00C153A6 /* BrowsingHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistoryViewController.h; sourceTree = "<group>"; };
 		CE3EDAEF1D4742EC00C153A6 /* BrowsingHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistoryViewController.m; sourceTree = "<group>"; };
 		CE3EDAF01D4742EC00C153A6 /* SearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewController.h; sourceTree = "<group>"; };
@@ -1384,8 +1386,6 @@
 		F4B876611D54653500DCF76F /* GenericParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericParams.m; sourceTree = "<group>"; };
 		F4B876621D54653500DCF76F /* PerformanceTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceTest.h; sourceTree = "<group>"; };
 		F4B876631D54653500DCF76F /* PerformanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceTest.m; sourceTree = "<group>"; };
-		F4BF6CF41E3F0BBE00E2BC21 /* DevicePropertiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevicePropertiesViewController.h; sourceTree = "<group>"; };
-		F4BF6CF51E3F0BBE00E2BC21 /* DevicePropertiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevicePropertiesViewController.m; sourceTree = "<group>"; };
 		F4BF6CF71E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevicePropertyTableViewCell.h; sourceTree = "<group>"; };
 		F4BF6CF81E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevicePropertyTableViewCell.m; sourceTree = "<group>"; };
 		F4D633BF1DC217EE000BF076 /* hue_bridge.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = hue_bridge.pdf; sourceTree = "<group>"; };
@@ -2567,8 +2567,8 @@
 				F4B876611D54653500DCF76F /* GenericParams.m */,
 				F4B876621D54653500DCF76F /* PerformanceTest.h */,
 				F4B876631D54653500DCF76F /* PerformanceTest.m */,
-				F4BF6CF41E3F0BBE00E2BC21 /* DevicePropertiesViewController.h */,
-				F4BF6CF51E3F0BBE00E2BC21 /* DevicePropertiesViewController.m */,
+				CE3C49C41E445F5300AD6E17 /* DevicePropertiesViewController.h */,
+				CE3C49C51E445F5300AD6E17 /* DevicePropertiesViewController.m */,
 				F4BF6CF71E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.h */,
 				F4BF6CF81E3F1DCA00E2BC21 /* DevicePropertyTableViewCell.m */,
 				CE3C49801E41C04700AD6E17 /* DeviceNotificationViewController.h */,
@@ -3492,7 +3492,6 @@
 				1C7E7DCD1A41A0990026F0BA /* SFISlider.m in Sources */,
 				CEF6F4FA1C92CAD600C68975 /* RulesConstants.m in Sources */,
 				1C7E7D911A41A0990026F0BA /* SFIRouterRebootTableViewCell.m in Sources */,
-				F4BF6CF61E3F0BBE00E2BC21 /* DevicePropertiesViewController.m in Sources */,
 				F4B875571D53837B00DCF76F /* UIImageView+Securifi.m in Sources */,
 				CEF6F5021C92CAD600C68975 /* TimeView.m in Sources */,
 				1C7E7DBB1A41A0990026F0BA /* SFICardView.m in Sources */,
@@ -3592,6 +3591,7 @@
 				CEF6F4E81C92CAD600C68975 /* RulesHue.m in Sources */,
 				F4B876841D54653500DCF76F /* DevicePayload.m in Sources */,
 				F4F981D21DFA899B00FB0676 /* List_TypeView.m in Sources */,
+				CE3C49C61E445F5300AD6E17 /* DevicePropertiesViewController.m in Sources */,
 				1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */,
 				1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */,
 				F4FDAB441E13C4BB0061089E /* IoTLearnMoreTableViewCell.m in Sources */,

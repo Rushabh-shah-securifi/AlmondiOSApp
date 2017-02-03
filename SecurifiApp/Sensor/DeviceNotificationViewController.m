@@ -9,12 +9,14 @@
 #import "DeviceNotificationViewController.h"
 #import "UICommonMethods.h"
 #import "NotificationCellTableViewCell.h"
+#import "GridView.h"
+#import "SFIColors.h"
 
 static const int defHeaderHeight = 25;
 static const float defRowHeight = 44;
 static const int defHeaderLableHt = 20;
 
-@interface DeviceNotificationViewController ()
+@interface DeviceNotificationViewController ()<GridViewDelegate>
 @property (weak, nonatomic) IBOutlet UISwitch *notificationSwitch;
 @property (weak, nonatomic) IBOutlet UITableView *notifyMeTable;
 
@@ -24,6 +26,13 @@ static const int defHeaderLableHt = 20;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.notifyMeTable.hidden = YES;
+    NSString *schedule = [Client getScheduleById:@(_genericIndexValue.deviceID).stringValue];
+    GridView *gridView = [[GridView alloc]initWithFrame:CGRectMake(0, 66, self.view.frame.size.width, self.view.frame.size.height - 70) color:[SFIColors clientGreenColor] genericIndexValue:_genericIndexValue onSchedule:(NSString*)schedule];
+    gridView.delegate = self;
+    gridView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:gridView];
+    
     // Do any additional setup after loading the view.
 }
 
@@ -64,4 +73,12 @@ static const int defHeaderLableHt = 20;
     }
     return cell;
 }
+
+- (IBAction)doneButtonClicked:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+- (IBAction)saveButtonClicked:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 @end

@@ -39,7 +39,11 @@ static const int defHeaderLableHt = 20;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self  initSection];
+    
+    NSMutableArray *sectionArr = [NSMutableArray new];
     [self setUpDevicePropertyEditHeaderView];
+    NSMutableArray *genericIndexObjs = [[NSMutableArray alloc]init];
+    
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
@@ -83,7 +87,7 @@ static const int defHeaderLableHt = 20;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat kExpandedCellHeight = 250;
+    CGFloat kExpandedCellHeight = 160;
     CGFloat kNormalCellHeigh = 50;
     
     if (self.indexPath == indexPath)
@@ -131,7 +135,7 @@ static const int defHeaderLableHt = 20;
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 1)];
-    [UICommonMethods addLineSeperator:view yPos:0];
+    //[UICommonMethods addLineSeperator:view yPos:0];
     return view;
     
 }
@@ -151,7 +155,7 @@ static const int defHeaderLableHt = 20;
             if([picView isKindOfClass:[PickerComponentView class]])
                [picView removeFromSuperview];
         }
-        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, 200) arrayList:@[@"1",@"2",@"3",@"1",@"2",@"3"]];
+        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, 160) arrayList:@[@"1",@"2",@"3",@"1",@"2",@"3"]];
         //pickerView.center = self.view.center;
         pickerView.center = CGPointMake(cell.contentView.bounds.size.width/2, cell.contentView.center.y);
         [cell.contentView addSubview:pickerView];
@@ -164,17 +168,17 @@ static const int defHeaderLableHt = 20;
     {
         DeviceNotificationViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"DeviceNotificationViewController"];
     
-        [self.navigationController pushViewController:viewController animated:YES];
+        [self presentViewController:viewController animated:YES completion:nil];
     }
-    else{
+    else if(indexPath.section != 1 || indexPath.section != 0) {
         if(self.indexPath == indexPath)
             self.indexPath = nil;
         else
             self.indexPath = indexPath;
         
         [tableView beginUpdates]; // Animate the height change
-        //[tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
+        //[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         [tableView endUpdates];
     }
 }
@@ -184,6 +188,18 @@ static const int defHeaderLableHt = 20;
     [self dismissViewControllerAnimated:YES completion:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
-
+-(void)getDeviceLayoutArray{
+    NSArray *sectionArrRef = @[@"-1",@"-2",@"10000",@"-42",@"-43"];
+    NSMutableArray *sectionArr = [[NSMutableArray alloc]init];
+    for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList)
+    {
+        GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
+        NSLog(@"group lbl and ID %@ ,%@",genericIndexObj.groupLabel,genericIndexObj.ID);
+        if([genericIndexObj.ID isEqualToString:@"-1"]){
+            NSDictionary *NameDict = [[NSDictionary alloc]init];
+            
+        }
+    }
+}
 
 @end
