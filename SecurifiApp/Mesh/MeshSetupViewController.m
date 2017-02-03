@@ -234,6 +234,7 @@ int mii;
         NSLog(@"nav viewheight: %f", CGRectGetHeight(self.view.frame));
         self.meshView.delegate = self;
         self.meshView.maxHopCount = self.maxHopCount;
+        self.meshView.routerSummary = self.routerSummary;
         
         [self.meshView initializeFirstScreen:[CommonMethods getMeshDict:@"Interface"]];
         [self.meshView addInfoScreen:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-20)];
@@ -337,8 +338,8 @@ int mii;
 - (void)presentMeshController{
     MeshEditViewController *ctrl = [MeshEditViewController new];
     ctrl.delegate = self;
-    ctrl.uniqueName = self.almondStatObj.slaveUniqueName;
-    ctrl.isMaster = self.almondStatObj.isMaster;
+    ctrl.almondStatObj = self.almondStatObj;
+    ctrl.routerSummary = self.routerSummary;
     [self presentViewController:ctrl animated:YES completion:nil];
 }
 

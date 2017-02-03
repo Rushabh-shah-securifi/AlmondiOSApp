@@ -791,7 +791,9 @@ int mii;
                 //NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
                 self.routerSummary = (SFIRouterSummary *)genericRouterCommand.command;
                 self.enableAdvRouter = [self isAl3AnyMode];
-                //NSLog(@"routersummary: %@", self.routerSummary);
+
+                //setting firmware version to use in meshview
+                [AlmondManagement currentAlmond].firmware = self.routerSummary.firmwareVersion;
                 
                 if(self.currentConnectionMode == SFIAlmondConnectionMode_cloud){ //Do only in Cloud
                     NSLog(@"updating local network settings");
@@ -988,13 +990,15 @@ int mii;
                  if(self.almCount == 0){
                      MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupViewController" isStatView:YES];
                      [self presentController:[AlmondStatus getMasterAlmondStatus:self.routerSummary] ctrl:ctrl];
-                 }else{
+                 }
+                 else{
                      NSDictionary *slaveDict = self.routerSummary.almondsList[_almCount];
                      [MeshPayload requestSlaveDetails:mii
                                       slaveUniqueName:slaveDict[SLAVE_UNIQUE_NAME]
                                             almondMac:[AlmondManagement currentAlmond].almondplusMAC];
                  }
-             }else{
+             }
+             else{
                  MeshSetupViewController *ctrl = [self getMeshController:@"MeshSetupAdding" isStatView:NO];
                  ctrl.maxHopCount = self.routerSummary.maxHopCount;
                  dispatch_async(dispatch_get_main_queue(), ^{
@@ -1064,6 +1068,7 @@ int mii;
     MeshSetupViewController *meshController = [storyboard instantiateViewControllerWithIdentifier:identifier];
     meshController.isStatusView = isStatView;
     meshController.hasLocationTag = self.routerSummary.location? YES: NO;
+    meshController.routerSummary = self.routerSummary;
     return meshController;
 }
 

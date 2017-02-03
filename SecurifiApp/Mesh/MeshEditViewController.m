@@ -16,12 +16,14 @@
 #import "AlmondManagement.h"
 
 #define NETWORK_OFFLINE -1
+#define USED_NAME 0
+#define SAME_NAME 1
 
 @interface MeshEditViewController ()<MeshViewDelegate, MBProgressHUDDelegate>
 @property (nonatomic) MeshView *meshView;
 @property (nonatomic) MBProgressHUD *HUD;
 @property (nonatomic) int mii;
-@property (nonatomic) NSString *name;
+@property (nonatomic) NSString *location;
 @property (nonatomic) NSTimer *nonRepeatingTimer;
 
 @end
@@ -45,6 +47,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 - (void)initializeNotification{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onMobileResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
@@ -58,8 +61,6 @@
     
     [center addObserver:self selector:@selector(onKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
-
-
 
 - (void)setupMeshNamingView{
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -85,6 +86,7 @@
     _HUD.delegate = self;
     [self.view addSubview:_HUD];
 }
+
 #pragma mark meshview delegates
 -(void)dismissControllerDelegate{
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -113,25 +115,39 @@
 }
 
 #pragma mark command methods
--(void)requestSetSlaveNameDelegate:(NSString *)newName{
-    if(newName.length <= 2){
+-(void)requestSetSlaveNameDelegate:(NSString *)location{
+    self.location = location;
+    if([self.almondStatObj.location isEqualToString:location]){
+        [self showAlert:@"" msg:@"The Location you have selected is same as previous. Do you want to continue?" cancel:@"Yes" other:@"No" tag:SAME_NAME];
+        return;
+    }
+    if([self.routerSummary hasSameAlmondLocation:location]){
+        [self showAlert:@"" msg:@"This Location name already has been used by other Almond in your Home Wi-Fi Network. Do you want to continue?" cancel:@"Yes" other:@"No" tag:USED_NAME];
+        return;
+    }
+    
+    if(location.length <= 2){
         //show toast
         [self showToast:@"Please Enter a name of atleast 3 characters."];
         return;
     }
-    else if (newName.length > 32) {
+    else if (location.length > 32) {
          [self showToast:NSLocalizedString(@"accounts.itoast.almondNameMax32Characters", @"Almond Name cannot be more than 32 characters.")];
         return;
     }
-    if(self.isMaster){
-        [[SecurifiToolkit sharedInstance] asyncSendToNetwork:[GenericCommand requestAlmondLocationChange:_mii location:newName]];
-            ;
+    
+    [self sendLocationChangeCommand];
+}
+
+- (void)sendLocationChangeCommand{
+    if(self.almondStatObj.isMaster){
+        [[SecurifiToolkit sharedInstance] asyncSendToNetwork:[GenericCommand requestAlmondLocationChange:_mii location:self.location]];
+        ;
     }else{
         //this will actually change location
-        [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.uniqueName newName:newName];
+        [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondStatObj.slaveUniqueName newName:self.location];
     }
-
-    self.name = newName;
+    
     [self showHudWithTimeoutMsgDelegate:@"Loading..." time:10];
 }
 
@@ -172,7 +188,7 @@
     [self hideHUDDelegate];
     BOOL isSuccessful = [payload[@"Success"] boolValue];
     if(isSuccessful){
-        [self.delegate slaveNameDidChangeDelegate:_name];
+        [self.delegate slaveNameDidChangeDelegate:_location];
         [self showToast:@"Successfully updated!"];
     }
     else{//failed
@@ -235,7 +251,7 @@
 
 - (void)showAlert:(NSString *)title msg:(NSString *)msg cancel:(NSString*)cncl other:(NSString *)other tag:(int)tag{
     NSLog(@"mesh view show alert tag: %d", tag);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:other, nil];
     alert.tag = tag;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [alert show];
@@ -254,7 +270,14 @@
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
         }
-    }else{
+        else if(alertView.tag == USED_NAME){
+            [self sendLocationChangeCommand];
+        }
+        else if(alertView.tag == SAME_NAME){
+            [self sendLocationChangeCommand];
+        }
+    }
+    else{
         
     }
 }

@@ -21,16 +21,16 @@
 #import "SFIAlmondPlus.h"
 #import "AlmondManagement.h"
 #import "AlmondPlan.h"
+#import "NSString+securifi.h"
 
 @implementation GenericIndexUtil
 
 
 +(GenericIndexValue*)getHeaderGenericIndexValueForDevice:(Device*)device{
-    //NSLog(@"devicename: %@, deviceid: %d", device.name, device.ID);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSArray *genericIndexValues = [self getGenericIndexValuesByPlacementForDevice:device placement:HEADER];
-    //NSLog(@"generic index values header: %@", genericIndexValues);
-    if([genericIndexValues count]<=0){
+    
+    if([genericIndexValues count] <= 0){
         return [[GenericIndexValue alloc]initWithGenericIndex:nil genericValue:[[GenericValue alloc]initUnknownDevice] index:0 deviceID:device.ID];
     }
     
@@ -39,21 +39,22 @@
     int index = 0;
     GenericValue *genericValue; //the value assigned to this will be generic value of header
     GenericIndexClass *genericIndex;
+    BOOL headerFound = NO;
+    
     for(GenericIndexValue *genericIndexValue in genericIndexValues){
-        
         if(genericIndexValue.genericValue == nil)
             continue;
         
-        if([genericIndexValue.genericIndex.placement isEqualToString:HEADER] || [genericIndexValue.genericIndex.placement isEqualToString:@"Header_Detail_Primary"]){
+        if(([genericIndexValue.genericIndex.placement isEqualToString:HEADER] || [genericIndexValue.genericIndex.placement isEqualToString:@"Header_Detail_Primary"]) && headerFound == NO){
+            headerFound = YES;
             
             genericValue = genericIndexValue.genericValue;
             genericIndex = genericIndexValue.genericIndex;
             
             if([genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
-                NSLog(@"type: %d, grouplabel: %@, display text: %@", device.type, genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.displayText);
                 headerText = [NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.displayText];
-                NSLog(@"header text: %@", headerText);
-            }else{
+            }
+            else{
                 headerText = genericIndexValue.genericValue.displayText;
             }
             if(genericIndexValue.genericValue.icon.length == 0)
@@ -61,25 +62,23 @@
             
             index = genericIndexValue.index;
         }
-        else if([genericIndexValue.genericIndex.placement rangeOfString:HEADER options:NSCaseInsensitiveSearch].location != NSNotFound){ //contains
+        
+        else if([genericIndexValue.genericIndex.placement containsString:HEADER]){ //contains
             if(genericIndexValue.genericValue.iconText){
-                if(detailText.length == 0)
+                if(detailText.length == 0 && headerText.length == 0)
                     [detailText appendString:[NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.iconText]];
-                else[detailText appendString:[NSString stringWithFormat:@", %@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.iconText]];
+                else
+                    [detailText appendString:[NSString stringWithFormat:@", %@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.iconText]];
             }
-            
             else{
-                if(detailText.length == 0)
+                if(detailText.length == 0 && headerText.length == 0)
                     [detailText appendString:[NSString stringWithFormat:@"%@", genericIndexValue.genericValue.displayText]];
                 else
                     [detailText appendString:[NSString stringWithFormat:@", %@", genericIndexValue.genericValue.displayText]];
             }
-            
         }
-        NSLog(@"header text: %@, detail text: %@", headerText, detailText);
     }//for
-    NSLog(@"generic value: %@, generic Index: %@", genericValue, genericIndex);
-    NSLog(@"generic value display text before: %@", genericValue.displayText);
+    
     if(genericValue == nil){
         genericValue = [GenericValue new];
         GenericDeviceClass *genericDevice = toolkit.genericDevices[@(device.type).stringValue];
@@ -88,10 +87,11 @@
     
     if(detailText.length > 0){
         genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:[NSString stringWithFormat:@"%@ %@", headerText, detailText]];
-    }else if(headerText.length > 0){
+    }
+    else if(headerText.length > 0){
         genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:[NSString stringWithFormat:@"%@", headerText]];
     }
-//    NSLog(@"generic value display text after: %@", genericValue.displayText);
+
     NSLog(@"Final header text: %@, detail text: %@", headerText, detailText);
     return [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:index deviceID:device.ID];
 }
@@ -133,47 +133,59 @@
 
 
 +(NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement{
-    //NSLog(@"%s, placement: %@", __PRETTY_FUNCTION__, placement);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    GenericDeviceClass *genericDevice = toolkit.genericDevices[@(device.type).stringValue];
-    if(genericDevice==nil)
-        return [NSMutableArray new];
-    NSDictionary *deviceIndexes = genericDevice.Indexes;
     NSMutableArray *genericIndexValues = [NSMutableArray new];
-    NSMutableArray *deviceIndexArr = [NSMutableArray arrayWithArray:deviceIndexes.allKeys];
-//    if(device.type == SFIDeviceType_AlmondBlink_64){
-//        NSLog(@"SFIDeviceType_AlmondBlink_64 in getGenericIndexValuesByPlacementForDevice");
-//        NSLog(@"deviceIndexArr %@",deviceIndexArr);
-//        [deviceIndexArr addObject:@"5"];
-//    }
-    
-    for(NSString *IndexId in deviceIndexArr){
-        
-        DeviceIndex *deviceIndex = deviceIndexes[IndexId];
-        GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
-        if(device.type == SFIDeviceType_AlmondBlink_64){
-            NSLog(@"SFIDeviceType_AlmondBlink_64 in getGenericIndexValuesByPlacementForDevice %@",genericIndexObj.ID);
-          
-        }
 
-        GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexObj];
-        if(deviceIndex.placement != nil){
-            //NSLog(@" device index place ment %@",deviceIndex.placement);
-            copyGenericIndex.placement = deviceIndex.placement;
-        }
-        if([copyGenericIndex.placement rangeOfString:placement options:NSCaseInsensitiveSearch].location != NSNotFound){//contains
-            NSLog(@"inside placement: %@", copyGenericIndex.placement);
-            GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:copyGenericIndex.ID
-                                                                               forValue:[self getHeaderValueFromKnownValuesForDevice:device indexID:IndexId]];
-            NSLog(@"genericvalue: %@, genericValue.value: %@, transformedvalue: %@", genericValue, genericValue.value, genericValue.transformedValue);
-            if(deviceIndex.min != nil && deviceIndex.max  != nil){
-                copyGenericIndex.formatter.min = deviceIndex.min.intValue;
-                copyGenericIndex.formatter.max = deviceIndex.max.intValue;
+    
+    if(device.type == SFIDeviceType_GenericDevice_60){
+        for(DeviceKnownValues *knownValue in device.knownValues){
+            GenericIndexClass *genericIndexObj = toolkit.genericIndexes[knownValue.genericIndex];
+            GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexObj];
+            
+            if([copyGenericIndex.placement containsString:placement] || ([placement isEqualToString:@"Detail"] && [copyGenericIndex.placement isEqualToString:HEADER])){//contains
+                GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:copyGenericIndex.ID
+                                                                                   forValue:knownValue.value];
+                if(genericValue!=nil && knownValue.value != nil) //check for index exists
+                    [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:copyGenericIndex genericValue:genericValue index:knownValue.index deviceID:device.ID]];
             }
-            if(genericValue!=nil && [Device getValueForIndex:IndexId.intValue deviceID:device.ID] != nil) //check for index exists
-                [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:copyGenericIndex genericValue:genericValue index:IndexId.intValue deviceID:device.ID]];
+            
         }
     }
+    
+    else{
+        GenericDeviceClass *genericDevice = toolkit.genericDevices[@(device.type).stringValue];
+        if(genericDevice==nil)
+            return [NSMutableArray new];
+        NSDictionary *deviceIndexes = genericDevice.Indexes;
+        NSMutableArray *deviceIndexesKeys = [NSMutableArray arrayWithArray:deviceIndexes.allKeys];
+        
+        for(NSString *IndexId in deviceIndexesKeys){
+            DeviceIndex *deviceIndex = deviceIndexes[IndexId];
+            GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
+            
+            GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexObj];
+            if(deviceIndex.placement != nil){
+                copyGenericIndex.placement = deviceIndex.placement;
+            }
+            if([copyGenericIndex.placement containsString:placement]){//contains
+                GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:copyGenericIndex.ID
+                                                                                   forValue:[self getHeaderValueFromKnownValuesForDevice:device indexID:IndexId]];
+                
+                //override device index values
+                if(deviceIndex.min != nil && deviceIndex.max  != nil){
+                    copyGenericIndex.formatter.min = deviceIndex.min.intValue;
+                    copyGenericIndex.formatter.max = deviceIndex.max.intValue;
+                }
+                if(deviceIndex.appLabel != nil)
+                    copyGenericIndex.groupLabel = deviceIndex.appLabel;
+                
+                
+                if(genericValue!=nil && [Device getValueForIndex:IndexId.intValue deviceID:device.ID] != nil) //check for index exists
+                    [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:copyGenericIndex genericValue:genericValue index:IndexId.intValue deviceID:device.ID]];
+            }
+        }
+    }
+
     return genericIndexValues;
 }
 

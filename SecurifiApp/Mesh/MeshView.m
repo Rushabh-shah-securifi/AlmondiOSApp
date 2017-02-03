@@ -17,7 +17,7 @@
 #import "ConnectionStatus.h"
 #import "AlmondManagement.h"
 
-
+#define USED_NAME -3
 #define ADD_FAIL -2
 #define NETWORK_OFFLINE -1
 #define HELP_INFO 0
@@ -94,6 +94,7 @@
 @property (nonatomic) NSString *selectedName;
 @property (nonatomic) BOOL isYesBlinkTapped;
 
+@property (nonatomic) UIAlertView *alert;
 @property (nonatomic)int mii;
 @end
 
@@ -618,18 +619,25 @@
 }
 
 -(void)requestSetSlaveName{
-    if(self.nameField.text.length == 0){
-        [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondUniqueName newName:self.selectedName];
-    }else{
-        if(self.nameField.text.length <= 2){
-            //show toast
-            [self.nameField resignFirstResponder];
-            [self.delegate showToastDelegate:@"Please Enter a name of atleast 3 characters."];
-            return;
-        }
-        [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondUniqueName newName:self.nameField.text];
+    [self.nameField resignFirstResponder];
+    
+    NSString *location = self.nameField.text.length == 0? self.selectedName: self.nameField.text;
+    
+    if([self.routerSummary hasSameAlmondLocation:location]){
+        [self showAlert:@"" msg:@"This Location name already has been used by other Almond in your Home Wi-Fi Network. Do you want to continue?" cancel:@"Yes" other:@"No" tag:USED_NAME];
+        return;
     }
     
+    if(location.length <= 2){
+        [self.delegate showToastDelegate:@"Please Enter a name of atleast 3 characters."];
+        return;
+    }
+    else if (location.length > 32) {
+        [self.delegate showToastDelegate:NSLocalizedString(@"accounts.itoast.almondNameMax32Characters", @"Almond Name cannot be more than 32 characters.")];
+        return;
+    }
+    
+    [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondUniqueName newName:location];
     [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:10];
 }
 
@@ -653,12 +661,24 @@
     NSLog(@"check point 2");
     if(isSuccessful){
         //do nothing, wait for dynamic response
+        
+        //new case
+        /*
+         {\"CommandMode\":\"Reply\",\"CommandType\":\"AddWirelessSlaveMobile\",\"Reason\":\"Adding to network.\",\"Success\":\"true\"}
+         */
+//        [self alertViewCancel:self.alert];
+        if(self.alert){
+            [self.alert dismissWithClickedButtonIndex:0 animated:YES];
+            [self onYesLEDBlinking:nil];
+        }
     }
     else{
         NSLog(@"check point 3");
         [self.delegate hideHUDDelegate];
         NSString *msg;
         NSString *reason = payload[REASON];
+        NSString *cancelTitle = [self toShowAlertWithoutOk:[AlmondManagement currentAlmond].firmware]? nil: @"Ok";
+        NSLog(@"firmware: %@",[AlmondManagement currentAlmond].firmware);
         if([reason.lowercaseString hasPrefix:@"unplug all"]){
             if(self.wirelessBtn.selected){
             msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
@@ -666,9 +686,10 @@
 //            [self.blinkTimer invalidate]; //you don't have to invalidate, on unplugging it slave will auto reboot, and we may expect true response
             }
             else{
-                msg = @"Unplug all cables except WAN cable. Do not unplug power cable";
+                msg = @"Unplug all cables except WAN cable from the additional Almond you are adding. Do not unplug power cable";
             }
-            [self showAlert:self.almondNormalName msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
+            
+            [self showAlert:self.almondNormalName msg:msg cancel:cancelTitle other:nil tag:ADD_FAIL];
         }
         else if([reason.lowercaseString hasPrefix:@"unable to"]){
             if(self.wirelessBtn.selected)
@@ -676,13 +697,22 @@
             else
                 msg = [NSString stringWithFormat:@"Unable to reach %@. Check for loose wired connections between your Almonds and try again!", self.almondNormalName];
             
-            [self showAlert:self.almondNormalName msg:msg cancel:@"Ok" other:nil tag:ADD_FAIL];
+            [self showAlert:self.almondNormalName msg:msg cancel:cancelTitle other:nil tag:ADD_FAIL];
         }
         else{
             [self.blinkTimer invalidate];
             if(self.currentView.tag == BLINK_CHECK)//on ok tap this will take to interface page
                 [self showAlert:self.almondNormalName msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
         }
+    }
+}
+
+- (BOOL)toShowAlertWithoutOk:(NSString *)firmware{
+    AlmondVersionCheckerResult result = [AlmondVersionChecker compareVersions:@"AL3-R015d" currentVersion:firmware];
+    if(result == AlmondVersionCheckerResult_currentSameAsLatest || result == AlmondVersionCheckerResult_currentNewerThanLatest){
+        return YES;
+    }else{
+        return NO;
     }
 }
 
@@ -702,6 +732,7 @@
     }
     return payload;
 }
+
 
 -(void)onCommandResponse:(id)sender{
     NSLog(@"mesh view onCommandResponse");
@@ -911,10 +942,10 @@
 
 - (void)showAlert:(NSString *)title msg:(NSString *)msg cancel:(NSString*)cncl other:(NSString *)other tag:(int)tag{
     NSLog(@"mesh view show alert tag: %d", tag);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:nil];
-    alert.tag = tag;
+    self.alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:nil];
+    self.alert.tag = tag;
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [alert show];
+        [self.alert show];
     });
 }
 
@@ -941,10 +972,17 @@
             self.nonRepeatingTimer = [NSTimer scheduledTimerWithTimeInterval:connectionTO target:self selector:@selector(onNonRepeatingTimeout:) userInfo:@(NETWORK_OFFLINE).stringValue repeats:NO];
             [self.delegate showHudWithTimeoutMsgDelegate:@"Trying to reconnect..." time:connectionTO];
             
-        }else if(alertView.tag == ADD_FAIL){
+        }
+        else if(alertView.tag == ADD_FAIL){
             if(self.currentView.tag != BLINK_CHECK)
                 return;
+            
             [self onYesLEDBlinking:nil];
+        }
+        else if(alertView.tag == USED_NAME){
+            NSString *location = self.nameField.text.length == 0? self.selectedName: self.nameField.text;
+            [MeshPayload requestSetSlaveName:self.mii uniqueSlaveName:self.almondUniqueName newName:location];
+            [self.delegate showHudWithTimeoutMsgDelegate:@"Loading..." time:10];
         }
     }
     else{
