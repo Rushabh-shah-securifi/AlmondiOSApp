@@ -22,6 +22,8 @@
 #import "AlmondManagement.h"
 #import "AlmondPlan.h"
 #import "NSString+securifi.h"
+#import "Rule.h"
+#import "SFIButtonSubProperties.h"
 
 @implementation GenericIndexUtil
 
@@ -96,7 +98,7 @@
     return [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:index deviceID:device.ID];
 }
 
-+ (NSMutableArray *)getDetailListForDevice:(int)deviceID{
++ (NSArray *)getDetailListForDevice:(int)deviceID{
     //NSLog(@"%s", __PRETTY_FUNCTION__);
     Device *device = [Device getDeviceForID:deviceID];
     
@@ -114,9 +116,9 @@
     }else if(device.type == SFIDeviceType_AlmondSiren_63)
         detailList = [self handleAlmondSiren:deviceID genericIndexValues:detailList];
     
-    NSArray *commonList = [self getCommonGenericIndexValue:device];
-    [detailList addObjectsFromArray:commonList];
-    return detailList;
+    //NSArray *commonList = [self getCommonGenericIndexValue:device];
+    //[detailList addObjectsFromArray:commonList];
+    return [self getGroupedGenericIndexes:detailList device:device];
 }
 
 +(NSMutableArray*)getSortedIndexValues:(NSMutableArray*)detailList{
@@ -235,7 +237,6 @@
 }
 
 
-
 + (NSArray*)getCommonGenericIndexValue:(Device*)device{
     NSMutableArray *genericIndexValues = [NSMutableArray new];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -257,10 +258,102 @@
         }
         GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value excludeFrom:nil transformedValue:nil prefix:@""];
         GenericIndexClass *genIndexObj = toolkit.genericIndexes[@(genericIndex).stringValue];
+        
         [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genIndexObj genericValue:genericValue index:genericIndex deviceID:device.ID]];
     }
     
     return genericIndexValues;
+}
+
++ (NSArray *)getGroupedGenericIndexes:(NSMutableArray *)detailList device:(Device *)device{
+    NSMutableArray *groupedIndexValueList = [NSMutableArray new]; //change it to dictionary
+    //name, location, devicespecific, automation, notification
+    NSArray *displayOrder = @[@-1, @-2, @10000, @-42, @-43];
+    
+    for(NSNumber *orderId in displayOrder){
+        if(orderId.intValue ==  -1 || orderId.intValue ==  -2){
+            GenericIndexValue *gIVal = [self getGenericIndexeValueForGenericId:orderId.intValue device:device];
+            [groupedIndexValueList addObject:gIVal];
+        }
+        else if(orderId.intValue == 10000){
+            NSDictionary *dict = [self getDeviceSpecificInxedesDict:detailList];
+            dict[@"0"]? [groupedIndexValueList addObject:dict[@"0"]]: `;
+            dict[@"1"]? [groupedIndexValueList addObject:dict[@"1"]]: nil;
+            dict[@"2"]? [groupedIndexValueList addObject:dict[@"2"]]: nil;
+            dict[@"3"]? [groupedIndexValueList addObject:dict[@"3"]]: nil;
+        }
+        else if(orderId.intValue ==  -42){
+            GenericIndexValue *gIVal = [self getGenericIndexeValueForGenericId:-37 device:device];
+            [groupedIndexValueList addObject:gIVal];
+            gIVal = [self getGenericIndexeValueForGenericId:-38 device:device];
+            [groupedIndexValueList addObject:gIVal];
+        }
+        else if(orderId.intValue ==  -43){
+            GenericIndexValue *gIVal = [self getGenericIndexeValueForGenericId:-3 device:device];
+            [groupedIndexValueList addObject:gIVal];
+            gIVal = [self getGenericIndexeValueForGenericId:-39 device:device];
+            [groupedIndexValueList addObject:gIVal];
+        }
+    }
+    return groupedIndexValueList;
+}
+
+//0-status 1-temp 2-control 3-notitle
++ (NSDictionary *)getDeviceSpecificInxedesDict:(NSArray *)detailList{
+    NSMutableDictionary *deviceSpecificDict = [NSMutableDictionary new];
+    
+    for(GenericIndexValue *gIVal in detailList){
+        [self addToDictionary:deviceSpecificDict GenericIndexVal:gIVal groupID:gIVal.genericIndex.categoryLabel];
+    }
+    return deviceSpecificDict;
+}
+
++(void)addToDictionary:(NSMutableDictionary *)deviceSpecificDict GenericIndexVal:(GenericIndexValue *)genericIndexVal groupID:(NSString *)groupID{
+    NSMutableArray *augArray = [deviceSpecificDict valueForKey:groupID];
+    if(augArray != nil){
+        [augArray addObject:genericIndexVal];
+        [deviceSpecificDict setValue:augArray forKey:groupID];
+    }else{
+        NSMutableArray *tempArray = [NSMutableArray new];
+        [tempArray addObject:genericIndexVal];
+        [deviceSpecificDict setValue:tempArray forKey:groupID];
+    }
+}
+
+
++ (GenericIndexValue *)getGenericIndexeValueForGenericId:(NSInteger)genericId device:(Device *)device{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    GenericIndexClass *genIndexObj = toolkit.genericIndexes[@(genericId).stringValue];
+    if(genIndexObj == nil)
+        return nil;
+    
+    GenericValue *genericValue = nil;
+    GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genIndexObj];
+    if(genericId == -1 || genericId == -2 || genericId == -3){
+        NSString *value;
+        if(genericId == -1){
+            value = device.name;
+        }else if(genericId == -2){
+            value = device.location;
+        }else{//notifyme
+            value = @(device.notificationMode).stringValue;
+        }
+        
+        /*?*/
+        genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value excludeFrom:nil transformedValue:nil prefix:@""];
+    }
+    else if(genericId == -37){
+        NSString *countStr = @([self ruleListThatContainsDevice:NO deviceId:device.ID].count).stringValue;
+        genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:countStr value:countStr excludeFrom:nil transformedValue:nil prefix:@""];
+    }
+    else if(genericId == -38){
+        NSString *countStr = @([self ruleListThatContainsDevice:YES deviceId:device.ID].count).stringValue;
+        genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:countStr value:countStr excludeFrom:nil transformedValue:nil prefix:@""];
+    }
+    else if(genericId == -39){
+        genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:@"" value:@"" excludeFrom:nil transformedValue:nil prefix:@""];
+    }
+    return [[GenericIndexValue alloc]initWithGenericIndex:copyGenericIndex genericValue:genericValue index:copyGenericIndex.ID.intValue deviceID:device.ID];
 }
 
 #pragma mark client
@@ -288,8 +381,6 @@
     BOOL hasSubscribe = [AlmondPlan hasSubscription:currentAlmond.almondplusMAC];
     NSLog(@"hasSubscribe %d",hasSubscribe);
     for(NSNumber *genericID in clientGenericIndexes){
-        
-        
         genericIndex = [self getGenericIndexForID:genericID.stringValue];
         if(genericIndex != nil){
             NSString *value = [Client getOrSetValueForClient:client genericIndex:genericID.intValue newValue:nil ifGet:YES];
@@ -328,35 +419,6 @@
     return toolkit.genericIndexes[genericIndexID];
 }
 
-+ (NSString*)getStatus:(int)deviceID value:(NSString *)value{
-    Device *device = [Device getDeviceForID:deviceID];
-    NSMutableArray *detailList = [self getGenericIndexValuesByPlacementForDevice:device placement:@"HeaderOnly"];
-    [detailList addObjectsFromArray:[self getGenericIndexValuesByPlacementForDevice:device placement:@"Header_Detail"]];
-    NSMutableString *status = [NSMutableString new];
-    //NSLog(@"util value: %@", value);
-    if(value == nil){//has icon text
-        //NSLog(@"has icon text util");
-        int i = 0;
-        for(GenericIndexValue *genericIndexVal in detailList){
-            if(i==0){
-                [status appendString:[NSString stringWithFormat:@"%@ %@",genericIndexVal.genericIndex.groupLabel, genericIndexVal.genericValue.value]];
-            }
-            else{
-                [status appendString:[NSString stringWithFormat:@", %@ %@",genericIndexVal.genericIndex.groupLabel, genericIndexVal.genericValue.value]];
-            }
-            i++;
-        }
-    }else{
-        //NSLog(@"no icon text util");
-        [status appendString:value];
-        for(GenericIndexValue *genericIndexVal in detailList){
-            [status appendString:[NSString stringWithFormat:@", %@", genericIndexVal.genericValue.value]];
-        }
-    }
-    //NSLog(@"status: %@", status);
-    return  status;
-}
-
 
 +(NSMutableArray*)handleAlmondSiren:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues{
     //for index 1 if value is false remove [2-4] indexes.
@@ -371,5 +433,100 @@
     return newGenericIndexValues;
 }
 
+#pragma mark helper methods
+
++(NSMutableArray *)ruleListThatContainsDevice:(BOOL)isRule deviceId:(int)deviceID{
+    NSMutableArray *ruleArr = [[NSMutableArray alloc]init];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    
+    NSArray *ruleList = isRule?toolkit.ruleList:toolkit.scenesArray;
+    if(!isRule){
+        for(NSDictionary *sceneDict in ruleList){
+            Rule *scene = [self getScene:sceneDict];
+            for(SFIButtonSubProperties *subProperty in scene.triggers){
+                
+                if(subProperty.deviceId == deviceID){
+                    if(![subProperty.eventType isEqualToString:@"AlmondModeUpdated"])
+                    {
+                        [ruleArr addObject: scene];
+                        break ;
+                    }
+                }
+            }
+            
+        }
+        return ruleArr;
+    }
+    for(Rule *rules in ruleList){
+        BOOL isRuleFound = NO;
+        for(SFIButtonSubProperties *subProperty in rules.triggers){
+            
+            if(subProperty.deviceId == deviceID){
+                if(![self checkEventType:subProperty.eventType]){
+                    [ruleArr addObject: rules];
+                    isRuleFound = YES;
+                    break ;
+                }
+            }
+        }
+        if(isRuleFound)
+            continue;
+        
+        for(SFIButtonSubProperties *subProperty in rules.actions){
+            if(subProperty.deviceId == deviceID){
+                if(![self checkEventType:subProperty.eventType]){
+                    [ruleArr addObject: rules];
+                    isRuleFound = YES;
+                    break;
+                }
+            }
+        }
+        if(isRuleFound)
+            continue;
+    }
+    return ruleArr;
+}
+
++(BOOL)checkEventType:(NSString *)eventType{
+    if([eventType isEqualToString:@"AlmondModeUpdated"] || [eventType isEqualToString:@"ClientJoined"] || [eventType isEqualToString:@"ClientLeft"]){
+        return YES;
+    }
+    else
+        return NO;
+}
+
++(BOOL)isRepetingRule:(NSArray *)ruleArr rule:(Rule*)rule{
+    for (Rule *ruleObj in ruleArr) {
+        if([rule.ID isEqualToString:ruleObj.ID])
+            return NO;
+    }
+    return YES;
+}
+
++(Rule *)getScene:(NSDictionary*)dict{
+    Rule *scene = [[Rule alloc]init];
+    scene.ID = [dict valueForKey:@"ID"];
+    scene.name = [dict valueForKey:@"Name"]==nil?@"":[dict valueForKey:@"Name"];
+    scene.isActive = [[dict valueForKey:@"Active"] boolValue];
+    scene.triggers= [NSMutableArray new];
+    [self getEntriesList:[dict valueForKey:@"SceneEntryList"] list:scene.triggers];
+    return scene;
+}
+
++(void)getEntriesList:(NSArray*)sceneEntryList list:(NSMutableArray *)triggers{
+    for(NSDictionary *triggersDict in sceneEntryList){
+        SFIButtonSubProperties* subProperties = [[SFIButtonSubProperties alloc] init];
+        NSLog(@"triggersDict %@",triggersDict);
+        subProperties.deviceId = [[triggersDict valueForKey:@"ID"] intValue];
+        subProperties.index = [[triggersDict valueForKey:@"Index"] intValue];
+        subProperties.matchData = [triggersDict valueForKey:@"Value"];
+        subProperties.valid = [[triggersDict valueForKey:@"Valid"] boolValue];
+        subProperties.eventType = [triggersDict valueForKey:@"EventType"];
+        //        subProperties.type = subProperties.deviceId==0?@"EventTrigger":@"DeviceTrigger";
+        //        subProperties.delay=[triggersDict valueForKey:@"PreDelay"];
+        //        [self addTime:triggersDict timeProperty:subProperties];
+        [triggers addObject:subProperties];
+    }
+}
 
 @end

@@ -234,28 +234,32 @@
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "AppLabel": "manufacturer"
+        "AppLabel": "manufacturer",
+        "Title": "3"
     },
     "-14": {
         "Name": "ClientMAC",
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "AppLabel": "macAddress"
+        "AppLabel": "macAddress",
+        "Title": "3"
     },
     "-15": {
         "Name": "LastKnownIP",
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "AppLabel": "lastKnownIP"
+        "AppLabel": "lastKnownIP",
+        "Title": "3"
     },
     "-16": {
         "Name": "ClientConnection",
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "AppLabel": "connection"
+        "AppLabel": "connection",
+        "Title": "3"
     },
     "-17": {
         "Name": "UseAsPresence",
@@ -302,7 +306,8 @@
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "AppLabel": "signalStrength"
+        "AppLabel": "signalStrength",
+        "Title": "3"
     },
     "-21": {
         "Name": "CanBlock",
@@ -676,6 +681,102 @@
             }
         }
     },
+    "-36": {
+        "Name": "Detail Title",
+        "IsTitle": "true",
+        "Type": "Sensor",
+        "Placement": "Detail",
+        "Layout": "TEXT_VIEW",
+        "AppLabel": "switch_off",
+        "DefaultIcon": "switch_on"
+    },
+    "-37": {
+        "Name": "Scenes",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "Scenes",
+        "Values": {
+            "reboot": {
+                "ToggleValue": "reboot",
+                "Icon": "switch_off",
+                "AppLabel": "rebootAlmond",
+                "Label": "REBOOT ALMOND",
+                "EventType": "AlmondModeUpdated"
+            }
+        }
+    },
+    "-38": {
+        "Name": "Rules",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "Rules",
+        "Values": {
+            "toggle": {
+                "Icon": "toggle_icon",
+                "AppLabel": "toggle",
+                "Label": "Toggle"
+            }
+        }
+    },
+    
+    "-39": {
+        "Name": "View Device History",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "ViewDeviceHistory",
+        "Values": {
+            "toggle": {
+                "Icon": "toggle_icon",
+                "AppLabel": "toggle",
+                "Label": "Toggle"
+            }
+        }
+    },
+    
+    "-40": {
+        "Name": "Create Schedule",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "CreateSchedule",
+        "Values": {
+            "toggle": {
+                "Icon": "toggle_icon",
+                "AppLabel": "toggle",
+                "Label": "Toggle"
+            }
+        }
+    },
+    "-41": {
+        "Name": "Advance Information",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "AdvanceInformation",
+        "Values": {
+            "toggle": {
+                "Icon": "toggle_icon",
+                "AppLabel": "toggle",
+                "Label": "Toggle"
+            }
+        }
+    },
+    "-42": {
+        "Name": "Automation",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "Automation"
+    },
+    "-43": {
+        "Name": "Notification",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "AdvanceInformation"
+    },
+    "-44": {
+        "Name": "Schedule",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "AdvanceInformation"
+    },
     "1": {
         "Name": "SWITCH BINARY",
         "Type": "Actuator",
@@ -684,6 +785,7 @@
         "AppLabel": "Switch",
         "ShowToggleInRules": "true",
         "DefaultIcon": "switch_on",
+        "Title": "0",
         "Values": {
             "true": {
                 "ToggleValue": "false",
@@ -1720,6 +1822,7 @@
         "AppLabel": "voltage",
         "Conditional": "true",
         "DefaultIcon": "target_temperature",
+        "Title": "0",
         "Formatter": {
             "Min": "0",
             "Max": "240",
@@ -1735,6 +1838,7 @@
         "AppLabel": "current",
         "Conditional": "true",
         "DefaultIcon": "target_temperature",
+        "Title": "1",
         "Formatter": {
             "Min": "0",
             "Max": "15",
@@ -2250,6 +2354,7 @@
         "AppLabel": "powerLabel",
         "Conditional": "true",
         "DefaultIcon": "target_temperature",
+        "Title": "0",
         "Formatter": {
             "Min": "0",
             "Max": "100",
@@ -2337,7 +2442,7 @@
         "Layout": "info",
         "Type": "sensor",
         "DefaultIcon": "switch_off",
-        "AppLabel":"State",
+        "AppLabel": "State",
         "Placement": "Hidden"
         
     },
@@ -2347,7 +2452,7 @@
         "Type": "Actuator",
         "DefaultIcon": "alarm_off",
         "Placement": "Hidden",
-        "AppLabel":"State",
+        "AppLabel": "State",
         "Conditional": "true",
         "Values": {
             "true": {
@@ -2561,6 +2666,7 @@
         "AppLabel": "ac_switch",
         "ShowToggleInRules": "true",
         "DefaultIcon": "ac_switch_off",
+        "Title": "0",
         "Values": {
             "true": {
                 "ToggleValue": "false",

@@ -12,11 +12,10 @@
 #import "GenericIndexValue.h"
 
 @interface GenericIndexUtil : NSObject
-+ (NSMutableArray *)getDetailListForDevice:(int)deviceID;
++ (NSArray *)getDetailListForDevice:(int)deviceID;
 + (NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement;
 + (GenericIndexValue*)getHeaderGenericIndexValueForDevice:(Device*)device;
 + (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(Client*) client;
 + (NSArray*) getClientDetailGenericIndexValuesListForClientID:(NSString*)clientID;
 + (GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value;
-+ (NSString*)getStatus:(int)deviceID value:(NSString *)value;
 @end
