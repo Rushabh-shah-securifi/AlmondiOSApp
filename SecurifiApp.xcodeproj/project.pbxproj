@@ -457,6 +457,9 @@
 		CE57E5321D1BBCC400493460 /* HistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE57E5301D1BBCC400493460 /* HistoryCell.xib */; };
 		CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58276B1D10127400843B4C /* WeatherRuleButton.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
+		CE6DA49F1E483CA9007C1163 /* NotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6DA49E1E483CA9007C1163 /* NotificationView.m */; };
+		CE6DA4A11E483CD6007C1163 /* NotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE6DA4A01E483CD6007C1163 /* NotificationView.xib */; };
+		CE6DA4A61E4857FC007C1163 /* AdvancedInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6DA4A51E4857FC007C1163 /* AdvancedInformationView.m */; };
 		CE7D242E1E24A03600811CAD /* LabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7D242D1E24A03600811CAD /* LabelView.m */; };
 		CE7D24321E27596200811CAD /* IoTVulnerabilityData.json in Resources */ = {isa = PBXBuildFile; fileRef = CE7D24311E27596200811CAD /* IoTVulnerabilityData.json */; };
 		CE7E89B61DC356CB00B0C3C6 /* DetailsPeriodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7E89B51DC356CB00B0C3C6 /* DetailsPeriodViewController.m */; };
@@ -1171,6 +1174,11 @@
 		CE58276B1D10127400843B4C /* WeatherRuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherRuleButton.m; sourceTree = "<group>"; };
 		CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPickerIndicatorView1.h; sourceTree = "<group>"; };
 		CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPickerIndicatorView1.m; sourceTree = "<group>"; };
+		CE6DA49D1E483CA9007C1163 /* NotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationView.h; sourceTree = "<group>"; };
+		CE6DA49E1E483CA9007C1163 /* NotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationView.m; sourceTree = "<group>"; };
+		CE6DA4A01E483CD6007C1163 /* NotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationView.xib; sourceTree = "<group>"; };
+		CE6DA4A41E4857FC007C1163 /* AdvancedInformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvancedInformationView.h; sourceTree = "<group>"; };
+		CE6DA4A51E4857FC007C1163 /* AdvancedInformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvancedInformationView.m; sourceTree = "<group>"; };
 		CE7D242C1E24A03600811CAD /* LabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelView.h; sourceTree = "<group>"; };
 		CE7D242D1E24A03600811CAD /* LabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelView.m; sourceTree = "<group>"; };
 		CE7D24311E27596200811CAD /* IoTVulnerabilityData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = IoTVulnerabilityData.json; sourceTree = "<group>"; };
@@ -2575,6 +2583,11 @@
 				CE3C49811E41C04700AD6E17 /* DeviceNotificationViewController.m */,
 				CE3C49831E41EA7600AD6E17 /* NotificationCellTableViewCell.h */,
 				CE3C49841E41EA7600AD6E17 /* NotificationCellTableViewCell.m */,
+				CE6DA49D1E483CA9007C1163 /* NotificationView.h */,
+				CE6DA4A41E4857FC007C1163 /* AdvancedInformationView.h */,
+				CE6DA4A51E4857FC007C1163 /* AdvancedInformationView.m */,
+				CE6DA49E1E483CA9007C1163 /* NotificationView.m */,
+				CE6DA4A01E483CD6007C1163 /* NotificationView.xib */,
 			);
 			path = Sensor;
 			sourceTree = "<group>";
@@ -2997,6 +3010,7 @@
 				A58DB4731BB3CD5200717C02 /* termsofuse.html in Resources */,
 				A58DB2E61BB16B9F00717C02 /* Localizable.strings in Resources */,
 				F492EA411DF009EC00FB3B76 /* Images.xcassets in Resources */,
+				CE6DA4A11E483CD6007C1163 /* NotificationView.xib in Resources */,
 				F4D633EA1DC217EE000BF076 /* h_dashboard_selectals.pdf in Resources */,
 				A58DB3131BB16B9F00717C02 /* Localizable.strings in Resources */,
 				A58DB3121BB16B9F00717C02 /* InfoPlist.strings in Resources */,
@@ -3518,8 +3532,10 @@
 				1C7E7D951A41A0990026F0BA /* SFIRouterTableViewController.m in Sources */,
 				F492EA3F1DF009EC00FB3B76 /* PaymentViewController.m in Sources */,
 				1C7E7E061A41A0B30026F0BA /* main.m in Sources */,
+				CE6DA4A61E4857FC007C1163 /* AdvancedInformationView.m in Sources */,
 				F417B2A51DA25CBD0073C440 /* AdvanceRouterSettingsController.m in Sources */,
 				B0053EA91DFFC9EE002F2F20 /* SFIAlmondCell.m in Sources */,
+				CE6DA49F1E483CA9007C1163 /* NotificationView.m in Sources */,
 				CE3C49851E41EA7600AD6E17 /* NotificationCellTableViewCell.m in Sources */,
 				F4B8766E1D54653500DCF76F /* BlinkLedView.m in Sources */,
 				CEF6F4FC1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */,

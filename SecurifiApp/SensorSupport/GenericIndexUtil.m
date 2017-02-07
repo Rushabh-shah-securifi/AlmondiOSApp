@@ -31,6 +31,9 @@
 +(GenericIndexValue*)getHeaderGenericIndexValueForDevice:(Device*)device{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSArray *genericIndexValues = [self getGenericIndexValuesByPlacementForDevice:device placement:HEADER];
+    if([genericIndexValues count] <= 0 && device.type == 60){
+        genericIndexValues = [self getGenericIndexValuesNOHeader:device placment:@"Detail"];
+    }
     
     if([genericIndexValues count] <= 0){
         return [[GenericIndexValue alloc]initWithGenericIndex:nil genericValue:[[GenericValue alloc]initUnknownDevice] index:0 deviceID:device.ID];
@@ -133,7 +136,27 @@
     return [[detailList sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
 }
 
-
++(NSMutableArray *)getGenericIndexValuesNOHeader:(Device *)device placment:(NSString*)placment{
+    
+    
+    NSArray *genericIndexes = [self getGenericIndexValuesByPlacementForDevice:device placement:placment];
+    if(genericIndexes!= nil && genericIndexes.count > 0){
+        GenericIndexValue *genericIndexValue = [genericIndexes objectAtIndex:0];
+        
+        if(genericIndexValue.genericIndex.formatter != Nil){
+            
+            GenericValue *gValue = [GenericValue new];
+            gValue.value =genericIndexValue.genericValue.value;
+            gValue.displayText =genericIndexValue.genericValue.displayText;
+            gValue.icon =genericIndexValue.genericValue.icon;
+            genericIndexValue.genericValue = gValue;
+            return  genericIndexes;
+        }
+        
+        
+    }
+    return NULL;
+}
 +(NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSMutableArray *genericIndexValues = [NSMutableArray new];
@@ -149,8 +172,9 @@
                                                                                    forValue:knownValue.value];
                 if(genericValue!=nil && knownValue.value != nil) //check for index exists
                     [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:copyGenericIndex genericValue:genericValue index:knownValue.index deviceID:device.ID]];
+                
             }
-            
+
         }
     }
     
@@ -277,7 +301,7 @@
         }
         else if(orderId.intValue == 10000){
             NSDictionary *dict = [self getDeviceSpecificInxedesDict:detailList];
-            dict[@"0"]? [groupedIndexValueList addObject:dict[@"0"]]: `;
+            dict[@"0"]? [groupedIndexValueList addObject:dict[@"0"]]: nil;
             dict[@"1"]? [groupedIndexValueList addObject:dict[@"1"]]: nil;
             dict[@"2"]? [groupedIndexValueList addObject:dict[@"2"]]: nil;
             dict[@"3"]? [groupedIndexValueList addObject:dict[@"3"]]: nil;
