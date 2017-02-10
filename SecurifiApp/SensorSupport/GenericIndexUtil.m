@@ -358,8 +358,8 @@
     if(genericIndex == nil || genericIndex.elements.count == 0)
         return genericIndexVals;
     
-    for(NSNumber *num in genericIndex.elements){
-        gIVal = [self getGenericIndexeValueForGenericId:num.integerValue device:device];
+    for(NSString *strId in genericIndex.elements){
+        gIVal = [self getGenericIndexeValueForGenericId:strId.integerValue device:device];
         if(gIVal)
            [genericIndexVals addObject:gIVal];
     }
