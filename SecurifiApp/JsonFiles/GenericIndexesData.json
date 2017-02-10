@@ -5,7 +5,8 @@
         "Layout": "TEXT_VIEW",
         "Type": "Actuator",
         "AppLabel": "name",
-        "CommandType": "NAME_CHANGE"
+        "CommandType": "NAME_CHANGE",
+        "property": "displayHere"
     },
     "-2": {
         "Name": "Location",
@@ -13,7 +14,8 @@
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "location",
-        "CommandType": "LOCATION_CHANGE"
+        "CommandType": "LOCATION_CHANGE",
+        "property": "navigate"
     },
     "-3": {
         "Name": "Notify Me",
@@ -21,6 +23,7 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "notifyMe",
+        "property": "navigate",
         "CommandType": "NOTIFICATION",
         "Values": {
             "1": {
@@ -45,7 +48,8 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "AppLabel": "name"
+        "AppLabel": "name",
+        "property": "displayHere"
     },
     "-12": {
         "Name": "ClientType",
@@ -54,6 +58,7 @@
         "Layout": "LIST_TYPE",
         "AppLabel": "type",
         "DefaultIcon": "help_icon",
+        "property": "navigate",
         "Values": {
             "identifying": {
                 "Icon": "identifying",
@@ -267,6 +272,9 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "presenceSensor",
+        "property": "navigate",
+        "footer": "use_as_rule_engine_desc",
+        "NavigateElements": ["-17", "-18", "-38"],
         "Values": {
             "true": {
                 "AppLabel": "yes"
@@ -287,8 +295,9 @@
         "Name": "AllowOnNetwork",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "GRID_VIEW",
+        "Layout": "SWITCH",
         "AppLabel": "allowOnNetwork",
+        "property": "displayHere",
         "Values": {
             "0": {
                 "AppLabel": "always"
@@ -695,6 +704,7 @@
         "Type": "Actuator",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "Scenes",
+        "property": "navigate",
         "Values": {
             "reboot": {
                 "ToggleValue": "reboot",
@@ -710,6 +720,7 @@
         "Type": "Actuator",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "Rules",
+        "property": "navigate",
         "Values": {
             "toggle": {
                 "Icon": "toggle_icon",
@@ -724,13 +735,7 @@
         "Type": "Actuator",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "ViewDeviceHistory",
-        "Values": {
-            "toggle": {
-                "Icon": "toggle_icon",
-                "AppLabel": "toggle",
-                "Label": "Toggle"
-            }
-        }
+        "property": "link"
     },
     
     "-40": {
@@ -738,44 +743,67 @@
         "Type": "Actuator",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "CreateSchedule",
-        "Values": {
-            "toggle": {
-                "Icon": "toggle_icon",
-                "AppLabel": "toggle",
-                "Label": "Toggle"
-            }
-        }
+        "property": "link"
     },
     "-41": {
         "Name": "Advance Information",
         "Type": "Actuator",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "AdvanceInformation",
-        "Values": {
-            "toggle": {
-                "Icon": "toggle_icon",
-                "AppLabel": "toggle",
-                "Label": "Toggle"
-            }
-        }
+        "property": "navigate",
+        "NavigateElements": ["-13", "-14", "-15", "-16", "-20"]
     },
     "-42": {
         "Name": "Automation",
         "Type": "Actuator",
         "Layout": "MULTI_BUTTON",
-        "AppLabel": "Automation"
+        "AppLabel": "Automation",
+        "header": "Automation",
+        "footer": "automation_desc",
+        "Elements": ["-38", "-37"]
     },
     "-43": {
         "Name": "Notification",
         "Type": "Actuator",
         "Layout": "MULTI_BUTTON",
-        "AppLabel": "AdvanceInformation"
+        "AppLabel": "enable_notification",
+        "Elements": ["-39", "-3"]
     },
     "-44": {
         "Name": "Schedule",
         "Type": "Actuator",
         "Layout": "MULTI_BUTTON",
-        "AppLabel": "AdvanceInformation"
+        "AppLabel": "Schedule_",
+        "header": "Schedule_",
+        "footer": "schedule_desc",
+        "Elements": ["-19", "-40"]
+    },
+    "-45": {
+        "Name": "Status",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "Schedule_",
+        "header": "status"
+    },
+    "-46": {
+        "Name": "Temperature",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "Schedule_",
+        "header": "temperature_"
+    },
+    "-47": {
+        "Name": "Control",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "Schedule_",
+        "header": "control"
+    },
+    "-48": {
+        "Name": "No Status",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "Schedule_"
     },
     "1": {
         "Name": "SWITCH BINARY",

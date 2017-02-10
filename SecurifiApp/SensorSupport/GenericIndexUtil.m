@@ -290,11 +290,33 @@
 }
 
 + (NSArray *)getGroupedGenericIndexes:(NSMutableArray *)detailList device:(Device *)device{
-    NSMutableArray *groupedIndexValueList = [NSMutableArray new]; //change it to dictionary
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSMutableArray *groupedIndexValueList = [NSMutableArray new];
+    NSArray *indexList;
     //name, location, devicespecific, automation, notification
-    NSArray *displayOrder = @[@-1, @-2, @10000, @-42, @-43];
+    NSArray *displayOrder = @[@-1, @-2, @-45, @-46, @-47, @-48, @-42, @-43];
+    NSDictionary *deviceDict = [self getDeviceSpecificInxedesDict:detailList];
     
     for(NSNumber *orderId in displayOrder){
+        GenericIndexClass *genIndexObj = toolkit.genericIndexes[orderId.stringValue];
+        
+        if(orderId.integerValue == -45 || orderId.integerValue == -46 || orderId.integerValue == -47 || orderId.integerValue == -48){
+            if(orderId.integerValue == -45 && deviceDict[@"0"])
+                [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"0"]];
+            else if(orderId.integerValue == -46 && deviceDict[@"1"])
+                [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"1"]];
+            else if(orderId.integerValue == -47 && deviceDict[@"2"])
+                [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"2"]];
+            else if(orderId.integerValue == -48 && deviceDict[@"3"])
+                [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"3"]];
+        }
+        
+        else{
+            
+            indexList = [self getCommonGenericIndexValues:device genericIndex:genIndexObj];
+            [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:indexList];
+        }
+        /*
         if(orderId.intValue ==  -1 || orderId.intValue ==  -2){
             GenericIndexValue *gIVal = [self getGenericIndexeValueForGenericId:orderId.intValue device:device];
             [groupedIndexValueList addObject:gIVal];
@@ -318,8 +340,31 @@
             gIVal = [self getGenericIndexeValueForGenericId:-39 device:device];
             [groupedIndexValueList addObject:gIVal];
         }
+         */
     }
     return groupedIndexValueList;
+}
+
++ (void)addIndexValueList:(NSMutableArray *)groupedIndexValueList gI:(GenericIndexClass *)gI genericIndexes:(NSArray *)genericIndexes{
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    [dict setObject:gI forKey:GENERIC_INDEX];
+    [dict setObject:genericIndexes forKey:GENERIC_ARRAY];
+    [groupedIndexValueList addObject:dict];
+}
+
++ (NSArray *)getCommonGenericIndexValues:(Device *)device genericIndex:(GenericIndexClass *)genericIndex{
+    NSMutableArray *genericIndexVals = [NSMutableArray new];
+    GenericIndexValue *gIVal;
+    if(genericIndex == nil || genericIndex.elements.count == 0)
+        return genericIndexVals;
+    
+    for(NSNumber *num in genericIndex.elements){
+        gIVal = [self getGenericIndexeValueForGenericId:num.integerValue device:device];
+        if(gIVal)
+           [genericIndexVals addObject:gIVal];
+    }
+    
+    return genericIndexVals;
 }
 
 //0-status 1-temp 2-control 3-notitle

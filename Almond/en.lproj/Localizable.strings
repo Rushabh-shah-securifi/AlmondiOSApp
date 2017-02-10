@@ -1606,7 +1606,16 @@ img {width:90%}
 "armmode"= "Arm Mode";
 "hvac_state"= "HVAC State";
 
+"tip_schedule" = "Tip: Tap on a day\u0027s name to select it entirely.";
+"Automation" = "AUTOMATION";
+"Schedule_" = "SCHEDULE";
+"status" = "STATUS";
+"control" = "CONTROL";
+"temperature_" = "TEMPERATURE";
 
+"schedule_desc" = "Create a weekly, daily or hourly schedule during which this device is allowed on your network.";
+"use_as_rule_engine_desc" = "Use this device as a presence sensor to create powerful smart home automation rules.";
+"automation_desc" = "Automate your home by creating scenes and rules using this device.";
 
 /* ==================================================================== */
 

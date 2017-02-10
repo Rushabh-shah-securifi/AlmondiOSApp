@@ -11,6 +11,9 @@
 #import "Device.h"
 #import "GenericIndexValue.h"
 
+#define GENERIC_INDEX @"generic_index"
+#define GENERIC_ARRAY @"generic_inxex_values_array"
+
 @interface GenericIndexUtil : NSObject
 + (NSArray *)getDetailListForDevice:(int)deviceID;
 + (NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement;
