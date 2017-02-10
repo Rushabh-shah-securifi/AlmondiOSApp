@@ -184,9 +184,9 @@ labelAndCheckButtonView *labelView;
     [self toggleHighlightForDeviceNameButton:weatherBtn];
     UIView *pickerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0 , self.deviceListScrollView.frame.size.width, 10)];
     [self.parentView addSubview:pickerView];
-
     
-   NSArray *rows = @[@[NSLocalizedString(@"AddTriggerAction Day", @"Day"), NSLocalizedString(@"night", @"Night")],@[@"C", @"Db", @"D", @"Eb", @"E", @"F", @"Gb", @"G", @"Ab", @"A", @"Bb", @"B"]];
+    
+    NSArray *rows = @[@[NSLocalizedString(@"AddTriggerAction Day", @"Day"), NSLocalizedString(@"night", @"Night")],@[@"C", @"Db", @"D", @"Eb", @"E", @"F", @"Gb", @"G", @"Ab", @"A", @"Bb", @"B"]];
     NSArray *initialSelection = @[@2, @4];
     [ActionSheetMultipleStringPicker showPickerWithTitle:NSLocalizedString(@"AddTriggerAction Select scale", @"Select scale")
                                                     rows:rows
@@ -200,7 +200,7 @@ labelAndCheckButtonView *labelView;
                                              cancelBlock:^(ActionSheetMultipleStringPicker *picker) {
                                                  NSLog(@"picker = %@", picker);
                                              } origin:(UIView *)pickerView];
-
+    
     // You can also use self.view if you don't have a sender
     
 }
@@ -267,7 +267,7 @@ labelAndCheckButtonView *labelView;
     else if(deviceType == SFIDeviceType_Weather){
         genericIndexValues =[self handleWeather:deviceId genericIndexValues:genericIndexValues triggers:self.triggers];
     }
-
+    
     NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForArray:genericIndexValues isTrigger:self.isTrigger isScene:self.isScene];
     int numberOfCells = (int)[self maxCellId:genericIndexValDic];
     NSLog(@"GenericIndexValueDict after: %@", genericIndexValDic);
@@ -278,7 +278,7 @@ labelAndCheckButtonView *labelView;
         [self.ruleHueObject createHueCellLayoutWithDeviceId:deviceId deviceType:deviceType deviceIndexes:nil deviceName:deviceName scrollView:self.deviceIndexButtonScrollView cellCount:numberOfCells indexesDictionary:genericIndexValDic];
         return;
     }
-
+    
     NSArray *sortedKeys = [genericIndexValDic.allKeys sortedArrayUsingSelector:@selector(compare:)];
     int j=0;
     for(NSString *row in sortedKeys){
@@ -321,7 +321,7 @@ labelAndCheckButtonView *labelView;
     NSDictionary *currentGenericValueDict = genericIndexValue.genericIndex.values;
     
     NSString *matchData = nil;
-   
+    
     for(SFIButtonSubProperties *subProperty in self.triggers){
         if(subProperty.deviceType == SFIDeviceType_Weather && subProperty.index == 2){
             matchData = subProperty.matchData;
@@ -413,7 +413,7 @@ labelAndCheckButtonView *labelView;
 
 -(void)showAlert:(NSString *)string{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Oops")  message:string
-        delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles: nil];
+                                                   delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles: nil];
     [alert show];
 }
 #pragma mark RuleTextField delegate
@@ -459,26 +459,26 @@ labelAndCheckButtonView *labelView;
             NSLog(@"textfield text %@",textField.text);
             newPickerValue = textField.text;
             textField.subProperties.matchData = textField.text;
-          
-             if(!self.isTrigger){
-                 [self.actions addObject:[textField.subProperties createNew]];
-                 [self.delegate updateTriggerAndActionDelegatePropertie:!self.isTrigger];
-                 [self setActionButtonCount:dimerButton isSlider:YES];
-                 dimerButton.selected = YES;
-             }
-             else{
+            
+            if(!self.isTrigger){
+                [self.actions addObject:[textField.subProperties createNew]];
+                [self.delegate updateTriggerAndActionDelegatePropertie:!self.isTrigger];
+                [self setActionButtonCount:dimerButton isSlider:YES];
+                dimerButton.selected = YES;
+            }
+            else{
                 
-                 NSLog(@"onSwitchButtonClick - istrigger");
+                NSLog(@"onSwitchButtonClick - istrigger");
                 if (dimerButton.selected)
-                 [self.triggers addObject:textField.subProperties];
-//                 else
-//                     [self removeTriggerIndex:textField.subProperties.index buttonId:textField.subProperties.index deviceType:textField.subProperties.deviceType matchData:textField.text];
-                 
-                  [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
-             }
-   
+                    [self.triggers addObject:textField.subProperties];
+                //                 else
+                //                     [self removeTriggerIndex:textField.subProperties.index buttonId:textField.subProperties.index deviceType:textField.subProperties.deviceType matchData:textField.text];
+                
+                [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
+            }
+            
         }
-
+        
     }
     else {
         [self showAlert:NSLocalizedString(@"TextInput Please enter numbers only", @"Please enter numbers only")];
@@ -517,21 +517,21 @@ labelAndCheckButtonView *labelView;
     DimmerButton *dimbtn=[[DimmerButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,0 , dimFrameWidth, dimFrameHeight)];
     dimbtn.delegate = self;
     dimbtn.tag=i;
-//    dimbtn.valueType=deviceIndex.valueType;
+    //    dimbtn.valueType=deviceIndex.valueType;
     dimbtn.minValue = genericIndexVal.genericIndex.formatter.min;
     dimbtn.maxValue = genericIndexVal.genericIndex.formatter.max;
     dimbtn.factor = genericIndexVal.genericIndex.formatter.factor;
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexVal.index matchData:gVal.iconText andEventType:nil deviceName:deviceName deviceType:deviceType];
     if(deviceType == SFIDeviceType_Weather)
         dimbtn.subProperties.type = @"WeatherTrigger";
-//    if(self.isTrigger){
-//        dimbtn.dimbutton.minValue = genericIndexVal.genericIndex.formatter.min;
-//        dimbtn.dimbutton.maxValue = genericIndexVal.genericIndex.formatter.max;
-//        dimbtn.dimbutton.factor=genericIndexVal.genericIndex.formatter.factor;
-//        dimbtn.dimbutton.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexVal.index matchData:gVal.iconText andEventType:nil deviceName:deviceName deviceType:deviceType];
-//            [dimbtn.dimbutton addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-//    }
-//    else
+    //    if(self.isTrigger){
+    //        dimbtn.dimbutton.minValue = genericIndexVal.genericIndex.formatter.min;
+    //        dimbtn.dimbutton.maxValue = genericIndexVal.genericIndex.formatter.max;
+    //        dimbtn.dimbutton.factor=genericIndexVal.genericIndex.formatter.factor;
+    //        dimbtn.dimbutton.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexVal.index matchData:gVal.iconText andEventType:nil deviceName:deviceName deviceType:deviceType];
+    //            [dimbtn.dimbutton addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    //    }
+    //    else
     [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
     [dimbtn setupValues:gVal.iconText Title:gVal.displayText suffix:genericIndexVal.genericIndex.formatter.units isTrigger:self.isTrigger isScene:self.isScene];
@@ -575,7 +575,7 @@ labelAndCheckButtonView *labelView;
 -(void)buildColorComponent:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
     SFIButtonSubProperties *subproperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType ];
     ColorComponentView *colComp = [[ColorComponentView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height - 15) setUpValue:@"Hue" ButtonTitle:NSLocalizedString(@"select", @"Select") andIsScene:self.isScene list:self.isTrigger?self.triggers:self.actions subproperties:subproperties genricIndexVal:genericIndexValue];
-
+    
     colComp.delegate = self;
     [view addSubview:colComp];
 }
@@ -638,7 +638,7 @@ labelAndCheckButtonView *labelView;
     SwitchButton *btnBinarySwitchOn = [[SwitchButton alloc] initWithFrame:CGRectMake(0,buttonY, indexButtonFrameSize, indexButtonFrameSize)];
     [view addSubview:btnBinarySwitchOn];
     btnBinarySwitchOn.tag = i;
-//    btnBinarySwitchOn.valueType=deviceIndex.valueType;
+    //    btnBinarySwitchOn.valueType=deviceIndex.valueType;
     btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:gVal.eventType deviceName:deviceName deviceType:deviceType];
     NSLog(@"gval.value: %@, icon: %@", gVal.value, gVal.icon);
     btnBinarySwitchOn.deviceType = deviceType;
@@ -647,10 +647,10 @@ labelAndCheckButtonView *labelView;
         btnBinarySwitchOn.subProperties.type = @"NetworkResult";
     }else if(deviceType == SFIDeviceType_Weather)
         btnBinarySwitchOn.subProperties.type = @"WeatherTrigger";
-        
+    
     [btnBinarySwitchOn addTarget:self action:@selector(onSwitchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     if(gVal.icon != nil)
-    [btnBinarySwitchOn setupValues:[UIImage imageNamed:gVal.icon] topText:nil bottomText:gVal.displayText isTrigger:self.isTrigger isDimButton:NO insideText:gVal.displayText isScene:self.isScene];
+        [btnBinarySwitchOn setupValues:[UIImage imageNamed:gVal.icon] topText:nil bottomText:gVal.displayText isTrigger:self.isTrigger isDimButton:NO insideText:gVal.displayText isScene:self.isScene];
     
     //set perv. count and highlight
     
@@ -718,6 +718,7 @@ labelAndCheckButtonView *labelView;
         
         for (NSString *value in genericValueKeys) {
             GenericValue *genericVal = genericValueDic[value];
+            
             if(![RuleSceneUtil showGenericValue:genericVal isScene:_isScene isTrigger:self.isTrigger])
                 continue;
             i++;
@@ -813,11 +814,11 @@ labelAndCheckButtonView *labelView;
     NSMutableArray *toBeDeletedSubProperties = [[NSMutableArray alloc] init];
     if(deviceType == SFIDeviceType_WIFIClient){
         for(SFIButtonSubProperties *switchButtonProperty in self.triggers){
-                       if([switchButtonProperty.matchData isEqualToString:matchData] && (switchButtonProperty.index == buttonIndex)){
+            if([switchButtonProperty.matchData isEqualToString:matchData] && (switchButtonProperty.index == buttonIndex)){
                 [toBeDeletedSubProperties addObject:switchButtonProperty];
             }
         }
-
+        
     }
     else if(deviceType == SFIDeviceType_Weather){
         for(SFIButtonSubProperties *switchButtonProperty in self.triggers){
@@ -829,7 +830,7 @@ labelAndCheckButtonView *labelView;
     else{
         for(SFIButtonSubProperties *switchButtonProperty in self.triggers){
             NSLog(@"IndexID : %d,devicetype = %d, matchData %@ dviceID %d",switchButtonProperty.index,switchButtonProperty.deviceType,switchButtonProperty.matchData,switchButtonProperty.deviceId );
-
+            
             if((switchButtonProperty.deviceType == deviceType) && (switchButtonProperty.deviceId == buttonId) && (switchButtonProperty.index == buttonIndex)){
                 NSLog(@"inside");
                 [toBeDeletedSubProperties addObject:switchButtonProperty];
@@ -901,12 +902,12 @@ labelAndCheckButtonView *labelView;
             [self.delegate redrawDeviceIndexView:indexSwitchButton.subProperties.deviceId clientEvent:@""];
         }else if(indexSwitchButton.subProperties.deviceType == SFIDeviceType_Weather){
             if (indexSwitchButton.selected){
-                    [self presentWeatherPicker:indexSwitchButton];
-                    [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
+                [self presentWeatherPicker:indexSwitchButton];
+                [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
             }
-                else{
-                    [self.delegate redrawDeviceIndexView:indexSwitchButton.subProperties.deviceId clientEvent:@""];
-                }
+            else{
+                [self.delegate redrawDeviceIndexView:indexSwitchButton.subProperties.deviceId clientEvent:@""];
+            }
             
         }else{
             [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
@@ -944,10 +945,10 @@ labelAndCheckButtonView *labelView;
         for(int i=0;i<60;i++){
             [displayArr addObject:@(i).stringValue];
         }
-rows = @[displayArr,@[NSLocalizedString(@"before", @"Before"),NSLocalizedString(@"after", @"After")]];
+        rows = @[displayArr,@[NSLocalizedString(@"before", @"Before"),NSLocalizedString(@"after", @"After")]];
     }
     
-//    valueArr enumerateObjectsUsingBlock:
+    //    valueArr enumerateObjectsUsingBlock:
     NSLog(@"subproperties match data %@",subproperties.matchData);
     NSString *title = (subproperties.index == 2)?NSLocalizedString(@"sunnycondition", @"Condition"):NSLocalizedString(@"Minutes", @"Minutes");
     NSArray *initialSelection = @[@0,@0];
@@ -966,7 +967,7 @@ rows = @[displayArr,@[NSLocalizedString(@"before", @"Before"),NSLocalizedString(
                                                  NSLog(@"picker = %@", picker);
                                              } origin:(UIView *)self.parentView];
     NSLog(@"done");
-
+    
 }
 
 -(void)onDoneButtonClick:(NSArray*)selectedIndexes values:(NSArray*)selectedValues property:(SFIButtonSubProperties*)subproperties display:(NSArray*)displayArr values:(NSArray*)valueArr{
@@ -993,7 +994,7 @@ rows = @[displayArr,@[NSLocalizedString(@"before", @"Before"),NSLocalizedString(
     
     [self updateWeatherMatchData:subproperties];
     [self.delegate redrawDeviceIndexView:subproperties.deviceId clientEvent:@""];
-
+    
 }
 
 -(void)updateWeatherMatchData:(SFIButtonSubProperties*)subproperties{
@@ -1058,22 +1059,22 @@ rows = @[displayArr,@[NSLocalizedString(@"before", @"Before"),NSLocalizedString(
         
     }
     
-//    for (UIView *v in deviceIndexButtons) {
-//        if ([v isKindOfClass:[DimmerButton class]]) { //to avoid removing scroll indicators
-//            DimmerButton *dim = (DimmerButton*)v;
-//            if(dim.subProperties.index == 6 && index == 5){
-//                if(dim.subProperties.matchData.intValue - value < 3){
-//                    [dim setNewValue:@(value+3).stringValue];
-//                    [self updateMatchData:dim.subProperties newValue:@(value+3).stringValue];
-//                }
-//            }else if(dim.subProperties.index == 5 && index == 6){
-//                if(value - dim.subProperties.matchData.intValue < 3){
-//                    [dim setNewValue:@(value-3).stringValue];
-//                    [self updateMatchData:dim.subProperties newValue:@(value-3).stringValue];
-//                }
-//            }
-//        }
-//    }
+    //    for (UIView *v in deviceIndexButtons) {
+    //        if ([v isKindOfClass:[DimmerButton class]]) { //to avoid removing scroll indicators
+    //            DimmerButton *dim = (DimmerButton*)v;
+    //            if(dim.subProperties.index == 6 && index == 5){
+    //                if(dim.subProperties.matchData.intValue - value < 3){
+    //                    [dim setNewValue:@(value+3).stringValue];
+    //                    [self updateMatchData:dim.subProperties newValue:@(value+3).stringValue];
+    //                }
+    //            }else if(dim.subProperties.index == 5 && index == 6){
+    //                if(value - dim.subProperties.matchData.intValue < 3){
+    //                    [dim setNewValue:@(value-3).stringValue];
+    //                    [self updateMatchData:dim.subProperties newValue:@(value-3).stringValue];
+    //                }
+    //            }
+    //        }
+    //    }
     
     
 }
@@ -1193,8 +1194,8 @@ rows = @[displayArr,@[NSLocalizedString(@"before", @"Before"),NSLocalizedString(
     picker.indicatorPosition = V8HorizontalPickerIndicatorBottom;
     picker.delegate = self;
     picker.dataSource = self;
-   
-//    [picker scrollToElement:dimButton.dimValue.intValue animated:YES];
+    
+    //    [picker scrollToElement:dimButton.dimValue.intValue animated:YES];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.deviceIndexButtonScrollView addSubview:picker];
     });
@@ -1209,7 +1210,7 @@ rows = @[displayArr,@[NSLocalizedString(@"before", @"Before"),NSLocalizedString(
         indicatorView.color1 = [SFIColors ruleOrangeColor];
     }
     picker.selectionIndicatorView = indicatorView;
-     [picker scrollToElement:0 animated:YES];
+    [picker scrollToElement:0 animated:YES];
     
 }
 #pragma mark - V8HorizontalPickerView methods

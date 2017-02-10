@@ -46,21 +46,21 @@
             },
             "2": {
                 "genericIndexID": "-34",
-                "row_no": 2
+                "row_no": 1
             },
             "3": {
                 "genericIndexID": "25",
                 "min": "-40",
                 "max": "248",
-                "row_no": 3
+                "row_no": 1
             },
             "4": {
                 "genericIndexID": "27",
-                "row_no": 3
+                "row_no": 1
             },
             "5": {
                 "genericIndexID": "26",
-                "row_no": 4,
+                "row_no": 1,
                 "min": "0",
                 "max": "9999"
             }
@@ -720,11 +720,11 @@
             },
             "4": {
                 "genericIndexID": "32",
-                "row_no": 3
+                "row_no": 2
             },
             "5": {
                 "genericIndexID": "33",
-                "row_no": 4
+                "row_no": 3
             }
         }
     },
@@ -1367,6 +1367,56 @@
                 "min": "0",
                 "max": "99999",
                 "Placement": "Detail"
+            }
+        }
+    },
+    "65": {
+        "name": "ZBIRExtender",
+        "isActuator": "true",
+        "defaultIcon": "switch_off",
+        "ExcludeFrom": "Trigger",
+        "Indexes": {
+            "1": {
+                "genericIndexID": "112"
+            },
+            "2": {
+                "genericIndexID": "113"
+            },
+            "3": {
+                "genericIndexID": "113"
+            },
+            "4": {
+                "genericIndexID": "113"
+            },
+            "5": {
+                "genericIndexID": "113"
+            },
+            "6": {
+                "genericIndexID": "113"
+            },
+            "7": {
+                "genericIndexID": "113"
+            },
+            "8": {
+                "genericIndexID": "114"
+            },
+            "9": {
+                "genericIndexID": "115"
+            },
+            "10": {
+                "genericIndexID": "115"
+            },
+            "11": {
+                "genericIndexID": "115"
+            },
+            "12": {
+                "genericIndexID": "115"
+            },
+            "13": {
+                "genericIndexID": "115"
+            },
+            "14": {
+                "genericIndexID": "115"
             }
         }
     }

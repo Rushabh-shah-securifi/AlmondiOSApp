@@ -2337,7 +2337,7 @@
         "Layout": "info",
         "Type": "sensor",
         "DefaultIcon": "switch_off",
-        "AppLabel":"State",
+        "AppLabel": "State",
         "Placement": "Hidden"
         
     },
@@ -2347,7 +2347,7 @@
         "Type": "Actuator",
         "DefaultIcon": "alarm_off",
         "Placement": "Hidden",
-        "AppLabel":"State",
+        "AppLabel": "State",
         "Conditional": "true",
         "Values": {
             "true": {
@@ -2668,5 +2668,36 @@
                 "Notification": "notification_swith2_off"
             }
         }
+    },
+    "112": {
+        "Name": "SystemMode",
+        "Type": "Actuator",
+        "Placement": "Functional",
+        "Layout": "TEXT_VIEW",
+        "AppLabel": "device",
+        "ExcludeFrom": "Scene_Rule"
+    },
+    "113": {
+        "Name": "IRDeviceData",
+        "Type": "Actuator",
+        "Placement": "Detail",
+        "Layout": "IR_LAYOUT",
+        "AppLabel": "device",
+    },
+    "114": {
+        "Name": "SelectLed",
+        "Type": "Actuator",
+        "Placement": "Functional",
+        "Layout": "TEXT_VIEW",
+        "AppLabel": "setLed",
+        "ExcludeFrom": "Scene_Rule"
+    },
+    "115": {
+        "Name": "IRButtonData",
+        "Type": "Actuator",
+        "Placement": "Functional",
+        "Layout": "TEXT_VIEW",
+        "AppLabel": "button",
+        "ExcludeFrom": "Scene_Rule"
     }
 }

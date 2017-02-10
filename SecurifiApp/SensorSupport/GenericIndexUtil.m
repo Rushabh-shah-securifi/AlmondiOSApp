@@ -30,6 +30,9 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSArray *genericIndexValues = [self getGenericIndexValuesByPlacementForDevice:device placement:HEADER];
     
+    if([genericIndexValues count] <= 0 && device.type == 60){
+        genericIndexValues = [self getGenericIndexValuesNOHeader:device placment:@"Detail"];
+    }
     if([genericIndexValues count] <= 0){
         return [[GenericIndexValue alloc]initWithGenericIndex:nil genericValue:[[GenericValue alloc]initUnknownDevice] index:0 deviceID:device.ID];
     }
@@ -131,6 +134,27 @@
     return [[detailList sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
 }
 
++(NSMutableArray *)getGenericIndexValuesNOHeader:(Device *)device placment:(NSString*)placment{
+    
+    
+    NSArray *genericIndexes = [self getGenericIndexValuesByPlacementForDevice:device placement:placment];
+    if(genericIndexes!= nil && genericIndexes.count > 0){
+        GenericIndexValue *genericIndexValue = [genericIndexes objectAtIndex:0];
+        //NSLog(@"value display text icon %@,%@,%@",genericIndexValue.genericValue.value,genericIndexValue.genericValue.displayText,genericIndexValue.genericValue.icon);
+        if(genericIndexValue.genericIndex.formatter != Nil){
+            
+            GenericValue *gValue = [GenericValue new];
+            gValue.value =genericIndexValue.genericValue.value;
+            gValue.displayText =genericIndexValue.genericValue.displayText;
+            gValue.icon =genericIndexValue.genericValue.icon;
+            genericIndexValue.genericValue = gValue;
+            return  genericIndexes;
+        }
+        
+        
+    }
+    return NULL;
+}
 
 +(NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
