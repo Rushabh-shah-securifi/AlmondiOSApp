@@ -7,6 +7,7 @@
 //
 
 #import "PickerComponentView.h"
+#import "UIFont+Securifi.h"
 
 @interface PickerComponentView ()<UIPickerViewDelegate,UIPickerViewDataSource>
 @property (nonatomic) UIPickerView *pickerView;
@@ -26,7 +27,7 @@
     return self;
 }
 -(void)drawPickerView{
-    _pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 100, 160)];
+    _pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 180, 160)];
     _pickerView.delegate = self;
     _pickerView.dataSource = self;
     _pickerView.center = self.center;
@@ -48,7 +49,8 @@
     NSString *title;
     title=[self.arrayOfState objectAtIndex:row];
     NSAttributedString *attString =
-    [[NSAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    [[NSAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],
+         NSFontAttributeName:[UIFont securifiFont:10]                                                   }];
     
     return attString;
 }

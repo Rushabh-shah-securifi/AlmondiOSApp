@@ -20,7 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIView *labelSwitchView;
 @property (weak, nonatomic) IBOutlet UITableView *buttonTableView;
 @property (nonatomic, strong) NSIndexPath *indexPath;
-@property (nonatomic)NSArray *buttonArr;
+@property (nonatomic)NSArray *buttonsValueArr;
 @property (weak, nonatomic) IBOutlet UISwitch *configSwitch;
 @property (weak, nonatomic) IBOutlet UITextField *NameTextField;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopConstrain;
@@ -29,6 +29,7 @@
 @property CGFloat tableViewDefaultConstrain;
 @property (nonatomic)NSArray *statusArr;
 @property (nonatomic)NSMutableArray *buttonValueArr;
+@property (nonatomic)NSMutableArray *defaultLedValusArr;
 @property (weak, nonatomic) IBOutlet DeviceHeaderView *deviceHeaderCell;
 @property (nonatomic) NSMutableArray *ledValueArr;
 
@@ -39,12 +40,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     GenericIndexValue *gval = self.genericIndexValue;
-    
+    self.defaultLedValusArr = [NSMutableArray new];
     self.NameTextField.text =gval.genericIndex.groupLabel;
     _tableViewDefaultConstrain = self.tableViewTopConstrain.constant;
      [self setUpDeviceEditCell];
     NSLog(@"gval.genericIndex value %@",gval.genericValue.value);
-    _buttonArr = [[NSArray alloc]initWithObjects:@"Default",@"Default",@"Default",@"Default",@"Default",@"Default",@"Default",@"Default", nil];
+    _buttonsValueArr  = @[@"Default",@"On",@"Off",@"Menu",@"Next",@"Back",@"Up",@"Down",@"Ok",@"Volume",@"Play",@"Stop",@"Pause",@"Ac Cool Mode",@"Ac Heat Mode",@"Ac Auto Mode",@"Ac Dry Mode",@"Ac Sleep Mode",@"Ac Fan On",@"Ac Fan Off",@"Ac Fan Speed",@"Ac Swing On",@"Ac Swing Off",@"Ac Set Timer",@"Ac Set Temp",@"Set TV Channel"];
      self.buttonValueArr = [NSMutableArray new];
     self.ledValueArr = [[NSMutableArray alloc]initWithObjects:@"0",@"0",@"0",@"0",@"0",@"0", nil];
     
@@ -91,6 +92,7 @@
     double dayButtonWidth = 45;
     UIView *dayView = [[UIView alloc]initWithFrame:CGRectMake(0, 18, (dayButtonWidth+spacing)*6, 70)];
     int tag = 0;
+    NSString *selectedLed = [self getLedValueForDevice];
     NSArray* dayArray = [[NSArray alloc]initWithObjects:@"01",@"02",@"03",@"04",@"05",@"06", nil];
     for(NSString* day in dayArray){
         UIButton *dayButton = [[UIButton alloc] initWithFrame:CGRectMake(xVal, 0, dayButtonWidth, dayButtonWidth)];
@@ -102,7 +104,7 @@
         [dayButton addTarget:self action:@selector(onDayBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         [dayView addSubview:dayButton];
         dayButton.selected = NO;
-        //[self setPreviousHighlight:dayButton];
+        [self setPreviousHighlight:dayButton selectedValue:selectedLed];
         xVal += dayButtonWidth + spacing;
         tag++;
     }
@@ -110,6 +112,49 @@
     //    dayView.backgroundColor = [UIColor orangeColor];
     [self.LEDView addSubview:dayView];
 }
+-(NSString *)getLedValueForDevice{
+    Device *device = [Device getDeviceForID:self.genericIndexValue.deviceID];
+    NSString  *str = [GenericIndexUtil getHeaderValueFromKnownValuesForDevice:device indexID:@(8).stringValue];
+    NSLog(@"STr = %@",str);
+    int deviceID = self.genericIndexValue.index;
+    NSMutableArray *deviceLedValues = [NSMutableArray new];
+    for(int i = 2;i < str.length ; i++)
+    {
+        
+        NSString *value = [NSString stringWithFormat:@"%c%c",[str characterAtIndex:i],[str characterAtIndex:i+1]];
+        [deviceLedValues addObject:value];
+        i++;
+    }
+    NSLog(@"deviceLedValues %@",deviceLedValues);
+    self.defaultLedValusArr = [deviceLedValues mutableCopy];
+    NSString *hex = [deviceLedValues objectAtIndex:deviceID -2];
+    NSUInteger hexAsInt;
+    [[NSScanner scannerWithString:hex] scanHexInt:&hexAsInt];
+    NSString *binary = [NSString stringWithFormat:@"%@", [self toBinary:hexAsInt]];
+    NSLog(@"binary  %@",binary);
+    [self setLedValueArrFromBinaryString:binary];
+    
+    return  binary;
+}
+-(void)setLedValueArrFromBinaryString:(NSString *)binary{
+    NSMutableArray *letterArray = [NSMutableArray array];
+    NSString *letters = binary;
+    [letters enumerateSubstringsInRange:NSMakeRange(0, [letters length])
+                                options:(NSStringEnumerationByComposedCharacterSequences)
+                             usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
+                                 [letterArray addObject:substring];
+                             }];
+    
+    self.ledValueArr = [letterArray mutableCopy];
+    
+}
+-(NSString *)toBinary:(NSUInteger)input
+{
+    if (input == 1 || input == 0)
+        return [NSString stringWithFormat:@"%lu", (unsigned long)input];
+    return [NSString stringWithFormat:@"%@%lu", [self toBinary:input / 2], input % 2];
+}
+
 -(void)onDayBtnClicked:(id)sender{
     NSMutableArray *selectedLed = [NSMutableArray new];
     UIButton *button = (UIButton*)sender;
@@ -140,8 +185,12 @@
     NSLog(@"self.ledValueArr %@",self.ledValueArr);
     NSString *ledValueString = [self.ledValueArr componentsJoinedByString:@""];
     NSLog(@"ledValueString %@",ledValueString);
+    
     NSString *ledHexStr = [self convertBin:ledValueString];
-     NSLog(@"ledHexStr %@",ledHexStr);
+    [self.defaultLedValusArr replaceObjectAtIndex:self.genericIndexValue.index -2 withObject:ledHexStr];
+     NSLog(@"self.defaultLedValusArr %@",self.defaultLedValusArr);
+    NSString *LedValue = [self.defaultLedValusArr componentsJoinedByString:@","];
+    [self sendUpadateVelue:LedValue genericIndexId:@"4"];
 }
 - (NSString*)convertBin:(NSString *)bin
 {
@@ -164,7 +213,7 @@
         for (int i = 0; i < [bin length]; i++) {
             value += pow(2,i)*[[bin substringWithRange:NSMakeRange([bin length]-1-i, 1)] intValue];
         }
-        return [NSString stringWithFormat:@"%X", value];
+        return [NSString stringWithFormat:@"%1X", value];
     }
 }
 -(void) setDayButtonProperties:(UIButton*)dayButton withRadius:(double)dayButtonWidth{
@@ -179,16 +228,14 @@
     dayButton.backgroundColor = [SFIColors darkerColorForColor:self.genericParams.color];
     dayButton.titleLabel.textAlignment  = NSTextAlignmentCenter;
 }
-//-(void)setPreviousHighlight:(UIButton*)dayButton{
-//    NSMutableArray *earlierSelection = self.ruleTime.dayOfWeek;
-//    for (NSString* tag in earlierSelection) {
-//        if ([tag isEqualToString:@(dayButton.tag).stringValue]) {
-//            dayButton.selected = YES;
-//            dayButton.backgroundColor = [SFIColors ruleBlueColor];
-//            
-//        }
-//    }
-//}
+-(void)setPreviousHighlight:(UIButton*)dayButton selectedValue:(NSString *)selectedLed{
+    if([selectedLed characterAtIndex:dayButton.tag] == '1'){
+        dayButton.selected = YES;
+        dayButton.backgroundColor = [UIColor whiteColor];
+        [dayButton setTitleColor:self.genericParams.color forState:UIControlStateNormal];
+    }
+
+}
 - (IBAction)configSwitchAction:(id)sender {
     UISwitch *confiG = (UISwitch*)sender;
     [self setConfig:confiG];
@@ -250,8 +297,10 @@
         if([textCheckMarkView isKindOfClass:[UILabel class]])
             [textCheckMarkView removeFromSuperview];
     }
+    NSString *StatusValue = [self.statusArr objectAtIndex:indexPath.row];
+    
     UILabel *cellTitle = [[UILabel alloc]initWithFrame:CGRectMake(5, 5, 100, 25)];
-    cellTitle.text = [_buttonArr objectAtIndex:indexPath.row];
+    cellTitle.text = [_buttonsValueArr objectAtIndex:[StatusValue intValue]];
     
     
     cellTitle.numberOfLines = 2;
@@ -289,6 +338,7 @@
             textCheckMarkView.backgroundColor = [UIColor whiteColor];
         else
             textCheckMarkView.backgroundColor = [UIColor whiteColor];
+        textCheckMarkView.alpha = 1;
         
     }
     if (self.indexPath == indexPath && self.isConfig)
@@ -298,7 +348,7 @@
                 [picView removeFromSuperview];
         }
         textCheckMarkView.image = [UIImage imageNamed:@"up_arrow"];
-        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width - 40, 160) arrayList:@[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",@"24",@"25"] atRowPosition:indexPath.row];
+        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width , 160) arrayList:_buttonsValueArr atRowPosition:indexPath.row];
          [pickerView removeFromSuperview];
         pickerView.delegate = self;
         pickerView.center = CGPointMake(cell.contentView.bounds.size.width/2, cell.contentView.center.y);
@@ -331,25 +381,25 @@
         NSString *value = [self.buttonValueArr objectAtIndex:indexPath.row];
         self.isSelected = YES;
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self sendUpadateVelue:value genericIndexId:@"112"];
+        [self sendUpadateVelue:value genericIndexId:@(self.genericIndexValue.index).stringValue];
     }
 }
 -(void)setPickerValue:(NSString *)pickerSelectedValue rowPosition:(NSString*)rowPosition{
     NSLog(@"picker value delegate %@ rowPosition %@",pickerSelectedValue,rowPosition);
-    NSArray *returnSelectedButtonArr = [self returnSelectedButtonArr:rowPosition];
+    NSArray *returnSelectedButtonArr = [self returnSelectedButtonArr:rowPosition pickerValue:pickerSelectedValue];
     NSString *returnButtonString = [returnSelectedButtonArr componentsJoinedByString:@","];
     NSString *returnString = [NSString stringWithFormat:@"%@,%@",pickerSelectedValue,returnButtonString];
     NSLog(@"returnString = = %@",returnString);
-     [self sendUpadateVelue:returnString genericIndexId:@"115"];
+     [self sendUpadateVelue:returnString genericIndexId:@(self.genericIndexValue.index + 7).stringValue];
 
     
     
 }
--(NSArray *)returnSelectedButtonArr:(NSString *)rowPosition{
+-(NSArray *)returnSelectedButtonArr:(NSString *)rowPosition pickerValue:(NSString *)pickerValue{
     NSMutableArray *returnStatusArr = [NSMutableArray arrayWithArray:self.statusArr];
     for(int i= 0;i<=7;i++){
         if(i== [rowPosition intValue])
-            returnStatusArr[i] = @"1";
+            returnStatusArr[i] = pickerValue;
     }
     return returnStatusArr;
 }
