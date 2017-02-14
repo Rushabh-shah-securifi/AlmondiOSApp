@@ -47,6 +47,7 @@
 #import "TriDimBtn.h"
 #import "ColorComponentView.h"
 #import "SliderComponentView.h"
+#import "GenericIndexUtil.h"
 
 @interface AddTriggerAndAddAction ()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,UITextFieldDelegate,TimeViewDelegate,HueColorPickerDelegate,DimmerButtonDelegate,ColorComponentViewDelegate, SliderComponentViewDelegate>
 @property (nonatomic, strong)NSMutableArray *triggers;
@@ -634,7 +635,8 @@ labelAndCheckButtonView *labelView;
 }
 
 - (void)buildSwitchButton:(GenericIndexValue *)genericIndexValue deviceType:(int)deviceType deviceName:(NSString *)deviceName gVal:(GenericValue *)gVal deviceId:(int)deviceId i:(int)i view:(UIView *)view buttonY:(float)buttonY{
-    
+    if(gVal.icon == Nil)
+        gVal.icon = @"ic_scan_black";
     SwitchButton *btnBinarySwitchOn = [[SwitchButton alloc] initWithFrame:CGRectMake(0,buttonY, indexButtonFrameSize, indexButtonFrameSize)];
     [view addSubview:btnBinarySwitchOn];
     btnBinarySwitchOn.tag = i;
@@ -900,7 +902,13 @@ labelAndCheckButtonView *labelView;
         
         else if(self.isScene && indexSwitchButton.subProperties.deviceType == SFIDeviceType_HueLamp_48 && indexSwitchButton.subProperties.index == 2){
             [self.delegate redrawDeviceIndexView:indexSwitchButton.subProperties.deviceId clientEvent:@""];
-        }else if(indexSwitchButton.subProperties.deviceType == SFIDeviceType_Weather){
+            
+        }else if(indexSwitchButton.subProperties.deviceType == 65){
+           
+            [self presentWeatherPicker:indexSwitchButton];
+            
+        }
+        else if(indexSwitchButton.subProperties.deviceType == SFIDeviceType_Weather){
             if (indexSwitchButton.selected){
                 [self presentWeatherPicker:indexSwitchButton];
                 [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
@@ -925,6 +933,23 @@ labelAndCheckButtonView *labelView;
     NSArray *rows ;
     NSLog(@"index wth : %d",subproperties.index);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    if(subproperties.deviceType == 65){
+        NSMutableArray *buttonValueArr = [NSMutableArray new];
+       NSArray * constantArr  = @[@"Default",@"On",@"Off",@"Menu",@"Next",@"Back",@"Up",@"Down",@"Ok",@"Volume",@"Play",@"Stop",@"Pause",@"Ac Cool Mode",@"Ac Heat Mode",@"Ac Auto Mode",@"Ac Dry Mode",@"Ac Sleep Mode",@"Ac Fan On",@"Ac Fan Off",@"Ac Fan Speed",@"Ac Swing On",@"Ac Swing Off",@"Ac Set Timer",@"Ac Set Temp",@"Set TV Channel"];
+        Device *device = [Device getDeviceForID:subproperties.deviceId];
+        int correspondingButtonId = subproperties.index  + 7;
+        NSString  *str = [GenericIndexUtil getHeaderValueFromKnownValuesForDevice:device indexID:@(correspondingButtonId).stringValue];
+        NSLog(@"STr = %@",str);
+        NSArray* statusArr = [str componentsSeparatedByString:@","];
+        
+        for(int i= 0;i<=7;i++){
+            NSString *returnValue = [statusArr objectAtIndex:i];
+            [buttonValueArr addObject:[constantArr objectAtIndex:[returnValue integerValue]]];
+        }
+         rows = @[buttonValueArr];
+        NSLog( @"buttonValueArr %@",buttonValueArr);
+
+    }
     if(subproperties.index == 2){
         GenericIndexClass *genericIndexObj = [toolkit.genericIndexes valueForKey:@"-34"];
         allKeys = genericIndexObj.values.allKeys;
@@ -947,7 +972,7 @@ labelAndCheckButtonView *labelView;
         }
         rows = @[displayArr,@[NSLocalizedString(@"before", @"Before"),NSLocalizedString(@"after", @"After")]];
     }
-    
+   
     //    valueArr enumerateObjectsUsingBlock:
     NSLog(@"subproperties match data %@",subproperties.matchData);
     NSString *title = (subproperties.index == 2)?NSLocalizedString(@"sunnycondition", @"Condition"):NSLocalizedString(@"Minutes", @"Minutes");
@@ -961,9 +986,12 @@ labelAndCheckButtonView *labelView;
                                                    [self onDoneButtonClick:selectedIndexes values:selectedValues property:subproperties display:displayArr values:valueArr];
                                                }
                                              cancelBlock:^(ActionSheetMultipleStringPicker *picker) {
+                                                 
                                                  [self removeTriggerIndex:subproperties.index buttonId:subproperties.deviceId deviceType:indexSwitchButton.subProperties.deviceType matchData:subproperties.matchData];
+                                                 
+                                                  indexSwitchButton.selected = NO;
                                                  [self.delegate redrawDeviceIndexView:subproperties.deviceId clientEvent:@""];
-                                                 indexSwitchButton.selected = NO;
+                                                 
                                                  NSLog(@"picker = %@", picker);
                                              } origin:(UIView *)self.parentView];
     NSLog(@"done");
@@ -971,12 +999,18 @@ labelAndCheckButtonView *labelView;
 }
 
 -(void)onDoneButtonClick:(NSArray*)selectedIndexes values:(NSArray*)selectedValues property:(SFIButtonSubProperties*)subproperties display:(NSArray*)displayArr values:(NSArray*)valueArr{
-    NSLog(@"%@", selectedIndexes);// array of NSString
+    NSLog(@"array of NSString %@", selectedIndexes);// array of NSString
     NSLog(@"%@", [selectedValues componentsJoinedByString:@", "]);
     NSString *posIndex = [selectedIndexes objectAtIndex:0];
-    
-    if(selectedIndexes.count == 1){
+    if(subproperties.deviceType == 65){
+        
+        [self.delegate redrawDeviceIndexView:subproperties.deviceId clientEvent:@""];
+        [self removeSirenEntriesOnDisableForType_65:subproperties.deviceId value:@"" entries:self.triggers];
+    }
+    else if(selectedIndexes.count == 1){
         subproperties.matchData = [valueArr objectAtIndex:[posIndex integerValue]];
+         [self updateWeatherMatchData:subproperties];
+         [self.delegate redrawDeviceIndexView:subproperties.deviceId clientEvent:@""];
     }
     
     else{
@@ -990,10 +1024,12 @@ labelAndCheckButtonView *labelView;
             NSLog(@"displayArr %@",displayArr);
             subproperties.delay =[NSString stringWithFormat:@"-%@",[displayArr objectAtIndex:[posIndex integerValue]]];
         }
+         [self updateWeatherMatchData:subproperties];
+         [self.delegate redrawDeviceIndexView:subproperties.deviceId clientEvent:@""];
     }
     
-    [self updateWeatherMatchData:subproperties];
-    [self.delegate redrawDeviceIndexView:subproperties.deviceId clientEvent:@""];
+   
+   
     
 }
 
@@ -1299,6 +1335,15 @@ labelAndCheckButtonView *labelView;
     return newGenIndexVals;
 }
 
+-(void)removeSirenEntriesOnDisableForType_65:(int)deviceID value:(NSString*)value entries:(NSMutableArray*)entries{
+    NSMutableArray *toBeDeletedEntries = [NSMutableArray new];
+    
+    for(SFIButtonSubProperties *entry in entries){
+        if(entry.deviceId == deviceID && entry.deviceType == 65)
+            [toBeDeletedEntries addObject:entry];
+    }
+    [entries removeObjectsInArray:toBeDeletedEntries];
+}
 -(void)removeSirenEntriesOnDisable:(int)deviceID value:(NSString*)value entries:(NSMutableArray*)entries{
     if([value isEqualToString:@"true"])
         return;

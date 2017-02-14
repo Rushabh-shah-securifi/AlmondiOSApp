@@ -131,6 +131,9 @@ UILabel *topLabel;
 
 + (SwitchButton *)setIconAndText:(int)positionId buttonProperties:(SFIButtonSubProperties *)buttonProperties icon:(NSString *)icon text:(NSString*)text isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString*)bottomText{
     buttonProperties.positionId=positionId;
+    if(icon == nil){
+        icon = @"ic_scan_black";
+    }
     buttonProperties.iconName=icon;
     buttonProperties.displayText=text;
     [self drawButton: buttonProperties isTrigger:isTrigger isDimButton:isDimmbutton bottomText:bottomText];

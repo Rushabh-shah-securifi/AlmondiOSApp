@@ -44,6 +44,8 @@
 }
 
 - (void)buildTriggersAndActions{
+    NSLog(@"self.triggers count %ld",self.triggers.count);
+    
     [SFISubPropertyBuilder createEntryForView:self.triggersActionsScrollView indexScrollView:self.deviceIndexScrollView parentView:self.parentView parentClass:self triggers:self.triggers actions:self.actions isCrossButtonHidden:NO isRuleActive:YES isScene:self.isScene];
 }
 
@@ -98,6 +100,7 @@
     }
     if(deviceButton.deviceId != deviceId)
         return;
+    
     
     if(deviceButton.isTrigger){
         if(deviceId == 0){ //time mode clients

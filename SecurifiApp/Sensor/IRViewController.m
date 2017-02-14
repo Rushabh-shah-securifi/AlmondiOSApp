@@ -323,22 +323,22 @@
         textCheckMarkView.image = [UIImage imageNamed:@"down_arrow"];
     }
     else{
-        textCheckMarkView.frame = CGRectMake(cell.contentView.frame.size.width - 30 , 7, 25 , 25);
-        CALayer * l1 = [textCheckMarkView layer];
-        [l1 setMasksToBounds:YES];
-        [l1 setCornerRadius:25/2];
-        
-            
-        l1.backgroundColor = (__bridge CGColorRef _Nullable)([UIColor blueColor]);
-//        textCheckMarkView.layer.masksToBounds = NO;
-//        textCheckMarkView.layer.shadowOffset = CGSizeMake(-15, 20);
-//        textCheckMarkView.layer.shadowRadius = 5;
-//        textCheckMarkView.layer.shadowOpacity = 0.5;
-        if(self.isSelected)
-            textCheckMarkView.backgroundColor = [UIColor whiteColor];
-        else
-            textCheckMarkView.backgroundColor = [UIColor whiteColor];
-        textCheckMarkView.alpha = 1;
+//        textCheckMarkView.frame = CGRectMake(cell.contentView.frame.size.width - 30 , 7, 25 , 25);
+//        CALayer * l1 = [textCheckMarkView layer];
+//        [l1 setMasksToBounds:YES];
+//        [l1 setCornerRadius:25/2];
+//        
+//            
+//        l1.backgroundColor = (__bridge CGColorRef _Nullable)([UIColor blueColor]);
+////        textCheckMarkView.layer.masksToBounds = NO;
+////        textCheckMarkView.layer.shadowOffset = CGSizeMake(-15, 20);
+////        textCheckMarkView.layer.shadowRadius = 5;
+////        textCheckMarkView.layer.shadowOpacity = 0.5;
+//        if(self.isSelected)
+//            textCheckMarkView.backgroundColor = [UIColor whiteColor];
+//        else
+//            textCheckMarkView.backgroundColor = [UIColor whiteColor];
+//        textCheckMarkView.alpha = 1;
         
     }
     if (self.indexPath == indexPath && self.isConfig)
