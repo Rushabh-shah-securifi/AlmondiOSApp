@@ -15,7 +15,7 @@
 #import "UICommonMethods.h"
 
 
-@interface IRViewController ()<PickerComponentViewDelegate>
+@interface IRViewController ()<PickerComponentViewDelegate,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIView *LEDView;
 @property (weak, nonatomic) IBOutlet UIView *labelSwitchView;
 @property (weak, nonatomic) IBOutlet UITableView *buttonTableView;
@@ -41,7 +41,7 @@
     [super viewDidLoad];
     GenericIndexValue *gval = self.genericIndexValue;
     self.defaultLedValusArr = [NSMutableArray new];
-    self.NameTextField.text =gval.genericIndex.groupLabel;
+    self.NameTextField.text =gval.genericValue.displayText;
     _tableViewDefaultConstrain = self.tableViewTopConstrain.constant;
      [self setUpDeviceEditCell];
     NSLog(@"gval.genericIndex value %@",gval.genericValue.value);
@@ -408,5 +408,19 @@
     genricIndexValue.index = [gId intValue];
     genricIndexValue.deviceID = self.genericIndexValue.deviceID;
     [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genricIndexValue mii:121 value:value];
+}
+#pragma mark - TextField Delegates
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+    NSLog(@"Text field did begin editing");
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    NSLog(@"Text field ended editing");
+}
+
+-(BOOL) textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
 }
 @end

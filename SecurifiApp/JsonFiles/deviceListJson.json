@@ -1374,7 +1374,7 @@
         "name": "ZBIRExtender",
         "isActuator": "true",
         "defaultIcon": "switch_off",
-        "ExcludeFrom": "Trigger",
+        "isTrigger": "false",
         "Indexes": {
             "1": {
                 "genericIndexID": "112"

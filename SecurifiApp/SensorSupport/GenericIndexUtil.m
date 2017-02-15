@@ -33,6 +33,17 @@
     if([genericIndexValues count] <= 0 && device.type == 60){
         genericIndexValues = [self getGenericIndexValuesNOHeader:device placment:@"Detail"];
     }
+    if(device.type == 65){
+
+        GenericValue *gVal = [[GenericValue alloc]initWithDisplayText:@"" iconText:nil value:@"1" excludeFrom:@"" transformedValue:@"" prefix:@""];
+        gVal.icon = @"vibration_off";
+        GenericIndexClass *gIndex = [GenericIndexClass new];
+        GenericIndexValue *gIndexValue = [GenericIndexValue new];
+        gIndexValue.genericValue = gVal;
+        gIndexValue.genericIndex = gIndex;
+        gIndexValue.deviceID = device.ID;
+        return gIndexValue;
+     }
     if([genericIndexValues count] <= 0){
         return [[GenericIndexValue alloc]initWithGenericIndex:nil genericValue:[[GenericValue alloc]initUnknownDevice] index:0 deviceID:device.ID];
     }

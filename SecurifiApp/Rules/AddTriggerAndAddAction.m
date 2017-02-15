@@ -637,12 +637,15 @@ labelAndCheckButtonView *labelView;
 - (void)buildSwitchButton:(GenericIndexValue *)genericIndexValue deviceType:(int)deviceType deviceName:(NSString *)deviceName gVal:(GenericValue *)gVal deviceId:(int)deviceId i:(int)i view:(UIView *)view buttonY:(float)buttonY{
     if(gVal.icon == Nil)
         gVal.icon = @"ic_scan_black";
+    
     SwitchButton *btnBinarySwitchOn = [[SwitchButton alloc] initWithFrame:CGRectMake(0,buttonY, indexButtonFrameSize, indexButtonFrameSize)];
     [view addSubview:btnBinarySwitchOn];
     btnBinarySwitchOn.tag = i;
+    
     //    btnBinarySwitchOn.valueType=deviceIndex.valueType;
     btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:gVal.eventType deviceName:deviceName deviceType:deviceType];
     NSLog(@"gval.value: %@, icon: %@", gVal.value, gVal.icon);
+    
     btnBinarySwitchOn.deviceType = deviceType;
     
     if(deviceType == SFIDeviceType_REBOOT_ALMOND){
@@ -651,9 +654,26 @@ labelAndCheckButtonView *labelView;
         btnBinarySwitchOn.subProperties.type = @"WeatherTrigger";
     
     [btnBinarySwitchOn addTarget:self action:@selector(onSwitchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    if(gVal.icon != nil)
-        [btnBinarySwitchOn setupValues:[UIImage imageNamed:gVal.icon] topText:nil bottomText:gVal.displayText isTrigger:self.isTrigger isDimButton:NO insideText:gVal.displayText isScene:self.isScene];
     
+    if(gVal.icon != nil){
+        if(deviceType == 65)
+        {
+            //deviceName = genericIndexValue.genericValue.value;
+            Device *device = [Device getDeviceForID:deviceId];
+            NSLog(@"genericIndexValue indexes %d",genericIndexValue.index);
+            NSString *kval = [GenericIndexUtil getHeaderValueFromKnownValuesForDevice:device indexID:@(genericIndexValue.index).stringValue];
+            GenericValue *val = [GenericIndexUtil getMatchingGenericValueForGenericIndexID:@"113" forValue:kval];
+            btnBinarySwitchOn.subProperties.deviceName = device.name;
+            
+            //DeviceKnownValues *g = [GenericIndexUtil getHeaderValueFromKnownValuesForDevice:device indexID:@(genericIndexValue.index).stringValue];
+            
+            
+            [btnBinarySwitchOn setupValues:[UIImage imageNamed:gVal.icon] topText:nil bottomText:val.value isTrigger:self.isTrigger isDimButton:NO insideText:gVal.displayText isScene:self.isScene];
+        }
+        else {
+            [btnBinarySwitchOn setupValues:[UIImage imageNamed:gVal.icon] topText:nil bottomText:gVal.displayText isTrigger:self.isTrigger isDimButton:NO insideText:gVal.displayText isScene:self.isScene];
+        }
+    }
     //set perv. count and highlight
     
     btnBinarySwitchOn.selected=[self setActionButtonCount:btnBinarySwitchOn isSlider:NO];
@@ -880,9 +900,20 @@ labelAndCheckButtonView *labelView;
     int buttonIndex = indexSwitchButton.subProperties.index;
     NSString *matchData = indexSwitchButton.subProperties.matchData;
     if(!self.isTrigger){
-        indexSwitchButton.selected = YES ;
-        [self.actions addObject:[indexSwitchButton.subProperties createNew]];
-        [self.delegate updateTriggerAndActionDelegatePropertie:!self.isTrigger];
+        if(indexSwitchButton.subProperties.deviceType == 65){
+            
+            [self presentWeatherPicker:indexSwitchButton];
+            indexSwitchButton.selected = YES ;
+            [self.actions addObject:[indexSwitchButton.subProperties createNew]];
+            [self.delegate updateTriggerAndActionDelegatePropertie:!self.isTrigger];
+            
+        }
+        else
+        {
+            indexSwitchButton.selected = YES ;
+            [self.actions addObject:[indexSwitchButton.subProperties createNew]];
+            [self.delegate updateTriggerAndActionDelegatePropertie:!self.isTrigger];
+        }
     }else{
         NSLog(@"onSwitchButtonClick - istrigger");
         [self toggleTriggerIndex:buttonIndex superView:[sender superview] indexButton:indexSwitchButton];
