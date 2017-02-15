@@ -653,7 +653,7 @@ labelAndCheckButtonView *labelView;
     }else if(deviceType == SFIDeviceType_Weather)
         btnBinarySwitchOn.subProperties.type = @"WeatherTrigger";
     
-    [btnBinarySwitchOn addTarget:self action:@selector(onSwitchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+  
     
     if(gVal.icon != nil){
         if(deviceType == 65)
@@ -663,17 +663,19 @@ labelAndCheckButtonView *labelView;
             NSLog(@"genericIndexValue indexes %d",genericIndexValue.index);
             NSString *kval = [GenericIndexUtil getHeaderValueFromKnownValuesForDevice:device indexID:@(genericIndexValue.index).stringValue];
             GenericValue *val = [GenericIndexUtil getMatchingGenericValueForGenericIndexID:@"113" forValue:kval];
-            btnBinarySwitchOn.subProperties.deviceName = device.name;
+            val.icon = @"vibration_off";
+            btnBinarySwitchOn.subProperties.deviceName = val.value;
             
             //DeviceKnownValues *g = [GenericIndexUtil getHeaderValueFromKnownValuesForDevice:device indexID:@(genericIndexValue.index).stringValue];
             
             
-            [btnBinarySwitchOn setupValues:[UIImage imageNamed:gVal.icon] topText:nil bottomText:val.value isTrigger:self.isTrigger isDimButton:NO insideText:gVal.displayText isScene:self.isScene];
+            [btnBinarySwitchOn setupValues:[UIImage imageNamed:val.icon] topText:nil bottomText:val.value isTrigger:self.isTrigger isDimButton:NO insideText:gVal.displayText isScene:self.isScene];
         }
         else {
             [btnBinarySwitchOn setupValues:[UIImage imageNamed:gVal.icon] topText:nil bottomText:gVal.displayText isTrigger:self.isTrigger isDimButton:NO insideText:gVal.displayText isScene:self.isScene];
         }
     }
+      [btnBinarySwitchOn addTarget:self action:@selector(onSwitchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     //set perv. count and highlight
     
     btnBinarySwitchOn.selected=[self setActionButtonCount:btnBinarySwitchOn isSlider:NO];
@@ -904,6 +906,7 @@ labelAndCheckButtonView *labelView;
             
             [self presentWeatherPicker:indexSwitchButton];
             indexSwitchButton.selected = YES ;
+            NSLog(@"indexSwitchButton.subProperties %@",indexSwitchButton.subProperties.deviceName);
             [self.actions addObject:[indexSwitchButton.subProperties createNew]];
             [self.delegate updateTriggerAndActionDelegatePropertie:!self.isTrigger];
             
@@ -981,7 +984,7 @@ labelAndCheckButtonView *labelView;
         NSLog( @"buttonValueArr %@",buttonValueArr);
 
     }
-    if(subproperties.index == 2){
+    else if(subproperties.index == 2){
         GenericIndexClass *genericIndexObj = [toolkit.genericIndexes valueForKey:@"-34"];
         allKeys = genericIndexObj.values.allKeys;
         NSArray *sortedKeys = [allKeys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {

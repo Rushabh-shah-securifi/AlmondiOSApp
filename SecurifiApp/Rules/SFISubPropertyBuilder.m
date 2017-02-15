@@ -45,6 +45,7 @@
 #import "WeatherRuleButton.h"
 
 #import "AlmondManagement.h"
+#import "GenericIndexUtil.h"
 
 @interface SFISubPropertyBuilder()
 
@@ -199,14 +200,24 @@ UILabel *topLabel;
             {
                 return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"toggle_icon.png" text:@"Toggle" isTrigger:isTrigger isDimButton:NO bottomText:NSLocalizedString(@"toggle",@"TOGGLE")];//
             }
-            
-            for (NSString *value in genericValueKeys) {
-                //NSLog(@"values %@",value);
+                        for (NSString *value in genericValueKeys) {
+                NSLog(@"values %@",value);
                 GenericValue *gVal = genericValueDic[value];
-                BOOL isDimButton = genericIndex.layoutType!=nil && ([genericIndex.layoutType isEqualToString: SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW] || [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndex.layoutType isEqualToString:@"HUE"] || [genericIndex.layoutType isEqualToString:@"HUE_ONLY"]);
+                if(buttonProperties.deviceType == 65){
+                    Device *device = [Device getDeviceForID:buttonProperties.deviceId];
+                    NSString *kval = [GenericIndexUtil getHeaderValueFromKnownValuesForDevice:device indexID:@(indexValue.index).stringValue];
+                    GenericValue *val = [GenericIndexUtil getMatchingGenericValueForGenericIndexID:@"113" forValue:kval];
+                    val.icon = @"vibration_off";
+                    gVal.icon = val.icon;
+                    gVal.displayText = val.displayText;
+                    gVal.value = val.value;
+                    
+                    
+                }
+                BOOL isDimButton = genericIndex.layoutType!=nil && ([genericIndex.layoutType isEqualToString: SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW] || [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndex.layoutType isEqualToString:@"HUE"] || [genericIndex.layoutType isEqualToString:@"HUE_ONLY"] );
                 
-                //NSLog(@"gaval.value: %@, propertyvalue: %@, displayeddata: %@", gVal.value, buttonProperties.matchData, buttonProperties.displayedData);
-                if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties]){
+                NSLog(@"gaval.value: %@, propertyvalue: %@, displayeddata: %@", gVal.value, buttonProperties.matchData, buttonProperties.displayedData);
+                if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties] || buttonProperties.deviceType == 65){
                     NSString *text;
                     if(isDimButton){
                     buttonProperties.displayedData = [NSString stringWithFormat:@"%d",(int)roundf([buttonProperties.matchData intValue]*(genericIndex.formatter.factor == 0?1.0:genericIndex.formatter.factor))];
@@ -222,7 +233,7 @@ UILabel *topLabel;
                     else
                         text = gVal.displayText;
 
-                    //NSLog(@"bottomText  %@ gval.icon %@",text,gVal.icon);
+                    NSLog(@"bottomText  %@ gval.icon %@",text,gVal.icon);
                     NSString *icon = gVal.icon == nil?genericIndex.icon:gVal.icon;
                     //NSLog(@"icon %@",icon);
                     
