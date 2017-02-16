@@ -36,9 +36,10 @@
 @end
 
 @implementation IRViewController
-
+int mii;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _NameTextField.delegate = self;
     GenericIndexValue *gval = self.genericIndexValue;
     self.defaultLedValusArr = [NSMutableArray new];
     self.NameTextField.text =gval.genericValue.displayText;
@@ -54,6 +55,16 @@
     // Do any additional setup after loading the view.
     [self setBackgroundColor];
     [self addDayView];
+    [self initializeNotifications];
+    
+}
+-(void)initializeNotifications{
+    NSLog(@"initialize notifications sensor table");
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self //indexupdate or name/location change both
+               selector:@selector(onMobileCommandResponse:)
+                   name:MOBILE_COMMAND_NOTIFIER
+                 object:nil];
     
 }
 -(void)setBackgroundColor{
@@ -404,10 +415,11 @@
     return returnStatusArr;
 }
 -(void)sendUpadateVelue:(NSString *)value genericIndexId:(NSString *)gId{
+     mii = arc4random()%10000;
     GenericIndexValue *genricIndexValue = [GenericIndexValue new];
     genricIndexValue.index = [gId intValue];
     genricIndexValue.deviceID = self.genericIndexValue.deviceID;
-    [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genricIndexValue mii:121 value:value];
+    [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genricIndexValue mii:mii value:value];
 }
 #pragma mark - TextField Delegates
 
@@ -420,7 +432,19 @@
 }
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
+    [self sendUpadateVelue:textField.text genericIndexId:@"1"];
     [textField resignFirstResponder];
+    
     return YES;
+}
+-(void)onMobileCommandResponse:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    NSDictionary *resDict = [data valueForKey:@"data"];
+    if([resDict[@"success"] isEqualToString:@"true"])
+        [self.navigationController popViewControllerAnimated:YES];
+    
+    
+    
 }
 @end

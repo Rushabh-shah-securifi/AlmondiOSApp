@@ -940,6 +940,7 @@ labelAndCheckButtonView *labelView;
         }else if(indexSwitchButton.subProperties.deviceType == 65){
            
             [self presentWeatherPicker:indexSwitchButton];
+            [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
             
         }
         else if(indexSwitchButton.subProperties.deviceType == SFIDeviceType_Weather){
@@ -1039,6 +1040,7 @@ labelAndCheckButtonView *labelView;
     if(subproperties.deviceType == 65){
         
         [self.delegate redrawDeviceIndexView:subproperties.deviceId clientEvent:@""];
+        if(!self.isScene)
         [self removeSirenEntriesOnDisableForType_65:subproperties.deviceId value:@"" entries:self.triggers];
     }
     else if(selectedIndexes.count == 1){
