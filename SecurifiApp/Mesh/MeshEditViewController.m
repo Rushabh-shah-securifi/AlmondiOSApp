@@ -117,14 +117,14 @@
 #pragma mark command methods
 -(void)requestSetSlaveNameDelegate:(NSString *)location{
     self.location = location;
-    if([self.almondStatObj.location isEqualToString:location]){
-        [self showAlert:@"" msg:@"The Location you have selected is same as previous. Do you want to continue?" cancel:@"Yes" other:@"No" tag:SAME_NAME];
-        return;
-    }
-    if([self.routerSummary hasSameAlmondLocation:location]){
-        [self showAlert:@"" msg:@"This Location name already has been used by other Almond in your Home Wi-Fi Network. Do you want to continue?" cancel:@"Yes" other:@"No" tag:USED_NAME];
-        return;
-    }
+//    if([self.almondStatObj.location isEqualToString:location]){
+//        [self showAlert:@"" msg:@"The Location you have selected is same as previous. Do you want to continue?" cancel:@"Yes" other:@"No" tag:SAME_NAME];
+//        return;
+//    }
+//    if([self.routerSummary hasSameAlmondLocation:location]){
+//        [self showAlert:@"" msg:@"This Location name already has been used by other Almond in your Home Wi-Fi Network. Do you want to continue?" cancel:@"Yes" other:@"No" tag:USED_NAME];
+//        return;
+//    }
     
     if(location.length <= 2){
         //show toast

@@ -667,9 +667,11 @@
          {\"CommandMode\":\"Reply\",\"CommandType\":\"AddWirelessSlaveMobile\",\"Reason\":\"Adding to network.\",\"Success\":\"true\"}
          */
 //        [self alertViewCancel:self.alert];
-        if(self.alert){
+        if(self.alert.tag == -10){
             [self.alert dismissWithClickedButtonIndex:0 animated:YES];
+            self.alert.tag = -10;
             [self onYesLEDBlinking:nil];
+
         }
     }
     else{
@@ -841,12 +843,14 @@
             }
         }
         
-        if([self.blinkTimer isValid] == NO && self.currentView.tag == BLINK_CHECK && self.isYesBlinkTapped)
-            [self showAlert:self.almondNormalName msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
+//        if([self.blinkTimer isValid] == NO && self.currentView.tag == BLINK_CHECK && self.isYesBlinkTapped)
+//            [self showAlert:self.almondNormalName msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
         
-        //almond not yet added, its in adding state show hud (alerady there)
-        //        else if(self.isYesBlinkTapped)
-        //            [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:60];
+        //  almond not yet added, its in adding state show hud (alerady there)
+        if(self.currentView.tag == BLINK_CHECK && self.isYesBlinkTapped && self.alert.tag == NETWORK_OFFLINE){
+            NSLog(@"onAlmondRouterCommandResponse onYesLEDBlinking");
+            [self onYesLEDBlinking:nil];
+        }
         
     }
 }
