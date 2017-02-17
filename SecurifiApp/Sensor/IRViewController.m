@@ -13,6 +13,7 @@
 #import "SFIColors.h"
 #import "DeviceHeaderView.h"
 #import "UICommonMethods.h"
+#import "AlmondManagement.h"
 
 
 @interface IRViewController ()<PickerComponentViewDelegate,UITextFieldDelegate>
@@ -54,8 +55,10 @@ int mii;
     [self setButtonLayOut];
     // Do any additional setup after loading the view.
     [self setBackgroundColor];
-    [self addDayView];
     [self initializeNotifications];
+    if(self.genericIndexValue.index != 7)
+        [self addDayView];
+   
     
 }
 -(void)initializeNotifications{
@@ -63,7 +66,7 @@ int mii;
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self //indexupdate or name/location change both
                selector:@selector(onMobileCommandResponse:)
-                   name:MOBILE_COMMAND_NOTIFIER
+                   name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
                  object:nil];
     
 }
@@ -138,7 +141,7 @@ int mii;
     }
     NSLog(@"deviceLedValues %@",deviceLedValues);
     self.defaultLedValusArr = [deviceLedValues mutableCopy];
-    NSString *hex = [deviceLedValues objectAtIndex:deviceID -2];
+    NSString *hex = [deviceLedValues objectAtIndex:self.genericIndexValue.index -2];
     NSUInteger hexAsInt;
     [[NSScanner scannerWithString:hex] scanHexInt:&hexAsInt];
     NSString *binary = [NSString stringWithFormat:@"%@", [self toBinary:hexAsInt]];
@@ -239,6 +242,7 @@ int mii;
     dayButton.backgroundColor = [SFIColors darkerColorForColor:self.genericParams.color];
     dayButton.titleLabel.textAlignment  = NSTextAlignmentCenter;
 }
+
 -(void)setPreviousHighlight:(UIButton*)dayButton selectedValue:(NSString *)selectedLed{
     if([selectedLed characterAtIndex:dayButton.tag] == '1'){
         dayButton.selected = YES;
@@ -258,7 +262,8 @@ int mii;
         self.NameTextField.userInteractionEnabled = YES;
         self.LEDView.hidden = NO;
         self.tableViewTopConstrain.constant = _tableViewDefaultConstrain;
-        [self addDayView];
+        if(self.genericIndexValue.index != 7)
+            [self addDayView];
         [self.buttonTableView reloadData];
         
     }
@@ -440,10 +445,20 @@ int mii;
 -(void)onMobileCommandResponse:(id)sender{
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    NSDictionary *resDict = [data valueForKey:@"data"];
-    if([resDict[@"success"] isEqualToString:@"true"])
-        [self.navigationController popViewControllerAnimated:YES];
+    NSDictionary *resDict;
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
+    BOOL local = [[SecurifiToolkit sharedInstance] useLocalNetwork:almond.almondplusMAC];
+    if(local){
+        resDict = [data valueForKey:@"data"];
+    }else{
+        resDict = [[data valueForKey:@"data"] objectFromJSONData];
+    }
     
+    if([resDict[@"Success"] isEqualToString:@"true"]){
+         dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController popViewControllerAnimated:YES];
+         });
+    }
     
     
 }
