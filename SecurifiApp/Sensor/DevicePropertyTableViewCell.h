@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "GenericIndexValue.h"
 @interface DevicePropertyTableViewCell : UITableViewCell
-- (void)setUpCell:(NSDictionary *)cellDict indexPath:(NSIndexPath *)indexPath;
+- (void)setUpCell:(NSDictionary *)cellDict property:(NSString *)property genericValue:(GenericIndexValue *)gIval;
+- (void)setRightLabelColor:(UIColor *)color;
 @end

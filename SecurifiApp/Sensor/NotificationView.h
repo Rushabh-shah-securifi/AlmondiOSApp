@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface NotificationView : UIView
-
+@property (weak, nonatomic) IBOutlet UIView *view;
 @end

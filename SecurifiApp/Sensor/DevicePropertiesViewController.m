@@ -14,12 +14,14 @@
 #import "UICommonMethods.h"
 #import "PickerComponentView.h"
 #import "DeviceNotificationViewController.h"
+#import "GenericIndexUtil.h"
 
 #define DEVICE_PROPERTY_CELL @"devicepropertycell"
 
 static const int defHeaderHeight = 25;
 static const float defRowHeight = 44;
 static const int defHeaderLableHt = 20;
+static const int normalheaderheight = 2;
 
 @interface DevicePropertiesViewController () <DeviceHeaderViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView *topView;
@@ -32,6 +34,12 @@ static const int defHeaderLableHt = 20;
 @property BOOL is_Expanded;
 @property (strong, nonatomic) NSIndexPath *indexPath;
 
+@property NSInteger deviceId;
+@property BOOL isSensor;
+
+
+@property (nonatomic) NSMutableArray *sectionArr;
+
 @end
 
 @implementation DevicePropertiesViewController
@@ -39,11 +47,36 @@ static const int defHeaderLableHt = 20;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self  initSection];
-    
-    NSMutableArray *sectionArr = [NSMutableArray new];
     [self setUpDevicePropertyEditHeaderView];
-    NSMutableArray *genericIndexObjs = [[NSMutableArray alloc]init];
+    [self getSectionForTable];
     
+}
+
+-(void)getSectionForTable{
+    GenericParams *gparams = self.genericParams;
+    self.deviceId = gparams.headerGenericIndexValue.deviceID;
+    self.isSensor = gparams.isSensor;
+    
+    NSLog(@"Index value arr %@",gparams.indexValueList);
+    for(NSDictionary *dict in gparams.indexValueList){
+        GenericIndexClass *gClass = dict[@"generic_index"];
+        [self.sectionArr addObject:gClass];
+    }
+
+}
+-(NSArray *)getRowforSection:(NSInteger)sectionNumber{
+    GenericParams *gparams = self.genericParams;
+    NSDictionary *dict = [gparams.indexValueList objectAtIndex:sectionNumber];
+     NSArray *genericIndexValueArr = dict[@"generic_inxex_values_array"];
+    return [self getRowFortable:genericIndexValueArr];
+}
+-(NSArray *)getRowFortable:(NSArray *)genericIndexValueArr{
+     NSMutableArray *rowArr = [NSMutableArray new];
+    for (GenericIndexValue *gIndexVal in genericIndexValueArr) {
+        NSLog(@"gIndexVal in %@",gIndexVal);
+        [rowArr addObject:gIndexVal];
+    }
+    return rowArr;
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
@@ -54,7 +87,8 @@ static const int defHeaderLableHt = 20;
     [self.navigationController setNavigationBarHidden:NO];
 }
 -(void)initSection{
-    //self.expandedCells = [[NSMutableArray alloc]init];
+    self.sectionArr = [NSMutableArray new];
+   
 }
 
 -(void)setUpDevicePropertyEditHeaderView{
@@ -74,23 +108,20 @@ static const int defHeaderLableHt = 20;
 
 #pragma mark tableView delegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 5;
+    return self.sectionArr.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(section == 0)
-        return 1;
-    else if (section == 1)
-        return 1;
-    else
-        return 2;
+    NSArray *rowCountForSection = [self getRowforSection:section];
+    return rowCountForSection.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat kExpandedCellHeight = 160;
-    CGFloat kNormalCellHeigh = 50;
+    CGFloat kNormalCellHeigh = 40;
+     GenericIndexValue *gValue = [[self getRowforSection:indexPath.section] objectAtIndex:indexPath.row];
     
-    if (self.indexPath == indexPath)
+    if (self.indexPath == indexPath && !gValue.genericIndex.readOnly)
     {
         return kExpandedCellHeight; //It's not necessary a constant, though
     }
@@ -102,26 +133,29 @@ static const int defHeaderLableHt = 20;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if(section == 2)
+    GenericIndexClass *gclass = [self.sectionArr objectAtIndex:section];
+    NSLog(@"gclass.header %@",gclass.header);
+    if(gclass.header != nil)
         return defHeaderHeight + defHeaderLableHt;
     
-    return defHeaderHeight;
+    return normalheaderheight;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *view;
     int viewHt;
-    if(section == 2){
+    GenericIndexClass *gclass = [self.sectionArr objectAtIndex:section];
+    if(gclass.header != nil)
+    {
         viewHt = defHeaderHeight + defHeaderLableHt;
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), viewHt)];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, defHeaderHeight-8, CGRectGetWidth(view.frame), defHeaderLableHt)];
-        [UICommonMethods setLableProperties:label text:@"TEMPERATURE" textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:14 alignment:NSTextAlignmentLeft];
+        [UICommonMethods setLableProperties:label text:gclass.header textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:14 alignment:NSTextAlignmentLeft];
         [view addSubview:label];
     }
-    
     else{
-        viewHt = defHeaderLableHt;
-        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), defHeaderHeight)];
+        viewHt = normalheaderheight;
+        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), normalheaderheight)];
     }
     
     view.backgroundColor = [UIColor whiteColor];
@@ -130,12 +164,34 @@ static const int defHeaderLableHt = 20;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 1;
+    GenericIndexClass *gclass = [self.sectionArr objectAtIndex:section];
+    NSLog(@"footer  :: %@",gclass.footer);
+    if(gclass.footer != nil)
+        return defHeaderHeight + defHeaderLableHt;
+    return normalheaderheight;
+    
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 1)];
-    //[UICommonMethods addLineSeperator:view yPos:0];
+    UIView *view;
+    int viewHt;
+    GenericIndexClass *gclass = [self.sectionArr objectAtIndex:section];
+    if(gclass.footer != nil)
+    {
+        viewHt = defHeaderHeight + defHeaderLableHt;
+        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), viewHt)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, defHeaderHeight-8, CGRectGetWidth(view.frame), defHeaderLableHt)];
+        label.numberOfLines = 2;
+        [UICommonMethods setLableProperties:label text:NSLocalizedString(gclass.footer,@"") textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:14 alignment:NSTextAlignmentLeft];
+        [view addSubview:label];
+    }
+    else{
+        viewHt = normalheaderheight;
+        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), normalheaderheight)];
+    }
+    
+    view.backgroundColor = [UIColor whiteColor];
+//    [UICommonMethods addLineSeperator:view yPos:viewHt-1];
     return view;
     
 }
@@ -148,14 +204,28 @@ static const int defHeaderLableHt = 20;
     if (cell == nil) {
         cell = [[DevicePropertyTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    [cell setUpCell:nil indexPath:indexPath];
-    if (self.indexPath == indexPath)
+     GenericIndexValue *gValue = [[self getRowforSection:indexPath.section] objectAtIndex:indexPath.row];
+    NSString *leftlabel = gValue.genericIndex.groupLabel;
+    NSString *property = gValue.genericIndex.property;
+    NSString *rightlabel = gValue.genericValue.displayText?gValue.genericValue.displayText:gValue.genericValue.value;
+    
+    NSDictionary *cellDict = @{@"leftLabel":leftlabel,
+                               @"rightLabel":rightlabel};
+    
+    [cell setUpCell:cellDict property:property genericValue:gValue];
+    
+    NSDictionary *values = gValue.genericIndex.values;
+    
+    for(UIView *picView in cell.contentView.subviews){
+        if([picView isKindOfClass:[PickerComponentView class]])
+            [picView removeFromSuperview];
+    }
+    if (self.indexPath == indexPath && !gValue.genericIndex.readOnly)
     {
-        for(UIView *picView in cell.contentView.subviews){
-            if([picView isKindOfClass:[PickerComponentView class]])
-               [picView removeFromSuperview];
-        }
-        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, 160) arrayList:@[@"1",@"2",@"3",@"1",@"2",@"3"]];
+        
+        NSDictionary *values = gValue.genericIndex.values;
+        NSLog(@"values button %@",values);
+        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, 160) arrayList:values];
         //pickerView.center = self.view.center;
         pickerView.center = CGPointMake(cell.contentView.bounds.size.width/2, cell.contentView.center.y);
         [cell.contentView addSubview:pickerView];

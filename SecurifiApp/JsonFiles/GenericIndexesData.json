@@ -6,7 +6,7 @@
         "Type": "Actuator",
         "AppLabel": "name",
         "CommandType": "NAME_CHANGE",
-        "property": "displayHere"
+        "property": "EditText"
     },
     "-2": {
         "Name": "Location",
@@ -25,15 +25,19 @@
         "AppLabel": "notifyMe",
         "property": "navigate",
         "CommandType": "NOTIFICATION",
+        "NavigateElements": [-3],
+        "DefaultValue": "3",
         "Values": {
             "1": {
                 "AppLabel": "always"
+                
             },
             "3": {
                 "AppLabel": "whenAway"
             },
             "0": {
-                "AppLabel": "never"
+                "AppLabel": "never",
+                "ExcludeFrom": "List"
             }
         }
     },
@@ -49,7 +53,7 @@
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "name",
-        "property": "displayHere"
+        "property": "EditText"
     },
     "-12": {
         "Name": "ClientType",
@@ -274,10 +278,11 @@
         "AppLabel": "presenceSensor",
         "property": "navigate",
         "footer": "use_as_rule_engine_desc",
-        "NavigateElements": ["-17", "-18", "-38"],
+        "NavigateElements": [-17],
         "Values": {
             "true": {
-                "AppLabel": "yes"
+                "AppLabel": "yes",
+                "ShowDependent": "true"
             },
             "false": {
                 "AppLabel": "no"
@@ -289,7 +294,14 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "AppLabel": "inactiveGracePeriod"
+        "property": "displayHere",
+        "AppLabel": "inactiveGracePeriod",
+        "Formatter": {
+            "Min": "1",
+            "Max": "60",
+            "Unit": " min",
+            "UnitName":"minutes"
+        }
     },
     "-19": {
         "Name": "AllowOnNetwork",
@@ -297,7 +309,7 @@
         "Placement": "Detail",
         "Layout": "SWITCH",
         "AppLabel": "allowOnNetwork",
-        "property": "displayHere",
+        "property": "switchButton",
         "Values": {
             "0": {
                 "AppLabel": "always"
@@ -751,7 +763,9 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "AdvanceInformation",
         "property": "navigate",
-        "NavigateElements": ["-13", "-14", "-15", "-16", "-20"]
+        "NavigateElements": [-49]
+        
+        
     },
     "-42": {
         "Name": "Automation",
@@ -760,14 +774,14 @@
         "AppLabel": "Automation",
         "header": "Automation",
         "footer": "automation_desc",
-        "Elements": ["-38", "-37"]
+        "Elements": [-38, -37]
     },
     "-43": {
         "Name": "Notification",
         "Type": "Actuator",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "enable_notification",
-        "Elements": ["-39", "-3"]
+        "Elements": [-3, -39]
     },
     "-44": {
         "Name": "Schedule",
@@ -776,7 +790,7 @@
         "AppLabel": "Schedule_",
         "header": "Schedule_",
         "footer": "schedule_desc",
-        "Elements": ["-19", "-40"]
+        "Elements": [-19, -40]
     },
     "-45": {
         "Name": "Status",
@@ -805,6 +819,24 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "Schedule_"
     },
+    "-49": {
+        "Name": "No Status",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "Schedule_",
+        "Elements": [-13, -14, -15, -16, -20]
+    },
+    
+    "-50": {
+        "Name": "Reset",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "Reset_device",
+        "property": "button"
+        
+        
+    },
+    
     "1": {
         "Name": "SWITCH BINARY",
         "Type": "Actuator",
@@ -2376,12 +2408,13 @@
     },
     "86": {
         "Name": "ACTIVE_POWER",
-        "Type": "Sensor",
+        "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "powerLabel",
         "Conditional": "true",
         "DefaultIcon": "target_temperature",
+        "property": "displayHere",
         "Title": "0",
         "Formatter": {
             "Min": "0",
@@ -2617,6 +2650,7 @@
             "Min": "0",
             "Max": "65535",
             "Unit": " sec",
+            "UnitName": "_seconds",
             "prefix": "timer_text"
         }
     },

@@ -11,6 +11,7 @@
 #import "NotificationCellTableViewCell.h"
 #import "GridView.h"
 #import "SFIColors.h"
+#import "NotificationView.h"
 
 static const int defHeaderHeight = 25;
 static const float defRowHeight = 44;
@@ -28,11 +29,15 @@ static const int defHeaderLableHt = 20;
     [super viewDidLoad];
     self.notifyMeTable.hidden = YES;
     NSString *schedule = [Client getScheduleById:@(_genericIndexValue.deviceID).stringValue];
-    GridView *gridView = [[GridView alloc]initWithFrame:CGRectMake(0, 66, self.view.frame.size.width, self.view.frame.size.height - 70) color:[SFIColors clientGreenColor] genericIndexValue:_genericIndexValue onSchedule:(NSString*)schedule];
-    gridView.delegate = self;
-    gridView.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:gridView];
+    NotificationView *notificationView = [[NotificationView alloc]initWithFrame:CGRectMake(0, 66, self.view.frame.size.width, 250)];
     
+    [self.view addSubview:notificationView];
+    
+//    GridView *gridView = [[GridView alloc]initWithFrame:CGRectMake(0, 66, self.view.frame.size.width, self.view.frame.size.height - 70) color:[SFIColors clientGreenColor] genericIndexValue:_genericIndexValue onSchedule:(NSString*)schedule];
+//    gridView.delegate = self;
+//    gridView.backgroundColor = [UIColor clearColor];
+//    [self.view addSubview:gridView];
+//    
     // Do any additional setup after loading the view.
 }
 

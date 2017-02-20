@@ -21,4 +21,7 @@
 + (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(Client*) client;
 + (NSArray*) getClientDetailGenericIndexValuesListForClientID:(NSString*)clientID;
 + (GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value;
+
+
++ (NSArray *)getGroupedGenericIndexes:(NSMutableArray *)detailList device:(Device *)device;
 @end

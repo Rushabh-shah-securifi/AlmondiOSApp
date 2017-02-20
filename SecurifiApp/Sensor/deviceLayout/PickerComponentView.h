@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface PickerComponentView : UIView
--(id) initWithFrame:(CGRect)frame arrayList:(NSArray *)arrayOfState;
+-(id) initWithFrame:(CGRect)frame arrayList:(NSDictionary *)dictOfValues;
 @end

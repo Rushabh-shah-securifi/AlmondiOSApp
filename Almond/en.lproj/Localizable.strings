@@ -2369,3 +2369,10 @@ Contact us at support@securifi.com";
 "h_subscription_title4" = "Access advanced controls.";
 "h_subscription_title5" = "Check data usage.";
 "h_subscription_title6" = "Review web history by ratings.";
+
+
+/* 
+ NEW SCREENS
+ */
+
+"automation_desc" = "Automate your home by creating scenes and rules using this device";

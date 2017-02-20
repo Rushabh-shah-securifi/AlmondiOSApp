@@ -8,7 +8,6 @@
 
 #import "NotificationView.h"
 @interface NotificationView ()
-@property (weak, nonatomic) IBOutlet NSObject *view;
 
 @property (weak, nonatomic) IBOutlet UISwitch *enableDisableSwitch;
 
@@ -19,13 +18,14 @@
 @property (weak, nonatomic) IBOutlet UIImageView *awayImg;
 @property (weak, nonatomic) IBOutlet UILabel *awayLbl;
 
+
 @end
 @implementation NotificationView
 
 - (id)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if(self){
-        [[NSBundle mainBundle] loadNibNamed:@"DeviceHeaderView" owner:self options:nil];
+        [[NSBundle mainBundle] loadNibNamed:@"NotificationView" owner:self options:nil];
         [self addSubview:self.view];
         [self stretchToSuperView:self.view];
     }
@@ -34,7 +34,7 @@
 -(id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if(self){
-        [[NSBundle mainBundle] loadNibNamed:@"DeviceHeaderView" owner:self options:nil];
+        [[NSBundle mainBundle] loadNibNamed:@"NotificationView" owner:self options:nil];
         [self addSubview:self.view];
         [self stretchToSuperView:self.view];
     }

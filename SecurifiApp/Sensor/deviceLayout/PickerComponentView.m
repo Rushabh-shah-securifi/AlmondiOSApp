@@ -7,24 +7,29 @@
 //
 
 #import "PickerComponentView.h"
+#import "GenericValue.h"
 
 @interface PickerComponentView ()<UIPickerViewDelegate,UIPickerViewDataSource>
 @property (nonatomic) UIPickerView *pickerView;
-@property (nonatomic) NSArray *arrayOfState;
+@property (nonatomic) NSArray *displayArr;
+@property (nonatomic) NSArray *valueArr;
+
 @end
 
 @implementation PickerComponentView
--(id) initWithFrame:(CGRect)frame arrayList:(NSArray *)arrayOfState;
+-(id) initWithFrame:(CGRect)frame arrayList:(NSDictionary *)dictOfValues;
 {
     self = [super initWithFrame:frame];
     if(self){
-        self.arrayOfState = arrayOfState;
+        self.displayArr = [dictOfValues allValues];
+        self.valueArr = [dictOfValues allKeys];
+        
         [self drawPickerView];
     }
     return self;
 }
 -(void)drawPickerView{
-    _pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 100, 160)];
+    _pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 150, 160)];
     _pickerView.delegate = self;
     _pickerView.dataSource = self;
     _pickerView.center = self.center;
@@ -38,18 +43,21 @@
 // Total rows in our component.
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    return [self.arrayOfState count];
+    return [self.displayArr count];
 }
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     
     NSString *title;
-    title=[self.arrayOfState objectAtIndex:row];
+    GenericValue *gIndex = [self.displayArr objectAtIndex:row];
+    title=gIndex.displayText;
     return title;
 }
 
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
+    NSString *value = [self.valueArr objectAtIndex:row];
+    NSLog( @"selected value = %@",value);
 }
 /*
 // Only override drawRect: if you perform custom drawing.
