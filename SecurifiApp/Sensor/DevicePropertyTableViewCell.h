@@ -8,7 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "GenericIndexValue.h"
+@protocol DevicePropertyTableViewCellDelegate
+@optional
+-(void)deviceNameUpdate:(NSString *)name genericIndexValue:(GenericIndexValue*)genericIndexValue;
+
+@end
+
+
 @interface DevicePropertyTableViewCell : UITableViewCell
+@property (nonatomic,weak) id<DevicePropertyTableViewCellDelegate> delegate;
 - (void)setUpCell:(NSDictionary *)cellDict property:(NSString *)property genericValue:(GenericIndexValue *)gIval;
 - (void)setRightLabelColor:(UIColor *)color;
+
 @end

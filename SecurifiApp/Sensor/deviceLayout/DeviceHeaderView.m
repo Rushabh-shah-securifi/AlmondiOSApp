@@ -380,7 +380,8 @@
         [self.delegate delegateDeviceSettingButtonClick:_genericParams];
     }
     else if(self.cellType == ClientTable_Cell){
-        genericIndexValues = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:@(deviceID).stringValue];
+//        genericIndexValues = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:@(deviceID).stringValue];
+       genericIndexValues =  [GenericIndexUtil getDetailListForClient:deviceID];
         self.genericParams.indexValueList = genericIndexValues;
         [self.delegate delegateClientSettingButtonClick:self.genericParams];
         

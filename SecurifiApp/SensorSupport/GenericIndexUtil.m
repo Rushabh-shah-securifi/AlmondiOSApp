@@ -123,6 +123,18 @@
     //[detailList addObjectsFromArray:commonList];
     return [self getGroupedGenericIndexes:detailList device:device];
 }
++ (NSArray *)getDetailListForClient:(int)clientID{
+    Client *client = [Client findClientByID:@(clientID).stringValue];
+   // [self getGroupedGenericIndexesForClient:<#(NSMutableArray *)#> device:client];
+    NSMutableArray *clienTGenericIndex = [[self getClientDetailGenericIndexValuesListForClientID:@(clientID).stringValue] mutableCopy];
+    clienTGenericIndex = [self getSortedIndexValues:clienTGenericIndex];
+    clienTGenericIndex = [self getIndexValuesBasedOnSortedReadOnly:clienTGenericIndex];
+    clienTGenericIndex = [self getGroupedGenericIndexesForClient:clienTGenericIndex device:client];
+    
+    
+    return clienTGenericIndex;
+    
+}
 
 +(NSMutableArray*)getSortedIndexValues:(NSMutableArray*)detailList{
     NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
@@ -288,7 +300,6 @@
     
     return genericIndexValues;
 }
-
 + (NSArray *)getGroupedGenericIndexes:(NSMutableArray *)detailList device:(Device *)device{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSMutableArray *groupedIndexValueList = [NSMutableArray new];
@@ -317,30 +328,46 @@
             [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:indexList];
         }
         /*
-        if(orderId.intValue ==  -1 || orderId.intValue ==  -2){
-            GenericIndexValue *gIVal = [self getGenericIndexeValueForGenericId:orderId.intValue device:device];
-            [groupedIndexValueList addObject:gIVal];
-        }
-        else if(orderId.intValue == 10000){
-            NSDictionary *dict = [self getDeviceSpecificInxedesDict:detailList];
-            dict[@"0"]? [groupedIndexValueList addObject:dict[@"0"]]: nil;
-            dict[@"1"]? [groupedIndexValueList addObject:dict[@"1"]]: nil;
-            dict[@"2"]? [groupedIndexValueList addObject:dict[@"2"]]: nil;
-            dict[@"3"]? [groupedIndexValueList addObject:dict[@"3"]]: nil;
-        }
-        else if(orderId.intValue ==  -42){
-            GenericIndexValue *gIVal = [self getGenericIndexeValueForGenericId:-37 device:device];
-            [groupedIndexValueList addObject:gIVal];
-            gIVal = [self getGenericIndexeValueForGenericId:-38 device:device];
-            [groupedIndexValueList addObject:gIVal];
-        }
-        else if(orderId.intValue ==  -43){
-            GenericIndexValue *gIVal = [self getGenericIndexeValueForGenericId:-3 device:device];
-            [groupedIndexValueList addObject:gIVal];
-            gIVal = [self getGenericIndexeValueForGenericId:-39 device:device];
-            [groupedIndexValueList addObject:gIVal];
-        }
+         if(orderId.intValue ==  -1 || orderId.intValue ==  -2){
+         GenericIndexValue *gIVal = [self getGenericIndexeValueForGenericId:orderId.intValue device:device];
+         [groupedIndexValueList addObject:gIVal];
+         }
+         else if(orderId.intValue == 10000){
+         NSDictionary *dict = [self getDeviceSpecificInxedesDict:detailList];
+         dict[@"0"]? [groupedIndexValueList addObject:dict[@"0"]]: nil;
+         dict[@"1"]? [groupedIndexValueList addObject:dict[@"1"]]: nil;
+         dict[@"2"]? [groupedIndexValueList addObject:dict[@"2"]]: nil;
+         dict[@"3"]? [groupedIndexValueList addObject:dict[@"3"]]: nil;
+         }
+         else if(orderId.intValue ==  -42){
+         GenericIndexValue *gIVal = [self getGenericIndexeValueForGenericId:-37 device:device];
+         [groupedIndexValueList addObject:gIVal];
+         gIVal = [self getGenericIndexeValueForGenericId:-38 device:device];
+         [groupedIndexValueList addObject:gIVal];
+         }
+         else if(orderId.intValue ==  -43){
+         GenericIndexValue *gIVal = [self getGenericIndexeValueForGenericId:-3 device:device];
+         [groupedIndexValueList addObject:gIVal];
+         gIVal = [self getGenericIndexeValueForGenericId:-39 device:device];
+         [groupedIndexValueList addObject:gIVal];
+         }
          */
+    }
+    
+    return groupedIndexValueList;
+}
++ (NSArray *)getGroupedGenericIndexesForClient:(NSMutableArray *)detailList device:(Client *)client{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSMutableArray *groupedIndexValueList = [NSMutableArray new];
+    NSArray *indexList;
+    //name, location, devicespecific, automation, notification
+    NSArray *displayOrder = @[@-11, @-12, @-44, @-17, @-43, @-41];
+    
+    for(NSNumber *orderId in displayOrder){
+        GenericIndexClass *genIndexObj = toolkit.genericIndexes[orderId.stringValue];
+        
+        indexList = [self getCommonGenericIndexValuesClient:client genericIndex:genIndexObj];
+            [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:indexList];
     }
     return groupedIndexValueList;
 }
@@ -350,6 +377,23 @@
     [dict setObject:gI forKey:GENERIC_INDEX];
     [dict setObject:genericIndexes forKey:GENERIC_ARRAY];
     [groupedIndexValueList addObject:dict];
+}
+
+
+
++ (NSArray *)getCommonGenericIndexValuesClient:(Client *)client genericIndex:(GenericIndexClass *)genericIndex{
+    NSMutableArray *genericIndexVals = [NSMutableArray new];
+    GenericIndexValue *gIVal;
+    if(genericIndex == nil || genericIndex.elements.count == 0)
+        return genericIndexVals;
+    
+    for(NSString *strId in genericIndex.elements){
+        gIVal = [self getGenericIndexeValueForGenericIdClient:strId.integerValue client:client];
+        if(gIVal)
+            [genericIndexVals addObject:gIVal];
+    }
+    
+    return genericIndexVals;
 }
 
 + (NSArray *)getCommonGenericIndexValues:(Device *)device genericIndex:(GenericIndexClass *)genericIndex{
@@ -389,6 +433,36 @@
     }
 }
 
++ (GenericIndexValue *)getGenericIndexeValueForGenericIdClient:(NSInteger)genericId client:(Client *)client{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    GenericIndexClass *genIndexObj = toolkit.genericIndexes[@(genericId).stringValue];
+    if(genIndexObj == nil)
+        return nil;
+    
+    GenericValue *genericValue = nil;
+    GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genIndexObj];
+    if(genericId == -1 || genericId == -2 || genericId == -3){
+        NSString *value;
+        if(genericId == -1){
+            value = client.name;
+        }else{//notifyme
+            value = @(client.notificationMode).stringValue;
+        }
+         genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value excludeFrom:nil transformedValue:nil prefix:@""];
+    }
+    else if(genericId == -37){
+        NSString *countStr = @([self ruleListThatContainsDevice:NO deviceId:[client.deviceID intValue]].count).stringValue;
+        genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:countStr value:countStr excludeFrom:nil transformedValue:nil prefix:@""];
+    }
+    else if(genericId == -38){
+        NSString *countStr = @([self ruleListThatContainsDevice:YES deviceId:[client.deviceID intValue]].count).stringValue;
+        genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:countStr value:countStr excludeFrom:nil transformedValue:nil prefix:@""];
+    }
+    else if(genericId == -39){
+        genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:@"" value:@"" excludeFrom:nil transformedValue:nil prefix:@""];
+    }
+    return [[GenericIndexValue alloc]initWithGenericIndex:copyGenericIndex genericValue:genericValue index:copyGenericIndex.ID.intValue deviceID:[client.deviceID intValue]];
+}
 
 + (GenericIndexValue *)getGenericIndexeValueForGenericId:(NSInteger)genericId device:(Device *)device{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];

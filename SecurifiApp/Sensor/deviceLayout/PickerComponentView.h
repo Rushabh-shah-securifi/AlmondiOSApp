@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GenericIndexValue.h"
 
+@protocol PickerComponentViewDelegate
+
+-(void)pickerViewSelectedValue:(NSString *)value genericIndexValue:(GenericIndexValue *)genericIndexValue;
+
+@end
 @interface PickerComponentView : UIView
+@property (nonatomic )GenericIndexValue *genericIndexValue;
+@property (nonatomic , weak)id<PickerComponentViewDelegate> delegate;
 -(id) initWithFrame:(CGRect)frame arrayList:(NSDictionary *)dictOfValues;
+
 @end

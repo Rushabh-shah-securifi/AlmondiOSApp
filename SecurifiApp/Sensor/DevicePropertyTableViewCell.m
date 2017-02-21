@@ -32,6 +32,7 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
 @property (weak, nonatomic) IBOutlet UILabel *leftLabelView;
 @property (weak, nonatomic) IBOutlet UILabel *rightLabel;
 @property (nonatomic)PropertyType propertyType;
+@property (nonatomic )GenericIndexValue *genericIndexValue;
 
 @end
 
@@ -58,6 +59,7 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
         self.propertyType = navigate_;
 }
 - (void)setUpCell:(NSDictionary *)cellDict property:(NSString *)property genericValue:(GenericIndexValue *)genericIndexValue{
+    self.genericIndexValue = genericIndexValue;
     [self resetViews];
     [self setCellProperty:property];
     
@@ -69,9 +71,9 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
         case displayHere_:{
             [self setLeftlabelAndRightLabel:cellDict];
             if(genericIndexValue.genericIndex.readOnly)
-                [self setRightLabelColor:[UIColor lightGrayColor]];
+                [self setRightLabelColor:[UIColor darkGrayColor]];
             else
-                 [self setRightLabelColor:[UIColor blueColor]];
+                 [self setRightLabelColor:[SFIColors ruleBlueColor]];
             break;
         }
         case navigate_:{
@@ -129,7 +131,7 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
 
 // This method is called once we complete editing
 -(void)textFieldDidEndEditing:(UITextField *)textField{
-    
+    [self.delegate deviceNameUpdate:textField.text genericIndexValue:self.genericIndexValue];
     NSLog(@"Text field ended editing ,%@",textField.text);
 }
 

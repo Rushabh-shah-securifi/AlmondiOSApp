@@ -15,6 +15,11 @@
 #import "PickerComponentView.h"
 #import "DeviceNotificationViewController.h"
 #import "GenericIndexUtil.h"
+#import "DevicePayload.h"
+#import "SFIScenesTableViewController.h"
+#import "RulesTableViewController.h"
+#import "ClientTableViewController.h"
+#import "UseAsPresenseViewController.h"
 
 #define DEVICE_PROPERTY_CELL @"devicepropertycell"
 
@@ -23,7 +28,9 @@ static const float defRowHeight = 44;
 static const int defHeaderLableHt = 20;
 static const int normalheaderheight = 2;
 
-@interface DevicePropertiesViewController () <DeviceHeaderViewDelegate>
+@interface DevicePropertiesViewController () <DeviceHeaderViewDelegate,PickerComponentViewDelegate,DevicePropertyTableViewCellDelegate>{
+int mii;
+}
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UILabel *deviceNameLbl;
 
@@ -80,6 +87,7 @@ static const int normalheaderheight = 2;
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    mii = arc4random() % 10000;
     [self.navigationController setNavigationBarHidden:YES];
 }
 -(void)viewWillDisappear:(BOOL)animated{
@@ -204,10 +212,14 @@ static const int normalheaderheight = 2;
     if (cell == nil) {
         cell = [[DevicePropertyTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
+    cell.delegate = self;
      GenericIndexValue *gValue = [[self getRowforSection:indexPath.section] objectAtIndex:indexPath.row];
     NSString *leftlabel = gValue.genericIndex.groupLabel;
     NSString *property = gValue.genericIndex.property;
     NSString *rightlabel = gValue.genericValue.displayText?gValue.genericValue.displayText:gValue.genericValue.value;
+    if(rightlabel == nil){
+        rightlabel = @"";
+    }
     
     NSDictionary *cellDict = @{@"leftLabel":leftlabel,
                                @"rightLabel":rightlabel};
@@ -226,6 +238,7 @@ static const int normalheaderheight = 2;
         NSDictionary *values = gValue.genericIndex.values;
         NSLog(@"values button %@",values);
         PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, 160) arrayList:values];
+        pickerView.delegate = self;
         //pickerView.center = self.view.center;
         pickerView.center = CGPointMake(cell.contentView.bounds.size.width/2, cell.contentView.center.y);
         [cell.contentView addSubview:pickerView];
@@ -234,21 +247,51 @@ static const int normalheaderheight = 2;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(indexPath.section == 1)
-    {
+    GenericIndexValue *gValue = [[self getRowforSection:indexPath.section] objectAtIndex:indexPath.row];
+    NSString *leftlabel = gValue.genericIndex.groupLabel;
+    NSString *property = gValue.genericIndex.property;
+    if([property isEqualToString:@"navigate"] && ([gValue.genericIndex.ID isEqualToString:@"-2"] || [gValue.genericIndex.ID isEqualToString:@"-17"])){
         DeviceNotificationViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"DeviceNotificationViewController"];
-    
+        viewController.genericIndexValue = gValue;
+        
         [self presentViewController:viewController animated:YES completion:nil];
     }
-    else if(indexPath.section != 1 || indexPath.section != 0) {
+    else if ([property isEqualToString:@"navigate"] && [gValue.genericIndex.ID isEqualToString:@"-12"]){
+        
+        ClientTableViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"ClientTableViewController"];
+        viewController.genericIndexValue = gValue;
+        [self.navigationController pushViewController:viewController animated:YES];
+        
+    }
+    else if ([property isEqualToString:@"navigate"] && [gValue.genericIndex.ID isEqualToString:@"-17"]){
+        
+        UseAsPresenseViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"UseAsPresenseViewController"];
+        viewController.genericIndexValue = gValue;
+        [self.navigationController pushViewController:viewController animated:YES];
+        
+    }
+    else if([property isEqualToString:@"navigate"] && [gValue.genericIndex.ID isEqualToString:@"-38"]){
+       
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Rules" bundle:nil];
+        RulesTableViewController *viewController = [storyBoard   instantiateViewControllerWithIdentifier:@"RulesTableViewController"];
+        [self.navigationController pushViewController:viewController animated:YES];
+//        [self presentViewController:viewController animated:YES completion:nil];
+    }
+    else if([property isEqualToString:@"navigate"] && [gValue.genericIndex.ID isEqualToString:@"-37"]){
+        
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
+        SFIScenesTableViewController *viewController = [storyBoard   instantiateViewControllerWithIdentifier:@"SFIScenesTableViewController"];
+        [self.navigationController pushViewController:viewController animated:YES];
+        
+    }
+    else{
         if(self.indexPath == indexPath)
             self.indexPath = nil;
         else
             self.indexPath = indexPath;
-        
         [tableView beginUpdates]; // Animate the height change
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
-        //[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
         [tableView endUpdates];
     }
 }
@@ -271,5 +314,14 @@ static const int normalheaderheight = 2;
         }
     }
 }
+#pragma mark pickerView Delegate
+-(void )pickerViewSelectedValue:(NSString *)value genericIndexValue:(GenericIndexValue *)genericIndexValue{
+    
+    [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:mii value:value];
+}
+#pragma mark cell delegate methods
+-(void)deviceNameUpdate:(NSString *)name genericIndexValue:(GenericIndexValue*)genericIndexValue{
 
+    [DevicePayload getNameLocationChange:genericIndexValue mii:mii value:name];
+}
 @end

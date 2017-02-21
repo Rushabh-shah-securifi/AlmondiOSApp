@@ -467,6 +467,9 @@
 		CEABC65B1D6F14A000C2DCD4 /* CategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEABC65A1D6F14A000C2DCD4 /* CategoryView.m */; };
 		CEABC65E1D6F14A900C2DCD4 /* ChangeCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEABC65D1D6F14A900C2DCD4 /* ChangeCategoryViewController.m */; };
 		CEABC6611D6F14CD00C2DCD4 /* categoryTab.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEABC65F1D6F14CD00C2DCD4 /* categoryTab.xib */; };
+		CEE9DF0F1E5C1DAB00299C26 /* ClientTypeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE9DF0E1E5C1DAB00299C26 /* ClientTypeTableViewCell.m */; };
+		CEE9DF121E5C1DEE00299C26 /* ClientTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE9DF111E5C1DEE00299C26 /* ClientTableViewController.m */; };
+		CEE9DF181E5C5AE200299C26 /* UseAsPresenseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE9DF171E5C5AE200299C26 /* UseAsPresenseViewController.m */; };
 		CEEAB7AD1CAD26A2003C5290 /* UICommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */; };
 		CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEF425C1C47E0E300E36C9B /* ScenePayload.m */; };
 		CEF6F4D81C92CAD600C68975 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */; };
@@ -1190,6 +1193,12 @@
 		CEABC65C1D6F14A900C2DCD4 /* ChangeCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeCategoryViewController.h; sourceTree = "<group>"; };
 		CEABC65D1D6F14A900C2DCD4 /* ChangeCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeCategoryViewController.m; sourceTree = "<group>"; };
 		CEABC6601D6F14CD00C2DCD4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = categoryTab.xib; sourceTree = "<group>"; };
+		CEE9DF0D1E5C1DAA00299C26 /* ClientTypeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientTypeTableViewCell.h; sourceTree = "<group>"; };
+		CEE9DF0E1E5C1DAB00299C26 /* ClientTypeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientTypeTableViewCell.m; sourceTree = "<group>"; };
+		CEE9DF101E5C1DEE00299C26 /* ClientTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientTableViewController.h; sourceTree = "<group>"; };
+		CEE9DF111E5C1DEE00299C26 /* ClientTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientTableViewController.m; sourceTree = "<group>"; };
+		CEE9DF161E5C5AE200299C26 /* UseAsPresenseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UseAsPresenseViewController.h; sourceTree = "<group>"; };
+		CEE9DF171E5C5AE200299C26 /* UseAsPresenseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseAsPresenseViewController.m; sourceTree = "<group>"; };
 		CEEAB7AB1CAD26A2003C5290 /* UICommonMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICommonMethods.h; sourceTree = "<group>"; };
 		CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICommonMethods.m; sourceTree = "<group>"; };
 		CEEF425B1C47E0E300E36C9B /* ScenePayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenePayload.h; sourceTree = "<group>"; };
@@ -2588,6 +2597,12 @@
 				CE6DA4A51E4857FC007C1163 /* AdvancedInformationView.m */,
 				CE6DA49E1E483CA9007C1163 /* NotificationView.m */,
 				CE6DA4A01E483CD6007C1163 /* NotificationView.xib */,
+				CEE9DF0D1E5C1DAA00299C26 /* ClientTypeTableViewCell.h */,
+				CEE9DF0E1E5C1DAB00299C26 /* ClientTypeTableViewCell.m */,
+				CEE9DF101E5C1DEE00299C26 /* ClientTableViewController.h */,
+				CEE9DF111E5C1DEE00299C26 /* ClientTableViewController.m */,
+				CEE9DF161E5C5AE200299C26 /* UseAsPresenseViewController.h */,
+				CEE9DF171E5C5AE200299C26 /* UseAsPresenseViewController.m */,
 			);
 			path = Sensor;
 			sourceTree = "<group>";
@@ -3463,6 +3478,7 @@
 				CEEAB7AD1CAD26A2003C5290 /* UICommonMethods.m in Sources */,
 				1C7E7DAB1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,
 				F4B876661D54653500DCF76F /* ClientPropertiesCell.m in Sources */,
+				CEE9DF121E5C1DEE00299C26 /* ClientTableViewController.m in Sources */,
 				1C7E7D8B1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
 				1C7E7DCF1A41A0990026F0BA /* SFITableViewController.m in Sources */,
 				F400B6C11D65ECCD00DDEE50 /* SupportViewController.m in Sources */,
@@ -3544,6 +3560,7 @@
 				A5F03F6C1C76E412006CB309 /* NewAddSceneViewController.m in Sources */,
 				1C7E7DAD1A41A0990026F0BA /* SFISignupViewController.m in Sources */,
 				1C7E7DA91A41A0990026F0BA /* SFIUserProfile.m in Sources */,
+				CEE9DF0F1E5C1DAB00299C26 /* ClientTypeTableViewCell.m in Sources */,
 				1C7E7D811A41A0990026F0BA /* SFIActivationViewController.m in Sources */,
 				CEF6F4F21C92CAD600C68975 /* CrossButton.m in Sources */,
 				1C7E7DD51A41A0990026F0BA /* UIViewController+Securifi.m in Sources */,
@@ -3651,6 +3668,7 @@
 				1DF0394349F84E2FCC5E25F9 /* AlertViewAction.m in Sources */,
 				1DF03B8FE78FA07C67A943CC /* RouterNetworkSettingsEditor.m in Sources */,
 				1DF0372FD63ED4053F07FFAD /* SFIDeviceIndex.m in Sources */,
+				CEE9DF181E5C5AE200299C26 /* UseAsPresenseViewController.m in Sources */,
 				1DF0389E9743D1F55E76AC11 /* SFIRouterClientsTableViewController.m in Sources */,
 				F4B8768A1D54653500DCF76F /* GenericParams.m in Sources */,
 				F4F981C81DFA7F8600FB0676 /* PaymentTypesViewController.m in Sources */,

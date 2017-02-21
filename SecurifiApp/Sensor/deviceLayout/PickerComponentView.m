@@ -58,6 +58,7 @@
 {
     NSString *value = [self.valueArr objectAtIndex:row];
     NSLog( @"selected value = %@",value);
+    [self.delegate pickerViewSelectedValue:value genericIndexValue:self.genericIndexValue];
 }
 /*
 // Only override drawRect: if you perform custom drawing.

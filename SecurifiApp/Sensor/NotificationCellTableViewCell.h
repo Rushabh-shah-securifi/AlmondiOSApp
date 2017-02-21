@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface NotificationCellTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIImageView *chekButton;
 
 @end

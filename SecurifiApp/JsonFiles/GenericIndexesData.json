@@ -15,7 +15,40 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "location",
         "CommandType": "LOCATION_CHANGE",
-        "property": "navigate"
+        "property": "navigate",
+        "Values": {
+            "Attic": {
+                "AppLabel": "Attic"
+            },
+            "Basement": {
+                "AppLabel": "Basement"
+            },
+            "Bedroom": {
+                "Icon": "tablet_icon",
+                "AppLabel": "Bedroom"
+            },
+            "Kitchen": {
+                "Icon": "pc_icon",
+                "AppLabel": "Kitchen"
+            },
+            "Living Room": {
+                "Icon": "laptop_icon",
+                "AppLabel": "Living_Room"
+            },
+            "Office": {
+                "Icon": "android_stick_icon",
+                "AppLabel": "Office"
+            },
+            "EntryWay": {
+                "Icon": "nest_google_icon",
+                "AppLabel": "EntryWay"
+            },
+            "Default": {
+                "Icon": "chrome_cast_icon",
+                "AppLabel": "Default"
+            }
+        }
+        
     },
     "-3": {
         "Name": "Notify Me",
@@ -278,7 +311,7 @@
         "AppLabel": "presenceSensor",
         "property": "navigate",
         "footer": "use_as_rule_engine_desc",
-        "NavigateElements": [-17],
+        "NavigateElements": ["-17","-18","-38"],
         "Values": {
             "true": {
                 "AppLabel": "yes",
@@ -293,14 +326,13 @@
         "Name": "InactiveGrace",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "TEXT_VIEW",
+        "Layout": "MULTI_BUTTON",
         "property": "displayHere",
         "AppLabel": "inactiveGracePeriod",
         "Formatter": {
             "Min": "1",
             "Max": "60",
-            "Unit": " min",
-            "UnitName":"minutes"
+            "Unit": " minutes"
         }
     },
     "-19": {
@@ -888,6 +920,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "State",
         "DefaultIcon": "motion_on",
+        "Title": "0",
         "Values": {
             "true": {
                 "AppLabel": "motion_on",
@@ -908,6 +941,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "door_state",
         "DefaultIcon": "door_on",
+        "Title": "0",
         "Values": {
             "true": {
                 "AppLabel": "door_on",
@@ -928,6 +962,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "State",
         "DefaultIcon": "vibration_off",
+        "Title": "0",
         "Values": {
             "true": {
                 "AppLabel": "vibration_on",
@@ -948,6 +983,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "water_state",
         "DefaultIcon": "water_off",
+        "Title": "0",
         "Values": {
             "true": {
                 "AppLabel": "water_on",
@@ -968,6 +1004,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "gas_state",
         "DefaultIcon": "fire_off",
+        "Title": "0",
         "Values": {
             "true": {
                 "AppLabel": "gas_on",
@@ -988,6 +1025,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "fire_state",
         "DefaultIcon": "fire_off",
+        "Title": "0",
         "Values": {
             "true": {
                 "AppLabel": "fire_on",
@@ -1008,6 +1046,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "tampered",
         "DefaultIcon": "tamper",
+        "Title": "0",
         "Values": {
             "true": {
                 "AppLabel": "tampered",
@@ -1024,6 +1063,7 @@
         "AppLabel": "paincAlarm",
         "ExcludeFrom": "Scene",
         "DefaultIcon": "panic_icon",
+        "Title": "0",
         "Values": {
             "true": {
                 "Icon": "panic_icon",
@@ -1045,6 +1085,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "emergencyAlarm",
         "DefaultIcon": "emergency_icon",
+        "Title": "0",
         "Values": {
             "true": {
                 "Icon": "emergency_icon",
@@ -1063,6 +1104,7 @@
         "Name": "LOW BATTERY",
         "Type": "Sensor",
         "Placement": "Badge",
+        "Title": "0",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "lowBattery",
         "DefaultIcon": "low_battery",
@@ -1082,6 +1124,7 @@
         "AppLabel": "set_alarm_for",
         "ExcludeFrom": "Scene_Trigger",
         "DefaultIcon": "alarm_off",
+        "Title": "0",
         "Formatter": {
             "Min": "0",
             "Max": "65535",
@@ -1097,6 +1140,7 @@
         "Conditional": "false",
         "DefaultVisibility": "true",
         "ExcludeFrom": "Scene",
+        "Title": "0",
         "DefaultIcon": "alarm_off",
         "Values": {
             "0": {
@@ -1120,6 +1164,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "smoke_state",
         "DefaultIcon": "fire_off",
+        "Title": "0",
         "Values": {
             "0": {
                 "Icon": "fire_off",
@@ -1140,6 +1185,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "water_state",
         "DefaultIcon": "water_off",
+        "Title": "0",
         "Values": {
             "0": {
                 "AppLabel": "ok",
@@ -1160,6 +1206,7 @@
         "Layout": "SLIDER_ICON",
         "AppLabel": "dimmer",
         "DefaultIcon": "dimmer",
+        "Title": "0",
         "Formatter": {
             "Min": "0",
             "Max": "100",
@@ -1175,6 +1222,7 @@
         "Layout": "SLIDER",
         "AppLabel": "brightness",
         "DefaultIcon": "multilevel_switch_on",
+        "Title": "2",
         "Formatter": {
             "Min": "0",
             "Max": "100",
@@ -1190,6 +1238,7 @@
         "Layout": "LIST",
         "AppLabel": "start_alarm",
         "DefaultIcon": "alarm_off",
+        "Title": "2",
         "Values": {
             "0": {
                 "Icon": "alarm_off",
@@ -1241,6 +1290,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "shutter",
         "DefaultIcon": "garage_close",
+        "Title": "0",
         "Values": {
             "0": {
                 "ToggleValue": "99",
@@ -1269,6 +1319,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "powerLabel",
         "DefaultIcon": "switch_off",
+        "Title": "2",
         "Values": {
             "0": {
                 "ToggleValue": "255",
@@ -1292,6 +1343,7 @@
         "ShowToggleInRules": "true",
         "AppLabel": "lock_state",
         "DefaultIcon": "lock_close",
+        "Title": "0",
         "ValuesArray": {
             "indexValues": [17, 23, 26, 254],
             "Icon": "lock_open",
@@ -1321,6 +1373,7 @@
         "ShowToggleInRules": "true",
         "AppLabel": "lock_state",
         "DefaultIcon": "lock_open",
+        "Title": "0",
         "Values": {
             "1": {
                 "ToggleValue": "2",
@@ -1349,6 +1402,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "armmode",
         "DefaultIcon": "keyfob_off",
+        "Title": "0",
         "Values": {
             "0": {
                 "Icon": "keyfob_off",
@@ -1375,11 +1429,13 @@
         "AppLabel": "temperature",
         "DefaultIcon": "target_temperature",
         "ExcludeFrom": "Scene",
+        "Title": "1",
         "Formatter": {
             "Min": "-4",
             "Max": "140",
             "Unit": "\u00B0F",
             "Factor": "1",
+            
             "prefix": "temp_changed_to"
         }
     },
@@ -1407,6 +1463,7 @@
         "AppLabel": "humidity",
         "ExcludeFrom": "Scene",
         "DefaultIcon": "humidity",
+        "Title": "0",
         "Formatter": {
             "Min": "0",
             "Max": "100",
@@ -1422,6 +1479,7 @@
         "Layout": "SLIDER_ICON",
         "AppLabel": "luminance",
         "DefaultIcon": "light_on",
+        "Title": "0",
         "Formatter": {
             "Min": "0",
             "Max": "3000",
@@ -1450,6 +1508,8 @@
         "Layout": "HUE",
         "AppLabel": "hue",
         "DefaultIcon": "light_on",
+        "Title": "2",
+        "property": "navigate",
         "Formatter": {
             "Min": "0",
             "Max": "65535",
@@ -1463,6 +1523,8 @@
         "Layout": "HUE",
         "AppLabel": "hue",
         "DefaultIcon": "light_on",
+        "Title": "2",
+        "property": "navigate",
         "Formatter": {
             "Min": "0",
             "Max": "255",
@@ -1475,6 +1537,7 @@
         "Placement": "Detail",
         "Layout": "SLIDER",
         "AppLabel": "saturation",
+        "Title": "2",
         "DefaultIcon": "saturation_icon",
         "Formatter": {
             "Min": "0",
@@ -1491,6 +1554,7 @@
         "Layout": "TEXT_VIEW_ONLY",
         "AppLabel": "color_temp",
         "Conditional": "true",
+        "Title": "2",
         "DefaultIcon": "saturation_icon",
         "Formatter": {
             "Min": "1000",
@@ -1507,6 +1571,7 @@
         "AppLabel": "powerLabel",
         "Conditional": "true",
         "DefaultIcon": "online_icon",
+        "Title": "0",
         "Formatter": {
             "Min": "0",
             "Max": "9999",
@@ -1521,6 +1586,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "mode",
         "DefaultIcon": "img_off",
+        "Title": "2",
         "Values": {
             "Auto": {
                 "Icon": "img_auto",
@@ -1551,6 +1617,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "operating_state",
         "DefaultIcon": "img_off",
+        "Title": "0",
         "ExcludeFrom": "Rule"
     },
     "37": {
@@ -1561,6 +1628,7 @@
         "AppLabel": "high_temp",
         "Conditional": "true",
         "DefaultIcon": "target_temperature",
+        "Title": "2",
         "Formatter": {
             "Min": "35",
             "Max": "95",
@@ -1577,6 +1645,7 @@
         "AppLabel": "low_temp",
         "Conditional": "true",
         "DefaultIcon": "target_temperature",
+        "Title": "2",
         "Formatter": {
             "Min": "35",
             "Max": "95",
@@ -1592,6 +1661,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "fan_mode",
         "DefaultIcon": "btn_fan_off",
+        "Title": "2",
         "Values": {
             "On Low": {
                 "Icon": "btn_fan_off",
@@ -1613,7 +1683,8 @@
         "AppLabel": "fan_state",
         "ExcludeFrom": "Rule",
         "DefaultIcon": "img_off",
-        "Notification": "thermostat_fanState"
+        "Notification": "thermostat_fanState",
+        "Title": "2"
     },
     "41": {
         "Name": "THERMOSTAT SETPOINT",
@@ -1623,6 +1694,7 @@
         "AppLabel": "setpoint_temp",
         "Conditional": "true",
         "DefaultIcon": "target_temperature",
+        "Title": "2",
         "Formatter": {
             "Min": "41",
             "Max": "104",
@@ -1637,6 +1709,7 @@
         "Layout": "LIST",
         "AppLabel": "actions",
         "ExcludeFrom": "Rule_Scene",
+        "Title": "2",
         "DefaultIcon": "garage_close",
         "Values": {
             "0": {
@@ -1661,6 +1734,7 @@
         "Layout": "MULTI_BUTTON",
         "ExcludeFrom": "Scene_Trigger",
         "DefaultIcon": "motion_off",
+        "Title": "2",
         "Values": {
             "true": {
                 "AppLabel": "stop_",
@@ -1676,6 +1750,7 @@
         "AppLabel": "actions",
         "Layout": "LIST",
         "DefaultIcon": "garage_close",
+        "Title": "2",
         "Values": {
             "0": {
                 "ToggleValue": "255",
@@ -1719,6 +1794,7 @@
         "Layout": "LIST",
         "AppLabel": "mode",
         "DefaultIcon": "img_off",
+        "Title": "2",
         "Values": {
             "Auto": {
                 "Icon": "img_auto",
@@ -1770,6 +1846,7 @@
         "AppLabel": "high_temp",
         "Conditional": "true",
         "DefaultIcon": "thermostat_image",
+        "Title": "2",
         "Formatter": {
             "Min": "60",
             "Max": "86",
@@ -1785,6 +1862,7 @@
         "AppLabel": "low_temp",
         "Conditional": "true",
         "DefaultIcon": "thermostat_image",
+        "Title": "2",
         "Formatter": {
             "Min": "60",
             "Max": "86",
@@ -1799,6 +1877,7 @@
         "Layout": "LIST",
         "AppLabel": "fan_mode",
         "DefaultIcon": "fan_auto",
+        "Title": "2",
         "Values": {
             "Auto Low": {
                 "Icon": "fan_auto",
@@ -1829,6 +1908,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "swing",
         "DefaultIcon": "swingoff_icon",
+        "Title": "2",
         "Values": {
             "0": {
                 "ToggleValue": "1",
@@ -1852,6 +1932,7 @@
         "AppLabel": "battery",
         "Conditional": "true",
         "DefaultIcon": "low_battery",
+        "Title": "0",
         "Formatter": {
             "Min": "0",
             "Max": "100",
@@ -1868,6 +1949,7 @@
         "AppLabel": "irCode",
         "ExcludeFrom": "Trigger",
         "DefaultIcon": "target_temperature",
+        "Title": "2",
         "Formatter": {
             "Min": "0",
             "Max": "999",
@@ -1882,7 +1964,7 @@
         "AppLabel": "voltage",
         "Conditional": "true",
         "DefaultIcon": "target_temperature",
-        "Title": "0",
+        "Title": "2",
         "Formatter": {
             "Min": "0",
             "Max": "240",
@@ -1898,7 +1980,7 @@
         "AppLabel": "current",
         "Conditional": "true",
         "DefaultIcon": "target_temperature",
-        "Title": "1",
+        "Title": "2",
         "Formatter": {
             "Min": "0",
             "Max": "15",
@@ -1916,6 +1998,7 @@
         "Name": "NEST_ID",
         "Type": "Functional",
         "Placement": "Hidden",
+        "Title": "0",
         "ExcludeFrom": "Scene_Rule"
     },
     "56": {
@@ -1924,6 +2007,7 @@
         "Placement": "Detail",
         "Layout": "LIST",
         "AppLabel": "mode",
+        "Title": "2",
         "DefaultIcon": "img_off",
         "Values": {
             "eco": {
@@ -1960,6 +2044,7 @@
         "Layout": "SINGLE_TEMP",
         "AppLabel": "target_temperature",
         "Conditional": "true",
+        "Title": "2",
         "DefaultIcon": "target_temperature",
         "Formatter": {
             "Min": "50",
@@ -1975,6 +2060,7 @@
         "Layout": "SINGLE_TEMP",
         "AppLabel": "low_temp",
         "Conditional": "true",
+        "Title": "2",
         "DefaultIcon": "target_temperature",
         "Formatter": {
             "Min": "50",
@@ -1990,6 +2076,7 @@
         "Layout": "SINGLE_TEMP",
         "AppLabel": "high_temp",
         "Conditional": "true",
+        "Title": "2",
         "DefaultIcon": "target_temperature",
         "Formatter": {
             "Min": "53",
@@ -2005,6 +2092,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "nest_label_away_mode",
         "ExcludeFrom": "Scene_Rule",
+        "Title": "2",
         "DefaultIcon": "home_white",
         "Values": {
             "home": {
@@ -2031,6 +2119,7 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "fan",
+        "Title": "2",
         "DefaultIcon": "btn_fan_off",
         "Values": {
             "true": {
@@ -2052,6 +2141,7 @@
         "Layout": "MULTI_BUTTON",
         "ExcludeFrom": "Scene",
         "DefaultIcon": "online_icon",
+        "Title": "0",
         "Values": {
             "true": {
                 "Icon": "online_icon",
@@ -2069,12 +2159,14 @@
         "Name": "CAN_COOL",
         "Type": "Functional",
         "Placement": "Hidden",
+        "Title": "0",
         "ExcludeFrom": "Scene_Rule"
     },
     "64": {
         "Name": "CAN_HEAT",
         "Type": "Functional",
         "Placement": "Hidden",
+        "Title": "0",
         "ExcludeFrom": "Scene_Rule"
     },
     "65": {
@@ -2083,6 +2175,7 @@
         "Placement": "Hidden",
         "ExcludeFrom": "Scene_Rule",
         "DefaultIcon": "img_off",
+        "Title": "0",
         "Values": {
             "true": {
                 "AppLabel": "emergency_heat",
@@ -2094,6 +2187,7 @@
         "Name": "HAS_FAN",
         "Type": "Functional",
         "Placement": "Hidden",
+        "Title": "0",
         "ExcludeFrom": "Scene_Rule"
     },
     "67": {
@@ -2104,6 +2198,7 @@
         "AppLabel": "hvac_state",
         "ExcludeFrom": "Scene",
         "DefaultIcon": "img_off",
+        "Title": "0",
         "Values": {
             "heating": {
                 "Icon": "img_heat",
@@ -2126,6 +2221,7 @@
         "Name": "HAS_LEAF",
         "Type": "Functional",
         "Placement": "Hidden",
+        "Title": "0",
         "ExcludeFrom": "Scene_Rule"
     },
     "69": {
@@ -2133,6 +2229,7 @@
         "Type": "Info",
         "Placement": "Message",
         "ExcludeFrom": "Scene_Rule",
+        "Title": "0",
         "DefaultIcon": "img_off",
         "Values": {
             "-1": {
@@ -2224,6 +2321,7 @@
         "AppLabel": "co_lable",
         "Layout": "TEXT_VIEW",
         "ExcludeFrom": "Rule",
+        "Title": "0",
         "DefaultIcon": "nest_protect_icon",
         "Values": {
             "ok": {
@@ -2250,6 +2348,7 @@
         "AppLabel": "smoke_lable",
         "Layout": "TEXT_VIEW",
         "ExcludeFrom": "Rule",
+        "Title": "0",
         "DefaultIcon": "nest_protect_icon",
         "Values": {
             "ok": {
@@ -2308,6 +2407,7 @@
         "AppLabel": "battery",
         "ExcludeFrom": "Scene_Rule",
         "DefaultIcon": "img_off",
+        "Title": "0",
         "Values": {
             "ok": {
                 "AppLabel": "ok",
@@ -2323,6 +2423,7 @@
         "Name": "MAXIMUM_USERS",
         "Type": "Functional",
         "Placement": "Hidden",
+        "Title": "2",
         "ExcludeFrom": "Scene_Rule"
     },
     "80": {
@@ -2333,6 +2434,7 @@
         "AppLabel": "energyLabel",
         "Conditional": "true",
         "DefaultIcon": "energyreader_icon",
+        "Title": "0",
         "Formatter": {
             "Min": "0",
             "Max": "9999",
@@ -2346,6 +2448,7 @@
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "pin",
+        "Title": "2",
         "ExcludeFrom": "Scene_Rule"
     },
     "82": {
@@ -2355,6 +2458,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "clamp1_power",
         "Conditional": "true",
+        "Title": "0",
         "Formatter": {
             "Min": "0",
             "Max": "9999",
@@ -2369,6 +2473,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "clamp2_power",
         "Conditional": "true",
+        "Title": "0",
         "Formatter": {
             "Min": "0",
             "Max": "9999",
@@ -2383,6 +2488,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "clamp1_energy",
         "Conditional": "true",
+        "Title": "0",
         "DefaultIcon": "energyreader_icon",
         "Formatter": {
             "Min": "0",
@@ -2398,6 +2504,7 @@
         "Layout": "TEXT_VIEW",
         "AppLabel": "clamp2_energy",
         "Conditional": "true",
+        "Title": "0",
         "DefaultIcon": "energyreader_icon",
         "Formatter": {
             "Min": "0",
@@ -2408,14 +2515,14 @@
     },
     "86": {
         "Name": "ACTIVE_POWER",
-        "Type": "Actuator",
+        "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "powerLabel",
         "Conditional": "true",
         "DefaultIcon": "target_temperature",
         "property": "displayHere",
-        "Title": "0",
+        "Title": "2",
         "Formatter": {
             "Min": "0",
             "Max": "100",
@@ -2474,6 +2581,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "press",
         "DefaultIcon": "switch_off",
+        "Title": "0",
         "Values": {
             "0": {
                 "Icon": "resume_icon",
@@ -2535,6 +2643,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "Switch",
         "DefaultIcon": "switch_on",
+        "Title": "0",
         "Values": {
             "true": {
                 "ToggleValue": "false",
@@ -2558,6 +2667,7 @@
         "AppLabel": "ringTone",
         "DefaultIcon": "alarm_on",
         "ExcludeFrom": "Trigger",
+        "Title": "2",
         "Values": {
             "1": {
                 "Icon": "alarm_on",
@@ -2584,6 +2694,7 @@
         "AppLabel": "volume",
         "DefaultIcon": "alarm_on",
         "ExcludeFrom": "Trigger",
+        "Title": "2",
         "Values": {
             "1": {
                 "Icon": "low_volume_icon",
@@ -2609,6 +2720,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "blink",
         "DefaultIcon": "switch_on",
+        "Title": "0",
         "Values": {
             "true": {
                 "ToggleValue": "false",
@@ -2628,10 +2740,11 @@
         "Name": "RGB ",
         "Type": "Actuator",
         "Placement": "Hidden",
-        "Layout": "HUE_ONLY",
+        "Layout": "SLIDER",
         "AppLabel": "brightness",
         "ExcludeFrom": "Trigger",
         "DefaultIcon": "light_on",
+        "Title": "0",
         "Formatter": {
             "Min": "0",
             "Max": "65535",
@@ -2646,11 +2759,11 @@
         "AppLabel": "blinkTimer",
         "ExcludeFrom": "Trigger",
         "DefaultIcon": "alarm_off",
+        "Title": "2",
         "Formatter": {
             "Min": "0",
             "Max": "65535",
-            "Unit": " sec",
-            "UnitName": "_seconds",
+            "Unit": " seconds",
             "prefix": "timer_text"
         }
     },
@@ -2663,6 +2776,8 @@
         "AppLabel": "enable",
         "DefaultIcon": "switch_on",
         "ExcludeFrom": "Scene_Rule",
+        
+        "Title": "2",
         "Values": {
             "true": {
                 "ToggleValue": "false",
@@ -2685,6 +2800,7 @@
         "Placement": "Hidden",
         "Layout": "MULTI_BUTTON",
         "DefaultIcon": "motion_on",
+        "Title": "0",
         "Values": {
             "true": {
                 "AppLabel": "occupied",
@@ -2705,6 +2821,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "alarm",
         "DefaultIcon": "alarm_off",
+        "Title": "0",
         "Values": {
             "true": {
                 "ToggleValue": "false",
@@ -2751,6 +2868,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "hue",
         "ShowToggleInRules": "true",
+        "Title": "0",
         "DefaultIcon": "light_off",
         "Values": {
             "true": {
@@ -2776,6 +2894,7 @@
         "ShowToggleInRules": "true",
         "AppLabel": "multilevel_switch",
         "DefaultIcon": "dimmer",
+        "Title": "0",
         "Values": {
             "true": {
                 "ToggleValue": "false",
@@ -2799,6 +2918,7 @@
         "AppLabel": "switch1",
         "ShowToggleInRules": "true",
         "DefaultIcon": "switch_on",
+        "Title": "0",
         "Values": {
             "true": {
                 "ToggleValue": "false",
@@ -2822,6 +2942,7 @@
         "AppLabel": "switch2",
         "ShowToggleInRules": "true",
         "DefaultIcon": "switch_on",
+        "Title": "0",
         "Values": {
             "true": {
                 "ToggleValue": "false",

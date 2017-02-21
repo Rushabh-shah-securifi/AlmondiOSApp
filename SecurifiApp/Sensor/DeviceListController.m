@@ -510,10 +510,17 @@ int mii;
 
 -(void)delegateClientSettingButtonClick:(GenericParams*)genericParams{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
-    ClientPropertiesViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ClientPropertiesViewController"];
+    DevicePropertiesViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DevicePropertiesViewController"];
     viewController.genericParams = genericParams;
-    viewController.isInitialized = YES;
+    // [self presentViewController:viewController animated:YES completion:nil];
     [self.navigationController pushViewController:viewController animated:YES];
+    
+    
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
+//    ClientPropertiesViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ClientPropertiesViewController"];
+//    viewController.genericParams = genericParams;
+//    viewController.isInitialized = YES;
+//    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark command responses
