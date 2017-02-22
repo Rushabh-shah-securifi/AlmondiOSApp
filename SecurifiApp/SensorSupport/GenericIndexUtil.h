@@ -24,7 +24,7 @@
 
 
 + (NSArray *)getGroupedGenericIndexes:(NSMutableArray *)detailList device:(Device *)device;
-
++(NSArray *) getDetailForNavigationItems:(NSArray *)navigationItems clientID:(NSString*)clientID;
 
 + (NSArray *)getDetailListForClient:(int)clientID;
 @end

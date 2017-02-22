@@ -31,8 +31,11 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UILabel *leftLabelView;
 @property (weak, nonatomic) IBOutlet UILabel *rightLabel;
+
+@property (weak, nonatomic) IBOutlet UISwitch *onOFFSwitch;
 @property (nonatomic)PropertyType propertyType;
 @property (nonatomic )GenericIndexValue *genericIndexValue;
+@property (weak, nonatomic) IBOutlet UIView *editTextUdView;
 
 @end
 
@@ -53,10 +56,12 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
 -(void)setCellProperty:(NSString *)property{
     if([property isEqualToString:EDITTEXT])
         self.propertyType = EditText_;
-    if([property isEqualToString:DISPLAYHERE])
+    else if([property isEqualToString:DISPLAYHERE])
         self.propertyType = displayHere_;
-    if([property isEqualToString:NAVIGATE])
+    else if([property isEqualToString:NAVIGATE])
         self.propertyType = navigate_;
+    else if([property isEqualToString:SWITCHBUTTON])
+        self.propertyType = switchButton_;
 }
 - (void)setUpCell:(NSDictionary *)cellDict property:(NSString *)property genericValue:(GenericIndexValue *)genericIndexValue{
     self.genericIndexValue = genericIndexValue;
@@ -74,13 +79,18 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
                 [self setRightLabelColor:[UIColor darkGrayColor]];
             else
                  [self setRightLabelColor:[SFIColors ruleBlueColor]];
-            break;
+            
         }
+            break;
         case navigate_:{
             [self setNavigate:cellDict];
-            break;
+           
         }
-            
+             break;
+        case switchButton_:{
+            [self setSwitchPropertyItem:cellDict];
+        }
+            break;
         default:
             break;
     }
@@ -96,6 +106,7 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
 
 }
 -(void)setEditText:(NSDictionary *)cellDict{
+    self.editTextUdView.hidden = NO;
     self.textField.hidden = NO;
     self.textField.text = cellDict[@"rightLabel"];
 }
@@ -112,10 +123,16 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
 -(void)setRightLabelColor:(UIColor *)color{
     self.rightLabel.textColor = color;
 }
+-(void)setSwitchPropertyItem:(NSDictionary *)dict{
+    [self setLeftValue:dict[@"leftLabel"]];
+    self.onOFFSwitch.hidden = NO;
+}
 - (void)resetViews{
+    self.editTextUdView.hidden = YES;
     self.imgView.hidden = YES;
     self.textField.hidden = YES;
     self.leftLabelView.hidden = YES;
+    self.onOFFSwitch.hidden = YES;
     
     self.rightLabel.hidden = YES;
     self.rightLabel.textColor = [UIColor blackColor];
@@ -139,6 +156,14 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
     return YES;
+}
+- (IBAction)onOFFChanged:(id)sender {
+    if(self.onOFFSwitch.on){
+        [self.delegate deviceOnOffSwitchUpdate:@"ON" genericIndexValue:self.genericIndexValue];
+    }
+    else{
+         [self.delegate deviceOnOffSwitchUpdate:@"OFF" genericIndexValue:self.genericIndexValue];
+    }
 }
 
 @end

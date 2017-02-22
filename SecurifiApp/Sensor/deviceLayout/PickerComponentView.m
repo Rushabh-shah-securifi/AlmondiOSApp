@@ -8,6 +8,7 @@
 
 #import "PickerComponentView.h"
 #import "GenericValue.h"
+#import "UIFont+Securifi.h"
 
 @interface PickerComponentView ()<UIPickerViewDelegate,UIPickerViewDataSource>
 @property (nonatomic) UIPickerView *pickerView;
@@ -17,12 +18,12 @@
 @end
 
 @implementation PickerComponentView
--(id) initWithFrame:(CGRect)frame arrayList:(NSDictionary *)dictOfValues;
+-(id) initWithFrame:(CGRect)frame displayList:(NSArray *)dispArr valueList:(NSArray *)valArr
 {
     self = [super initWithFrame:frame];
     if(self){
-        self.displayArr = [dictOfValues allValues];
-        self.valueArr = [dictOfValues allKeys];
+        self.displayArr = dispArr;
+        self.valueArr = valArr;
         
         [self drawPickerView];
     }
@@ -49,10 +50,24 @@
     
     NSString *title;
     GenericValue *gIndex = [self.displayArr objectAtIndex:row];
-    title=gIndex.displayText;
+    
+    title=[self.displayArr objectAtIndex:row];
     return title;
 }
+- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSString *title;
+    
+    
+    title=[self.displayArr objectAtIndex:row];
 
+   // title=[self.arrayOfState objectAtIndex:row];
+    NSAttributedString *attString =
+    [[NSAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor],
+                                                                  NSFontAttributeName:[UIFont securifiFont:10]                                                   }];
+    
+    return attString;
+}
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {

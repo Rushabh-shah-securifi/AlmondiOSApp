@@ -17,6 +17,6 @@
 @interface PickerComponentView : UIView
 @property (nonatomic )GenericIndexValue *genericIndexValue;
 @property (nonatomic , weak)id<PickerComponentViewDelegate> delegate;
--(id) initWithFrame:(CGRect)frame arrayList:(NSDictionary *)dictOfValues;
+-(id) initWithFrame:(CGRect)frame displayList:(NSArray *)dispArr valueList:(NSArray *)valArr;
 
 @end

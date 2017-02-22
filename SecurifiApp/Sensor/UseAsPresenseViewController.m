@@ -10,12 +10,16 @@
 #import "UICommonMethods.h"
 #import "DevicePropertyTableViewCell.h"
 #import "PickerComponentView.h"
+#import "GenericIndexUtil.h"
+#import "RulesTableViewController.h"
+#import "DevicePayload.h"
 
 
 
 @interface UseAsPresenseViewController ()<UITableViewDataSource,UITableViewDelegate,DevicePropertyTableViewCellDelegate,PickerComponentViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic) NSMutableArray *sectionArr;
+@property (nonatomic) NSArray *genericIndexes ;
 @property (strong, nonatomic) NSIndexPath *indexPath;
 
 
@@ -31,6 +35,11 @@ static const int normalheaderheight = 2;
     [super viewDidLoad];
     self.sectionArr = [NSMutableArray new];
     [self getSectionForTable];
+    [self.tableView reloadData];
+    NSLog(@"navigate items %@",self.genericIndexValue.genericIndex.navigateElements);
+    
+    
+    
     // Do any additional setup after loading the view.
 }
 
@@ -40,43 +49,31 @@ static const int normalheaderheight = 2;
 }
 
 -(void)getSectionForTable{
-    GenericParams *gparams = self.genericParams;
-    
-    NSLog(@"Index value arr %@",gparams.indexValueList);
-    for(NSDictionary *dict in gparams.indexValueList){
-        GenericIndexClass *gClass = dict[@"generic_index"];
+    [self.sectionArr removeAllObjects];
+    NSArray *genericIndexes = [GenericIndexUtil getDetailForNavigationItems:self.genericIndexValue.genericIndex.navigateElements clientID:@(self.genericIndexValue.deviceID).stringValue];
+    self.genericIndexes = genericIndexes;
+    for (GenericIndexValue *gIndexVal in genericIndexes) {
+        GenericIndexClass *gClass = gIndexVal.genericIndex;
         [self.sectionArr addObject:gClass];
     }
     
+    
 }
--(NSArray *)getRowforSection:(NSInteger)sectionNumber{
-    GenericParams *gparams = self.genericParams;
-    NSDictionary *dict = [gparams.indexValueList objectAtIndex:sectionNumber];
-    NSArray *genericIndexValueArr = dict[@"generic_inxex_values_array"];
-    return [self getRowFortable:genericIndexValueArr];
-}
--(NSArray *)getRowFortable:(NSArray *)genericIndexValueArr{
-    NSMutableArray *rowArr = [NSMutableArray new];
-    for (GenericIndexValue *gIndexVal in genericIndexValueArr) {
-        NSLog(@"gIndexVal in %@",gIndexVal);
-        [rowArr addObject:gIndexVal];
-    }
-    return rowArr;
-}
+
 #pragma mark tableView delegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.sectionArr.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSArray *rowCountForSection = [self getRowforSection:section];
-    return rowCountForSection.count;
+    
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat kExpandedCellHeight = 160;
     CGFloat kNormalCellHeigh = 40;
-    GenericIndexValue *gValue = [[self getRowforSection:indexPath.section] objectAtIndex:indexPath.row];
+    GenericIndexValue *gValue = [self.genericIndexes objectAtIndex:indexPath.row];
     
     if (self.indexPath == indexPath && !gValue.genericIndex.readOnly)
     {
@@ -162,7 +159,7 @@ static const int normalheaderheight = 2;
         cell = [[DevicePropertyTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.delegate = self;
-    GenericIndexValue *gValue = [[self getRowforSection:indexPath.section] objectAtIndex:indexPath.row];
+    GenericIndexValue *gValue = [self.genericIndexes objectAtIndex:indexPath.section];
     NSString *leftlabel = gValue.genericIndex.groupLabel;
     NSString *property = gValue.genericIndex.property;
     NSString *rightlabel = gValue.genericValue.displayText?gValue.genericValue.displayText:gValue.genericValue.value;
@@ -185,8 +182,17 @@ static const int normalheaderheight = 2;
     {
         
         NSDictionary *values = gValue.genericIndex.values;
+        NSMutableArray *displayArr = [NSMutableArray new];
+        NSMutableArray *ValueArr = [NSMutableArray new];
         NSLog(@"values button %@",values);
-        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, 160) arrayList:values];
+        if (gValue.genericIndex.formatter != nil) {
+            [self getValueArrfromMin:gValue.genericIndex.formatter.min max:gValue.genericIndex.formatter.max displayArr:displayArr valueArr:ValueArr];
+        }
+        else{
+            [self getGenericValVsDispDict:gValue.genericIndex.values displayArr:displayArr valueArr:ValueArr];
+        }
+        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, 160) displayList:displayArr valueList:ValueArr];
+       
         pickerView.delegate = self;
         //pickerView.center = self.view.center;
         pickerView.center = CGPointMake(cell.contentView.bounds.size.width/2, cell.contentView.center.y);
@@ -194,5 +200,61 @@ static const int normalheaderheight = 2;
     }
     return cell;
 }
-
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    GenericIndexValue *gValue = [self.genericIndexes objectAtIndex:indexPath.section];
+    NSString *leftlabel = gValue.genericIndex.groupLabel?:@"";
+    NSString *property = gValue.genericIndex.property;
+    if([property isEqualToString:@"navigate"] && [gValue.genericIndex.ID isEqualToString:@"-38"]){
+        
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Rules" bundle:nil];
+        RulesTableViewController *viewController = [storyBoard   instantiateViewControllerWithIdentifier:@"RulesTableViewController"];
+        [self.navigationController pushViewController:viewController animated:YES];
+        //        [self presentViewController:viewController animated:YES completion:nil];
+    }
+    else{
+        if(self.indexPath == indexPath)
+            self.indexPath = nil;
+        else
+            self.indexPath = indexPath;
+        [tableView beginUpdates]; // Animate the height change
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        [tableView endUpdates];
+    }
+}
+-(void)getGenericValVsDispDict:(NSDictionary *)value displayArr:(NSMutableArray *)displayArr valueArr:(NSMutableArray *)valueArr{
+    for (NSString *val in value) {
+        GenericValue *gval = value[val];
+        [displayArr addObject:gval.displayText];
+        [valueArr addObject:val];
+    }
+}
+-(void)getValueArrfromMin:(int)min max:(int)max displayArr:(NSMutableArray *)displayArr valueArr:(NSMutableArray *)valueArr {
+    for(NSUInteger i=min;i<=max;i++){
+        [displayArr addObject:@(i).stringValue];
+        [valueArr addObject:@(i).stringValue];
+    }
+    
+}
+#pragma mark pickerView Delegate
+-(void )pickerViewSelectedValue:(NSString *)value genericIndexValue:(GenericIndexValue *)genericIndexValue{
+    
+    [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:122 value:value];
+}
+-(void)deviceOnOffSwitchUpdate:(NSString *)status genericIndexValue:(GenericIndexValue *)genericIndexValue{
+    if ([status isEqualToString:@"ON"]) {
+        [self getSectionForTable];
+        [self reloadTable];
+    }
+    else{
+        [self.sectionArr removeObjectAtIndex:2];
+        [self.sectionArr removeObjectAtIndex:1];
+         [self reloadTable];
+    }
+}
+-(void)reloadTable{
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self.tableView reloadData];
+    });
+}
 @end

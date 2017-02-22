@@ -293,22 +293,33 @@
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i2A-kN-fW8">
+                                                    <rect key="frame" x="45" y="41" width="318" height="1"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="XP7-Bk-U98"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="W5b-Xq-N44" firstAttribute="leading" secondItem="um5-8H-4hf" secondAttribute="trailing" constant="7" id="1Wf-5K-Kfq"/>
                                                 <constraint firstAttribute="trailing" secondItem="W5b-Xq-N44" secondAttribute="trailing" constant="111" id="6SU-ne-2vl"/>
                                                 <constraint firstItem="nIZ-Un-Ln8" firstAttribute="top" secondItem="d9E-nY-x0U" secondAttribute="topMargin" constant="3" id="8W8-qP-vJC"/>
                                                 <constraint firstAttribute="bottom" secondItem="um5-8H-4hf" secondAttribute="bottom" constant="7" id="AH9-b1-Ew6"/>
+                                                <constraint firstItem="i2A-kN-fW8" firstAttribute="leading" secondItem="d9E-nY-x0U" secondAttribute="leading" constant="45" id="Kar-pw-O3c"/>
                                                 <constraint firstItem="vb6-da-Atd" firstAttribute="top" secondItem="d9E-nY-x0U" secondAttribute="top" constant="3" id="Rf6-gI-6ii"/>
+                                                <constraint firstAttribute="trailing" secondItem="i2A-kN-fW8" secondAttribute="trailing" constant="12" id="cYw-q1-d0T"/>
                                                 <constraint firstItem="W5b-Xq-N44" firstAttribute="top" secondItem="d9E-nY-x0U" secondAttribute="top" constant="4" id="cYx-EU-vVt"/>
                                                 <constraint firstItem="vb6-da-Atd" firstAttribute="leading" secondItem="d9E-nY-x0U" secondAttribute="leading" constant="15" id="fHm-ge-ZWk"/>
                                                 <constraint firstItem="nIZ-Un-Ln8" firstAttribute="trailing" secondItem="d9E-nY-x0U" secondAttribute="trailingMargin" id="ife-zp-Saa"/>
                                                 <constraint firstItem="um5-8H-4hf" firstAttribute="top" secondItem="d9E-nY-x0U" secondAttribute="top" constant="6" id="l0f-Nh-Z96"/>
+                                                <constraint firstItem="i2A-kN-fW8" firstAttribute="top" secondItem="W5b-Xq-N44" secondAttribute="bottom" constant="1" id="pod-CN-xJR"/>
                                                 <constraint firstItem="um5-8H-4hf" firstAttribute="leading" secondItem="d9E-nY-x0U" secondAttribute="leading" constant="8" id="sKn-cE-tX9"/>
                                                 <constraint firstAttribute="bottom" secondItem="W5b-Xq-N44" secondAttribute="bottom" constant="3" id="zZA-NS-0Lx"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="editTextUdView" destination="i2A-kN-fW8" id="ovY-QU-U9n"/>
                                             <outlet property="imgView" destination="um5-8H-4hf" id="hda-BH-cYa"/>
                                             <outlet property="leftLabelView" destination="vb6-da-Atd" id="Dcm-Hx-p2R"/>
                                             <outlet property="rightLabel" destination="nIZ-Un-Ln8" id="tRk-D1-Bna"/>
@@ -613,8 +624,19 @@
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZsY-NI-U28">
+                                                    <rect key="frame" x="318" y="8" width="51" height="31"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="31" id="59f-7a-Dgq"/>
+                                                        <constraint firstAttribute="width" constant="49" id="Q7l-i2-OUi"/>
+                                                    </constraints>
+                                                    <connections>
+                                                        <action selector="onOFFChanged:" destination="b4v-7X-8LU" eventType="valueChanged" id="zI5-mm-TIx"/>
+                                                    </connections>
+                                                </switch>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="ZsY-NI-U28" secondAttribute="trailing" constant="8" id="3Tw-Z7-zdk"/>
                                                 <constraint firstItem="OJt-F8-Fko" firstAttribute="top" secondItem="4bh-7n-2bO" secondAttribute="top" constant="4" id="7Nz-AR-ByM"/>
                                                 <constraint firstItem="RbD-8m-u4R" firstAttribute="leading" secondItem="4bh-7n-2bO" secondAttribute="leading" constant="8" id="EtC-tc-KEE"/>
                                                 <constraint firstItem="8Iw-9B-VTg" firstAttribute="top" secondItem="4bh-7n-2bO" secondAttribute="top" constant="3" id="MW9-tJ-WnA"/>
@@ -623,6 +645,7 @@
                                                 <constraint firstItem="fMb-eA-bnR" firstAttribute="top" secondItem="4bh-7n-2bO" secondAttribute="topMargin" constant="3" id="PW8-Ri-i2R"/>
                                                 <constraint firstAttribute="trailing" secondItem="OJt-F8-Fko" secondAttribute="trailing" constant="111" id="Xai-TL-rd5"/>
                                                 <constraint firstItem="8Iw-9B-VTg" firstAttribute="leading" secondItem="4bh-7n-2bO" secondAttribute="leading" constant="15" id="XjO-f9-FHj"/>
+                                                <constraint firstItem="ZsY-NI-U28" firstAttribute="centerY" secondItem="4bh-7n-2bO" secondAttribute="centerY" constant="2" id="YTz-aE-y6E"/>
                                                 <constraint firstItem="RbD-8m-u4R" firstAttribute="top" secondItem="4bh-7n-2bO" secondAttribute="top" constant="6" id="mUg-KV-gYS"/>
                                                 <constraint firstAttribute="bottom" secondItem="OJt-F8-Fko" secondAttribute="bottom" constant="3" id="mrN-3A-C5L"/>
                                                 <constraint firstAttribute="bottom" secondItem="RbD-8m-u4R" secondAttribute="bottom" constant="7" id="tNL-5v-Voh"/>
@@ -631,6 +654,7 @@
                                         <connections>
                                             <outlet property="imgView" destination="RbD-8m-u4R" id="oQU-aa-QFa"/>
                                             <outlet property="leftLabelView" destination="8Iw-9B-VTg" id="awA-TI-VIO"/>
+                                            <outlet property="onOFFSwitch" destination="ZsY-NI-U28" id="OBw-5d-Vur"/>
                                             <outlet property="rightLabel" destination="fMb-eA-bnR" id="JM6-cW-z8B"/>
                                             <outlet property="textField" destination="OJt-F8-Fko" id="PBK-R2-hzx"/>
                                         </connections>

@@ -513,7 +513,28 @@
     
     return [[GenericIndexValue alloc]initWithGenericIndex:nil genericValue:genericValue index:client.deviceID.intValue deviceID:client.deviceID.intValue];
 }
-
++(NSArray *) getDetailForNavigationItems:(NSArray *)navigationItems clientID:(NSString*)clientID{
+    NSMutableArray *genericIndexValues = [NSMutableArray new];
+    Client *client = [Client findClientByID:clientID];
+    NSArray *clientGenericIndexes = navigationItems;
+    GenericIndexValue *genericIndexValue;
+    GenericIndexClass *genericIndex;
+    for(NSNumber *genericID in clientGenericIndexes){
+        genericIndex = [self getGenericIndexForID:genericID.stringValue];
+        if(genericIndex != nil){
+            NSString *value = [Client getOrSetValueForClient:client genericIndex:genericID.intValue newValue:nil ifGet:YES];
+            GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericID.stringValue
+                                                                               forValue:value];
+            if([genericID integerValue] == -17){
+                genericIndex.groupLabel = @"Use in Rules Engine";
+                genericIndex.property = @"switchButton";
+            }
+            genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:genericID.intValue deviceID:clientID.intValue];
+            [genericIndexValues addObject:genericIndexValue];
+        }
+    }
+    return genericIndexValues;
+}
 +(NSArray*) getClientDetailGenericIndexValuesListForClientID:(NSString*)clientID{
     NSMutableArray *genericIndexValues = [NSMutableArray new];
     Client *client = [Client findClientByID:clientID];

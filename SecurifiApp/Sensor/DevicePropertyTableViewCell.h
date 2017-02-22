@@ -11,6 +11,7 @@
 @protocol DevicePropertyTableViewCellDelegate
 @optional
 -(void)deviceNameUpdate:(NSString *)name genericIndexValue:(GenericIndexValue*)genericIndexValue;
+-(void)deviceOnOffSwitchUpdate:(NSString *)status genericIndexValue:(GenericIndexValue*)genericIndexValue;
 
 @end
 

@@ -311,7 +311,7 @@
         "AppLabel": "presenceSensor",
         "property": "navigate",
         "footer": "use_as_rule_engine_desc",
-        "NavigateElements": ["-17","-18","-38"],
+        "NavigateElements": [-17,-18,-38],
         "Values": {
             "true": {
                 "AppLabel": "yes",

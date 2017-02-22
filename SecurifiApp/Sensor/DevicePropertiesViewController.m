@@ -20,6 +20,7 @@
 #import "RulesTableViewController.h"
 #import "ClientTableViewController.h"
 #import "UseAsPresenseViewController.h"
+#import "Slider.h"
 
 #define DEVICE_PROPERTY_CELL @"devicepropertycell"
 
@@ -28,7 +29,7 @@ static const float defRowHeight = 44;
 static const int defHeaderLableHt = 20;
 static const int normalheaderheight = 2;
 
-@interface DevicePropertiesViewController () <DeviceHeaderViewDelegate,PickerComponentViewDelegate,DevicePropertyTableViewCellDelegate>{
+@interface DevicePropertiesViewController () <DeviceHeaderViewDelegate,PickerComponentViewDelegate,DevicePropertyTableViewCellDelegate,SliderViewDelegate>{
 int mii;
 }
 @property (weak, nonatomic) IBOutlet UIView *topView;
@@ -215,7 +216,11 @@ int mii;
     cell.delegate = self;
      GenericIndexValue *gValue = [[self getRowforSection:indexPath.section] objectAtIndex:indexPath.row];
     NSString *leftlabel = gValue.genericIndex.groupLabel;
+    
     NSString *property = gValue.genericIndex.property;
+    if([property isEqualToString:@"displayHere"] && ([gValue.genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [gValue.genericIndex.layoutType isEqualToString:@"TEXT_VIEW"])){
+        property = @"EditText";
+    }
     NSString *rightlabel = gValue.genericValue.displayText?gValue.genericValue.displayText:gValue.genericValue.value;
     if(rightlabel == nil){
         rightlabel = @"";
@@ -226,31 +231,59 @@ int mii;
     
     [cell setUpCell:cellDict property:property genericValue:gValue];
     
-    NSDictionary *values = gValue.genericIndex.values;
     
     for(UIView *picView in cell.contentView.subviews){
-        if([picView isKindOfClass:[PickerComponentView class]])
+        if([picView isKindOfClass:[PickerComponentView class]] || [picView isKindOfClass:[Slider class]])
             [picView removeFromSuperview];
     }
-    if (self.indexPath == indexPath && !gValue.genericIndex.readOnly)
+    if (self.indexPath == indexPath && !gValue.genericIndex.readOnly && ([gValue.genericIndex.layoutType isEqualToString:@"MULTI_BUTTON"] || [gValue.genericIndex.layoutType isEqualToString:@"LIST"] || [gValue.genericIndex.layoutType isEqualToString:@"SINGLE_TEMP"]))
     {
         
         NSDictionary *values = gValue.genericIndex.values;
+        NSMutableArray *displayArr = [NSMutableArray new];
+        NSMutableArray *ValueArr = [NSMutableArray new];
         NSLog(@"values button %@",values);
-        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, 160) arrayList:values];
+        
+        if(gValue.genericIndex.values) {
+             [self getGenericValVsDispDict:gValue.genericIndex.values displayArr:displayArr valueArr:ValueArr];
+        }
+        else{
+             [self getValueArrfromMin:gValue.genericIndex.formatter.min max:gValue.genericIndex.formatter.max displayArr:displayArr valueArr:ValueArr];
+        }
+        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, 160) displayList:displayArr valueList:ValueArr];
         pickerView.delegate = self;
         //pickerView.center = self.view.center;
         pickerView.center = CGPointMake(cell.contentView.bounds.size.width/2, cell.contentView.center.y);
         [cell.contentView addSubview:pickerView];
     }
+    else if(self.indexPath == indexPath && !gValue.genericIndex.readOnly && ([gValue.genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [gValue.genericIndex.layoutType isEqualToString:@"SLIDER"])){
+        Slider *horzView = [[Slider alloc]initWithFrame:CGRectMake(0, 60, cell.contentView.frame.size.width, 60) color:[UIColor lightGrayColor] genericIndexValue:gValue];
+        horzView.delegate = self;
+        [cell.contentView addSubview:horzView];
+
+    }
     return cell;
+}
+-(void)getGenericValVsDispDict:(NSDictionary *)value displayArr:(NSMutableArray *)displayArr valueArr:(NSMutableArray *)valueArr{
+        for (NSString *val in value) {
+        GenericValue *gval = value[val];
+        [displayArr addObject:gval.displayText];
+        [valueArr addObject:val];
+    }
+}
+-(void)getValueArrfromMin:(int)min max:(int)max displayArr:(NSMutableArray *)displayArr valueArr:(NSMutableArray *)valueArr {
+    for(NSUInteger i=min;i<=max;i++){
+        [displayArr addObject:@(i).stringValue];
+        [valueArr addObject:@(i).stringValue];
+    }
+
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     GenericIndexValue *gValue = [[self getRowforSection:indexPath.section] objectAtIndex:indexPath.row];
-    NSString *leftlabel = gValue.genericIndex.groupLabel;
+    NSString *leftlabel = gValue.genericIndex.groupLabel?:@"";
     NSString *property = gValue.genericIndex.property;
-    if([property isEqualToString:@"navigate"] && ([gValue.genericIndex.ID isEqualToString:@"-2"] || [gValue.genericIndex.ID isEqualToString:@"-17"])){
+    if([property isEqualToString:@"navigate"] && ([gValue.genericIndex.ID isEqualToString:@"-2"])){
         DeviceNotificationViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"DeviceNotificationViewController"];
         viewController.genericIndexValue = gValue;
         
@@ -284,11 +317,12 @@ int mii;
         [self.navigationController pushViewController:viewController animated:YES];
         
     }
-    else{
+    else if(!([gValue.genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [gValue.genericIndex.layoutType isEqualToString:@"TEXT_VIEW"])){
         if(self.indexPath == indexPath)
             self.indexPath = nil;
         else
             self.indexPath = indexPath;
+        
         [tableView beginUpdates]; // Animate the height change
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
         
@@ -323,5 +357,8 @@ int mii;
 -(void)deviceNameUpdate:(NSString *)name genericIndexValue:(GenericIndexValue*)genericIndexValue{
 
     [DevicePayload getNameLocationChange:genericIndexValue mii:mii value:name];
+}
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue currentView:(UIView*)currentView{
+
 }
 @end
