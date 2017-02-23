@@ -8,6 +8,7 @@
 
 #import "DevicePropertyTableViewCell.h"
 #import "SFIColors.h"
+#import "UICommonMethods.h"
 
 #define NAVIGATE @"navigate"
 #define LINK @"link"
@@ -31,6 +32,7 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UILabel *leftLabelView;
 @property (weak, nonatomic) IBOutlet UILabel *rightLabel;
+@property (weak, nonatomic) IBOutlet UIButton *button;
 
 @property (weak, nonatomic) IBOutlet UISwitch *onOFFSwitch;
 @property (nonatomic)PropertyType propertyType;
@@ -62,15 +64,17 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
         self.propertyType = navigate_;
     else if([property isEqualToString:SWITCHBUTTON])
         self.propertyType = switchButton_;
+    else if([property isEqualToString:LINK])
+        self.propertyType = link_;
 }
 - (void)setUpCell:(NSDictionary *)cellDict property:(NSString *)property genericValue:(GenericIndexValue *)genericIndexValue{
     self.genericIndexValue = genericIndexValue;
     [self resetViews];
     [self setCellProperty:property];
-    
+    NSLog(@"genericIndexValue.genericIndex.icon %@",genericIndexValue.genericIndex.icon);
     switch (self.propertyType) {
         case EditText_:{
-            [self setEditText:cellDict];
+            [self setEditText:cellDict icon:genericIndexValue.genericIndex.icon];
             break;
         }
         case displayHere_:{
@@ -91,6 +95,10 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
             [self setSwitchPropertyItem:cellDict];
         }
             break;
+        case link_:{
+            [self setButtonitem:cellDict];
+        }
+            break;
         default:
             break;
     }
@@ -98,6 +106,7 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
 }
 -(void)setNavigate:(NSDictionary *)cellDict{
     [self setLeftlabelAndRightLabel:cellDict];
+    self.rightLabel.hidden = YES;
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 -(void)setLeftlabelAndRightLabel:(NSDictionary *)cellDict{
@@ -105,7 +114,8 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
     [self setRightValue:[NSString stringWithFormat:@"%@",cellDict[@"rightLabel"]].capitalizedString];
 
 }
--(void)setEditText:(NSDictionary *)cellDict{
+-(void)setEditText:(NSDictionary *)cellDict icon:(NSString *)icon{
+    self.imgView.image = [UICommonMethods imageNamed:icon withColor:[UIColor darkGrayColor]];
     self.editTextUdView.hidden = NO;
     self.textField.hidden = NO;
     self.textField.text = cellDict[@"rightLabel"];
@@ -127,13 +137,23 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
     [self setLeftValue:dict[@"leftLabel"]];
     self.onOFFSwitch.hidden = NO;
 }
+-(void)setButtonitem:(NSDictionary *)dict{
+    self.button.hidden = NO;
+    [self.button setTitleColor:[SFIColors ruleBlueColor] forState:UIControlStateNormal];
+    self.button.titleLabel.textAlignment = NSTextAlignmentLeft;
+    self.button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [self.button setTitle:dict[@"leftLabel"] forState:UIControlStateNormal];
+}
+- (IBAction)buttonClicked:(id)sender {
+    [self.delegate linkToNextScreen:self.genericIndexValue];
+}
 - (void)resetViews{
     self.editTextUdView.hidden = YES;
     self.imgView.hidden = YES;
     self.textField.hidden = YES;
     self.leftLabelView.hidden = YES;
     self.onOFFSwitch.hidden = YES;
-    
+    self.button.hidden = YES;
     self.rightLabel.hidden = YES;
     self.rightLabel.textColor = [UIColor blackColor];
     

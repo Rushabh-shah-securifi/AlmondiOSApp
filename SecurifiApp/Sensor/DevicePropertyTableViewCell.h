@@ -12,6 +12,7 @@
 @optional
 -(void)deviceNameUpdate:(NSString *)name genericIndexValue:(GenericIndexValue*)genericIndexValue;
 -(void)deviceOnOffSwitchUpdate:(NSString *)status genericIndexValue:(GenericIndexValue*)genericIndexValue;
+-(void)linkToNextScreen:(GenericIndexValue *)genericIndexValue;
 
 @end
 

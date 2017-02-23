@@ -16,7 +16,6 @@
 +(void)setLableProperties:(UILabel*)label text:(NSString*)text textColor:(UIColor*)textColor fontName:(NSString *)fontName fontSize:(float)size alignment:(NSTextAlignment)alignment{
     label.text = text;
     label.font = [UIFont fontWithName:fontName size:size];
-    label.numberOfLines = 0;
     label.textAlignment = alignment;
     label.textColor = textColor;
 }

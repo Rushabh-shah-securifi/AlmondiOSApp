@@ -21,6 +21,7 @@
 #import "ClientTableViewController.h"
 #import "UseAsPresenseViewController.h"
 #import "Slider.h"
+#import "SFIColors.h"
 
 #define DEVICE_PROPERTY_CELL @"devicepropertycell"
 
@@ -127,7 +128,7 @@ int mii;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat kExpandedCellHeight = 160;
-    CGFloat kNormalCellHeigh = 40;
+    CGFloat kNormalCellHeigh = 30;
      GenericIndexValue *gValue = [[self getRowforSection:indexPath.section] objectAtIndex:indexPath.row];
     
     if (self.indexPath == indexPath && !gValue.genericIndex.readOnly)
@@ -158,8 +159,9 @@ int mii;
     {
         viewHt = defHeaderHeight + defHeaderLableHt;
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), viewHt)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, defHeaderHeight-8, CGRectGetWidth(view.frame), defHeaderLableHt)];
-        [UICommonMethods setLableProperties:label text:gclass.header textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:14 alignment:NSTextAlignmentLeft];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, defHeaderHeight-8, CGRectGetWidth(view.frame), defHeaderLableHt)];
+        [UICommonMethods setLableProperties:label text:gclass.header textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentLeft];
+        label.text = [gclass.header capitalizedString];
         [view addSubview:label];
     }
     else{
@@ -188,10 +190,13 @@ int mii;
     if(gclass.footer != nil)
     {
         viewHt = defHeaderHeight + defHeaderLableHt;
-        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), viewHt)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, defHeaderHeight-8, CGRectGetWidth(view.frame), defHeaderLableHt)];
-        label.numberOfLines = 2;
-        [UICommonMethods setLableProperties:label text:NSLocalizedString(gclass.footer,@"") textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:14 alignment:NSTextAlignmentLeft];
+        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame) - 10, viewHt)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 5, CGRectGetWidth(view.frame), viewHt)];
+        
+        [UICommonMethods setLableProperties:label text:NSLocalizedString(gclass.footer,@"") textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:13 alignment:NSTextAlignmentLeft];
+        
+        label.lineBreakMode = NSLineBreakByWordWrapping;
+        label.numberOfLines = 3;
         [view addSubview:label];
     }
     else{
@@ -257,7 +262,7 @@ int mii;
         [cell.contentView addSubview:pickerView];
     }
     else if(self.indexPath == indexPath && !gValue.genericIndex.readOnly && ([gValue.genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [gValue.genericIndex.layoutType isEqualToString:@"SLIDER"])){
-        Slider *horzView = [[Slider alloc]initWithFrame:CGRectMake(0, 60, cell.contentView.frame.size.width, 60) color:[UIColor lightGrayColor] genericIndexValue:gValue];
+        Slider *horzView = [[Slider alloc]initWithFrame:CGRectMake(0, 60, cell.contentView.frame.size.width, 40) color:[SFIColors ruleBlueColor] genericIndexValue:gValue];
         horzView.delegate = self;
         [cell.contentView addSubview:horzView];
 
@@ -360,5 +365,8 @@ int mii;
 }
 -(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue currentView:(UIView*)currentView{
 
+}
+-(void)linkToNextScreen:(GenericIndexValue *)genericIndexValue{
+    // link to notification screen
 }
 @end
