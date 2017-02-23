@@ -35,6 +35,7 @@
 @property (nonatomic) NSTimer *timer;
 @property (nonatomic) NSTimer *blinkTimer;
 @property (nonatomic) NSTimer *nonRepeatingTimer;
+@property (nonatomic) NSTimer *slaveReadyTimer;
 
 @property (nonatomic) CFTimeInterval startTime;
 
@@ -608,8 +609,19 @@
         [MeshPayload requestAddWiredSlave:self.mii slaveName:self.almondUniqueName];//mii
     else
         [MeshPayload requestAddWireLessSlave:self.mii slaveName:self.almondUniqueName];
+    //Added by Vikas
+    //timer repeats itself for every 2 seconds until it is invalidated
+    self.slaveReadyTimer = [NSTimer scheduledTimerWithTimeInterval:35.0
+                                                target:self
+                                                selector:@selector(slaveNotReady:)
+                                                userInfo:nil
+                                                repeats:NO];
 }
-
+-(void)slaveNotReady:(id)sender{
+    NSLog(@"in slave NotReady showing popup");
+    [self.delegate hideHUDDelegate];
+    [self showAlert:self.almondNormalName msg:@"Unable to reach the additional Almond. Please reboot it and try again." cancel:@"Ok" other:nil tag:BLINK_CHECK];    
+}
 -(void)requestblinkLED{
     [MeshPayload requestBlinkLed:self.mii slaveName:self.almondUniqueName];
 }
@@ -701,6 +713,10 @@
             
             [self showAlert:self.almondNormalName msg:msg cancel:cancelTitle other:nil tag:ADD_FAIL];
         }
+//        else if([reason.lowercaseString hasPrefix:@"Poor"]){
+//                msg = [NSString stringWithFormat:@"Unable to reach %@. Bring it closer to your primary Almond and try again!", self.almondNormalName];
+//            [self showAlert:self.almondNormalName msg:msg cancel:cancelTitle other:nil tag:BLINK_CHECK];
+//        }
         else{
             [self.blinkTimer invalidate];
             if(self.currentView.tag == BLINK_CHECK)//on ok tap this will take to interface page
@@ -755,6 +771,12 @@
                 [self loadNextView];
         }
         else{//failed
+            NSString *reason = payload[REASON];
+            if ([reason hasPrefix:@"Poor"]) {
+                NSString *msg1 = [NSString stringWithFormat: @"%@ Almond seems to be too far or is experiencing signal interference. Please bring it closer to other Almonds in your home Wi-Fi network and reboot it.",self.almondNormalName];
+                [self showAlert:self.almondNormalName msg:msg1 cancel:@"Ok" other:nil tag:BLINK_CHECK];
+                return;
+            }
             [self showAlert:self.almondNormalName msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
         }
         return;
@@ -791,7 +813,10 @@
             }
             
         }
-        
+        else if([commandType isEqualToString:@"ReadyToAddAsSlave"]){
+            [self.slaveReadyTimer invalidate];
+             self.slaveReadyTimer = nil;
+        }
         else if([commandType isEqualToString:@"BlinkLedMobile"]){
             [self.delegate hideHUDDelegate];
             if(self.currentView.tag == ALMONDS_LIST)

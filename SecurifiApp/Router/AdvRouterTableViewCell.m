@@ -30,6 +30,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *arrowImg;
 
 @property (weak, nonatomic) IBOutlet UIView *mainView;
+@property (weak, nonatomic) IBOutlet UIView *temperatureView;//5
+@property (weak, nonatomic) IBOutlet UIButton *fahrenheitButton;
+@property (weak, nonatomic) IBOutlet UIButton *celsiusButton;
 
 @property (nonatomic) AdvCellType type;
 @property (nonatomic) NSString *value;
@@ -107,7 +110,18 @@
     self.switchBtn.on = [cell[VALUE] boolValue];
     self.secureField.text = cell[VALUE];
     self.valueLbl.text = cell[VALUE];
-    
+    if (type == Adv_temperature) {
+        NSLog(@"temperature Unit is %@s",cell[VALUE])
+        if([cell[VALUE] hasSuffix:@"F"]){
+            [self setButtonProperty:self.fahrenheitButton titleColor:[SFIColors ruleBlueColor] backgroundColor:[UIColor whiteColor] title:@"\u00B0F"];
+            [self setButtonProperty:self.celsiusButton titleColor:[UIColor whiteColor] backgroundColor:[SFIColors ruleBlueColor] title:@"\u00B0C"];
+        }
+        else{
+            [self setButtonProperty:self.celsiusButton titleColor:[SFIColors ruleBlueColor] backgroundColor:[UIColor whiteColor] title:@"\u00B0C"];
+            [self setButtonProperty:self.fahrenheitButton titleColor:[UIColor whiteColor] backgroundColor:[SFIColors ruleBlueColor] title:@"\u00B0F"];
+
+        }
+    }
     //setting defaults
     [self setDefaults];
     
@@ -167,8 +181,15 @@
             }
         }
             break;
+        case Adv_temperature:{
+            if(row == 0){
+                
+                [self setConcernedView:self.temperatureView.tag];
+            }
+        }
+            break;
         case Adv_Help:{
-            [self setConcernedView:self.arrowImg.tag];
+            [self setConcernedView:self.valueLbl.tag];
         }
             break;
             
@@ -176,7 +197,11 @@
             break;
     }
 }
-
+-(void)setButtonProperty:(UIButton*)unitButton titleColor:(UIColor*)titleColor backgroundColor:(UIColor*)backgroundColor title:(NSString*)title{
+    [unitButton setTitleColor:titleColor forState:UIControlStateNormal];
+    [unitButton setTitle:title forState:UIControlStateNormal];
+    [unitButton setBackgroundColor:backgroundColor];
+}
 - (void)setMainViewColorAndDisable:(BOOL)enabled{
     if(!enabled){
         self.mainView.backgroundColor = [SFIColors ruleGraycolor];
@@ -222,6 +247,7 @@
     _valueLbl.hidden = (viewTag != _valueLbl.tag);
     _switchBtn.hidden = (viewTag != _switchBtn.tag);
     _textFieldView.hidden = (viewTag != _textFieldView.tag);
+    _temperatureView.hidden = (viewTag != _temperatureView.tag);
     NSLog(@"secure hidden : %zd", (viewTag != _secureFieldView.tag));
     _secureFieldView.hidden = (viewTag != _secureFieldView.tag);
     _arrowImg.hidden = (viewTag != _arrowImg.tag);
@@ -244,7 +270,13 @@
         [self.eyeBtn setTitle:@"SHOW" forState:UIControlStateNormal];
     }    
 }
+- (IBAction)onFahrenheitTap:(id)sender {
+    [self.delegate onDoneTapDelegate:self.type value:@"\u00B0F" isSecureFld:NO row:self.row];
+}
 
+- (IBAction)onCelsiusTap:(id)sender {
+    [self.delegate onDoneTapDelegate:self.type value:@"\u00B0F" isSecureFld:NO row:self.row];
+}
 
 
 #pragma mark text field delegate methods

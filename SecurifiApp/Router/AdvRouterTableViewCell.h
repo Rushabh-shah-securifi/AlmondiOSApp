@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, AdvCellType){
     Adv_AlmondScreenLock,
     Adv_DiagnosticSettings,
     Adv_Language,
+    Adv_temperature,
     Adv_Help
 };
 

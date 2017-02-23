@@ -99,7 +99,9 @@ int mii;
 }
 
 -(BOOL)isDisconnected{
-    return [_toolkit connectionStatusFromNetworkState:[ConnectionStatus getConnectionStatus]] == SFIAlmondConnectionStatus_disconnected;
+    ConnectionStatusType status = [ConnectionStatus getConnectionStatus];
+    BOOL b = [_toolkit connectionStatusFromNetworkState:status] == SFIAlmondConnectionStatus_disconnected;
+    return b;
 }
 
 -(void)markAlmondTitleAndMac{

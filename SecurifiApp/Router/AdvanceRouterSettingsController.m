@@ -242,7 +242,6 @@ int mii;
             break;
     }
 }
-
 - (void)onDoneTapDelegate:(AdvCellType)type value:(NSString *)value isSecureFld:(BOOL)isSecureFld row:(NSInteger)row{
     [self showHudWithTimeoutMsg:@"Please Wait!" time:15];
     AlmondProperties *almondProperty = [SecurifiToolkit sharedInstance].almondProperty;
@@ -290,7 +289,16 @@ int mii;
             //non editable
         }
             break;
-            
+        case Adv_temperature:{
+            if([almondProperty.temperatureUnit isEqualToString:@"\u00B0C"]){
+                value = @"\u00B0F";
+            }
+            else{
+                value = @"\u00B0C";
+            }
+            [RouterPayload requestAlmondPropertyChange:mii action:@"TemperatureUnit" value:value uptime:nil];
+        }
+            break;
         default:
             break;
     }
@@ -378,6 +386,12 @@ int mii;
     cellsArray = [NSMutableArray new];
     [cellsArray addObject:[self getCellDict:@"Language" value:almondProperty.language]];
     [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_Language]];
+    
+    //Temperature
+    cellsArray = [NSMutableArray new];
+    [cellsArray addObject:[self getCellDict:@"Temperature" value:almondProperty.temperatureUnit]];
+    [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_temperature]];
+
     
     //help sections
     cellsArray = [NSMutableArray new];
