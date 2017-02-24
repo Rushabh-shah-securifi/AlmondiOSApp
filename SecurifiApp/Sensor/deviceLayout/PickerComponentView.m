@@ -64,7 +64,7 @@
    // title=[self.arrayOfState objectAtIndex:row];
     NSAttributedString *attString =
     [[NSAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor],
-                                                                  NSFontAttributeName:[UIFont securifiFont:10]                                                   }];
+                                                                  NSFontAttributeName:[UIFont securifiFont:8]                                                   }];
     
     return attString;
 }

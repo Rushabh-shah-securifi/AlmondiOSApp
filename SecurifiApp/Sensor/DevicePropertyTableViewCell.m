@@ -106,7 +106,7 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
 }
 -(void)setNavigate:(NSDictionary *)cellDict{
     [self setLeftlabelAndRightLabel:cellDict];
-    self.rightLabel.hidden = YES;
+//    self.rightLabel.hidden = YES;
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 -(void)setLeftlabelAndRightLabel:(NSDictionary *)cellDict{

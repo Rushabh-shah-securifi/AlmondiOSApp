@@ -114,9 +114,10 @@
     if((device.type == SFIDeviceType_NestThermostat_57 && [[Device getValueForIndex:11 deviceID:deviceID] isEqualToString:@"false"]) || (device.type == SFIDeviceType_NestSmokeDetector_58 && [[Device getValueForIndex:5 deviceID:deviceID] isEqualToString:@"false"])){//don't paint indexes on offline
         [detailList removeAllObjects];
     }
-    else if(device.type == SFIDeviceType_HueLamp_48 && [[Device getValueForIndex:2 deviceID:deviceID] isEqualToString:@"false"]){
-        [detailList removeAllObjects];
-    }else if(device.type == SFIDeviceType_AlmondSiren_63)
+//    else if(device.type == SFIDeviceType_HueLamp_48 && [[Device getValueForIndex:2 deviceID:deviceID] isEqualToString:@"false"]){
+//        [detailList removeAllObjects];
+//    }
+    else if(device.type == SFIDeviceType_AlmondSiren_63)
         detailList = [self handleAlmondSiren:deviceID genericIndexValues:detailList];
     
     //NSArray *commonList = [self getCommonGenericIndexValue:device];

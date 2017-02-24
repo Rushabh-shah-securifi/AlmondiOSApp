@@ -22,6 +22,7 @@
 #import "UseAsPresenseViewController.h"
 #import "Slider.h"
 #import "SFIColors.h"
+#import "HueColorPicker.h"
 
 #define DEVICE_PROPERTY_CELL @"devicepropertycell"
 
@@ -30,7 +31,7 @@ static const float defRowHeight = 44;
 static const int defHeaderLableHt = 20;
 static const int normalheaderheight = 2;
 
-@interface DevicePropertiesViewController () <DeviceHeaderViewDelegate,PickerComponentViewDelegate,DevicePropertyTableViewCellDelegate,SliderViewDelegate>{
+@interface DevicePropertiesViewController () <DeviceHeaderViewDelegate,PickerComponentViewDelegate,DevicePropertyTableViewCellDelegate,SliderViewDelegate,HueColorPickerDelegate>{
 int mii;
 }
 @property (weak, nonatomic) IBOutlet UIView *topView;
@@ -128,7 +129,7 @@ int mii;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat kExpandedCellHeight = 160;
-    CGFloat kNormalCellHeigh = 30;
+    CGFloat kNormalCellHeigh = 40;
      GenericIndexValue *gValue = [[self getRowforSection:indexPath.section] objectAtIndex:indexPath.row];
     
     if (self.indexPath == indexPath && !gValue.genericIndex.readOnly)
@@ -159,9 +160,9 @@ int mii;
     {
         viewHt = defHeaderHeight + defHeaderLableHt;
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), viewHt)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, defHeaderHeight-8, CGRectGetWidth(view.frame), defHeaderLableHt)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(5, defHeaderHeight-8, CGRectGetWidth(view.frame), defHeaderLableHt)];
         [UICommonMethods setLableProperties:label text:gclass.header textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentLeft];
-        label.text = [gclass.header capitalizedString];
+        label.text = [gclass.header uppercaseString];
         [view addSubview:label];
     }
     else{
@@ -191,7 +192,7 @@ int mii;
     {
         viewHt = defHeaderHeight + defHeaderLableHt;
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame) - 10, viewHt)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 5, CGRectGetWidth(view.frame), viewHt)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(5, 5, CGRectGetWidth(view.frame), viewHt)];
         
         [UICommonMethods setLableProperties:label text:NSLocalizedString(gclass.footer,@"") textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:13 alignment:NSTextAlignmentLeft];
         
@@ -226,7 +227,8 @@ int mii;
     if([property isEqualToString:@"displayHere"] && ([gValue.genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [gValue.genericIndex.layoutType isEqualToString:@"TEXT_VIEW"])){
         property = @"EditText";
     }
-    NSString *rightlabel = gValue.genericValue.displayText?gValue.genericValue.displayText:gValue.genericValue.value;
+    GenericValue *genericvalue = gValue.genericIndex.values[gValue.genericValue.value];
+    NSString *rightlabel = gValue.genericValue.displayText?gValue.genericValue.displayText:genericvalue.displayText;
     if(rightlabel == nil){
         rightlabel = @"";
     }
@@ -267,6 +269,18 @@ int mii;
         [cell.contentView addSubview:horzView];
 
     }
+    else if(self.indexPath == indexPath && !gValue.genericIndex.readOnly && ([gValue.genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [gValue.genericIndex.layoutType isEqualToString:@"SLIDER"])){
+        Slider *horzView = [[Slider alloc]initWithFrame:CGRectMake(0, 60, cell.contentView.frame.size.width, 40) color:[SFIColors ruleBlueColor] genericIndexValue:gValue];
+        horzView.delegate = self;
+        [cell.contentView addSubview:horzView];
+        
+    }
+    else if(self.indexPath == indexPath && !gValue.genericIndex.readOnly && ([gValue.genericIndex.layoutType isEqualToString:@"HUE"])){
+        HueColorPicker *horzView = [[HueColorPicker alloc]initWithFrame:CGRectMake(0, 60, cell.contentView.frame.size.width, 40) color:[SFIColors ruleBlueColor] genericIndexValue:gValue];
+        horzView.delegate = self;
+        [cell.contentView addSubview:horzView];
+        
+    }
     return cell;
 }
 -(void)getGenericValVsDispDict:(NSDictionary *)value displayArr:(NSMutableArray *)displayArr valueArr:(NSMutableArray *)valueArr{
@@ -288,7 +302,7 @@ int mii;
     GenericIndexValue *gValue = [[self getRowforSection:indexPath.section] objectAtIndex:indexPath.row];
     NSString *leftlabel = gValue.genericIndex.groupLabel?:@"";
     NSString *property = gValue.genericIndex.property;
-    if([property isEqualToString:@"navigate"] && ([gValue.genericIndex.ID isEqualToString:@"-2"])){
+    if([property isEqualToString:@"navigate"] && ([gValue.genericIndex.ID isEqualToString:@"-3"])){
         DeviceNotificationViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"DeviceNotificationViewController"];
         viewController.genericIndexValue = gValue;
         
@@ -328,10 +342,14 @@ int mii;
         else
             self.indexPath = indexPath;
         
-        [tableView beginUpdates]; // Animate the height change
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [tableView beginUpdates];
+            [tableView endUpdates];
+        } completion:nil];
+//        [tableView beginUpdates]; // Animate the height change
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
-        
-        [tableView endUpdates];
+//
+//        [tableView endUpdates];
     }
 }
 
@@ -368,5 +386,11 @@ int mii;
 }
 -(void)linkToNextScreen:(GenericIndexValue *)genericIndexValue{
     // link to notification screen
+    if([genericIndexValue.genericIndex.ID isEqualToString:@"-19"]){
+        
+        DeviceNotificationViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"DeviceNotificationViewController"];
+        viewController.genericIndexValue = genericIndexValue;
+        [self presentViewController:viewController animated:YES completion:nil];
+    }
 }
 @end
