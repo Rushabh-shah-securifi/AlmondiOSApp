@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -158,15 +158,59 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
+                                                <view hidden="YES" tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LTo-v5-O0B">
+                                                    <rect key="frame" x="298" y="8" width="61" height="28"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iB7-4k-lxy">
+                                                            <rect key="frame" x="1" y="1" width="30" height="26"/>
+                                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="26" id="3ka-tt-rI2"/>
+                                                                <constraint firstAttribute="width" constant="30" id="zIu-ge-Svz"/>
+                                                            </constraints>
+                                                            <state key="normal" title="F">
+                                                                <color key="titleColor" red="0.37261284719999999" green="0.66536458330000003" blue="0.89556206599999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="onFahrenheitTap:" destination="0jU-mW-Ijv" eventType="touchUpInside" id="51Y-x2-jcV"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="df4-nc-cAx">
+                                                            <rect key="frame" x="33" y="1" width="27" height="26"/>
+                                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="27" id="GGP-uY-86e"/>
+                                                                <constraint firstAttribute="height" constant="26" id="GSI-8H-wOS"/>
+                                                            </constraints>
+                                                            <state key="normal" title="C">
+                                                                <color key="titleColor" red="0.0078431372550000003" green="0.6588235294" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="onCelsiusTap:" destination="0jU-mW-Ijv" eventType="touchUpInside" id="qFb-IL-yJa"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstItem="iB7-4k-lxy" firstAttribute="top" secondItem="LTo-v5-O0B" secondAttribute="top" constant="1" id="IDx-56-R3l"/>
+                                                        <constraint firstItem="df4-nc-cAx" firstAttribute="top" secondItem="LTo-v5-O0B" secondAttribute="top" constant="1" id="PHs-tP-5H5"/>
+                                                        <constraint firstAttribute="width" constant="61" id="Pmh-uE-Myp"/>
+                                                        <constraint firstItem="df4-nc-cAx" firstAttribute="leading" secondItem="iB7-4k-lxy" secondAttribute="trailing" constant="2" id="d8x-4U-gvw"/>
+                                                        <constraint firstAttribute="trailing" secondItem="df4-nc-cAx" secondAttribute="trailing" constant="1" id="jf4-9V-pZM"/>
+                                                        <constraint firstAttribute="height" constant="28" id="zwT-pK-myW"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" red="0.0078431372549019607" green="0.6588235294117647" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstItem="VH5-4f-cFa" firstAttribute="leading" secondItem="Obo-dd-Rab" secondAttribute="leading" constant="8" id="6n7-qN-dbY"/>
                                                 <constraint firstAttribute="trailing" secondItem="DiH-NP-0HQ" secondAttribute="trailing" constant="8" id="AsY-ZN-JpQ"/>
+                                                <constraint firstItem="LTo-v5-O0B" firstAttribute="top" secondItem="Obo-dd-Rab" secondAttribute="top" constant="8" id="CAN-V8-l9r"/>
                                                 <constraint firstItem="VH5-4f-cFa" firstAttribute="top" secondItem="Obo-dd-Rab" secondAttribute="top" constant="10" id="CeK-qu-o3x"/>
                                                 <constraint firstAttribute="trailing" secondItem="EYI-x9-jqX" secondAttribute="trailing" constant="6" id="CnI-LH-tR5"/>
                                                 <constraint firstItem="g63-NI-zRg" firstAttribute="top" secondItem="Obo-dd-Rab" secondAttribute="top" constant="13" id="DSS-RU-dyT"/>
                                                 <constraint firstItem="ve8-cz-cRp" firstAttribute="top" secondItem="Obo-dd-Rab" secondAttribute="top" constant="4" id="Emx-lk-mIF"/>
+                                                <constraint firstAttribute="trailing" secondItem="LTo-v5-O0B" secondAttribute="trailing" constant="6" id="FF3-vp-LZj"/>
                                                 <constraint firstAttribute="trailing" secondItem="GGv-oh-G0x" secondAttribute="trailing" constant="6" id="MtF-wD-yIl"/>
                                                 <constraint firstItem="ve8-cz-cRp" firstAttribute="leading" secondItem="VH5-4f-cFa" secondAttribute="trailing" constant="-18" id="NSg-CF-QSD"/>
                                                 <constraint firstItem="DiH-NP-0HQ" firstAttribute="top" secondItem="Obo-dd-Rab" secondAttribute="top" constant="6" id="Oyf-wW-BHB"/>
@@ -191,13 +235,16 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="arrowImg" destination="DiH-NP-0HQ" id="oK9-TL-UGu"/>
+                                    <outlet property="celsiusButton" destination="df4-nc-cAx" id="j38-CC-4mf"/>
                                     <outlet property="eyeBtn" destination="DOW-Mp-Rsc" id="6Wa-We-9Ne"/>
+                                    <outlet property="fahrenheitButton" destination="iB7-4k-lxy" id="ssy-vw-AHb"/>
                                     <outlet property="label" destination="VH5-4f-cFa" id="dXD-hs-hUZ"/>
                                     <outlet property="lineView" destination="EYI-x9-jqX" id="dZN-w3-OVu"/>
                                     <outlet property="mainView" destination="Obo-dd-Rab" id="2Rj-yU-egg"/>
                                     <outlet property="secureField" destination="M5r-6r-TWt" id="Kiy-w1-XCS"/>
                                     <outlet property="secureFieldView" destination="GGv-oh-G0x" id="rns-8x-SRD"/>
                                     <outlet property="switchBtn" destination="NbG-Mq-n99" id="sTT-th-1J6"/>
+                                    <outlet property="temperatureView" destination="LTo-v5-O0B" id="e1o-nr-dAp"/>
                                     <outlet property="textField" destination="jVW-PK-9Dk" id="qyB-nQ-VhX"/>
                                     <outlet property="textFieldView" destination="ve8-cz-cRp" id="p1r-VD-Q9Y"/>
                                     <outlet property="valueLbl" destination="g63-NI-zRg" id="2Hd-8y-Tpq"/>

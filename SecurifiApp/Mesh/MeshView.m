@@ -610,7 +610,6 @@
     else
         [MeshPayload requestAddWireLessSlave:self.mii slaveName:self.almondUniqueName];
     //Added by Vikas
-    //timer repeats itself for every 2 seconds until it is invalidated
     self.slaveReadyTimer = [NSTimer scheduledTimerWithTimeInterval:35.0
                                                 target:self
                                                 selector:@selector(slaveNotReady:)
@@ -766,6 +765,8 @@
         [self.delegate hideHUDDelegate];
         [self.blinkTimer invalidate];
         self.blinkTimer = nil;
+        
+        
         if([payload[SUCCESS] boolValue]){
             if(self.currentView.tag == BLINK_CHECK)
                 [self loadNextView];
@@ -777,6 +778,7 @@
                 [self showAlert:self.almondNormalName msg:msg1 cancel:@"Ok" other:nil tag:BLINK_CHECK];
                 return;
             }
+            
             [self showAlert:self.almondNormalName msg:@"Adding to network failed." cancel:@"Ok" other:nil tag:BLINK_CHECK];
         }
         return;
