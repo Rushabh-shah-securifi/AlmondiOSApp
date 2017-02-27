@@ -18,7 +18,7 @@ static const int defHeaderHeight = 25;
 static const float defRowHeight = 44;
 static const int defHeaderLableHt = 20;
 
-@interface DeviceNotificationViewController ()<GridViewDelegate,UITextFieldDelegate,UIAlertViewDelegate>
+@interface DeviceNotificationViewController ()<GridViewDelegate,UITextFieldDelegate,UIAlertViewDelegate,NotificationViewDelegate>
 @property (weak, nonatomic) IBOutlet UISwitch *notificationSwitch;
 @property (weak, nonatomic) IBOutlet UITableView *notifyMeTable;
 @property (nonatomic )NSArray *staticList;
@@ -37,7 +37,8 @@ static const int defHeaderLableHt = 20;
     self.notifyMeTable.hidden = YES;
     NSString *schedule = [Client getScheduleById:@(_genericIndexValue.deviceID).stringValue];
     if([self.genericIndexValue.genericIndex.ID isEqualToString:@"-3"]){
-    NotificationView *notificationView = [[NotificationView alloc]initWithFrame:CGRectMake(0, 66, self.view.frame.size.width, 250)];
+    NotificationView *notificationView = [[NotificationView alloc]initWithFrame:CGRectMake(0, 66, self.view.frame.size.width, 250) andGenericIndexValue:self.genericIndexValue];
+        notificationView.genericIndexValue = self.genericIndexValue;
     
     [self.view addSubview:notificationView];
     }
@@ -49,7 +50,7 @@ static const int defHeaderLableHt = 20;
         
         [self.notifyMeTable reloadData];
     }
-    if([self.genericIndexValue.genericIndex.ID isEqualToString:@"-19"]){
+    if([self.genericIndexValue.genericIndex.ID isEqualToString:@"-40"]){
         GridView *gridView = [[GridView alloc]initWithFrame:CGRectMake(0, 66, self.view.frame.size.width, self.view.frame.size.height - 70) color:[SFIColors clientGreenColor] genericIndexValue:_genericIndexValue onSchedule:(NSString*)schedule];
         gridView.delegate = self;
         gridView.backgroundColor = [UIColor clearColor];
@@ -135,6 +136,10 @@ static const int defHeaderLableHt = 20;
     [self.notifyMeTable reloadData];
     
    
+}
+#pragma mark notification delegate
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue {
+    
 }
 
 @end

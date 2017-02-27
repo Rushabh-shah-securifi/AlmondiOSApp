@@ -34,6 +34,7 @@
     _pickerView.delegate = self;
     _pickerView.dataSource = self;
     _pickerView.center = self.center;
+    [_pickerView selectRow:[self selectRow] inComponent:0 animated:YES];
     [self addSubview:_pickerView];
     
 }
@@ -75,12 +76,15 @@
     NSLog( @"selected value = %@",value);
     [self.delegate pickerViewSelectedValue:value genericIndexValue:self.genericIndexValue];
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+-(NSInteger)selectRow{
+    NSString *selectedValue = self.genericIndexValue.genericValue.value;
+    NSInteger i =0;
+    for(NSString *value in self.valueArr){
+        if([value isEqualToString:selectedValue])
+            return i;
+        i++;
+    }
+    return 0;
 }
-*/
 
 @end

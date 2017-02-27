@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "GenericIndexValue.h"
+@protocol NotificationViewDelegate
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue;
+@end
 @interface NotificationView : UIView
 @property (weak, nonatomic) IBOutlet UIView *view;
+@property (weak,nonatomic) id<NotificationViewDelegate> delegate;
+@property (nonatomic)GenericIndexValue *genericIndexValue;
+- (id)initWithFrame:(CGRect)frame andGenericIndexValue:(GenericIndexValue *)genericIndexValue;
+
 @end

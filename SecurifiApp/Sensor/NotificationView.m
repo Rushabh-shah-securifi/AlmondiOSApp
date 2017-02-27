@@ -24,32 +24,58 @@
 @end
 @implementation NotificationView
 
-- (id)initWithFrame:(CGRect)frame{
+- (id)initWithFrame:(CGRect)frame andGenericIndexValue:(GenericIndexValue *)genericIndexValue{
     self = [super initWithFrame:frame];
     if(self){
         [[NSBundle mainBundle] loadNibNamed:@"NotificationView" owner:self options:nil];
         [self addSubview:self.view];
         [self stretchToSuperView:self.view];
+        self.genericIndexValue = genericIndexValue;
+        [self updateUIValue];
     }
     return self;
 }
+-(void)updateUIValue{
+    if([self.genericIndexValue.genericValue.value isEqualToString:@"1"]){
+        [self alwaysClickedUIupdate];
+    }
+    else if ([self.genericIndexValue.genericValue.value isEqualToString:@"3"]){
+        [self awayClickedUIupdate];
+    }
+    else{
+        [self notificationButtonSwitchOFF];
+    }
+}
 - (IBAction)notificationAlwaysButtonClicked:(id)sender {
     [self alwaysClickedUIupdate];
+    [self.delegate save:@"1" forGenericIndexValue:self.genericIndexValue];
+    // send command delegate
 }
 - (IBAction)notificationAwayButtonClicked:(id)sender {
     [self awayClickedUIupdate];
+    [self.delegate save:@"3" forGenericIndexValue:self.genericIndexValue];
+    
+    // send command delegate
 }
 - (IBAction)notificationEnableDisableSwitch:(id)sender {
     UISwitch *notificationSwitch = (UISwitch *)sender;
     if(notificationSwitch.on){
-        self.awayView.hidden = NO;
-        self.alwaysView.hidden = NO;
+        [self notificationButtonSwitchON];
+        [self.delegate save:@"1" forGenericIndexValue:self.genericIndexValue];
     }
     else{
-        self.awayView.hidden = YES;
-        self.alwaysView.hidden = YES;
+        [self notificationButtonSwitchOFF];
+        [self.delegate save:@"0" forGenericIndexValue:self.genericIndexValue];
     }
     
+}
+-(void)notificationButtonSwitchON{
+    self.awayView.hidden = NO;
+    self.alwaysView.hidden = NO;
+}
+-(void)notificationButtonSwitchOFF{
+    self.awayView.hidden = YES;
+    self.alwaysView.hidden = YES;
 }
 -(void)alwaysClickedUIupdate{
     dispatch_async(dispatch_get_main_queue(), ^{

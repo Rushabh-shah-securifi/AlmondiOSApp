@@ -470,6 +470,7 @@
 		CEE9DF0F1E5C1DAB00299C26 /* ClientTypeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE9DF0E1E5C1DAB00299C26 /* ClientTypeTableViewCell.m */; };
 		CEE9DF121E5C1DEE00299C26 /* ClientTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE9DF111E5C1DEE00299C26 /* ClientTableViewController.m */; };
 		CEE9DF181E5C5AE200299C26 /* UseAsPresenseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE9DF171E5C5AE200299C26 /* UseAsPresenseViewController.m */; };
+		CEE9DF1B1E60640300299C26 /* AdvanceInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE9DF1A1E60640200299C26 /* AdvanceInformationViewController.m */; };
 		CEEAB7AD1CAD26A2003C5290 /* UICommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */; };
 		CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEF425C1C47E0E300E36C9B /* ScenePayload.m */; };
 		CEF6F4D81C92CAD600C68975 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */; };
@@ -1199,6 +1200,8 @@
 		CEE9DF111E5C1DEE00299C26 /* ClientTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientTableViewController.m; sourceTree = "<group>"; };
 		CEE9DF161E5C5AE200299C26 /* UseAsPresenseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UseAsPresenseViewController.h; sourceTree = "<group>"; };
 		CEE9DF171E5C5AE200299C26 /* UseAsPresenseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseAsPresenseViewController.m; sourceTree = "<group>"; };
+		CEE9DF191E60640100299C26 /* AdvanceInformationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceInformationViewController.h; sourceTree = "<group>"; };
+		CEE9DF1A1E60640200299C26 /* AdvanceInformationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvanceInformationViewController.m; sourceTree = "<group>"; };
 		CEEAB7AB1CAD26A2003C5290 /* UICommonMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICommonMethods.h; sourceTree = "<group>"; };
 		CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICommonMethods.m; sourceTree = "<group>"; };
 		CEEF425B1C47E0E300E36C9B /* ScenePayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenePayload.h; sourceTree = "<group>"; };
@@ -2603,6 +2606,8 @@
 				CEE9DF111E5C1DEE00299C26 /* ClientTableViewController.m */,
 				CEE9DF161E5C5AE200299C26 /* UseAsPresenseViewController.h */,
 				CEE9DF171E5C5AE200299C26 /* UseAsPresenseViewController.m */,
+				CEE9DF191E60640100299C26 /* AdvanceInformationViewController.h */,
+				CEE9DF1A1E60640200299C26 /* AdvanceInformationViewController.m */,
 			);
 			path = Sensor;
 			sourceTree = "<group>";
@@ -3484,6 +3489,7 @@
 				F400B6C11D65ECCD00DDEE50 /* SupportViewController.m in Sources */,
 				1C7E7DD11A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				F44D533D1E138E05005C8F43 /* IoTLearnMoreViewController.m in Sources */,
+				CEE9DF1B1E60640300299C26 /* AdvanceInformationViewController.m in Sources */,
 				CEF6F4FE1C92CAD600C68975 /* RuleTextField.m in Sources */,
 				A5AC1E841CC7BA01009F362B /* RuleSceneUtil.m in Sources */,
 				CE40BF151D225791007C2148 /* HistoryCell.m in Sources */,

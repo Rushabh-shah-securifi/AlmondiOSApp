@@ -237,6 +237,7 @@ int mii;
                                @"rightLabel":rightlabel};
     
     [cell setUpCell:cellDict property:property genericValue:gValue];
+    NSString* value = [Device getValueForIndex:gValue.index deviceID:gValue.deviceID];
     
     
     for(UIView *picView in cell.contentView.subviews){
@@ -266,6 +267,7 @@ int mii;
     else if(self.indexPath == indexPath && !gValue.genericIndex.readOnly && ([gValue.genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [gValue.genericIndex.layoutType isEqualToString:@"SLIDER"])){
         Slider *horzView = [[Slider alloc]initWithFrame:CGRectMake(0, 60, cell.contentView.frame.size.width, 40) color:[SFIColors ruleBlueColor] genericIndexValue:gValue];
         horzView.delegate = self;
+        [horzView setSliderValue:[[gValue.genericIndex.formatter transformValue:value] intValue]];
         [cell.contentView addSubview:horzView];
 
     }
@@ -300,7 +302,9 @@ int mii;
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     GenericIndexValue *gValue = [[self getRowforSection:indexPath.section] objectAtIndex:indexPath.row];
+    NSLog(@"navigation item arr %@,%@",gValue.genericIndex.navigateElements,gValue.genericIndex.elements);
     NSString *leftlabel = gValue.genericIndex.groupLabel?:@"";
+    
     NSString *property = gValue.genericIndex.property;
     if([property isEqualToString:@"navigate"] && ([gValue.genericIndex.ID isEqualToString:@"-3"])){
         DeviceNotificationViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"DeviceNotificationViewController"];
@@ -330,6 +334,13 @@ int mii;
 //        [self presentViewController:viewController animated:YES completion:nil];
     }
     else if([property isEqualToString:@"navigate"] && [gValue.genericIndex.ID isEqualToString:@"-37"]){
+        
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
+        SFIScenesTableViewController *viewController = [storyBoard   instantiateViewControllerWithIdentifier:@"SFIScenesTableViewController"];
+        [self.navigationController pushViewController:viewController animated:YES];
+        
+    }
+    else if([property isEqualToString:@"navigate"] && [gValue.genericIndex.ID isEqualToString:@"-41"]){
         
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
         SFIScenesTableViewController *viewController = [storyBoard   instantiateViewControllerWithIdentifier:@"SFIScenesTableViewController"];
@@ -386,11 +397,18 @@ int mii;
 }
 -(void)linkToNextScreen:(GenericIndexValue *)genericIndexValue{
     // link to notification screen
-    if([genericIndexValue.genericIndex.ID isEqualToString:@"-19"]){
+    if([genericIndexValue.genericIndex.ID isEqualToString:@"-40"]){
         
         DeviceNotificationViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"DeviceNotificationViewController"];
         viewController.genericIndexValue = genericIndexValue;
         [self presentViewController:viewController animated:YES completion:nil];
     }
+}
+#pragma mark slider delegate
+-(void)deviceOnOffSwitchUpdate:(NSString *)status genericIndexValue:(GenericIndexValue*)genericIndexValue{
+    
+}
+-(void)blinkNew:(NSString *)newValue{
+    
 }
 @end

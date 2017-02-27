@@ -103,8 +103,9 @@ static const int normalheaderheight = 2;
     {
         viewHt = defHeaderHeight + defHeaderLableHt;
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), viewHt)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, defHeaderHeight-8, CGRectGetWidth(view.frame), defHeaderLableHt)];
-        [UICommonMethods setLableProperties:label text:gclass.header textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:14 alignment:NSTextAlignmentLeft];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(5, defHeaderHeight-8, CGRectGetWidth(view.frame), defHeaderLableHt)];
+        [UICommonMethods setLableProperties:label text:gclass.header textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentLeft];
+        label.text = [gclass.header uppercaseString];
         [view addSubview:label];
     }
     else{
@@ -133,10 +134,13 @@ static const int normalheaderheight = 2;
     if(gclass.footer != nil)
     {
         viewHt = defHeaderHeight + defHeaderLableHt;
-        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), viewHt)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, defHeaderHeight-8, CGRectGetWidth(view.frame), defHeaderLableHt)];
-        label.numberOfLines = 2;
-        [UICommonMethods setLableProperties:label text:NSLocalizedString(gclass.footer,@"") textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:14 alignment:NSTextAlignmentLeft];
+        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame) - 10, viewHt)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(5, 5, CGRectGetWidth(view.frame), viewHt)];
+        
+        [UICommonMethods setLableProperties:label text:NSLocalizedString(gclass.footer,@"") textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:13 alignment:NSTextAlignmentLeft];
+        
+        label.lineBreakMode = NSLineBreakByWordWrapping;
+        label.numberOfLines = 3;
         [view addSubview:label];
     }
     else{
