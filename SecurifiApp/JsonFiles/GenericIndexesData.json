@@ -795,7 +795,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "AdvanceInformation",
         "property": "navigate",
-        "NavigateElements": [-49]
+        "NavigateElements": [-13, -14, -15, -16, -20]
         
         
     },

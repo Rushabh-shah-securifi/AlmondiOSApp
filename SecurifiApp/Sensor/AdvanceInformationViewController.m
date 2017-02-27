@@ -8,17 +8,22 @@
 
 #import "AdvanceInformationViewController.h"
 #import "ClientPropertiesCell.h"
+#import "GenericIndexUtil.h"
 
 @interface AdvanceInformationViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *clientPropertiesTable;
 @property (nonatomic)NSMutableArray *orderedArray ;
 @property (nonatomic)SecurifiToolkit *toolkit;
+@property (nonatomic)NSArray *genericIndexes;
 @end
 
 @implementation AdvanceInformationViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSArray *arr = @[@-13, @-14, @-15, @-16, @20];
+    NSArray *genericIndexes = [GenericIndexUtil getDetailForNavigationItems:self.genericIndexValue.genericIndex.navigateElements clientID:@(self.genericIndexValue.deviceID).stringValue];
+    self.genericIndexes = genericIndexes;
     // Do any additional setup after loading the view.
 }
 
@@ -27,7 +32,7 @@
     // Dispose of any resources that can be recreated.
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 5;
+    return self.genericIndexes.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"client properties cell for row");
@@ -35,12 +40,13 @@
     if (cell == nil) {
         cell = [[ClientPropertiesCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SKSTableViewCell"];
     }
-    cell.displayLabel.text = self.genericIndexValue.genericIndex.groupLabel;
+    GenericIndexValue *genericIndexeValue = [self.genericIndexes objectAtIndex:indexPath.row];
+    cell.displayLabel.text = genericIndexeValue.genericIndex.groupLabel;
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     cell.vsluesLabel.alpha = 0.75;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.userInteractionEnabled = NO;
-    cell.vsluesLabel.text = self.genericIndexValue.genericValue.displayText;
+    cell.vsluesLabel.text = genericIndexeValue.genericValue.displayText;
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

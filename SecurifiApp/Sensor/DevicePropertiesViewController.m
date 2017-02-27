@@ -23,6 +23,8 @@
 #import "Slider.h"
 #import "SFIColors.h"
 #import "HueColorPicker.h"
+#import "AdvanceInformationViewController.h"
+
 
 #define DEVICE_PROPERTY_CELL @"devicepropertycell"
 
@@ -31,7 +33,7 @@ static const float defRowHeight = 44;
 static const int defHeaderLableHt = 20;
 static const int normalheaderheight = 2;
 
-@interface DevicePropertiesViewController () <DeviceHeaderViewDelegate,PickerComponentViewDelegate,DevicePropertyTableViewCellDelegate,SliderViewDelegate,HueColorPickerDelegate>{
+@interface DevicePropertiesViewController () <DeviceHeaderViewDelegate,PickerComponentViewDelegate,DevicePropertyTableViewCellDelegate,SliderViewDelegate,HueColorPickerDelegate,UIGestureRecognizerDelegate>{
 int mii;
 }
 @property (weak, nonatomic) IBOutlet UIView *topView;
@@ -46,9 +48,12 @@ int mii;
 
 @property NSInteger deviceId;
 @property BOOL isSensor;
+@property (nonatomic) CGRect ViewFrame;
+@property (nonatomic) NSInteger touchComp;
 
 
 @property (nonatomic) NSMutableArray *sectionArr;
+
 
 @end
 
@@ -56,9 +61,11 @@ int mii;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.ViewFrame = self.view.frame;
     [self  initSection];
     [self setUpDevicePropertyEditHeaderView];
     [self getSectionForTable];
+    
     
 }
 
@@ -99,6 +106,16 @@ int mii;
 }
 -(void)initSection{
     self.sectionArr = [NSMutableArray new];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self
+               selector:@selector(onKeyboardDidShow:)
+                   name:UIKeyboardDidShowNotification
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onKeyboardDidHide:)
+                   name:UIKeyboardDidHideNotification
+                 object:nil];
    
 }
 
@@ -229,6 +246,12 @@ int mii;
     }
     GenericValue *genericvalue = gValue.genericIndex.values[gValue.genericValue.value];
     NSString *rightlabel = gValue.genericValue.displayText?gValue.genericValue.displayText:genericvalue.displayText;
+    
+    if(!self.isSensor){
+        rightlabel = genericvalue.displayText;
+            if([gValue.genericIndex.ID isEqualToString:@"-11"])
+                rightlabel = gValue.genericValue.displayText;
+    }
     if(rightlabel == nil){
         rightlabel = @"";
     }
@@ -343,7 +366,8 @@ int mii;
     else if([property isEqualToString:@"navigate"] && [gValue.genericIndex.ID isEqualToString:@"-41"]){
         
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
-        SFIScenesTableViewController *viewController = [storyBoard   instantiateViewControllerWithIdentifier:@"SFIScenesTableViewController"];
+        AdvanceInformationViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"AdvanceInformationViewController"];
+        viewController.genericIndexValue = gValue;
         [self.navigationController pushViewController:viewController animated:YES];
         
     }
@@ -411,4 +435,38 @@ int mii;
 -(void)blinkNew:(NSString *)newValue{
     
 }
+#pragma mark gesture recognizer
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+- (void)tapTest:(UITapGestureRecognizer *)sender {
+    self.touchComp = [sender locationInView:self.view].y;
+}
+#pragma  mark uiwindow delegate methods
+- (void)onKeyboardDidShow:(id)notification {
+    NSLog(@"%s",__PRETTY_FUNCTION__);
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    if(self.touchComp  > keyboardSize.height){
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            CGRect f = self.view.frame;
+            CGFloat y = -keyboardSize.height ;
+            f.origin.y =  y + 80;
+            self.view.frame = f;
+            //        NSLog(@"keyboard frame %@",NSStringFromCGRect(self.parentView.frame));
+        }];
+    }
+}
+
+-(void)onKeyboardDidHide:(id)notice {
+    NSLog(@"%s",__PRETTY_FUNCTION__);
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect f = self.view.frame;
+        f.origin.y = self.ViewFrame.origin.y;
+        self.view.frame = f;
+    }];
+}
+
 @end

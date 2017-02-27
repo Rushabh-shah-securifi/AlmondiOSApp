@@ -370,6 +370,7 @@
         indexList = [self getCommonGenericIndexValuesClient:client genericIndex:genIndexObj];
             [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:indexList];
     }
+    
     return groupedIndexValueList;
 }
 
@@ -442,15 +443,11 @@
     
     GenericValue *genericValue = nil;
     GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genIndexObj];
-    if(genericId == -1 || genericId == -2 || genericId == -3){
-        NSString *value;
-        if(genericId == -1){
-            value = client.name;
-        }else{//notifyme
-            value = @(client.notificationMode).stringValue;
-        }
-         genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value excludeFrom:nil transformedValue:nil prefix:@""];
+    if(genericId != -37 || genericId != -38 || genericId != -39){
+        NSString *value = [Client getOrSetValueForClient:client genericIndex:genericId  newValue:nil ifGet:YES];
+        genericValue = [self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:value];
     }
+    
     else if(genericId == -37){
         NSString *countStr = @([self ruleListThatContainsDevice:NO deviceId:[client.deviceID intValue]].count).stringValue;
         genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:countStr value:countStr excludeFrom:nil transformedValue:nil prefix:@""];
@@ -462,9 +459,12 @@
     else if(genericId == -39){
         genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:@"" value:@"" excludeFrom:nil transformedValue:nil prefix:@""];
     }
+//    else {
+//        genericValue = [self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:client.deviceType];
+//    }
+    
     return [[GenericIndexValue alloc]initWithGenericIndex:copyGenericIndex genericValue:genericValue index:copyGenericIndex.ID.intValue deviceID:[client.deviceID intValue]];
 }
-
 + (GenericIndexValue *)getGenericIndexeValueForGenericId:(NSInteger)genericId device:(Device *)device{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericIndexClass *genIndexObj = toolkit.genericIndexes[@(genericId).stringValue];
@@ -479,7 +479,8 @@
             value = device.name;
         }else if(genericId == -2){
             value = device.location;
-        }else{//notifyme
+        }
+        else{//notifyme
             value = @(device.notificationMode).stringValue;
         }
         
@@ -497,6 +498,8 @@
     else if(genericId == -39){
         genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:@"" value:@"" excludeFrom:nil transformedValue:nil prefix:@""];
     }
+    
+    
     return [[GenericIndexValue alloc]initWithGenericIndex:copyGenericIndex genericValue:genericValue index:copyGenericIndex.ID.intValue deviceID:device.ID];
 }
 
@@ -504,7 +507,8 @@
 
 + (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(Client*) client{
     NSString *status = client.deviceAllowedType==1 ? ALLOWED_TYPE_BLOCKED: client.isActive? @"ACTIVE": @"INACTIVE";
-    GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:client.deviceType]; //-12 client type - iphone, ipad etc.
+    GenericValue *genericValue =[self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:client.deviceType]; //-12 client type - iphone, ipad etc.
+    NSLog(@"genericValue header %@",genericValue);
 
     if(genericValue == nil){ //if devicetype is wronglysent only expected return is nil
         genericValue = [[GenericValue alloc]initWithDisplayText:status icon:@"help_icon" toggleValue:nil value:client.deviceType excludeFrom:nil eventType:nil notificationText:@""];
@@ -549,8 +553,11 @@
         genericIndex = [self getGenericIndexForID:genericID.stringValue];
         if(genericIndex != nil){
             NSString *value = [Client getOrSetValueForClient:client genericIndex:genericID.intValue newValue:nil ifGet:YES];
-            GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericID.stringValue
-                                                                               forValue:value];
+            GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:value];
+            
+            
+            
+            //[self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:client.deviceType]
             genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:genericID.intValue deviceID:clientID.intValue];
             
             if([genericID.stringValue isEqualToString:@"-27"] ){
@@ -565,6 +572,7 @@
                 [genericIndexValues addObject:genericIndexValue];
         }
     }
+    
     return genericIndexValues;
 }
 
