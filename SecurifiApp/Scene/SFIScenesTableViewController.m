@@ -35,6 +35,7 @@
 }
 @property SFIAlmondPlus *currentAlmond;
 @property(nonatomic) SecurifiToolkit *toolkit;
+@property (nonatomic) NSMutableArray *sceneList;
 @end
 
 @implementation SFIScenesTableViewController
@@ -58,12 +59,39 @@
     
     if([[SecurifiToolkit sharedInstance] isScreenShown:@"scenes"] == NO)
         [self initializeHelpScreensfirst:@"Scenes"];
-    
+    self.sceneList = self.toolkit.scenesArray;
+    if(self.doDeviceFiltering){
+        self.sceneList = [self ispresentInRuleList:self.deviceID];
+        NSLog(@"self.sceneList count %ld,deviceId %d",self.sceneList.count,self.deviceID);
+    }
+    else
+    {
+        self.sceneList = self.toolkit.scenesArray;
+    }
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
 }
-
+-(NSMutableArray *)ispresentInRuleList:(int)deviceID{
+    NSMutableArray *ruleArr = [[NSMutableArray alloc]init];
+    BOOL tag =false;
+    for(NSDictionary *sceneDict in self.sceneList){
+        Rule *scene = [self getScene:sceneDict];
+        NSLog(@"Scene name %@",scene.name);
+        for(SFIButtonSubProperties *subProperty in scene.triggers){
+            
+            if(subProperty.deviceId == deviceID){
+                if(![subProperty.eventType isEqualToString:@"AlmondModeUpdated"])
+                {
+                    [ruleArr addObject: sceneDict];
+                    break ;
+                }
+            }
+        }
+        
+    }
+    return ruleArr;
+}
 -(void)setUpNavBar{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -157,7 +185,7 @@
     if ([self isSceneListEmpty]) {
         return 1;
     }
-    return self.toolkit.scenesArray.count;
+    return self.sceneList.count;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -198,12 +226,12 @@
     }
     
     cell.delegate = self;
-    if(indexPath.row  > (int)self.toolkit.scenesArray.count - 1){
+    if(indexPath.row  > (int)self.sceneList.count - 1){
         NSLog(@"scene reload");
         return cell;
     }
     
-    [cell createScenesCell:self.toolkit.scenesArray[indexPath.row]];
+    [cell createScenesCell:self.sceneList[indexPath.row]];
     return cell;
 }
 
@@ -214,7 +242,7 @@
     
     NewAddSceneViewController *newAddSceneViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewAddSceneViewController"];
     newAddSceneViewController.isInitialized = YES;
-    newAddSceneViewController.scene = [self getScene:self.toolkit.scenesArray[indexPath.row]];
+    newAddSceneViewController.scene = [self getScene:self.sceneList[indexPath.row]];
     [self.navigationController pushViewController:newAddSceneViewController animated:YES];
 }
 
@@ -404,7 +432,7 @@
 #pragma mark - State
 
 - (BOOL)isSceneListEmpty {
-    return self.toolkit.scenesArray.count == 0;
+    return self.sceneList.count == 0;
 }
 
 - (BOOL)isNoAlmondMAC {

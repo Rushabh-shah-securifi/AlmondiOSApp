@@ -68,6 +68,10 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
         self.propertyType = link_;
 }
 - (void)setUpCell:(NSDictionary *)cellDict property:(NSString *)property genericValue:(GenericIndexValue *)genericIndexValue{
+    if([property isEqualToString:EDITTEXT ] && !([genericIndexValue.genericIndex.ID isEqualToString :@"-1"] || [genericIndexValue.genericIndex.ID isEqualToString :@"-11"])){
+        property = DISPLAYHERE;
+    }
+        
     self.genericIndexValue = genericIndexValue;
     [self resetViews];
     [self setCellProperty:property];
@@ -115,6 +119,8 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
 
 }
 -(void)setEditText:(NSDictionary *)cellDict icon:(NSString *)icon{
+    icon = cellDict[@"icon"];
+    self.imgView.hidden = NO;
     self.imgView.image = [UICommonMethods imageNamed:icon withColor:[UIColor darkGrayColor]];
     self.editTextUdView.hidden = NO;
     self.textField.hidden = NO;

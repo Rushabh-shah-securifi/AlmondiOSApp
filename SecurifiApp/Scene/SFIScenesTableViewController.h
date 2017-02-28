@@ -9,5 +9,6 @@
 #import "SFITableViewController.h"
 
 @interface SFIScenesTableViewController : SFITableViewController
-
+@property (nonatomic )BOOL doDeviceFiltering;
+@property int deviceID;
 @end

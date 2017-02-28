@@ -10,6 +10,8 @@
 #import "UIFont+Securifi.h"
 #import "UIViewController+Securifi.h"
 #import "Colours.h"
+#import "UICommonMethods.h"
+
 
 @interface TextInput ()<UITextFieldDelegate>
 @property (nonatomic)UITextField *deviceNameField;
@@ -48,9 +50,9 @@
     //    self.deviceNameField.backgroundColor = self.color;
     self.deviceNameField.textColor = [UIColor whiteColor];
     self.deviceNameField.font = [UIFont securifiFont:15];
-    //    [self.deviceNameField becomeFirstResponder];
+    [self.deviceNameField becomeFirstResponder];
     UIView *OnelineView = [[UIView alloc]initWithFrame:CGRectMake(self.deviceNameField.frame.origin.x, self.deviceNameField.frame.size.height , self.frame.size.width, 1)];
-    OnelineView.backgroundColor = [UIColor whiteColor];
+    OnelineView.backgroundColor = [UIColor lightGrayColor];
     OnelineView.alpha = 0.5;
     
     [self addSubview:OnelineView];
@@ -74,7 +76,8 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
     UIImageView *textCheckMarkView = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width - self.frame.size.height , 0, self.frame.size.height -10, self.frame.size.height -10)];
     NSLog(@"frame width: %f, frame height: %f", self.frame.size.width, self.frame.size.height);
-    textCheckMarkView.image = [UIImage imageNamed:@"iconSceneChekmark"];
+    
+    textCheckMarkView.image = [UICommonMethods imageNamed:@"iconSceneChekmark" withColor:[UIColor blackColor]];
     
     UIButton *btnCloseNotification = [UIButton buttonWithType:UIButtonTypeCustom];
     btnCloseNotification.frame = CGRectMake(self.frame.size.width - self.frame.size.height - 20, 0, 60, 35);

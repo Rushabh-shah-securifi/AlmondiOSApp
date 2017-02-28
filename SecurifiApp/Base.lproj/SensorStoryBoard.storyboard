@@ -284,7 +284,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W5b-Xq-N44">
-                                                    <rect key="frame" x="48" y="4" width="304" height="34"/>
+                                                    <rect key="frame" x="48" y="4" width="321" height="34"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -318,21 +318,21 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="nIZ-Un-Ln8" secondAttribute="trailing" constant="8" id="2GT-Ws-Mvp"/>
-                                                <constraint firstItem="nIZ-Un-Ln8" firstAttribute="centerY" secondItem="d9E-nY-x0U" secondAttribute="centerY" constant="-1.5" id="33n-El-q2E"/>
                                                 <constraint firstItem="Tpm-vP-sCu" firstAttribute="centerY" secondItem="d9E-nY-x0U" secondAttribute="centerY" constant="-1" id="42H-Kr-HwM"/>
-                                                <constraint firstItem="vb6-da-Atd" firstAttribute="centerY" secondItem="d9E-nY-x0U" secondAttribute="centerY" constant="-1" id="9xQ-ZZ-LcW"/>
                                                 <constraint firstItem="vb6-da-Atd" firstAttribute="width" secondItem="nIZ-Un-Ln8" secondAttribute="width" constant="41" id="Cck-ob-bA2"/>
                                                 <constraint firstAttribute="trailing" secondItem="gKW-EX-5dm" secondAttribute="trailing" constant="6" id="EIt-e1-leK"/>
                                                 <constraint firstItem="nIZ-Un-Ln8" firstAttribute="leading" secondItem="vb6-da-Atd" secondAttribute="trailing" constant="3" id="EXc-Yy-81m"/>
                                                 <constraint firstItem="gKW-EX-5dm" firstAttribute="centerY" secondItem="d9E-nY-x0U" secondAttribute="centerY" id="IYq-Hn-c19"/>
                                                 <constraint firstAttribute="bottom" secondItem="W5b-Xq-N44" secondAttribute="bottom" constant="5" id="Ix3-Vc-aJx"/>
                                                 <constraint firstItem="nIZ-Un-Ln8" firstAttribute="leading" secondItem="vb6-da-Atd" secondAttribute="trailing" constant="3" id="JFb-fS-5W2"/>
-                                                <constraint firstAttribute="trailing" secondItem="W5b-Xq-N44" secondAttribute="trailing" constant="23" id="PYJ-kv-P8e"/>
+                                                <constraint firstAttribute="trailing" secondItem="W5b-Xq-N44" secondAttribute="trailing" constant="6" id="PYJ-kv-P8e"/>
+                                                <constraint firstItem="nIZ-Un-Ln8" firstAttribute="top" secondItem="d9E-nY-x0U" secondAttribute="top" constant="5" id="Z5k-Lh-eCw"/>
                                                 <constraint firstItem="W5b-Xq-N44" firstAttribute="top" secondItem="d9E-nY-x0U" secondAttribute="top" constant="4" id="bdw-f3-H3o"/>
                                                 <constraint firstItem="Tpm-vP-sCu" firstAttribute="leading" secondItem="d9E-nY-x0U" secondAttribute="leading" constant="17" id="emS-3N-8Ac"/>
                                                 <constraint firstItem="vb6-da-Atd" firstAttribute="leading" secondItem="d9E-nY-x0U" secondAttribute="leading" constant="15" id="k3O-lX-aX4"/>
                                                 <constraint firstItem="W5b-Xq-N44" firstAttribute="leading" secondItem="um5-8H-4hf" secondAttribute="trailing" constant="15" id="o0k-dm-Jvm"/>
                                                 <constraint firstItem="um5-8H-4hf" firstAttribute="centerY" secondItem="d9E-nY-x0U" secondAttribute="centerY" constant="-3.5" id="vf5-wS-GOY"/>
+                                                <constraint firstItem="vb6-da-Atd" firstAttribute="top" secondItem="d9E-nY-x0U" secondAttribute="top" constant="3" id="yvD-Tq-fyi"/>
                                                 <constraint firstItem="um5-8H-4hf" firstAttribute="leading" secondItem="d9E-nY-x0U" secondAttribute="leading" constant="8" id="ziy-Ea-d6g"/>
                                             </constraints>
                                         </tableViewCellContentView>

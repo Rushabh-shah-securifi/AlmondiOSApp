@@ -10,5 +10,6 @@
 #import "SFITableViewController.h"
 
 @interface RulesTableViewController : UITableViewController
-
+@property (nonatomic)BOOL doDeviceFiltering;
+@property int deviceID;
 @end

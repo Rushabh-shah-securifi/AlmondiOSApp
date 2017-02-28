@@ -40,6 +40,7 @@
 @property(nonatomic) MBProgressHUD *HUD;
 @property(nonatomic) HelpScreens *helpScreensObj;
 @property(nonatomic) UIView *maskView;
+@property (nonatomic)NSMutableArray *ruleList;
 @end
 
 @implementation RulesTableViewController
@@ -50,13 +51,57 @@ CGPoint tablePoint;
     self.toolkit = [SecurifiToolkit sharedInstance];
     if([[SecurifiToolkit sharedInstance] isScreenShown:@"rules"] == NO)
         [self initializeHelpScreens];
-    
+    self.ruleList = self.ruleList;
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+     self.ruleList = self.toolkit.ruleList;
+    if(self.doDeviceFiltering){
+        self.ruleList = [self ispresentInRuleList:self.deviceID];
+    }
+    else
+    {
+        self.ruleList = self.toolkit.ruleList;
+    }
     tablePoint = self.tableView.contentOffset;
     [self setUpHUD];
     [self setUpNavBar];
+}
+-(NSMutableArray *)ispresentInRuleList:(int)deviceID{
+     NSMutableArray *ruleArr = [[NSMutableArray alloc]init];
+    for(Rule *rules in self.ruleList){
+        BOOL tag = NO;
+        tag = [self isDeviceEntryFound:rules.triggers mutableArr:ruleArr rule:rules deviceID:deviceID];
+        if(tag)
+            continue;
+        
+        tag = [self isDeviceEntryFound:rules.actions mutableArr:ruleArr rule:rules deviceID:deviceID];
+        
+        if(tag)
+            continue;
+    }
+    
+    return ruleArr;
+}
+- (BOOL)checkEventType:(NSString *)eventType{
+    if([eventType isEqualToString:@"AlmondModeUpdated"] || [eventType isEqualToString:@"ClientJoined"] || [eventType isEqualToString:@"ClientLeft"]){
+        return YES;
+    }
+    else
+        return NO;
+}
+-(BOOL)isDeviceEntryFound:(NSArray *)entries mutableArr:(NSMutableArray*)array rule:(Rule*)rule deviceID:(int)deviceID{
+    
+    for(SFIButtonSubProperties *subProperty in entries){
+        if(subProperty.deviceId == deviceID){
+            if(![self checkEventType:subProperty.eventType])
+            {
+                [array addObject: rule];
+                return YES;
+                
+            }
+        }
+    }
+    return NO;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -158,8 +203,8 @@ CGPoint tablePoint;
     if([self isNoAlmondMAC] || [self isRuleArrayEmpty]){
         return 1;
     }
-    NSLog(@"row count: %lu", (unsigned long)self.toolkit.ruleList.count);
-    return self.toolkit.ruleList.count;
+    NSLog(@"row count: %lu", (unsigned long)self.ruleList.count);
+    return self.ruleList.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -184,12 +229,12 @@ CGPoint tablePoint;
     }
     
     
-    if(indexPath.row  > (int)self.toolkit.ruleList.count - 1){
+    if(indexPath.row  > (int)self.ruleList.count - 1){
         NSLog(@"rule list empty");
         return cell;
     }
     
-    Rule *rule = self.toolkit.ruleList[indexPath.row];
+    Rule *rule = self.ruleList[indexPath.row];
     cell.delegate = self;
     cell.ruleNameLabel.text = rule.name;
     [cell.activeDeactiveSwitch setSelected:rule.isActive];
@@ -223,7 +268,7 @@ CGPoint tablePoint;
 }
 
 - (BOOL)isRuleArrayEmpty {
-    return self.toolkit.ruleList.count == 0;
+    return self.ruleList.count == 0;
 }
 
 - (UITableViewCell *)createEmptyCell:(UITableView *)tableView {
@@ -273,7 +318,7 @@ CGPoint tablePoint;
 #pragma mark custom cell Delegate methods
 - (void)deleteRule:(CustomCellTableViewCell *)cell{
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
-    if(self.toolkit.ruleList==nil || self.toolkit.ruleList.count==0 || indexPath.row >= self.toolkit.ruleList.count)
+    if(self.ruleList==nil || self.ruleList.count==0 || indexPath.row >= self.ruleList.count)
         return;
     [self showHudWithTimeoutMsg:[NSString stringWithFormat:NSLocalizedString(@"RulesViewController Deleting rule %@...",@"Deleting rule %@..."),cell.ruleNameLabel.text]];
     NSDictionary *payload = [self getDeleteRulePayload:indexPath.row];
@@ -300,7 +345,7 @@ CGPoint tablePoint;
         return nil;
     }
     NSMutableDictionary *rulePayload = [[NSMutableDictionary alloc]init];
-    Rule *currentRule = self.toolkit.ruleList[row];
+    Rule *currentRule = self.ruleList[row];
     if(currentRule==nil ||currentRule.ID==nil)
         return nil;
     
@@ -326,8 +371,8 @@ CGPoint tablePoint;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Rules" bundle:nil];
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     AddRulesViewController *addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
-    if(indexPath.row < self.toolkit.ruleList.count){
-        Rule *rule = [self.toolkit.ruleList[indexPath.row] createNew];
+    if(indexPath.row < self.ruleList.count){
+        Rule *rule = [self.ruleList[indexPath.row] createNew];
         addRuleController.rule = rule;
     }
     addRuleController.isInitialized = YES;
@@ -337,12 +382,12 @@ CGPoint tablePoint;
 
 - (void)activateRule:(CustomCellTableViewCell *)cell{
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
-    if(self.toolkit.ruleList==nil || self.toolkit.ruleList.count==0 || indexPath.row >= self.toolkit.ruleList.count)
+    if(self.ruleList==nil || self.ruleList.count==0 || indexPath.row >= self.ruleList.count)
         return;
     //
     NSString *msg = cell.activeDeactiveSwitch.selected? [NSString stringWithFormat: NSLocalizedString(@"RulesViewController Activating rule - %@...",@"Activating rule - %@..."),cell.ruleNameLabel.text]: [NSString stringWithFormat:NSLocalizedString(@"RulesViewController Deactivating rule - %@...",@"Deactivating rule - %@..."),cell.ruleNameLabel.text];
     [self showHudWithTimeoutMsg:msg];
-    Rule *rule = self.toolkit.ruleList[indexPath.row];
+    Rule *rule = self.ruleList[indexPath.row];
     RulePayload *rulePayload = [RulePayload new];
     rulePayload.rule = rule;
     NSDictionary *payload = [rulePayload validateRule:randomMobileInternalIndex valid:cell.activeDeactiveSwitch.selected?@"true":@"false"];
@@ -359,7 +404,7 @@ CGPoint tablePoint;
 #pragma mark events
 - (void)onCurrentAlmondChanged:(id)sender {
     NSLog(@"on current almond change: %@", [AlmondManagement currentAlmond]);
-    [self.toolkit.ruleList removeAllObjects];
+    [self.ruleList removeAllObjects];
     [self markAlmondTitle];
     [self showHudWithTimeoutMsg:NSLocalizedString(@"RulesViewController Loading Rules...",@"Loading Rules...")];
     dispatch_async(dispatch_get_main_queue(), ^() {

@@ -24,6 +24,8 @@
 #import "SFIColors.h"
 #import "HueColorPicker.h"
 #import "AdvanceInformationViewController.h"
+#import "GenericDeviceClass.h"
+#import "TextInput.h"
 
 
 #define DEVICE_PROPERTY_CELL @"devicepropertycell"
@@ -33,7 +35,7 @@ static const float defRowHeight = 44;
 static const int defHeaderLableHt = 20;
 static const int normalheaderheight = 2;
 
-@interface DevicePropertiesViewController () <DeviceHeaderViewDelegate,PickerComponentViewDelegate,DevicePropertyTableViewCellDelegate,SliderViewDelegate,HueColorPickerDelegate,UIGestureRecognizerDelegate>{
+@interface DevicePropertiesViewController () <DeviceHeaderViewDelegate,PickerComponentViewDelegate,DevicePropertyTableViewCellDelegate,SliderViewDelegate,HueColorPickerDelegate,UIGestureRecognizerDelegate,TextInputDelegate>{
 int mii;
 }
 @property (weak, nonatomic) IBOutlet UIView *topView;
@@ -252,13 +254,22 @@ int mii;
             if([gValue.genericIndex.ID isEqualToString:@"-11"])
                 rightlabel = gValue.genericValue.displayText;
     }
+    else{
+        if([gValue.genericIndex.ID isEqualToString:@"-1"])
+            rightlabel = gValue.genericValue.value;
+        NSLog(@"genericvalue.value %@",gValue.genericValue.value);
+    }
+    
     if(rightlabel == nil){
         rightlabel = @"";
     }
-    
+    NSString *deviceTypeString = @([Device getTypeForID:gValue.deviceID]).stringValue;
+    GenericDeviceClass *genericDevice = [SecurifiToolkit sharedInstance].genericDevices[deviceTypeString];
     NSDictionary *cellDict = @{@"leftLabel":leftlabel,
-                               @"rightLabel":rightlabel};
-    
+                               @"rightLabel":rightlabel,
+                               @"icon":genericDevice.defaultIcon
+                               };
+   
     [cell setUpCell:cellDict property:property genericValue:gValue];
     NSString* value = [Device getValueForIndex:gValue.index deviceID:gValue.deviceID];
     
@@ -306,21 +317,13 @@ int mii;
         [cell.contentView addSubview:horzView];
         
     }
+    else if(self.indexPath == indexPath && !gValue.genericIndex.readOnly && ([gValue.genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [gValue.genericIndex.layoutType isEqualToString:@"TEXT_VIEW"])){
+        TextInput *textInputView = [[TextInput alloc]initWithFrame:CGRectMake(15, 60, cell.contentView.frame.size.width -15, 40)  color:[SFIColors ruleBlueColor] genericIndexValue:gValue isSensor:YES];
+        textInputView.delegate = self;
+        [cell.contentView addSubview:textInputView];
+        
+    }
     return cell;
-}
--(void)getGenericValVsDispDict:(NSDictionary *)value displayArr:(NSMutableArray *)displayArr valueArr:(NSMutableArray *)valueArr{
-        for (NSString *val in value) {
-        GenericValue *gval = value[val];
-        [displayArr addObject:gval.displayText];
-        [valueArr addObject:val];
-    }
-}
--(void)getValueArrfromMin:(int)min max:(int)max displayArr:(NSMutableArray *)displayArr valueArr:(NSMutableArray *)valueArr {
-    for(NSUInteger i=min;i<=max;i++){
-        [displayArr addObject:@(i).stringValue];
-        [valueArr addObject:@(i).stringValue];
-    }
-
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -353,6 +356,8 @@ int mii;
        
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Rules" bundle:nil];
         RulesTableViewController *viewController = [storyBoard   instantiateViewControllerWithIdentifier:@"RulesTableViewController"];
+        viewController.doDeviceFiltering = YES;
+        viewController.deviceID = gValue.deviceID;
         [self.navigationController pushViewController:viewController animated:YES];
 //        [self presentViewController:viewController animated:YES completion:nil];
     }
@@ -360,6 +365,8 @@ int mii;
         
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
         SFIScenesTableViewController *viewController = [storyBoard   instantiateViewControllerWithIdentifier:@"SFIScenesTableViewController"];
+        viewController.doDeviceFiltering = YES;
+        viewController.deviceID = gValue.deviceID;
         [self.navigationController pushViewController:viewController animated:YES];
         
     }
@@ -371,7 +378,7 @@ int mii;
         [self.navigationController pushViewController:viewController animated:YES];
         
     }
-    else if(!([gValue.genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [gValue.genericIndex.layoutType isEqualToString:@"TEXT_VIEW"])){
+    else{
         if(self.indexPath == indexPath)
             self.indexPath = nil;
         else
@@ -387,6 +394,21 @@ int mii;
 //        [tableView endUpdates];
     }
 }
+-(void)getGenericValVsDispDict:(NSDictionary *)value displayArr:(NSMutableArray *)displayArr valueArr:(NSMutableArray *)valueArr{
+    for (NSString *val in value) {
+        GenericValue *gval = value[val];
+        [displayArr addObject:gval.displayText];
+        [valueArr addObject:val];
+    }
+}
+-(void)getValueArrfromMin:(int)min max:(int)max displayArr:(NSMutableArray *)displayArr valueArr:(NSMutableArray *)valueArr {
+    for(NSUInteger i=min;i<=max;i++){
+        [displayArr addObject:@(i).stringValue];
+        [valueArr addObject:@(i).stringValue];
+    }
+    
+}
+
 
 #pragma mark action
 - (IBAction)onDoneBtnTap:(id)sender {
@@ -421,12 +443,13 @@ int mii;
 }
 -(void)linkToNextScreen:(GenericIndexValue *)genericIndexValue{
     // link to notification screen
-    if([genericIndexValue.genericIndex.ID isEqualToString:@"-40"]){
+    if([genericIndexValue.genericIndex.ID isEqualToString:@"-39"]){
         
         DeviceNotificationViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"DeviceNotificationViewController"];
         viewController.genericIndexValue = genericIndexValue;
         [self presentViewController:viewController animated:YES completion:nil];
     }
+    
 }
 #pragma mark slider delegate
 -(void)deviceOnOffSwitchUpdate:(NSString *)status genericIndexValue:(GenericIndexValue*)genericIndexValue{
