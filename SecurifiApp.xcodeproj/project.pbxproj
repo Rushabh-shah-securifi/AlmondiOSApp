@@ -529,6 +529,7 @@
 		F417B2AE1DA290030073C440 /* AdvRouterHelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */; };
 		F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F426AE2E1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
+		F4300B751E642B6D008CEBC9 /* TimeZoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4300B741E642B6D008CEBC9 /* TimeZoneViewController.m */; };
 		F44D533D1E138E05005C8F43 /* IoTLearnMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */; };
 		F44D533E1E138E05005C8F43 /* IoTLearnMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */; };
 		F46129F51DB76BC500EAD7F0 /* SliderComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */; };
@@ -1248,6 +1249,8 @@
 		F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvRouterHelpController.m; sourceTree = "<group>"; };
 		F426AE2B1D19515500AE60C8 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
+		F4300B731E642B6D008CEBC9 /* TimeZoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeZoneViewController.h; sourceTree = "<group>"; };
+		F4300B741E642B6D008CEBC9 /* TimeZoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeZoneViewController.m; sourceTree = "<group>"; };
 		F43814941D993B2800D5C762 /* Almond.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Almond.entitlements; sourceTree = "<group>"; };
 		F44D533B1E138E05005C8F43 /* IoTLearnMoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IoTLearnMoreViewController.h; sourceTree = "<group>"; };
 		F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IoTLearnMoreViewController.m; sourceTree = "<group>"; };
@@ -1637,6 +1640,8 @@
 				F417B2A81DA25D540073C440 /* AdvRouterTableViewCell.m */,
 				F417B2AB1DA290030073C440 /* AdvRouterHelpController.h */,
 				F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */,
+				F4300B731E642B6D008CEBC9 /* TimeZoneViewController.h */,
+				F4300B741E642B6D008CEBC9 /* TimeZoneViewController.m */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -3528,6 +3533,7 @@
 				F492EA3B1DF009EC00FB3B76 /* ShippingManager.m in Sources */,
 				CEABC65E1D6F14A900C2DCD4 /* ChangeCategoryViewController.m in Sources */,
 				846414CA1B736B36008AB07F /* ILColorPickerView.m in Sources */,
+				F4300B751E642B6D008CEBC9 /* TimeZoneViewController.m in Sources */,
 				1DF031661E380BA4D0E0EB07 /* SFIPreferences.m in Sources */,
 				1DF0390452B5D28DECBE4F68 /* NSData+Conversion.m in Sources */,
 				1DF0351F629E0103520602C3 /* SFICardViewSummaryCell.m in Sources */,
@@ -5542,10 +5548,12 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Almond-AppIcon";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-launch_image";
+				CLANG_DEBUG_INFORMATION_LEVEL = default;
 				CODE_SIGN_ENTITLEMENTS = Almond/Almond.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = R336EY8885;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PODS_ROOT)/CrashlyticsFramework\"",
@@ -5580,6 +5588,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = R336EY8885;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PODS_ROOT)/CrashlyticsFramework\"",

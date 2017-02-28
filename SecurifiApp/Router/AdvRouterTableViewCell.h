@@ -20,6 +20,7 @@ typedef NS_ENUM(NSInteger, AdvCellType){
     Adv_DiagnosticSettings,
     Adv_Language,
     Adv_temperature,
+    Adv_TimeZone,
     Adv_Help
 };
 

@@ -93,6 +93,11 @@
     self.type = type;
     self.row = row;
     
+    if(type == Adv_TimeZone)
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    else
+        self.accessoryType = UITableViewCellAccessoryNone;
+    
     NSArray *cells = sectionDict[CELLS];
     NSDictionary *cell = cells[row];
     
@@ -183,11 +188,17 @@
             break;
         case Adv_temperature:{
             if(row == 0){
-                
                 [self setConcernedView:self.temperatureView.tag];
             }
-        }
             break;
+        }
+        case Adv_TimeZone:{
+            if(row == 0){
+                [self setConcernedView:self.valueLbl.tag];
+            }
+            break;
+        }
+            
         case Adv_Help:{
             [self setConcernedView:self.valueLbl.tag];
         }
@@ -248,7 +259,7 @@
     _switchBtn.hidden = (viewTag != _switchBtn.tag);
     _textFieldView.hidden = (viewTag != _textFieldView.tag);
     _temperatureView.hidden = (viewTag != _temperatureView.tag);
-    NSLog(@"secure hidden : %zd", (viewTag != _secureFieldView.tag));
+//    NSLog(@"secure hidden : %zd", (viewTag != _secureFieldView.tag));
     _secureFieldView.hidden = (viewTag != _secureFieldView.tag);
     _arrowImg.hidden = (viewTag != _arrowImg.tag);
 }

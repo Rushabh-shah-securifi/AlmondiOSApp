@@ -212,7 +212,10 @@ int mii;
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *sectionDict  = self.sectionsArray[indexPath.section];
     AdvCellType type = [sectionDict[CELL_TYPE] integerValue];
-    if(type == Adv_Help){
+    if(type == Adv_TimeZone){
+        
+    }
+    else if(type == Adv_Help){
         AdvRouterHelpController *ctrl = [AdvRouterHelpController new];
         ctrl.row = indexPath.row;
         self.navigationController.hidesBottomBarWhenPushed = YES;
@@ -392,6 +395,10 @@ int mii;
     [cellsArray addObject:[self getCellDict:@"Temperature" value:almondProperty.temperatureUnit]];
     [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_temperature]];
 
+    //Time zone
+    cellsArray = [NSMutableArray new];
+    [cellsArray addObject:[self getCellDict:@"Time Zone" value:almondProperty.timeZone]];
+    [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_TimeZone]];
     
     //help sections
     cellsArray = [NSMutableArray new];
