@@ -530,6 +530,9 @@
 		F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F426AE2E1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F4300B751E642B6D008CEBC9 /* TimeZoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4300B741E642B6D008CEBC9 /* TimeZoneViewController.m */; };
+		F4300B781E669665008CEBC9 /* TimeZones.txt in Resources */ = {isa = PBXBuildFile; fileRef = F4300B761E669665008CEBC9 /* TimeZones.txt */; };
+		F4300B791E669665008CEBC9 /* usCity.txt in Resources */ = {isa = PBXBuildFile; fileRef = F4300B771E669665008CEBC9 /* usCity.txt */; };
+		F4300B7C1E669883008CEBC9 /* TimeZoneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4300B7B1E669883008CEBC9 /* TimeZoneTableViewCell.m */; };
 		F44D533D1E138E05005C8F43 /* IoTLearnMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */; };
 		F44D533E1E138E05005C8F43 /* IoTLearnMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */; };
 		F46129F51DB76BC500EAD7F0 /* SliderComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F46129F41DB76BC500EAD7F0 /* SliderComponentView.m */; };
@@ -1251,6 +1254,10 @@
 		F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		F4300B731E642B6D008CEBC9 /* TimeZoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeZoneViewController.h; sourceTree = "<group>"; };
 		F4300B741E642B6D008CEBC9 /* TimeZoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeZoneViewController.m; sourceTree = "<group>"; };
+		F4300B761E669665008CEBC9 /* TimeZones.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TimeZones.txt; sourceTree = "<group>"; };
+		F4300B771E669665008CEBC9 /* usCity.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = usCity.txt; sourceTree = "<group>"; };
+		F4300B7A1E669883008CEBC9 /* TimeZoneTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeZoneTableViewCell.h; sourceTree = "<group>"; };
+		F4300B7B1E669883008CEBC9 /* TimeZoneTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeZoneTableViewCell.m; sourceTree = "<group>"; };
 		F43814941D993B2800D5C762 /* Almond.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Almond.entitlements; sourceTree = "<group>"; };
 		F44D533B1E138E05005C8F43 /* IoTLearnMoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IoTLearnMoreViewController.h; sourceTree = "<group>"; };
 		F44D533C1E138E05005C8F43 /* IoTLearnMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IoTLearnMoreViewController.m; sourceTree = "<group>"; };
@@ -1642,6 +1649,8 @@
 				F417B2AC1DA290030073C440 /* AdvRouterHelpController.m */,
 				F4300B731E642B6D008CEBC9 /* TimeZoneViewController.h */,
 				F4300B741E642B6D008CEBC9 /* TimeZoneViewController.m */,
+				F4300B7A1E669883008CEBC9 /* TimeZoneTableViewCell.h */,
+				F4300B7B1E669883008CEBC9 /* TimeZoneTableViewCell.m */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -2578,6 +2587,8 @@
 				B017E8881DE8600400BC0DE8 /* scene_names.txt */,
 				B017E8891DE8600400BC0DE8 /* temp_jsonResponse.json */,
 				B017E88A1DE8600400BC0DE8 /* temp.json */,
+				F4300B761E669665008CEBC9 /* TimeZones.txt */,
+				F4300B771E669665008CEBC9 /* usCity.txt */,
 			);
 			path = JsonFiles;
 			sourceTree = "<group>";
@@ -2993,6 +3004,7 @@
 				A58DB3121BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				B017E8951DE8600400BC0DE8 /* responseMain.json in Resources */,
 				F4D93ADD1D390B4B00D55BD6 /* HelpScreenStoryboard.storyboard in Resources */,
+				F4300B781E669665008CEBC9 /* TimeZones.txt in Resources */,
 				A58DB46F1BB3CD5200717C02 /* Localizable.strings in Resources */,
 				A58DB2F61BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2EF1BB16B9F00717C02 /* Localizable.strings in Resources */,
@@ -3082,6 +3094,7 @@
 				A58DB41F1BB2CD7D00717C02 /* termsofuse.html in Resources */,
 				A58DB3091BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB30E1BB16B9F00717C02 /* termsofuse.html in Resources */,
+				F4300B791E669665008CEBC9 /* usCity.txt in Resources */,
 				A58DB3051BB16B9F00717C02 /* termsofuse.html in Resources */,
 				A58DB2FB1BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB46D1BB3CD5200717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
@@ -3543,6 +3556,7 @@
 				1DF03698BAF3152723335005 /* UIImage+Securifi.m in Sources */,
 				1DF03A50177B8354D886E980 /* CircleView.m in Sources */,
 				1DF03ADB8A23D76AE9B67F13 /* SFINotificationStatusBarButtonItem.m in Sources */,
+				F4300B7C1E669883008CEBC9 /* TimeZoneTableViewCell.m in Sources */,
 				CE6DA4C61E4D7D55007C1163 /* PickerComponentView.m in Sources */,
 				1DF032B24E580FC6CD86D379 /* CircleLabel.m in Sources */,
 				2A4C24371D0FC3FA001191E8 /* DashboardViewController.m in Sources */,

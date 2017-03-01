@@ -93,10 +93,6 @@
     self.type = type;
     self.row = row;
     
-    if(type == Adv_TimeZone)
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    else
-        self.accessoryType = UITableViewCellAccessoryNone;
     
     NSArray *cells = sectionDict[CELLS];
     NSDictionary *cell = cells[row];
@@ -116,7 +112,6 @@
     self.secureField.text = cell[VALUE];
     self.valueLbl.text = cell[VALUE];
     if (type == Adv_temperature) {
-        NSLog(@"temperature Unit is %@s",cell[VALUE])
         if([cell[VALUE] hasSuffix:@"F"]){
             [self setButtonProperty:self.fahrenheitButton titleColor:[SFIColors ruleBlueColor] backgroundColor:[UIColor whiteColor] title:@"\u00B0F"];
             [self setButtonProperty:self.celsiusButton titleColor:[UIColor whiteColor] backgroundColor:[SFIColors ruleBlueColor] title:@"\u00B0C"];

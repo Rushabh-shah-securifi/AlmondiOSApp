@@ -18,6 +18,7 @@
 #import "AlmondManagement.h"
 #import "UIViewController+Securifi.h"
 #import "MBProgressHUD.h"
+#import "TimeZoneViewController.h"
 
 #define ADVANCED_SETTINGS @"advance_settings"
 #define ADVANCE_ROUTER @"advance_router"
@@ -38,7 +39,7 @@ int mii;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = NSLocalizedString(@"Advanced_Features", @"");
-    [self initializeSectionsArray];
+//    [self initializeSectionsArray];
     [self setUpHUD];
     NSLog(@"router array: %@", self.sectionsArray);
  
@@ -50,6 +51,11 @@ int mii;
     mii = arc4random() % 10000;
     
     [self initializeNotification];
+    
+    [self initializeSectionsArray];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -213,6 +219,15 @@ int mii;
     NSDictionary *sectionDict  = self.sectionsArray[indexPath.section];
     AdvCellType type = [sectionDict[CELL_TYPE] integerValue];
     if(type == Adv_TimeZone){
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
+//        SearchTableViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SearchTableViewController"];
+        
+        UIStoryboard *story = [UIStoryboard storyboardWithName:@"Router" bundle:nil];
+        TimeZoneViewController *ctrl = [story instantiateViewControllerWithIdentifier:@"TimeZoneViewController"];
+        [self.navigationController setNavigationBarHidden:YES];
+        [self.navigationController pushViewController:ctrl animated:YES];
+    }
+    else if(type == Adv_Region){
         
     }
     else if(type == Adv_Help){
@@ -399,6 +414,12 @@ int mii;
     cellsArray = [NSMutableArray new];
     [cellsArray addObject:[self getCellDict:@"Time Zone" value:almondProperty.timeZone]];
     [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_TimeZone]];
+    
+    //region
+    cellsArray = [NSMutableArray new];
+    [cellsArray addObject:[self getCellDict:@"Almond device region" value:@""]];
+    [cellsArray addObject:[self getCellDict:almondProperty.region value:@">"]];
+    [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_Region]];
     
     //help sections
     cellsArray = [NSMutableArray new];

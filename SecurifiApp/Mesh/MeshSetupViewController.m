@@ -132,9 +132,9 @@ int mii;
         return @"N/A";
     else if(sig >= -50)
         return NSLocalizedString(@"excellent", @"");
-    else if(sig < -50 && sig >=-65)
+    else if(sig < -50 && sig >=-74)
         return NSLocalizedString(@"good", @"");
-    else if(sig < -65 && sig >= -80)
+    else if(sig < -74 && sig >= -80)
         return NSLocalizedString(@"poor", @"");
     else
         return NSLocalizedString(@"extremely_poor", @"");
@@ -220,9 +220,9 @@ int mii;
     NSInteger sig = self.almondStatObj.signalStrength.integerValue;
     if(sig >= -50)
         return [UIImage imageNamed:@"wifi-signal-strength4-icon"];
-    else if(sig < -50 && sig >=-65)
+    else if(sig < -50 && sig >=-74)
         return [UIImage imageNamed:@"wifi-signal-strength3-icon"];
-    else if(sig < -65 && sig >= -80)
+    else if(sig < -74 && sig >= -80)
         return [UIImage imageNamed:@"wifi-signal-strength2-icon"];
     else
         return [UIImage imageNamed:@"wifi-signal-strength1-icon"];

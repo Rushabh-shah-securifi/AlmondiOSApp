@@ -46,21 +46,21 @@
             },
             "2": {
                 "genericIndexID": "-34",
-                "row_no": 1
+                "row_no": 2
             },
             "3": {
                 "genericIndexID": "25",
                 "min": "-40",
                 "max": "248",
-                "row_no": 1
+                "row_no": 3
             },
             "4": {
                 "genericIndexID": "27",
-                "row_no": 1
+                "row_no": 3
             },
             "5": {
                 "genericIndexID": "26",
-                "row_no": 1,
+                "row_no": 4,
                 "min": "0",
                 "max": "9999"
             }

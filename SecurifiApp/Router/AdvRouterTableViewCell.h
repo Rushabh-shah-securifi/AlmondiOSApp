@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, AdvCellType){
     Adv_Language,
     Adv_temperature,
     Adv_TimeZone,
+    Adv_Region,
     Adv_Help
 };
 
