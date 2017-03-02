@@ -443,18 +443,18 @@
                                 </constraints>
                             </view>
                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Fv6-67-ifC">
-                                <rect key="frame" x="0.0" y="66" width="375" height="593"/>
+                                <rect key="frame" x="0.0" y="66" width="359" height="593"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="NotificationCellTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="NotificationCellTableViewCell" id="VXK-UC-Hq8" customClass="NotificationCellTableViewCell">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="359" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VXK-UC-Hq8" id="hdo-yB-arh">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="359" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_box_blue" translatesAutoresizingMaskIntoConstraints="NO" id="ilu-Lw-ehR">
-                                                    <rect key="frame" x="326" y="8" width="30" height="27"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_box_blue" translatesAutoresizingMaskIntoConstraints="NO" id="ilu-Lw-ehR">
+                                                    <rect key="frame" x="310" y="8" width="30" height="27"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="27" id="Wuq-q7-ntt"/>
                                                         <constraint firstAttribute="width" constant="30" id="y3C-wT-jyf"/>
@@ -482,7 +482,7 @@
                             <constraint firstAttribute="trailing" secondItem="duO-el-eWY" secondAttribute="trailing" id="4Lg-Hj-pXR"/>
                             <constraint firstItem="e8R-jg-k17" firstAttribute="top" secondItem="Fv6-67-ifC" secondAttribute="bottom" constant="8" id="NpW-gM-VbG"/>
                             <constraint firstItem="duO-el-eWY" firstAttribute="top" secondItem="xED-Ua-fvy" secondAttribute="top" id="UAS-eO-cnc"/>
-                            <constraint firstAttribute="trailing" secondItem="Fv6-67-ifC" secondAttribute="trailing" id="WuI-eu-YvI"/>
+                            <constraint firstAttribute="trailing" secondItem="Fv6-67-ifC" secondAttribute="trailing" constant="16" id="WuI-eu-YvI"/>
                             <constraint firstItem="Fv6-67-ifC" firstAttribute="leading" secondItem="xED-Ua-fvy" secondAttribute="leading" id="fHq-ib-HdC"/>
                             <constraint firstItem="Fv6-67-ifC" firstAttribute="top" secondItem="duO-el-eWY" secondAttribute="bottom" id="prg-pB-lWB"/>
                             <constraint firstItem="duO-el-eWY" firstAttribute="leading" secondItem="xED-Ua-fvy" secondAttribute="leading" id="sab-He-ujC"/>
@@ -536,7 +536,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OsK-Kt-2BP">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_box_blue" translatesAutoresizingMaskIntoConstraints="NO" id="OsK-Kt-2BP">
                                                     <rect key="frame" x="319" y="4" width="40" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="7YM-OQ-Afc"/>

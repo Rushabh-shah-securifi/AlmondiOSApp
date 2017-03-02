@@ -124,7 +124,7 @@
     CGRect textRect;
     textRect.size = [name sizeWithAttributes:attributes];
     if(name.length > maxLength){
-        NSString *temp=@"123456789012345678";
+        NSString *temp=@"12345678901234567812345";
         textRect.size = [temp sizeWithAttributes:attributes];
     }
     return textRect;

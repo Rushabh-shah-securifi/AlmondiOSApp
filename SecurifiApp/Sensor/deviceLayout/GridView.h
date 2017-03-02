@@ -10,7 +10,9 @@
 #import "GenericIndexValue.h"
 
 @protocol GridViewDelegate
+@optional
 -(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue currentView:(UIView*)currentView;
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue blockArr:(NSArray*)blockArr;
 @end
 
 @interface GridView : UIView
@@ -19,4 +21,7 @@
 @property (nonatomic)id<GridViewDelegate> delegate;
 //@property (nonatomic)
 -(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue onSchedule:(NSString*)schedule;
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue onSchedule:(NSString*)schedule blockArr:(NSMutableArray*)blockArr;
+
+
 @end

@@ -2369,7 +2369,8 @@ Contact us at support@securifi.com";
 "h_subscription_title4" = "Access advanced controls.";
 "h_subscription_title5" = "Check data usage.";
 "h_subscription_title6" = "Review web history by ratings.";
-
+"ssh_iot_title"="SSH (Secure Shell) port open with weak password";
+"ssh_iot_desc" = "Your device has an open SSH port ( Port no. 22). SSH provides a secure channel to login into remote computers over an unsecured network. SSH is a secure replacement for old protocols like Telnet. However, SSH port with weak or default password takes away all the security provided by the protocol. Any unauthorized user or a hacker can take control of your device with weak SSH credentials. We suggest that you upgrade the firmware of this device or contact the vendor for more assistance.";
 
 /* 
  NEW SCREENS

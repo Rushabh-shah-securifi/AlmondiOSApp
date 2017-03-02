@@ -33,7 +33,7 @@
     self.clientTypeLabel.text = [self ignoreCapitalizingSpecialWords:name];
     self.valueString = value;;
     self.clientTypeImage.image = [UICommonMethods imageNamed:icon withColor:[UIColor blackColor]];
-//    self.clientTypeCheck.hidden = YES;
+    self.clientTypeCheck.hidden = YES;
 }
 - (NSString *)ignoreCapitalizingSpecialWords:(NSString *)name{
     NSArray *spclWords = @[@"ipad", @"ipod", @"mac", @"iphone"];
@@ -46,6 +46,7 @@
     self.contentView.backgroundColor = [SFIColors clientGreenColor];
     self.clientTypeLabel.textColor = [UIColor whiteColor];
     self.clientTypeImage.image = [UICommonMethods imageNamed:icon withColor:[UIColor whiteColor]];
+    self.clientTypeCheck.hidden = NO;
 }
 
 @end

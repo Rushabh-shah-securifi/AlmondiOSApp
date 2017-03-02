@@ -8,6 +8,10 @@
 
 #import "ClientTableViewController.h"
 #import "ClientTypeTableViewCell.h"
+#import "DevicePayload.h"
+#import "AlmondManagement.h"
+#import "iToast.h"
+#import "ClientPayload.h"
 
 @interface ClientTableViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *typeTable;
@@ -21,7 +25,7 @@
 @end
 
 @implementation ClientTableViewController
-
+int mii;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.title = @"Device Type";
@@ -57,10 +61,18 @@
     self.iconArr = iconArr;
      self.displayText_value = [[NSMutableDictionary alloc]initWithObjects:self.valueArr_copy forKeys:self.displayArray_copy];
 
-    
+    [self initSection];
     // Do any additional setup after loading the view.
 }
-
+-(void)initSection{
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    
+    
+    [center addObserver:self //indexupdate or name/location change both
+               selector:@selector(onCommandResponse:)
+                   name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
+                 object:nil];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -113,8 +125,59 @@
     NSLog(@" typeName %@",typeName);
     self.selectedType = typeName;
     [self.typeTable reloadData];
-    //[self.delegate save:typeName forGenericIndexValue:self.genericIndexValue currentView:self];
+    mii = arc4random()%10000;
+    Client *client = [[Client findClientByID:@(self.genericIndexValue.deviceID).stringValue] copy];
+    [Client getOrSetValueForClient:client genericIndex:self.genericIndexValue.index newValue:self.selectedType ifGet:NO];
+    
+    [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
+    
 }
 
+#pragma mark command responses
+-(void)onCommandResponse:(id)sender{ //mobile command sensor and client 1064
+    NSLog(@"device edit - onUpdateDeviceIndexResponse");
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
+    BOOL local = [[SecurifiToolkit sharedInstance] useLocalNetwork:almond.almondplusMAC];
+    NSDictionary *payload;
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    
+    if (dataInfo==nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    
+    if(local){
+        payload = dataInfo[@"data"];
+    }else{
+        payload = [dataInfo[@"data"] objectFromJSONData];
+    }
+    
+    //    if (self.miiTable[payload[@"MobileInternalIndex"]] == nil || payload[@"MobileInternalIndex"] == nil) {
+    //        return;
+    //    }
+    
+    NSLog(@"payload mobile command: %@", payload);
+    
+    BOOL isSuccessful = [payload[@"Success"] boolValue];
+    if(isSuccessful == NO){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showToast:NSLocalizedString(@"sorry_could_not_update", @"")];
+        });
+    }
+    else{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.navigationController popToRootViewControllerAnimated:YES];
+             });
+    }
+}
+- (void)showToast:(NSString *)msg {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        iToast *toast = [iToast makeText:msg];
+        toast = [toast setGravity:iToastGravityBottom];
+        toast = [toast setDuration:2000];
+        [toast show:iToastTypeWarning];
+    });
+}
 
 @end

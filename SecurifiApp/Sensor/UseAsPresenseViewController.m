@@ -13,6 +13,9 @@
 #import "GenericIndexUtil.h"
 #import "RulesTableViewController.h"
 #import "DevicePayload.h"
+#import "AlmondManagement.h"
+#import "iToast.h"
+#import "ClientPayload.h"
 
 
 
@@ -30,14 +33,14 @@ static const int defHeaderHeight = 25;
 static const float defRowHeight = 44;
 static const int defHeaderLableHt = 20;
 static const int normalheaderheight = 2;
-
+int mii;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.sectionArr = [NSMutableArray new];
     [self getSectionForTable];
     [self.tableView reloadData];
     NSLog(@"navigate items %@",self.genericIndexValue.genericIndex.navigateElements);
-    
+    [self initSection];
     
     
     // Do any additional setup after loading the view.
@@ -47,7 +50,15 @@ static const int normalheaderheight = 2;
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(void)initSection{
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    
+    
+    [center addObserver:self //indexupdate or name/location change both
+               selector:@selector(onCommandResponse:)
+                   name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
+                 object:nil];
+}
 -(void)getSectionForTable{
     [self.sectionArr removeAllObjects];
     NSArray *genericIndexes = [GenericIndexUtil getDetailForNavigationItems:self.genericIndexValue.genericIndex.navigateElements clientID:@(self.genericIndexValue.deviceID).stringValue];
@@ -195,7 +206,7 @@ static const int normalheaderheight = 2;
         else{
             [self getGenericValVsDispDict:gValue.genericIndex.values displayArr:displayArr valueArr:ValueArr];
         }
-        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, 160) displayList:displayArr valueList:ValueArr];
+        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, 160) displayList:displayArr valueList:ValueArr genericIndexValue:gValue];
        
         pickerView.delegate = self;
         //pickerView.center = self.view.center;
@@ -242,10 +253,15 @@ static const int normalheaderheight = 2;
 }
 #pragma mark pickerView Delegate
 -(void )pickerViewSelectedValue:(NSString *)value genericIndexValue:(GenericIndexValue *)genericIndexValue{
+     mii = arc4random()%10000;
+    Client *client = [[Client findClientByID:@(self.genericIndexValue.deviceID).stringValue] copy];
+    [Client getOrSetValueForClient:client genericIndex:self.genericIndexValue.index newValue:value ifGet:NO];
     
-    [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:122 value:value];
+    [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
+    [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:mii value:value];
 }
 -(void)deviceOnOffSwitchUpdate:(NSString *)status genericIndexValue:(GenericIndexValue *)genericIndexValue{
+    [self pickerViewSelectedValue:status genericIndexValue:genericIndexValue];
     if ([status isEqualToString:@"ON"]) {
         [self getSectionForTable];
         [self reloadTable];
@@ -259,6 +275,51 @@ static const int normalheaderheight = 2;
 -(void)reloadTable{
     dispatch_async(dispatch_get_main_queue(), ^(){
         [self.tableView reloadData];
+    });
+}
+#pragma mark command responses
+-(void)onCommandResponse:(id)sender{ //mobile command sensor and client 1064
+    NSLog(@"device edit - onUpdateDeviceIndexResponse");
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
+    BOOL local = [[SecurifiToolkit sharedInstance] useLocalNetwork:almond.almondplusMAC];
+    NSDictionary *payload;
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    
+    if (dataInfo==nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    
+    if(local){
+        payload = dataInfo[@"data"];
+    }else{
+        payload = [dataInfo[@"data"] objectFromJSONData];
+    }
+    
+    //    if (self.miiTable[payload[@"MobileInternalIndex"]] == nil || payload[@"MobileInternalIndex"] == nil) {
+    //        return;
+    //    }
+    
+    NSLog(@"payload mobile command: %@", payload);
+    
+    BOOL isSuccessful = [payload[@"Success"] boolValue];
+    if(isSuccessful == NO){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showToast:NSLocalizedString(@"sorry_could_not_update", @"")];
+            [self reloadTable];
+        });
+    }
+    else{
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+- (void)showToast:(NSString *)msg {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        iToast *toast = [iToast makeText:msg];
+        toast = [toast setGravity:iToastGravityBottom];
+        toast = [toast setDuration:2000];
+        [toast show:iToastTypeWarning];
     });
 }
 @end

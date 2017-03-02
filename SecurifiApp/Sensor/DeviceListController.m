@@ -35,6 +35,9 @@
 #import "AlmondManagement.h"
 #import "IoTDeviceViewController.h"
 #import "DevicePropertiesViewController.h"
+#import "UICommonMethods.h"
+#import "ScrollButtonView.h"
+
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -42,13 +45,15 @@
 #define HEADER_FONT_SIZE 16
 #define COUNT_FONT_SIZE 12
 
-@interface DeviceListController ()<UITableViewDataSource,UITableViewDelegate,DeviceHeaderViewDelegate>
+@interface DeviceListController ()<UITableViewDataSource,UITableViewDelegate,DeviceHeaderViewDelegate,ScrollButtonViewDelegate>
 
 @property(nonatomic, readonly) SFIColors *almondColor;
 @property(nonatomic) NSTimer *mobileCommandTimer;
 @property(nonatomic) SecurifiToolkit *toolkit;
 @property(nonatomic) BOOL isSiteMapSupport;
 @property(nonatomic) BOOL isLocal;
+@property (nonatomic) NSArray *deviceList;
+@property (nonatomic) NSString *defaultAllLoc;
 @end
 
 @implementation DeviceListController
@@ -57,6 +62,7 @@ int mii;
 - (void)viewDidLoad {
     NSLog(@"devicelist - viewDidLoad");
     [super viewDidLoad];
+    self.defaultAllLoc = @"All";
     self.toolkit = [SecurifiToolkit sharedInstance];
     if([self.toolkit isScreenShown:@"devices"] == NO)
         [self initializeHelpScreensfirst:@"Devices"];
@@ -81,7 +87,7 @@ int mii;
     [self markAlmondTitleAndMac];
     SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
       self.isLocal = [self.toolkit useLocalNetwork:almond.almondplusMAC];
-    
+    self.deviceList = self.toolkit.devices;
     NSLog(@"View will appear is called in DeviceListController");
     [self initializeNotifications];
     
@@ -184,7 +190,7 @@ int mii;
 #pragma mark - State
 - (BOOL)isDeviceListEmpty {
     // don't show any tiles until there are values for the devices; no values == no way to fetch from almond
-    return self.toolkit.devices.count == 0;
+    return self.deviceList.count == 0;
 }
 
 -(BOOL)isClientListEmpty{
@@ -212,6 +218,7 @@ int mii;
         self.refreshControl = refresh;
     }
 }
+#pragma mark device location filter
 
 #pragma mark - Table view data source
 
@@ -231,8 +238,8 @@ int mii;
     if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]) || ![self isFirmwareCompatible] || [self isDisconnected])
         return 1;
     
-    NSLog(@"devices count %ld, client count: %ld",(unsigned long)self.toolkit.devices.count, (unsigned long)self.toolkit.clients.count);
-    return (section == 0) ? self.toolkit.devices.count: self.toolkit.clients.count;
+    NSLog(@"devices count %ld, client count: %ld",(unsigned long)self.deviceList.count, (unsigned long)self.toolkit.clients.count);
+    return (section == 0) ? self.deviceList.count: self.toolkit.clients.count;
     
 }
 
@@ -249,8 +256,10 @@ int mii;
     }
     if ([self isNoAlmondMAC] || [self isDisconnected])
         return 0;
-    
-    return 30;
+    if(section == 0)
+        return 90;
+    else
+        return 40;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -275,7 +284,7 @@ int mii;
     NSString *header,*headerVal;
     if(section == 0){
         header = NSLocalizedString(@"Smart Devices", @"Smart Devices");
-        headerVal = [NSString stringWithFormat:@"(%ld)",(long int)self.toolkit.devices.count];
+        headerVal = [NSString stringWithFormat:@"(%ld)",(long int)self.deviceList.count];
     }
     else{
         //headerVal = [NSString stringWithFormat:@"(%ld )",(long int)self.toolkit.clients.count];
@@ -286,20 +295,33 @@ int mii;
     NSMutableAttributedString *aAttrString = [CommonMethods getAttributeString:header fontSize:HEADER_FONT_SIZE LightFont:NO];
     NSMutableAttributedString *vAttrString = [CommonMethods getAttributeString:headerVal fontSize:COUNT_FONT_SIZE LightFont:NO];
     [aAttrString appendAttributedString:vAttrString];
+    UIView *view;
+    view = [[UIView alloc]initWithFrame:CGRectMake(10, 0, CGRectGetWidth(self.tableView.frame) -10, 90)];
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 17, CGRectGetWidth(view.frame), 20)];
+    label.attributedText = aAttrString;
+    [view addSubview:label];
+    if(section == 0){
+        ScrollButtonView *scrollView = [[ScrollButtonView alloc]initWithFrame:CGRectMake(10, 40, CGRectGetWidth(view.frame), 45) color:[UIColor greenColor] location:self.defaultAllLoc];
+        scrollView.delegate = self;
+        [view addSubview:scrollView];
+    }
     static NSString *headerView = @"customHeader";
     UITableViewHeaderFooterView *vHeader;
     //    vHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerView];
     //    if (!vHeader) {
     vHeader = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:headerView];
     //    }
+    
     vHeader.textLabel.textColor = [UIColor lightGrayColor];
     vHeader.textLabel.attributedText = aAttrString;
-    
-    return vHeader;
+    view.backgroundColor = [UIColor whiteColor];
+    return view;
 }
-
-
-
+-(void)updateDeviceListLocation:(NSString *)location{
+    self.defaultAllLoc = location;
+    self.deviceList = [Device filterDevicesByLocation:location];
+    [self.tableView reloadData];
+}
 - (BOOL)showNeedsActivationHeader {
     BOOL isAccountActivated = [[SecurifiToolkit sharedInstance] isAccountActivated];
     if (!isAccountActivated) {
@@ -338,11 +360,11 @@ int mii;
     GenericParams *genericParams;
     
     if(indexPath.section == 0){
-        if(indexPath.row  > (int)self.toolkit.devices.count - 1){
+        if(indexPath.row  > (int)self.deviceList.count - 1){
             NSLog(@"device removed");
             return cell;
         }
-        Device *device = [self.toolkit.devices objectAtIndex:indexPath.row];
+        Device *device = [self.deviceList objectAtIndex:indexPath.row];
         
         genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device]
                                                          indexValueList:nil

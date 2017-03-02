@@ -20,5 +20,8 @@
 
     // Configure the view for the selected state
 }
+-(void)hideCheckButton:(BOOL)hide{
+    self.chekButton.hidden = hide;
+}
 
 @end

@@ -629,7 +629,7 @@ static const int xIndent = 10;
             dispatch_async(dispatch_get_main_queue(), ^{
                 if(dType == SFIDeviceType_AlmondBlink_64){
                     [self repaintBottomView:dType];
-                }else{
+                    }else{
                     [self revertToOldValue:genIndexVal];
                 }
                 

@@ -7,6 +7,7 @@
 //
 
 #import "PickerComponentView.h"
+#import "GenericIndexValue.h"
 #import "GenericValue.h"
 #import "UIFont+Securifi.h"
 
@@ -18,13 +19,13 @@
 @end
 
 @implementation PickerComponentView
--(id) initWithFrame:(CGRect)frame displayList:(NSArray *)dispArr valueList:(NSArray *)valArr
+-(id) initWithFrame:(CGRect)frame displayList:(NSArray *)dispArr valueList:(NSArray *)valArr genericIndexValue:(GenericIndexValue *)genericIndexValue
 {
     self = [super initWithFrame:frame];
     if(self){
         self.displayArr = dispArr;
         self.valueArr = valArr;
-        
+        self.genericIndexValue = genericIndexValue;
         [self drawPickerView];
     }
     return self;

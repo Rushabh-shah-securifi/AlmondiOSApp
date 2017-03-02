@@ -10,5 +10,5 @@
 
 @interface NotificationCellTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *chekButton;
-
+-(void)hideCheckButton:(BOOL)hide;
 @end

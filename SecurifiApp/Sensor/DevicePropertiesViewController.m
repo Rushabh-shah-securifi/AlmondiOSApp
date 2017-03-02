@@ -26,7 +26,9 @@
 #import "AdvanceInformationViewController.h"
 #import "GenericDeviceClass.h"
 #import "TextInput.h"
-
+#import "AlmondManagement.h"
+#import "iToast.h"
+#import "ClientPayload.h"
 
 #define DEVICE_PROPERTY_CELL @"devicepropertycell"
 
@@ -52,6 +54,7 @@ int mii;
 @property BOOL isSensor;
 @property (nonatomic) CGRect ViewFrame;
 @property (nonatomic) NSInteger touchComp;
+@property (nonatomic )NSMutableDictionary *miiTable ;
 
 
 @property (nonatomic) NSMutableArray *sectionArr;
@@ -100,10 +103,12 @@ int mii;
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     mii = arc4random() % 10000;
+    self.miiTable = [NSMutableDictionary new];
     [self.navigationController setNavigationBarHidden:YES];
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
+     [self.miiTable removeAllObjects];
     [self.navigationController setNavigationBarHidden:NO];
 }
 -(void)initSection{
@@ -118,7 +123,16 @@ int mii;
                selector:@selector(onKeyboardDidHide:)
                    name:UIKeyboardDidHideNotification
                  object:nil];
-   
+    
+    [center addObserver:self //indexupdate or name/location change both
+               selector:@selector(onCommandResponse:)
+                   name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self //common dynamic reponse handler for sensor and clients
+               selector:@selector(onDeviceListAndDynamicResponseParsed:)
+                   name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
+                 object:nil];
 }
 
 -(void)setUpDevicePropertyEditHeaderView{
@@ -178,8 +192,10 @@ int mii;
     if(gclass.header != nil)
     {
         viewHt = defHeaderHeight + defHeaderLableHt;
-        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), viewHt)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(5, defHeaderHeight-8, CGRectGetWidth(view.frame), defHeaderLableHt)];
+        view = [[UIView alloc]initWithFrame:CGRectMake(15, 0, CGRectGetWidth(self.tableView.frame) -10, viewHt)];
+        view.backgroundColor = [UIColor greenColor];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 17, CGRectGetWidth(view.frame), defHeaderLableHt)];
+        
         [UICommonMethods setLableProperties:label text:gclass.header textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:18 alignment:NSTextAlignmentLeft];
         label.text = [gclass.header uppercaseString];
         [view addSubview:label];
@@ -210,8 +226,8 @@ int mii;
     if(gclass.footer != nil)
     {
         viewHt = defHeaderHeight + defHeaderLableHt;
-        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame) - 10, viewHt)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(5, 5, CGRectGetWidth(view.frame), viewHt)];
+        view = [[UIView alloc]initWithFrame:CGRectMake(15, 0, CGRectGetWidth(self.tableView.frame) - 10, viewHt)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 5, CGRectGetWidth(view.frame), viewHt)];
         
         [UICommonMethods setLableProperties:label text:NSLocalizedString(gclass.footer,@"") textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:13 alignment:NSTextAlignmentLeft];
         
@@ -255,12 +271,13 @@ int mii;
                 rightlabel = gValue.genericValue.displayText;
     }
     else{
-        if([gValue.genericIndex.ID isEqualToString:@"-1"])
+        if([gValue.genericIndex.ID isEqualToString:@"-1"] || [gValue.genericIndex.ID isEqualToString:@"-2"])
             rightlabel = gValue.genericValue.value;
         NSLog(@"genericvalue.value %@",gValue.genericValue.value);
     }
     
     if(rightlabel == nil){
+        rightlabel = gValue.genericValue.value;
         rightlabel = @"";
     }
     NSString *deviceTypeString = @([Device getTypeForID:gValue.deviceID]).stringValue;
@@ -292,7 +309,7 @@ int mii;
         else{
              [self getValueArrfromMin:gValue.genericIndex.formatter.min max:gValue.genericIndex.formatter.max displayArr:displayArr valueArr:ValueArr];
         }
-        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, 160) displayList:displayArr valueList:ValueArr];
+        PickerComponentView *pickerView = [[PickerComponentView alloc]initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width, 160) displayList:displayArr valueList:ValueArr genericIndexValue:gValue];
         pickerView.delegate = self;
         //pickerView.center = self.view.center;
         pickerView.center = CGPointMake(cell.contentView.bounds.size.width/2, cell.contentView.center.y);
@@ -332,7 +349,7 @@ int mii;
     NSString *leftlabel = gValue.genericIndex.groupLabel?:@"";
     
     NSString *property = gValue.genericIndex.property;
-    if([property isEqualToString:@"navigate"] && ([gValue.genericIndex.ID isEqualToString:@"-3"])){
+    if([property isEqualToString:@"navigate"] && ([gValue.genericIndex.ID isEqualToString:@"-3"] || [gValue.genericIndex.ID isEqualToString:@"-2"])){
         DeviceNotificationViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"DeviceNotificationViewController"];
         viewController.genericIndexValue = gValue;
         
@@ -428,22 +445,121 @@ int mii;
         }
     }
 }
+#pragma mark command responses
+-(void)onCommandResponse:(id)sender{ //mobile command sensor and client 1064
+    NSLog(@"device edit - onUpdateDeviceIndexResponse");
+    SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
+    BOOL local = [[SecurifiToolkit sharedInstance] useLocalNetwork:almond.almondplusMAC];
+    NSDictionary *payload;
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    
+    if (dataInfo==nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    
+    if(local){
+        payload = dataInfo[@"data"];
+    }else{
+        payload = [dataInfo[@"data"] objectFromJSONData];
+    }
+    
+//    if (self.miiTable[payload[@"MobileInternalIndex"]] == nil || payload[@"MobileInternalIndex"] == nil) {
+//        return;
+//    }
+    
+    NSLog(@"payload mobile command: %@", payload);
+    
+    BOOL isSuccessful = [payload[@"Success"] boolValue];
+    GenericIndexValue *genIndexVal = self.miiTable[payload[@"MobileInternalIndex"]];
+    int dType = [Device getTypeForID:genIndexVal.deviceID];
+    if(self.genericParams.isSensor){
+        NSLog(@"sensor");
+        if(isSuccessful == NO){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showToast:NSLocalizedString(@"sorry_could_not_update", @"")];
+            });
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+                [self repaintHeader:genIndexVal];
+            });
+}
+}
+-(void)onDeviceListAndDynamicResponseParsed:(id)sender{
+    NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");
+    
+    if(self.genericParams.isSensor){
+        NSLog(@"device edit - dynamic response - currently handling only mobile response in controller");
+        //perhaps you have to check device id of dynamic response and pop if matches, perhaps
+        
+    }
+    [self reloadTable];
+}
+-(void)reloadTable{
+     dispatch_async(dispatch_get_main_queue(), ^() {
+          self.indexPath = nil;
+          [self.tableView reloadData];
+     });
+}
+-(void)repaintHeader:(GenericIndexValue*)genIndexVal{
+    NSLog(@"repaintHeader");
+    Device *device = [Device getDeviceForID:genIndexVal.deviceID];
+    GenericIndexValue *headerGenIndexVal = [GenericIndexUtil getHeaderGenericIndexValueForDevice:device];
+    self.genericParams.headerGenericIndexValue = headerGenIndexVal;
+    self.genericParams.deviceName = device.name;
+    
+    [self.deviceHeaderView resetHeaderView];
+    [self.deviceHeaderView initialize:self.genericParams cellType:SensorEdit_Cell isSiteMap:NO];
+    NSLog(@"resetHeader: %f",self.deviceHeaderView.frame.origin.y);
+}
+- (void)showToast:(NSString *)msg {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        iToast *toast = [iToast makeText:msg];
+        toast = [toast setGravity:iToastGravityBottom];
+        toast = [toast setDuration:2000];
+        [toast show:iToastTypeWarning];
+    });
+}
+#pragma mark sensor cell(DeviceHeaderView) delegate
+-(void)toggle:(GenericIndexValue *)headerGenericIndexValue{
+    NSLog(@"delegateSensorTableDeviceButtonClickWithGenericProperies");
+    mii = arc4random()%10000;
+    
+    headerGenericIndexValue = [GenericIndexValue getLightCopy:headerGenericIndexValue];
+    headerGenericIndexValue.currentValue = headerGenericIndexValue.genericValue.toggleValue;
+    headerGenericIndexValue.clickedView = nil;
+    
+    [self.miiTable setValue:headerGenericIndexValue forKey:@(mii).stringValue];
+    [DevicePayload getSensorIndexUpdate:headerGenericIndexValue mii:mii];
+}
 #pragma mark pickerView Delegate
 -(void )pickerViewSelectedValue:(NSString *)value genericIndexValue:(GenericIndexValue *)genericIndexValue{
-    
-    [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:mii value:value];
-}
+    [self reloadTable];
+    [self save:value forGenericIndexValue:genericIndexValue currentView:nil];
+    }
 #pragma mark cell delegate methods
 -(void)deviceNameUpdate:(NSString *)name genericIndexValue:(GenericIndexValue*)genericIndexValue{
-
-    [DevicePayload getNameLocationChange:genericIndexValue mii:mii value:name];
+    [self save:name forGenericIndexValue:genericIndexValue currentView:nil];
 }
 -(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue currentView:(UIView*)currentView{
+    [self reloadTable];
+    mii = arc4random()%10000;
+   
+    if(self.genericParams.isSensor){
+        [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:mii value:newValue];
+    }
+    else{
+        Client *client = [[Client findClientByID:@(genericIndexValue.deviceID).stringValue] copy];
+        [Client getOrSetValueForClient:client genericIndex:genericIndexValue.index newValue:newValue ifGet:NO];
+        
+        [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
+    }
 
 }
 -(void)linkToNextScreen:(GenericIndexValue *)genericIndexValue{
     // link to notification screen
-    if([genericIndexValue.genericIndex.ID isEqualToString:@"-39"]){
+    if([genericIndexValue.genericIndex.ID isEqualToString:@"-40"]){
         
         DeviceNotificationViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"DeviceNotificationViewController"];
         viewController.genericIndexValue = genericIndexValue;

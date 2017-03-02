@@ -24,6 +24,7 @@
 #import "NSString+securifi.h"
 #import "Rule.h"
 #import "SFIButtonSubProperties.h"
+#import "RulesNestThermostat.h"
 
 @implementation GenericIndexUtil
 
@@ -119,9 +120,7 @@
 //    }
     else if(device.type == SFIDeviceType_AlmondSiren_63)
         detailList = [self handleAlmondSiren:deviceID genericIndexValues:detailList];
-    
-    //NSArray *commonList = [self getCommonGenericIndexValue:device];
-    //[detailList addObjectsFromArray:commonList];
+
     return [self getGroupedGenericIndexes:detailList device:device];
 }
 + (NSArray *)getDetailListForClient:(int)clientID{
@@ -185,9 +184,7 @@
                                                                                    forValue:knownValue.value];
                 if(genericValue!=nil && knownValue.value != nil) //check for index exists
                     [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:copyGenericIndex genericValue:genericValue index:knownValue.index deviceID:device.ID]];
-                
             }
-
         }
     }
     
@@ -206,7 +203,13 @@
             if(deviceIndex.placement != nil){
                 copyGenericIndex.placement = deviceIndex.placement;
             }
-            if([copyGenericIndex.placement containsString:placement]){//contains
+            if([copyGenericIndex.placement containsString:placement]){
+                //contains
+                if (device.type == 57)
+                    copyGenericIndex =[RulesNestThermostat filterValues:copyGenericIndex deviceId:device.ID];
+                if(copyGenericIndex == nil){
+                    continue;
+                }
                 GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:copyGenericIndex.ID
                                                                                    forValue:[self getHeaderValueFromKnownValuesForDevice:device indexID:IndexId]];
                 
@@ -301,6 +304,32 @@
     
     return genericIndexValues;
 }
+
+/*
+ boolean isOnline = true;
+ if (device.deviceType == 58 || device.deviceType == 57) {
+ int onlineIndexId = device.deviceType == 57 ? 11 : 5;
+ //Review abhishek - use string util equals.
+ 
+ if (AlmondPlusConstants.FALSE.equals(GenericIndexUtil.getValueFromDeviceKnownValues(device, onlineIndexId))) {
+ temp = null;
+ isOnline = false;
+ }
+ }
+ if (isOnline) {
+ temp = GenericIndexUtil.getDeviceSpecificIndexValueList(device, "Detail", context);
+ }
+ String nestModeValue = GenericIndexUtil.getValueFromDeviceKnownValues(device, 8);
+ if (device.deviceType == 57 && isOnline && !StringUtils.equals(nestModeValue, "away")) {
+ temp = GenericIndexUtil.filterSliderBasedOnModeForDevices(temp, device);
+ }
+ 
+ //Review abhishek - chceck for temp.get(i) null pointer.
+ if(temp!=null) {
+ detailList.put(index, temp.get(i));
+ }
+ 
+ */
 + (NSArray *)getGroupedGenericIndexes:(NSMutableArray *)detailList device:(Device *)device{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSMutableArray *groupedIndexValueList = [NSMutableArray new];
@@ -310,17 +339,58 @@
     NSDictionary *deviceDict = [self getDeviceSpecificInxedesDict:detailList];
     
     for(NSNumber *orderId in displayOrder){
+        
+        
         GenericIndexClass *genIndexObj = toolkit.genericIndexes[orderId.stringValue];
         
         if(orderId.integerValue == -45 || orderId.integerValue == -46 || orderId.integerValue == -47 || orderId.integerValue == -48){
-            if(orderId.integerValue == -45 && deviceDict[@"0"])
-                [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"0"]];
-            else if(orderId.integerValue == -46 && deviceDict[@"1"])
-                [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"1"]];
-            else if(orderId.integerValue == -47 && deviceDict[@"2"])
-                [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"2"]];
-            else if(orderId.integerValue == -48 && deviceDict[@"3"])
-                [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"3"]];
+            if(device.type == 57 || device.type == 58){
+                BOOL isOnline = true;
+                
+                int indexId ;
+                if(device.type == 57)
+                {
+                    indexId =11;
+                }
+                else{
+                    indexId = 5;
+                }
+                NSString *value = [self getHeaderValueFromKnownValuesForDevice:device indexID:@(indexId).stringValue];
+                if ([value isEqualToString:@"false"]) {
+                    isOnline = false;
+                    deviceDict = nil;
+                }
+                
+                if (isOnline) {
+                    deviceDict = [RulesNestThermostat handleNestThermostatFornewDevice:deviceDict deviceID:device.ID];
+                    
+                }
+                if (deviceDict!= Nil) {
+                    
+                    if(orderId.integerValue == -45 && deviceDict[@"0"])
+                        [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"0"]];
+                    else if(orderId.integerValue == -46 && deviceDict[@"1"])
+                        [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"1"]];
+                    else if(orderId.integerValue == -47 && deviceDict[@"2"])
+                        [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"2"]];
+                    else if(orderId.integerValue == -48 && deviceDict[@"3"])
+                        [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"3"]];
+                }
+                
+            }
+            else{
+                if(orderId.integerValue == -45 && deviceDict[@"0"])
+                    [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"0"]];
+                else if(orderId.integerValue == -46 && deviceDict[@"1"])
+                    [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"1"]];
+                else if(orderId.integerValue == -47 && deviceDict[@"2"])
+                    [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"2"]];
+                else if(orderId.integerValue == -48 && deviceDict[@"3"])
+                    [self addIndexValueList:groupedIndexValueList gI:genIndexObj genericIndexes:deviceDict[@"3"]];
+
+            }
+            
+           
         }
         
         else{

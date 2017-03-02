@@ -278,7 +278,7 @@
         if([key isEqualToString:@"MAC"])
             continue;
         NSDictionary *dict = returnDict[key];
-        if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] || [dict[@"Tag"]isEqualToString:@"5"]){
+        if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] || [dict[@"Tag"]isEqualToString:@"5"]|| [dict[@"Tag"]isEqualToString:@"8"]){
             if([dict[@"P"]isEqualToString:@"1"])
                 redflags++;
         }
@@ -344,7 +344,7 @@
         
         NSDictionary *dict = returnDict[key];
         if([dict[@"P"]isEqualToString:@"1"]){
-            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] || [dict[@"Tag"]isEqualToString:@"5"]){
+            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] || [dict[@"Tag"]isEqualToString:@"5"] || [dict[@"Tag"]isEqualToString:@"8"]){
                 color = [UIColor redColor];
                 break;
             }
@@ -362,7 +362,7 @@
         NSDictionary *dict = returnDict[key];
         NSLog(@"returnDict %@",returnDict);
         if([dict[@"P"]isEqualToString:@"1"]){
-            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] || [dict[@"Tag"]isEqualToString:@"5"]){
+            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] || [dict[@"Tag"]isEqualToString:@"5"] || [dict[@"Tag"]isEqualToString:@"8"]){
                 return @"is vulnerable";
             }
             else

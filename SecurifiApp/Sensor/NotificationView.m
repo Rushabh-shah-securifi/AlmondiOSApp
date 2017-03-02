@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIView *alwaysView;
 
 @property (weak, nonatomic) IBOutlet UIView *awayView;
+@property (nonatomic)NSString *updateValue;
 
 @end
 @implementation NotificationView
@@ -36,7 +37,9 @@
     return self;
 }
 -(void)updateUIValue{
+    self.updateValue = self.genericIndexValue.genericValue.value;
     if([self.genericIndexValue.genericValue.value isEqualToString:@"1"]){
+        [self notificationButtonSwitchON];
         [self alwaysClickedUIupdate];
     }
     else if ([self.genericIndexValue.genericValue.value isEqualToString:@"3"]){
@@ -61,6 +64,8 @@
     UISwitch *notificationSwitch = (UISwitch *)sender;
     if(notificationSwitch.on){
         [self notificationButtonSwitchON];
+        self.alwaysImg.hidden = NO;
+        self.awayImg.hidden = YES;
         [self.delegate save:@"1" forGenericIndexValue:self.genericIndexValue];
     }
     else{

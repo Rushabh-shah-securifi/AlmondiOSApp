@@ -449,6 +449,7 @@
 		CE3EDAF31D4742EC00C153A6 /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3EDAF11D4742EC00C153A6 /* SearchTableViewController.m */; };
 		CE40BF131D225791007C2148 /* BrowsingHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF0A1D225791007C2148 /* BrowsingHistory.m */; };
 		CE40BF151D225791007C2148 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF0E1D225791007C2148 /* HistoryCell.m */; };
+		CE42471A1E67F80900CB3ED1 /* ScrollButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4247191E67F80700CB3ED1 /* ScrollButtonView.m */; };
 		CE4DB3F61CEF340F00CBD6DE /* TriDimBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */; };
 		CE57A3461D7008C800F14B25 /* UrlImgDict.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57A3451D7008C800F14B25 /* UrlImgDict.m */; };
 		CE57A3491D70591A00F14B25 /* ParentalControlsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57A3481D70591A00F14B25 /* ParentalControlsViewController.m */; };
@@ -1164,6 +1165,8 @@
 		CE40BF0A1D225791007C2148 /* BrowsingHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistory.m; sourceTree = "<group>"; };
 		CE40BF0D1D225791007C2148 /* HistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCell.h; sourceTree = "<group>"; };
 		CE40BF0E1D225791007C2148 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
+		CE4247181E67F80700CB3ED1 /* ScrollButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollButtonView.h; sourceTree = "<group>"; };
+		CE4247191E67F80700CB3ED1 /* ScrollButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollButtonView.m; sourceTree = "<group>"; };
 		CE4DB3F41CEF340D00CBD6DE /* TriDimBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriDimBtn.h; sourceTree = "<group>"; };
 		CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TriDimBtn.m; sourceTree = "<group>"; };
 		CE57A3441D7008C800F14B25 /* UrlImgDict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlImgDict.h; sourceTree = "<group>"; };
@@ -2608,6 +2611,8 @@
 				CEE9DF171E5C5AE200299C26 /* UseAsPresenseViewController.m */,
 				CEE9DF191E60640100299C26 /* AdvanceInformationViewController.h */,
 				CEE9DF1A1E60640200299C26 /* AdvanceInformationViewController.m */,
+				CE4247181E67F80700CB3ED1 /* ScrollButtonView.h */,
+				CE4247191E67F80700CB3ED1 /* ScrollButtonView.m */,
 			);
 			path = Sensor;
 			sourceTree = "<group>";
@@ -3651,6 +3656,7 @@
 				CEF6F4F41C92CAD600C68975 /* DimmerButton.m in Sources */,
 				1DF035317380AA5E0BD86161 /* MessageView.m in Sources */,
 				1DF0358BE9EBF2A3821D948D /* TableHeaderView.m in Sources */,
+				CE42471A1E67F80900CB3ED1 /* ScrollButtonView.m in Sources */,
 				F4FDAB481E13E9380061089E /* IoTWebViewController.m in Sources */,
 				CE57A3491D70591A00F14B25 /* ParentalControlsViewController.m in Sources */,
 				1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */,

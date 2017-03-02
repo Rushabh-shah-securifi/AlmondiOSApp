@@ -27,13 +27,14 @@
 @implementation GridView
 NSMutableArray * blockedDaysArray;
 NSString *blockedType;
--(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue onSchedule:(NSString*)schedule
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue onSchedule:(NSString*)schedule blockArr:(NSMutableArray*)blockArr;
 {
     self = [super initWithFrame:frame];
     if(self){
         self.color = color;
         self.genericIndexValue = genericIndexValue;
         self.schedule = schedule;
+        blockedDaysArray = blockArr;
         [self addSegmentControll];
     }
     return self;
@@ -299,6 +300,7 @@ NSString *blockedType;
         }
         [collectionView reloadData];
     }
+    [self.delegate save:_hexBlockedDays forGenericIndexValue:self.genericIndexValue blockArr:blockedDaysArray];
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -365,7 +367,6 @@ NSString *blockedType;
     
     saveButton.center = CGPointMake(CGRectGetMidX(self.scrollView.bounds), saveButton.center.y);
     [self.scrollView addSubview:saveButton];
-    
 
 }
 -(void)saveButtonTap:(id)sender{

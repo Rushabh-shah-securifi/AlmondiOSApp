@@ -1524,7 +1524,7 @@
         "AppLabel": "hue",
         "DefaultIcon": "light_on",
         "Title": "2",
-        "property": "navigate",
+        "property": "displayHere",
         "Formatter": {
             "Min": "0",
             "Max": "255",
