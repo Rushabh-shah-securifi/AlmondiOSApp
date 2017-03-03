@@ -502,6 +502,8 @@
 -(void)addView:(UIView*)view frame:(CGRect)frame{
     if(view.tag == 1){//view here will now be added
         [self.timer invalidate];
+        [self.slaveReadyTimer invalidate];
+        
         self.slavesDictArray = nil;
         self.currentSlaves = nil;
         if(self.maxHopCount >= 3){
@@ -610,17 +612,19 @@
     else
         [MeshPayload requestAddWireLessSlave:self.mii slaveName:self.almondUniqueName];
     //Added by Vikas
-    self.slaveReadyTimer = [NSTimer scheduledTimerWithTimeInterval:35.0
+    self.slaveReadyTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
                                                 target:self
                                                 selector:@selector(slaveNotReady:)
                                                 userInfo:nil
                                                 repeats:NO];
 }
+
 -(void)slaveNotReady:(id)sender{
     NSLog(@"in slave NotReady showing popup");
     [self.delegate hideHUDDelegate];
     [self showAlert:self.almondNormalName msg:@"Unable to reach the additional Almond. Please reboot it and try again." cancel:@"Ok" other:nil tag:BLINK_CHECK];    
 }
+
 -(void)requestblinkLED{
     [MeshPayload requestBlinkLed:self.mii slaveName:self.almondUniqueName];
 }
@@ -663,7 +667,7 @@
     BOOL isSuccessful = [payload[SUCCESS] boolValue];
     
     NSLog(@"check point 1");
-    if(![commandType isEqualToString:@"AddWiredSlaveMobile"] && ![commandType isEqualToString:@"AddWirelessSlaveMobile"]){
+    if(![commandType isEqualToString:@"AddWiredSlaveMobile"] && ![commandType isEqualToString:@"AddWirelessSlaveMobile"] && ![commandType isEqualToString:@"ReadyToAddAsSlave"]){
         return;
     }
     if(self.currentView.tag != BLINK_CHECK)
@@ -672,27 +676,30 @@
     NSLog(@"check point 2");
     if(isSuccessful){
         //do nothing, wait for dynamic response
+        if([commandType isEqualToString:@"ReadyToAddAsSlave"])
+            [self.slaveReadyTimer invalidate];
         
-        //new case
-        /*
-         {\"CommandMode\":\"Reply\",\"CommandType\":\"AddWirelessSlaveMobile\",\"Reason\":\"Adding to network.\",\"Success\":\"true\"}
-         */
-//        [self alertViewCancel:self.alert];
-        if(self.alert.tag == -10){
+        if([payload[REASON] hasPrefix:@"Adding to"]){
             [self.alert dismissWithClickedButtonIndex:0 animated:YES];
-            self.alert.tag = -10;
-            [self onYesLEDBlinking:nil];
-
+            [self.delegate showHudWithTimeoutMsgDelegate:@"Please wait..." time:120];
         }
+//        if(self.alert.tag == -10){
+//            [self.alert dismissWithClickedButtonIndex:0 animated:YES];
+//            self.alert.tag = -10;
+//            [self onYesLEDBlinking:nil];
+//        }
     }
     else{
         NSLog(@"check point 3");
         [self.delegate hideHUDDelegate];
+        [self.slaveReadyTimer invalidate];
+        
         NSString *msg;
         NSString *reason = payload[REASON];
         NSString *cancelTitle = [self toShowAlertWithoutOk:[AlmondManagement currentAlmond].firmware]? nil: @"Ok";
         NSLog(@"firmware: %@",[AlmondManagement currentAlmond].firmware);
         if([reason.lowercaseString hasPrefix:@"unplug all"]){
+            
             if(self.wirelessBtn.selected){
             msg = @"Unplug all the LAN and WAN cables from the additional Almond you are adding. Do not unplug the power cable.";
 
@@ -712,10 +719,7 @@
             
             [self showAlert:self.almondNormalName msg:msg cancel:cancelTitle other:nil tag:ADD_FAIL];
         }
-//        else if([reason.lowercaseString hasPrefix:@"Poor"]){
-//                msg = [NSString stringWithFormat:@"Unable to reach %@. Bring it closer to your primary Almond and try again!", self.almondNormalName];
-//            [self showAlert:self.almondNormalName msg:msg cancel:cancelTitle other:nil tag:BLINK_CHECK];
-//        }
+
         else{
             [self.blinkTimer invalidate];
             if(self.currentView.tag == BLINK_CHECK)//on ok tap this will take to interface page
@@ -774,6 +778,7 @@
         else{//failed
             NSString *reason = payload[REASON];
             if ([reason hasPrefix:@"Poor"]) {
+                [self.slaveReadyTimer invalidate];
                 NSString *msg1 = [NSString stringWithFormat: @"%@ Almond seems to be too far or is experiencing signal interference. Please bring it closer to other Almonds in your home Wi-Fi network and reboot it.",self.almondNormalName];
                 [self showAlert:self.almondNormalName msg:msg1 cancel:@"Ok" other:nil tag:BLINK_CHECK];
                 return;
@@ -814,10 +819,6 @@
                 //not loading next view, as the user might still be on helpscreen.
             }
             
-        }
-        else if([commandType isEqualToString:@"ReadyToAddAsSlave"]){
-            [self.slaveReadyTimer invalidate];
-             self.slaveReadyTimer = nil;
         }
         else if([commandType isEqualToString:@"BlinkLedMobile"]){
             [self.delegate hideHUDDelegate];
@@ -975,6 +976,10 @@
     NSLog(@"mesh view show alert tag: %d", tag);
     self.alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cncl otherButtonTitles:nil];
     self.alert.tag = tag;
+    
+    if(self.alert.visible)
+        [self.alert dismissWithClickedButtonIndex:nil animated:YES];
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.alert show];
     });
