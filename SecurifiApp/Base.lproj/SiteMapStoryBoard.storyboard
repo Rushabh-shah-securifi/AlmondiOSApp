@@ -932,7 +932,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Web History" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7W7-sd-vNf">
-                                        <rect key="frame" x="142" y="27" width="94" height="15"/>
+                                        <rect key="frame" x="142.5" y="27" width="93.5" height="15"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="15" id="6cs-sx-2xS"/>
@@ -1430,7 +1430,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Web History" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dw6-Wu-VZY">
-                                        <rect key="frame" x="142" y="27" width="94" height="15"/>
+                                        <rect key="frame" x="142.5" y="27" width="93.5" height="15"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="15" id="IiQ-VN-TpD"/>
@@ -2226,7 +2226,7 @@
         <!--My Subscriptions View Controller-->
         <scene sceneID="yK6-BG-gfD">
             <objects>
-                <viewController storyboardIdentifier="MySubscriptionsViewController" id="KcJ-Go-0Dl" customClass="MySubscriptionsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MySubscriptionsViewController" hidesBottomBarWhenPushed="YES" id="KcJ-Go-0Dl" customClass="MySubscriptionsViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2B0-f6-sng"/>
                         <viewControllerLayoutGuide type="bottom" id="ZSC-wj-iOU"/>
