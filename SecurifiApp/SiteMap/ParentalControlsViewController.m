@@ -539,6 +539,13 @@
 -(void)createRequest:(NSString *)search value:(NSString*)value date:(NSString *)date{
     NSString *req ;
     req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@",search,value,date,_amac,_cmac];
+    
+    if([search isEqualToString:@"DataUsageReset"]){
+        NSTimeZone *timeZone = [NSTimeZone localTimeZone];
+        NSString *tzName = [timeZone name];
+        req =  [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@&TZ=%@",search,value,date,_amac,_cmac,tzName];
+    }
+    
     [self showHudWithTimeoutMsg:@"Loading..." withDelay:1];
     [self.httpReq sendHttpRequest:req];
 }
