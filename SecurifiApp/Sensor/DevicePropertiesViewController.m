@@ -67,9 +67,7 @@ int mii;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.ViewFrame = self.view.frame;
-    [self  initSection];
-    [self setUpDevicePropertyEditHeaderView];
-    [self getSectionForTable];
+    
     
     
 }
@@ -104,6 +102,9 @@ int mii;
     [super viewWillAppear:YES];
     mii = arc4random() % 10000;
     self.miiTable = [NSMutableDictionary new];
+    [self  initSection];
+    [self setUpDevicePropertyEditHeaderView];
+    [self getSectionForTable];
     [self.navigationController setNavigationBarHidden:YES];
 }
 -(void)viewWillDisappear:(BOOL)animated{
