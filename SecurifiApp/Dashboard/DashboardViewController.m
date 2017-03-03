@@ -210,7 +210,7 @@
         
         
     }
-    else if(!hasSubscribe &&  [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware] && isAtleastOnePrimaryAL3){
+    else if(!hasSubscribe &&  [currentAlmond iotSupportFirmwareVersion:currentAlmond.firmware]){
         // call my scbscription
         //change icon name
         self.vulnableDevices.text = @"IOT SECURITY DISABLED";
