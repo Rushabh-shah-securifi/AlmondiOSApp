@@ -2377,3 +2377,7 @@ Contact us at support@securifi.com";
  */
 
 "automation_desc" = "Automate your home by creating scenes and rules using this device";
+"ViewDeviceHistory" = "View Device History";
+"Schedule_" = "Schedule";
+"CreateSchedule" = "Create Schedule";
+"AdvanceInformation" = "Advance Information";

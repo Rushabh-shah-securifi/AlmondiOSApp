@@ -271,7 +271,7 @@
                                                     </connections>
                                                 </button>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thermostat" translatesAutoresizingMaskIntoConstraints="NO" id="um5-8H-4hf">
-                                                    <rect key="frame" x="8" y="6" width="25" height="25"/>
+                                                    <rect key="frame" x="10" y="6" width="25" height="25"/>
                                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="R1c-Pq-HEw"/>
@@ -329,11 +329,12 @@
                                                 <constraint firstItem="nIZ-Un-Ln8" firstAttribute="top" secondItem="d9E-nY-x0U" secondAttribute="top" constant="5" id="Z5k-Lh-eCw"/>
                                                 <constraint firstItem="W5b-Xq-N44" firstAttribute="top" secondItem="d9E-nY-x0U" secondAttribute="top" constant="4" id="bdw-f3-H3o"/>
                                                 <constraint firstItem="Tpm-vP-sCu" firstAttribute="leading" secondItem="d9E-nY-x0U" secondAttribute="leading" constant="17" id="emS-3N-8Ac"/>
+                                                <constraint firstItem="W5b-Xq-N44" firstAttribute="centerY" secondItem="d9E-nY-x0U" secondAttribute="centerY" id="hsK-qF-bsB"/>
                                                 <constraint firstItem="vb6-da-Atd" firstAttribute="leading" secondItem="d9E-nY-x0U" secondAttribute="leading" constant="15" id="k3O-lX-aX4"/>
-                                                <constraint firstItem="W5b-Xq-N44" firstAttribute="leading" secondItem="um5-8H-4hf" secondAttribute="trailing" constant="15" id="o0k-dm-Jvm"/>
+                                                <constraint firstItem="W5b-Xq-N44" firstAttribute="leading" secondItem="um5-8H-4hf" secondAttribute="trailing" constant="13" id="o0k-dm-Jvm"/>
                                                 <constraint firstItem="um5-8H-4hf" firstAttribute="centerY" secondItem="d9E-nY-x0U" secondAttribute="centerY" constant="-3.5" id="vf5-wS-GOY"/>
                                                 <constraint firstItem="vb6-da-Atd" firstAttribute="top" secondItem="d9E-nY-x0U" secondAttribute="top" constant="3" id="yvD-Tq-fyi"/>
-                                                <constraint firstItem="um5-8H-4hf" firstAttribute="leading" secondItem="d9E-nY-x0U" secondAttribute="leading" constant="8" id="ziy-Ea-d6g"/>
+                                                <constraint firstItem="um5-8H-4hf" firstAttribute="leading" secondItem="d9E-nY-x0U" secondAttribute="leading" constant="10" id="ziy-Ea-d6g"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -453,17 +454,17 @@
                                             <rect key="frame" x="0.0" y="0.0" width="359" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_box_blue" translatesAutoresizingMaskIntoConstraints="NO" id="ilu-Lw-ehR">
-                                                    <rect key="frame" x="310" y="8" width="30" height="27"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconBlueCheckmark" translatesAutoresizingMaskIntoConstraints="NO" id="ilu-Lw-ehR">
+                                                    <rect key="frame" x="310" y="8" width="25" height="20"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="27" id="Wuq-q7-ntt"/>
-                                                        <constraint firstAttribute="width" constant="30" id="y3C-wT-jyf"/>
+                                                        <constraint firstAttribute="width" constant="25" id="9LZ-hb-cSO"/>
+                                                        <constraint firstAttribute="height" constant="20" id="KpC-3K-S9R"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="ilu-Lw-ehR" secondAttribute="trailing" constant="11" id="Znv-MX-QrJ"/>
-                                                <constraint firstItem="ilu-Lw-ehR" firstAttribute="centerY" secondItem="hdo-yB-arh" secondAttribute="centerY" id="ftf-5l-29x"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="ilu-Lw-ehR" secondAttribute="trailing" constant="16" id="Eav-Nv-jtg"/>
+                                                <constraint firstItem="ilu-Lw-ehR" firstAttribute="centerY" secondItem="hdo-yB-arh" secondAttribute="centerY" constant="-3.5" id="iBT-Ur-ITd"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -536,21 +537,21 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_box_blue" translatesAutoresizingMaskIntoConstraints="NO" id="OsK-Kt-2BP">
-                                                    <rect key="frame" x="319" y="4" width="40" height="25"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconWhiteCheckmark" translatesAutoresizingMaskIntoConstraints="NO" id="OsK-Kt-2BP">
+                                                    <rect key="frame" x="319" y="4" width="25" height="20"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="40" id="7YM-OQ-Afc"/>
-                                                        <constraint firstAttribute="height" constant="25" id="MHv-kJ-Fut"/>
+                                                        <constraint firstAttribute="width" constant="25" id="7YM-OQ-Afc"/>
+                                                        <constraint firstAttribute="height" constant="20" id="MHv-kJ-Fut"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="OsK-Kt-2BP" firstAttribute="centerY" secondItem="YYR-zM-tT8" secondAttribute="centerY" constant="-5" id="14h-WW-gNS"/>
+                                                <constraint firstItem="OsK-Kt-2BP" firstAttribute="centerY" secondItem="YYR-zM-tT8" secondAttribute="centerY" constant="-7.5" id="14h-WW-gNS"/>
                                                 <constraint firstItem="udZ-A3-gQ8" firstAttribute="centerY" secondItem="YYR-zM-tT8" secondAttribute="centerY" constant="-4" id="8eh-wV-Nqj"/>
                                                 <constraint firstItem="qby-Uh-ViP" firstAttribute="leading" secondItem="udZ-A3-gQ8" secondAttribute="trailing" constant="20" id="A3X-C3-mRw"/>
                                                 <constraint firstItem="qby-Uh-ViP" firstAttribute="centerY" secondItem="YYR-zM-tT8" secondAttribute="centerY" constant="-4" id="MG0-BY-lwZ"/>
                                                 <constraint firstAttribute="trailing" secondItem="qby-Uh-ViP" secondAttribute="trailing" constant="53" id="OmH-Ty-eS2"/>
-                                                <constraint firstAttribute="trailing" secondItem="OsK-Kt-2BP" secondAttribute="trailing" constant="16" id="VnH-3y-7HS"/>
+                                                <constraint firstAttribute="trailing" secondItem="OsK-Kt-2BP" secondAttribute="trailing" constant="31" id="VnH-3y-7HS"/>
                                                 <constraint firstItem="udZ-A3-gQ8" firstAttribute="leading" secondItem="YYR-zM-tT8" secondAttribute="leading" constant="15" id="o2Z-4h-XVJ"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -821,7 +822,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="check_box_blue" width="40" height="40"/>
+        <image name="iconBlueCheckmark" width="22" height="16"/>
+        <image name="iconWhiteCheckmark" width="22" height="16"/>
         <image name="thermostat" width="140" height="140"/>
     </resources>
 </document>

@@ -607,5 +607,11 @@ int mii;
         self.view.frame = f;
     }];
 }
+-(void)delegateDeviceEditSettingClick{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+-(void)delegateClientPropertyEditSettingClick{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 @end
