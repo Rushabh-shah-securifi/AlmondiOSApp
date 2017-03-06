@@ -111,6 +111,7 @@
     self.switchBtn.on = [cell[VALUE] boolValue];
     self.secureField.text = cell[VALUE];
     self.valueLbl.text = cell[VALUE];
+    
     if (type == Adv_temperature) {
         if([cell[VALUE] hasSuffix:@"F"]){
             [self setButtonProperty:self.fahrenheitButton titleColor:[SFIColors ruleBlueColor] backgroundColor:[UIColor whiteColor] title:@"\u00B0F"];
@@ -193,7 +194,15 @@
             }
             break;
         }
-            
+        case Adv_Region:{
+            if(row == 0){
+                [self setConcernedView:Hide_All];
+            }
+            else if(row == 1){
+               [self setConcernedView:self.valueLbl.tag];
+            }
+            break;
+        }
         case Adv_Help:{
             [self setConcernedView:self.valueLbl.tag];
         }

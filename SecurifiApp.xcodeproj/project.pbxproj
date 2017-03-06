@@ -518,6 +518,8 @@
 		F400B6C21D65ECCD00DDEE50 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */; };
 		F401B0731D2D241200F64CE2 /* ColorComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F401B0721D2D241200F64CE2 /* ColorComponentView.m */; };
 		F401B0741D2D241200F64CE2 /* ColorComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F401B0721D2D241200F64CE2 /* ColorComponentView.m */; };
+		F406D9691E6D5B5800160E73 /* RegionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F406D9681E6D5B5800160E73 /* RegionViewController.m */; };
+		F406D96C1E6D700F00160E73 /* RegionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F406D96B1E6D700F00160E73 /* RegionTableViewCell.m */; };
 		F41586F41D6F06140004C577 /* AlmondUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F41586F31D6F06140004C577 /* AlmondUpdateViewController.m */; };
 		F417B2A11DA25B7B0073C440 /* Router.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F417B29F1DA25B7B0073C440 /* Router.storyboard */; };
 		F417B2A21DA25B7C0073C440 /* Router.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F417B29F1DA25B7B0073C440 /* Router.storyboard */; };
@@ -1241,6 +1243,10 @@
 		F400B6C01D65ECCD00DDEE50 /* SupportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportViewController.m; sourceTree = "<group>"; };
 		F401B0711D2D241200F64CE2 /* ColorComponentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorComponentView.h; sourceTree = "<group>"; };
 		F401B0721D2D241200F64CE2 /* ColorComponentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorComponentView.m; sourceTree = "<group>"; };
+		F406D9671E6D5B5800160E73 /* RegionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegionViewController.h; sourceTree = "<group>"; };
+		F406D9681E6D5B5800160E73 /* RegionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegionViewController.m; sourceTree = "<group>"; };
+		F406D96A1E6D700F00160E73 /* RegionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegionTableViewCell.h; sourceTree = "<group>"; };
+		F406D96B1E6D700F00160E73 /* RegionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegionTableViewCell.m; sourceTree = "<group>"; };
 		F41586F21D6F06140004C577 /* AlmondUpdateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondUpdateViewController.h; sourceTree = "<group>"; };
 		F41586F31D6F06140004C577 /* AlmondUpdateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlmondUpdateViewController.m; sourceTree = "<group>"; };
 		F417B2A01DA25B7B0073C440 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Router.storyboard; sourceTree = "<group>"; };
@@ -1651,6 +1657,10 @@
 				F4300B741E642B6D008CEBC9 /* TimeZoneViewController.m */,
 				F4300B7A1E669883008CEBC9 /* TimeZoneTableViewCell.h */,
 				F4300B7B1E669883008CEBC9 /* TimeZoneTableViewCell.m */,
+				F406D9671E6D5B5800160E73 /* RegionViewController.h */,
+				F406D9681E6D5B5800160E73 /* RegionViewController.m */,
+				F406D96A1E6D700F00160E73 /* RegionTableViewCell.h */,
+				F406D96B1E6D700F00160E73 /* RegionTableViewCell.m */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -3450,6 +3460,7 @@
 			files = (
 				F4D93AE11D390B8400D55BD6 /* HelpCenter.m in Sources */,
 				CEEAB7AD1CAD26A2003C5290 /* UICommonMethods.m in Sources */,
+				F406D9691E6D5B5800160E73 /* RegionViewController.m in Sources */,
 				1C7E7DAB1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,
 				F4B876661D54653500DCF76F /* ClientPropertiesCell.m in Sources */,
 				1C7E7D8B1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
@@ -3510,6 +3521,7 @@
 				1C7E7D931A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
 				F4B875491D5382D500DCF76F /* MeshStatusCell.m in Sources */,
 				1C7E7D9D1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
+				F406D96C1E6D700F00160E73 /* RegionTableViewCell.m in Sources */,
 				F4B8754B1D5382D500DCF76F /* MeshView.m in Sources */,
 				F4B876701D54653500DCF76F /* DeviceHeaderView.m in Sources */,
 				B017E87D1DE85EF800BC0DE8 /* AlmondSelectionTableView.m in Sources */,

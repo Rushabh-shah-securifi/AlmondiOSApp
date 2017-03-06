@@ -19,6 +19,7 @@
 #import "UIViewController+Securifi.h"
 #import "MBProgressHUD.h"
 #import "TimeZoneViewController.h"
+#import "RegionViewController.h"
 
 #define ADVANCED_SETTINGS @"advance_settings"
 #define ADVANCE_ROUTER @"advance_router"
@@ -219,16 +220,16 @@ int mii;
     NSDictionary *sectionDict  = self.sectionsArray[indexPath.section];
     AdvCellType type = [sectionDict[CELL_TYPE] integerValue];
     if(type == Adv_TimeZone){
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:nil];
-//        SearchTableViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SearchTableViewController"];
-        
         UIStoryboard *story = [UIStoryboard storyboardWithName:@"Router" bundle:nil];
         TimeZoneViewController *ctrl = [story instantiateViewControllerWithIdentifier:@"TimeZoneViewController"];
         [self.navigationController setNavigationBarHidden:YES];
         [self.navigationController pushViewController:ctrl animated:YES];
     }
     else if(type == Adv_Region){
-        
+        UIStoryboard *story = [UIStoryboard storyboardWithName:@"Router" bundle:nil];
+        RegionViewController *ctrl = [story instantiateViewControllerWithIdentifier:@"RegionViewController"];
+        [self.navigationController setNavigationBarHidden:YES];
+        [self.navigationController pushViewController:ctrl animated:YES];
     }
     else if(type == Adv_Help){
         AdvRouterHelpController *ctrl = [AdvRouterHelpController new];
