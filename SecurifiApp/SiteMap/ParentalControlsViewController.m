@@ -578,7 +578,7 @@
 - (IBAction)detailPeriodButtonClicked:(id)sender {
     DetailsPeriodViewController *newWindow = [self.storyboard   instantiateViewControllerWithIdentifier:@"DetailsPeriodViewController"];
 
-    if([self.NosDayLabel.text isEqualToString:@"LastDay"])
+    if([self.NosDayLabel.text isEqualToString:@"Today"])
         newWindow.str = @"0";
     else if ([self.NosDayLabel.text isEqualToString:@"Past week"])
         newWindow.str = @"1";

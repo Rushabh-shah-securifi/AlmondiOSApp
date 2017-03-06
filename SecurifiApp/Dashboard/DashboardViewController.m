@@ -1223,7 +1223,7 @@
         return genericIndexObject.values[value]? genericIndexObject.values[value]: [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:nil value:value excludeFrom:nil eventType:nil notificationText:gval.notificationText];
     }
     else if(genericIndexObject.formatter != nil && ([genericIndexObject.layoutType isEqualToString:@"HUE_ONLY"])){
-        if([genericIndexObject.ID isEqualToString:@"99"]){
+        if([genericIndexObject.ID isEqualToString:@"99"] || [genericIndexObject.ID isEqualToString:@"98"]){
             int brightnessValue = (int)roundf([CommonMethods getBrightnessValue:value]);
             NSString *str = @(brightnessValue).stringValue;
             NSLog(@"slider icon1 - display text: %@, value: %@ units : %@", [genericIndexObject.formatter transform:value genericId:genericIndexID], value,genericIndexObject.formatter.units);
