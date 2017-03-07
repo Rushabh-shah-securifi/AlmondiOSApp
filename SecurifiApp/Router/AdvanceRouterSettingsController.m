@@ -417,10 +417,13 @@ int mii;
     [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_TimeZone]];
     
     //region
-    cellsArray = [NSMutableArray new];
-    [cellsArray addObject:[self getCellDict:@"Almond device region" value:@""]];
-    [cellsArray addObject:[self getCellDict:almondProperty.region value:@">"]];
-    [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_Region]];
+    if(almondProperty.region){
+        cellsArray = [NSMutableArray new];
+        [cellsArray addObject:[self getCellDict:@"Almond device region" value:@""]];
+        [cellsArray addObject:[self getCellDict:almondProperty.region value:@">"]];
+        [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_Region]];
+    }
+    
     
     //help sections
     cellsArray = [NSMutableArray new];

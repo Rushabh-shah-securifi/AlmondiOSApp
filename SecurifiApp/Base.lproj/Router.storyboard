@@ -441,7 +441,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LER-dj-aA6">
-                                        <rect key="frame" x="86.5" y="13" width="202" height="44"/>
+                                        <rect key="frame" x="87" y="13" width="202" height="44"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="Uth-3E-4bl"/>
@@ -552,13 +552,18 @@
                                             <action selector="onOtherTickTap:" destination="8ux-Lh-HR3" eventType="touchUpInside" id="dsv-VM-yjn"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Location" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WS0-we-UJT">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Location" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="WS0-we-UJT">
                                         <rect key="frame" x="8" y="8" width="301" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="20"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
+                                    <view alpha="0.40000000596046448" tag="4" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ax4-2R-28V" userLabel="lineView">
+                                        <rect key="frame" x="0.0" y="49" width="358" height="1"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="gM7-mm-Rhf"/>
@@ -581,7 +586,7 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </imageView>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Start typing to filter" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Kgx-wg-3kE">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Start typing to filter" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Kgx-wg-3kE">
                                                 <rect key="frame" x="46" y="7" width="304" height="27"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -620,6 +625,9 @@
                                                                     <integer key="value" value="15"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="onRegionSelect:" destination="G6q-6Q-UQN" eventType="touchUpInside" id="Kly-hi-bcD"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                 </tableViewCellContentView>
@@ -662,6 +670,7 @@
                         <outlet property="locationLbl" destination="60f-z0-YX1" id="OU7-Xv-rz5"/>
                         <outlet property="lowerTick" destination="kuE-iE-7qF" id="oW0-vB-rHO"/>
                         <outlet property="otherTopConstraint" destination="0qv-IR-hL6" id="Dh1-Qg-Eph"/>
+                        <outlet property="otherTxtFld" destination="WS0-we-UJT" id="XMV-Ni-cO9"/>
                         <outlet property="otherView" destination="Zbl-fq-WMp" id="lWZ-Sm-VRn"/>
                         <outlet property="searchTxtFld" destination="Kgx-wg-3kE" id="lr7-pR-gYl"/>
                         <outlet property="tableView" destination="2cn-M1-leA" id="EFt-iU-HJn"/>

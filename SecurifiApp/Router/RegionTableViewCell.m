@@ -26,14 +26,23 @@
     // Configure the view for the selected state
 }
 
-- (void)setupCell{
-    if(arc4random() % 5 == 2){
+- (void)setupCell:(NSString *)region currentRegion:(NSString *)currentRegion{
+    self.regionLbl.text = region;
+    
+    if([region isEqualToString:currentRegion]){
+        _roundBtn.backgroundColor = [UIColor grayColor];
+    }
+    else{
         _roundBtn.backgroundColor = [UIColor whiteColor];
         
         _roundBtn.layer.borderWidth = 2.0;
         _roundBtn.layer.borderColor = [UIColor grayColor].CGColor;
-    }else{
-        _roundBtn.backgroundColor = [UIColor grayColor];
     }
 }
+
+- (IBAction)onRegionSelect:(id)sender {
+    _roundBtn.backgroundColor = [UIColor grayColor];
+    [self.delegate onRegionSelectedDelegate:self.regionLbl.text];
+}
+
 @end

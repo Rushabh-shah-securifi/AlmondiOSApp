@@ -99,7 +99,7 @@ int mii;
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"router viewDidLoad");
-    [self displayWebView:@""];
+//    [self displayWebView:@""];
     if([[SecurifiToolkit sharedInstance] isScreenShown:@"wifi"] == NO)
         [self initializeHelpScreensfirst:@"wifi"];
     
@@ -349,8 +349,9 @@ int mii;
     return [_routerSummary.firmwareVersion hasPrefix:@"AL3-"] && isRouterOrMaster;
 }
 
--(BOOL)isAl3AnyMode{
-    return [_routerSummary.firmwareVersion hasPrefix:@"AL3-"];
+-(BOOL)hasAlmondProperty{
+    //if any of the property is not nil, it means we have fetched almond properties
+    return [SecurifiToolkit sharedInstance].almondProperty.language != nil;
 }
 
 -(BOOL)isDisconnected{
@@ -790,7 +791,7 @@ int mii;
             case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
                 //NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
                 self.routerSummary = (SFIRouterSummary *)genericRouterCommand.command;
-                self.enableAdvRouter = [self isAl3AnyMode];
+                self.enableAdvRouter = [self hasAlmondProperty];
 
                 //setting firmware version to use in meshview
                 [AlmondManagement currentAlmond].firmware = self.routerSummary.firmwareVersion;

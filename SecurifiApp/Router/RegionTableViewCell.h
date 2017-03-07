@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol  RegionTableViewCellDelegate
+
+- (void)onRegionSelectedDelegate:(NSString *)region;
+
+@end
+
 @interface RegionTableViewCell : UITableViewCell
-- (void)setupCell;
+
+@property (nonatomic) id<RegionTableViewCellDelegate> delegate;
+
+- (void)setupCell:(NSString *)region currentRegion:(NSString *)currentRegion;
 @end
