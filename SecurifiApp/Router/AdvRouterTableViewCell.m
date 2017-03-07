@@ -217,6 +217,7 @@
     [unitButton setTitle:title forState:UIControlStateNormal];
     [unitButton setBackgroundColor:backgroundColor];
 }
+
 - (void)setMainViewColorAndDisable:(BOOL)enabled{
     if(!enabled){
         self.mainView.backgroundColor = [SFIColors ruleGraycolor];
@@ -286,11 +287,11 @@
     }    
 }
 - (IBAction)onFahrenheitTap:(id)sender {
-    [self.delegate onDoneTapDelegate:self.type value:@"\u00B0F" isSecureFld:NO row:self.row];
+    [self.delegate onDoneTapDelegate:self.type value:@"F" isSecureFld:NO row:self.row];
 }
 
 - (IBAction)onCelsiusTap:(id)sender {
-    [self.delegate onDoneTapDelegate:self.type value:@"\u00B0F" isSecureFld:NO row:self.row];
+    [self.delegate onDoneTapDelegate:self.type value:@"C" isSecureFld:NO row:self.row];
 }
 
 

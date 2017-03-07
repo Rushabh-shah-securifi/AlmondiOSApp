@@ -22,6 +22,7 @@
 #import "AlmondManagement.h"
 #import "AlmondPlan.h"
 #import "NSString+securifi.h"
+#import "CommonMethods.h"
 
 @implementation GenericIndexUtil
 
@@ -69,7 +70,12 @@
                 headerText = [NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.displayText];
             }
             else{
-                headerText = genericIndexValue.genericValue.displayText;
+                if([[SecurifiToolkit sharedInstance].almondProperty.weatherCentigrade isEqualToString:@"C"] &&[genericIndexValue.genericIndex.formatter.units hasSuffix:@"F"]){
+                    headerText = [NSString stringWithFormat:@"%d˚C",[CommonMethods convertToCelsius:genericIndexValue.genericValue.displayText.intValue]];
+                }
+                
+                else
+                    headerText = genericIndexValue.genericValue.displayText;
             }
             if(genericIndexValue.genericValue.icon.length == 0)
                 headerText = @"";

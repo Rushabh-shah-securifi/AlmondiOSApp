@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SFIButtonSubProperties.h"
+#import "GenericIndexValue.h"
 
 @interface CommonMethods : NSObject
 
@@ -102,5 +103,11 @@
 +(NSString *)colorShadesforValue:(int)defaultcolor byValueOfcolor:(NSString *)value;
 
 + (NSArray *)readableValueWithBytes:(id)bytes;
+
++ (int)convertToFarenheit:(int)celsius;
+
++ (int)convertToCelsius:(int)fahrenheit;
+
++ (void)converCentigrateValue:(GenericIndexValue *)genericIndexValObj;
 
 @end

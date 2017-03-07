@@ -822,4 +822,32 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     return arrayOfStrings;
 }
 
++ (void)converCentigrateValue:(GenericIndexValue *)genericIndexValObj{
+    GenericIndexClass *genericIndexObj = [[GenericIndexClass alloc] initWithGenericIndex:genericIndexValObj.genericIndex];
+    GenericValue *genericValue = [GenericValue getCopy:genericIndexValObj.genericValue];
+    
+    AlmondProperties *property = [SecurifiToolkit sharedInstance].almondProperty;
+    
+    //formatter is already a copy in genericindexObj
+    if([property.weatherCentigrade isEqualToString:@"C"]){
+        genericIndexObj.formatter.min = [self convertToCelsius:genericIndexObj.formatter.min];
+        genericIndexObj.formatter.max = [self convertToCelsius:genericIndexObj.formatter.max];
+        genericIndexObj.formatter.units = @"˚C";
+        
+        genericValue.value = @([self convertToCelsius:genericValue.value.intValue]).stringValue;
+    }
+    
+    genericIndexValObj.genericIndex = genericIndexObj;
+    genericIndexValObj.genericValue = genericValue;
+}
+
++ (int)convertToFarenheit:(int)celsius{
+    return round(celsius * 1.8 + 32);
+    
+}
+
++ (int)convertToCelsius:(int)fahrenheit{
+    return  round((fahrenheit - 32) / 1.8);
+}
+
 @end

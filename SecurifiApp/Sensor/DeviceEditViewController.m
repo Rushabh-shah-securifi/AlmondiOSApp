@@ -246,6 +246,7 @@ static const int xIndent = 10;
             [view addSubview:label];
             
             if([genericIndexObj.layoutType isEqualToString:@"SINGLE_TEMP"]){
+                [CommonMethods converCentigrateValue:genericIndexValue];
                 HorizontalPicker *horzView = [[HorizontalPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 horzView.delegate = self;
                 [view addSubview:horzView];
@@ -749,6 +750,7 @@ static const int xIndent = 10;
         if([layout isEqualToString:@"SINGLE_TEMP"]){
             HorizontalPicker *horzPicker = (HorizontalPicker *)genIndexVal.clickedView;
             horzPicker.isInitialised = NO;
+//            [CommonMethods converCentigrateValue:genIndexVal];
             [horzPicker.horzPicker scrollToElement:[value integerValue] - genIndexVal.genericIndex.formatter.min  animated:YES];
         }
         else if ([layout isEqualToString:MULTI_BUTTON]){

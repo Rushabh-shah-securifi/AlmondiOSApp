@@ -309,13 +309,7 @@ int mii;
         }
             break;
         case Adv_temperature:{
-            if([almondProperty.temperatureUnit isEqualToString:@"\u00B0C"]){
-                value = @"\u00B0F";
-            }
-            else{
-                value = @"\u00B0C";
-            }
-            [RouterPayload requestAlmondPropertyChange:mii action:@"TemperatureUnit" value:value uptime:nil];
+            [RouterPayload requestAlmondPropertyChange:mii action:@"weatherCentigrade" value:value uptime:nil];
         }
             break;
         default:
@@ -408,7 +402,7 @@ int mii;
     
     //Temperature
     cellsArray = [NSMutableArray new];
-    [cellsArray addObject:[self getCellDict:@"Temperature" value:almondProperty.temperatureUnit]];
+    [cellsArray addObject:[self getCellDict:@"Temperature" value:almondProperty.weatherCentigrade]];
     [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_temperature]];
 
     //Time zone

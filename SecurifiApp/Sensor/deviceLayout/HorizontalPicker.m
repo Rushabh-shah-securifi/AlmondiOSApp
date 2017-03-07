@@ -10,6 +10,7 @@
 #import "SFIColors.h"
 #import "SFIPickerIndicatorView1.h"
 #import "UIFont+Securifi.h"
+#import "CommonMethods.h"
 
 @interface HorizontalPicker ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate>
 @end
@@ -66,8 +67,16 @@
 }
 
 - (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {
-    if(self.isInitialised)
-        [self.delegate save:@(self.genericIndexValue.genericIndex.formatter.min + index).stringValue forGenericIndexValue:_genericIndexValue currentView:self];
+    if(self.isInitialised){
+        NSInteger value = self.genericIndexValue.genericIndex.formatter.min + index;
+        if([[SecurifiToolkit sharedInstance].almondProperty.weatherCentigrade isEqualToString:@"C"]){
+            value = [CommonMethods convertToFarenheit:(int)value];
+    
+        }
+        [self.delegate save:@(value).stringValue forGenericIndexValue:_genericIndexValue currentView:self];
+        
+    }
+    
     self.isInitialised = YES;
 }
 
