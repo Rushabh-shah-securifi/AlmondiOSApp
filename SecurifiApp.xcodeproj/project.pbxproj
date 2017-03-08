@@ -441,6 +441,8 @@
 		B095F99A1DCF7CBF00CBCCDF /* NetworkStatusIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = B095F9991DCF7CBF00CBCCDF /* NetworkStatusIcon.m */; };
 		B0E41DF31DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B0E41DF21DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf */; };
 		B0E41DF51DCC1BA100D5FD2A /* h_keyfob_image_V3.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B0E41DF41DCC1BA100D5FD2A /* h_keyfob_image_V3.pdf */; };
+		CE1153921E6ED23900F81D7F /* UserProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1153911E6ED23800F81D7F /* UserProfileView.m */; };
+		CE1153941E6ED25F00F81D7F /* UserProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE1153931E6ED25F00F81D7F /* UserProfileView.xib */; };
 		CE3C497F1E40734C00AD6E17 /* PickerComponentView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3C497E1E40734C00AD6E17 /* PickerComponentView.m */; };
 		CE3C49821E41C04700AD6E17 /* DeviceNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3C49811E41C04700AD6E17 /* DeviceNotificationViewController.m */; };
 		CE3C49851E41EA7600AD6E17 /* NotificationCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3C49841E41EA7600AD6E17 /* NotificationCellTableViewCell.m */; };
@@ -1149,6 +1151,9 @@
 		B095F9991DCF7CBF00CBCCDF /* NetworkStatusIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkStatusIcon.m; sourceTree = "<group>"; };
 		B0E41DF21DCC1B9300D5FD2A /* h_keyfob_image_V2.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_keyfob_image_V2.pdf; sourceTree = "<group>"; };
 		B0E41DF41DCC1BA100D5FD2A /* h_keyfob_image_V3.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = h_keyfob_image_V3.pdf; sourceTree = "<group>"; };
+		CE1153901E6ED23800F81D7F /* UserProfileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileView.h; sourceTree = "<group>"; };
+		CE1153911E6ED23800F81D7F /* UserProfileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileView.m; sourceTree = "<group>"; };
+		CE1153931E6ED25F00F81D7F /* UserProfileView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileView.xib; sourceTree = "<group>"; };
 		CE3C497D1E40734C00AD6E17 /* PickerComponentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerComponentView.h; sourceTree = "<group>"; };
 		CE3C497E1E40734C00AD6E17 /* PickerComponentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerComponentView.m; sourceTree = "<group>"; };
 		CE3C49801E41C04700AD6E17 /* DeviceNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceNotificationViewController.h; sourceTree = "<group>"; };
@@ -2661,6 +2666,9 @@
 				F4F981D11DFA899B00FB0676 /* List_TypeView.m */,
 				CE3C497D1E40734C00AD6E17 /* PickerComponentView.h */,
 				CE3C497E1E40734C00AD6E17 /* PickerComponentView.m */,
+				CE1153901E6ED23800F81D7F /* UserProfileView.h */,
+				CE1153911E6ED23800F81D7F /* UserProfileView.m */,
+				CE1153931E6ED25F00F81D7F /* UserProfileView.xib */,
 			);
 			path = deviceLayout;
 			sourceTree = "<group>";
@@ -3062,6 +3070,7 @@
 				A58DB30F1BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				F417B2A11DA25B7B0073C440 /* Router.storyboard in Resources */,
 				A58DB2F31BB16B9F00717C02 /* termsofuse.html in Resources */,
+				CE1153941E6ED25F00F81D7F /* UserProfileView.xib in Resources */,
 				846414E21B736B80008AB07F /* AvenirLTStd-LightOblique.otf in Resources */,
 				B017E8991DE8600400BC0DE8 /* temp_jsonResponse.json in Resources */,
 				A58DB3031BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
@@ -3687,6 +3696,7 @@
 				1DF0391AFBAB20EA1FB28F60 /* SFIRouterSettingsTableViewController.m in Sources */,
 				1DF03C3105B3DC1477346284 /* SFITabBarController.m in Sources */,
 				F4F981CF1DFA880A00FB0676 /* IoTDeviceViewController.m in Sources */,
+				CE1153921E6ED23900F81D7F /* UserProfileView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -43,7 +43,7 @@ int mii;
         self.notifyMeTable.hidden = YES;
     NSString *schedule = [Client getScheduleById:@(_genericIndexValue.deviceID).stringValue];
     if([self.genericIndexValue.genericIndex.ID isEqualToString:@"-3"]){
-    NotificationView *notificationView = [[NotificationView alloc]initWithFrame:CGRectMake(0, 66, self.view.frame.size.width, 250) andGenericIndexValue:self.genericIndexValue];
+    NotificationView *notificationView = [[NotificationView alloc]initWithFrame:CGRectMake(0, 66, self.view.frame.size.width, 250) andGenericIndexValue:self.genericIndexValue isSensor:self.isSensor];
         notificationView.delegate = self;
         notificationView.genericIndexValue = self.genericIndexValue;
         [self.doneButtoon addTarget:self action:@selector(onDoneButtonClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -62,6 +62,7 @@ int mii;
         }
 
         GenericIndexValue *gval = self.genericIndexValue;
+        self.doneButtoon.titleLabel.font = [UIFont securifiFont:25];
         [self.doneButtoon setTitle:@"+" forState:UIControlStateNormal];
         [self.doneButtoon addTarget:self action:@selector(plusButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -134,7 +135,7 @@ int mii;
         cell = [[NotificationCellTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.textLabel.text = [self.staticList objectAtIndex:indexPath.row];
-    [cell.textLabel setFont:[UIFont securifiFont:14]];
+    [cell.textLabel setFont:[UIFont securifiFont:16]];
     
     if([_location isEqualToString:[self.staticList objectAtIndex:indexPath.row]]){
         [cell hideCheckButton:NO];
@@ -153,6 +154,7 @@ int mii;
     NSString *location = [self.staticList objectAtIndex:indexPath.row];
     //send request
      mii = arc4random() % 10000;
+    self.genericIndexValue.genericIndex.commandType = DeviceCommand_UpdateDeviceLocation;
      [DevicePayload getNameLocationChange:self.genericIndexValue mii:mii value:location];
     [self.notifyMeTable reloadData];
     

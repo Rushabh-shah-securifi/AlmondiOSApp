@@ -2747,7 +2747,8 @@
         "Title": "0",
         "Formatter": {
             "Min": "0",
-            "Max": "65535",
+            "Max": "100",
+            "Factor": "655.35",
             "prefix": "brightness_changed"
         }
     },

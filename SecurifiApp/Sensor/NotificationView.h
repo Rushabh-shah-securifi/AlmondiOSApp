@@ -15,6 +15,6 @@
 @property (weak, nonatomic) IBOutlet UIView *view;
 @property (weak,nonatomic) id<NotificationViewDelegate> delegate;
 @property (nonatomic)GenericIndexValue *genericIndexValue;
-- (id)initWithFrame:(CGRect)frame andGenericIndexValue:(GenericIndexValue *)genericIndexValue;
+- (id)initWithFrame:(CGRect)frame andGenericIndexValue:(GenericIndexValue *)genericIndexValue isSensor:(BOOL)isSensor;
 
 @end

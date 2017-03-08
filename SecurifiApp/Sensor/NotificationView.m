@@ -7,6 +7,8 @@
 //
 
 #import "NotificationView.h"
+#import "UICommonMethods.h"
+#import "SFIColors.h"
 @interface NotificationView ()
 
 @property (weak, nonatomic) IBOutlet UISwitch *enableDisableSwitch;
@@ -21,22 +23,33 @@
 
 @property (weak, nonatomic) IBOutlet UIView *awayView;
 @property (nonatomic)NSString *updateValue;
+@property BOOL isSensor;
 
 @end
 @implementation NotificationView
 
-- (id)initWithFrame:(CGRect)frame andGenericIndexValue:(GenericIndexValue *)genericIndexValue{
+- (id)initWithFrame:(CGRect)frame andGenericIndexValue:(GenericIndexValue *)genericIndexValue isSensor:(BOOL)isSensor{
     self = [super initWithFrame:frame];
     if(self){
         [[NSBundle mainBundle] loadNibNamed:@"NotificationView" owner:self options:nil];
-        [self addSubview:self.view];
+        [self addSubview:self.view];//iconWhiteCheckmark
         [self stretchToSuperView:self.view];
         self.genericIndexValue = genericIndexValue;
+        self.isSensor = isSensor;
+        
         [self updateUIValue];
     }
     return self;
 }
 -(void)updateUIValue{
+    if(self.isSensor){
+        self.alwaysImg.image=[UICommonMethods imageNamed:@"iconWhiteCheckmark" withColor:[SFIColors ruleBlueColor]];
+        self.awayImg.image=[UICommonMethods imageNamed:@"iconWhiteCheckmark" withColor:[SFIColors ruleBlueColor]];
+    }
+    else{
+        self.alwaysImg.image=[UICommonMethods imageNamed:@"iconWhiteCheckmark" withColor:[SFIColors clientGreenColor]];
+        self.awayImg.image=[UICommonMethods imageNamed:@"iconWhiteCheckmark" withColor:[SFIColors clientGreenColor]];
+    }
     self.updateValue = self.genericIndexValue.genericValue.value;
     if([self.genericIndexValue.genericValue.value isEqualToString:@"1"]){
         [self notificationButtonSwitchON];

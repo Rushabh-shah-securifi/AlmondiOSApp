@@ -134,7 +134,7 @@ typedef NS_ENUM(NSUInteger, PropertyType) {
 
 - (void)setRightValue:(NSString *)value{
     self.rightLabel.hidden = NO;
-    self.rightLabel.text = value;
+    self.rightLabel.text = [value uppercaseString];
 }
 -(void)setRightLabelColor:(UIColor *)color{
     self.rightLabel.textColor = color;

@@ -25,6 +25,8 @@
 #import "AlertView.h"
 #import "UIViewController+Securifi.h"
 #import "AlmondManagement.h"
+#import "UICommonMethods.h"
+#import "SFIColors.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
@@ -93,8 +95,14 @@
     return ruleArr;
 }
 -(void)setUpNavBar{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     dispatch_async(dispatch_get_main_queue(), ^{
+        if(self.doDeviceFiltering){
+            
+            UIBarButtonItem *barButtonItem1 = [[UIBarButtonItem alloc]initWithImage:[UICommonMethods imageNamed:@"backArrow" withColor:[SFIColors ruleBlueColor]] style:UIBarButtonItemStyleBordered target:self action:@selector(onBackButton)];
+            NSMutableArray *navItems = [[NSMutableArray alloc ]initWithArray: @[barButtonItem1]];
+            [navItems addObjectsFromArray:super.navigationItem.leftBarButtonItems];
+            self.navigationItem.leftBarButtonItems = navItems;
+        }
         if([AlmondManagement currentAlmond]){
             UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add_almond_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddBtnTap:)];
             self.navigationItem.rightBarButtonItem = addButton;
@@ -105,7 +113,6 @@
 }
 
 -(void)markAlmondTitleAndMac{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [AlmondManagement currentAlmond];
     if (self.currentAlmond == nil) {
         [self markNewTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
@@ -448,5 +455,10 @@
 - (void)onAddBtnTap:(id)sender{
     NSLog(@"scene on add btn tap");
     [self btnAddNewSceneTap:sender];
+}
+-(void)onBackButton{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController popViewControllerAnimated:YES];
+    });
 }
 @end

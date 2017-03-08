@@ -52,6 +52,7 @@
     
     if([matchingLoc isEqualToString:deviceLocation]){
         deviceLocBtn.selected = YES;
+        [self onDeviceLocClick:deviceLocBtn];
     }
     [self selectedButton:deviceLocBtn];
     
@@ -62,7 +63,7 @@
     
     [self addSubview:deviceLocBtn];
     
-    return xpos + textRect.size.width +20;
+    return xpos + textRect.size.width +25;
 }
 
 -(void)onDeviceLocClick:(id)sender{

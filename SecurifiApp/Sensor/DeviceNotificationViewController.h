@@ -13,4 +13,5 @@
 @interface DeviceNotificationViewController : UIViewController
 @property (nonatomic)GenericIndexValue *genericIndexValue;
 @property (nonatomic)GenericParams *genericParams;
+@property BOOL isSensor;
 @end

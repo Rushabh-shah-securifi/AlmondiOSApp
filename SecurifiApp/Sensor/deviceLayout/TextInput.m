@@ -80,7 +80,7 @@
     textCheckMarkView.image = [UICommonMethods imageNamed:@"iconSceneChekmark" withColor:[UIColor blackColor]];
     
     UIButton *btnCloseNotification = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnCloseNotification.frame = CGRectMake(self.frame.size.width - self.frame.size.height - 20, 0, 60, 35);
+    btnCloseNotification.frame = CGRectMake(self.frame.size.width - 100, 0, 100, self.frame.size.height -10);
     btnCloseNotification.backgroundColor = [UIColor clearColor];
     [btnCloseNotification addTarget:self action:@selector(tapCheckMark) forControlEvents:UIControlEventTouchUpInside];
     
@@ -90,7 +90,7 @@
 
 -(void)tapCheckMark{
     NSLog(@"tapCheckMark %@",self.deviceNameField.text);
-    
+    [self.deviceNameField resignFirstResponder];
     if(!self.isSensor){
         if(self.genericIndexValue.genericIndex.ID.intValue == -18){
             if(self.deviceNameField.text.length == 0){

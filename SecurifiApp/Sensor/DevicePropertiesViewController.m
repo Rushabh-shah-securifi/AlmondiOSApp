@@ -137,6 +137,7 @@ int mii;
 }
 
 -(void)setUpDevicePropertyEditHeaderView{
+    self.deviceNameLbl.text = self.genericParams.deviceName;
     if(self.genericParams.isSensor){
         [self.deviceHeaderView initialize:self.genericParams cellType:SensorEdit_Cell isSiteMap:NO];
     }
@@ -324,9 +325,14 @@ int mii;
     GenericIndexValue *gValue = [[self getRowforSection:indexPath.section] objectAtIndex:indexPath.row];
     
     NSString *property = gValue.genericIndex.property;
-    
+   
+    if([gValue.genericIndex.groupLabel isEqualToString:@"Name"])
+    {
+        return;
+    }
     if([property isEqualToString:@"navigate"] && ([gValue.genericIndex.ID isEqualToString:@"-3"] || [gValue.genericIndex.ID isEqualToString:@"-2"])){
         DeviceNotificationViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"DeviceNotificationViewController"];
+        viewController.isSensor = self.isSensor;
         viewController.genericIndexValue = gValue;
         
         [self presentViewController:viewController animated:YES completion:nil];
@@ -365,7 +371,6 @@ int mii;
     }
     else if([property isEqualToString:@"navigate"] && [gValue.genericIndex.ID isEqualToString:@"-41"]){
         
-        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
         AdvanceInformationViewController *viewController = [self.storyboard   instantiateViewControllerWithIdentifier:@"AdvanceInformationViewController"];
         viewController.genericIndexValue = gValue;
         [self.navigationController pushViewController:viewController animated:YES];

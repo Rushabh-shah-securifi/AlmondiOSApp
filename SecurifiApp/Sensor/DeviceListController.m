@@ -37,6 +37,7 @@
 #import "DevicePropertiesViewController.h"
 #import "UICommonMethods.h"
 #import "ScrollButtonView.h"
+#import "UserProfileView.h"
 
 
 #define NO_ALMOND @"NO ALMOND"
@@ -83,6 +84,7 @@ int mii;
 - (void)viewWillAppear:(BOOL)animated{
     NSLog(@"devicelist viewWillAppear");
     [super viewWillAppear:YES];
+   
     mii = arc4random() % 10000;
     [self markAlmondTitleAndMac];
     SFIAlmondPlus *almond = [AlmondManagement currentAlmond];
@@ -96,6 +98,7 @@ int mii;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
+    [self updateDeviceListLocation:self.defaultAllLoc];
 }
 
 -(void)tryShowLoadingDevice{
@@ -259,7 +262,7 @@ int mii;
     if(section == 0)
         return 90;
     else
-        return 40;
+        return 200;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -301,9 +304,13 @@ int mii;
     label.attributedText = aAttrString;
     [view addSubview:label];
     if(section == 0){
-        ScrollButtonView *scrollView = [[ScrollButtonView alloc]initWithFrame:CGRectMake(10, 40, CGRectGetWidth(view.frame), 45) color:[UIColor greenColor] location:self.defaultAllLoc];
+        ScrollButtonView *scrollView = [[ScrollButtonView alloc]initWithFrame:CGRectMake(10, 45, CGRectGetWidth(view.frame), 45) color:[UIColor greenColor] location:self.defaultAllLoc];
         scrollView.delegate = self;
         [view addSubview:scrollView];
+    }
+    else if (section == 1){
+        UserProfileView *userProfile = [[UserProfileView alloc]initWithFrame:CGRectMake(0, 0, 200, 200)];
+          [view addSubview:userProfile];
     }
     static NSString *headerView = @"customHeader";
     UITableViewHeaderFooterView *vHeader;
