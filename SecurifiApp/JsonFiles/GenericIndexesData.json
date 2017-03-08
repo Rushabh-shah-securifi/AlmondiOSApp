@@ -1798,7 +1798,7 @@
         "Conditional": "true",
         "DefaultIcon": "target_temperature",
         "Formatter": {
-            "Min": "50",
+            "Min": "48",
             "Max": "90",
             "Unit": "\u00B0F",
             "prefix": "thermostat_setpoint"
@@ -1813,7 +1813,7 @@
         "Conditional": "true",
         "DefaultIcon": "target_temperature",
         "Formatter": {
-            "Min": "50",
+            "Min": "48",
             "Max": "87",
             "Unit": "\u00B0F",
             "prefix": "coolingDown"
@@ -1828,7 +1828,7 @@
         "Conditional": "true",
         "DefaultIcon": "target_temperature",
         "Formatter": {
-            "Min": "53",
+            "Min": "51",
             "Max": "90",
             "Unit": "\u00B0F",
             "prefix": "heatingUp"

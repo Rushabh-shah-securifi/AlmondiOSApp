@@ -159,7 +159,8 @@
     tfRenameAlmond.font = [UIFont standardUITextFieldFont];
     tfRenameAlmond.tag = _indexPathRow;
     [tfRenameAlmond setReturnKeyType:UIReturnKeyDone];
-    tfRenameAlmond.enabled = FALSE;
+    tfRenameAlmond.enabled = true;
+    
     [tfRenameAlmond addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [tfRenameAlmond addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
     [self addSubview:tfRenameAlmond];

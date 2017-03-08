@@ -23,6 +23,7 @@
 NSArray *fieldNumbersForEachCategory;
 #pragma mark - Keyboard methods
 
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
@@ -156,7 +157,7 @@ NSArray *fieldNumbersForEachCategory;
         [((UITextField*)_textFieldView[count]) setReturnKeyType:UIReturnKeyDone];
         [((UITextField*)_textFieldView[count]) addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         [((UITextField*)_textFieldView[count]) addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
-        ((UITextField*)_textFieldView[count]).enabled = FALSE;
+        ((UITextField*)_textFieldView[count]).enabled = true;
         [self addSubview:((UITextField*)_textFieldView[count])];
     }
     
