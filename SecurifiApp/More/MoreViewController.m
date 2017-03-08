@@ -155,7 +155,7 @@
     NSMutableArray *moreFeatures = [NSMutableArray new];
     [moreFeatures addObject:@{@"rule_forward_icon":NSLocalizedString(@"rules", @"")}];
     SFIAlmondPlus *currAlmond = [AlmondManagement currentAlmond];
-    if(!self.isLocal && [currAlmond iotSupportFirmwareVersion:currAlmond.firmware])
+    if(!self.isLocal && [currAlmond iotSupportFirmwareVersion:currAlmond.firmware] && currAlmond.isPrimaryAlmond)
         [moreFeatures addObject:@{@"subscriptions_icon":NSLocalizedString(@"my_subscriptions", @"")}];
     
     NSString *addAlmondText = self.isLocal? NSLocalizedString(@"add_almond", @""): NSLocalizedString(@"link_almond_account", @"");
