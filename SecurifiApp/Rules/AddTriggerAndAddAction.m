@@ -107,7 +107,8 @@ labelAndCheckButtonView *labelView;
     for(Device *device in toolkit.devices){
         
         if(device.type == SFIDeviceType_GenericDevice_60){
-            if([RuleSceneUtil isToAddGEnericDevice:device])
+            
+            if((self.isScene && [RuleSceneUtil isToAddGEnericDevice:device]) ||(!self.isScene && self.isTrigger) || (!self.isScene && !self.isTrigger &&  [RuleSceneUtil isToAddGEnericDevice:device])  )
             xVal = [self addDeviceName:device.name deviceID:device.ID deviceType:device.type xVal:xVal];
         }
         else if([RuleSceneUtil showGenericDevice:device.type isTrigger:self.isTrigger isScene:self.isScene])
@@ -274,9 +275,7 @@ labelAndCheckButtonView *labelView;
     else if(deviceType == SFIDeviceType_Weather){
         genericIndexValues =[self handleWeather:deviceId genericIndexValues:genericIndexValues triggers:self.triggers];
     }
-    else if(deviceType == SFIDeviceType_GenericDevice_60){
-        
-    }
+    
     NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForArray:genericIndexValues isTrigger:self.isTrigger isScene:self.isScene];
     int numberOfCells = (int)[self maxCellId:genericIndexValDic];
     NSLog(@"GenericIndexValueDict after: %@", genericIndexValDic);

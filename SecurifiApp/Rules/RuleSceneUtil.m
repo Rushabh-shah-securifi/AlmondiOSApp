@@ -60,24 +60,11 @@
     if(genericDevice==nil)
         return genericIndexValues;
     
-//    if(deviceType == SFIDeviceType_GenericDevice_60){
-//        Device *device = [Device getDeviceForID:deviceID];
-//        for(DeviceKnownValues *knownValue in device.knownValues){
-//            GenericIndexClass *genericIndexObj = toolkit.genericIndexes[knownValue.genericIndex];
-//            GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexObj];
-//            
-//            if(copyGenericIndex!= nil && !copyGenericIndex.readOnly)
-//            {
-//                
-//                GenericIndexValue *genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:copyGenericIndex genericValue:genericValue index:indexID.intValue deviceID:deviceID];
-//                
-//                [genericIndexValues addObject:genericIndexValue];
-//                
-//            }
-//        }
-//        
-//        return genericIndexValues;
-//    }
+    if(deviceType == SFIDeviceType_GenericDevice_60){
+        
+        return [self genericndexesForType60:deviceID type:deviceType isTrigger:isTrigger isScene:isScene triggers:triggers action:actions];
+    }
+    
     NSDictionary *deviceIndexes = genericDevice.Indexes;
     NSArray *indexIDs = deviceIndexes.allKeys;
     for(NSString *indexID in indexIDs){
@@ -110,7 +97,42 @@
     
     return genericIndexValues;
 }
++(NSArray *)genericndexesForType60:(int)deviceID type:(int)deviceType isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene triggers:(NSMutableArray*)triggers action:(NSMutableArray*)actions {
+    NSMutableArray *genericIndexValues = [NSMutableArray new];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    
+    Device *device = [Device getDeviceForID:deviceID];
+    int rowId = 1;
+    for(DeviceKnownValues *knownValue in device.knownValues){
+        GenericIndexClass *genericIndexObj = toolkit.genericIndexes[knownValue.genericIndex];
+        if(genericIndexObj == NULL)
+            continue;
+        
+        GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexObj];
+        
+        if(copyGenericIndex!= nil)
+        {
+            if(![self showGenericIndex:copyGenericIndex isTrigger:isTrigger isScene:isScene])
+                continue;
+            copyGenericIndex.rowID = @(rowId).stringValue;
+            rowId++;
+            
+            
+            SFIButtonSubProperties *subProperty = [self findSubProperty:triggers actions:(NSArray*)actions deviceID:deviceID index:knownValue.index istrigger:isTrigger];
+            GenericValue *genericValue = nil;
+            if(subProperty != nil)
+                genericValue = [GenericIndexUtil getMatchingGenericValueForGenericIndexID:copyGenericIndex.ID forValue:subProperty.matchData];
+        
+            
+            GenericIndexValue *genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:copyGenericIndex genericValue:genericValue index:knownValue.index deviceID:deviceID];
+            
+            [genericIndexValues addObject:genericIndexValue];
+            
+        }
+    }
+    return genericIndexValues;
 
+}
 +(SFIButtonSubProperties *)findSubProperty:(NSArray*)triggers actions:(NSArray*)actions deviceID:(int)deviceID index:(int)index istrigger:(BOOL)isTrigger{
     NSArray *list = isTrigger? triggers: actions;
     for(SFIButtonSubProperties *subProperty in list){
