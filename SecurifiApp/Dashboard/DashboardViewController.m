@@ -86,6 +86,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+   
     
     _statusIcon = [NetworkStatusIcon new];
     self.toolkit = [SecurifiToolkit sharedInstance];
@@ -598,6 +599,10 @@
 
 -(void )getRecentNotification{
     NSLog(@"getDeviceClientNotification");
+    NSString *mac= [AlmondManagement currentAlmond];
+    if(!mac)
+        return;
+    
     self.deviceNotificationArr = [self.store fetchRecentSmartDeviceNotifications:[AlmondManagement currentAlmond].almondplusMAC];
     self.clientNotificationArr = [self.store fetchRecentClientNotifications:[AlmondManagement currentAlmond].almondplusMAC];
     self.iotNotificationArr = [self.store fetchRecentIotNotifications:[AlmondManagement currentAlmond].almondplusMAC];
@@ -1032,6 +1037,9 @@
 
 -(void)sendScanNowReq{
     SFIAlmondPlus *alm = [AlmondManagement currentAlmond];
+    if(!alm.almondplusMAC)
+        return;
+    
     GenericCommand *cmd  = [GenericCommand requestScanNow:alm.almondplusMAC];
     NSLog(@"cmd === %@",cmd);
     [self.toolkit asyncSendToNetwork:cmd];

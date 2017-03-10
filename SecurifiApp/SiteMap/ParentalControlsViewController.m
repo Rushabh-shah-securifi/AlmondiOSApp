@@ -541,8 +541,11 @@
     req = [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@",search,value,date,_amac,_cmac];
     
     if([search isEqualToString:@"DataUsageReset"]){
-        NSTimeZone *timeZone = [NSTimeZone localTimeZone];
-        NSString *tzName = [timeZone name];
+       
+        NSDateFormatter *dateFormatter = [NSDateFormatter new];
+        dateFormatter.dateFormat = @"ZZZ";
+        NSString *tzName = [dateFormatter stringFromDate:[NSDate date]];
+        
         req =  [NSString stringWithFormat:@"search=%@&value=%@&today=%@&AMAC=%@&CMAC=%@&TZ=%@",search,value,date,_amac,_cmac,tzName];
     }
     

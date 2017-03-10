@@ -105,8 +105,14 @@ labelAndCheckButtonView *labelView;
     }
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     for(Device *device in toolkit.devices){
-        if([RuleSceneUtil showGenericDevice:device.type isTrigger:self.isTrigger isScene:self.isScene])
+        
+        if(device.type == SFIDeviceType_GenericDevice_60){
+            if([RuleSceneUtil isToAddGEnericDevice:device])
             xVal = [self addDeviceName:device.name deviceID:device.ID deviceType:device.type xVal:xVal];
+        }
+        else if([RuleSceneUtil showGenericDevice:device.type isTrigger:self.isTrigger isScene:self.isScene])
+            xVal = [self addDeviceName:device.name deviceID:device.ID deviceType:device.type xVal:xVal];
+            
     }
     if(!self.isTrigger){
         xVal = [self addDeviceName:@"Reboot Almond" deviceID:1 deviceType:SFIDeviceType_REBOOT_ALMOND xVal:xVal];
@@ -268,7 +274,9 @@ labelAndCheckButtonView *labelView;
     else if(deviceType == SFIDeviceType_Weather){
         genericIndexValues =[self handleWeather:deviceId genericIndexValues:genericIndexValues triggers:self.triggers];
     }
-    
+    else if(deviceType == SFIDeviceType_GenericDevice_60){
+        
+    }
     NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForArray:genericIndexValues isTrigger:self.isTrigger isScene:self.isScene];
     int numberOfCells = (int)[self maxCellId:genericIndexValDic];
     NSLog(@"GenericIndexValueDict after: %@", genericIndexValDic);

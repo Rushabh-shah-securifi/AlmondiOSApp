@@ -16,6 +16,7 @@
 #import "SFIButtonSubProperties.h"
 #import "GenericIndexUtil.h"
 #import "RulesNestThermostat.h"
+#import "DeviceKnownValues.h"
 
 @implementation RuleSceneUtil
 
@@ -59,6 +60,24 @@
     if(genericDevice==nil)
         return genericIndexValues;
     
+//    if(deviceType == SFIDeviceType_GenericDevice_60){
+//        Device *device = [Device getDeviceForID:deviceID];
+//        for(DeviceKnownValues *knownValue in device.knownValues){
+//            GenericIndexClass *genericIndexObj = toolkit.genericIndexes[knownValue.genericIndex];
+//            GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexObj];
+//            
+//            if(copyGenericIndex!= nil && !copyGenericIndex.readOnly)
+//            {
+//                
+//                GenericIndexValue *genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:copyGenericIndex genericValue:genericValue index:indexID.intValue deviceID:deviceID];
+//                
+//                [genericIndexValues addObject:genericIndexValue];
+//                
+//            }
+//        }
+//        
+//        return genericIndexValues;
+//    }
     NSDictionary *deviceIndexes = genericDevice.Indexes;
     NSArray *indexIDs = deviceIndexes.allKeys;
     for(NSString *indexID in indexIDs){
@@ -83,12 +102,12 @@
             copyGenericIndex.formatter.min = deviceIndex.min.intValue;
             copyGenericIndex.formatter.max = deviceIndex.max.intValue;
         }
-        
+  
         GenericIndexValue *genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:copyGenericIndex genericValue:genericValue index:indexID.intValue deviceID:deviceID];
         
         [genericIndexValues addObject:genericIndexValue];
-        
     }
+    
     return genericIndexValues;
 }
 
@@ -102,9 +121,21 @@
     return nil;
 }
 
++(BOOL)isToAddGEnericDevice:(Device *)device{
+     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        for(DeviceKnownValues *knownValue in device.knownValues){
+            GenericIndexClass *genericIndexObj = toolkit.genericIndexes[knownValue.genericIndex];
+            GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexObj];
+            if(copyGenericIndex!= nil && !copyGenericIndex.readOnly)
+                return YES;
+        }
+    return NO;
+}
 +(BOOL)showGenericDevice:(int)deviceType isTrigger:(BOOL) isTrigger isScene:(BOOL)isScene{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+   
     GenericDeviceClass *genericDevice = toolkit.genericDevices[@(deviceType).stringValue];
+    
     //NSLog(@"devicetype: %d, istrigger: %d", deviceType, genericDevice.isTrigger);
     if(genericDevice != nil && [self isToBeAdded:genericDevice.excludeFrom checkString:isScene?@"Scene":@"Rule"]){
         if((!isScene && isTrigger) && genericDevice.isTrigger)

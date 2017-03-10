@@ -23,4 +23,6 @@
 
 + (BOOL)showGenericValue:(GenericValue *)index isScene:(BOOL)isScene isTrigger:(BOOL)isTrigger;
 
++(BOOL)isToAddGEnericDevice:(Device *)device;
+
 @end
