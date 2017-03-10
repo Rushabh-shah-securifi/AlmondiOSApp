@@ -1193,13 +1193,13 @@ labelAndCheckButtonView *labelView;
     SFIButtonSubProperties *newProperty=dimmer.subProperties;
     if(!self.isTrigger){
         newProperty=[dimmer.subProperties createNew];
-        newProperty.matchData = [CommonMethods getFahrenheitValue:@"" text:newPickerValue]; //[dimmer scaledValue:newPickerValue];
+        newProperty.matchData = [CommonMethods getFahrenheitValue:cetigrateVal text:newPickerValue]; //[dimmer scaledValue:newPickerValue];
         newProperty.displayedData = [dimmer scaledValue:newPickerValue];
 //[CommonMethods getFahrenheitValue:@"" text:newPickerValue];
     }else{
         NSLog(@"dim factor: %f", dimmer.factor);
-        dimmer.subProperties.matchData = [dimmer scaledValue:newPickerValue];
-        dimmer.subProperties.displayedData = newPickerValue;
+        dimmer.subProperties.matchData = [CommonMethods getFahrenheitValue:cetigrateVal text:newPickerValue];
+        dimmer.subProperties.displayedData = [dimmer scaledValue:newPickerValue]; //newPickerValue;
     }
     if(dimmer.subProperties.deviceType == SFIDeviceType_NestThermostat_57 && self.isTrigger){
         [self changeMinMaxValuesOfNestRangeLowHighForIndex:dimmer.subProperties.index value:dimmer.subProperties.matchData.intValue dimSuperView:[dimmer superview]];

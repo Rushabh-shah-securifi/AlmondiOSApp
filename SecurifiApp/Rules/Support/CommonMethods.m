@@ -863,7 +863,7 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
 
 + (NSString *)getFahrenheitValue:(NSString *)units text:(NSString *)text{
     NSString *fahVal = text;
-    if([[SecurifiToolkit sharedInstance].almondProperty.weatherCentigrade isEqualToString:@"C"]){
+    if([units isEqualToString:@"C"]){
         fahVal = [NSString stringWithFormat:@"%d",[self convertToFarenheit:text.intValue]];
     }
     return fahVal;

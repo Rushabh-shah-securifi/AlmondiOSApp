@@ -216,7 +216,8 @@ UILabel *topLabel;
                         
                         if([[SecurifiToolkit sharedInstance].almondProperty.weatherCentigrade isEqualToString:@"C"] &&[genericIndex.formatter.units hasSuffix:@"F"]){
                             int centiVal = [CommonMethods convertToCelsius:buttonProperties.displayedData.intValue];
-                            text = [NSString stringWithFormat:@"%d%@", centiVal,(genericIndex.formatter.units == nil?@"":genericIndex.formatter.units)];
+                        
+                            text = [NSString stringWithFormat:@"%d%@", centiVal,(genericIndex.formatter.units == nil?@"":@"°C")];
                         }else{
                             text = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,(genericIndex.formatter.units == nil?@"":genericIndex.formatter.units)];
                         }
