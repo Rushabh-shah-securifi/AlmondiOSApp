@@ -389,11 +389,11 @@ int mii;
     [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_DiagnosticSettings]];
     
     //upnp
-    if([self isAL3]){
+   // if([self isAL3]){
         cellsArray = [NSMutableArray new];
         [cellsArray addObject:[self getCellDict:@"UPnP" value:almondProperty.upnp]];
         [_sectionsArray addObject:[self getAdvFeatures:cellsArray cellType:Adv_UPnP]];
-    }
+    //}
     
     //language
     cellsArray = [NSMutableArray new];

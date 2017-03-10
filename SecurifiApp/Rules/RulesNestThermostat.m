@@ -188,6 +188,8 @@
             GenericValue *gVal = currentGenericValueDict[keyValue];
             if([gVal.value isEqualToString:@"heat"])
                 [newGenericValueDict setValue:gVal forKey:keyValue];
+            else if([gVal.value isEqualToString:@"eco"])
+                [newGenericValueDict setValue:gVal forKey:keyValue];
             else if([gVal.value isEqualToString:@"off"]){
                 [newGenericValueDict setValue:gVal forKey:keyValue];
             }
@@ -220,6 +222,8 @@
         for(NSString *keyValue in currentGenericValueDict){
             GenericValue *gVal = currentGenericValueDict[keyValue];
             if([gVal.value isEqualToString:@"cool"])
+                [newGenericValueDict setValue:gVal forKey:keyValue];
+            else if([gVal.value isEqualToString:@"eco"])
                 [newGenericValueDict setValue:gVal forKey:keyValue];
             else if([gVal.value isEqualToString:@"off"]){
                 [newGenericValueDict setValue:gVal forKey:keyValue];

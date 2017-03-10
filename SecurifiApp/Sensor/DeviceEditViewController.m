@@ -179,6 +179,7 @@ static const int xIndent = 10;
 }
 
 #pragma mark drawerMethods
+//for detail part
 -(void)drawIndexes{
     int yPos = LABELSPACING;
     self.indexesScroll.backgroundColor = self.genericParams.color;
