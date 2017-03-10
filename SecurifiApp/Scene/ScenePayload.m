@@ -9,7 +9,7 @@
 #import "Analytics.h"
 #import "SFIButtonSubProperties.h"
 #import "AlmondManagement.h"
-
+#import "CommonMethods.h"
 
 @implementation ScenePayload
 +(NSMutableDictionary*)getScenePayload:(Rule*)scene mobileInternalIndex:(int)mii isEdit:(BOOL)isEdit isSceneNameCompatibleWithAlexa:(BOOL)isCompatible{
@@ -80,8 +80,15 @@
     return @{
              @"ID" : @(subProperty.deviceId).stringValue,
              @"Index" : @(subProperty.index).stringValue,
-             @"Value" : subProperty.matchData
+             @"Value" : [self getConverterValueIfCentigrade:subProperty]
              };
+}
+
++ (NSString *)getConverterValueIfCentigrade:(SFIButtonSubProperties *)property{
+    if([property.displayText hasSuffix:@"˚C"]){
+        return @([CommonMethods convertToFarenheit:property.matchData.intValue]).stringValue;
+    }
+    return property.matchData;
 }
 
 + (NSMutableDictionary*)getDeleteScenePayload:(Rule*)scene mobileInternalIndex:(int)mii {

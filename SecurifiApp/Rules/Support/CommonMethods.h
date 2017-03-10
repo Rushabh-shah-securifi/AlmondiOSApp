@@ -108,6 +108,10 @@
 
 + (int)convertToCelsius:(int)fahrenheit;
 
-+ (void)converCentigrateValue:(GenericIndexValue *)genericIndexValObj;
++ (void)converCentigrateValue:(GenericIndexValue *)genericIndexValObj isSceneRule:(BOOL)isSceneRule;
+
++ (NSString *)getCelsiusValue:(NSString *)units text:(NSString *)text;
+
++ (NSString *)getFahrenheitValue:(NSString *)units text:(NSString *)text;
 
 @end

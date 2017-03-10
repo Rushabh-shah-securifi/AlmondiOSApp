@@ -822,19 +822,22 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
     return arrayOfStrings;
 }
 
-+ (void)converCentigrateValue:(GenericIndexValue *)genericIndexValObj{
++ (void)converCentigrateValue:(GenericIndexValue *)genericIndexValObj isSceneRule:(BOOL)isSceneRule{
     GenericIndexClass *genericIndexObj = [[GenericIndexClass alloc] initWithGenericIndex:genericIndexValObj.genericIndex];
     GenericValue *genericValue = [GenericValue getCopy:genericIndexValObj.genericValue];
     
     AlmondProperties *property = [SecurifiToolkit sharedInstance].almondProperty;
     
     //formatter is already a copy in genericindexObj
-    if([property.weatherCentigrade isEqualToString:@"C"]){
+    if([property.weatherCentigrade isEqualToString:@"C"] && [genericIndexObj.formatter.units hasSuffix:@"F"]){
         genericIndexObj.formatter.min = [self convertToCelsius:genericIndexObj.formatter.min];
         genericIndexObj.formatter.max = [self convertToCelsius:genericIndexObj.formatter.max];
         genericIndexObj.formatter.units = @"˚C";
         
-        genericValue.value = @([self convertToCelsius:genericValue.value.intValue]).stringValue;
+        if(isSceneRule)
+            genericValue.iconText = @([self convertToCelsius:genericValue.iconText.intValue]).stringValue;
+        else
+            genericValue.value = @([self convertToCelsius:genericValue.value.intValue]).stringValue;
     }
     
     genericIndexValObj.genericIndex = genericIndexObj;
@@ -848,6 +851,22 @@ static void HSL2RGB(float h, float s, float l, float* outR, float* outG, float* 
 
 + (int)convertToCelsius:(int)fahrenheit{
     return  round((fahrenheit - 32) / 1.8);
+}
+
++ (NSString *)getCelsiusValue:(NSString *)units text:(NSString *)text{
+    NSString *centiVal = text;
+    if([[SecurifiToolkit sharedInstance].almondProperty.weatherCentigrade isEqualToString:@"C"] &&[units hasSuffix:@"F"]){
+        centiVal = [NSString stringWithFormat:@"%d˚C",[self convertToCelsius:text.intValue]];
+    }
+    return centiVal;
+}
+
++ (NSString *)getFahrenheitValue:(NSString *)units text:(NSString *)text{
+    NSString *fahVal = text;
+    if([[SecurifiToolkit sharedInstance].almondProperty.weatherCentigrade isEqualToString:@"C"]){
+        fahVal = [NSString stringWithFormat:@"%d",[self convertToFarenheit:text.intValue]];
+    }
+    return fahVal;
 }
 
 @end

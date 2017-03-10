@@ -66,16 +66,13 @@
             genericValue = genericIndexValue.genericValue;
             genericIndex = genericIndexValue.genericIndex;
             
+            NSString *ifConvertVal = [self getCelsiusValue:genericIndexValue.genericIndex.formatter.units text:genericIndexValue.genericValue.displayText];
+            
             if([genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
-                headerText = [NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.displayText];
+                headerText = [NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, ifConvertVal];
             }
             else{
-                if([[SecurifiToolkit sharedInstance].almondProperty.weatherCentigrade isEqualToString:@"C"] &&[genericIndexValue.genericIndex.formatter.units hasSuffix:@"F"]){
-                    headerText = [NSString stringWithFormat:@"%d˚C",[CommonMethods convertToCelsius:genericIndexValue.genericValue.displayText.intValue]];
-                }
-                
-                else
-                    headerText = genericIndexValue.genericValue.displayText;
+                headerText = ifConvertVal;
             }
             if(genericIndexValue.genericValue.icon.length == 0)
                 headerText = @"";
@@ -85,16 +82,19 @@
         
         else if([genericIndexValue.genericIndex.placement containsString:HEADER]){ //contains
             if(genericIndexValue.genericValue.iconText){
+                NSString *ifConvertVal = [self getCelsiusValue:genericIndexValue.genericIndex.formatter.units text:genericIndexValue.genericValue.iconText];
                 if(detailText.length == 0 && headerText.length == 0)
-                    [detailText appendString:[NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.iconText]];
+                    [detailText appendString:[NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, ifConvertVal]];
                 else
-                    [detailText appendString:[NSString stringWithFormat:@", %@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.iconText]];
+                    [detailText appendString:[NSString stringWithFormat:@", %@ %@", genericIndexValue.genericIndex.groupLabel, ifConvertVal]];
             }
             else{
+                NSString *ifConvertVal = [self getCelsiusValue:genericIndexValue.genericIndex.formatter.units text:genericIndexValue.genericValue.displayText];
+                
                 if(detailText.length == 0 && headerText.length == 0)
-                    [detailText appendString:[NSString stringWithFormat:@"%@", genericIndexValue.genericValue.displayText]];
+                    [detailText appendString:[NSString stringWithFormat:@"%@", ifConvertVal]];
                 else
-                    [detailText appendString:[NSString stringWithFormat:@", %@", genericIndexValue.genericValue.displayText]];
+                    [detailText appendString:[NSString stringWithFormat:@", %@", ifConvertVal]];
             }
         }
     }//for
@@ -111,9 +111,24 @@
     else if(headerText.length > 0){
         genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:[NSString stringWithFormat:@"%@", headerText]];
     }
-
+    
+    else if(detailText.length == 0 || headerText.length == 0)
+    {
+        NSString *ifConvertVal = [self getCelsiusValue:genericIndex.formatter.units text:genericValue.displayText];
+        genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:[NSString stringWithFormat:@"%@", ifConvertVal]];
+    }
+    
+    
     NSLog(@"Final header text: %@, detail text: %@", headerText, detailText);
     return [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:index deviceID:device.ID];
+}
+
++ (NSString *)getCelsiusValue:(NSString *)units text:(NSString *)text{
+    NSString *centiVal = text;
+    if([[SecurifiToolkit sharedInstance].almondProperty.weatherCentigrade isEqualToString:@"C"] &&[units hasSuffix:@"F"]){
+        centiVal = [NSString stringWithFormat:@"%d˚C",[CommonMethods convertToCelsius:text.intValue]];
+    }
+    return centiVal;
 }
 
 + (NSMutableArray *)getDetailListForDevice:(int)deviceID{
@@ -152,8 +167,6 @@
 }
 
 +(NSMutableArray *)getGenericIndexValuesNOHeader:(Device *)device placment:(NSString*)placment{
-    
-    
     NSArray *genericIndexes = [self getGenericIndexValuesByPlacementForDevice:device placement:placment];
     if(genericIndexes!= nil && genericIndexes.count > 0){
         GenericIndexValue *genericIndexValue = [genericIndexes objectAtIndex:0];
@@ -167,8 +180,6 @@
             genericIndexValue.genericValue = gValue;
             return  genericIndexes;
         }
-        
-        
     }
     return NULL;
 }

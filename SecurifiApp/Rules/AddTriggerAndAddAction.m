@@ -522,6 +522,7 @@ labelAndCheckButtonView *labelView;
     dimbtn.minValue = genericIndexVal.genericIndex.formatter.min;
     dimbtn.maxValue = genericIndexVal.genericIndex.formatter.max;
     dimbtn.factor = genericIndexVal.genericIndex.formatter.factor;
+//    NSString *celVal = [CommonMethods getCelsiusValue:gVal.iconText text:<#(NSString *)#>]
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexVal.index matchData:gVal.iconText andEventType:nil deviceName:deviceName deviceType:deviceType];
     if(deviceType == SFIDeviceType_Weather)
         dimbtn.subProperties.type = @"WeatherTrigger";
@@ -729,11 +730,14 @@ labelAndCheckButtonView *labelView;
     
     for (GenericIndexValue *indexValue in deviceIndexValues) {
         NSLog(@"yscale index: %d", indexValue.index);
+        
         GenericIndexClass *genericIndex =indexValue.genericIndex;
         
         NSDictionary *genericValueDic;
         if(genericIndex.values == nil){
-            genericValueDic = [self formatterDict:genericIndex];
+            [CommonMethods converCentigrateValue:indexValue isSceneRule:YES];
+            
+            genericValueDic = [self formatterDict:indexValue.genericIndex];
             NSLog(@"genericValueDic val = %@",genericValueDic);
         }else{
             genericValueDic = genericIndex.values;
@@ -1173,6 +1177,7 @@ labelAndCheckButtonView *labelView;
 }
 -(void)removePicker:(DimmerButton* )dimmer{
     dimmer.pickerVisibility=NO;
+    NSString *cetigrateVal = [SecurifiToolkit sharedInstance].almondProperty.weatherCentigrade;
     [self removePickerFromView];
     //Store Values
     if(newPickerValue.length==0)
@@ -1181,8 +1186,9 @@ labelAndCheckButtonView *labelView;
     SFIButtonSubProperties *newProperty=dimmer.subProperties;
     if(!self.isTrigger){
         newProperty=[dimmer.subProperties createNew];
-        newProperty.matchData = [dimmer scaledValue:newPickerValue];
-        newProperty.displayedData=newPickerValue;
+        newProperty.matchData = [CommonMethods getFahrenheitValue:@"" text:newPickerValue]; //[dimmer scaledValue:newPickerValue];
+        newProperty.displayedData = [dimmer scaledValue:newPickerValue];
+//[CommonMethods getFahrenheitValue:@"" text:newPickerValue];
     }else{
         NSLog(@"dim factor: %f", dimmer.factor);
         dimmer.subProperties.matchData = [dimmer scaledValue:newPickerValue];
@@ -1302,6 +1308,7 @@ labelAndCheckButtonView *labelView;
 }
 
 - (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {
+    
     newPickerValue = pickerValuesArray2[index];
     isPresentHozPicker = YES;
 }

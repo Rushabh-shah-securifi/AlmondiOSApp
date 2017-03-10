@@ -112,9 +112,10 @@
     if(_genericParams.headerGenericIndexValue.genericValue.iconText){
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;
-        if([[SecurifiToolkit sharedInstance].almondProperty.weatherCentigrade isEqualToString:@"C"] && [_genericParams.headerGenericIndexValue.genericIndex.formatter.units hasSuffix:@"F"]){
+        
+        if([[SecurifiToolkit sharedInstance].almondProperty.weatherCentigrade isEqualToString:@"C"] && [_genericParams.headerGenericIndexValue.genericIndex.formatter.units hasSuffix:@"F"])
+        {
             NSString  *centiValue = [NSString stringWithFormat:@"%d˚C", [CommonMethods convertToCelsius:self.genericParams.headerGenericIndexValue.genericValue.iconText.intValue]];
-            
             self.deviceValueImgLable.attributedText = [CommonMethods getAttributeString:centiValue fontSize:20 LightFont:NO];
         }
         else{

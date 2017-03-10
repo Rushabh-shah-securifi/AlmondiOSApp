@@ -153,13 +153,9 @@ UILabel *topLabel;
         }else{
             NSLog(@"Subproperty: devicetype %d, index: %d, value: %@",buttonProperties.deviceType, buttonProperties.index, buttonProperties.matchData);
             NSArray *genericIndexValues = [self getDeviceIndexes:buttonProperties isTrigger:isTrigger];
-            NSLog(@"genericIndexValues count %ld",(unsigned long)genericIndexValues.count);
             if(genericIndexValues == nil || genericIndexValues.count<=0)
                 continue;
-            NSLog(@"button property: %@, genericindexvalues: %@ valid entry %d", buttonProperties, genericIndexValues,buttonProperties.valid);
             lastImageButton= [self buildEntry:buttonProperties positionId:positionId genericIndexValues:genericIndexValues isTrigger:isTrigger];
-            //NSLog(@"position id :: %d",positionId);
-            //NSLog(@"lastImageButton %@",lastImageButton);
             if(lastImageButton!=nil)
                 positionId++;
         }
@@ -183,8 +179,6 @@ UILabel *topLabel;
     for(GenericIndexValue *indexValue in genericIndexValues){
         //NSLog(@"indexValue.deviceId %d",indexValue.deviceID);
         GenericIndexClass *genericIndex = indexValue.genericIndex;
-        //GenericValue *selectedValue = indexValue.genericValue;
-        //NSLog(@"genericIndexValues %@ ,%@,%@",genericIndexValues,buttonProperties.matchData,buttonProperties.displayText);
         
         NSDictionary *genericValueDic;
         if(genericIndex.values == nil){
@@ -192,9 +186,7 @@ UILabel *topLabel;
         }else{
             genericValueDic = genericIndex.values;
         }
-        NSLog(@"genericIndex.Id %@",genericIndex.ID);
         NSArray *genericValueKeys = genericValueDic.allKeys;
-        NSLog(@"genericindex %d == subpropertyindex %d",indexValue.index,buttonProperties.index);
         if (indexValue.index == buttonProperties.index) {
             if([buttonProperties.matchData isEqualToString:@"toggle"])
             {
@@ -220,9 +212,15 @@ UILabel *topLabel;
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties] || buttonProperties.deviceType == 65){
                     NSString *text;
                     if(isDimButton){
-                    buttonProperties.displayedData = [NSString stringWithFormat:@"%d",(int)roundf([buttonProperties.matchData intValue]*(genericIndex.formatter.factor == 0?1.0:genericIndex.formatter.factor))];
-                         NSLog(@"buttonProperties.displayedData %@", buttonProperties.displayedData);
-                        text = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,(genericIndex.formatter.units == nil?@"":genericIndex.formatter.units)];
+                        buttonProperties.displayedData = [NSString stringWithFormat:@"%d",(int)roundf([buttonProperties.matchData intValue]*(genericIndex.formatter.factor == 0?1.0:genericIndex.formatter.factor))];
+                        
+                        if([[SecurifiToolkit sharedInstance].almondProperty.weatherCentigrade isEqualToString:@"C"] &&[genericIndex.formatter.units hasSuffix:@"F"]){
+                            int centiVal = [CommonMethods convertToCelsius:buttonProperties.displayedData.intValue];
+                            text = [NSString stringWithFormat:@"%d%@", centiVal,(genericIndex.formatter.units == nil?@"":genericIndex.formatter.units)];
+                        }else{
+                            text = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,(genericIndex.formatter.units == nil?@"":genericIndex.formatter.units)];
+                        }
+                        
                          //NSLog(@"is dim button text %@",text);
                         if(buttonProperties.deviceType == SFIDeviceType_HueLamp_48){
                             text = [NSString stringWithFormat:@"%@%@",@(roundf(buttonProperties.matchData.intValue * genericIndex.formatter.factor)).stringValue,genericIndex.formatter.units];
