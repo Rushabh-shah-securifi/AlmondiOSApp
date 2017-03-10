@@ -29,6 +29,7 @@
 #import "AlmondManagement.h"
 #import "iToast.h"
 #import "ClientPayload.h"
+#import "DataUsageView.h"
 
 #define DEVICE_PROPERTY_CELL @"devicepropertycell"
 
@@ -82,8 +83,8 @@ int mii;
         GenericIndexClass *gClass = dict[@"generic_index"];
         [self.sectionArr addObject:gClass];
     }
-
 }
+
 -(NSArray *)getRowforSection:(NSInteger)sectionNumber{
     GenericParams *gparams = self.genericParams;
     NSDictionary *dict = [gparams.indexValueList objectAtIndex:sectionNumber];
@@ -166,7 +167,8 @@ int mii;
     CGFloat kExpandedCellHeight = 160;
     CGFloat kNormalCellHeigh = 40;
      GenericIndexValue *gValue = [[self getRowforSection:indexPath.section] objectAtIndex:indexPath.row];
-    
+    if([gValue.genericIndex.layoutType isEqualToString:@"HISTORY_LAYOUT"])
+        return 180;
     if (self.indexPath == indexPath && !gValue.genericIndex.readOnly)
     {
         return kExpandedCellHeight; //It's not necessary a constant, though
@@ -190,16 +192,16 @@ int mii;
     
     UIView *view;
     int viewHt;
-    GenericIndexClass *gclass = [self.sectionArr objectAtIndex:section];
-    if(gclass.header != nil)
+    if(title != nil)
     {
 //        viewHt = defHeaderHeight + defHeaderLableHt;
         view = [[UIView alloc]initWithFrame:CGRectMake(15, 0, CGRectGetWidth(self.tableView.frame) -10, height)];
         view.backgroundColor = [UIColor greenColor];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 17, CGRectGetWidth(view.frame), defHeaderLableHt)];
         
-        [UICommonMethods setLableProperties:label text:gclass.header textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:fontSize alignment:NSTextAlignmentLeft];
-        label.text = [gclass.header uppercaseString];
+        [UICommonMethods setLableProperties:label text:title textColor:[UIColor grayColor] fontName:@"Avenir-Roman" fontSize:fontSize alignment:NSTextAlignmentLeft];
+        label.numberOfLines = 3;
+//        label.text = [title uppercaseString];
         [view addSubview:label];
     }
     else{
@@ -215,7 +217,8 @@ int mii;
     UIView *view;
     int viewHt;
      viewHt = defHeaderHeight + defHeaderLableHt;
-    return  [self tableHeaderViewForSection:section fontSize:18 title:@"" height:viewHt];
+    GenericIndexClass *gclass = [self.sectionArr objectAtIndex:section];
+    return  [self tableHeaderViewForSection:section fontSize:18 title:[NSLocalizedString(gclass.header,@"") capitalizedString] height:viewHt];
 //    GenericIndexClass *gclass = [self.sectionArr objectAtIndex:section];
 //    if(gclass.header != nil)
 //    {
@@ -308,6 +311,14 @@ int mii;
     if (self.indexPath == indexPath && !gValue.genericIndex.readOnly && ([gValue.genericIndex.layoutType isEqualToString:@"MULTI_BUTTON"] || [gValue.genericIndex.layoutType isEqualToString:@"LIST"] || [gValue.genericIndex.layoutType isEqualToString:@"SINGLE_TEMP"]))
     {
         [self addPickerComponent:gValue tableCell:cell];
+    }
+    else if([gValue.genericIndex.layoutType isEqualToString:@"HISTORY_LAYOUT"]){
+         Client *client = [Client findClientByID:@(gValue.deviceID).stringValue];
+        DataUsageView *dataUsage = [[DataUsageView alloc]initWithFrame:CGRectMake(0, 30, cell.contentView.frame.size.width, 121) genericIndexValue:gValue amac:[AlmondManagement currentAlmond].almondplusMAC cmac:[CommonMethods hexToString:client.deviceMAC]];
+        dataUsage.backgroundColor = [UIColor yellowColor];
+       
+        [cell.contentView addSubview:dataUsage];
+        
     }
     else if(self.indexPath == indexPath && !gValue.genericIndex.readOnly && ([gValue.genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [gValue.genericIndex.layoutType isEqualToString:@"SLIDER"])){
         [self addSlider:gValue tableCell:cell];

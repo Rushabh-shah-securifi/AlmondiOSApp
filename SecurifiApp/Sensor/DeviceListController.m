@@ -309,7 +309,8 @@ int mii;
         [view addSubview:scrollView];
     }
     else if (section == 1){
-        UserProfileView *userProfile = [[UserProfileView alloc]initWithFrame:CGRectMake(0, 0, 200, 200)];
+        UserProfileView *userProfile = [[UserProfileView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(view.frame), 200)];
+        userProfile.backgroundColor = [UIColor redColor];
           [view addSubview:userProfile];
     }
     static NSString *headerView = @"customHeader";

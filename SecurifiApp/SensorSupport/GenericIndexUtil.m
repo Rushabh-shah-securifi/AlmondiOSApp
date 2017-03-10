@@ -432,7 +432,7 @@
     NSMutableArray *groupedIndexValueList = [NSMutableArray new];
     NSArray *indexList;
     //name, location, devicespecific, automation, notification
-    NSArray *displayOrder = @[@-11, @-12, @-44, @-17, @-43, @-41];
+    NSArray *displayOrder = @[@-11, @-51, @-12, @-44, @-17 ,@-25 ,@-23, @-43, @-41];
     
     for(NSNumber *orderId in displayOrder){
         GenericIndexClass *genIndexObj = toolkit.genericIndexes[orderId.stringValue];

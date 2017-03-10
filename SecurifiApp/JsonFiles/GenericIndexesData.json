@@ -868,7 +868,16 @@
         
         
     },
-    
+    "-51": {
+        "Name": "ClientType",
+        "Type": "Actuator",
+        "Placement": "Detail",
+        "Layout": "LIST_TYPE",
+        "AppLabel": "User",
+        "DefaultIcon": "help_icon",
+        "property": "navigate",
+        "Elements": [-51]
+    },
     "1": {
         "Name": "SWITCH BINARY",
         "Type": "Actuator",
@@ -2047,7 +2056,7 @@
         "Title": "2",
         "DefaultIcon": "target_temperature",
         "Formatter": {
-            "Min": "50",
+            "Min": "48",
             "Max": "90",
             "Unit": "\u00B0F",
             "prefix": "thermostat_setpoint"
@@ -2063,7 +2072,7 @@
         "Title": "2",
         "DefaultIcon": "target_temperature",
         "Formatter": {
-            "Min": "50",
+            "Min": "48",
             "Max": "87",
             "Unit": "\u00B0F",
             "prefix": "coolingDown"
@@ -2079,7 +2088,7 @@
         "Title": "2",
         "DefaultIcon": "target_temperature",
         "Formatter": {
-            "Min": "53",
+            "Min": "51",
             "Max": "90",
             "Unit": "\u00B0F",
             "prefix": "heatingUp"

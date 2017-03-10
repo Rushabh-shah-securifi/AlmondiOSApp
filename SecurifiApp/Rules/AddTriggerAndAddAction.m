@@ -1109,7 +1109,7 @@ rows = @[displayArr,@[NSLocalizedString(@"before", @"Before"),NSLocalizedString(
     if(!self.isTrigger){
         newProperty=[dimmer.subProperties createNew];
         newProperty.matchData = [dimmer scaledValue:newPickerValue];
-        newProperty.displayedData=newPickerValue;
+        newProperty.displayedData= newPickerValue;
     }else{
         NSLog(@"dim factor: %f", dimmer.factor);
         dimmer.subProperties.matchData = [dimmer scaledValue:newPickerValue];

@@ -449,6 +449,8 @@
 		CE3C49C61E445F5300AD6E17 /* DevicePropertiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3C49C51E445F5300AD6E17 /* DevicePropertiesViewController.m */; };
 		CE3EDAF21D4742EC00C153A6 /* BrowsingHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3EDAEF1D4742EC00C153A6 /* BrowsingHistoryViewController.m */; };
 		CE3EDAF31D4742EC00C153A6 /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3EDAF11D4742EC00C153A6 /* SearchTableViewController.m */; };
+		CE3EDE341E711C250032EC30 /* DataUsageView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3EDE331E711C250032EC30 /* DataUsageView.m */; };
+		CE3EDE361E711D7C0032EC30 /* DataUsageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3EDE351E711D7C0032EC30 /* DataUsageView.xib */; };
 		CE40BF131D225791007C2148 /* BrowsingHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF0A1D225791007C2148 /* BrowsingHistory.m */; };
 		CE40BF151D225791007C2148 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF0E1D225791007C2148 /* HistoryCell.m */; };
 		CE42471A1E67F80900CB3ED1 /* ScrollButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4247191E67F80700CB3ED1 /* ScrollButtonView.m */; };
@@ -1166,6 +1168,9 @@
 		CE3EDAEF1D4742EC00C153A6 /* BrowsingHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistoryViewController.m; sourceTree = "<group>"; };
 		CE3EDAF01D4742EC00C153A6 /* SearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewController.h; sourceTree = "<group>"; };
 		CE3EDAF11D4742EC00C153A6 /* SearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewController.m; sourceTree = "<group>"; };
+		CE3EDE321E711C250032EC30 /* DataUsageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataUsageView.h; sourceTree = "<group>"; };
+		CE3EDE331E711C250032EC30 /* DataUsageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataUsageView.m; sourceTree = "<group>"; };
+		CE3EDE351E711D7C0032EC30 /* DataUsageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DataUsageView.xib; sourceTree = "<group>"; };
 		CE40BF091D225791007C2148 /* BrowsingHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistory.h; sourceTree = "<group>"; };
 		CE40BF0A1D225791007C2148 /* BrowsingHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistory.m; sourceTree = "<group>"; };
 		CE40BF0D1D225791007C2148 /* HistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCell.h; sourceTree = "<group>"; };
@@ -2669,6 +2674,9 @@
 				CE1153901E6ED23800F81D7F /* UserProfileView.h */,
 				CE1153911E6ED23800F81D7F /* UserProfileView.m */,
 				CE1153931E6ED25F00F81D7F /* UserProfileView.xib */,
+				CE3EDE321E711C250032EC30 /* DataUsageView.h */,
+				CE3EDE331E711C250032EC30 /* DataUsageView.m */,
+				CE3EDE351E711D7C0032EC30 /* DataUsageView.xib */,
 			);
 			path = deviceLayout;
 			sourceTree = "<group>";
@@ -3050,6 +3058,7 @@
 				B017E8951DE8600400BC0DE8 /* responseMain.json in Resources */,
 				F4D93ADD1D390B4B00D55BD6 /* HelpScreenStoryboard.storyboard in Resources */,
 				A58DB46F1BB3CD5200717C02 /* Localizable.strings in Resources */,
+				CE3EDE361E711D7C0032EC30 /* DataUsageView.xib in Resources */,
 				A58DB2F61BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2EF1BB16B9F00717C02 /* Localizable.strings in Resources */,
 				846414E01B736B80008AB07F /* AvenirLTStd-HeavyOblique.otf in Resources */,
@@ -3681,6 +3690,7 @@
 				F4EA08261D6ADBFF00D6CC28 /* MoreCellTableViewCell.m in Sources */,
 				F4F981C91DFA7F8600FB0676 /* SFIBackendAPIClient.m in Sources */,
 				1DF031024A2F8810074C455A /* TemperatureView.m in Sources */,
+				CE3EDE341E711C250032EC30 /* DataUsageView.m in Sources */,
 				1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */,
 				1DF0333217E77760651C98F7 /* ScoreboardNetworkSettingsViewController.m in Sources */,
 				A54D74891CB51FD000EB46B6 /* RouterPayload.m in Sources */,
