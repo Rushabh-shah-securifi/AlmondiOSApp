@@ -292,7 +292,8 @@ int mii;
     
     if (self.currentConnectionMode == SFIAlmondConnectionMode_local) {
         return [self isAL3]? 2: 1;
-    }else{
+    }
+    else{
         return 7;
     }
 }
@@ -324,8 +325,13 @@ int mii;
                 return  [self getSettingsRowHeight];
             case DEF_MESH_SECTION:
                 return [self isAL3]? almondNtwkHeight: 0;
-            case DEF_ADVANCED_ROUTER_SECTION:
+            case DEF_ADVANCED_ROUTER_SECTION:{
+                if([[AlmondManagement currentAlmond].firmware hasPrefix:@"AP2-"]){
+                    return 0;
+                }
                 return _enableAdvRouter? advanceRtrHeight: 0;
+            }
+                
             case DEF_NETWORKING_SECTION:
                 return networkingHeight;
             case DEF_ROUTER_REBOOT_SECTION:
@@ -418,6 +424,9 @@ int mii;
                 
             }
             case DEF_ADVANCED_ROUTER_SECTION:{
+                if([[AlmondManagement currentAlmond].firmware hasPrefix:@"AP2-"]){
+                    return [self createZeroCell:tableView];
+                }
                 if(_enableAdvRouter){
                     
                     NSArray *summary = @[NSLocalizedString(@"learn_adv_features", @"")];
@@ -509,7 +518,7 @@ int mii;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if([self isNoAlmondLoaded])
         return 0;
-    else if(section == DEF_ADVANCED_ROUTER_SECTION && self.enableAdvRouter == NO)
+    else if(section == DEF_ADVANCED_ROUTER_SECTION && (self.enableAdvRouter == NO || [[AlmondManagement currentAlmond].firmware hasPrefix:@"AP2-"]))
         return 0;
     else if(section == DEF_MESH_SECTION && ![self isAL3])
         return 0;
