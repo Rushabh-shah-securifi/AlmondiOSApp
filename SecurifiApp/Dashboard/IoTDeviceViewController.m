@@ -424,7 +424,7 @@
     NSString *iconName = @"tamper";
     UIColor *color;
 NSLog(@"dict tag %@ ",dict[@"Tag"]);
-    if([dict[@"Tag"] isEqualToString:@"1"]||[dict[@"Tag"] isEqualToString:@"3"] || [dict[@"Tag"] isEqualToString:@"5"])
+    if([dict[@"Tag"] isEqualToString:@"1"]||[dict[@"Tag"] isEqualToString:@"3"] || [dict[@"Tag"] isEqualToString:@"5"] ||[dict[@"Tag"] isEqualToString:@"8"] )
         color = [UIColor redColor];
     else
         color = [UIColor orangeColor];
@@ -481,7 +481,7 @@ NSLog(@"dict tag %@ ",dict[@"Tag"]);
         NSLog(@"dict   == %@",dict);
 
         if([dict[@"P"]isEqualToString:@"1"]){
-            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] || [dict[@"Tag"] isEqualToString:@"5"]){
+            if([dict[@"Tag"]isEqualToString:@"1"] || [dict[@"Tag"]isEqualToString:@"3"] || [dict[@"Tag"] isEqualToString:@"5"] ||[dict[@"Tag"]isEqualToString:@"8"] ){
                 color = [UIColor redColor];
                 break;
             }

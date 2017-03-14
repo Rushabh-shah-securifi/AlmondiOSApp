@@ -155,7 +155,8 @@ int mii;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    
+    [self onRegionSelectedDelegate: self.filteredList[indexPath.row]];
 }
 
 #pragma mark action methods
