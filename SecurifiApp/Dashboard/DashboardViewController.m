@@ -42,6 +42,7 @@
 #import "GenericDeviceClass.h"
 #import "GenericValue.h"
 #import "DeviceIndex.h"
+#import "UIViewController+Securifi.h"
 
 
 
@@ -1106,6 +1107,12 @@
 
 
 -(void)launchMySubscription:(id)sender{
+    NSArray *primaryAlList = [AlmondManagement getPrimaryAL3s:[AlmondManagement almondList]];
+    if(primaryAlList.count == 0){
+        [self showToast:@"Subscription settings are accessible only from Mobile app of primary users."];
+        return;
+    }
+    
     MySubscriptionsViewController *ctrl = [self getStoryBoardController:@"SiteMapStoryBoard" ctrlID:@"MySubscriptionsViewController"];
     [self pushViewController:ctrl];
 }

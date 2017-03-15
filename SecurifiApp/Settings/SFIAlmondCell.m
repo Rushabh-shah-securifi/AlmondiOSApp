@@ -72,10 +72,12 @@
 
 - (void)textFieldFinished:(UITextField*) tfName {
     changedAlmondName = tfName.text;
+    [self.delegate onChangeAlmondNameClicked:changedAlmondName nameChangeValue:343];
     [tfName resignFirstResponder];
 }
 
 -(void)textFieldDidChange:(UITextField *)tfName {
+//    [tfName becomeFirstResponder];
     changedAlmondName = tfName.text;
 }
 
@@ -146,7 +148,7 @@
     
     CGFloat rename_button_width = 130;
     CGFloat rename_textfield_width = CGRectGetWidth(_bound) - 10 - rename_button_width - 30;
-    tfRenameAlmond = [[UITextField alloc] initWithFrame:CGRectMake(10, _baseYCoordinate, rename_textfield_width - 10, 30)];
+    tfRenameAlmond = [[UITextField alloc] initWithFrame:CGRectMake(10, _baseYCoordinate, self.frame.size.width, 30)];
     if(self.isOwnedAlmond)
         tfRenameAlmond.placeholder = NSLocalizedString(ACCOUNTS_OWNEDALMOND_TEXTFIELD_PLACEHOLDER, ALMOND_NAME);
     else{
@@ -166,10 +168,11 @@
     [self addSubview:tfRenameAlmond];
     
     
-    UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnChangeAlmondName.frame = CGRectMake(_frameValue.size.width - 160, _baseYCoordinate, rename_button_width, 30);
-    btnChangeAlmondName.backgroundColor = [UIColor clearColor];
+//    UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
+//    btnChangeAlmondName.frame = CGRectMake(_frameValue.size.width - 160, _baseYCoordinate, rename_button_width, 30);
+//    btnChangeAlmondName.backgroundColor = [UIColor clearColor];
     
+//    [self addSubview:btnChangeAlmondName];
     _baseYCoordinate += 30;
     UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, _baseYCoordinate, _frameValue.size.width - 35, 1)];
     imgLine2.image = [UIImage imageNamed:LINE];

@@ -288,6 +288,19 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 -(void) onChangeAlmondNameClicked:(NSString*)newAlmondName nameChangeValue:(int)nameChangeValue{
     changedAlmondName = newAlmondName;
     nameChangedForAlmond = nameChangeValue;
+    NSString *reqname = @"AlmondNameChange";
+    
+    [self sendAlmondNameChangeRequest:[AlmondManagement currentAlmond].almondplusMAC];
+    
+}
+- (void)sendAlmondNameChangeRequest:(NSString *)almondplusMAC {
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = NSLocalizedString(@"accounts.hud.changeAlmondName", @"Change almond name...");
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+    [self showHudWithTimeout];
+    [[SecurifiToolkit sharedInstance] asyncRequestChangeAlmondName:changedAlmondName almondMAC:almondplusMAC];
 }
 
 #pragma mark - FromAlmondCell

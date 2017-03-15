@@ -90,7 +90,7 @@ int mii;
                             action:@selector(editingChanged:)
                   forControlEvents:UIControlEventEditingChanged];
     self.searchTxtFld.delegate = self;
-    
+    self.otherTxtFld.delegate = self;
     self.currentRegion = [SecurifiToolkit sharedInstance].almondProperty.region;
 }
 
@@ -163,6 +163,7 @@ int mii;
 - (IBAction)onSelectLocationTap:(id)sender {
     UIButton *btn = sender;
     btn.selected = !btn.selected;
+    [self.otherTxtFld resignFirstResponder];
     if(btn.selected){
         self.upArrow.hidden = NO;
         self.downArrow.hidden = YES;
@@ -186,6 +187,7 @@ int mii;
 }
 
 - (IBAction)onAmericaTap:(id)sender {
+    [self.otherTxtFld resignFirstResponder];
     self.locationLbl.text = @"America";
     
     self.americaView.hidden = NO;
@@ -196,6 +198,7 @@ int mii;
 }
 
 - (IBAction)onOtherTap:(id)sender {
+    [self.otherTxtFld resignFirstResponder];
     self.locationLbl.text = @"Other";
     
     self.americaView.hidden = YES;
@@ -222,7 +225,22 @@ int mii;
     [textField resignFirstResponder];
     return  YES;
 }
-
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField{
+    // add your method here
+    
+    return YES;
+}
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    NSString *value = textField.text;
+    if(value.length == 0)
+        [self showToast:@"Please Enter a value of atleast 1 character."];
+    if([value containsString:@","]){
+        NSArray *components = [value componentsSeparatedByString:@","];
+        value = [NSString stringWithFormat:@"%@/%@", components[1], components[0]];
+    }
+    [self showHudWithTimeoutMsg:@"Please wait!" time:10];
+    [RouterPayload requestAlmondPropertyChange:mii action:@"GeoLocation" value:value uptime:nil];
+}
 -(void)editingChanged:(id)sender{
     [self.filteredList removeAllObjects];
     
