@@ -72,7 +72,7 @@
 
 - (void)textFieldFinished:(UITextField*) tfName {
     changedAlmondName = tfName.text;
-    [self.delegate onChangeAlmondNameClicked:changedAlmondName nameChangeValue:343];
+    [self.delegate onChangeAlmondNameClicked:changedAlmondName almondMac:self.currentAlmond.almondplusMAC];
     [tfName resignFirstResponder];
 }
 

@@ -17,6 +17,7 @@
 #import "SFIAlmondCell.h"
 #import "AlmondManagement.h"
 #import "SFISecondaryUser.h"
+#import "UIViewController+Securifi.h"
 
 static NSString *simpleTableIdentifier = @"AccountCell";
 
@@ -285,12 +286,14 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [self onDeleteAccountClicked:sender];
 }
 
--(void) onChangeAlmondNameClicked:(NSString*)newAlmondName nameChangeValue:(int)nameChangeValue{
+-(void) onChangeAlmondNameClicked:(NSString*)newAlmondName almondMac:(NSString*)mac{
     changedAlmondName = newAlmondName;
-    nameChangedForAlmond = nameChangeValue;
     NSString *reqname = @"AlmondNameChange";
-    
-    [self sendAlmondNameChangeRequest:[AlmondManagement currentAlmond].almondplusMAC];
+    if((newAlmondName.length == 0) || (newAlmondName.length > 32)){
+        [self showToast:@"almond name should be less than 32 character"];
+        return;
+    }
+    [self sendAlmondNameChangeRequest:mac];
     
 }
 - (void)sendAlmondNameChangeRequest:(NSString *)almondplusMAC {

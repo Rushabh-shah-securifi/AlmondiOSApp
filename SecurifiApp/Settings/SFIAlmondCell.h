@@ -18,7 +18,7 @@
 -(void) onUnlinkAlmondClicked:(id)sender;
 -(void) onInviteClicked:(id)sender;
 -(void) onRemoveSharedAlmondClicked:(id)sender;
--(void) onChangeAlmondNameClicked:(NSString*)newAlmondName nameChangeValue:(int)nameChangeValue;
+-(void) onChangeAlmondNameClicked:(NSString*)newAlmondName almondMac:(NSString*)mac;
 -(void) onEmailRemoveClicked:(id)sender;
 -(void) sendRequest:(CommandType*)commandType withData:(NSArray*)data withLocalizedStrings:(NSArray*)strings ;
 -(void) showToastForMoreThan32Chars;
