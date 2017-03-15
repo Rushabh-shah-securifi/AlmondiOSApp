@@ -56,7 +56,8 @@ int mii;
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     mii = arc4random() % 10000;
-    
+    self.searchTxtFld.delegate = self;
+    self.otherTxtFld.delegate = self;
     [self initializeNotification];
 }
 
@@ -89,8 +90,7 @@ int mii;
     [self.searchTxtFld addTarget:self
                             action:@selector(editingChanged:)
                   forControlEvents:UIControlEventEditingChanged];
-    self.searchTxtFld.delegate = self;
-    self.otherTxtFld.delegate = self;
+   
     self.currentRegion = [SecurifiToolkit sharedInstance].almondProperty.region;
 }
 
@@ -238,7 +238,7 @@ int mii;
         NSArray *components = [value componentsSeparatedByString:@","];
         value = [NSString stringWithFormat:@"%@/%@", components[1], components[0]];
     }
-    [self showHudWithTimeoutMsg:@"Please wait!" time:10];
+    [self showHudWithTimeoutMsg:@"Please wait!" time:5];
     [RouterPayload requestAlmondPropertyChange:mii action:@"GeoLocation" value:value uptime:nil];
 }
 -(void)editingChanged:(id)sender{
