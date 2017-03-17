@@ -30,6 +30,7 @@
 #import "iToast.h"
 #import "ClientPayload.h"
 #import "DataUsageView.h"
+#import "ProfileView.h"
 
 #define DEVICE_PROPERTY_CELL @"devicepropertycell"
 
@@ -59,6 +60,8 @@ int mii;
 
 
 @property (nonatomic) NSMutableArray *sectionArr;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTop;
+@property (weak, nonatomic) IBOutlet ProfileView *profileView;
 
 
 @end
@@ -104,7 +107,15 @@ int mii;
     mii = arc4random() % 10000;
     self.miiTable = [NSMutableDictionary new];
     [self  initSection];
-    [self setUpDevicePropertyEditHeaderView];
+    if (self.userProfile) {
+        self.profileView.hidden = NO;
+        [self.profileView setButtonImages];
+        self.tableViewTop.constant = 200;
+
+    }
+    else
+        [self setUpDevicePropertyEditHeaderView];
+    
     [self getSectionForTable];
     [self.navigationController setNavigationBarHidden:YES];
 }

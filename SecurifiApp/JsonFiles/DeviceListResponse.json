@@ -854,6 +854,51 @@
                 "deviceid": "866",
                 "Location": "Hall"
             },
+            "-111": {
+                "Name": "ClientName",
+                "Type": "Actuator",
+                "Placement": "Detail",
+                "Layout": "TEXT_VIEW",
+                "AppLabel": "name",
+                "property": "EditText"
+            },
+            "-119": {
+                "Name": "AllowOnNetwork",
+                "Type": "Actuator",
+                "Placement": "Detail",
+                "Layout": "SWITCH",
+                "AppLabel": "allowOnNetwork",
+                "property": "switchButton",
+                "Values": {
+                    "0": {
+                        "AppLabel": "always"
+                    },
+                    "1": {
+                        "AppLabel": "blocked_"
+                    },
+                    "2": {
+                        "AppLabel": "onSchedule"
+                    }
+                }
+            },
+            "-123": {
+                "Name": "Web History",
+                "Type": "Actuator",
+                "Placement": "Detail",
+                "Layout": "HISTORY_LAYOUT",
+                "AppLabel": "web_history",
+                "Values": {
+                    "true": {
+                        "AppLabel": "on_camelcase"
+                        
+                    },
+                    "false": {
+                        "AppLabel": "off_camelcase"
+                        
+                    }
+                }
+            },
+
             "DeviceValues": {
                 "1": {
                     "Name": "Temp",

@@ -14,17 +14,17 @@
 @property (weak, nonatomic) IBOutlet UIImageView *userDP;
 @property (weak, nonatomic) IBOutlet UILabel *userName;
 
-@property (weak, nonatomic) IBOutlet UIImageView *active;
+@property (weak, nonatomic) IBOutlet UIButton *active;
 @property (weak, nonatomic) IBOutlet UILabel *activeLbl;
 
-@property (weak, nonatomic) IBOutlet UIImageView *dataUsage;
+@property (weak, nonatomic) IBOutlet UIButton *dataUsage;
 @property (weak, nonatomic) IBOutlet UILabel *dataUsageLbl;
 
-@property (weak, nonatomic) IBOutlet UIImageView *webHistory;
+@property (weak, nonatomic) IBOutlet UIButton *webHistory;
 @property (weak, nonatomic) IBOutlet UILabel *webHistoryLbl
 ;
 
-@property (weak, nonatomic) IBOutlet UIImageView *more;
+@property (weak, nonatomic) IBOutlet UIButton *more;
 @property (weak, nonatomic) IBOutlet UILabel *moreLbl;
 
 @end

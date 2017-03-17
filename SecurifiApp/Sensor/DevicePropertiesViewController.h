@@ -11,4 +11,5 @@
 
 @interface DevicePropertiesViewController : UIViewController
 @property (nonatomic)GenericParams *genericParams;
+@property BOOL userProfile;
 @end

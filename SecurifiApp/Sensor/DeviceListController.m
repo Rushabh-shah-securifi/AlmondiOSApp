@@ -38,6 +38,8 @@
 #import "UICommonMethods.h"
 #import "ScrollButtonView.h"
 #import "UserProfileView.h"
+#import "ProfileView.h"
+#import "UserProfileViewController.h"
 
 
 #define NO_ALMOND @"NO ALMOND"
@@ -46,7 +48,7 @@
 #define HEADER_FONT_SIZE 16
 #define COUNT_FONT_SIZE 12
 
-@interface DeviceListController ()<UITableViewDataSource,UITableViewDelegate,DeviceHeaderViewDelegate,ScrollButtonViewDelegate>
+@interface DeviceListController ()<UITableViewDataSource,UITableViewDelegate,DeviceHeaderViewDelegate,ScrollButtonViewDelegate,ProfileViewDelegate>
 
 @property(nonatomic, readonly) SFIColors *almondColor;
 @property(nonatomic) NSTimer *mobileCommandTimer;
@@ -79,6 +81,13 @@ int mii;
     
     //ensure list is empty initially
     [self initializeAlmondData];
+    int parameter1 = 12;
+    float parameter2 = 144.1;
+    
+    // Delay execution of my block for 10 seconds.
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//        NSLog(@"parameter1: %d parameter2: %f", parameter1, parameter2);
+//    });
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -309,8 +318,8 @@ int mii;
         [view addSubview:scrollView];
     }
     else if (section == 1){
-        UserProfileView *userProfile = [[UserProfileView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(view.frame), 200)];
-        userProfile.backgroundColor = [UIColor redColor];
+        ProfileView *userProfile = [[ProfileView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(view.frame), 200)];
+        userProfile.delegate = self;
           [view addSubview:userProfile];
     }
     static NSString *headerView = @"customHeader";
@@ -540,10 +549,13 @@ int mii;
 
 -(void)delegateClientSettingButtonClick:(GenericParams*)genericParams{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
-    DevicePropertiesViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DevicePropertiesViewController"];
-    viewController.genericParams = genericParams;
-    // [self presentViewController:viewController animated:YES completion:nil];
-    [self.navigationController pushViewController:viewController animated:YES];
+    UserProfileViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"UserProfileViewController"];
+//    viewController.userProfile = YES;
+//    viewController.genericParams = genericParams;
+     [self presentViewController:viewController animated:YES completion:nil];
+    
+    
+//    [self.navigationController pushViewController:viewController animated:YES];
     
     
 //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
@@ -768,5 +780,13 @@ int mii;
     
     NSLog(@"IoTDevicesListViewController IF");
     [self.navigationController pushViewController:newWindow animated:YES];
+}
+#pragma mark profile view delegate
+-(void)callUserPropertyViewController{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
+    DevicePropertiesViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DevicePropertiesViewController"];
+    viewController.userProfile = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+    
 }
 @end
