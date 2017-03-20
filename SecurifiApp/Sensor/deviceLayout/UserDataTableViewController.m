@@ -10,6 +10,7 @@
 
 @interface UserDataTableViewController ()<UITableViewDelegate,UITableViewDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *userDataTable;
+@property (weak, nonatomic) IBOutlet UISwitch *dataUsageSwitch;
 
 @end
 
@@ -32,10 +33,10 @@
 
 #pragma mark - Table view data source
 
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-//#warning Incomplete implementation, return the number of sections
-//    return 0;
-//}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+
+    return 3;
+}
 //
 //- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 //#warning Incomplete implementation, return the number of rows
@@ -95,5 +96,24 @@
     // Pass the selected object to the new view controller.
 }
 */
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    if (cell.hidden) {
+        return 0;
+    } else {
+        return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+    }
+}
+#pragma mark actions methods
+- (IBAction)dataUsageSwitchAction:(UISwitch *)sender {
+    if(!sender.on){
+        [self.tableView beginUpdates];
+        NSIndexPath *myIP = [NSIndexPath indexPathForRow:1 inSection:1];
+        [self.userDataTable deleteRowsAtIndexPaths:[NSArray arrayWithObjects:myIP, nil] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
+        [self.userDataTable reloadSections:[NSIndexSet indexSetWithIndex:myIP.section] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+    }
+}
 
 @end
