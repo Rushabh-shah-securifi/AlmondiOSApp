@@ -28,8 +28,10 @@
     return sensorValue;
 }
 
-- (NSString *)scaledValue:(NSString *)value{
-    return [NSString stringWithFormat:@"%d", (int)ceil([value intValue]*self.factor)];
+- (NSString *)scaledValue:(NSString *)value factor:(float) factor{
+    NSLog(@"dsds %@",[NSString stringWithFormat:@"%d", (int)ceil([value intValue]*factor)]);
+    
+    return [NSString stringWithFormat:@"%d", (int)ceil([value intValue]*factor)];
 }
 
 - (float )factor {

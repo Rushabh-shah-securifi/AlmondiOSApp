@@ -212,7 +212,7 @@ UILabel *topLabel;
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties] || buttonProperties.deviceType == 65){
                     NSString *text;
                     if(isDimButton){
-                        buttonProperties.displayedData = [NSString stringWithFormat:@"%d",(int)roundf([buttonProperties.matchData intValue]*(genericIndex.formatter.factor == 0?1.0:genericIndex.formatter.factor))];
+                        buttonProperties.displayedData =[NSString stringWithFormat:@"%d",(int)roundf([buttonProperties.matchData intValue]*(genericIndex.formatter.factor == 0?1.0:genericIndex.formatter.factor))];
                         
                         if([[SecurifiToolkit sharedInstance].almondProperty.weatherCentigrade isEqualToString:@"C"] &&[genericIndex.formatter.units hasSuffix:@"F"]){
                             int centiVal = [CommonMethods convertToCelsius:buttonProperties.displayedData.intValue];

@@ -147,6 +147,8 @@
 }
 
 - (NSString *)scaledValue:(NSString*)text{
+    NSLog(@"ddff %@",[NSString stringWithFormat:@"%d",  (int)roundf([text intValue]/self.factor)]);
+    
     return [NSString stringWithFormat:@"%d",  (int)roundf([text intValue]/self.factor)];
 }
 

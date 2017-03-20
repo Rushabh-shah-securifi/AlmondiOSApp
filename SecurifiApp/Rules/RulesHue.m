@@ -113,7 +113,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
         
 
             indexValCounter++;
-            if([genericIndex.ID isEqualToString:@"90"] ){
+            if([genericIndex.ID isEqualToString:@"90"] || [genericIndex.ID isEqualToString:@"104"]){
                 SwitchButton *buttonHue = [[SwitchButton alloc] initWithFrame:CGRectMake(view.frame.origin.x, 0, indexButtonFrameSize, indexButtonFrameSize)];
                 //                buttonHue.backgroundColor = [UIColor blackColor];
                 buttonHue.tag = indexValCounter;

@@ -36,5 +36,6 @@ typedef NS_ENUM(unsigned int, ValueFormatterAction) {
 - (NSString*)formatNotificationValue:(NSString*)sensorValue;
 - (NSString *)scaledValue:(NSString *)value;
 -(float) factor;
+- (NSString *)scaledValue:(NSString *)value factor:(float) factor;
 
 @end
