@@ -1192,15 +1192,19 @@ labelAndCheckButtonView *labelView;
     
     SFIButtonSubProperties *newProperty=dimmer.subProperties;
     if(!self.isTrigger){
+         NSString *matchData = [dimmer scaledValue:newPickerValue];
         newProperty=[dimmer.subProperties createNew];
-        newProperty.matchData = [dimmer scaledValue:newPickerValue];
-        newProperty.matchData = [CommonMethods getFahrenheitValue:cetigrateVal text:newProperty.matchData]; //[dimmer scaledValue:newPickerValue];
+        newProperty.matchData = matchData;
+       if([dimmer.prefix containsString:@"F"])
+             newProperty.matchData = [CommonMethods getFahrenheitValue:cetigrateVal text:matchData]; //[dimmer scaledValue:newPickerValue];
         newProperty.displayedData = newPickerValue;
 //[CommonMethods getFahrenheitValue:@"" text:newPickerValue];
     }else{
         NSLog(@"dim factor: %f", dimmer.factor);
-        dimmer.subProperties.matchData = [dimmer scaledValue:newPickerValue];
-        dimmer.subProperties.matchData = [CommonMethods getFahrenheitValue:cetigrateVal text:dimmer.subProperties.matchData];
+        NSString *matchData = [dimmer scaledValue:newPickerValue];
+        dimmer.subProperties.matchData = matchData;
+        if([dimmer.prefix containsString:@"F"])
+            dimmer.subProperties.matchData = [CommonMethods getFahrenheitValue:cetigrateVal text:matchData];
         dimmer.subProperties.displayedData = newPickerValue; //newPickerValue;
     }
     if(dimmer.subProperties.deviceType == SFIDeviceType_NestThermostat_57 && self.isTrigger){
