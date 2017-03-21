@@ -58,6 +58,7 @@ int mii;
     mii = arc4random() % 10000;
     self.searchTxtFld.delegate = self;
     self.otherTxtFld.delegate = self;
+    self.otherTxtFld.placeholder = @"\"France/Paris\" or \"NY/New_Rochelle\"";
     [self initializeNotification];
 }
 
@@ -207,13 +208,31 @@ int mii;
     self.upperTick.hidden = YES;
     self.lowerTick.hidden = NO;
 }
+#define ACCEPTABLE_CHARACTERS @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_/"
 
+-(BOOL)regionTextValidator:(NSString *)location{
+     NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:ACCEPTABLE_CHARACTERS] invertedSet];
+    NSString *filtered = [[location componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
+    
+    return [location isEqualToString:filtered];
+//    if([location containsString:@" "]|| [location containsString:@","] || [location containsString:@"@"] || [location containsString:@"@"]){
+//        return NO;
+//    }
+//    else
+//        return YES;
+}
 - (IBAction)onOtherTickTap:(id)sender {
     NSString *value = self.otherTxtFld.text;
-    if(value.length == 0)
+    if(![self regionTextValidator:value]){
+        [self showToast:@"NOTE: Please enter the Almond Region in any of \"France/Paris\" or \"NY/New_Rochelle\" these formats."];
+        return;
+    }
+    if(value.length == 0){
         [self showToast:@"Please Enter a value of atleast 1 character."];
-    if([value containsString:@","]){
-        NSArray *components = [value componentsSeparatedByString:@","];
+        return;
+    }
+    if([value containsString:@"/"]){
+        NSArray *components = [value componentsSeparatedByString:@"/"];
         value = [NSString stringWithFormat:@"%@/%@", components[1], components[0]];
     }
     [self showHudWithTimeoutMsg:@"Please wait!" time:10];
@@ -232,10 +251,17 @@ int mii;
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField{
     NSString *value = textField.text;
-    if(value.length == 0)
+    if(![self regionTextValidator:value]){
+        [self showToast:@"NOTE: Please enter the Almond Region in any of \"France/Paris\" or \"NY/New_Rochelle\" these formats."];
+        return;
+    }
+    if(value.length == 0){
         [self showToast:@"Please Enter a value of atleast 1 character."];
-    if([value containsString:@","]){
-        NSArray *components = [value componentsSeparatedByString:@","];
+        return;
+    }
+    
+    if([value containsString:@"/"]){
+        NSArray *components = [value componentsSeparatedByString:@"/"];
         value = [NSString stringWithFormat:@"%@/%@", components[1], components[0]];
     }
     [self showHudWithTimeoutMsg:@"Please wait!" time:5];
